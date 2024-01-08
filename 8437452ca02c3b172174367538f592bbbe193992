@@ -1,0 +1,550 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e50315d_1f4f0a64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 54
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "Also in addition, i see a bunch of cppcheck errors in the jenkins CI console (at requester/mctp_endpoint_discovery.cpp/hpp) that\u0027s being included in this commit.Please fix those as well in the next re-work.",
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "467a9f61_809c572f",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 58,
+        "startChar": 13,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be02cd61_02de804f",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "can we do type based access here ? since we only want eid and that\u0027s the only type which is uint8_t in the tuple ?",
+      "range": {
+        "startLine": 60,
+        "startChar": 30,
+        "endLine": 60,
+        "endChar": 41
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bb13e42_f8a9bf8b",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "does this still hold true ? its a void function which always returns ?\n\nis this supposed to do something ? i dont understand what is the need for this function which does nothing ?",
+      "range": {
+        "startLine": 71,
+        "startChar": 5,
+        "endLine": 71,
+        "endChar": 71
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927ae395_0d52a9a4",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "all of these should have been defined somewhere else in pldm repo already , please re-use them.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 70
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f0f5ea_a57ec69e",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "instead of this, you can re-use the getSubtree utility function which is already in the repository at https://github.com/openbmc/pldm/blob/90314a3f09f8168df9ccb5cd196766c29f655bf0/common/utils.hpp#L263",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d04f3305_846b636b",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "pldm already uses lg2 for logging, please change the tracing here and every where to use lg2 library .",
+      "range": {
+        "startLine": 67,
+        "startChar": 8,
+        "endLine": 68,
+        "endChar": 43
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379bdcb1_6c2f0f3a",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "you could create a new util API called getAll() and put it in utils , similar to getSubtree().",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 80
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c69ad1a2_4687ac1c",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "types is a map ? why can\u0027t we do types.contains() ?",
+      "range": {
+        "startLine": 99,
+        "startChar": 20,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29a55a20_6b95135f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "use LG2 for logging.",
+      "range": {
+        "startLine": 102,
+        "startChar": 24,
+        "endLine": 103,
+        "endChar": 70
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5280959_183340d8",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "use LG2 for logging.",
+      "range": {
+        "startLine": 111,
+        "startChar": 15,
+        "endLine": 113,
+        "endChar": 60
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edd3c9a4_1762c985",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "lg2",
+      "range": {
+        "startLine": 136,
+        "startChar": 7,
+        "endLine": 137,
+        "endChar": 43
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052da145_29e9d87e",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "types.contains()\n\nand LG2 for logging.",
+      "range": {
+        "startLine": 154,
+        "startChar": 16,
+        "endLine": 158,
+        "endChar": 66
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd467dfd_6d06af0f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 169,
+        "startChar": 9,
+        "endLine": 169,
+        "endChar": 24
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b6426e6_b4670d49",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "contains ()",
+      "range": {
+        "startLine": 171,
+        "startChar": 8,
+        "endLine": 172,
+        "endChar": 58
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a149b13_e056c743",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 182,
+        "startChar": 9,
+        "endLine": 182,
+        "endChar": 24
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "744da816_5383a4d9",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "contains()",
+      "range": {
+        "startLine": 184,
+        "startChar": 8,
+        "endLine": 185,
+        "endChar": 28
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff2e12b3_071d31e2",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 190,
+        "startChar": 9,
+        "endLine": 190,
+        "endChar": 14
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe0e9e41_4c79e13a",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "use LG2 for logging.",
+      "range": {
+        "startLine": 192,
+        "startChar": 8,
+        "endLine": 193,
+        "endChar": 72
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfe22c9d_cac38686",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "LG2",
+      "range": {
+        "startLine": 228,
+        "startChar": 7,
+        "endLine": 229,
+        "endChar": 26
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2be9bc_037e51f4",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "contains()",
+      "range": {
+        "startLine": 244,
+        "startChar": 11,
+        "endLine": 245,
+        "endChar": 32
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f566a10_aec63ffe",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "lg2",
+      "range": {
+        "startLine": 251,
+        "startChar": 13,
+        "endLine": 253,
+        "endChar": 85
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72d558bc_564aa1de",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "auto ?",
+      "range": {
+        "startLine": 261,
+        "startChar": 9,
+        "endLine": 261,
+        "endChar": 35
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d03c023c_622752cb",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-08T15:20:53Z",
+      "side": 1,
+      "message": "auto ?",
+      "range": {
+        "startLine": 272,
+        "startChar": 9,
+        "endLine": 272,
+        "endChar": 35
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
