@@ -9,6 +9,7 @@
 #include <sys/socket.h>
 
 #include <phosphor-logging/lg2.hpp>
+#include <sdbusplus/async.hpp>
 #include <sdbusplus/timer.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
@@ -276,6 +277,32 @@ class Handler
         return PLDM_SUCCESS;
     }
 
+    /** @brief Unregister a PLDM request message
+     *
+     *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+     *  @param[in] instanceId - instance ID to match request and response
+     *  @param[in] type - PLDM type
+     *  @param[in] command - PLDM command
+     *
+     *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
+     */
+    int unregisterRequest(mctp_eid_t eid, uint8_t instanceId, uint8_t type,
+                          uint8_t command)
+    {
+        RequestKey key{eid, instanceId, type, command};
+
+        if (handlers.contains(key))
+        {
+            std::get<1>(handlers[key]) = [](mctp_eid_t, const pldm_msg*,
+                                            size_t) {};
+            return PLDM_SUCCESS;
+        }
+        else
+        {
+            return PLDM_ERROR;
+        }
+    }
+
     /** @brief Handle PLDM response message
      *
      *  @param[in] eid - endpoint ID of the remote MCTP endpoint
@@ -317,6 +344,14 @@ class Handler
             instanceIdDb.free(key.eid, key.instanceId);
         }
     }
+
+    /** @brief Wrap registerRequest with coroutine API.
+     *
+     *  @return A tuple of [return_code, pldm::Response].
+     *          pldm::Response is empty on non-zero return_code.
+     *          Otherwise, filled with pldm_msg* content.
+     */
+    stdexec::sender auto sendRecvMsg(mctp_eid_t eid, pldm::Request&& request);
 
   private:
     PldmTransport* pldmTransport; //!< PLDM transport object
@@ -366,6 +401,131 @@ class Handler
         }
     }
 };
+
+template <class RequestInterface, stdexec::receiver R>
+struct SendRecvMsgOperation
+{
+    SendRecvMsgOperation() = delete;
+
+    explicit SendRecvMsgOperation(Handler<RequestInterface>& handler,
+                                  mctp_eid_t eid, pldm::Request&& request,
+                                  R&& r) :
+        handler(handler),
+        request(std::move(request)), receiver(std::move(r))
+    {
+        auto requestMsg =
+            reinterpret_cast<const pldm_msg*>(this->request.data());
+        requestKey = RequestKey{
+            eid,
+            requestMsg->hdr.instance_id,
+            requestMsg->hdr.type,
+            requestMsg->hdr.command,
+        };
+    }
+
+    friend void tag_invoke(stdexec::start_t, SendRecvMsgOperation& op) noexcept
+    {
+        auto st = stdexec::get_stop_token(stdexec::get_env(op.receiver));
+
+        // operation already cancelled
+        if (st.stop_requested())
+        {
+            return stdexec::set_stopped(std::move(op.receiver));
+        }
+
+        using namespace std::placeholders;
+        auto rc = op.handler.registerRequest(
+            op.requestKey.eid, op.requestKey.instanceId, op.requestKey.type,
+            op.requestKey.command, std::move(op.request),
+            std::bind(&SendRecvMsgOperation::onComplete, &op, _1, _2, _3));
+        if (rc)
+        {
+            return stdexec::set_error(std::move(op.receiver), rc);
+        }
+
+        if (st.stop_possible())
+        {
+            op.stopCallback.emplace(
+                std::move(st), std::bind(&SendRecvMsgOperation::onStop, &op));
+        }
+    }
+
+    void onStop()
+    {
+        handler.unregisterRequest(requestKey.eid, requestKey.instanceId,
+                                  requestKey.type, requestKey.command);
+        return stdexec::set_stopped(std::move(receiver));
+    }
+
+    void onComplete(mctp_eid_t eid, const pldm_msg* response, size_t len)
+    {
+        stopCallback.reset();
+        assert(eid == this->requestKey.eid);
+        if (!response || !len)
+        {
+            return stdexec::set_error(std::move(receiver), (int)PLDM_ERROR);
+        }
+        else
+        {
+            return stdexec::set_value(std::move(receiver), response, len);
+        }
+    }
+
+  private:
+    requester::Handler<RequestInterface>& handler;
+    RequestKey requestKey;
+    pldm::Request request;
+    const pldm_msg* response;
+    size_t len;
+    R receiver;
+
+    std::optional<typename stdexec::stop_token_of_t<
+        stdexec::env_of_t<R>>::template callback_type<std::function<void()>>>
+        stopCallback = std::nullopt;
+};
+
+template <class RequestInterface>
+struct SendRecvMsgSender
+{
+    using is_sender = void;
+
+    SendRecvMsgSender() = delete;
+
+    explicit SendRecvMsgSender(requester::Handler<RequestInterface>& handler,
+                               mctp_eid_t eid, pldm::Request&& request) :
+        handler(handler),
+        eid(eid), request(std::move(request))
+    {}
+
+    friend auto tag_invoke(stdexec::get_completion_signatures_t,
+                           const SendRecvMsgSender&, auto)
+        -> stdexec::completion_signatures<
+            stdexec::set_value_t(const pldm_msg*, size_t),
+            stdexec::set_error_t(int), stdexec::set_stopped_t()>;
+
+    template <stdexec::receiver R>
+    friend auto tag_invoke(stdexec::connect_t, SendRecvMsgSender&& self, R r)
+    {
+        return SendRecvMsgOperation<RequestInterface, R>(
+            self.handler, self.eid, std::move(self.request), std::move(r));
+    }
+
+  private:
+    requester::Handler<RequestInterface>& handler;
+    mctp_eid_t eid;
+    pldm::Request request;
+};
+
+template <class RequestInterface>
+stdexec::sender auto
+    Handler<RequestInterface>::sendRecvMsg(mctp_eid_t eid,
+                                           pldm::Request&& request)
+{
+    return SendRecvMsgSender(*this, eid, std::move(request)) |
+           stdexec::then([](const pldm_msg* responseMsg, size_t responseLen) {
+        return std::make_tuple(responseMsg, responseLen);
+    });
+}
 
 } // namespace requester
 
