@@ -38,7 +38,7 @@ owners:
 - manojkiran.eda@gmail.com
 
 reviewers:
-- liuxiwei@inspur.com
+- liuxiwei@ieisystem.com
 
 matchers:
 - partial_regex: ibm
@@ -57,7 +57,7 @@ openbmc:
   email: deepak.kodihalli.83@gmail.com
   discord: dkodihal
 - name: George Liu
-  email: liuxiwei@inspur.com
+  email: liuxiwei@ieisystem.com
   discord: George Liu
 - name: Manojkiran Eda
   email: manojkiran.eda@gmail.com
