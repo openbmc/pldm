@@ -9,6 +9,7 @@
 #include <sys/socket.h>
 
 #include <phosphor-logging/lg2.hpp>
+#include <sdbusplus/async/stdexec/execution.hpp>
 #include <sdbusplus/timer.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
@@ -318,6 +319,14 @@ class Handler
         }
     }
 
+    /** @brief Wrap registerRequest with coroutine API.
+     *
+     *  @return A tuple of [return_code, pldm::Response].
+     *          pldm::Response is empty on non-zero return_code.
+     *          Otherwise, filled with pldm_msg* content.
+     */
+    stdexec::sender auto sendRecvMsg(mctp_eid_t eid, pldm::Request&& request);
+
   private:
     PldmTransport* pldmTransport; //!< PLDM transport object
     sdeventplus::Event& event; //!< reference to PLDM daemon's main event loop
@@ -366,6 +375,110 @@ class Handler
         }
     }
 };
+
+template <class RequestInterface, stdexec::receiver R>
+struct SendRecvMsgOperation
+{
+    SendRecvMsgOperation() = delete;
+
+    SendRecvMsgOperation(Handler<RequestInterface>& handler, mctp_eid_t eid,
+                         pldm::Request&& request, R&& r) :
+        handler(handler),
+        eid(eid), request(std::move(request)), receiver(std::move(r))
+    {}
+
+    friend void tag_invoke(stdexec::start_t,
+                           SendRecvMsgOperation& self) noexcept
+    {
+        auto requestMsg =
+            reinterpret_cast<const pldm_msg*>(self.request.data());
+
+        auto rc = self.handler.registerRequest(
+            self.eid, requestMsg->hdr.instance_id, requestMsg->hdr.type,
+            requestMsg->hdr.command, std::move(self.request),
+            std::move(
+                [&](mctp_eid_t eid, const pldm_msg* response, size_t len) {
+            return stdexec::set_value(std::move(self.receiver), eid, response,
+                                      len);
+        }));
+
+        if (rc)
+        {
+            stdexec::set_error(std::move(self.receiver), rc);
+        }
+    }
+
+  private:
+    requester::Handler<RequestInterface>& handler;
+    mctp_eid_t eid;
+    pldm::Request request;
+    R receiver;
+};
+
+template <class RequestInterface>
+struct SendRecvMsgSender
+{
+    using is_sender = void;
+
+    SendRecvMsgSender() = delete;
+    SendRecvMsgSender(const RequestRetryTimer&) = delete;
+    SendRecvMsgSender(RequestRetryTimer&&) = delete;
+    SendRecvMsgSender& operator=(const RequestRetryTimer&) = delete;
+    SendRecvMsgSender& operator=(RequestRetryTimer&&) = delete;
+
+    explicit SendRecvMsgSender(requester::Handler<RequestInterface>& handler,
+                               mctp_eid_t eid, pldm::Request&& request) :
+        handler(handler),
+        eid(eid), request(std::move(request))
+    {}
+
+    friend auto tag_invoke(stdexec::get_completion_signatures_t,
+                           const SendRecvMsgSender&, auto)
+        -> stdexec::completion_signatures<
+            stdexec::set_value_t(mctp_eid_t, const pldm_msg*, size_t),
+            stdexec::set_error_t(int), stdexec::set_stopped_t()>;
+
+    template <stdexec::receiver R>
+    friend auto tag_invoke(stdexec::connect_t, SendRecvMsgSender&& self, R r)
+    {
+        return SendRecvMsgOperation<RequestInterface, R>(
+            self.handler, self.eid, std::move(self.request), std::move(r));
+    }
+
+  private:
+    requester::Handler<RequestInterface>& handler;
+    mctp_eid_t eid;
+    pldm::Request request;
+};
+
+template <class RequestInterface>
+stdexec::sender auto
+    Handler<RequestInterface>::sendRecvMsg(mctp_eid_t eid,
+                                           pldm::Request&& request)
+{
+    return SendRecvMsgSender(*this, eid, std::move(request)) |
+           stdexec::then([&](mctp_eid_t, const pldm_msg* responseMsg,
+                             size_t size) noexcept {
+        int rc;
+        pldm::Response response;
+
+        if (!responseMsg || !size)
+        {
+            rc = PLDM_ERROR_INVALID_LENGTH;
+        }
+        else
+        {
+            rc = PLDM_SUCCESS;
+            response = pldm::Response((uint8_t*)responseMsg,
+                                      (uint8_t*)responseMsg + size +
+                                          sizeof(struct pldm_msg_hdr));
+        }
+
+        return std::make_tuple(rc, response);
+    }) | stdexec::upon_error([](int rc) {
+        return std::make_tuple(rc, pldm::Response{});
+    });
+}
 
 } // namespace requester
 
