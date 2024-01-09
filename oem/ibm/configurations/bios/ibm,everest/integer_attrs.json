@@ -187,6 +187,25 @@
             "displayName": "Requested Core Freq MHZ (current)"
         },
         {
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 9,
+            "helpText": "This option allocates platform memory during IPL for PCI-E slots to enable dynamic I/O drawer attachment.",
+            "displayName": "Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 9,
+            "readOnly": true,
+            "helpText": "This option allocates platform memory during IPL for PCI-E slots to enable dynamic I/O drawer attachment.",
+            "displayName": "Dynamic I/O Drawer Attachment"
+        },
+        {
             "attribute_name": "pvm_rpd_scheduled_tod",
             "lower_bound": 0,
             "upper_bound": 86399,
