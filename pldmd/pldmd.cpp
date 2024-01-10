@@ -25,6 +25,8 @@
 #include <unistd.h>
 
 #include <phosphor-logging/lg2.hpp>
+#include <sdbusplus/async/context.hpp>
+#include <sdbusplus/event.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <sdeventplus/source/signal.hpp>
@@ -41,6 +43,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <system_error>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
@@ -178,6 +181,7 @@ int main(int argc, char** argv)
      * and use the correct TIDs */
     pldm_tid_t TID = hostEID;
     PldmTransport pldmTransport{};
+    sdbusplus::async::context ctx;
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
     sdbusplus::server::manager_t objManager(bus,
@@ -372,11 +376,20 @@ int main(int argc, char** argv)
     stdplus::signal::block(SIGUSR1);
     sdeventplus::source::Signal sigUsr1(
         event, SIGUSR1, std::bind_front(&interruptFlightRecorderCallBack));
-    int returnCode = event.loop();
-    if (returnCode)
-    {
-        exit(EXIT_FAILURE);
-    }
+
+    // HACK: run Event using sdbusplus::async::context run_loop
+    auto eventSource =
+        sdbusplus::async::details::context_friend::get_event_loop(ctx).add_io(
+            sd_event_get_fd(event.get()), EPOLLIN,
+            [](auto, auto, auto, auto data) -> int {
+        using namespace std::literals;
+        auto self = static_cast<Event*>(data);
+        self->run(0ms);
+        return 0;
+    },
+            &event);
+
+    ctx.run();
 
     exit(EXIT_SUCCESS);
 }
