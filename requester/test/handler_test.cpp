@@ -191,7 +191,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
         auto mockResponsePtr =
             reinterpret_cast<const pldm_msg*>(mockResponse.data());
         reqHandler.handleResponse(eid, instanceId, 0, 0, mockResponsePtr,
-                                  sizeof(mockResponse));
+                                  mockResponse.size() - sizeof(pldm_msg_hdr));
     }));
 
     ctx.run();
