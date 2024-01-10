@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0858da26_5aacab5f",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-10T05:31:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "832f9a06_84e59656",
+      "range": {
+        "startLine": 164,
+        "startChar": 8,
+        "endLine": 164,
+        "endChar": 12
+      },
+      "revId": "98dcd09795dfe9dd352a2a2f285b7eab2541dfaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "765f66f5_7bbda9e3",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-01-09T07:16:54Z",
       "side": 1,
       "message": "can we move this enabling LG2 in pldmtool into a different commit altogether?",
+      "revId": "98dcd09795dfe9dd352a2a2f285b7eab2541dfaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a05abd81_864011ee",
+        "filename": "pldmtool/meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-10T05:31:50Z",
+      "side": 1,
+      "message": "if enabling part is separate for pldmtool then lg2 logs from pldmtool will be creating error so enabling part can\u0027t go for different commit.",
+      "parentUuid": "765f66f5_7bbda9e3",
       "revId": "98dcd09795dfe9dd352a2a2f285b7eab2541dfaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
