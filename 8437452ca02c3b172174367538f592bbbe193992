@@ -159,6 +159,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f6d5a43_ab280426",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-10T14:01:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "132c5bb5_55b54257",
+      "range": {
+        "startLine": 71,
+        "startChar": 5,
+        "endLine": 71,
+        "endChar": 71
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "927ae395_0d52a9a4",
@@ -243,6 +267,30 @@
       "side": 1,
       "message": "I end with error `undefined reference to `vtable for pldm::utils::DBusHandler\u0027` when I apply the changing in the comment code.\nIt seems the `DBusHandler` need to be updated. but I\u0027m not sure how to do that. I\u0027m still researching.",
       "parentUuid": "78f0f5ea_a57ec69e",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2935cf1_0587ab18",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-10T14:01:06Z",
+      "side": 1,
+      "message": "sure",
+      "parentUuid": "5fc604f5_ce0d7dd4",
       "range": {
         "startLine": 51,
         "startChar": 0,
@@ -360,6 +408,30 @@
       "side": 1,
       "message": "Type is vector, we can\u0027t use contains().",
       "parentUuid": "c69ad1a2_4687ac1c",
+      "range": {
+        "startLine": 99,
+        "startChar": 20,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2fbe45b_d98efc9e",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-10T14:01:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "241b125c_1597431b",
       "range": {
         "startLine": 99,
         "startChar": 20,
@@ -652,6 +724,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe1b6e0f_9840d72f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-10T14:01:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d3d67a18_fc1c21cd",
+      "range": {
+        "startLine": 171,
+        "startChar": 8,
+        "endLine": 172,
+        "endChar": 58
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a149b13_e056c743",
@@ -736,6 +832,30 @@
       "side": 1,
       "message": "Std::vector does not have `contain()`.",
       "parentUuid": "744da816_5383a4d9",
+      "range": {
+        "startLine": 184,
+        "startChar": 8,
+        "endLine": 185,
+        "endChar": 28
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c7eff02_c5757dde",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-10T14:01:06Z",
+      "side": 1,
+      "message": "ack",
+      "parentUuid": "4d8680a9_96796722",
       "range": {
         "startLine": 184,
         "startChar": 8,
