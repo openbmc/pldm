@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb695345_cb581d10",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-10T09:24:23Z",
+      "side": 1,
+      "message": "Updated code base on your feedback.",
+      "parentUuid": "8ded2f3d_3f97ce5c",
+      "revId": "b2d42cc940878adb528cce53ee8d0845c47087fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25dadf08_6d5dba03",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-10-24T03:18:23Z",
       "side": 1,
       "message": "I really wouldn\u0027t recommend making your own co-routine types.  There are a lot of sharp edges.\n\nCan we leverage the sdbusplus::async::task here?",
+      "revId": "b2d42cc940878adb528cce53ee8d0845c47087fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a27ecb4c_2e624a68",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-10T09:24:23Z",
+      "side": 1,
+      "message": "Khang from Ampere just updates the code base on your feedback. Can you help review?",
+      "parentUuid": "25dadf08_6d5dba03",
       "revId": "b2d42cc940878adb528cce53ee8d0845c47087fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
