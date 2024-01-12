@@ -66,19 +66,11 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
         for (const auto& serviceIter : services)
         {
             const std::string& service = serviceIter.first;
-
             try
             {
-                auto method = bus.new_method_call(service.c_str(), path.c_str(),
-                                                  pldm::utils::dbusProperties,
-                                                  "GetAll");
-                method.append(MCTP_INTERFACE);
-
-                auto response = bus.call(method, dbusTimeout);
-                using Property = std::string;
-                using PropertyMap = std::map<Property, dbus::Value>;
-                PropertyMap properties;
-                response.read(properties);
+                auto properties =
+                    pldm::utils::DBusHandler().getDbusPropertiesVariant(
+                        MCTP_OBJECT_PATH, MCTP_OBJECT_PATH, MCTP_INTERFACE);
 
                 if (properties.contains("NetworkId") &&
                     properties.contains("EID") &&
