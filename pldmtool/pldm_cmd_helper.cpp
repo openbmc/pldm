@@ -9,10 +9,13 @@
 #include <poll.h>
 #include <systemd/sd-bus.h>
 
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include <exception>
+
+PHOSPHOR_LOG2_USING;
 
 using namespace pldm::utils;
 
@@ -28,8 +31,8 @@ void CommandInterface::exec()
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        std::cerr << "Failed to encode request message for " << pldmType << ":"
-                  << commandName << " rc = " << rc << "\n";
+        error("Failed to encode request message for {TYPE}:{NAME} rc:{RC}",
+              "TYPE", pldmType, "NAME", commandName, "RC", rc);
         return;
     }
 
@@ -39,7 +42,7 @@ void CommandInterface::exec()
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
+        error("pldmSendRecv: Failed to receive RC = {KEY0}", "KEY0", rc);
         return;
     }
 
@@ -98,7 +101,7 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
 
     if (rc)
     {
-        std::cerr << "failed to pldm send recv error rc " << rc << std::endl;
+        error("failed to pldm send recv error rc:{RC}", "RC", rc);
     }
 
     return rc;

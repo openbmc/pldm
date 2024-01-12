@@ -5,6 +5,10 @@
 
 #include <libpldm/firmware_update.h>
 
+#include <phosphor-logging/lg2.hpp>
+
+PHOSPHOR_LOG2_USING;
+
 namespace pldmtool
 {
 
@@ -111,8 +115,8 @@ class GetStatus : public CommandInterface
             &reasonCode, &updateOptionFlagsEnabled);
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode << "\n";
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", completionCode);
             return;
         }
 
@@ -196,9 +200,9 @@ class GetFwParams : public CommandInterface
             &pendingCompImageSetVersion, &compParameterTable);
         if (rc != PLDM_SUCCESS || fwParams.completion_code != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)fwParams.completion_code
-                      << "\n";
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", fwParams.completion_code);
+
             return;
         }
 
@@ -286,9 +290,9 @@ class GetFwParams : public CommandInterface
                 &pendingCompVerStr);
             if (rc)
             {
-                std::cerr
-                    << "Decoding component parameter table entry failed, RC="
-                    << rc << "\n";
+                error(
+                    "Decoding component parameter table entry failed, RC={KEY0}",
+                    "KEY0", rc);
                 return;
             }
 
@@ -512,7 +516,7 @@ void QueryDeviceIdentifiers::updateDescriptor(
     }
     else
     {
-        std::cerr << "Unknown descriptor type, type=" << descriptorType << "\n";
+        error("Unknown descriptor type, type={TYPE}", "TYPE", descriptorType);
     }
 }
 std::pair<int, std::vector<uint8_t>> QueryDeviceIdentifiers::createRequestMsg()
@@ -538,16 +542,16 @@ void QueryDeviceIdentifiers::parseResponseMsg(pldm_msg* responsePtr,
         &descriptorCount, &descriptorPtr);
     if (rc)
     {
-        std::cerr << "Decoding QueryDeviceIdentifiers response failed,EID="
-                  << unsigned(eid) << ", RC=" << rc << "\n";
+        error(
+            "Decoding QueryDeviceIdentifiers response failed,EID=={EID} , RC={RC}",
+            "EID", eid, "RC", rc);
         return;
     }
     if (completionCode)
     {
-        std::cerr << "QueryDeviceIdentifiers response failed with error "
-                     "completion code, EID="
-                  << unsigned(eid) << ", CC=" << unsigned(completionCode)
-                  << "\n";
+        error(
+            "QueryDeviceIdentifiers response failed with error completion code, EID={EID}, CC={CC}",
+            "EID", eid, "CC", completionCode);
         return;
     }
     ordered_json data;
@@ -563,8 +567,9 @@ void QueryDeviceIdentifiers::parseResponseMsg(pldm_msg* responsePtr,
             &descriptorData);
         if (rc)
         {
-            std::cerr << "Decoding descriptor type, length and value failed,"
-                      << "EID=" << unsigned(eid) << ",RC=" << rc << "\n ";
+            error(
+                "Decoding descriptor type, length and value failed,EID=={EID} , RC={RC}",
+                "EID", eid, "RC", rc);
             return;
         }
 
@@ -586,9 +591,9 @@ void QueryDeviceIdentifiers::parseResponseMsg(pldm_msg* responsePtr,
                 &vendorDefinedDescriptorData);
             if (rc)
             {
-                std::cerr << "Decoding Vendor-defined descriptor value"
-                          << "failed EID=" << unsigned(eid) << ", RC=" << rc
-                          << "\n ";
+                error(
+                    "Decoding Vendor-defined descriptor value failed,EID=={EID} , RC={RC}",
+                    "EID", eid, "RC", rc);
                 return;
             }
 

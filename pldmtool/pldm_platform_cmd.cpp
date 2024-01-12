@@ -13,6 +13,9 @@
 #ifdef OEM_IBM
 #include "oem/ibm/oem_ibm_state_set.hpp"
 #endif
+#include <phosphor-logging/lg2.hpp>
+
+PHOSPHOR_LOG2_USING;
 
 using namespace pldm::utils;
 
@@ -171,10 +174,10 @@ class GetPDR : public CommandInterface
                                                   prevRecordHandle);
                 if (!result.second)
                 {
-                    std::cerr
-                        << "Record handle " << recordHandle
-                        << " has multiple references: " << result.first->second
-                        << ", " << prevRecordHandle << "\n";
+                    error(
+                        "Record handle {KEY0} has multiple references: {KEY1}, {KEY2}",
+                        "KEY0", recordHandle, "KEY1", result.first->second,
+                        "KEY2", prevRecordHandle);
                     return;
                 }
                 prevRecordHandle = recordHandle;
@@ -224,9 +227,8 @@ class GetPDR : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", completionCode);
             return;
         }
 
@@ -625,7 +627,7 @@ class GetPDR : public CommandInterface
         {
             return entityName + entityType.at(entityNumber);
         }
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range&)
         {
             auto OemString =
                 std::to_string(static_cast<unsigned>(entityNumber));
@@ -652,7 +654,7 @@ class GetPDR : public CommandInterface
         {
             return stateSet.at(id) + "(" + typeString + ")";
         }
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range&)
         {
             return typeString;
         }
@@ -707,7 +709,7 @@ class GetPDR : public CommandInterface
         {
             return pdrType.at(type);
         }
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range&)
         {
             return typeString;
         }
@@ -797,7 +799,7 @@ class GetPDR : public CommandInterface
             reinterpret_cast<pldm_pdr_fru_record_set*>(data);
         if (!pdr)
         {
-            std::cerr << "Failed to get the FRU record set PDR" << std::endl;
+            error("Failed to get the FRU record set PDR");
             return;
         }
 
@@ -825,8 +827,7 @@ class GetPDR : public CommandInterface
             reinterpret_cast<pldm_pdr_entity_association*>(data);
         if (!pdr)
         {
-            std::cerr << "Failed to get the PDR eneity association"
-                      << std::endl;
+            error("Failed to get the PDR eneity association");
             return;
         }
 
@@ -838,7 +839,7 @@ class GetPDR : public CommandInterface
         }
         else
         {
-            std::cout << "Get associationType failed.\n";
+            info("Get associationType failed.");
         }
         output["containerEntityType"] =
             getEntityName(pdr->container.entity_type);
@@ -878,7 +879,7 @@ class GetPDR : public CommandInterface
 
         if (!auxNamePdr)
         {
-            std::cerr << "Failed to get Aux Name PDR" << std::endl;
+            error("Failed to get Aux Name PDR.");
             return;
         }
 
@@ -931,7 +932,7 @@ class GetPDR : public CommandInterface
             (struct pldm_numeric_effecter_value_pdr*)data;
         if (!pdr)
         {
-            std::cerr << "Failed to get numeric effecter PDR" << std::endl;
+            error("Failed to get numeric effecter PDR");
             return;
         }
 
@@ -1211,8 +1212,7 @@ class GetPDR : public CommandInterface
             (struct pldm_compact_numeric_sensor_pdr*)data;
         if (!pdr)
         {
-            std::cerr << "Failed to get compact numeric sensor PDR"
-                      << std::endl;
+            error("Failed to get compact numeric sensor PDR.");
             return;
         }
         output["PLDMTerminusHandle"] = int(pdr->terminus_handle);
@@ -1268,7 +1268,7 @@ class GetPDR : public CommandInterface
     {
         if (data == NULL)
         {
-            std::cerr << "Failed to get PDR message" << std::endl;
+            error("Failed to get PDR message");
             return;
         }
 
@@ -1288,10 +1288,11 @@ class GetPDR : public CommandInterface
             // is not supported
             if (!strToPdrType.contains(pdrRecType))
             {
-                std::cerr << "PDR type '" << pdrRecType
-                          << "' is not supported or invalid\n";
-                // PDR type not supported, setting next record handle to
-                // 0 to avoid looping through all PDR records
+                error("PDR type {KEY0} is not supported or invalid", "KEY0",
+                      pdrRecType);
+
+                // PDR type not supported, setting next record handle to 0
+                // to avoid looping through all PDR records
                 nextRecordHndl = 0;
                 return;
             }
@@ -1308,8 +1309,7 @@ class GetPDR : public CommandInterface
         {
             if (checkTerminusHandle(data, terminusHandle))
             {
-                std::cerr << "The Terminus handle doesn't match return"
-                          << std::endl;
+                error("The Terminus handle doesn't match return.");
                 return;
             }
         }
@@ -1405,16 +1405,16 @@ class SetStateEffecter : public CommandInterface
         if (effecterCount > maxEffecterCount ||
             effecterCount < minEffecterCount)
         {
-            std::cerr << "Request Message Error: effecterCount size "
-                      << effecterCount << "is invalid\n";
+            error("Request Message Error: effecterCount size {KEY0} is invalid",
+                  "KEY0", effecterCount);
             auto rc = PLDM_ERROR_INVALID_DATA;
             return {rc, requestMsg};
         }
 
         if (effecterData.size() > maxEffecterDataSize)
         {
-            std::cerr << "Request Message Error: effecterData size "
-                      << effecterData.size() << "is invalid\n";
+            error("Request Message Error: effecterData size {KEY0} is invalid",
+                  "KEY0", effecterData.size());
             auto rc = PLDM_ERROR_INVALID_DATA;
             return {rc, requestMsg};
         }
@@ -1422,8 +1422,8 @@ class SetStateEffecter : public CommandInterface
         auto stateField = parseEffecterData(effecterData, effecterCount);
         if (!stateField)
         {
-            std::cerr << "Failed to parse effecter data, effecterCount size "
-                      << effecterCount << "\n";
+            error("Failed to parse effecter data, effecterCount size {KEY0}",
+                  "KEY0", effecterCount);
             auto rc = PLDM_ERROR_INVALID_DATA;
             return {rc, requestMsg};
         }
@@ -1441,8 +1441,9 @@ class SetStateEffecter : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode << "\n";
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", completionCode);
+
             return;
         }
 
@@ -1522,9 +1523,9 @@ class SetNumericEffecterValue : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", completionCode);
+
             return;
         }
 
@@ -1589,9 +1590,9 @@ class GetStateSensorReadings : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            error("Response Message Error: rc = {KEY0}, cc={KEY1}", "KEY0", rc,
+                  "KEY1", completionCode);
+
             return;
         }
         ordered_json output;
@@ -1684,10 +1685,8 @@ class GetNumericEffecterValue : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc
-                      << ",cc=" << static_cast<int>(completionCode)
-                      << std::endl;
+            error("Response Message Error: rc={RC} cc={CC}", "RC", rc, "CC",
+                  completionCode);
             return;
         }
 
@@ -1748,8 +1747,8 @@ class GetNumericEffecterValue : public CommandInterface
             }
             default:
             {
-                std::cerr << "Unknown Effecter Data Size : "
-                          << static_cast<int>(effecterDataSize) << std::endl;
+                error("Unknown Effecter data Size :{SIZE}", "SIZE",
+                      effecterDataSize);
                 break;
             }
         }
