@@ -2,7 +2,7 @@
 
 #include <libpldm/fru.h>
 #ifdef OEM_IBM
-#include <libpldm/fru_oem_ibm.h>
+#include <libpldm/oem/ibm/fru.h>
 #endif
 #include "custom_dbus.hpp"
 
