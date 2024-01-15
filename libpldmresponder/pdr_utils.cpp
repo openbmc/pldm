@@ -1,7 +1,6 @@
-#include "libpldm/fru.h"
-
 #include "pdr.hpp"
 
+#include <libpldm/fru.h>
 #include <libpldm/platform.h>
 
 #include <phosphor-logging/lg2.hpp>
