@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db66f889_ae2e278c",
+        "filename": "pldmtool/oem/ibm/pldm_oem_ibm.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-01-15T00:24:29Z",
+      "side": 1,
+      "message": "I remember lg2 does not support the `uint8` type?\nMaybe I am wrong?",
+      "range": {
+        "startLine": 79,
+        "startChar": 18,
+        "endLine": 79,
+        "endChar": 32
+      },
+      "revId": "f743fd73f24a85e394d0b90fc7fa6fe328d46cc5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
