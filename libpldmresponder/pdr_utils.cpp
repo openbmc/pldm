@@ -1,4 +1,4 @@
-#include "libpldm/fru.h"
+#include <libpldm/fru.h>
 
 #include "pdr.hpp"
 

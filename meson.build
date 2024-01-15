@@ -128,7 +128,7 @@ if get_option('tests').allowed()
     endif
 endif
 
-libpldm_dep = dependency('libpldm', fallback:['libpldm','libpldm_dep'])
+libpldm_dep = dependency('libpldm', fallback:['libpldm','libpldm_dep'], include_type: 'system')
 
 
 libpldmutils_headers = ['.']

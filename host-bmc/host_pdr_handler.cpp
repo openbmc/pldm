@@ -1,8 +1,8 @@
 #include "host_pdr_handler.hpp"
 
-#include "libpldm/fru.h"
+#include <libpldm/fru.h>
 #ifdef OEM_IBM
-#include "libpldm/fru_oem_ibm.h"
+#include <libpldm/fru_oem_ibm.h>
 #endif
 #include "custom_dbus.hpp"
 
