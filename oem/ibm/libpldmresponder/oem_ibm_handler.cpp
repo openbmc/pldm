@@ -5,7 +5,7 @@
 #include "libpldmresponder/pdr_utils.hpp"
 
 #include <libpldm/entity.h>
-#include <libpldm/entity_oem_ibm.h>
+#include <libpldm/oem/ibm/entity.h>
 
 #include <phosphor-logging/lg2.hpp>
 

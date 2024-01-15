@@ -3,7 +3,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 
-#include <libpldm/platform_oem_ibm.h>
+#include <libpldm/oem/ibm/platform.h>
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>

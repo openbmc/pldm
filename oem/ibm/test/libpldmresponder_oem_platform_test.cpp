@@ -9,7 +9,7 @@
 #include "test/test_instance_id.hpp"
 
 #include <libpldm/entity.h>
-#include <libpldm/entity_oem_ibm.h>
+#include <libpldm/oem/ibm/entity.h>
 
 #include <sdeventplus/event.hpp>
 
