@@ -70,6 +70,30 @@
       },
       "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65fcc79e_ed9ae590",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-16T12:11:29Z",
+      "side": 1,
+      "message": "If result output is same for both then i would recommend to keep e.what() for better readability. if any major difference is there then i can make change in all the files. please let me know your opinion.",
+      "parentUuid": "4cea13dd_a9eb5a1e",
+      "range": {
+        "startLine": 117,
+        "startChar": 14,
+        "endLine": 117,
+        "endChar": 22
+      },
+      "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
