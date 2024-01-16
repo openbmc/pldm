@@ -22,6 +22,30 @@
       },
       "revId": "f743fd73f24a85e394d0b90fc7fa6fe328d46cc5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18615eb3_518cfe88",
+        "filename": "pldmtool/oem/ibm/pldm_oem_ibm.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-16T06:11:02Z",
+      "side": 1,
+      "message": "uint8 is supported by lg2.\nhttps://github.com/openbmc/phosphor-logging/blob/master/docs/structured-logging.md",
+      "parentUuid": "db66f889_ae2e278c",
+      "range": {
+        "startLine": 79,
+        "startChar": 18,
+        "endLine": 79,
+        "endChar": 32
+      },
+      "revId": "f743fd73f24a85e394d0b90fc7fa6fe328d46cc5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
