@@ -22,6 +22,30 @@
       },
       "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba880e8_59565e97",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-16T06:11:40Z",
+      "side": 1,
+      "message": "\u0027e\u0027 returns Exception class object and e.what() returns a string, so i am printing exception string in error logs.\nplease let me know if you have something else in mind to explain.",
+      "parentUuid": "628e79ad_e674aadd",
+      "range": {
+        "startLine": 117,
+        "startChar": 14,
+        "endLine": 117,
+        "endChar": 22
+      },
+      "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
