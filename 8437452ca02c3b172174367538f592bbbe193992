@@ -325,6 +325,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77fe41fa_f362f615",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-16T04:52:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "30cfd8f7_a15a1fbb",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d04f3305_846b636b",
@@ -409,6 +433,30 @@
       "side": 1,
       "message": "Added getDbusPropertiesVariant() API.",
       "parentUuid": "379bdcb1_6c2f0f3a",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 80
+      },
+      "revId": "8437452ca02c3b172174367538f592bbbe193992",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c8a07a7_c9bac6a0",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 54
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-16T04:52:27Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "b03e6d56_8487e5c4",
       "range": {
         "startLine": 80,
         "startChar": 0,

@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da2cf96e_6da1cbfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 63
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-16T04:52:27Z",
+      "side": 1,
+      "message": "@Thu - looks close,posted another comment about how the static-eid-table.json file. Please address this.",
+      "revId": "35ef64deefe00d18e4261288a535b20e45c74efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ad96f16_0fdac250",
+        "filename": "meson.build",
+        "patchSetId": 63
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-16T04:52:27Z",
+      "side": 1,
+      "message": "where is this file being checked in ? and also this is common for all companies ? but the eid table might be different for different companies ? if so , how do we make sure this is not something that will be installed in all company machines.\n\ncan we install it from pldm/configurations folder itself ? like we do for all the other configuration files ?",
+      "range": {
+        "startLine": 72,
+        "startChar": 75,
+        "endLine": 72,
+        "endChar": 96
+      },
+      "revId": "35ef64deefe00d18e4261288a535b20e45c74efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
