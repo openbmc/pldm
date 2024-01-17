@@ -69,6 +69,30 @@
       },
       "revId": "f743fd73f24a85e394d0b90fc7fa6fe328d46cc5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b66b8d3_465771b6",
+        "filename": "pldmtool/pldm_base_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-17T07:00:44Z",
+      "side": 1,
+      "message": "Removed unwanted conversion from files.",
+      "parentUuid": "c6997977_0a061afc",
+      "range": {
+        "startLine": 117,
+        "startChar": 26,
+        "endLine": 117,
+        "endChar": 33
+      },
+      "revId": "f743fd73f24a85e394d0b90fc7fa6fe328d46cc5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
