@@ -118,6 +118,30 @@
       },
       "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f69c5b6a_760f8c37",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-01-17T00:51:50Z",
+      "side": 1,
+      "message": "\u003e How is being less succinct improving readability? I agree with George, please just pass `e`and let the lg2 APIs do the work. The approach also gives the lg2 implementation the option of changing what it does with the exception in the future.\n\n+1",
+      "parentUuid": "18a86e6d_b87133e4",
+      "range": {
+        "startLine": 117,
+        "startChar": 14,
+        "endLine": 117,
+        "endChar": 22
+      },
+      "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
