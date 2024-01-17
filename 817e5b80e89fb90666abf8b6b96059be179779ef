@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "513bf429_c6f9ef75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-17T23:45:15Z",
+      "side": 1,
+      "message": "Hello, I\u0027ve commented on a problematic pattern I keep seeing people implement in logging patches. It has to stop at some point, and you\u0027re the unlucky person to field my gripe.\n\nPlease address the concern throughout the entire patch.",
+      "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f5dd628_c5f261be",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-17T23:45:15Z",
+      "side": 1,
+      "message": "So `ERROR\u003d` wasn\u0027t in the format string previously. Why are we adding this? The message strings are supposed to be for human consumption, and this isn\u0027t super friendly. Instead we can use:\n\n```\n\"Invalid PLDM package header: {ERR_EXCEP}\", \"ERR_EXCEP\", e);\n```\n\nThis will render as something like the following where I\u0027ve invented an exception description:\n\n```\n\"Invalid PLDM package header: Value too large for defined data type\n```\n\nThis is quite legible to humans.\n\nA core behaviour of `lg2` is that it exploit\u0027s the [journal\u0027s structured logging](https://0pointer.de/blog/projects/journal-submit.html). All the variables interpolated into the message string are logged to the journal as separate key/value pairs in the journal entry. To make that concrete, here\u0027s an example entry from `phosphor-time-manager`, which uses `lg2`:\n\n```\n# journalctl --identifier\u003dphosphor-time-manager --boot\nSep 23 06:09:57 cc-nvme-mi phosphor-time-manager[373]: Time mode has been changed to xyz.openbmc_project.Time.Synchronization.Method.NTP\nSep 23 06:09:58 cc-nvme-mi phosphor-time-manager[373]: Updated NTP setting: True\n```\n\nWe can see here that e.g. the time manager has logged that it\u0027s changing modes to NTP. But we can get more metadata about that specific message by exposing the variables captured in the structured logging:\n\n```\n# journalctl --identifier\u003dphosphor-time-manager --boot --output\u003dverbose | grep -v \u0027    _\u0027 | head -n 9\nSat 2023-09-23 06:09:57.645208 UTC [s\u003d85c1cb5f8e02445aa110a5164c9c07f6;i\u003d244;b\u003dffd111d3cdca41c8893bb728a1c6cb20;m\u003d133a5a0;t\u003d606009314d0d9;x\u003d9a54e8714754a6cb]\n    PRIORITY\u003d6\n    MESSAGE\u003dTime mode has been changed to xyz.openbmc_project.Time.Synchronization.Method.NTP\n    LOG2_FMTMSG\u003dTime mode has been changed to {MODE}\n    CODE_FILE\u003d/usr/src/debug/phosphor-time-manager/1.0+git/manager.cpp\n    CODE_LINE\u003d98\n    CODE_FUNC\u003dbool phosphor::time::Manager::setCurrentTimeMode(const std::string\u0026)\n    MODE\u003dxyz.openbmc_project.Time.Synchronization.Method.NTP\n    SYSLOG_IDENTIFIER\u003dphosphor-time-manager\n```\n\nSpecifically, we find the key/value entry `MODE\u003dxyz.openbmc_project.Time.Synchronization.Method.NTP` is captured, independent of the `MESSAGE` line. Further, we also see that `LOG2_FMTMSG\u003dTime mode has been changed to {MODE}` is captured, which tells us how the `MESSAGE` entry was generated from the structured data.\n\nThere\u0027s no need to add `ERROR\u003d` into the message string. It doesn\u0027t help human readability, and the structured logging key/value pairs provide a much more reliable method for extracting the metadata than trying to parse `MESSAGE`.\n\nPlease remove this pattern throughout the patch. Try to find a way to write the message strings so they are easily consumed by humans as is their intent.",
+      "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
