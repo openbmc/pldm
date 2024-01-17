@@ -22,6 +22,30 @@
       },
       "revId": "4668f5c85935852f03de0eb3aedc0c5435a1e4f2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63cd2414_59b84b36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-17T04:26:11Z",
+      "side": 1,
+      "message": "As in, libpldm no-longer lives in `subprojects/libpldm` in the pldm repo. More than likely the pldm build is locating libpldm headers in the system include directory `/usr/include/...` or `/usr/local/include` (e.g. CI). It shouldn\u0027t be using relative includes for system headers. However, if we are building pldm with libpldm dragged in via the meson wrap, mark those headers as if they were system headers (see the `meson.build` change).",
+      "parentUuid": "e25cbe8e_551c0a32",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "4668f5c85935852f03de0eb3aedc0c5435a1e4f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
