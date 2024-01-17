@@ -142,6 +142,30 @@
       },
       "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b58218bb_325a607e",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-17T07:00:50Z",
+      "side": 1,
+      "message": "Changes are done as mentioned above.",
+      "parentUuid": "f69c5b6a_760f8c37",
+      "range": {
+        "startLine": 117,
+        "startChar": 14,
+        "endLine": 117,
+        "endChar": 22
+      },
+      "revId": "02b96656518081d29e6b3a7f20ff58282a59e55f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
