@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "767b5223_bebe3a17",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-17T09:52:38Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "a18a778d_74179862",
+      "range": {
+        "startLine": 237,
+        "startChar": 15,
+        "endLine": 237,
+        "endChar": 21
+      },
+      "revId": "35cbf904fb46cdfeea80a0b96b79fe2b1c897eaf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7d4867e9_da2e6212",
         "filename": "pldmtool/pldm_cmd_helper.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2024-01-17T09:21:45Z",
       "side": 1,
       "message": "Why static_cast is needed?",
+      "range": {
+        "startLine": 36,
+        "startChar": 14,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "35cbf904fb46cdfeea80a0b96b79fe2b1c897eaf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3cc5318_409cf94a",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-17T09:52:38Z",
+      "side": 1,
+      "message": "corrected.",
+      "parentUuid": "7d4867e9_da2e6212",
       "range": {
         "startLine": 36,
         "startChar": 14,
