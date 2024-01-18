@@ -50,6 +50,24 @@
       "message": "I\u0027d prefer if errors were consistently ERROR.",
       "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f6d0a3c_ab7a0f0d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-18T01:20:47Z",
+      "side": 1,
+      "message": "I\u0027ve pushed [anti-patterns: Ill-defined data structuring in `lg2` message strings](https://gerrit.openbmc.org/c/openbmc/docs/+/68923) to capture my feelings above.",
+      "parentUuid": "0f5dd628_c5f261be",
+      "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
