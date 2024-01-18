@@ -104,6 +104,24 @@
       "parentUuid": "88450a14_16dfa51a",
       "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8b2a9d8_e16e82e5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-18T22:45:13Z",
+      "side": 1,
+      "message": "I think you\u0027ve missed the crux of my comment if you\u0027ve just removed the string \"ERROR\u003d\" from your patch.",
+      "parentUuid": "7ff4a060_b884a195",
+      "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

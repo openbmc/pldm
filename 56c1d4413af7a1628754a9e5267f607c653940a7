@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81588305_6f4a2921",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-18T22:45:13Z",
+      "side": 1,
+      "message": "Hi Kamalkumar, unfortunately I feel you haven\u0027t completely grasped the crux of my comment on PS9. It didn\u0027t just apply to the string `ERROR\u003d` in your log messages. Perhaps it\u0027s best to have a conversation on discord so we can pick apart the misunderstandings without the latency of gerrit comments?",
+      "revId": "56c1d4413af7a1628754a9e5267f607c653940a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae1f41c_906ef3c4",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-18T22:45:13Z",
+      "side": 1,
+      "message": "But what about `PATH\u003d`? What about `TIME INTERFACE\u003d`?\n\nIf someone else logged a message like this, is it something you would find comfortable reading in the logs?\n\nWhat goes in the message string is a choice. It\u0027s not the case that if the data isn\u0027t in the message string it isn\u0027t captured. Any parameters provided to the lg2 logging call will be captured in the structured log data, regardless of whether the value is interpolated into the message or not.\n\nAs I mentioned in the previous comment you can access `ERR_EXCEP`, `BMC_TIME_PATH` and `TIME_INTF` using `journalctl --output\u003dverbose`.\n\nPlease make this log message something that is comfortably read by humans. Do not create ad-hoc, ill-defined structured data _inside_ the human-centric log message. Leave that to the structured logging entry created by the journal.\n\nPlease audit the rest of your log entries to address the concern.",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 28
+      },
+      "revId": "56c1d4413af7a1628754a9e5267f607c653940a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
