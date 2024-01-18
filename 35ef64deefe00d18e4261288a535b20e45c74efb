@@ -63,6 +63,30 @@
       },
       "revId": "35ef64deefe00d18e4261288a535b20e45c74efb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "346ea84e_a58b776a",
+        "filename": "meson.build",
+        "patchSetId": 63
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-01-18T12:27:23Z",
+      "side": 1,
+      "message": "As the discussion in the Discord, I removed the code which handle static_eid_table.json.\nThe static eid configuration will be added in mctpd or entity-manager.",
+      "parentUuid": "e71b305b_7b32b225",
+      "range": {
+        "startLine": 72,
+        "startChar": 75,
+        "endLine": 72,
+        "endChar": 96
+      },
+      "revId": "35ef64deefe00d18e4261288a535b20e45c74efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
