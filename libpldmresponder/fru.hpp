@@ -68,14 +68,14 @@ class FruImpl
         pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree)
     {}
 
-    /** @brief Total length of the FRU table in bytes, this excludes the pad
+    /** @brief Total length of the FRU table in bytes, this includes the pad
      *         bytes and the checksum.
      *
      *  @return size of the FRU table
      */
     uint32_t size() const
     {
-        return table.size() - padBytes;
+        return table.size();
     }
 
     /** @brief The checksum of the contents of the FRU table
@@ -110,6 +110,12 @@ class FruImpl
      *  @param[out] - Populate response with the FRU table
      */
     void getFRUTable(Response& response);
+
+    /** @brief Get the Fru Table MetaData
+     *
+     *  @param[out] - Calculate Checksum and table size
+     */
+    void getFRURecordTableMetadata();
 
     /** @brief Get FRU Record Table By Option
      *  @param[out] response - Populate response with the FRU table got by
@@ -176,6 +182,12 @@ class FruImpl
      * @return firmware version ID
      */
     std::string populatefwVersion();
+
+    /* @brief Method to resize the table
+     *
+     * @return resized table
+     */
+    std::vector<uint8_t> tableResize();
 
   private:
     uint16_t nextRSI()
