@@ -1027,9 +1027,9 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
                                                    sizeof(pldm_msg_hdr));
         auto responsePtr = reinterpret_cast<const struct pldm_msg*>(response);
         auto rc = decode_get_fru_record_table_resp(
-            responsePtr, respMsgLen - sizeof(pldm_msg_hdr), &cc,
-            &next_data_transfer_handle, &transfer_flag,
-            fru_record_table_data.data(), &fru_record_table_length);
+            responsePtr, respMsgLen, &cc, &next_data_transfer_handle,
+            &transfer_flag, fru_record_table_data.data(),
+            &fru_record_table_length);
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
