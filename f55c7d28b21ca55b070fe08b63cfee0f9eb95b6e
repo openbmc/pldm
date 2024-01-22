@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ace6703_7259a1a6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-22T14:31:46Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "b824e7c7_25142d86",
+      "revId": "f55c7d28b21ca55b070fe08b63cfee0f9eb95b6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b27270b4_7a90fb0d",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Agree",
       "parentUuid": "b27270b4_7a90fb0d",
+      "revId": "f55c7d28b21ca55b070fe08b63cfee0f9eb95b6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff55e07d_ddd7af03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-22T14:31:46Z",
+      "side": 1,
+      "message": "- Added traces and check from which path the files has been taken for pdr generation.\n- Removed power supply from default path and oem layer and identified that power supply pdr is not generating.",
+      "parentUuid": "506a83c1_ca1e8869",
       "revId": "f55c7d28b21ca55b070fe08b63cfee0f9eb95b6e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
