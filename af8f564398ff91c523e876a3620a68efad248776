@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfabcefc_7ce818e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:30:48Z",
+      "side": 1,
+      "message": "possible wrapping issue ?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "567139f3_34382043",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:30:48Z",
+      "side": 1,
+      "message": "better to use github links ..rather than gerrit.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4812cbfc_0576d09f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:30:48Z",
+      "side": 1,
+      "message": "@Sagar - this looks much better. Couple of more comments and i think we are close.",
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05147eba_d977f468",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:30:48Z",
+      "side": 1,
+      "message": "un-necessary new line added ?",
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9506f0f7_60c91896",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:30:48Z",
+      "side": 1,
+      "message": "just use valueDisplayNamesMap.contains() instead ?",
+      "range": {
+        "startLine": 307,
+        "startChar": 16,
+        "endLine": 308,
+        "endChar": 52
+      },
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed8bf9ac_20a12805",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:30:48Z",
+      "side": 1,
+      "message": "could use the type instead ?",
+      "range": {
+        "startLine": 199,
+        "startChar": 10,
+        "endLine": 199,
+        "endChar": 34
+      },
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8923b553_a04d9c65",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:30:48Z",
+      "side": 1,
+      "message": "this is already a class variable right ? why are we passing it to the function ?",
+      "range": {
+        "startLine": 201,
+        "startChar": 21,
+        "endLine": 201,
+        "endChar": 38
+      },
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
