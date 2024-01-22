@@ -51,6 +51,24 @@
       "parentUuid": "79ecf9b4_9bd981a4",
       "revId": "128df9bf66526dec234bfdea576313460ac617c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "050fa2aa_30ff77c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-22T12:14:42Z",
+      "side": 1,
+      "message": "*no-longer involves libpldm\n\n:grimace:",
+      "parentUuid": "533576e8_024d1eff",
+      "revId": "128df9bf66526dec234bfdea576313460ac617c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
