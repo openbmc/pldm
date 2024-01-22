@@ -64,6 +64,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d58d0296_77174e18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T09:33:40Z",
+      "side": 1,
+      "message": "And also , can you add the JSON file changes as well in the same commit ? so that the functionality does not break until we merge the JSON changes ?",
+      "revId": "af8f564398ff91c523e876a3620a68efad248776",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05147eba_d977f468",
