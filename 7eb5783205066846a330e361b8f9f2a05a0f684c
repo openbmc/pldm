@@ -22,6 +22,30 @@
       },
       "revId": "7eb5783205066846a330e361b8f9f2a05a0f684c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fd0ff73_721618bc",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-01-22T09:18:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff0b4f07_84a1c49e",
+      "range": {
+        "startLine": 337,
+        "startChar": 59,
+        "endLine": 337,
+        "endChar": 63
+      },
+      "revId": "7eb5783205066846a330e361b8f9f2a05a0f684c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
