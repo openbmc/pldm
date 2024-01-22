@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5631d40d_5eef84fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-22T10:55:16Z",
+      "side": 1,
+      "message": "hey @arj - since you had feedback on the libpldm patch, i am adding you to this review. This patch is completely self contained in pldm .Do you have any feedback on this commit ?",
+      "revId": "128df9bf66526dec234bfdea576313460ac617c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
