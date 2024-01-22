@@ -1,0 +1,9 @@
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Andrew Jeffery <andrew@codeconstruct.com.au>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 22 Jan 2024 11:03:04 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/66980
+Comments-Total: 20
+Project: openbmc/pldm
+Branch: refs/heads/master
