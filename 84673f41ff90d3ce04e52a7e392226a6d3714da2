@@ -141,6 +141,30 @@
       },
       "revId": "84673f41ff90d3ce04e52a7e392226a6d3714da2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b545e69c_2c79bb4b",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-01-24T08:56:22Z",
+      "side": 1,
+      "message": "yes Sagar, all the responses are handled in the FRUHandler class and this is the FRUImpl class.",
+      "parentUuid": "70e8859b_ade51600",
+      "range": {
+        "startLine": 118,
+        "startChar": 9,
+        "endLine": 118,
+        "endChar": 34
+      },
+      "revId": "84673f41ff90d3ce04e52a7e392226a6d3714da2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
