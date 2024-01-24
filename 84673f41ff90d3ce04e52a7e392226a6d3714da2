@@ -165,6 +165,30 @@
       },
       "revId": "84673f41ff90d3ce04e52a7e392226a6d3714da2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fa37cef_7f30f0f6",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-01-24T10:04:36Z",
+      "side": 1,
+      "message": "Understood, thanks",
+      "parentUuid": "b545e69c_2c79bb4b",
+      "range": {
+        "startLine": 118,
+        "startChar": 9,
+        "endLine": 118,
+        "endChar": 34
+      },
+      "revId": "84673f41ff90d3ce04e52a7e392226a6d3714da2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
