@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72380b1c_a79c9335",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-01-24T10:55:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f857c13f_6b92fd65",
+      "range": {
+        "startLine": 356,
+        "startChar": 4,
+        "endLine": 365,
+        "endChar": 5
+      },
+      "revId": "84673f41ff90d3ce04e52a7e392226a6d3714da2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92bff5d5_d01278ed",
