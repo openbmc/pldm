@@ -1,0 +1,284 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e1873f_bf795160",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "For consistency please use ERROR.\n\nI\u0027m not sure what Andrew feels about this, but I would expect something more like: \"Invalid PLDM package header: {ERROR}\".\n\nConsider this feedback throughout.",
+      "range": {
+        "startLine": 116,
+        "startChar": 44,
+        "endLine": 116,
+        "endChar": 53
+      },
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72e92859_883e7d97",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "For consistency please use ERROR.",
+      "range": {
+        "startLine": 192,
+        "startChar": 44,
+        "endLine": 192,
+        "endChar": 53
+      },
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a1760ab_bbc29db0",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "My suggestion:\n\n\"Error getting time from Elapsed property at {PATH} on {INTERFACE}: {ERROR}\".",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 28
+      },
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a241b3_70a5017b",
+        "filename": "libpldmresponder/bios_attribute.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "This is frankly stupid code but you can fix that in another commit.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 5
+      },
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f583a73f_ebefbb96",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "My suggestion: \n\n\"Error constructing table entry for {ATTR}: {ERROR}\"",
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9916ada5_ad1a8cdb",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "\"Failed to parse JSON config at {PATH}: {ERROR}\"",
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "805951ab_d39bed13",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 941,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "\"Missing handle for {ATTR}: {ERROR}\"",
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c77699bc_564bbd01",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "It kind of looks to me like there is useful information missing here related to the dbus operation, right?  Please also incorporate feedback given elsewhere.",
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01235714_83572acb",
+        "filename": "libpldmresponder/bios_string_attribute.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "Same feedback as previous file.",
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c91d03e_30f268b7",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "ERROR",
+      "range": {
+        "startLine": 133,
+        "startChar": 64,
+        "endLine": 133,
+        "endChar": 73
+      },
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2051523_4d5015f5",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "Why are we casting?  If this is an enum use `to_underlying`.",
+      "range": {
+        "startLine": 133,
+        "startChar": 33,
+        "endLine": 133,
+        "endChar": 61
+      },
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b532921_37b4bb98",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "Can you clean this one up?",
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15f4dc95_43d72fca",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "I know you didn\u0027t write this, but this is a lot of words.  Maybe we could be more succinct.\n\n\"ERROR\".",
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1740813_31a21027",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T13:10:03Z",
+      "side": 1,
+      "message": "I\u0027m not sure why this is called \"file handle\".  It looks like it is just a string.  Is it a path?\n\nSuggest something like: \"Handle ({HANDLE}) does not exist in the file table: {ERROR}\".\n\nI don\u0027t like the first value of the message being a variable.",
+      "range": {
+        "startLine": 285,
+        "startChar": 11,
+        "endLine": 286,
+        "endChar": 53
+      },
+      "revId": "11de6a48a02d03a0e234970a751774b4ac9e11ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
