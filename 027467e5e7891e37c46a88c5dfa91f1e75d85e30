@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e62f79d2_998f46cd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T05:02:31Z",
+      "side": 1,
+      "message": "the commit message is confusing, can you change it to \n\n\nIn the current design, when PLDM builds the FRU table, it incorporates padbytes and checksum. However, the process of adding or deleting a FRU triggers a rebuild of the table, including the addition of padbytes again. This repetition is leading to a crash in pldmtool after multiple add/remove operations.\n\nTo address this issue, the proposed commit resolves the problem by eliminating the inclusion of padbytes and checksum during the initial construction of the FRU table. Instead, these elements are added based on requests from the remote endpoint via the getFRURecordTable command.",
+      "revId": "027467e5e7891e37c46a88c5dfa91f1e75d85e30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dacd2281_55ed2db5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T05:02:31Z",
+      "side": 1,
+      "message": "nit : `GetFRURecordTable command`",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 17
+      },
+      "revId": "027467e5e7891e37c46a88c5dfa91f1e75d85e30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c446d4b6_bdca4767",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T05:02:31Z",
+      "side": 1,
+      "message": "update doxygen",
+      "range": {
+        "startLine": 116,
+        "startChar": 8,
+        "endLine": 116,
+        "endChar": 55
+      },
+      "revId": "027467e5e7891e37c46a88c5dfa91f1e75d85e30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
