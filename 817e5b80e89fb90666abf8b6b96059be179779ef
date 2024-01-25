@@ -122,6 +122,42 @@
       "parentUuid": "7ff4a060_b884a195",
       "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0f112fb_66a059f0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-25T06:20:32Z",
+      "side": 1,
+      "message": "Changes done as suggested.",
+      "parentUuid": "c11ee21e_c9816931",
+      "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89713d2d_195a8675",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-25T06:20:32Z",
+      "side": 1,
+      "message": "Changes done as suggested.",
+      "parentUuid": "d8b2a9d8_e16e82e5",
+      "revId": "817e5b80e89fb90666abf8b6b96059be179779ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
