@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52452424_155f753d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "ideally this is supposed to be the subsystem with in pldm , for easy reviews. like oem-ibm, host-bmc e.t.c\n\nhaving just `PLDM` here does not add any value nor make things easy. Suggest to remove it.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce85d2c_b44f3192",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "rephrase as `this commit adds support to generate PDR\u0027s based in the platform`.",
+      "range": {
+        "startLine": 12,
+        "startChar": 17,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "593c7e9d_37fe0418",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 113,
+        "startChar": 55,
+        "endLine": 113,
+        "endChar": 65
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f02efb_a3fdc71c",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "can we re-use the getPlatformName() from line number 136 here ?",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 53
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cfeee6d_9ad2e52f",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "please use your feedback on https://gerrit.openbmc.org/c/openbmc/pldm/+/67994 and fix the similar patterns here as well .",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 13
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec59ac10_c558c2bd",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "isn\u0027t this statement redundant ? we are not using systemType.",
+      "range": {
+        "startLine": 201,
+        "startChar": 12,
+        "endLine": 201,
+        "endChar": 65
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed9dd6d_0d8d8901",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "this code is also present at https://github.com/openbmc/pldm/blob/33a9cd0b234b63e1f32859d2f5071684e4ed651d/oem/ibm/libpldmresponder/bios_oem_ibm.cpp#L14, please re-use.",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 1
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c52570_36aba544",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-01-25T04:39:47Z",
+      "side": 1,
+      "message": "there is already this infrastructure at https://github.com/openbmc/pldm/blob/33a9cd0b234b63e1f32859d2f5071684e4ed651d/oem/ibm/libpldmresponder/bios_oem_ibm.cpp#L65C48-L65C74, please re-use the same thing rather than creating a new match for exactly same data.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 2
+      },
+      "revId": "63bec99dc60014388306ae57e79172197e136f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
