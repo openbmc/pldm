@@ -1,0 +1,266 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9204dff6_1220aaec",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: You didn\u0027t add the colon (:).",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a647d85_063278dc",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "039d2dcb_d437a237",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: space not necessary",
+      "range": {
+        "startLine": 144,
+        "startChar": 92,
+        "endLine": 144,
+        "endChar": 93
+      },
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba013b6d_030b3a76",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "How about PROPERTY?",
+      "range": {
+        "startLine": 144,
+        "startChar": 32,
+        "endLine": 144,
+        "endChar": 41
+      },
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0243455_e3ebe474",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: add colon after \u0027lookup\u0027.",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2839262b_9010483a",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ecd70ca_b3ec9b0a",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: platform (spelling)",
+      "range": {
+        "startLine": 360,
+        "startChar": 37,
+        "endLine": 360,
+        "endChar": 46
+      },
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73fb077f_9eb151a8",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "367b6290_a41fd1d6",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "range": {
+        "startLine": 378,
+        "startChar": 65,
+        "endLine": 378,
+        "endChar": 67
+      },
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cb8a296_1f6f5a2e",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "Again, not your fault, but kind of sad how we have 100s of lines of nearly duplicated code.",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "028a7351_c55ee03a",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "094ebf3d_25574db9",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51983c0d_d1041373",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d00b8e_7fbc05e3",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-25T20:53:14Z",
+      "side": 1,
+      "message": "nit: colon",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
