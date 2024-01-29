@@ -58,6 +58,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d02da83_6ec022fe",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-29T06:13:47Z",
+      "side": 1,
+      "message": "here we are finding new state of property and we are not aware about what state.\nif you give suggestion will resolve as part of new commit.",
+      "parentUuid": "ba273f11_4ed6a772",
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8498d563_635c9b16",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-29T06:13:47Z",
+      "side": 1,
+      "message": "corrected mistake.",
+      "parentUuid": "288a9a55_7ac06d7b",
+      "range": {
+        "startLine": 192,
+        "startChar": 15,
+        "endLine": 192,
+        "endChar": 16
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5968f10a_99156953",
@@ -71,6 +113,30 @@
       "writtenOn": "2024-01-29T01:59:48Z",
       "side": 1,
       "message": "Nit: I think this is better phrased as `Error getting integer attribute \u0027{ATTR}\u0027 from \u0027{INTERFACE}\u0027: {ERROR}\".\n\nTwo things here:\n\n1. Swap `{ATTR} attribute` to `attribute {ATTR}`\n2. Put single-quotes around the interpolations. This helps in the case that they\u0027re somehow the empty string\n\nPoint 2 applies generally to interpolating any string. However, it\u0027s not necessary to put quotes around values that aren\u0027t strings. For instance, there\u0027s no need to add quotes around `{ERROR}` because it\u0027s value is not a string type.\n\nPlease address both these points throughout the patch.",
+      "range": {
+        "startLine": 205,
+        "startChar": 13,
+        "endLine": 205,
+        "endChar": 51
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3888288_a031c7d9",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-29T06:13:47Z",
+      "side": 1,
+      "message": "corrected as per suggestion.",
+      "parentUuid": "5968f10a_99156953",
       "range": {
         "startLine": 205,
         "startChar": 13,
@@ -104,6 +170,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a418f923_c1687319",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-29T06:13:47Z",
+      "side": 1,
+      "message": "corrected as per suggestion.",
+      "parentUuid": "7facb851_926f27b3",
+      "range": {
+        "startLine": 206,
+        "startChar": 57,
+        "endLine": 206,
+        "endChar": 65
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "027bddfe_19102783",
@@ -117,6 +207,24 @@
       "writtenOn": "2024-01-29T01:59:48Z",
       "side": 1,
       "message": "See previous comment:\n\n`\"Error getting string attribute \u0027{ATTR}\u0027 from \u0027{INTERFACE}\u0027: {ERROR}\"`",
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea0e039c_cd60e90a",
+        "filename": "libpldmresponder/bios_string_attribute.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-29T06:13:47Z",
+      "side": 1,
+      "message": "corrected as per suggestion.",
+      "parentUuid": "027bddfe_19102783",
       "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -144,6 +252,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b4b798c_95ee3506",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-29T06:13:47Z",
+      "side": 1,
+      "message": "corrected as per suggestion.",
+      "parentUuid": "091c2ca3_672ff998",
+      "range": {
+        "startLine": 144,
+        "startChar": 1,
+        "endLine": 147,
+        "endChar": 19
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a8057fb_78d413f6",
@@ -157,6 +289,30 @@
       "writtenOn": "2024-01-29T01:59:48Z",
       "side": 1,
       "message": "The first letter of the log message should be capitalised, just like a regular sentence. The original message had this correct. Please audit your patch and fix this issue throughout.",
+      "range": {
+        "startLine": 284,
+        "startChar": 15,
+        "endLine": 284,
+        "endChar": 16
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f656019_1ee8fce5",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-01-29T06:13:47Z",
+      "side": 1,
+      "message": "corrected as per suggestion.",
+      "parentUuid": "0a8057fb_78d413f6",
       "range": {
         "startLine": 284,
         "startChar": 15,
