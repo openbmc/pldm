@@ -197,6 +197,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f9d9191_8a42bade",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "Also a bit sad that we\u0027re catching `InternalFailure`, which was meant to indicate something unrecoverable, and that we\u0027re assuming that it means `PLDM_INVALID_FILE_TYPE` here.",
+      "parentUuid": "5cb8a296_1f6f5a2e",
+      "revId": "e9260655f59ba9c2ed205743193e32543935031b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "028a7351_c55ee03a",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
         "patchSetId": 13

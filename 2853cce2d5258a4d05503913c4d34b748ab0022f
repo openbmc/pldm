@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63542fe8_74c2fcfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "Hi Kamalkumar, broadly this is much better than when I last reviewed. Thanks for taking on the feedback and incorporating it into the patch. I have some further comments. Some are a bit nitpicky, but from experience they should reduce some stress when reading logs while tracking down a bug.",
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba273f11_4ed6a772",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "If we\u0027re trying to find something and we fail, it\u0027s very useful to log what it is we\u0027re trying to find, given that failing is the exceptional case.",
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "288a9a55_7ac06d7b",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "Nit: Why did you change the capitalisation of \u0027n\u0027 here? My preferences is that log messages are capitalised in the same manner as a sentence.",
+      "range": {
+        "startLine": 192,
+        "startChar": 15,
+        "endLine": 192,
+        "endChar": 16
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5968f10a_99156953",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "Nit: I think this is better phrased as `Error getting integer attribute \u0027{ATTR}\u0027 from \u0027{INTERFACE}\u0027: {ERROR}\".\n\nTwo things here:\n\n1. Swap `{ATTR} attribute` to `attribute {ATTR}`\n2. Put single-quotes around the interpolations. This helps in the case that they\u0027re somehow the empty string\n\nPoint 2 applies generally to interpolating any string. However, it\u0027s not necessary to put quotes around values that aren\u0027t strings. For instance, there\u0027s no need to add quotes around `{ERROR}` because it\u0027s value is not a string type.\n\nPlease address both these points throughout the patch.",
+      "range": {
+        "startLine": 205,
+        "startChar": 13,
+        "endLine": 205,
+        "endChar": 51
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7facb851_926f27b3",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "Must we pass the C string here? I forget.",
+      "range": {
+        "startLine": 206,
+        "startChar": 57,
+        "endLine": 206,
+        "endChar": 65
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "027bddfe_19102783",
+        "filename": "libpldmresponder/bios_string_attribute.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "See previous comment:\n\n`\"Error getting string attribute \u0027{ATTR}\u0027 from \u0027{INTERFACE}\u0027: {ERROR}\"`",
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "091c2ca3_672ff998",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "See comment here:\n\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/67994/14/libpldmresponder/bios_integer_attribute.cpp",
+      "range": {
+        "startLine": 144,
+        "startChar": 1,
+        "endLine": 147,
+        "endChar": 19
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a8057fb_78d413f6",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-01-29T01:59:48Z",
+      "side": 1,
+      "message": "The first letter of the log message should be capitalised, just like a regular sentence. The original message had this correct. Please audit your patch and fix this issue throughout.",
+      "range": {
+        "startLine": 284,
+        "startChar": 15,
+        "endLine": 284,
+        "endChar": 16
+      },
+      "revId": "2853cce2d5258a4d05503913c4d34b748ab0022f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
