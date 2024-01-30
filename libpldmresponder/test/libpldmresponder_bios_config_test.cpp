@@ -2,6 +2,7 @@
 #include "common/test/mocked_utils.hpp"
 #include "libpldmresponder/bios_config.hpp"
 #include "libpldmresponder/bios_string_attribute.hpp"
+#include "libpldmresponder/config.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "mocked_bios.hpp"
 
@@ -77,29 +78,16 @@ class TestBIOSConfig : public ::testing::Test
 fs::path TestBIOSConfig::tableDir;
 std::vector<Json> TestBIOSConfig::jsons;
 
-class MockBiosSystemConfig : public pldm::responder::oem_bios::Handler
-{
-  public:
-    MockBiosSystemConfig(const pldm::utils::DBusHandler* dBusIntf) :
-        pldm::responder::oem_bios::Handler(dBusIntf)
-    {}
-    MOCK_METHOD(void, ibmCompatibleAddedCallback, (sdbusplus::message_t&), ());
-    MOCK_METHOD(std::optional<std::string>, getPlatformName, ());
-};
-
 TEST_F(TestBIOSConfig, buildTablesTest)
 {
     MockdBusHandler dbusHandler;
-
-    MockBiosSystemConfig mockBiosSystemConfig(&dbusHandler);
 
     ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
         .WillByDefault(Throw(std::exception()));
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockBiosSystemConfig);
+                          nullptr, nullptr, nullptr);
     biosConfig.buildTables();
-
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
     auto attrValueTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
@@ -266,14 +254,11 @@ TEST_F(TestBIOSConfig, buildTablesSystemSpecificTest)
 {
     MockdBusHandler dbusHandler;
 
-    MockBiosSystemConfig mockBiosSystemConfig(&dbusHandler);
-
     ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
         .WillByDefault(Throw(std::exception()));
 
     BIOSConfig biosConfig("./system_type1/bios_jsons", tableDir.c_str(),
-                          &dbusHandler, 0, 0, nullptr, nullptr,
-                          &mockBiosSystemConfig);
+                          &dbusHandler, 0, 0, nullptr, nullptr, nullptr);
 
     biosConfig.buildTables();
 
@@ -339,10 +324,8 @@ TEST_F(TestBIOSConfig, setAttrValue)
 {
     MockdBusHandler dbusHandler;
 
-    MockBiosSystemConfig mockBiosSystemConfig(&dbusHandler);
-
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockBiosSystemConfig);
+                          nullptr, nullptr, nullptr);
     biosConfig.removeTables();
     biosConfig.buildTables();
 

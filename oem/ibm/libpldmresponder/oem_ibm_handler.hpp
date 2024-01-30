@@ -132,7 +132,8 @@ class Handler : public oem_platform::Handler
                               uint8_t sensorOffset, uint8_t eventState,
                               uint8_t prevEventState);
 
-    /** @brief Method to send encoded request msg of code update event to host
+    /** @brief Method to send encoded request msg of code update event to
+     * host
      *  @param[in] requestMsg - encoded request msg
      *  @param[in] instanceId - instance id of the message
      *  @return PLDM status code
@@ -140,21 +141,21 @@ class Handler : public oem_platform::Handler
     int sendEventToHost(std::vector<uint8_t>& requestMsg, uint8_t instanceId);
 
     /** @brief _processEndUpdate processes the actual work that needs
-     *  to be carried out after EndUpdate effecter is set. This is done async
-     *  after sending response for EndUpdate set effecter
+     *  to be carried out after EndUpdate effecter is set. This is done
+     * async after sending response for EndUpdate set effecter
      *  @param[in] source - sdeventplus event source
      */
     void _processEndUpdate(sdeventplus::source::EventBase& source);
 
     /** @brief _processStartUpdate processes the actual work that needs
-     *  to be carried out after StartUpdate effecter is set. This is done async
-     *  after sending response for StartUpdate set effecter
+     *  to be carried out after StartUpdate effecter is set. This is done
+     * async after sending response for StartUpdate set effecter
      *  @param[in] source - sdeventplus event source
      */
     void _processStartUpdate(sdeventplus::source::EventBase& source);
 
-    /** @brief _processSystemReboot processes the actual work that needs to be
-     *  carried out after the System Power State effecter is set to reboot
+    /** @brief _processSystemReboot processes the actual work that needs to
+     * be carried out after the System Power State effecter is set to reboot
      *  the system
      *  @param[in] source - sdeventplus event source
      */
@@ -175,8 +176,8 @@ class Handler : public oem_platform::Handler
      */
     bool watchDogRunning();
 
-    /** @brief Method to reset the Watchdog timer on receiving platform Event
-     *  Message for heartbeat elapsed time from Hostboot
+    /** @brief Method to reset the Watchdog timer on receiving platform
+     * Event Message for heartbeat elapsed time from Hostboot
      */
     void resetWatchDogTimer();
 
@@ -199,7 +200,8 @@ class Handler : public oem_platform::Handler
      *
      *  @param[in] record_handle - record handle of the PDR
      *
-     *  @return true if record handle passed is in host PDR record handle range
+     *  @return true if record handle passed is in host PDR record handle
+     * range
      */
     bool checkRecordHandleInRange(const uint32_t& record_handle);
 
@@ -234,12 +236,15 @@ class Handler : public oem_platform::Handler
     std::unique_ptr<sdeventplus::source::Defer> startUpdateEvent;
     std::unique_ptr<sdeventplus::source::Defer> systemRebootEvent;
 
-    /** @brief reference of main event loop of pldmd, primarily used to schedule
-     *  work
+    /** @brief reference of main event loop of pldmd, primarily used to
+     * schedule work
      */
     sdeventplus::Event& event;
 
   private:
+    /**@ brief system type/model */
+    std::string systemType;
+
     /** @brief D-Bus property changed signal match for CurrentPowerState*/
     std::unique_ptr<sdbusplus::bus::match_t> chassisOffMatch;
 
