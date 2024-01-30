@@ -4,6 +4,7 @@
 #include "bios_table.hpp"
 #include "common/instance_id.hpp"
 #include "oem_handler.hpp"
+#include "platform_config.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/bios_table.h>
@@ -79,14 +80,14 @@ class BIOSConfig
      *  @param[in] eid - MCTP EID of host firmware
      *  @param[in] instanceIdDb - pointer to an InstanceIdDb object
      *  @param[in] handler - PLDM request handler
-     *  @param[in] oemBiosHandler - pointer to oem Bios Handler
+     *  @param[in] platformConfigHandler - pointer to platform config Handler
      */
     explicit BIOSConfig(
         const char* jsonDir, const char* tableDir,
         pldm::utils::DBusHandler* const dbusHandler, int fd, uint8_t eid,
         pldm::InstanceIdDb* instanceIdDb,
         pldm::requester::Handler<pldm::requester::Request>* handler,
-        pldm::responder::oem_bios::Handler* oemBiosHandler);
+        pldm::responder::platform_config::Handler* platformConfigHandler);
 
     /** @brief Set attribute value on dbus and attribute value table
      *  @param[in] entry - attribute value entry
@@ -159,8 +160,8 @@ class BIOSConfig
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
-    /** @brief oem Bios Handler*/
-    pldm::responder::oem_bios::Handler* oemBiosHandler;
+    /** @brief platform config Handler*/
+    pldm::responder::platform_config::Handler* platformConfigHandler;
 
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
