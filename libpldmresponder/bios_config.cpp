@@ -45,18 +45,18 @@ BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::oem_bios::Handler* oemBiosHandler) :
+    pldm::responder::config::Handler* configHandler) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
-    instanceIdDb(instanceIdDb), handler(handler), oemBiosHandler(oemBiosHandler)
+    instanceIdDb(instanceIdDb), handler(handler), configHandler(configHandler)
 
 {
-    if (oemBiosHandler)
+    if (configHandler)
     {
-        auto systemType = oemBiosHandler->getPlatformName();
-        if (systemType.has_value())
+        auto systemType = configHandler->getPlatformName();
+        if (!systemType.empty())
         {
-            sysType = systemType.value();
+            sysType = systemType;
         }
     }
     fs::create_directories(tableDir);
@@ -563,8 +563,8 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
         }
         catch (const std::exception& e)
         {
-            error("Error constructing table entry for '{ATTR}': {ERROR}",
-                  "ATTR", attr->name, "ERROR", e);
+            error("Construct Table Entry Error, AttributeName = {ATTR_NAME}",
+                  "ATTR_NAME", attr->name);
         }
     }
 
@@ -654,8 +654,8 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
         }
         catch (const std::exception& e)
         {
-            error("Failed to parse JSON config at '{PATH}': {ERROR}", "PATH",
-                  filePath.c_str(), "ERROR", e);
+            error("Failed to parse JSON config file : {JSON_PATH}", "JSON_PATH",
+                  filePath.c_str());
         }
     }
 }
@@ -949,8 +949,8 @@ void BIOSConfig::processBiosAttrChangeNotification(
     }
     catch (const std::invalid_argument& e)
     {
-        error("Missing handle for '{ATTR}': {ERROR}", "ATTR", attrName, "ERROR",
-              e);
+        error("Could not find handle for BIOS string, ATTRIBUTE={ATTR_NAME}",
+              "ATTR_NAME", attrName.c_str());
         return;
     }
 

@@ -71,9 +71,9 @@ DBusHandler dbusHandler;
 
 Handler::Handler(int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
                  pldm::requester::Handler<pldm::requester::Request>* handler,
-                 pldm::responder::oem_bios::Handler* oemBiosHandler) :
+                 pldm::responder::config::Handler* configHandler) :
     biosConfig(BIOS_JSONS_DIR, BIOS_TABLES_DIR, &dbusHandler, fd, eid,
-               instanceIdDb, handler, oemBiosHandler)
+               instanceIdDb, handler, configHandler)
 {
     biosConfig.removeTables();
     biosConfig.buildTables();
@@ -134,8 +134,9 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     catch (const sdbusplus::exception_t& e)
     {
         error(
-            "Error getting time from Elapsed property at '{PATH}' on '{INTERFACE}': {ERROR}",
-            "PATH", bmcTimePath, "INTERFACE", timeInterface, "ERROR", e);
+            "Error getting time, PATH={BMC_TIME_PATH} TIME INTERACE={TIME_INTERFACE}",
+            "BMC_TIME_PATH", bmcTimePath, "TIME_INTERFACE", timeInterface);
+
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
 
