@@ -20,6 +20,7 @@ sources = [
   'pdr_utils.cpp',
   'pdr.cpp',
   'platform.cpp',
+  'platform_config.cpp',
   'fru_parser.cpp',
   'fru.cpp',
   '../host-bmc/host_pdr_handler.cpp',
@@ -50,7 +51,6 @@ if get_option('oem-ibm').allowed()
     '../oem/ibm/requester/dbus_to_file_handler.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_progress_src.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_vpd.cpp',
-    '../oem/ibm/libpldmresponder/bios_oem_ibm.cpp',
   ]
 endif
 
