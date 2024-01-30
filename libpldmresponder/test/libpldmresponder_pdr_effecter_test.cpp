@@ -32,7 +32,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     auto event = sdeventplus::Event::get_default();
     Handler handler(&mockedUtils, 0, nullptr, "./pdr_jsons/state_effecter/good",
                     inPDRRepo, nullptr, nullptr, nullptr, nullptr, nullptr,
-                    event);
+                    nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
@@ -133,7 +133,7 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
     auto event = sdeventplus::Event::get_default();
     Handler handler(&mockedUtils, 0, nullptr, "./pdr_jsons/state_effecter/good",
                     inPDRRepo, nullptr, nullptr, nullptr, nullptr, nullptr,
-                    event);
+                    nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_NUMERIC_EFFECTER_PDR);
 
@@ -181,7 +181,7 @@ TEST(GeneratePDR, testMalformedJson)
     auto event = sdeventplus::Event::get_default();
     Handler handler(&mockedUtils, 0, nullptr, "./pdr_jsons/state_effecter/good",
                     inPDRRepo, nullptr, nullptr, nullptr, nullptr, nullptr,
-                    event);
+                    nullptr, event);
     Repo inRepo(inPDRRepo);
     getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
 
@@ -204,7 +204,7 @@ TEST(findStateEffecterId, goodJson)
     auto event = sdeventplus::Event::get_default();
     Handler handler(&mockedUtils, 0, nullptr, "./pdr_jsons/state_effecter/good",
                     inPDRRepo, nullptr, nullptr, nullptr, nullptr, nullptr,
-                    event);
+                    nullptr, event);
     uint16_t entityType = 33;
     uint16_t entityInstance = 0;
     uint16_t containerId = 0;
