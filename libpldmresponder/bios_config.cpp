@@ -45,18 +45,18 @@ BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::oem_bios::Handler* oemBiosHandler) :
+    pldm::responder::config::Handler* configHandler) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
-    instanceIdDb(instanceIdDb), handler(handler), oemBiosHandler(oemBiosHandler)
+    instanceIdDb(instanceIdDb), handler(handler), configHandler(configHandler)
 
 {
-    if (oemBiosHandler)
+    if (configHandler)
     {
-        auto systemType = oemBiosHandler->getPlatformName();
-        if (systemType.has_value())
+        auto systemType = configHandler->getPlatformName();
+        if (!systemType.empty())
         {
-            sysType = systemType.value();
+            sysType = systemType;
         }
     }
     fs::create_directories(tableDir);
