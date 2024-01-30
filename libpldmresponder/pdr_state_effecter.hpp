@@ -96,7 +96,6 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 // present
                 if (!pdr->entity_type)
                 {
-                    error("The entity path for the FRU is not present.");
                     continue;
                 }
             }
