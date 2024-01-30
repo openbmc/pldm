@@ -5,6 +5,7 @@
 #include "fru.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
+#include "libpldmresponder/config.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "oem_handler.hpp"
@@ -49,11 +50,12 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf, uint8_t eid,
-            pldm::InstanceIdDb* instanceIdDb, const std::string& pdrJsonsDir,
+            pldm::InstanceIdDb* instanceIdDb, const fs::path& pdrJsonDir,
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
             pldm::responder::oem_platform::Handler* oemPlatformHandler,
+            pldm::responder::config::Handler* configHandler,
             pldm::requester::Handler<pldm::requester::Request>* handler,
             sdeventplus::Event& event, bool buildPDRLazily = false,
             const std::optional<EventMap>& addOnHandlersMap = std::nullopt) :
@@ -62,8 +64,8 @@ class Handler : public CmdHandler
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        handler(handler), event(event), pdrJsonsDir(pdrJsonsDir),
-        pdrCreated(false)
+        configHandler(configHandler), handler(handler), event(event),
+        pdrJsonDir(pdrJsonDir), pdrCreated(false), pdrJsonsDir({pdrJsonDir})
     {
         if (!buildPDRLazily)
         {
@@ -192,7 +194,7 @@ class Handler : public CmdHandler
      *  @param[in] repo - instance of concrete implementation of Repo
      */
     void generate(const pldm::utils::DBusHandler& dBusIntf,
-                  const std::string& dir,
+                  const std::vector<fs::path>& dir,
                   pldm::responder::pdr_utils::Repo& repo);
 
     /** @brief Parse PDR JSONs and build state effecter PDR repository
@@ -483,10 +485,12 @@ class Handler : public CmdHandler
     fru::Handler* fruHandler;
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+    pldm::responder::config::Handler* configHandler;
     pldm::requester::Handler<pldm::requester::Request>* handler;
     sdeventplus::Event& event;
-    std::string pdrJsonsDir;
+    fs::path pdrJsonDir;
     bool pdrCreated;
+    std::vector<fs::path> pdrJsonsDir;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
 };
 
