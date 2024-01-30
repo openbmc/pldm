@@ -3,6 +3,7 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "coroutine_helper.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -14,6 +15,7 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <coroutine>
 #include <deque>
 #include <filesystem>
 #include <map>
@@ -49,6 +51,19 @@ struct SensorEntry
         return ((terminusID < e.terminusID) ||
                 ((terminusID == e.terminusID) && (sensorID < e.sensorID)));
     }
+};
+
+// Adding a co-routine structure for setOperationaStatus
+
+struct EntityData
+{
+    uint16_t sensorId;
+    uint16_t entityType;
+    uint16_t entityInstance;
+    uint16_t containerId;
+    uint8_t state;
+    std::string path;
+    pldm::pdr::StateSetId stateSetId;
 };
 
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
@@ -127,12 +142,14 @@ class HostPDRHandler
 
     /** @brief Handles state sensor event
      *
+     *  @param[in] stateSetId - state set Id
      *  @param[in] entry - state sensor entry
      *  @param[in] state - event state
      *
      *  @return PLDM completion code
      */
     int handleStateSensorEvent(
+        const std::vector<pldm::pdr::StateSetId>& stateSetId,
         const pldm::responder::events::StateSensorEntry& entry,
         pdr::EventState state);
 
@@ -172,6 +189,29 @@ class HostPDRHandler
 
     /** @brief map that captures various terminus information **/
     TLPDRMap tlPDRInfo;
+
+    /** @brief maps an object path to pldm_entity from the BMC's entity
+     *  association tree
+     */
+    utils::ObjectPathMaps objPathMap;
+
+    /** @brief sensorMap is a lookup data structure that is build from the
+     *         hostPDR that speeds up the lookup of <TerminusID, SensorID> in
+     *         PlatformEventMessage command request.
+     */
+    HostStateSensorMap sensorMap;
+
+    /** @brief Get the Validity of a Terminus ID
+     *
+     *  @param[out] bool - true if valid, false otherwise
+     */
+    bool getValidity(const pldm::pdr::TerminusID& tid);
+
+    mutable EntityData AsyncParameters; // Mutable structure object
+
+    void setData(const EntityData& EntityParameter);
+
+    void operator()(std::coroutine_handle<> h) const;
 
   private:
     /** @brief deferred function to fetch PDR from Host, scheduled to work on
@@ -254,6 +294,13 @@ class HostPDRHandler
     std::optional<uint16_t> getRSI(const PDRList& fruRecordSetPDRs,
                                    const pldm_entity& entity);
 
+    /** @brief Set the Present dbus Property
+     *
+     *  @param[in] path     - object path
+     *  @return
+     */
+    void setPresentPropertyStatus(const std::string& path);
+
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
     /** @brief MCTP EID of host firmware */
@@ -298,12 +345,6 @@ class HostPDRHandler
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
 
-    /** @brief sensorMap is a lookup data structure that is build from the
-     *         hostPDR that speeds up the lookup of <TerminusID, SensorID> in
-     *         PlatformEventMessage command request.
-     */
-    HostStateSensorMap sensorMap;
-
     /** @brief whether response received from Host */
     bool responseReceived;
 
@@ -317,11 +358,6 @@ class HostPDRHandler
 
     /** @brief request message instance id */
     uint8_t insId;
-
-    /** @brief maps an object path to pldm_entity from the BMC's entity
-     *         association tree
-     */
-    utils::ObjectPathMaps objPathMap;
 
     /** @brief maps an entity name to map, maps to entity name to pldm_entity
      */
