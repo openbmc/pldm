@@ -45,15 +45,16 @@ BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::oem_bios::Handler* oemBiosHandler) :
+    pldm::responder::platform_config::Handler* platformConfigHandler) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
-    instanceIdDb(instanceIdDb), handler(handler), oemBiosHandler(oemBiosHandler)
+    instanceIdDb(instanceIdDb), handler(handler),
+    platformConfigHandler(platformConfigHandler)
 
 {
-    if (oemBiosHandler)
+    if (platformConfigHandler)
     {
-        auto systemType = oemBiosHandler->getPlatformName();
+        auto systemType = platformConfigHandler->getPlatformName();
         if (systemType.has_value())
         {
             sysType = systemType.value();

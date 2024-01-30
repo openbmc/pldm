@@ -3,6 +3,7 @@
 #include "libpldmresponder/bios_config.hpp"
 #include "libpldmresponder/bios_string_attribute.hpp"
 #include "libpldmresponder/oem_handler.hpp"
+#include "libpldmresponder/platform_config.hpp"
 #include "mocked_bios.hpp"
 
 #include <nlohmann/json.hpp>
@@ -77,29 +78,26 @@ class TestBIOSConfig : public ::testing::Test
 fs::path TestBIOSConfig::tableDir;
 std::vector<Json> TestBIOSConfig::jsons;
 
-class MockBiosSystemConfig : public pldm::responder::oem_bios::Handler
+class MockSystemConfig : public pldm::responder::platform_config::Handler
 {
   public:
-    MockBiosSystemConfig(const pldm::utils::DBusHandler* dBusIntf) :
-        pldm::responder::oem_bios::Handler(dBusIntf)
-    {}
+    MockSystemConfig() {}
     MOCK_METHOD(void, ibmCompatibleAddedCallback, (sdbusplus::message_t&), ());
-    MOCK_METHOD(std::optional<std::string>, getPlatformName, ());
+    MOCK_METHOD(std::optional<std::filesystem::path>, getPlatformName, ());
 };
 
 TEST_F(TestBIOSConfig, buildTablesTest)
 {
     MockdBusHandler dbusHandler;
+    MockSystemConfig mockSystemConfig;
 
-    MockBiosSystemConfig mockBiosSystemConfig(&dbusHandler);
-
+    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return(""));
     ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
         .WillByDefault(Throw(std::exception()));
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockBiosSystemConfig);
+                          nullptr, nullptr, &mockSystemConfig);
     biosConfig.buildTables();
-
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
     auto attrValueTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
@@ -265,15 +263,15 @@ TEST_F(TestBIOSConfig, buildTablesTest)
 TEST_F(TestBIOSConfig, buildTablesSystemSpecificTest)
 {
     MockdBusHandler dbusHandler;
+    MockSystemConfig mockSystemConfig;
 
-    MockBiosSystemConfig mockBiosSystemConfig(&dbusHandler);
-
+    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return(""));
     ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
         .WillByDefault(Throw(std::exception()));
 
     BIOSConfig biosConfig("./system_type1/bios_jsons", tableDir.c_str(),
                           &dbusHandler, 0, 0, nullptr, nullptr,
-                          &mockBiosSystemConfig);
+                          &mockSystemConfig);
 
     biosConfig.buildTables();
 
@@ -338,11 +336,11 @@ TEST_F(TestBIOSConfig, buildTablesSystemSpecificTest)
 TEST_F(TestBIOSConfig, setAttrValue)
 {
     MockdBusHandler dbusHandler;
+    MockSystemConfig mockSystemConfig;
 
-    MockBiosSystemConfig mockBiosSystemConfig(&dbusHandler);
-
+    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return(""));
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockBiosSystemConfig);
+                          nullptr, nullptr, &mockSystemConfig);
     biosConfig.removeTables();
     biosConfig.buildTables();
 
