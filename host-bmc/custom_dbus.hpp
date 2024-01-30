@@ -4,6 +4,7 @@
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
+#include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
 #include <memory>
 #include <optional>
@@ -19,6 +20,10 @@ using ObjectPath = std::string;
 using LocationIntf =
     sdbusplus::server::object_t<sdbusplus::xyz::openbmc_project::Inventory::
                                     Decorator::server::LocationCode>;
+
+using OperationalStatusIntf =
+    sdbusplus::server::object_t<sdbusplus::xyz::openbmc_project::State::
+                                    Decorator::server::OperationalStatus>;
 
 /** @class CustomDBus
  *  @brief This is a custom D-Bus object, used to add D-Bus interface and update
@@ -60,8 +65,26 @@ class CustomDBus
      */
     std::optional<std::string> getLocationCode(const std::string& path) const;
 
+    /** @brief Set the Functional property
+     *
+     *  @param[in] path   - The object path
+     *  @param[in] status - PLDM operational fault status
+     */
+    void setOperationalStatus(const std::string& path, uint8_t status);
+
+    /** @brief Get the Functional property
+     *
+     *  @param[in] path   - The object path
+     *
+     *  @return status    - PLDM operational fault status
+     */
+    bool getOperationalStatus(const std::string& path) const;
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
+
+    std::unordered_map<ObjectPath, std::unique_ptr<OperationalStatusIntf>>
+        operationalStatus;
 };
 
 } // namespace dbus
