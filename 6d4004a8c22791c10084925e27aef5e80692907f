@@ -49,6 +49,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d90b312_bea0ab31",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-05T16:08:35Z",
+      "side": 1,
+      "message": "config handler",
+      "range": {
+        "startLine": 163,
+        "startChar": 19,
+        "endLine": 163,
+        "endChar": 23
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ee0130eb_9103592a",
         "filename": "libpldmresponder/config.cpp",
         "patchSetId": 16
@@ -164,6 +187,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1307fb6a_0a3c3a58",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-05T16:08:35Z",
+      "side": 1,
+      "message": "why is this change in this commit? where are we using \"e\"?",
+      "range": {
+        "startLine": 459,
+        "startChar": 40,
+        "endLine": 459,
+        "endChar": 41
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a541f934_8ceaaf48",
         "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
         "patchSetId": 16
@@ -249,6 +295,29 @@
         "startChar": 3,
         "endLine": 240,
         "endChar": 20
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1401545_91eab896",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-05T16:08:35Z",
+      "side": 1,
+      "message": "why is this variable declared here?",
+      "range": {
+        "startLine": 246,
+        "startChar": 16,
+        "endLine": 246,
+        "endChar": 26
       },
       "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
