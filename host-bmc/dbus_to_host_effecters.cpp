@@ -5,6 +5,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/client.hpp>
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
 
 #include <fstream>
@@ -126,6 +127,9 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     const DbusChgHostEffecterProps& chProperties, size_t effecterInfoIndex,
     size_t dbusInfoIndex, uint16_t effecterId)
 {
+    using BootProgress =
+        sdbusplus::client::xyz::openbmc_project::state::boot::Progress<>;
+
     const auto& propertyName = hostEffecterInfo[effecterInfoIndex]
                                    .dbusInfo[dbusInfoIndex]
                                    .dbusMap.propertyName;
@@ -154,21 +158,22 @@ void HostEffecterParser::processHostEffecterChangeNotification(
             return;
         }
     }
-    constexpr auto hostStateInterface =
-        "xyz.openbmc_project.State.Boot.Progress";
     constexpr auto hostStatePath = "/xyz/openbmc_project/state/host0";
 
     try
     {
         auto propVal = dbusHandler->getDbusPropertyVariant(
-            hostStatePath, "BootProgress", hostStateInterface);
+            hostStatePath, "BootProgress", BootProgress::interface);
         const auto& currHostState = std::get<std::string>(propVal);
-        if ((currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.SystemInitComplete") &&
-            (currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.OSRunning") &&
-            (currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.SystemSetup"))
+        if ((sdbusplus::message::convert_from_string<
+                 BootProgress::ProgressStages>(currHostState) !=
+             BootProgress::ProgressStages::SystemInitComplete) &&
+            (sdbusplus::message::convert_from_string<
+                 BootProgress::ProgressStages>(currHostState) !=
+             BootProgress::ProgressStages::OSRunning) &&
+            (sdbusplus::message::convert_from_string<
+                 BootProgress::ProgressStages>(currHostState) !=
+             BootProgress::ProgressStages::SystemSetup))
         {
             info("Host is not up. Current host state: {CUR_HOST_STATE}",
                  "CUR_HOST_STATE", currHostState.c_str());
