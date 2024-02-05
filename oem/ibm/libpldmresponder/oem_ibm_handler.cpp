@@ -8,6 +8,7 @@
 #include <libpldm/oem/ibm/entity.h>
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/State/BMC/client.hpp>
 
 PHOSPHOR_LOG2_USING;
 
@@ -575,12 +576,14 @@ void pldm::responder::oem_ibm_platform::Handler::disableWatchDogTimer()
 }
 int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
 {
+    using BMC = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
+    auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
+                   BMC::namespace_path::bmc;
     try
     {
         pldm::utils::PropertyValue propertyValue =
             pldm::utils::DBusHandler().getDbusPropertyVariant(
-                "/xyz/openbmc_project/state/bmc0", "CurrentBMCState",
-                "xyz.openbmc_project.State.BMC");
+                bmcPath.str.c_str(), "CurrentBMCState", BMC::interface);
 
         if (std::get<std::string>(propertyValue) ==
             "xyz.openbmc_project.State.BMC.BMCState.NotReady")

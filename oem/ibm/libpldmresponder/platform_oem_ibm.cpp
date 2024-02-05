@@ -7,6 +7,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/State/Boot/Progress/client.hpp>
 
 #include <iostream>
 
@@ -23,6 +24,9 @@ int sendBiosAttributeUpdateEvent(
     const std::vector<uint16_t>& handles,
     pldm::requester::Handler<pldm::requester::Request>* handler)
 {
+    using BootProgress =
+        sdbusplus::client::xyz::openbmc_project::state::boot::Progress<>;
+
     constexpr auto hostStatePath = "/xyz/openbmc_project/state/host0";
     constexpr auto hostStateInterface =
         "xyz.openbmc_project.State.Boot.Progress";
@@ -31,14 +35,12 @@ int sendBiosAttributeUpdateEvent(
     try
     {
         auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
-            hostStatePath, hostStateProperty, hostStateInterface);
+            hostStatePath, hostStateProperty, BootProgress::interface);
         const auto& currHostState = std::get<std::string>(propVal);
-        if ((currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.SystemInitComplete") &&
-            (currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.OSRunning") &&
-            (currHostState != "xyz.openbmc_project.State.Boot.Progress."
-                              "ProgressStages.SystemSetup"))
+        if ((currHostState !=
+             BootProgress::ProgressStages::SystemInitComplete) &&
+            (currHostState != BootProgress::ProgressStages::OSRunning) &&
+            (currHostState != BootProgress::ProgressStages::SystemSetup))
         {
             return PLDM_SUCCESS;
         }
