@@ -22,6 +22,30 @@
       },
       "revId": "437920687bd4663084da93e653e953f11726ed05",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98609965_237d7938",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-05T09:00:53Z",
+      "side": 1,
+      "message": "This should be handled here - https://gerrit.openbmc.org/c/openbmc/pldm/+/45876",
+      "parentUuid": "5ec4f59d_b12eb986",
+      "range": {
+        "startLine": 98,
+        "startChar": 15,
+        "endLine": 104,
+        "endChar": 74
+      },
+      "revId": "437920687bd4663084da93e653e953f11726ed05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
