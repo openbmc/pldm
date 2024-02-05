@@ -5,6 +5,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
 #include <algorithm>
 #include <array>
@@ -23,9 +25,8 @@ namespace pldm
 {
 namespace utils
 {
-constexpr auto mapperBusName = "xyz.openbmc_project.ObjectMapper";
-constexpr auto mapperPath = "/xyz/openbmc_project/object_mapper";
-constexpr auto mapperInterface = "xyz.openbmc_project.ObjectMapper";
+
+using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 
 Entities getParentEntites(const EntityAssociations& entityAssoc)
 {
@@ -414,8 +415,9 @@ std::string DBusHandler::getService(const char* path,
     std::map<std::string, std::vector<std::string>> mapperResponse;
     auto& bus = DBusHandler::getBus();
 
-    auto mapper = bus.new_method_call(mapperBusName, mapperPath,
-                                      mapperInterface, "GetObject");
+    auto mapper = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetObject");
 
     if (interface)
     {
@@ -436,8 +438,9 @@ GetSubTreeResponse
                             const std::vector<std::string>& ifaceList) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-    auto method = bus.new_method_call(mapperBusName, mapperPath,
-                                      mapperInterface, "GetSubTree");
+    auto method = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetSubTree");
     method.append(searchPath, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
     GetSubTreeResponse response;
@@ -447,21 +450,22 @@ GetSubTreeResponse
 
 void reportError(const char* errorMsg)
 {
-    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
-    static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
-
     auto& bus = pldm::utils::DBusHandler::getBus();
 
     try
     {
-        auto service = DBusHandler().getService(logObjPath, logInterface);
+        using LoggingCreate =
+            sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
                 sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
                     Error);
-        auto method = bus.new_method_call(service.c_str(), logObjPath,
-                                          logInterface, "Create");
+        auto method = bus.new_method_call(LoggingCreate::default_service,
+                                          LoggingCreate::instance_path,
+                                          LoggingCreate::interface, "Create");
+
         std::map<std::string, std::string> addlData{};
         method.append(errorMsg, severity, addlData);
         bus.call_noreply(method, dbusTimeout);
