@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf73c0f2_86bcb5d6",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-06T06:57:01Z",
+      "side": 1,
+      "message": "Can\u0027t we use locally since it\u0027s used only once, like other files?",
+      "revId": "e1694bd548f5a4a513554abdc6eba1805380f3a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
