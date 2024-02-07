@@ -18,6 +18,9 @@ using Json = nlohmann::json;
 
 static const Json empty{};
 
+constexpr uint32_t BMC_PDR_START_RANGE = 0x00000000;
+constexpr uint32_t BMC_PDR_END_RANGE = 0x00FFFFFF;
+
 /** @brief Parse PDR JSON file and generate state sensor PDR structure
  *
  *  @param[in] json - the JSON Object with the state sensor PDR
@@ -27,7 +30,8 @@ static const Json empty{};
  */
 template <class DBusInterface, class Handler>
 void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
-                            Handler& handler, pdr_utils::RepoInterface& repo)
+                            Handler& handler, pdr_utils::RepoInterface& repo,
+                            pldm_entity_association_tree* bmcEntityTree)
 {
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
@@ -72,7 +76,7 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         HTOLE16(pdr->hdr.length);
 
         pdr->terminus_handle = TERMINUS_HANDLE;
-
+        pdr->sensor_id = handler.getNextSensorId();
         try
         {
             std::string entity_path = e.value("entity_path", "");
@@ -94,12 +98,73 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
 
                 // do not create the PDR when the FRU or the entity path is not
                 // present
+
                 if (!pdr->entity_type)
                 {
                     continue;
                 }
+
+                // now attach this entity to the container that was
+                // mentioned in the json, and add this entity to the
+                // parents entity assocation PDR
+
+                std::string parent_entity_path =
+                    e.value("parent_entity_path", "");
+                if (parent_entity_path != "" &&
+                    associatedEntityMap.contains(parent_entity_path))
+                {
+                    // find the parent node in the tree
+                    pldm_entity parent_entity =
+                        associatedEntityMap.at(parent_entity_path);
+                    pldm_entity child_entity = {pdr->entity_type,
+                                                pdr->entity_instance,
+                                                pdr->container_id};
+                    auto parent_node =
+                        pldm_entity_association_tree_find_with_locality(
+                            bmcEntityTree, &parent_entity, false);
+                    if (!parent_node)
+                    {
+                        // parent node not found in the entity association tree,
+                        // this should not be possible
+                        error(
+                            "Parent Entity of type {P_ENTITY_TYP} not found in the BMC Entity Association tree",
+                            "P_ENTITY_TYP",
+                            static_cast<unsigned>(parent_entity.entity_type));
+                        return;
+                    }
+                    pldm_entity_association_tree_add_entity(
+                        bmcEntityTree, &child_entity, pdr->entity_instance,
+                        parent_node, PLDM_ENTITY_ASSOCIAION_PHYSICAL, false,
+                        false, 0xFFFF);
+
+                    uint32_t bmc_record_handle = 0;
+                    auto lastLocalRecord = pldm_pdr_find_last_in_range(
+                        repo.getPdr(), BMC_PDR_START_RANGE, BMC_PDR_END_RANGE);
+                    bmc_record_handle = pldm_pdr_get_record_handle(
+                        repo.getPdr(), lastLocalRecord);
+                    [[maybe_unused]] uint8_t bmcEventDataOps;
+
+                    uint32_t updatedRecordHdlBmc = 0;
+                    bool found = pldm_entity_association_find_parent_entity(
+                        repo.getPdr(), &parent_entity, false,
+                        &updatedRecordHdlBmc);
+                    if (found)
+                    {
+                        pldm_entity_association_pdr_add_contained_entity_to_remote_pdr(
+                            repo.getPdr(), &child_entity, updatedRecordHdlBmc);
+                        bmcEventDataOps = PLDM_RECORDS_MODIFIED;
+                    }
+                    else
+                    {
+                        pldm_entity_association_pdr_create_new(
+                            repo.getPdr(), bmc_record_handle, &parent_entity,
+                            &child_entity, &updatedRecordHdlBmc);
+                        bmcEventDataOps = PLDM_RECORDS_ADDED;
+                    }
+                }
             }
         }
+
         catch (const std::exception&)
         {
             pdr->entity_type = e.value("type", 0);
