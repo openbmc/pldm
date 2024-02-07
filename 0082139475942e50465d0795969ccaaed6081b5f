@@ -50,6 +50,24 @@
       "message": "Again we are adding cyclic dependency which is not deleted at parent level.",
       "revId": "0082139475942e50465d0795969ccaaed6081b5f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9690ebe_70d61b8b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T05:20:59Z",
+      "side": 1,
+      "message": "checked with sample code and it\u0027s not circular dependency.",
+      "parentUuid": "649e52fc_d4893e3f",
+      "revId": "0082139475942e50465d0795969ccaaed6081b5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
