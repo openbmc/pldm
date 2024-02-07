@@ -445,6 +445,20 @@ GetSubTreeResponse
     return response;
 }
 
+GetAncestorsResponse
+    DBusHandler::getAncestors(const std::string& searchPath,
+                              const std::vector<std::string>& ifaceList) const
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(mapperBusName, mapperPath,
+                                      mapperInterface, "GetAncestors");
+    method.append(searchPath, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+    GetAncestorsResponse response;
+    reply.read(response);
+    return response;
+}
+
 void reportError(const char* errorMsg)
 {
     static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
