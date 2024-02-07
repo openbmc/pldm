@@ -273,6 +273,7 @@ int main(int argc, char** argv)
     auto platformHandler = std::make_unique<platform::Handler>(
         &dbusHandler, hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),
         hostPDRHandler.get(), dbusToPLDMEventHandler.get(), fruHandler.get(),
+        bmcEntityTree.get(), oemPlatformHandler.get(),
         platformConfigHandler.get(), &reqHandler, event, true);
 
     auto biosHandler = std::make_unique<bios::Handler>(

@@ -115,9 +115,18 @@ class OemIBM
      */
     void createOemPlatformHandler()
     {
+        std::unique_ptr<pldm_entity_association_tree,
+                        decltype(&pldm_entity_association_tree_destroy)>
+            bmcEntityTree(pldm_entity_association_tree_init(),
+                          pldm_entity_association_tree_destroy);
+        if (!bmcEntityTree)
+        {
+            throw std::runtime_error(
+                "Failed to instantiate BMC PDR entity association tree");
+        }
         oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
             dBusIntf, codeUpdate.get(), slotHandler.get(), mctp_fd, mctp_eid,
-            instanceIdDb, event, reqHandler);
+            instanceIdDb, event, reqHandler, bmcEntityTree.get());
     }
 
     /** @brief Method for creating oemIbmPlatformHandler */
