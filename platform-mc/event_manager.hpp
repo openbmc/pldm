@@ -6,6 +6,7 @@
 #include "common/types.hpp"
 #include "numeric_sensor.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
+#include "requester/configuration_discovery_handler.hpp"
 #include "requester/handler.hpp"
 #include "terminus.hpp"
 #include "terminus_manager.hpp"
@@ -54,9 +55,11 @@ class EventManager
 
     explicit EventManager(
         TerminusManager& terminusManager,
-        std::map<mctp_eid_t, std::shared_ptr<Terminus>>& termini) :
+        std::map<mctp_eid_t, std::shared_ptr<Terminus>>& termini,
+        pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
         terminusManager(terminusManager),
-        termini(termini){};
+        termini(termini), configurationDiscovery(configurationDiscovery)
+    {}
 
     /** @brief Handle platform event
      *
@@ -108,6 +111,9 @@ class EventManager
     virtual int processCperEvent(const uint8_t* eventData,
                                  size_t eventDataSize);
 
+    bool checkMetaIana(
+        tid_t tid, const std::map<std::string, MctpEndpoint>& configurations);
+
     int createCperDumpEntry(const std::string& dataType,
                             const std::string& dataPath);
 
@@ -125,6 +131,8 @@ class EventManager
 
     /** @brief List of discovered termini */
     std::map<tid_t, std::shared_ptr<Terminus>>& termini;
+
+    pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
 };
 } // namespace platform_mc
 } // namespace pldm
