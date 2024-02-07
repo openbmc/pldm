@@ -34,16 +34,15 @@ int sendBiosAttributeUpdateEvent(
     {
         auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
             hostStatePath, hostStateProperty, BootProgress::interface);
-        const auto& currHostState = std::get<std::string>(propVal);
-        if ((sdbusplus::message::convert_from_string<
-                 BootProgress::ProgressStages>(currHostState) !=
-             BootProgress::ProgressStages::SystemInitComplete) &&
-            (sdbusplus::message::convert_from_string<
-                 BootProgress::ProgressStages>(currHostState) !=
-             BootProgress::ProgressStages::OSRunning) &&
-            (sdbusplus::message::convert_from_string<
-                 BootProgress::ProgressStages>(currHostState) !=
-             BootProgress::ProgressStages::SystemSetup))
+
+        using Stages = BootProgress::ProgressStages;
+        auto currHostState = sdbusplus::message::convert_from_string<Stages>(
+                                 std::get<std::string>(propVal))
+                                 .value();
+
+        if (currHostState != Stages::SystemInitComplete &&
+            currHostState != Stages::OSRunning &&
+            currHostState != Stages::SystemSetup)
         {
             return PLDM_SUCCESS;
         }

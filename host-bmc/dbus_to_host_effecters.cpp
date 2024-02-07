@@ -164,19 +164,18 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     {
         auto propVal = dbusHandler->getDbusPropertyVariant(
             hostStatePath, "BootProgress", BootProgress::interface);
-        const auto& currHostState = std::get<std::string>(propVal);
-        if ((sdbusplus::message::convert_from_string<
-                 BootProgress::ProgressStages>(currHostState) !=
-             BootProgress::ProgressStages::SystemInitComplete) &&
-            (sdbusplus::message::convert_from_string<
-                 BootProgress::ProgressStages>(currHostState) !=
-             BootProgress::ProgressStages::OSRunning) &&
-            (sdbusplus::message::convert_from_string<
-                 BootProgress::ProgressStages>(currHostState) !=
-             BootProgress::ProgressStages::SystemSetup))
+
+        using Stages = BootProgress::ProgressStages;
+        auto currHostState = sdbusplus::message::convert_from_string<Stages>(
+                                 std::get<std::string>(propVal))
+                                 .value();
+
+        if (currHostState != Stages::SystemInitComplete &&
+            currHostState != Stages::OSRunning &&
+            currHostState != Stages::SystemSetup)
         {
             info("Host is not up. Current host state: {CUR_HOST_STATE}",
-                 "CUR_HOST_STATE", currHostState.c_str());
+                 "CUR_HOST_STATE", currHostState);
             return;
         }
     }
