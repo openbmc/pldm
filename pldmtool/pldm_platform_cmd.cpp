@@ -573,6 +573,11 @@ class GetPDR : public CommandInterface
             {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_ABORTED, "Aborted"},
             {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_DORMANT, "Dormant"}};
 
+    static inline const std::map<uint8_t, std::string> setPowerDeviceState{
+        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_UNKNOWN, "Unknown"},
+        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_FULLY_ON, "Fully-On"},
+        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_OFF, "Off"}};
+
     static inline const std::map<uint16_t, const std::map<uint8_t, std::string>>
         populatePStateMaps{
             {PLDM_STATE_SET_THERMAL_TRIP, setThermalTrip},
@@ -585,6 +590,7 @@ class GetPDR : public CommandInterface
             {PLDM_STATE_SET_HEALTH_STATE, setHealthState},
             {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS,
              setOperationalRunningState},
+            {PLDM_STATE_SET_DEVICE_POWER_STATE, setPowerDeviceState},
         };
 
     const std::map<std::string, uint8_t> strToPdrType = {
