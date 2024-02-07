@@ -556,10 +556,7 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     auto method = bus.new_method_call(service.c_str(), objPath, dbusProperties,
                                       "Get");
     method.append(dbusInterface, dbusProp);
-    PropertyValue value{};
-    auto reply = bus.call(method, dbusTimeout);
-    reply.read(value);
-    return value;
+    return bus.call(method, dbusTimeout).unpack<PropertyValue>();
 }
 
 PropertyValue jsonEntryToDbusVal(std::string_view type,
