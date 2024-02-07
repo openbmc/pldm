@@ -3,8 +3,10 @@
 #include "libpldm/platform.h"
 #include "libpldm/utils.h"
 
+#include "requester/configuration_discovery_handler.hpp"
 #include "terminus_manager.hpp"
 
+#include <oem/meta/platform-mc/event_oem_meta.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
@@ -13,11 +15,30 @@
 
 PHOSPHOR_LOG2_USING;
 
+constexpr auto MetaIANA = "0015A000";
+
 namespace pldm
 {
 namespace platform_mc
 {
 namespace fs = std::filesystem;
+
+bool EventManager::checkMetaIana(
+    pldm_tid_t tid, const std::map<std::string, MctpEndpoint>& configurations)
+{
+    for (const auto& [configDbusPath, mctpEndpoint] : configurations)
+    {
+        if (mctpEndpoint.EndpointId == tid)
+        {
+            if (mctpEndpoint.iana.has_value() &&
+                mctpEndpoint.iana.value() == MetaIANA)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 int EventManager::handlePlatformEvent(
     pldm_tid_t tid, uint16_t eventId, uint8_t eventClass,
@@ -97,6 +118,22 @@ int EventManager::handlePlatformEvent(
             terminus->pollEventId = poll_event.event_id;
             terminus->pollDataTransferHandle = poll_event.data_transfer_handle;
         }
+
+        return PLDM_SUCCESS;
+    }
+
+    /* EventClass CPER (0xFA OEM) `Table 11 - PLDM Event Types` DSP0248 */
+    if (eventClass == PLDM_OEM_EVENT_CLASS_0xFB)
+    {
+        const std::map<std::string, MctpEndpoint>& configurations =
+            configurationDiscovery->getConfigurations();
+        if (!checkMetaIana(tid, configurations))
+        {
+            lg2::error("Recieve OEM Meta event from not Meta specific device");
+            return PLDM_ERROR;
+        }
+        pldm::platform_mc::oem_meta::processOemMetaEvent(
+            tid, eventData, eventDataSize, configurations);
 
         return PLDM_SUCCESS;
     }
