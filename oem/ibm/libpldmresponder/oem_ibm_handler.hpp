@@ -51,11 +51,12 @@ class Handler : public oem_platform::Handler
             pldm::responder::SlotHandler* slotHandler, int mctp_fd,
             uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
             sdeventplus::Event& event,
-            pldm::requester::Handler<pldm::requester::Request>* handler) :
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            pldm_entity_association_tree* bmcEntityTree) :
         oem_platform::Handler(dBusIntf), codeUpdate(codeUpdate),
         slotHandler(slotHandler), platformHandler(nullptr), mctp_fd(mctp_fd),
         mctp_eid(mctp_eid), instanceIdDb(instanceIdDb), event(event),
-        handler(handler),
+        handler(handler), bmcEntityTree(bmcEntityTree),
         timer(event, std::bind(std::mem_fn(&Handler::setSurvTimer), this,
                                HYPERVISOR_TID, false)),
         hostTransitioningToOff(true)
@@ -187,12 +188,6 @@ class Handler : public oem_platform::Handler
         return platformHandler->getNextSensorId();
     }
 
-    /** @brief Get std::map associated with the entity
-     *         key: object path
-     *         value: pldm_entity
-     *
-     *  @return std::map<ObjectPath, pldm_entity>
-     */
     virtual const AssociatedEntityMap& getAssociateEntityMap()
     {
         return platformHandler->getAssociateEntityMap();
@@ -358,6 +353,9 @@ class Handler : public oem_platform::Handler
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
+
+    /** @brief Pointer to BMC's entity association tree */
+    pldm_entity_association_tree* bmcEntityTree;
 
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;

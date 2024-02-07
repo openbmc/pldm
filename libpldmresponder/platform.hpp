@@ -30,7 +30,8 @@ namespace platform
 {
 using generatePDR = std::function<void(
     const pldm::utils::DBusHandler& dBusIntf, const pldm::utils::Json& json,
-    pdr_utils::RepoInterface& repo)>;
+    pdr_utils::RepoInterface& repo,
+    pldm_entity_association_tree* bmcEntityTree)>;
 
 using EffecterId = uint16_t;
 using DbusObjMaps =
@@ -54,6 +55,7 @@ class Handler : public CmdHandler
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
+            pldm_entity_association_tree* bmcEntityTree,
             pldm::responder::platform_config::Handler* platformConfigHandler,
             pldm::requester::Handler<pldm::requester::Request>* handler,
             sdeventplus::Event& event, bool buildPDRLazily = false,
@@ -61,14 +63,15 @@ class Handler : public CmdHandler
         eid(eid), instanceIdDb(instanceIdDb), pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
-        dBusIntf(dBusIntf), platformConfigHandler(platformConfigHandler),
-        handler(handler), event(event), pdrJsonDir(pdrJsonDir),
-        pdrCreated(false), pdrJsonsDir({pdrJsonDir})
+        bmcEntityTree(bmcEntityTree), dBusIntf(dBusIntf),
+        platformConfigHandler(platformConfigHandler), handler(handler),
+        event(event), pdrJsonDir(pdrJsonDir), pdrCreated(false),
+        pdrJsonsDir({pdrJsonDir})
     {
         if (!buildPDRLazily)
         {
             generateTerminusLocatorPDR(pdrRepo);
-            generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+            generate(*dBusIntf, pdrJsonsDir, pdrRepo, bmcEntityTree);
             pdrCreated = true;
         }
 
@@ -194,15 +197,19 @@ class Handler : public CmdHandler
      */
     void generate(const pldm::utils::DBusHandler& dBusIntf,
                   const std::vector<fs::path>& dir,
-                  pldm::responder::pdr_utils::Repo& repo);
+                  pldm::responder::pdr_utils::Repo& repo,
+                  pldm_entity_association_tree* bmcEntityTree);
 
-    /** @brief Parse PDR JSONs and build state effecter PDR repository
+    /** @brief Parse PDR JSONs and build state effecter PDR
+     * repository
      *
      *  @param[in] json - platform specific PDR JSON files
-     *  @param[in] repo - instance of state effecter implementation of Repo
+     *  @param[in] repo - instance of state effecter
+     * implementation of Repo
      */
     void generateStateEffecterRepo(const pldm::utils::Json& json,
-                                   pldm::responder::pdr_utils::Repo& repo);
+                                   pldm::responder::pdr_utils::Repo& repo,
+                                   pldm_entity_association_tree* bmcEntityTree);
 
     /** @brief map of PLDM event type to EventHandlers
      *
@@ -294,8 +301,8 @@ class Handler : public CmdHandler
      *  @param[in] payloadLength - Request payload length
      *  @param[in] formatVersion - Version of the event format
      *  @param[in] tid - Terminus ID of the event's originator
-     *  @param[in] eventDataOffset - Offset of the event data in the request
-     *                               message
+     *  @param[in] eventDataOffset - Offset of the event data in
+     * the request message
      *  @return PLDM completion code
      */
     int sensorEvent(const pldm_msg* request, size_t payloadLength,
@@ -315,7 +322,8 @@ class Handler : public CmdHandler
                                   uint8_t formatVersion, uint8_t tid,
                                   size_t eventDataOffset);
 
-    /** @brief Handler for extracting the PDR handles from changeEntries
+    /** @brief Handler for extracting the PDR handles from
+     * changeEntries
      *
      *  @param[in] changeEntryData - ChangeEntry data from changeRecord
      *  @param[in] changeEntryDataSize - total size of changeEntryData
@@ -330,13 +338,15 @@ class Handler : public CmdHandler
                             size_t numberOfChangeEntries,
                             PDRRecordHandles& pdrRecordHandles);
 
-    /** @brief Function to set the effecter requested by pldm requester
+    /** @brief Function to set the effecter requested by pldm
+     * requester
      *  @param[in] dBusIntf - The interface object
      *  @param[in] effecterId - Effecter ID sent by the requester to act on
      *  @param[in] stateField - The state field data for each of the states,
-     * equal to composite effecter count in number
-     *  @return - Success or failure in setting the states. Returns failure in
-     * terms of PLDM completion codes if at least one state fails to be set
+     *                           equal to composite effecter count in number
+     *  @return - Success or failure in setting the states. Returns failure
+     *            in terms of PLDM completion codes if atleast one state
+     *            fails to be set
      */
     template <class DBusInterface>
     int setStateEffecterStatesHandler(
@@ -407,7 +417,8 @@ class Handler : public CmdHandler
                  ++currState)
             {
                 std::vector<StateSetNum> allowed{};
-                // computation is based on table 79 from DSP0248 v1.1.1
+                // computation is based on table 79 from DSP0248
+                // v1.1.1
                 uint8_t bitfieldIndex =
                     stateField[currState].effecter_state / 8;
                 uint8_t bit = stateField[currState].effecter_state -
@@ -468,7 +479,8 @@ class Handler : public CmdHandler
 
     /** @brief Build BMC Terminus Locator PDR
      *
-     *  @param[in] repo - instance of concrete implementation of Repo
+     *  @param[in] repo - instance of concrete implementation of
+     * Repo
      */
     void generateTerminusLocatorPDR(pldm::responder::pdr_utils::Repo& repo);
 
@@ -523,6 +535,7 @@ class Handler : public CmdHandler
     HostPDRHandler* hostPDRHandler;
     pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler;
     fru::Handler* fruHandler;
+    pldm_entity_association_tree* bmcEntityTree;
     const pldm::utils::DBusHandler* dBusIntf;
     pldm::responder::oem_platform::Handler* oemPlatformHandler = nullptr;
     pldm::responder::platform_config::Handler* platformConfigHandler;

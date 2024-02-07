@@ -28,7 +28,8 @@ static const Json empty{};
  */
 template <class DBusInterface, class Handler>
 void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
-                              Handler& handler, pdr_utils::RepoInterface& repo)
+                              Handler& handler, pdr_utils::RepoInterface& repo,
+                              pldm_entity_association_tree* /*bmcEntityTree*/)
 {
     static const std::vector<Json> emptyList{};
     auto entries = json.value("entries", emptyList);
