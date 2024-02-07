@@ -44,11 +44,12 @@ class Handler : public oem_platform::Handler
             pldm::responder::CodeUpdate* codeUpdate, pldm::responder::SlotHandler* slotHandler, int mctp_fd,
             uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
             sdeventplus::Event& event,
-            pldm::requester::Handler<pldm::requester::Request>* handler) :
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+	    pldm_entity_association_tree* bmcEntityTree) :
         oem_platform::Handler(dBusIntf),
         codeUpdate(codeUpdate), slotHandler(slotHandler), platformHandler(nullptr), mctp_fd(mctp_fd),
         mctp_eid(mctp_eid), instanceIdDb(instanceIdDb), event(event),
-        handler(handler)
+        handler(handler), bmcEntityTree(bmcEntityTree)
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -264,6 +265,9 @@ class Handler : public oem_platform::Handler
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
+
+    /** @brief Pointer to BMC's entity association tree */
+    pldm_entity_association_tree* bmcEntityTree;
 
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;

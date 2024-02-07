@@ -25,6 +25,7 @@ namespace responder
 {
 namespace oem_ibm_platform
 {
+
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
         EntityType entityType, EntityInstance entityInstance,
@@ -408,6 +409,53 @@ void buildAllSlotEnableSensorPDR(oem_ibm_platform::Handler* platformHandler,
     }
 }
 
+std::vector<std::string> getslotPaths()
+{
+    static constexpr auto searchpath = "/xyz/openbmc_project/inventory/system";
+    int depth = 0;
+    pldm::utils::GetSubTreeResponse response =
+        pldm::utils::DBusHandler().getSubtree(
+            searchpath, depth, {"xyz.openbmc_project.Inventory.Item.PCIeSlot"});
+    std::vector<std::string> slotPaths;
+    std::transform(response.begin(), response.end(),
+                   std::back_inserter(slotPaths),
+                   [](const auto& kv) { return kv.first; });
+    return slotPaths;
+}
+
+void attachOemEntityToEntityAssociationPDR(
+    oem_ibm_platform::Handler* platformHandler,
+    pldm_entity_association_tree* bmcEntityTree,
+    const std::string& parentEntityPath, pdr_utils::Repo& repo,
+    pldm_entity childEntity)
+{
+    auto& associatedEntityMap = platformHandler->getAssociateEntityMap();
+    if (associatedEntityMap.contains(parentEntityPath))
+    {
+        // Parent is present in the entity association PDR
+        pldm_entity parent_entity = associatedEntityMap.at(parentEntityPath);
+        auto parent_node = pldm_entity_association_tree_find_with_locality(
+            bmcEntityTree, &parent_entity, false);
+        if (!parent_node)
+        {
+            // parent node not found in the entity association tree,
+            // this should not be possible
+            std::cerr << "Parent Entity of type " << parent_entity.entity_type
+                      << " not found in the BMC Entity Association tree\n";
+            return;
+        }
+        pldm_entity_association_tree_add_entity(
+            bmcEntityTree, &childEntity, 0xFFFF, parent_node,
+            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false, false, 0xFFFF);
+        uint8_t bmcEventDataOps = PLDM_INVALID_OP;
+	uint32_t bmc_record_handle = 0;
+	auto lastInRangeRecord = pldm_pdr_find_last_in_range(repo.getPdr(), BMC_PDR_START_RANGE, BMC_PDR_END_RANGE);
+        bmc_record_handle = lastInRangeRecord->record_handle;
+        pldm_entity_association_pdr_add_contained_entity(
+            repo.getPdr(), childEntity, parent_entity, &bmcEventDataOps, false, bmc_record_handle);
+    }
+}
+
 void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     pdr_utils::Repo& repo)
 {
@@ -423,21 +471,9 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     buildAllCodeUpdateEffecterPDR(this, PLDM_ENTITY_SYSTEM_CHASSIS,
                                   ENTITY_INSTANCE_1,
                                   PLDM_OEM_IBM_SYSTEM_POWER_STATE, repo);
-    std::vector<std::string> slotobjpaths = {
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot0",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot1",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot10",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot11",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot2",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot3",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot4",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot5",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot6",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot7",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot8",
-        "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot9"};
-    buildAllSlotEnabeEffecterPDR(this, repo, slotobjpaths);
-    buildAllSlotEnableSensorPDR(this, repo, slotobjpaths);
+
+    buildAllSlotEnabeEffecterPDR(this, repo, getslotPaths());
+    buildAllSlotEnableSensorPDR(this, repo, getslotPaths());
 
     buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                                 ENTITY_INSTANCE_0, PLDM_OEM_IBM_BOOT_STATE,
@@ -451,6 +487,12 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                                 ENTITY_INSTANCE_0,
                                 PLDM_OEM_IBM_VERIFICATION_STATE, repo);
+
+    pldm_entity fwUpEntity = {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, 0, 1};
+    attachOemEntityToEntityAssociationPDR(
+        this, bmcEntityTree, "/xyz/openbmc_project/inventory/system", repo,
+        fwUpEntity);
+
     auto sensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_VERIFICATION_STATE);

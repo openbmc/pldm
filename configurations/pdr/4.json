@@ -5,8 +5,9 @@
             "entries": [
                 {
                     "type": 91,
-                    "instance": 0,
-                    "container": 1,
+                    "instance": 1,
+                    "container": 2,
+		    "parent_entity_path" : "/xyz/openbmc_project/inventory/system/chassis",
                     "sensors": [
                         {
                             "set": {
@@ -26,8 +27,9 @@
                 },
                 {
                     "type": 5,
-                    "instance": 0,
-                    "container": 1,
+                    "instance": 1,
+                    "container": 2,
+		    "parent_entity_path" : "/xyz/openbmc_project/inventory/system/chassis",
                     "sensors": [
                         {
                             "set": {
@@ -47,8 +49,9 @@
                 },
                 {
                     "type": 5,
-                    "instance": 0,
-                    "container": 1,
+                    "instance": 2,
+                    "container": 2,
+		    "parent_entity_path" : "/xyz/openbmc_project/inventory/system/chassis",
                     "sensors": [
                         {
                             "set": {
