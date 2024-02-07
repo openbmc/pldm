@@ -67,6 +67,10 @@ PHOSPHOR_LOG2_USING;
 #include "libpldmresponder/oem_ibm_handler.hpp"
 #endif
 
+// #ifdef OEM_META
+// #include "libpldmresponder/file_io.hpp"
+// #endif
+
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 
 using namespace pldm;
@@ -264,6 +268,7 @@ int main(int argc, char** argv)
         dbusToPLDMEventHandler = std::make_unique<DbusToPLDMEvent>(
             pldmTransport.getEventSource(), hostEID, instanceIdDb, &reqHandler);
     }
+
     auto biosHandler = std::make_unique<bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
         oemBiosHandler.get());
@@ -275,7 +280,8 @@ int main(int argc, char** argv)
     // Platform handler.
 
     std::unique_ptr<platform_mc::Manager> platformManager =
-        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb,
+                                               configurationDiscovery.get());
 
     pldm::responder::platform::EventMap addOnEventHandlers{
         {PLDM_OEM_EVENT_CLASS_0xFA,
@@ -297,6 +303,13 @@ int main(int argc, char** argv)
                              uint8_t formatVersion, uint8_t tid,
                              size_t eventDataOffset) {
         return platformManager->handleSensorEvent(
+            request, payloadLength, formatVersion, tid, eventDataOffset);
+    }}},
+        {PLDM_OEM_EVENT_CLASS_0xFB,
+         {[&platformManager](const pldm_msg* request, size_t payloadLength,
+                             uint8_t formatVersion, uint8_t tid,
+                             size_t eventDataOffset) {
+        return platformManager->handleOemMetaEvent(
             request, payloadLength, formatVersion, tid, eventDataOffset);
     }}}};
 
