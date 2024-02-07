@@ -6,6 +6,9 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#ifdef OEM_META
+#include <oem/meta/platform-mc/event_oem_meta.hpp>
+#endif
 
 #include <cerrno>
 
@@ -128,7 +131,16 @@ int EventManager::handlePlatformEvent(tid_t tid, uint8_t eventClass,
     {
         return processCperEvent(eventData, eventDataSize);
     }
-
+#ifdef OEM_META
+    else if (eventClass == PLDM_OEM_EVENT_CLASS_0xFB)
+    {
+        const std::map<std::string, MctpEndpoint>& configurations =
+            configurationDiscovery->getConfigurations();
+        pldm::platform_mc::oem_meta::processOemMetaEvent(
+            tid, eventData, eventDataSize, configurations);
+        return PLDM_SUCCESS;
+    }
+#endif
     lg2::info("unhandled event, event class={EVENTCLASS}", "EVENTCLASS",
               eventClass);
 
