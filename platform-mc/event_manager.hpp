@@ -6,6 +6,7 @@
 #include "common/types.hpp"
 #include "numeric_sensor.hpp"
 #include "pldmd/dbus_impl_requester.hpp"
+#include "requester/configuration_discovery_handler.hpp"
 #include "requester/handler.hpp"
 #include "terminus.hpp"
 #include "terminus_manager.hpp"
@@ -19,8 +20,7 @@ using EventType = uint8_t;
 using HandlerFunc =
     std::function<int(pldm_tid_t tid, uint16_t eventId,
                       const uint8_t* eventData, size_t eventDataSize)>;
-using HandlerFuncs = std::vector<HandlerFunc>;
-using EventMap = std::map<EventType, HandlerFuncs>;
+using EventMap = std::map<EventType, HandlerFunc>;
 
 /**
  * @brief EventManager
@@ -40,26 +40,28 @@ class EventManager
     EventManager& operator=(EventManager&&) = delete;
     virtual ~EventManager() = default;
 
-    explicit EventManager(TerminusManager& terminusManager,
-                          TerminiMapper& termini) :
-        terminusManager(terminusManager), termini(termini)
+    explicit EventManager(
+        TerminusManager& terminusManager, TerminiMapper& termini,
+        pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
+        terminusManager(terminusManager),
+        termini(termini), configurationDiscovery(configurationDiscovery)
     {
         // Default response handler for PollForPlatFormEventMessage
         registerPolledEventHandler(
             PLDM_MESSAGE_POLL_EVENT,
-            {[this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
-                    size_t eventDataSize) {
+            [this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                   size_t eventDataSize) {
                 return this->handlePlatformEvent(tid, eventId,
                                                  PLDM_MESSAGE_POLL_EVENT,
                                                  eventData, eventDataSize);
-            }});
+            });
         registerPolledEventHandler(
             PLDM_CPER_EVENT,
-            {[this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
-                    size_t eventDataSize) {
+            [this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                   size_t eventDataSize) {
                 return this->handlePlatformEvent(tid, eventId, PLDM_CPER_EVENT,
                                                  eventData, eventDataSize);
-            }});
+            });
     };
 
     /** @brief Handle platform event
@@ -112,15 +114,9 @@ class EventManager
      *         PollForPlatFormEventMessage
      */
     void registerPolledEventHandler(uint8_t eventClass,
-                                    pldm::platform_mc::HandlerFuncs handlers)
+                                    pldm::platform_mc::HandlerFunc function)
     {
-        auto [iter, inserted] = eventHandlers.try_emplace(
-            eventClass, pldm::platform_mc::HandlerFuncs{});
-
-        for (const auto& handler : handlers)
-        {
-            iter->second.emplace_back(handler);
-        }
+        eventHandlers.insert_or_assign(eventClass, std::move(function));
     }
 
   protected:
@@ -158,6 +154,7 @@ class EventManager
      *
      *  @return PLDM completion code
      */
+   
     int createCperDumpEntry(const std::string& dataType,
                             const std::string& dataPath,
                             const std::string& typeName);
@@ -208,18 +205,9 @@ class EventManager
         uint8_t transferFlag, uint32_t eventDataIntegrityChecksum,
         uint32_t nextDataTransferHandle, uint8_t* transferOperationFlag,
         uint32_t* dataTransferHandle, uint32_t* eventIdToAcknowledge);
-
-    /** @brief Helper function to call the event handler for polled events
-     *
-     *  @param[in] tid - terminus ID
-     *  @param[out] eventClass - Event class
-     *  @param[out] eventId - Event ID
-     *  @param[in] eventMessage - event data of response message
-     *
-     */
-    void callPolledEventHandlers(pldm_tid_t tid, uint8_t eventClass,
-                                 uint16_t eventId,
-                                 std::vector<uint8_t>& eventMessage);
+    bool checkMetaIana(
+        tid_t tid, 
+        const std::map<std::string, MctpEndpoint>& configurations);
 
     /** @brief Reference of terminusManager */
     TerminusManager& terminusManager;
@@ -232,6 +220,8 @@ class EventManager
 
     /** @brief map of PLDM event type of polled event to EventHandlers */
     pldm::platform_mc::EventMap eventHandlers;
+
+    pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
 };
 } // namespace platform_mc
 } // namespace pldm

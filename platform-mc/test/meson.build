@@ -1,15 +1,17 @@
 test_src = declare_dependency(
-    sources: [
-        '../terminus_manager.cpp',
-        '../terminus.cpp',
-        '../platform_manager.cpp',
-        '../manager.cpp',
-        '../sensor_manager.cpp',
-        '../numeric_sensor.cpp',
-        '../event_manager.cpp',
-        '../../requester/mctp_endpoint_discovery.cpp',
-    ],
-    include_directories: ['../../requester', '../../pldmd'],
+        sources: [
+            '../terminus_manager.cpp',
+            '../terminus.cpp',
+            '../platform_manager.cpp',
+            '../manager.cpp',
+            '../sensor_manager.cpp',
+            '../numeric_sensor.cpp',
+            '../event_manager.cpp',
+            '../../requester/mctp_endpoint_discovery.cpp',
+            '../../requester/configuration_discovery_handler.cpp',
+            '../../oem/meta/platform-mc/event_oem_meta.cpp',
+        ],
+        include_directories: ['../../requester', '../../pldmd'],
 )
 
 tests = [

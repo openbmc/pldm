@@ -6,10 +6,13 @@
 #include "common/types.hpp"
 #include "event_manager.hpp"
 #include "platform_manager.hpp"
+#include "requester/configuration_discovery_handler.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "sensor_manager.hpp"
 #include "terminus_manager.hpp"
+
+#include <oem/meta/platform-mc/event_oem_meta.hpp>
 
 namespace pldm
 {
@@ -32,13 +35,17 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     Manager& operator=(Manager&&) = delete;
     ~Manager() = default;
 
-    explicit Manager(sdeventplus::Event& event, RequesterHandler& handler,
-                     pldm::InstanceIdDb& instanceIdDb) :
+    explicit Manager(
+        sdeventplus::Event& event,
+        requester::Handler<requester::Request>& handler,
+        pldm::InstanceIdDb& instanceIdDb,
+        pldm::ConfigurationDiscoveryHandler* configurationDiscovery) :
         terminusManager(event, handler, instanceIdDb, termini, this,
                         pldm::BmcMctpEid),
         platformManager(terminusManager, termini),
         sensorManager(event, terminusManager, termini, this),
-        eventManager(terminusManager, termini)
+        eventManager(terminusManager, termini, configurationDiscovery),
+        configurationDiscovery(configurationDiscovery)
     {}
 
     /** @brief Helper function to do the actions before discovering terminus
@@ -169,28 +176,19 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                                          eventDataSize);
         return PLDM_SUCCESS;
     }
-
-    /** @brief The function to trigger the event polling
-     *
-     *  @param[in] tid - Terminus ID
-     *  @param[in] pollEventId - The source eventID from pldmMessagePollEvent
-     *  @param[in] pollDataTransferHandle - The dataTransferHandle from
-     *             pldmMessagePollEvent event
-     *  @return coroutine return_value - PLDM completion code
-     */
-    exec::task<int> pollForPlatformEvent(pldm_tid_t tid, uint16_t pollEventId,
-                                         uint32_t pollDataTransferHandle);
-
-    /** @brief Handle Polled CPER event
-     *
-     *  @param[in] tid - tid where the event is from
-     *  @param[in] eventId - event Id
-     *  @param[in] eventData - event data
-     *  @param[in] eventDataSize - size of event data
-     *  @return PLDM completion code
-     */
-    int handlePolledCperEvent(pldm_tid_t tid, uint16_t eventId,
-                              const uint8_t* eventData, size_t eventDataSize)
+    
+    int handleOemMetaEvent(const pldm_msg* request, size_t payloadLength,
+                           uint8_t /* formatVersion */, uint8_t tid,
+                           size_t eventDataOffset)
+    {
+        auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
+                         eventDataOffset;
+        auto eventDataSize = payloadLength - eventDataOffset;
+        eventManager.handlePlatformEvent(tid, PLDM_OEM_EVENT_CLASS_0xFB,
+                                         eventData, eventDataSize);
+        return PLDM_SUCCESS;
+    }
+    requester::Coroutine pollForPlatformEvent(tid_t tid)
     {
         return eventManager.handlePlatformEvent(tid, eventId, PLDM_CPER_EVENT,
                                                 eventData, eventDataSize);
@@ -204,9 +202,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      */
     void registerPolledEventHandler(uint8_t eventClass,
-                                    pldm::platform_mc::HandlerFuncs handlers)
+                                    pldm::platform_mc::HandlerFunc handlerFunc)
     {
-        eventManager.registerPolledEventHandler(eventClass, handlers);
+        eventManager.registerPolledEventHandler(eventClass,
+                                                std::move(handlerFunc));
     }
 
   private:
@@ -224,6 +223,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     /** @brief Store event manager handler */
     EventManager eventManager;
+    pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
 };
 } // namespace platform_mc
 } // namespace pldm

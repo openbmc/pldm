@@ -3,8 +3,10 @@
 #include "libpldm/platform.h"
 #include "libpldm/utils.h"
 
+#include "requester/configuration_discovery_handler.hpp"
 #include "terminus_manager.hpp"
 
+#include <oem/meta/platform-mc/event_oem_meta.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
@@ -12,12 +14,30 @@
 #include <memory>
 
 PHOSPHOR_LOG2_USING;
+constexpr auto MetaIANA = "0015A000";
 
 namespace pldm
 {
 namespace platform_mc
 {
 namespace fs = std::filesystem;
+
+bool EventManager::checkMetaIana(
+    pldm_tid_t tid, const std::map<std::string, MctpEndpoint>& configurations)
+{
+    for (const auto& [configDbusPath, mctpEndpoint] : configurations)
+    {
+        if (mctpEndpoint.EndpointId == tid)
+        {
+            if (mctpEndpoint.iana.has_value() &&
+                mctpEndpoint.iana.value() == MetaIANA)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 int EventManager::handlePlatformEvent(
     pldm_tid_t tid, uint16_t eventId, uint8_t eventClass,
@@ -97,6 +117,22 @@ int EventManager::handlePlatformEvent(
             terminus->pollEventId = poll_event.event_id;
             terminus->pollDataTransferHandle = poll_event.data_transfer_handle;
         }
+
+        return PLDM_SUCCESS;
+    }
+
+    /* EventClass CPER (0xFA OEM) `Table 11 - PLDM Event Types` DSP0248 */
+    if (eventClass == PLDM_OEM_EVENT_CLASS_0xFB)
+    {
+        const std::map<std::string, MctpEndpoint>& configurations =
+            configurationDiscovery->getConfigurations();
+        if (!checkMetaIana(tid, configurations))
+        {
+            lg2::error("Recieve OEM Meta event from not Meta specific device");
+            return PLDM_ERROR;
+        }
+        pldm::platform_mc::oem_meta::processOemMetaEvent(
+            tid, eventData, eventDataSize, configurations);
 
         return PLDM_SUCCESS;
     }
@@ -518,33 +554,6 @@ int EventManager::getNextPartParameters(
     return PLDM_SUCCESS;
 }
 
-void EventManager::callPolledEventHandlers(pldm_tid_t tid, uint8_t eventClass,
-                                           uint16_t eventId,
-                                           std::vector<uint8_t>& eventMessage)
-{
-    try
-    {
-        const auto& handlers = eventHandlers.at(eventClass);
-        for (const auto& handler : handlers)
-        {
-            auto rc =
-                handler(tid, eventId, eventMessage.data(), eventMessage.size());
-            if (rc != PLDM_SUCCESS)
-            {
-                lg2::error(
-                    "Failed to handle platform event msg for terminus {TID}, event {EVENTID} return {RET}",
-                    "TID", tid, "EVENTID", eventId, "RET", rc);
-            }
-        }
-    }
-    catch (const std::out_of_range& e)
-    {
-        lg2::error(
-            "Failed to handle platform event msg for terminus {TID}, event {EVENTID} error - {ERROR}",
-            "TID", tid, "EVENTID", eventId, "ERROR", e);
-    }
-}
-
 exec::task<int> EventManager::pollForPlatformEventTask(
     pldm_tid_t tid, uint32_t pollDataTransferHandle)
 {
@@ -609,8 +618,9 @@ exec::task<int> EventManager::pollForPlatformEventTask(
             /* Handle the polled event after finish ACK it */
             if (eventHandlers.contains(polledEventClass))
             {
-                callPolledEventHandlers(polledEventTid, polledEventClass,
-                                        polledEventId, eventMessage);
+                eventHandlers.at(
+                    polledEventClass)(polledEventTid, polledEventId,
+                                      eventMessage.data(), eventMessage.size());
             }
             eventMessage.clear();
 
