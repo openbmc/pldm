@@ -28,9 +28,10 @@ namespace responder
 {
 namespace platform
 {
-using generatePDR = std::function<void(const pldm::utils::DBusHandler& dBusIntf,
-                                       const pldm::utils::Json& json,
-                                       pdr_utils::RepoInterface& repo)>;
+using generatePDR = std::function<void(
+    const pldm::utils::DBusHandler& dBusIntf, const pldm::utils::Json& json,
+    pdr_utils::RepoInterface& repo,
+    pldm_entity_association_tree* bmcEntityTree)>;
 
 using EffecterId = uint16_t;
 using DbusObjMaps =
@@ -54,6 +55,7 @@ class Handler : public CmdHandler
             pldm_pdr* repo, HostPDRHandler* hostPDRHandler,
             pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler,
             fru::Handler* fruHandler,
+            pldm_entity_association_tree* bmcEntityTree,
             pldm::responder::oem_platform::Handler* oemPlatformHandler,
             pldm::responder::platform_config::Handler* platformConfigHandler,
             pldm::requester::Handler<pldm::requester::Request>* handler,
@@ -63,15 +65,14 @@ class Handler : public CmdHandler
         instanceIdDb(instanceIdDb), pdrRepo(repo),
         hostPDRHandler(hostPDRHandler),
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
-        dBusIntf(dBusIntf), oemPlatformHandler(oemPlatformHandler),
-        platformConfigHandler(platformConfigHandler), handler(handler),
-        event(event), pdrJsonDir(pdrJsonDir), pdrCreated(false),
-        pdrJsonsDir({pdrJsonDir})
+        bmcEntityTree(bmcEntityTree), dBusIntf(dBusIntf),
+        oemPlatformHandler(oemPlatformHandler), handler(handler), event(event),
+        pdrJsonsDir(pdrJsonsDir), pdrCreated(false)
     {
         if (!buildPDRLazily)
         {
             generateTerminusLocatorPDR(pdrRepo);
-            generate(*dBusIntf, pdrJsonsDir, pdrRepo);
+            generate(*dBusIntf, pdrJsonsDir, pdrRepo, bmcEntityTree);
             pdrCreated = true;
         }
 
@@ -197,302 +198,343 @@ class Handler : public CmdHandler
     void generate(const pldm::utils::DBusHandler& dBusIntf,
                   const std::vector<fs::path>& dir,
                   pldm::responder::pdr_utils::Repo& repo);
+                  pldm_entity_association_tree* bmcEntityTree);
 
-    /** @brief Parse PDR JSONs and build state effecter PDR repository
-     *
-     *  @param[in] json - platform specific PDR JSON files
-     *  @param[in] repo - instance of state effecter implementation of Repo
-     */
-    void generateStateEffecterRepo(const pldm::utils::Json& json,
-                                   pldm::responder::pdr_utils::Repo& repo);
+                  /** @brief Parse PDR JSONs and build state effecter PDR
+                   * repository
+                   *
+                   *  @param[in] json - platform specific PDR JSON files
+                   *  @param[in] repo - instance of state effecter
+                   * implementation of Repo
+                   */
+                  void generateStateEffecterRepo(
+                      const pldm::utils::Json& json,
+                      pldm::responder::pdr_utils::Repo& repo,
+                      pldm_entity_association_tree* bmcEntityTree);
 
-    /** @brief map of PLDM event type to EventHandlers
-     *
-     */
-    EventMap eventHandlers;
+                  /** @brief map of PLDM event type to EventHandlers
+                   *
+                   */
+                  EventMap eventHandlers;
 
-    /** @brief Handler for GetPDR
-     *
-     *  @param[in] request - Request message payload
-     *  @param[in] payloadLength - Request payload length
-     *  @param[out] Response - Response message written here
-     */
-    Response getPDR(const pldm_msg* request, size_t payloadLength);
-
-    /** @brief Handler for setNumericEffecterValue
-     *
-     *  @param[in] request - Request message
-     *  @param[in] payloadLength - Request payload length
-     *  @return Response - PLDM Response message
-     */
-    Response setNumericEffecterValue(const pldm_msg* request,
-                                     size_t payloadLength);
-
-    /** @brief Handler for getNumericEffecterValue
-     *
-     *  @param[in] request - Request message
-     *  @param[in] payloadLength - Request payload length
-     *  @return Response - PLDM Response message
-     */
-    Response getNumericEffecterValue(const pldm_msg* request,
-                                     size_t payloadLength);
-
-    /** @brief Handler for getStateSensorReadings
-     *
-     *  @param[in] request - Request message
-     *  @param[in] payloadLength - Request payload length
-     *  @return Response - PLDM Response message
-     */
-    Response getStateSensorReadings(const pldm_msg* request,
-                                    size_t payloadLength);
-
-    /** @brief Handler for setStateEffecterStates
-     *
-     *  @param[in] request - Request message
-     *  @param[in] payloadLength - Request payload length
-     *  @return Response - PLDM Response message
-     */
-    Response setStateEffecterStates(const pldm_msg* request,
-                                    size_t payloadLength);
-
-    /** @brief Handler for PlatformEventMessage
-     *
-     *  @param[in] request - Request message
-     *  @param[in] payloadLength - Request payload length
-     *  @return Response - PLDM Response message
-     */
-    Response platformEventMessage(const pldm_msg* request,
+                  /** @brief Handler for GetPDR
+                   *
+                   *  @param[in] request - Request message payload
+                   *  @param[in] payloadLength - Request payload length
+                   *  @param[out] Response - Response message written here
+                   */
+                  Response getPDR(const pldm_msg* request,
                                   size_t payloadLength);
 
-    /** @brief Handler for event class Sensor event
-     *
-     *  @param[in] request - Request message
-     *  @param[in] payloadLength - Request payload length
-     *  @param[in] formatVersion - Version of the event format
-     *  @param[in] tid - Terminus ID of the event's originator
-     *  @param[in] eventDataOffset - Offset of the event data in the request
-     *                               message
-     *  @return PLDM completion code
-     */
-    int sensorEvent(const pldm_msg* request, size_t payloadLength,
-                    uint8_t formatVersion, uint8_t tid, size_t eventDataOffset);
+                  /** @brief Handler for setNumericEffecterValue
+                   *
+                   *  @param[in] request - Request message
+                   *  @param[in] payloadLength - Request payload length
+                   *  @return Response - PLDM Response message
+                   */
+                  Response setNumericEffecterValue(const pldm_msg* request,
+                                                   size_t payloadLength);
 
-    /** @brief Handler for pldmPDRRepositoryChgEvent
-     *
-     *  @param[in] request - Request message
-     *  @param[in] payloadLength - Request payload length
-     *  @param[in] formatVersion - Version of the event format
-     *  @param[in] tid - Terminus ID of the event's originator
-     *  @param[in] eventDataOffset - Offset of the event data in the request
-     *                               message
-     *  @return PLDM completion code
-     */
-    int pldmPDRRepositoryChgEvent(const pldm_msg* request, size_t payloadLength,
+                  /** @brief Handler for getNumericEffecterValue
+                   *
+                   *  @param[in] request - Request message
+                   *  @param[in] payloadLength - Request payload length
+                   *  @return Response - PLDM Response message
+                   */
+                  Response getNumericEffecterValue(const pldm_msg* request,
+                                                   size_t payloadLength);
+
+                  /** @brief Handler for getStateSensorReadings
+                   *
+                   *  @param[in] request - Request message
+                   *  @param[in] payloadLength - Request payload length
+                   *  @return Response - PLDM Response message
+                   */
+                  Response getStateSensorReadings(const pldm_msg* request,
+                                                  size_t payloadLength);
+
+                  /** @brief Handler for setStateEffecterStates
+                   *
+                   *  @param[in] request - Request message
+                   *  @param[in] payloadLength - Request payload length
+                   *  @return Response - PLDM Response message
+                   */
+                  Response setStateEffecterStates(const pldm_msg* request,
+                                                  size_t payloadLength);
+
+                  /** @brief Handler for PlatformEventMessage
+                   *
+                   *  @param[in] request - Request message
+                   *  @param[in] payloadLength - Request payload length
+                   *  @return Response - PLDM Response message
+                   */
+                  Response platformEventMessage(const pldm_msg* request,
+                                                size_t payloadLength);
+
+                  /** @brief Handler for event class Sensor event
+                   *
+                   *  @param[in] request - Request message
+                   *  @param[in] payloadLength - Request payload length
+                   *  @param[in] formatVersion - Version of the event format
+                   *  @param[in] tid - Terminus ID of the event's originator
+                   *  @param[in] eventDataOffset - Offset of the event data in
+                   * the request message
+                   *  @return PLDM completion code
+                   */
+                  int sensorEvent(const pldm_msg* request, size_t payloadLength,
                                   uint8_t formatVersion, uint8_t tid,
                                   size_t eventDataOffset);
 
-    /** @brief Handler for extracting the PDR handles from changeEntries
-     *
-     *  @param[in] changeEntryData - ChangeEntry data from changeRecord
-     *  @param[in] changeEntryDataSize - total size of changeEntryData
-     *  @param[in] numberOfChangeEntries - total number of changeEntries to
-     *                                     extract
-     *  @param[out] pdrRecordHandles - std::vector where the extracted PDR
-     *                                 handles are placed
-     *  @return PLDM completion code
-     */
-    int getPDRRecordHandles(const ChangeEntry* changeEntryData,
-                            size_t changeEntryDataSize,
-                            size_t numberOfChangeEntries,
-                            PDRRecordHandles& pdrRecordHandles);
+                  /** @brief Handler for pldmPDRRepositoryChgEvent
+                   *
+                   *  @param[in] request - Request message
+                   *  @param[in] payloadLength - Request payload length
+                   *  @param[in] formatVersion - Version of the event format
+                   *  @param[in] tid - Terminus ID of the event's originator
+                   *  @param[in] eventDataOffset - Offset of the event data in
+                   * the request message
+                   *  @return PLDM completion code
+                   */
+                  int pldmPDRRepositoryChgEvent(const pldm_msg* request,
+                                                size_t payloadLength,
+                                                uint8_t formatVersion,
+                                                uint8_t tid,
+                                                size_t eventDataOffset);
 
-    /** @brief Function to set the effecter requested by pldm requester
-     *  @param[in] dBusIntf - The interface object
-     *  @param[in] effecterId - Effecter ID sent by the requester to act on
-     *  @param[in] stateField - The state field data for each of the states,
-     * equal to composite effecter count in number
-     *  @return - Success or failure in setting the states. Returns failure in
-     * terms of PLDM completion codes if atleast one state fails to be set
-     */
-    template <class DBusInterface>
-    int setStateEffecterStatesHandler(
-        const DBusInterface& dBusIntf, uint16_t effecterId,
-        const std::vector<set_effecter_state_field>& stateField)
-    {
-        using namespace pldm::responder::pdr;
-        using namespace pldm::utils;
-        using StateSetNum = uint8_t;
+                  /** @brief Handler for extracting the PDR handles from
+                   * changeEntries
+                   *
+                   *  @param[in] changeEntryData - ChangeEntry data from
+                   * changeRecord
+                   *  @param[in] changeEntryDataSize - total size of
+                   * changeEntryData
+                   *  @param[in] numberOfChangeEntries - total number of
+                   * changeEntries to extract
+                   *  @param[out] pdrRecordHandles - std::vector where the
+                   * extracted PDR handles are placed
+                   *  @return PLDM completion code
+                   */
+                  int getPDRRecordHandles(const ChangeEntry* changeEntryData,
+                                          size_t changeEntryDataSize,
+                                          size_t numberOfChangeEntries,
+                                          PDRRecordHandles& pdrRecordHandles);
 
-        state_effecter_possible_states* states = nullptr;
-        pldm_state_effecter_pdr* pdr = nullptr;
-        uint8_t compEffecterCnt = stateField.size();
+                  /** @brief Function to set the effecter requested by pldm
+                   * requester
+                   *  @param[in] dBusIntf - The interface object
+                   *  @param[in] effecterId - Effecter ID sent by the requester
+                   * to act on
+                   *  @param[in] stateField - The state field data for each of
+                   * the states, equal to composite effecter count in number
+                   *  @return - Success or failure in setting the states.
+                   * Returns failure in terms of PLDM completion codes if
+                   * atleast one state fails to be set
+                   */
+                  template <class DBusInterface>
+                  int setStateEffecterStatesHandler(
+                      const DBusInterface& dBusIntf, uint16_t effecterId,
+                      const std::vector<set_effecter_state_field>& stateField)
+                  {
+                      using namespace pldm::responder::pdr;
+                      using namespace pldm::utils;
+                      using StateSetNum = uint8_t;
 
-        std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
-            stateEffecterPdrRepo(pldm_pdr_init(), pldm_pdr_destroy);
-        if (!stateEffecterPdrRepo)
-        {
-            throw std::runtime_error(
-                "Failed to instantiate state effecter PDR repository");
-        }
-        pldm::responder::pdr_utils::Repo stateEffecterPDRs(
-            stateEffecterPdrRepo.get());
-        getRepoByType(pdrRepo, stateEffecterPDRs, PLDM_STATE_EFFECTER_PDR);
-        if (stateEffecterPDRs.empty())
-        {
-            error("Failed to get record by PDR type");
-            return PLDM_PLATFORM_INVALID_EFFECTER_ID;
-        }
+                      state_effecter_possible_states* states = nullptr;
+                      pldm_state_effecter_pdr* pdr = nullptr;
+                      uint8_t compEffecterCnt = stateField.size();
 
-        pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-        auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
-        while (pdrRecord)
-        {
-            pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
-            if (pdr->effecter_id != effecterId)
-            {
-                pdr = nullptr;
-                pdrRecord = stateEffecterPDRs.getNextRecord(pdrRecord,
-                                                            pdrEntry);
-                continue;
-            }
+                      std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
+                          stateEffecterPdrRepo(pldm_pdr_init(),
+                                               pldm_pdr_destroy);
+                      if (!stateEffecterPdrRepo)
+                      {
+                          throw std::runtime_error(
+                              "Failed to instantiate state effecter PDR repository");
+                      }
+                      pldm::responder::pdr_utils::Repo stateEffecterPDRs(
+                          stateEffecterPdrRepo.get());
+                      getRepoByType(pdrRepo, stateEffecterPDRs,
+                                    PLDM_STATE_EFFECTER_PDR);
+                      if (stateEffecterPDRs.empty())
+                      {
+                          error("Failed to get record by PDR type");
+                          return PLDM_PLATFORM_INVALID_EFFECTER_ID;
+                      }
 
-            states = reinterpret_cast<state_effecter_possible_states*>(
-                pdr->possible_states);
-            if (compEffecterCnt > pdr->composite_effecter_count)
-            {
-                error(
-                    "The requester sent wrong composite effecter count for the effecter, EFFECTER_ID={EFFECTER_ID} COMP_EFF_CNT={COMP_EFF_CNT}",
-                    "EFFECTER_ID", (unsigned)effecterId, "COMP_EFF_CNT",
-                    (unsigned)compEffecterCnt);
-                return PLDM_ERROR_INVALID_DATA;
-            }
-            break;
-        }
+                      pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+                      auto pdrRecord =
+                          stateEffecterPDRs.getFirstRecord(pdrEntry);
+                      while (pdrRecord)
+                      {
+                          pdr = reinterpret_cast<pldm_state_effecter_pdr*>(
+                              pdrEntry.data);
+                          if (pdr->effecter_id != effecterId)
+                          {
+                              pdr = nullptr;
+                              pdrRecord = stateEffecterPDRs.getNextRecord(
+                                  pdrRecord, pdrEntry);
+                              continue;
+                          }
 
-        if (!pdr)
-        {
-            return PLDM_PLATFORM_INVALID_EFFECTER_ID;
-        }
+                          states =
+                              reinterpret_cast<state_effecter_possible_states*>(
+                                  pdr->possible_states);
+                          if (compEffecterCnt > pdr->composite_effecter_count)
+                          {
+                              error(
+                                  "The requester sent wrong composite effecter count for the effecter, EFFECTER_ID={EFFECTER_ID} COMP_EFF_CNT={COMP_EFF_CNT}",
+                                  "EFFECTER_ID", (unsigned)effecterId,
+                                  "COMP_EFF_CNT", (unsigned)compEffecterCnt);
+                              return PLDM_ERROR_INVALID_DATA;
+                          }
+                          break;
+                      }
 
-        int rc = PLDM_SUCCESS;
-        try
-        {
-            const auto& [dbusMappings,
-                         dbusValMaps] = effecterDbusObjMaps.at(effecterId);
-            for (uint8_t currState = 0; currState < compEffecterCnt;
-                 ++currState)
-            {
-                std::vector<StateSetNum> allowed{};
-                // computation is based on table 79 from DSP0248 v1.1.1
-                uint8_t bitfieldIndex = stateField[currState].effecter_state /
-                                        8;
-                uint8_t bit = stateField[currState].effecter_state -
-                              (8 * bitfieldIndex);
-                if (states->possible_states_size < bitfieldIndex ||
-                    !(states->states[bitfieldIndex].byte & (1 << bit)))
-                {
-                    error(
-                        "Invalid state set value, EFFECTER_ID={EFFECTER_ID} VALUE={EFFECTER_STATE} COMPOSITE_EFFECTER_ID={CURR_STATE} DBUS_PATH={DBUS_OBJ_PATH}",
-                        "EFFECTER_ID", (unsigned)effecterId, "EFFECTER_STATE",
-                        (unsigned)stateField[currState].effecter_state,
-                        "CURR_STATE", (unsigned)currState, "DBUS_OBJ_PATH",
-                        dbusMappings[currState].objectPath.c_str());
-                    rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
-                    break;
-                }
-                const DBusMapping& dbusMapping = dbusMappings[currState];
-                const pldm::responder::pdr_utils::StatestoDbusVal&
-                    dbusValToMap = dbusValMaps[currState];
+                      if (!pdr)
+                      {
+                          return PLDM_PLATFORM_INVALID_EFFECTER_ID;
+                      }
 
-                if (stateField[currState].set_request == PLDM_REQUEST_SET)
-                {
-                    try
-                    {
-                        dBusIntf.setDbusProperty(
-                            dbusMapping,
-                            dbusValToMap.at(
-                                stateField[currState].effecter_state));
-                    }
-                    catch (const std::exception& e)
-                    {
-                        error(
-                            "Error setting property, ERROR={ERR_EXCEP} PROPERTY={DBUS_PROP} INTERFACE={DBUS_INTF} PATH={DBUS_OBJ_PATH}",
-                            "ERR_EXCEP", e.what(), "DBUS_PROP",
-                            dbusMapping.propertyName, "DBUS_INTF",
-                            dbusMapping.interface, "DBUS_OBJ_PATH",
-                            dbusMapping.objectPath.c_str());
-                        return PLDM_ERROR;
-                    }
-                }
-                uint8_t* nextState =
-                    reinterpret_cast<uint8_t*>(states) +
-                    sizeof(state_effecter_possible_states) -
-                    sizeof(states->states) +
-                    (states->possible_states_size * sizeof(states->states));
-                states = reinterpret_cast<state_effecter_possible_states*>(
-                    nextState);
-            }
-        }
-        catch (const std::out_of_range& e)
-        {
-            error(
-                "the effecterId does not exist. effecter id: {EFFECTER_ID} {ERR_EXCEP}",
-                "EFFECTER_ID", (unsigned)effecterId, "ERR_EXCEP", e.what());
-        }
+                      int rc = PLDM_SUCCESS;
+                      try
+                      {
+                          const auto& [dbusMappings, dbusValMaps] =
+                              effecterDbusObjMaps.at(effecterId);
+                          for (uint8_t currState = 0;
+                               currState < compEffecterCnt; ++currState)
+                          {
+                              std::vector<StateSetNum> allowed{};
+                              // computation is based on table 79 from DSP0248
+                              // v1.1.1
+                              uint8_t bitfieldIndex =
+                                  stateField[currState].effecter_state / 8;
+                              uint8_t bit =
+                                  stateField[currState].effecter_state -
+                                  (8 * bitfieldIndex);
+                              if (states->possible_states_size <
+                                      bitfieldIndex ||
+                                  !(states->states[bitfieldIndex].byte &
+                                    (1 << bit)))
+                              {
+                                  error(
+                                      "Invalid state set value, EFFECTER_ID={EFFECTER_ID} VALUE={EFFECTER_STATE} COMPOSITE_EFFECTER_ID={CURR_STATE} DBUS_PATH={DBUS_OBJ_PATH}",
+                                      "EFFECTER_ID", (unsigned)effecterId,
+                                      "EFFECTER_STATE",
+                                      (unsigned)stateField[currState]
+                                          .effecter_state,
+                                      "CURR_STATE", (unsigned)currState,
+                                      "DBUS_OBJ_PATH",
+                                      dbusMappings[currState]
+                                          .objectPath.c_str());
+                                  rc =
+                                      PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
+                                  break;
+                              }
+                              const DBusMapping& dbusMapping =
+                                  dbusMappings[currState];
+                              const pldm::responder::pdr_utils::StatestoDbusVal&
+                                  dbusValToMap = dbusValMaps[currState];
 
-        return rc;
-    }
+                              if (stateField[currState].set_request ==
+                                  PLDM_REQUEST_SET)
+                              {
+                                  try
+                                  {
+                                      dBusIntf.setDbusProperty(
+                                          dbusMapping,
+                                          dbusValToMap.at(stateField[currState]
+                                                              .effecter_state));
+                                  }
+                                  catch (const std::exception& e)
+                                  {
+                                      error(
+                                          "Error setting property, ERROR={ERR_EXCEP} PROPERTY={DBUS_PROP} INTERFACE={DBUS_INTF} PATH={DBUS_OBJ_PATH}",
+                                          "ERR_EXCEP", e.what(), "DBUS_PROP",
+                                          dbusMapping.propertyName, "DBUS_INTF",
+                                          dbusMapping.interface,
+                                          "DBUS_OBJ_PATH",
+                                          dbusMapping.objectPath.c_str());
+                                      return PLDM_ERROR;
+                                  }
+                              }
+                              uint8_t* nextState =
+                                  reinterpret_cast<uint8_t*>(states) +
+                                  sizeof(state_effecter_possible_states) -
+                                  sizeof(states->states) +
+                                  (states->possible_states_size *
+                                   sizeof(states->states));
+                              states = reinterpret_cast<
+                                  state_effecter_possible_states*>(nextState);
+                          }
+                      }
+                      catch (const std::out_of_range& e)
+                      {
+                          error(
+                              "the effecterId does not exist. effecter id: {EFFECTER_ID} {ERR_EXCEP}",
+                              "EFFECTER_ID", (unsigned)effecterId, "ERR_EXCEP",
+                              e.what());
+                      }
 
-    /** @brief Build BMC Terminus Locator PDR
-     *
-     *  @param[in] repo - instance of concrete implementation of Repo
-     */
-    void generateTerminusLocatorPDR(pldm::responder::pdr_utils::Repo& repo);
+                      return rc;
+                  }
 
-    /** @brief Get std::map associated with the entity
-     *         key: object path
-     *         value: pldm_entity
-     *
-     *  @return std::map<ObjectPath, pldm_entity>
-     */
-    inline const AssociatedEntityMap& getAssociateEntityMap() const
-    {
-        if (fruHandler == nullptr)
-        {
-            throw InternalFailure();
-        }
-        return fruHandler->getAssociateEntityMap();
-    }
+                  /** @brief Build BMC Terminus Locator PDR
+                   *
+                   *  @param[in] repo - instance of concrete implementation of
+                   * Repo
+                   */
+                  void generateTerminusLocatorPDR(
+                      pldm::responder::pdr_utils::Repo& repo);
 
-    /** @brief process the actions that needs to be performed after a GetPDR
-     *         call is received
-     *  @param[in] source - sdeventplus event source
-     */
-    void _processPostGetPDRActions(sdeventplus::source::EventBase& source);
+                  /** @brief Get std::map associated with the entity
+                   *         key: object path
+                   *         value: pldm_entity
+                   *
+                   *  @return std::map<ObjectPath, pldm_entity>
+                   */
+                  inline const AssociatedEntityMap&
+                      getAssociateEntityMap() const
+                  {
+                      if (fruHandler == nullptr)
+                      {
+                          throw InternalFailure();
+                      }
+                      return fruHandler->getAssociateEntityMap();
+                  }
 
-    /** @brief Method for setEventreceiver */
-    void setEventReceiver();
+                  /** @brief process the actions that needs to be performed
+                   * after a GetPDR call is received
+                   *  @param[in] source - sdeventplus event source
+                   */
+                  void _processPostGetPDRActions(
+                      sdeventplus::source::EventBase& source);
 
-  private:
-    uint8_t eid;
-    InstanceIdDb* instanceIdDb;
-    pdr_utils::Repo pdrRepo;
-    uint16_t nextEffecterId{};
-    uint16_t nextSensorId{};
-    DbusObjMaps effecterDbusObjMaps{};
-    DbusObjMaps sensorDbusObjMaps{};
-    HostPDRHandler* hostPDRHandler;
-    pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler;
-    fru::Handler* fruHandler;
-    const pldm::utils::DBusHandler* dBusIntf;
-    pldm::responder::oem_platform::Handler* oemPlatformHandler;
-    pldm::responder::platform_config::Handler* platformConfigHandler;
-    pldm::requester::Handler<pldm::requester::Request>* handler;
-    sdeventplus::Event& event;
-    fs::path pdrJsonDir;
-    bool pdrCreated;
-    std::vector<fs::path> pdrJsonsDir;
-    std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
+                  /** @brief Method for setEventreceiver */
+                  void setEventReceiver();
+
+                private:
+                  uint8_t eid;
+                  InstanceIdDb* instanceIdDb;
+                  pdr_utils::Repo pdrRepo;
+                  uint16_t nextEffecterId{};
+                  uint16_t nextSensorId{};
+                  DbusObjMaps effecterDbusObjMaps{};
+                  DbusObjMaps sensorDbusObjMaps{};
+                  HostPDRHandler* hostPDRHandler;
+                  pldm::state_sensor::DbusToPLDMEvent* dbusToPLDMEventHandler;
+                  fru::Handler* fruHandler;
+                  pldm_entity_association_tree* bmcEntityTree;
+                  const pldm::utils::DBusHandler* dBusIntf;
+                  pldm::responder::oem_platform::Handler* oemPlatformHandler;
+                  pldm::responder::platform_config::Handler*
+                      platformConfigHandler;
+                  pldm::requester::Handler<pldm::requester::Request>* handler;
+                  sdeventplus::Event& event;
+                  fs::path pdrJsonDir;
+                  bool pdrCreated;
+                  std::vector<fs::path> pdrJsonsDir;
+                  std::unique_ptr<sdeventplus::source::Defer>
+                      deferredGetPDREvent;
 };
 
 /** @brief Function to check if a sensor falls in OEM range

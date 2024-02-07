@@ -236,7 +236,7 @@ int main(int argc, char** argv)
     oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
         &dbusHandler, codeUpdate.get(), slotHandler.get(),
         pldmTransport.getEventSource(), hostEID, instanceIdDb, event,
-        &reqHandler);
+        &reqHandler, bmcEntityTree.get());
     codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
     slotHandler->setOemPlatformHandler(oemPlatformHandler.get());
     invoker.registerHandler(PLDM_OEM, std::make_unique<oem_ibm::Handler>(
@@ -273,8 +273,8 @@ int main(int argc, char** argv)
     auto platformHandler = std::make_unique<platform::Handler>(
         &dbusHandler, hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),
         hostPDRHandler.get(), dbusToPLDMEventHandler.get(), fruHandler.get(),
-        oemPlatformHandler.get(), platformConfigHandler.get(), &reqHandler,
-        event, true);
+        bmcEntityTree.get(), oemPlatformHandler.get(), &reqHandler, event,
+        true);
 #ifdef OEM_IBM
     pldm::responder::oem_ibm_platform::Handler* oemIbmPlatformHandler =
         dynamic_cast<pldm::responder::oem_ibm_platform::Handler*>(
