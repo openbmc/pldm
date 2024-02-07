@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8adcc6c_c17373fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "removed interface related bcz there is no interface now.",
+      "parentUuid": "1c08e58a_ca8028a8",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 18
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc6fd769_63d5215d",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-05T05:09:48Z",
       "side": 1,
       "message": "check for nullopt rather than empty",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 32
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a4d743_e2df7a6d",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "changed as per comment.",
+      "parentUuid": "cc6fd769_63d5215d",
       "range": {
         "startLine": 57,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8738119e_d91a9f67",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "5d90b312_bea0ab31",
+      "range": {
+        "startLine": 163,
+        "startChar": 19,
+        "endLine": 163,
+        "endChar": 23
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee0130eb_9103592a",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-02-05T05:09:48Z",
       "side": 1,
       "message": "this seems hacky and bug prone, what are we trying to do here ?",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 47
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8100ca2c_7104a976",
+        "filename": "libpldmresponder/config.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "changed as per discussion.",
+      "parentUuid": "ee0130eb_9103592a",
       "range": {
         "startLine": 40,
         "startChar": 8,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "935257bc_5ecd3d5f",
+        "filename": "libpldmresponder/config.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "changed as per comment.",
+      "parentUuid": "b6ae6411_74cf628f",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 21
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0649900_1db01284",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-02-05T05:09:48Z",
       "side": 1,
       "message": "same here",
+      "range": {
+        "startLine": 90,
+        "startChar": 17,
+        "endLine": 92,
+        "endChar": 55
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f2afa6f_1896eae9",
+        "filename": "libpldmresponder/config.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "b0649900_1db01284",
       "range": {
         "startLine": 90,
         "startChar": 17,
@@ -162,6 +306,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1394c48b_85d317f3",
+        "filename": "libpldmresponder/config.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "82799350_5c8a35ef",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 22
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c216805_2156a646",
@@ -175,6 +343,30 @@
       "writtenOn": "2024-02-05T05:09:48Z",
       "side": 1,
       "message": "check if this is a nullopt rather than string empty.",
+      "range": {
+        "startLine": 182,
+        "startChar": 9,
+        "endLine": 182,
+        "endChar": 31
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87604e3c_298cbab0",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "changed as per comment.",
+      "parentUuid": "0c216805_2156a646",
       "range": {
         "startLine": 182,
         "startChar": 9,
@@ -208,6 +400,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd5302d1_0a8f8be3",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "corrected.",
+      "parentUuid": "1307fb6a_0a3c3a58",
+      "range": {
+        "startLine": 459,
+        "startChar": 40,
+        "endLine": 459,
+        "endChar": 41
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a541f934_8ceaaf48",
@@ -221,6 +437,30 @@
       "writtenOn": "2024-02-05T05:09:48Z",
       "side": 1,
       "message": "this change is unrelated , please remove",
+      "range": {
+        "startLine": 135,
+        "startChar": 3,
+        "endLine": 136,
+        "endChar": 11
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6ca691a_14006fd6",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "reverted",
+      "parentUuid": "a541f934_8ceaaf48",
       "range": {
         "startLine": 135,
         "startChar": 3,
@@ -254,6 +494,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e414832a_2f7978f3",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "reverted",
+      "parentUuid": "33197898_f4c39b74",
+      "range": {
+        "startLine": 179,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 61
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ddbe97cb_6ae2e974",
@@ -267,6 +531,30 @@
       "writtenOn": "2024-02-05T05:09:48Z",
       "side": 1,
       "message": "revert this change.",
+      "range": {
+        "startLine": 203,
+        "startChar": 5,
+        "endLine": 204,
+        "endChar": 12
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93dcfa70_9f60a33f",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "reverted",
+      "parentUuid": "ddbe97cb_6ae2e974",
       "range": {
         "startLine": 203,
         "startChar": 5,
@@ -300,6 +588,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf94954_53ba8b2c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "reverted",
+      "parentUuid": "5bb03a49_dc9cd148",
+      "range": {
+        "startLine": 239,
+        "startChar": 3,
+        "endLine": 240,
+        "endChar": 20
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1401545_91eab896",
@@ -313,6 +625,30 @@
       "writtenOn": "2024-02-05T16:08:35Z",
       "side": 1,
       "message": "why is this variable declared here?",
+      "range": {
+        "startLine": 246,
+        "startChar": 16,
+        "endLine": 246,
+        "endChar": 26
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "267f3cd0_20ff23a9",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "c1401545_91eab896",
       "range": {
         "startLine": 246,
         "startChar": 16,
@@ -346,6 +682,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee4beae_187f844f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "changed as per comment.",
+      "parentUuid": "9538ea6c_a9ebef60",
+      "range": {
+        "startLine": 56,
+        "startChar": 26,
+        "endLine": 56,
+        "endChar": 38
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fd7fb86_a963998c",
@@ -369,6 +729,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab0d8e24_021e879a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "changed as per comment.",
+      "parentUuid": "3fd7fb86_a963998c",
+      "range": {
+        "startLine": 228,
+        "startChar": 20,
+        "endLine": 228,
+        "endChar": 27
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7205ddd8_d595ef7a",
@@ -382,6 +766,30 @@
       "writtenOn": "2024-02-05T05:09:48Z",
       "side": 1,
       "message": "initialise this immediately after declaration ? in line number 229 ?",
+      "range": {
+        "startLine": 261,
+        "startChar": 3,
+        "endLine": 261,
+        "endChar": 56
+      },
+      "revId": "6d4004a8c22791c10084925e27aef5e80692907f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07d91014_03180d64",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-07T13:50:06Z",
+      "side": 1,
+      "message": "changed as per comment.",
+      "parentUuid": "7205ddd8_d595ef7a",
       "range": {
         "startLine": 261,
         "startChar": 3,
