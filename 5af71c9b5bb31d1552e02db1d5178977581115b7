@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2f93c903_21e1eb23",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-02-08T05:15:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5868ffe2_034b8202",
+      "revId": "5af71c9b5bb31d1552e02db1d5178977581115b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ac7eed4f_df9efd9d",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-08T04:34:21Z",
       "side": 1,
       "message": "Also, this does not look to be related to the Relation chain, so can this be pushed separately?",
+      "revId": "5af71c9b5bb31d1552e02db1d5178977581115b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2061f0cf_593d4570",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-02-08T05:15:32Z",
+      "side": 1,
+      "message": "The Device power state PDRs are in Kamal\u0027s commit. This change will have no impact without his change going in",
+      "parentUuid": "ac7eed4f_df9efd9d",
       "revId": "5af71c9b5bb31d1552e02db1d5178977581115b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
