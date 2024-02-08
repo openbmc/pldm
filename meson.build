@@ -69,11 +69,12 @@ if get_option('transport-implementation') == 'mctp-demux'
 elif get_option('transport-implementation') == 'af-mctp'
   conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
-config = configure_file(output: 'config.h',
+
+configure_file(output: 'config.h',
   configuration: conf_data
 )
 
-add_project_arguments('-include', '@0@'.format(config), language: 'cpp')
+add_project_arguments('-include', '@0@'.format(meson.current_build_dir() /'config.h'), language: 'cpp')
 
 filesystem = import('fs')
 
