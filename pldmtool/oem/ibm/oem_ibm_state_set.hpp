@@ -1,3 +1,5 @@
+#include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
+
 #include <libpldm/entity.h>
 #include <libpldm/oem/ibm/entity.h>
 #include <libpldm/oem/ibm/state_set.h>
@@ -43,7 +45,9 @@ enum pldm_oem_ibm_boot_state_set_values
  */
 extern const std::map<uint8_t, std::string> OemIBMEntityType{
     {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, "OEM IBM Firmware Update"},
-    {PLDM_OEM_IBM_ENTITY_TPM, "OEM IBM Trusted Platform Module"}};
+    {PLDM_OEM_IBM_ENTITY_TPM, "OEM IBM Trusted Platform Module"},
+    {pldm::responder::oem_ibm_platform::PLDM_OEM_IBM_CHASSIS_POWER_CONTROLLER,
+     "OEM IBM Chassis Power Controller"}};
 
 /** @brief Map for PLDM OEM IBM State Sets
  */

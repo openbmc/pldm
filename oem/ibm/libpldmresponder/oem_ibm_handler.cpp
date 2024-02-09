@@ -2,6 +2,7 @@
 
 #include "libpldm/entity.h"
 #include "libpldm/pldm.h"
+#include "libpldm/state_set.h"
 
 #include "collect_slot_vpd.hpp"
 #include "file_io_type_lid.hpp"
@@ -167,6 +168,25 @@ int pldm::responder::oem_ibm_platform::Handler::
                 std::cerr << "Effecter id : " << effecterId << std::endl;
                 slotHandler->enableSlot(effecterId, entityAssociationMap,
                                         stateField[currState].effecter_state);
+            }
+            else if (entityType == PLDM_OEM_IBM_CHASSIS_POWER_CONTROLLER &&
+                     stateSetId == PLDM_STATE_SET_SYSTEM_POWER_STATE)
+            {
+                if (stateField[currState].effecter_state ==
+                    PLDM_STATE_SET_SYS_POWER_CYCLE_OFF_SOFT_GRACEFUL)
+                {
+                    processPowerCycleOffSoftGraceful();
+                }
+                else if (stateField[currState].effecter_state ==
+                         PLDM_STATE_SET_SYS_POWER_STATE_OFF_SOFT_GRACEFUL)
+                {
+                    processPowerOffSoftGraceful();
+                }
+                else if (stateField[currState].effecter_state ==
+                         PLDM_STATE_SET_SYS_POWER_STATE_OFF_HARD_GRACEFUL)
+                {
+                    processPowerOffHardGraceful();
+                }
             }
             else
             {
@@ -409,6 +429,53 @@ void buildAllSlotEnableSensorPDR(oem_ibm_platform::Handler* platformHandler,
     }
 }
 
+void buildAllSystemPowerStateEffecterPDR(
+    oem_ibm_platform::Handler* platformHandler, uint16_t entityType,
+    uint16_t entityInstance, uint16_t stateSetID, pdr_utils::Repo& repo)
+{
+    size_t pdrSize = 0;
+    pdrSize = sizeof(pldm_state_effecter_pdr) +
+              sizeof(state_effecter_possible_states);
+    std::vector<uint8_t> entry{};
+    entry.resize(pdrSize);
+    pldm_state_effecter_pdr* pdr =
+        reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+    if (!pdr)
+    {
+        std::cerr << "Failed to get record by PDR type, ERROR:"
+                  << PLDM_PLATFORM_INVALID_EFFECTER_ID << std::endl;
+        return;
+    }
+    pdr->hdr.record_handle = 0;
+    pdr->hdr.version = 1;
+    pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
+    pdr->hdr.record_change_num = 0;
+    pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
+    pdr->terminus_handle = TERMINUS_HANDLE;
+    pdr->effecter_id = platformHandler->getNextEffecterId();
+    pdr->entity_type = entityType;
+    pdr->entity_instance = entityInstance;
+    pdr->container_id = 1;
+    pdr->effecter_semantic_id = 0;
+    pdr->effecter_init = PLDM_NO_INIT;
+    pdr->has_description_pdr = false;
+    pdr->composite_effecter_count = 1;
+
+    auto* possibleStatesPtr = pdr->possible_states;
+    auto possibleStates =
+        reinterpret_cast<state_effecter_possible_states*>(possibleStatesPtr);
+    possibleStates->state_set_id = stateSetID;
+    possibleStates->possible_states_size = 2;
+    auto state =
+        reinterpret_cast<state_effecter_possible_states*>(possibleStates);
+    state->states[0].byte = 128;
+    state->states[1].byte = 6;
+    pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+    pdrEntry.data = entry.data();
+    pdrEntry.size = pdrSize;
+    repo.addRecord(pdrEntry);
+}
+
 std::vector<std::string> getslotPaths()
 {
     static constexpr auto searchpath = "/xyz/openbmc_project/inventory/system";
@@ -494,6 +561,12 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     attachOemEntityToEntityAssociationPDR(
         this, bmcEntityTree, "/xyz/openbmc_project/inventory/system", repo,
         fwUpEntity);
+
+    pldm_entity powerStateEntity = {PLDM_OEM_IBM_CHASSIS_POWER_CONTROLLER, 0,
+                                    1};
+    attachOemEntityToEntityAssociationPDR(
+        this, bmcEntityTree, "/xyz/openbmc_project/inventory/system", repo,
+        powerStateEntity);
 
     auto sensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
@@ -830,6 +903,65 @@ bool pldm::responder::oem_ibm_platform::Handler::checkRecordHandleInRange(
 void Handler::processSetEventReceiver()
 {
     this->setEventReceiver();
+}
+
+void pldm::responder::oem_ibm_platform::Handler::
+    processPowerCycleOffSoftGraceful()
+{
+    pldm::utils::PropertyValue value =
+        "xyz.openbmc_project.State.Host.Transition.ForceWarmReboot";
+    pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/state/host0",
+                                         "xyz.openbmc_project.State.Host",
+                                         "RequestedHostTransition", "string"};
+    try
+    {
+        dBusIntf->setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr
+            << "Error to do a ForceWarmReboot, chassis power remains on, and boot the host back up. Unable to set property RequestedHostTransition. ERROR="
+            << e.what() << "\n";
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::processPowerOffSoftGraceful()
+{
+    pldm::utils::PropertyValue value =
+        "xyz.openbmc_project.State.Chassis.Transition.Off";
+    pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/state/chassis0",
+                                         "xyz.openbmc_project.State.Chassis",
+                                         "RequestedPowerTransition", "string"};
+    try
+    {
+        dBusIntf->setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr
+            << "Error in powering down the host. Unable to set property RequestedPowerTransition. ERROR="
+            << e.what() << "\n";
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::processPowerOffHardGraceful()
+{
+    pldm::utils::PropertyValue value =
+        "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn";
+    pldm::utils::DBusMapping dbusMapping{
+        "/xyz/openbmc_project/control/host0/power_restore_policy/one_time",
+        "xyz.openbmc_project.Control.Power.RestorePolicy", "PowerRestorePolicy",
+        "string"};
+    try
+    {
+        dBusIntf->setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr
+            << "Setting one-time restore policy failed, Unable to set property PowerRestorePolicy. ERROR="
+            << e.what() << "\n";
+    }
 }
 
 } // namespace oem_ibm_platform
