@@ -47,6 +47,23 @@ int main()
     {
         pldm::utils::reportError(
             "pldm soft off: Waiting for the host soft off timeout");
+
+	auto method = bus.new_method_call(
+            "xyz.openbmc_project.Dump.Manager", "/xyz/openbmc_project/dump/bmc",
+            "xyz.openbmc_project.Dump.Create", "CreateDump");
+        method.append(
+            std::vector<
+                std::pair<std::string, std::variant<std::string, uint64_t>>>());
+        try
+        {
+            bus.call_noreply(method);
+        }
+        catch (const sdbusplus::exception::exception& e)
+        {
+            std::cerr << "SoftPowerOff:Failed to create BMC dump, ERROR="
+                      << e.what() << std::endl;
+        }
+
         error(
             "PLDM host soft off: ERROR! Wait for the host soft off timeout. Exit the pldm-softpoweroff");
         return -1;
