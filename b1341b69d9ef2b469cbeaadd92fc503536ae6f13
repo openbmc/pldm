@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03e2ed43_ee3f4c2b",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-09T06:54:40Z",
+      "side": 1,
+      "message": "done as per discussion.",
+      "parentUuid": "5f1be0f8_41597572",
+      "revId": "b1341b69d9ef2b469cbeaadd92fc503536ae6f13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46786726_295d5c52",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-09T05:36:31Z",
       "side": 1,
       "message": "nit:line",
+      "revId": "b1341b69d9ef2b469cbeaadd92fc503536ae6f13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae500b9_dacd2fb6",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-09T06:54:40Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "46786726_295d5c52",
       "revId": "b1341b69d9ef2b469cbeaadd92fc503536ae6f13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
