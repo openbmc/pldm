@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f1be0f8_41597572",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-09T05:36:31Z",
+      "side": 1,
+      "message": "This \"if\" condition can be moved to line 188.",
+      "revId": "b1341b69d9ef2b469cbeaadd92fc503536ae6f13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46786726_295d5c52",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-09T05:36:31Z",
+      "side": 1,
+      "message": "nit:line",
+      "revId": "b1341b69d9ef2b469cbeaadd92fc503536ae6f13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
