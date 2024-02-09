@@ -541,8 +541,11 @@ class GetPDR : public CommandInterface
          "Non Recoverable Error"}};
 
     static inline const std::map<uint8_t, std::string> setSysPowerState{
-        {PLDM_STATE_SET_SYS_POWER_STATE_OFF_SOFT_GRACEFUL,
-         "Off-Soft Graceful"}};
+	{PLDM_STATE_SET_SYS_POWER_STATE_OFF_SOFT_GRACEFUL, "Off-Soft Graceful"},
+        {PLDM_STATE_SET_SYS_POWER_CYCLE_OFF_SOFT_GRACEFUL,
+         "Power Cycle Off-Soft Graceful"},
+        {PLDM_STATE_SET_SYS_POWER_STATE_OFF_HARD_GRACEFUL,
+         "Off-Hard Graceful"}};
 
     static inline const std::map<uint8_t, std::string> setSWTerminationStatus{
         {PLDM_SW_TERM_GRACEFUL_RESTART_REQUESTED,
