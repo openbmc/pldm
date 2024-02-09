@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e031002b_8b27e152",
+        "filename": "configurations/pdr/11.json",
+        "patchSetId": 19
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-09T09:26:11Z",
+      "side": 1,
+      "message": "If you make this change here it will break everywhere it is used - https://github.com/ibm-openbmc/libpldm/blob/efb400697eede42f14ad6290660a4aecbc314141/include/libpldm/platform.h#L681\n\nhttps://github.com/search?q\u003drepo%3Aopenbmc%2Fpldm%20max_settable\u0026type\u003dcode\n\nPlease keep the change uniform.",
+      "revId": "9e9fe91513e4611c89dce9da4f0120f74e8e057c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
