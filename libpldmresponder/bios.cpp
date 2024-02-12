@@ -72,13 +72,12 @@ DBusHandler dbusHandler;
 Handler::Handler(
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::platform_config::Handler* platformConfigHandler) :
+    pldm::responder::platform_config::Handler* platformConfigHandler,
+    pldm::utils::Callback registerServiceName) :
     biosConfig(BIOS_JSONS_DIR, BIOS_TABLES_DIR, &dbusHandler, fd, eid,
-               instanceIdDb, handler, platformConfigHandler)
+               instanceIdDb, handler, platformConfigHandler,
+               registerServiceName)
 {
-    biosConfig.removeTables();
-    biosConfig.buildTables();
-
     handlers.emplace(
         PLDM_SET_DATE_TIME,
         [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
@@ -230,6 +229,12 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
 
 Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
 {
+    if (!biosConfig.isBiosTbleReady)
+    {
+        error("BIOS Stack is not ready yet. Try again");
+        return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
+    }
+
     uint32_t transferHandle{};
     uint8_t transferOpFlag{};
     uint8_t tableType{};
@@ -265,6 +270,12 @@ Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
 
 Response Handler::setBIOSTable(const pldm_msg* request, size_t payloadLength)
 {
+    if (!biosConfig.isBiosTbleReady)
+    {
+        error("BIOS Stack is not ready yet. Try again");
+        return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
+    }
+
     uint32_t transferHandle{};
     uint8_t transferOpFlag{};
     uint8_t tableType{};
@@ -300,6 +311,12 @@ Response Handler::setBIOSTable(const pldm_msg* request, size_t payloadLength)
 Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
                                                        size_t payloadLength)
 {
+    if (!biosConfig.isBiosTbleReady)
+    {
+        error("BIOS Stack is not ready yet. Try again");
+        return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
+    }
+
     uint32_t transferHandle;
     uint8_t transferOpFlag;
     uint16_t attributeHandle;
@@ -345,6 +362,12 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
 Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
                                                size_t payloadLength)
 {
+    if (!biosConfig.isBiosTbleReady)
+    {
+        error("BIOS Stack is not ready yet. Try again");
+        return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
+    }
+
     uint32_t transferHandle;
     uint8_t transferOpFlag;
     variable_field attributeField;

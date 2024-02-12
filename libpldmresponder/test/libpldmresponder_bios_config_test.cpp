@@ -91,13 +91,11 @@ TEST_F(TestBIOSConfig, buildTablesTest)
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
 
-    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return(""));
-    ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
-        .WillByDefault(Throw(std::exception()));
+    EXPECT_CALL(mockSystemConfig, getPlatformName())
+        .WillOnce(Return(std::filesystem::path("bios_jsons")));
 
-    BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockSystemConfig);
-    biosConfig.buildTables();
+    BIOSConfig biosConfig("./", tableDir.c_str(), &dbusHandler, 0, 0, nullptr,
+                          nullptr, &mockSystemConfig,[](){});
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
     auto attrValueTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
@@ -271,9 +269,8 @@ TEST_F(TestBIOSConfig, buildTablesSystemSpecificTest)
 
     BIOSConfig biosConfig("./system_type1/bios_jsons", tableDir.c_str(),
                           &dbusHandler, 0, 0, nullptr, nullptr,
-                          &mockSystemConfig);
+                          &mockSystemConfig, [](){});
 
-    biosConfig.buildTables();
 
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
@@ -340,9 +337,7 @@ TEST_F(TestBIOSConfig, setAttrValue)
 
     EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return(""));
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockSystemConfig);
-    biosConfig.removeTables();
-    biosConfig.buildTables();
+                          nullptr, nullptr, &mockSystemConfig, [](){});
 
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
