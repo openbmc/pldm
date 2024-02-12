@@ -40,6 +40,10 @@ void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
     {
         // get only the first system type
         systemType = names.front();
+        if(sysTypeCallback)
+        {
+           sysTypeCallback(systemType);
+        }
     }
 
     if (!systemType.empty())
@@ -117,6 +121,11 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
               "ERROR", e);
     }
     return std::nullopt;
+}
+
+void Handler::registerSystemTypeCallback(SystemTypeCallback callback)
+{
+    sysTypeCallback = callback;
 }
 
 } // namespace platform_config
