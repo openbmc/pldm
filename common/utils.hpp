@@ -45,6 +45,7 @@ using EntityType = uint16_t;
 using Entities = std::vector<pldm_entity_node*>;
 using EntityAssociations = std::vector<Entities>;
 using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
+using Callback = std::function<void()>;
 
 const std::map<EntityType, EntityName> entityMaps = {
     {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},

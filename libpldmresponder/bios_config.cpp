@@ -9,6 +9,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/BIOSConfig/Manager/server.hpp>
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -45,24 +46,43 @@ BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::platform_config::Handler* platformConfigHandler) :
+    pldm::responder::platform_config::Handler* platformConfigHandler,
+    pldm::utils::Callback setServiceRequestName) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
     instanceIdDb(instanceIdDb), handler(handler),
-    platformConfigHandler(platformConfigHandler)
+    platformConfigHandler(platformConfigHandler),
+    setServiceName(setServiceRequestName)
 
 {
+    fs::create_directories(tableDir);
     if (platformConfigHandler)
     {
         auto systemType = platformConfigHandler->getPlatformName();
         if (systemType.has_value())
         {
             sysType = systemType.value();
+            initializeBIOSAttributes(sysType);
+        }
+        else
+        {
+            platformConfigHandler->registerSystemTypeCallback(
+                std::bind(&BIOSConfig::initializeBIOSAttributes, this,
+                          std::placeholders::_1));
         }
     }
-    fs::create_directories(tableDir);
-    constructAttributes();
     listenPendingAttributes();
+}
+
+void BIOSConfig::initializeBIOSAttributes(std::string& systemType)
+{
+    sysType = systemType;
+    info("Initialising BIOS attributes for system: {TYPE}", "TYPE", sysType);
+    constructAttributes();
+    removeTables();
+    buildTables();
+    setServiceName();
+    isBiosTableReady = true;
 }
 
 void BIOSConfig::buildTables()
@@ -496,6 +516,14 @@ void BIOSConfig::updateBaseBIOSTableProperty()
 
 void BIOSConfig::constructAttributes()
 {
+    std::filesystem::path dir{jsonDir / sysType};
+    if (!fs::exists(dir))
+    {
+        error("System specific bios attribute directory does not exit : {TYPE}",
+              "TYPE", sysType);
+        return;
+    }
+    info("Bios Attribute file path: {PATH}", "PATH", (jsonDir / sysType));
     load(jsonDir / sysType / stringJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSStringAttribute>(entry);
     });
