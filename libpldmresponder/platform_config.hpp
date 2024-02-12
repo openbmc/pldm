@@ -19,6 +19,8 @@ static constexpr auto compatibleInterface =
     "xyz.openbmc_project.Inventory.Decorator.Compatible";
 static constexpr auto namesProperty = "Names";
 
+using SystemTypeCallback = std::function<void(const std::string&)>;
+
 class Handler : public CmdHandler
 {
   public:
@@ -32,9 +34,10 @@ class Handler : public CmdHandler
                         "xyz.openbmc_project.EntityManager"),
                 std::bind(&Handler::systemCompatibleCallback, this,
                           std::placeholders::_1));
+        sysTypeCallback = nullptr;
     }
 
-    /** @brief Interface to get the system type information
+    /** @brief Interface to get the system type information using Dbus query
      *
      *  @return - the system type information
      */
@@ -43,12 +46,18 @@ class Handler : public CmdHandler
     /** @brief D-Bus Interface added signal match for Entity Manager */
     void systemCompatibleCallback(sdbusplus::message_t& msg);
 
+    /** @brief Registers the callback from other objects */
+    void registerSystemTypeCallback(SystemTypeCallback callback);
+
   private:
     /** @brief system type/model */
     std::string systemType;
 
     /** @brief D-Bus Interface added signal match for Entity Manager */
     std::unique_ptr<sdbusplus::bus::match_t> systemCompatibleMatchCallBack;
+
+    /** @brief Registered Callback */
+    SystemTypeCallback sysTypeCallback;
 };
 
 } // namespace platform_config
