@@ -173,3 +173,10 @@ option(
     value: 8384512,
     description: 'OEM-IBM: max DMA size'
 )
+
+option(
+    'system-specific-json',
+    type : 'feature',
+    value: 'enabled',
+    description : 'BIOS Attributes JSON filepath'
+)
