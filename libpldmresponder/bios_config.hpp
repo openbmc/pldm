@@ -58,6 +58,7 @@ using BaseBIOSTable = std::map<AttributeName, BIOSTableObj>;
 
 using PendingObj = std::tuple<AttributeType, CurrentValue>;
 using PendingAttributes = std::map<AttributeName, PendingObj>;
+using Callback = std::function<void()>;
 
 /** @class BIOSConfig
  *  @brief Manager BIOS Attributes
@@ -81,13 +82,16 @@ class BIOSConfig
      *  @param[in] instanceIdDb - pointer to an InstanceIdDb object
      *  @param[in] handler - PLDM request handler
      *  @param[in] platformConfigHandler - pointer to platform config Handler
+     *  @param[in] setServiceRequestName - Callback for claiming the PLDM
+     * service name Called only after building BIOS tables.
      */
     explicit BIOSConfig(
         const char* jsonDir, const char* tableDir,
         pldm::utils::DBusHandler* const dbusHandler, int fd, uint8_t eid,
         pldm::InstanceIdDb* instanceIdDb,
         pldm::requester::Handler<pldm::requester::Request>* handler,
-        pldm::responder::platform_config::Handler* platformConfigHandler);
+        pldm::responder::platform_config::Handler* platformConfigHandler,
+        pldm::responder::bios::Callback requestPLDMServiceName);
 
     /** @brief Set attribute value on dbus and attribute value table
      *  @param[in] entry - attribute value entry
@@ -126,6 +130,18 @@ class BIOSConfig
     int setBIOSTable(uint8_t tableType, const Table& table,
                      bool updateBaseBIOSTable = true);
 
+    /** @brief Construct the BIos Attributes and build the tables
+     *         after receiving system type from entity manager.
+     *  @param[in] String - System Type
+     *  @return void
+     */
+    void initBIOSAttributes(const std::string& sysType);
+
+    /** @brief Informs if the bios tables are constructed or not.
+     *  @return true if bios tables are created else returns false
+     */
+    bool isBiosTableReady;
+
   private:
     /** @enum Index into the fields in the BaseBIOSTable
      */
@@ -162,6 +178,9 @@ class BIOSConfig
 
     /** @brief platform config Handler*/
     pldm::responder::platform_config::Handler* platformConfigHandler;
+
+    /** @brief Callback for registering the PLDM service name */
+    pldm::responder::bios::Callback requestPLDMServiceName;
 
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
