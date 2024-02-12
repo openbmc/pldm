@@ -9,6 +9,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/BIOSConfig/Manager/server.hpp>
 
+#include <filesystem>
 #include <fstream>
 
 #ifdef OEM_IBM
@@ -44,12 +45,24 @@ BIOSConfig::BIOSConfig(
     const char* jsonDir, const char* tableDir, DBusHandler* const dbusHandler,
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::platform_config::Handler* platformConfigHandler) :
+    pldm::responder::platform_config::Handler* platformConfigHandler,
+    pldm::responder::bios::Callback requestPLDMServiceName) :
     jsonDir(jsonDir),
     tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
     instanceIdDb(instanceIdDb), handler(handler),
-    platformConfigHandler(platformConfigHandler)
+    platformConfigHandler(platformConfigHandler),
+    requestPLDMServiceName(requestPLDMServiceName)
+{
+    fs::create_directories(tableDir);
+    removeTables();
+    if (isSystemTypeAvailable())
+    {
+        initBIOSAttributes(sysType);
+    }
+    listenPendingAttributes();
+}
 
+bool BIOSConfig::isSystemTypeAvailable()
 {
     if (platformConfigHandler)
     {
@@ -58,10 +71,29 @@ BIOSConfig::BIOSConfig(
         {
             sysType = systemType.value();
         }
+        else
+        {
+            platformConfigHandler->registerSystemTypeCallback(std::bind(
+                &BIOSConfig::initBIOSAttributes, this, std::placeholders::_1));
+            return false;
+        }
     }
-    fs::create_directories(tableDir);
+    return true;
+}
+
+void BIOSConfig::initBIOSAttributes(const std::string& systemType)
+{
+    sysType = systemType;
+    fs::path dir{jsonDir / sysType};
+    if (!fs::exists(dir))
+    {
+        error("System specific bios attribute directory {DIR} does not exit",
+              "DIR", dir.string());
+        return;
+    }
     constructAttributes();
-    listenPendingAttributes();
+    buildTables();
+    requestPLDMServiceName();
 }
 
 void BIOSConfig::buildTables()
@@ -495,6 +527,7 @@ void BIOSConfig::updateBaseBIOSTableProperty()
 
 void BIOSConfig::constructAttributes()
 {
+    info("Bios Attribute file path: {PATH}", "PATH", (jsonDir / sysType));
     load(jsonDir / sysType / stringJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSStringAttribute>(entry);
     });
