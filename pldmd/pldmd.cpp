@@ -83,6 +83,12 @@ void interruptFlightRecorderCallBack(Signal& /*signal*/,
     FlightRecorder::GetInstance().playRecorder();
 }
 
+void requestPLDMServiceName()
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    bus.request_name("xyz.openbmc_project.PLDM");
+}
+
 static std::optional<Response>
     processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
                  requester::Handler<requester::Request>& handler,
@@ -262,7 +268,7 @@ int main(int argc, char** argv)
     }
     auto biosHandler = std::make_unique<bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
-        platformConfigHandler.get());
+        platformConfigHandler.get(), requestPLDMServiceName);
 
     auto fruHandler = std::make_unique<fru::Handler>(
         FRU_JSONS_DIR, FRU_MASTER_JSON, pdrRepo.get(), entityTree.get(),
@@ -368,7 +374,6 @@ int main(int argc, char** argv)
     };
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
-    bus.request_name("xyz.openbmc_project.PLDM");
     IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
     if (hostPDRHandler)
