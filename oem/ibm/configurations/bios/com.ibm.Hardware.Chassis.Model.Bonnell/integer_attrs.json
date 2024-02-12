@@ -1,0 +1,291 @@
+{
+    "entries": [
+        {
+            "attribute_name": "vmi_if0_ipv4_prefix_length",
+            "lower_bound": 0,
+            "upper_bound": 32,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "vmi_if0_ipv4_prefix_length",
+            "displayName": "vmi_if0_ipv4_prefix_length"
+        },
+        {
+            "attribute_name": "vmi_if0_ipv6_prefix_length",
+            "lower_bound": 0,
+            "upper_bound": 128,
+            "scalar_increment": 1,
+            "default_value": 128,
+            "helpText": "vmi_if0_ipv6_prefix_length",
+            "displayName": "vmi_if0_ipv6_prefix_length"
+        },
+        {
+            "attribute_name": "hb_number_huge_pages",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the number of huge pages available for memory management, requires a reboot for a change to be applied.",
+            "displayName": "Number Huge Pages (pending)"
+        },
+        {
+            "attribute_name": "hb_number_huge_pages_current",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the number of huge pages available for memory management for the current IPL. Do not set this attribute directly; set hb_number_huge_pages instead.",
+            "displayName": "Number Huge Pages (current)"
+        },
+        {
+            "attribute_name": "hb_huge_page_size",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the size of huge pages, 0 = 16GB, requires a reboot for a change to be applied.",
+            "displayName": "Huge Page Size (pending)"
+        },
+        {
+            "attribute_name": "hb_huge_page_size_current",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the size of huge pages, 0 = 16GB, for the current IPL. Do not set this attribute directly; set hb_huge_page_size instead.",
+            "displayName": "Huge Page Size (current)"
+        },
+        {
+            "attribute_name": "hb_field_core_override",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "The maximum number of cores to activate where 0 being to activate all available cores. Requires a reboot for a change to be applied.",
+            "displayName": "Field Core Override (pending)"
+        },
+        {
+            "attribute_name": "hb_field_core_override_current",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "The maximum number of cores to activate where 0 being to activate all available cores. Value applicable for the current IPL. Do not set this attribute directly; set hb_field_core_override instead.",
+            "displayName": "Field Core Override (current)"
+        },
+        {
+            "attribute_name": "hb_power_limit_in_watts",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the power limit in watts.",
+            "displayName": "Power Limit In Watts",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/control/host0/power_cap",
+                "interface": "xyz.openbmc_project.Control.Power.Cap",
+                "property_type": "uint32_t",
+                "property_name": "PowerCap"
+            }
+        },
+        {
+            "attribute_name": "hb_max_number_huge_pages",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the actual maximum number of huge pages available given the current system configuration.",
+            "displayName": "Max Number Huge Pages"
+        },
+        {
+            "attribute_name": "hb_ioadapter_enlarged_capacity",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the enlarged IO capacity, requires a reboot for a change to be applied.",
+            "displayName": "Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_name": "hb_ioadapter_enlarged_capacity_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity instead.",
+            "displayName": "Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_name": "hb_effective_secure_version",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the effective secure version of the host FW. In secure mode, the secure version value of a driver must be greater than or equal to this effective secure version to allow the system to boot.",
+            "displayName": "Effective Secure Version"
+        },
+        {
+            "attribute_name": "hb_cap_freq_mhz_min",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the lowest floor frequency across all chips in the system.",
+            "displayName": "Minimum Core Freq MHZ"
+        },
+        {
+            "attribute_name": "hb_cap_freq_mhz_max",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the highest ceiling frequency across all chips in the system.",
+            "displayName": "Maximum Core Freq MHZ"
+        },
+        {
+            "attribute_name": "hb_cap_freq_mhz_request",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the desired frequency across all chips in the system.  Requires a reboot for a change to be applied.",
+            "displayName": "Requested Core Freq MHZ (pending)"
+        },
+        {
+            "attribute_name": "hb_cap_freq_mhz_request_current",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the desired frequency across all chips in the system.  Do not set this attribute directly; set hb_cap_freq_mhz_request instead.",
+            "displayName": "Requested Core Freq MHZ (current)"
+        },
+        {
+            "attribute_name": "pvm_rpd_scheduled_tod",
+            "lower_bound": 0,
+            "upper_bound": 86399,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the time of day in seconds at which to run the processor diagnostics.",
+            "displayName": "RPD Scheduled Run Time of Day in Seconds"
+        },
+        {
+            "attribute_name": "pvm_rpd_scheduled_duration",
+            "lower_bound": 30,
+            "upper_bound": 1440,
+            "scalar_increment": 1,
+            "default_value": 1440,
+            "helpText": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the duration in minutes to run the processor diagnostics, starting at the Scheduled Time of Day. Note: If the RPD is unable to test every core within the specified Run Time Duration, the RPD will resume where it left off, at the next Schedule Run Time of Day.",
+            "displayName": "RPD Scheduled Run Time Duration in Minutes"
+        },
+        {
+            "attribute_name": "hb_power_PS0_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 0 input voltage(volts)",
+            "displayName": "Power Supply 0 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps0_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_name": "hb_power_PS1_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 1 input voltage(volts)",
+            "displayName": "Power Supply 1 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps1_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_name": "hb_power_PS2_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 2 input voltage(volts)",
+            "displayName": "Power Supply 2 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps2_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_name": "hb_power_PS3_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 3 input voltage(volts)",
+            "displayName": "Power Supply 3 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps3_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_name": "pvm_ibmi_vlan_tag_id",
+            "lower_bound": 0,
+            "upper_bound": 4094,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the VLAN ID that is used when performing a network installation of an IBM i logical partition. Ethernet packets are tagged with the specified VLAN ID. If this option is not specified, Ethernet packets are untagged.",
+            "displayName": "VLAN Tag Identifier"
+        },
+        {
+            "attribute_name": "pvm_ibmi_iscsi_target_port",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the port that is used for the iSCSI connection.",
+            "displayName": "Target Port"
+        },
+        {
+            "attribute_name": "pvm_linux_kvm_percentage",
+            "lower_bound": 0,
+            "upper_bound": 1000,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. The percentage is specified to the 10th of a percent.",
+            "displayName": "System Memory Reserved for KVM Guest Management"
+        },
+        {
+            "attribute_name": "pvm_linux_kvm_percentage_current",
+            "lower_bound": 0,
+            "upper_bound": 1000,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. The percentage is specified to the 10th of a percent. Do not set this attribute directly; set pvm_linux_kvm_percentage instead.",
+            "displayName": "System Memory Reserved for KVM Guest Management (current)"
+        }
+    ]
+}
