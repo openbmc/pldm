@@ -38,7 +38,8 @@ class Handler : public CmdHandler
      */
     Handler(int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
             pldm::requester::Handler<pldm::requester::Request>* handler,
-            pldm::responder::platform_config::Handler* platformConfigHandler);
+            pldm::responder::platform_config::Handler* platformConfigHandler,
+            pldm::utils::Callback registerServiceName);
 
     /** @brief Handler for GetDateTime
      *

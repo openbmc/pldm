@@ -87,7 +87,8 @@ class BIOSConfig
         pldm::utils::DBusHandler* const dbusHandler, int fd, uint8_t eid,
         pldm::InstanceIdDb* instanceIdDb,
         pldm::requester::Handler<pldm::requester::Request>* handler,
-        pldm::responder::platform_config::Handler* platformConfigHandler);
+        pldm::responder::platform_config::Handler* platformConfigHandler,
+        pldm::utils::Callback setServiceRequestName);
 
     /** @brief Set attribute value on dbus and attribute value table
      *  @param[in] entry - attribute value entry
@@ -126,6 +127,18 @@ class BIOSConfig
     int setBIOSTable(uint8_t tableType, const Table& table,
                      bool updateBaseBIOSTable = true);
 
+    /** @brief Construct the BIos Attributes and build the tables
+     *         after receiving system type from entity manager.
+     *  @param[in] String - System Type
+     *  @return void
+     */
+    void initializeBIOSAttributes(std::string& sysType);
+
+    /** @brief Informs if the bios tables are constructed or not.
+     *  @return true if bios tables are created else returns false
+     */
+    bool isBiosTbleReady = false;
+
   private:
     /** @enum Index into the fields in the BaseBIOSTable
      */
@@ -162,6 +175,9 @@ class BIOSConfig
 
     /** @brief platform config Handler*/
     pldm::responder::platform_config::Handler* platformConfigHandler;
+
+    /** @brief Callback for registering the PLDM service name */
+    pldm::utils::Callback setServiceName;
 
     // vector persists all attributes
     using BIOSAttributes = std::vector<std::unique_ptr<BIOSAttribute>>;
