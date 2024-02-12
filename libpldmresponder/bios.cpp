@@ -71,13 +71,12 @@ DBusHandler dbusHandler;
 Handler::Handler(
     int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
-    pldm::responder::platform_config::Handler* platformConfigHandler) :
+    pldm::responder::platform_config::Handler* platformConfigHandler,
+    pldm::responder::bios::Callback requestPLDMServiceName) :
     biosConfig(BIOS_JSONS_DIR, BIOS_TABLES_DIR, &dbusHandler, fd, eid,
-               instanceIdDb, handler, platformConfigHandler)
+               instanceIdDb, handler, platformConfigHandler,
+               requestPLDMServiceName)
 {
-    biosConfig.removeTables();
-    biosConfig.buildTables();
-
     handlers.emplace(
         PLDM_SET_DATE_TIME,
         [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
