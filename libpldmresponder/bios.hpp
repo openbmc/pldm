@@ -35,10 +35,13 @@ class Handler : public CmdHandler
      *  @param[in] instanceIdDb - pointer to an InstanceIdDb object
      *  @param[in] handler - PLDM request handler
      *  @param[in] platformConfigHandler - pointer to platform config object
+     *  @param[in] requestPLDMServiceName - Callback for registering the PLDM
+     *                                      service
      */
     Handler(int fd, uint8_t eid, pldm::InstanceIdDb* instanceIdDb,
             pldm::requester::Handler<pldm::requester::Request>* handler,
-            pldm::responder::platform_config::Handler* platformConfigHandler);
+            pldm::responder::platform_config::Handler* platformConfigHandler,
+            pldm::responder::bios::Callback requestPLDMServiceName);
 
     /** @brief Handler for GetDateTime
      *
