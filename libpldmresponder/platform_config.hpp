@@ -25,7 +25,7 @@ class Handler : public CmdHandler
     Handler()
     {
         systemCompatibleMatchCallBack =
-            std::make_unique<sdbusplus::bus::match::match>(
+            std::make_unique<sdbusplus::bus::match_t>(
                 pldm::utils::DBusHandler::getBus(),
                 sdbusplus::bus::match::rules::interfacesAdded() +
                     sdbusplus::bus::match::rules::sender(
