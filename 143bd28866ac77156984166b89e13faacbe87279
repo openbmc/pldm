@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c8de699_1dba7e1e",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1ad91f9_94ac7524",
+      "range": {
+        "startLine": 439,
+        "startChar": 26,
+        "endLine": 439,
+        "endChar": 36
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e377bfcc_d52b13f2",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-09T07:21:19Z",
       "side": 1,
       "message": "processOEMFruTable",
+      "range": {
+        "startLine": 442,
+        "startChar": 37,
+        "endLine": 442,
+        "endChar": 56
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08ef5632_0a2dcfa3",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e377bfcc_d52b13f2",
       "range": {
         "startLine": 442,
         "startChar": 37,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df20314a_596e2911",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "844a9373_342b1286",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 26
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0723bd7_c0dbe290",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-02-09T07:21:19Z",
       "side": 1,
       "message": "record is a vector with one element ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 77
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d21844_365cdd57",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "no, it is a vector of all the records. the auto operator was holding a vector.\nMade changes to incorporate the multiple FRU record data information.",
+      "parentUuid": "c0723bd7_c0dbe290",
       "range": {
         "startLine": 23,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9684877_05cf50eb",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "461efefc_1914b015",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 22
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85909ed2_62493955",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-02-09T07:21:19Z",
       "side": 1,
       "message": "PLDM_ERROR_INVALID_DATA",
+      "range": {
+        "startLine": 27,
+        "startChar": 15,
+        "endLine": 27,
+        "endChar": 25
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df4d49a2_2a593b88",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85909ed2_62493955",
       "range": {
         "startLine": 27,
         "startChar": 15,
@@ -162,6 +306,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a7ca08f_09fbe290",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "As I made some change to incorporate the vector information, Range-based for loops work with arrays, but not with pointers. kept this as it is.",
+      "parentUuid": "6e9a45da_7e449e9a",
+      "range": {
+        "startLine": 35,
+        "startChar": 3,
+        "endLine": 35,
+        "endChar": 52
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "049264ee_5d0c4d47",
@@ -175,6 +343,30 @@
       "writtenOn": "2024-02-09T07:21:19Z",
       "side": 1,
       "message": "!tlv",
+      "range": {
+        "startLine": 38,
+        "startChar": 13,
+        "endLine": 38,
+        "endChar": 17
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e982317_e0a1a678",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "049264ee_5d0c4d47",
       "range": {
         "startLine": 38,
         "startChar": 13,
@@ -208,6 +400,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59260aed_3b6e4785",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "048f8845_23409f3c",
+      "range": {
+        "startLine": 40,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 9
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "413985cf_5cb5f504",
@@ -221,6 +437,30 @@
       "writtenOn": "2024-02-09T07:21:19Z",
       "side": 1,
       "message": "change this everywhere",
+      "range": {
+        "startLine": 48,
+        "startChar": 17,
+        "endLine": 48,
+        "endChar": 32
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d4a2af5_656eec16",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "413985cf_5cb5f504",
       "range": {
         "startLine": 48,
         "startChar": 17,
@@ -254,6 +494,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "412bc047_06018d96",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee95c42a_a21e3445",
+      "range": {
+        "startLine": 58,
+        "startChar": 17,
+        "endLine": 58,
+        "endChar": 24
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dce17eac_ed4acff2",
@@ -267,6 +531,30 @@
       "writtenOn": "2024-02-09T07:21:19Z",
       "side": 1,
       "message": "magic number",
+      "range": {
+        "startLine": 72,
+        "startChar": 45,
+        "endLine": 72,
+        "endChar": 47
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "968619f0_1b77dad8",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dce17eac_ed4acff2",
       "range": {
         "startLine": 72,
         "startChar": 45,
@@ -300,6 +588,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e3d651_88ffcb7c",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.hpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6156bf3_39a69352",
+      "range": {
+        "startLine": 46,
+        "startChar": 9,
+        "endLine": 46,
+        "endChar": 22
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "032a9921_22fe2050",
@@ -323,6 +635,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0a286bc_60c1ff92",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.hpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "032a9921_22fe2050",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 64
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d19b25f_90b9a867",
@@ -336,6 +672,30 @@
       "writtenOn": "2024-02-09T07:21:19Z",
       "side": 1,
       "message": "remove this ? since you are not using it anywhere.",
+      "range": {
+        "startLine": 241,
+        "startChar": 59,
+        "endLine": 241,
+        "endChar": 72
+      },
+      "revId": "143bd28866ac77156984166b89e13faacbe87279",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae7189a6_8d5a35dd",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-13T10:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d19b25f_90b9a867",
       "range": {
         "startLine": 241,
         "startChar": 59,
