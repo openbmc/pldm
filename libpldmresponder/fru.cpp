@@ -171,17 +171,16 @@ void FruImpl::buildFRUTable()
     for (const auto& object : objects)
     {
         const auto& interfaces = object.second;
-        bool isPresent = pldm::utils::checkForFruPresence(object.first.str);
-        // Do not create fru record if fru is not present.
-        // Pick up the next available fru.
-        if (!isPresent)
-        {
-            continue;
-        }
         for (const auto& interface : interfaces)
         {
             if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
             {
+                // checking fru present property is available or not.
+                if (!pldm::utils::checkForFruPresence(object.first.str))
+                {
+                    continue;
+                }
+
                 // An exception will be thrown by getRecordInfo, if the item
                 // D-Bus interface name specified in FRU_Master.json does
                 // not have corresponding config jsons
