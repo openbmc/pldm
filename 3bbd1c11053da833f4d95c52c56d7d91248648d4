@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56cf0128_d95b60b9",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1001322
+      },
+      "writtenOn": "2024-02-15T06:42:57Z",
+      "side": 1,
+      "message": "As per my understanding, you have just included the checkForFruPresence in if block. how are you enhancing it? how are you enhancing its tracing?",
+      "revId": "3bbd1c11053da833f4d95c52c56d7d91248648d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
