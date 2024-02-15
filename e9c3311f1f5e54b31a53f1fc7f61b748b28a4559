@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b766f630_62be2513",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T18:29:51Z",
+      "side": 1,
+      "message": "extra line. 50",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a634029c_b71981b7",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T18:29:51Z",
+      "side": 1,
+      "message": "Can we have common function to check and reply, since same 4 lines are repeating multiple time at 235,273,314,365 line no.",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9910e9bf_c5b2c004",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T18:29:51Z",
+      "side": 1,
+      "message": "can we have msg like\" Initialising BIOS attributes for system:{TYPE}\"",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0fb9c02_57ae996d",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T18:29:51Z",
+      "side": 1,
+      "message": "[out] void \n\nplease correct.",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cc28b64_1b5146cb",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T18:29:51Z",
+      "side": 1,
+      "message": "1.Rename to isBiosTableReady\n2.Please initialize in constructor.",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cdf94f5_65d20e43",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T18:29:51Z",
+      "side": 1,
+      "message": "move trace outside of for loop. not required to print multiple time.",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4b68441_77d694ff",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T18:29:51Z",
+      "side": 1,
+      "message": "Extra line no :56",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
