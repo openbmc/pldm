@@ -353,6 +353,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "749e2caa_be82e844",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:55:48Z",
+      "side": 1,
+      "message": "This will be pointing to a single record itself and the pointer gets updated later on to the next record. so ideally record is a single record from the fruData obtained.",
+      "parentUuid": "39b654f8_d01d2904",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 19
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e53a586a_eef8827b",
@@ -390,6 +414,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "e53a586a_eef8827b",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 20
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7296b26_7b66209b",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:55:48Z",
+      "side": 1,
+      "message": "This is not a vector, rather a single record.",
+      "parentUuid": "ee3cb6bc_8fc408fe",
       "range": {
         "startLine": 31,
         "startChar": 9,
