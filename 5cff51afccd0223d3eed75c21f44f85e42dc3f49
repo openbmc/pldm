@@ -49,6 +49,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1621d01_d5a5098e",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T07:05:46Z",
+      "side": 1,
+      "message": "please mention what it\u0027s return [out]?.",
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c62d129_17674657",
         "filename": "libpldmresponder/fru.hpp",
         "patchSetId": 34
@@ -66,6 +83,23 @@
         "endLine": 341,
         "endChar": 34
       },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbcdaaf_5fbf7851",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T07:05:46Z",
+      "side": 1,
+      "message": "return type is missing [out]?",
       "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -180,6 +214,29 @@
         "startChar": 8,
         "endLine": 42,
         "endChar": 56
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4750f35c_18845dcb",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-15T07:05:46Z",
+      "side": 1,
+      "message": "unnecessary () in if condition.",
+      "range": {
+        "startLine": 50,
+        "startChar": 77,
+        "endLine": 50,
+        "endChar": 78
       },
       "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
