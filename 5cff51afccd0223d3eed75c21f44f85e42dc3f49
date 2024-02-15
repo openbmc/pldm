@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6094a8c0_3f7bf65e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 34
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ee3cb6f3_381b50d2",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ab2ee27_e059f20a",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-15T06:44:24Z",
       "side": 1,
       "message": "IBM cable cards,",
+      "range": {
+        "startLine": 10,
+        "startChar": 43,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0ccdd59_6482eb41",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 34
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ab2ee27_e059f20a",
       "range": {
         "startLine": 10,
         "startChar": 43,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c5d785f_b3204ebc",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1621d01_d5a5098e",
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c62d129_17674657",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-02-15T06:44:24Z",
       "side": 1,
       "message": "remove.",
+      "range": {
+        "startLine": 341,
+        "startChar": 4,
+        "endLine": 341,
+        "endChar": 34
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5211cadd_a86f7ae0",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c62d129_17674657",
       "range": {
         "startLine": 341,
         "startChar": 4,
@@ -104,6 +194,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dc5455c_0f2a5dea",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bbcdaaf_5fbf7851",
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e9bca57_66e4c174",
@@ -117,6 +225,30 @@
       "writtenOn": "2024-02-15T06:44:24Z",
       "side": 1,
       "message": "redundant",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 43
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b8aa1d_c244fcdf",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e9bca57_66e4c174",
       "range": {
         "startLine": 23,
         "startChar": 4,
@@ -150,6 +282,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cbdf4dc_94c2ad97",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0d73048_ff8eaa88",
+      "range": {
+        "startLine": 27,
+        "startChar": 22,
+        "endLine": 27,
+        "endChar": 38
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13403dc0_8c325a06",
@@ -163,6 +319,30 @@
       "writtenOn": "2024-02-15T06:44:24Z",
       "side": 1,
       "message": "record is not the right name..change it to table or records.",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 19
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39b654f8_d01d2904",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13403dc0_8c325a06",
       "range": {
         "startLine": 29,
         "startChar": 8,
@@ -196,6 +376,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee3cb6bc_8fc408fe",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e53a586a_eef8827b",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 20
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d39612d_e35ac158",
@@ -209,6 +413,30 @@
       "writtenOn": "2024-02-15T06:44:24Z",
       "side": 1,
       "message": "for( const auto\u0026 fru_filed : std::ranges::iota_view{0, record-\u003enum_fru_fields}",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 56
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9cc8d04_3103fc1b",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d39612d_e35ac158",
       "range": {
         "startLine": 42,
         "startChar": 8,
@@ -242,6 +470,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7371281_6c59d643",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4750f35c_18845dcb",
+      "range": {
+        "startLine": 50,
+        "startChar": 77,
+        "endLine": 50,
+        "endChar": 78
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be926231_960f8a3d",
@@ -255,6 +507,30 @@
       "writtenOn": "2024-02-15T06:44:24Z",
       "side": 1,
       "message": "came because of bad rebase ?",
+      "range": {
+        "startLine": 229,
+        "startChar": 1,
+        "endLine": 230,
+        "endChar": 73
+      },
+      "revId": "5cff51afccd0223d3eed75c21f44f85e42dc3f49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b574e923_21479771",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-15T10:00:10Z",
+      "side": 1,
+      "message": "This is already upstreamed. I have not added them in the commit",
+      "parentUuid": "be926231_960f8a3d",
       "range": {
         "startLine": 229,
         "startChar": 1,
