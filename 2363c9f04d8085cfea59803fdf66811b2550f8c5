@@ -1,0 +1,336 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b93d925a_74e63a36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Let\u0027s send these to phosphor-logging instead of using the journal.  Even if it is an arbitrary message to phosphor-logging, I\u0027d rather see them there.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 65
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ab127b_69bc280a",
+        "filename": "common/utils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Support for this should be broken out into a separate commit, as it should be trivial to get merged.",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46f08050_aecacc43",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "I\u0027m a bit surprised we need this.  I don\u0027t like having separate code paths that are only even compiled under certain configs.",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25b17ddc_99a14652",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Get this from the phosphor-dbus-interfaces header.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 78
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787aefbb_bca38d44",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "How would we handle machines with a different DIMM labeling scheme?  (Not an ifdef I hope).",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cff3d24a_e6a8218d",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "```\nstatic inline auto to_hex_string(uint8_t value)\n{\n    return std::format(\"{:2x}\", value);\n}\n```\n\nString stream processing is rather expensive compared to std::format.\n\nhttps://godbolt.org/z/7958bTeEP\n\nYou\u0027ll see here how the format code is like half the size of sstream and only a single function call.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 1
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e2c2af_dfa1300f",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Why is this function named `get...Number` if it returns a string?",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 17
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "337cd547_f3278ef4",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Why forward declare?",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 55
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf1f8001_267b05e0",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "auto response \u003d ...",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 63
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7171c21_8abe62b0",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Let\u0027s not do this.  The lg2 already puts the function name in the journal.",
+      "range": {
+        "startLine": 94,
+        "startChar": 24,
+        "endLine": 94,
+        "endChar": 54
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00d13520_b31d5a1a",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "I\u0027m surprised this code doesn\u0027t need the service name.  It looks like inside this function it calls mapper to get the service name.  So that means we\u0027ve got two calls to mapper to basically get a single property.\n\nWe should probably follow up with an improvement here.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 39
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecb166fe_1bd82386",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Please name these and use `enum class` rather than creating an anonymous enum.",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8cdf582_0f35b4f9",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "`static constexpr auto memoryError \u003d std::to_array(...`",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0badbf4a_5d342fd1",
+        "filename": "oem/meta/platform-mc/event_oem_meta.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "I don\u0027t think any of these need to be in this header?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 73
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f993cce8_13c767df",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Is there any way we can do this without an ifdef?  Can we have the handlers somehow register with the manager instead of having specific functions in the manager for each message?",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd00b7ac_8580ed3e",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-02-15T16:14:40Z",
+      "side": 1,
+      "message": "Won\u0027t this fail to compile on non-Meta compiles?",
+      "range": {
+        "startLine": 306,
+        "startChar": 0,
+        "endLine": 307,
+        "endChar": 73
+      },
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
