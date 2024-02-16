@@ -857,10 +857,12 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                         pldm::pdr::EntityInfo entityInfo{};
                         pldm::pdr::CompositeSensorStates
                             compositeSensorStates{};
+                        std::vector<pldm::pdr::StateSetId> stateSetIds{};
 
                         try
                         {
-                            std::tie(entityInfo, compositeSensorStates) =
+                            std::tie(entityInfo, compositeSensorStates,
+                                     stateSetIds) =
                                 lookupSensorInfo(sensorEntry);
                         }
                         catch (const std::out_of_range&)
@@ -868,7 +870,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             try
                             {
                                 sensorEntry.terminusID = PLDM_TID_RESERVED;
-                                std::tie(entityInfo, compositeSensorStates) =
+                                std::tie(entityInfo, compositeSensorStates,
+                                         stateSetIds) =
                                     lookupSensorInfo(sensorEntry);
                             }
                             catch (const std::out_of_range&)
@@ -893,9 +896,11 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                         }
                         const auto& [containerId, entityType,
                                      entityInstance] = entityInfo;
+                        auto stateSetId = stateSetIds[sensorOffset];
                         pldm::responder::events::StateSensorEntry
                             stateSensorEntry{containerId, entityType,
-                                             entityInstance, sensorOffset};
+                                             entityInstance, sensorOffset,
+                                             stateSetId};
                         handleStateSensorEvent(stateSensorEntry, eventState);
                     }
                 };
