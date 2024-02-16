@@ -166,6 +166,7 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
     CompositeSensorStates sensors{};
     auto statesPtr = pdr->possible_states;
     auto compositeSensorCount = pdr->composite_sensor_count;
+    std::vector<StateSetId> stateSetIds{};
 
     while (compositeSensorCount--)
     {
@@ -189,6 +190,8 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
                       updateStates);
 
         sensors.emplace_back(std::move(possibleStates));
+        stateSetIds.emplace_back(state->state_set_id);
+
         if (compositeSensorCount)
         {
             statesPtr += sizeof(state_sensor_possible_states) +
@@ -200,8 +203,8 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
         std::make_tuple(static_cast<ContainerID>(pdr->container_id),
                         static_cast<EntityType>(pdr->entity_type),
                         static_cast<EntityInstance>(pdr->entity_instance));
-    auto sensorInfo = std::make_tuple(std::move(entityInfo),
-                                      std::move(sensors));
+    auto sensorInfo = std::make_tuple(std::move(entityInfo), std::move(sensors),
+                                      std::move(stateSetIds));
     return std::make_tuple(pdr->terminus_handle, pdr->sensor_id,
                            std::move(sensorInfo));
 }
