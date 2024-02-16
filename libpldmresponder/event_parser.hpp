@@ -27,13 +27,14 @@ struct StateSensorEntry
     pdr::EntityType entityType;
     pdr::EntityInstance entityInstance;
     pdr::SensorOffset sensorOffset;
+    pdr::StateSetId stateSetid;
 
     bool operator==(const StateSensorEntry& e) const
     {
-        return ((containerId == e.containerId) &&
-                (entityType == e.entityType) &&
-                (entityInstance == e.entityInstance) &&
-                (sensorOffset == e.sensorOffset));
+        return (
+            (containerId == e.containerId) && (entityType == e.entityType) &&
+            (entityInstance == e.entityInstance) &&
+            (sensorOffset == e.sensorOffset) && (stateSetid == e.stateSetid));
     }
 
     bool operator<(const StateSensorEntry& e) const
@@ -45,7 +46,10 @@ struct StateSensorEntry
              (entityInstance < e.entityInstance)) ||
             ((containerId == e.containerId) && (entityType == e.entityType) &&
              (entityInstance == e.entityInstance) &&
-             (sensorOffset < e.sensorOffset)));
+             (sensorOffset < e.sensorOffset)) ||
+            ((containerId == e.containerId) && (entityType == e.entityType) &&
+             (entityInstance == e.entityInstance) &&
+             (sensorOffset == e.sensorOffset) && (stateSetid < e.stateSetid)));
     }
 };
 

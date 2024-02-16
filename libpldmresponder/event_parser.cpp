@@ -5,7 +5,6 @@
 
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <set>
 
 PHOSPHOR_LOG2_USING;
@@ -58,6 +57,8 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
                 static_cast<uint16_t>(entry.value("entityInstance", 0));
             stateSensorEntry.sensorOffset =
                 static_cast<uint8_t>(entry.value("sensorOffset", 0));
+            stateSensorEntry.stateSetid =
+                static_cast<uint16_t>(entry.value("stateSetId", 0));
 
             pldm::utils::DBusMapping dbusInfo{};
 
