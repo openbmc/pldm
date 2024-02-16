@@ -70,6 +70,7 @@ int ProgressCodeHandler::write(const char* buffer, uint32_t /*offset*/,
         for (int i = 0; i < 8; i++)
             primaryCode |= (uint64_t)primaryCodeArray[i] << 8 * i;
 
+        std::cout << "primaryCode:" << primaryCode << std::endl;
         return setRawBootProperty(std::make_tuple(primaryCode, secondaryCode));
     }
     return PLDM_ERROR;

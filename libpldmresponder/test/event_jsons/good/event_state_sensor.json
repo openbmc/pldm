@@ -5,6 +5,7 @@
             "entityType": 64,
             "entityInstance": 1,
             "sensorOffset": 0,
+            "stateSetId": 1,
             "event_states": [0, 1, 2],
             "dbus": {
                 "object_path": "/xyz/abc/def",
@@ -23,6 +24,7 @@
             "entityType": 64,
             "entityInstance": 1,
             "sensorOffset": 1,
+            "stateSetId": 1,
             "event_states": [2, 3],
             "dbus": {
                 "object_path": "/xyz/abc/def",
@@ -37,6 +39,7 @@
             "entityType": 67,
             "entityInstance": 2,
             "sensorOffset": 0,
+            "stateSetId": 1,
             "event_states": [0, 1],
             "dbus": {
                 "object_path": "/xyz/abc/ghi",
