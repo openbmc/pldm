@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9c8e91_b8763206",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-18T05:12:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b766f630_62be2513",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a634029c_b71981b7",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0313499c_d8ce5cad",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-18T05:12:20Z",
+      "side": 1,
+      "message": "Function call will not help much here as we will have to again check for the return value of the function and decide on the next action.",
+      "parentUuid": "a634029c_b71981b7",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9910e9bf_c5b2c004",
         "filename": "libpldmresponder/bios_config.cpp",
         "patchSetId": 7
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-15T18:29:51Z",
       "side": 1,
       "message": "can we have msg like\" Initialising BIOS attributes for system:{TYPE}\"",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b02af60_4266033b",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-18T05:12:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9910e9bf_c5b2c004",
       "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22120eb5_67366551",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-18T05:12:20Z",
+      "side": 1,
+      "message": "Please point me to the doxygen document which talks about [out] .\n@return seems to be the correct doxygen tag to provide function return value details.",
+      "parentUuid": "a0fb9c02_57ae996d",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cc28b64_1b5146cb",
         "filename": "libpldmresponder/bios_config.hpp",
         "patchSetId": 7
@@ -82,6 +154,24 @@
       "writtenOn": "2024-02-15T18:29:51Z",
       "side": 1,
       "message": "1.Rename to isBiosTableReady\n2.Please initialize in constructor.",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34a6e551_f13bc214",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-18T05:12:20Z",
+      "side": 1,
+      "message": "1. Renamed to isBiosTableReady.\n\n2. About initializing in Constructor:\nMember initialization is allowed during declaration.\nhttps://en.cppreference.com/w/cpp/language/data_members#Member_initialization\nIs there any specific reason to move it to constructor?",
+      "parentUuid": "8cc28b64_1b5146cb",
       "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -103,6 +193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dee37a8_796b43e6",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-18T05:12:20Z",
+      "side": 1,
+      "message": "I have removed the trace.",
+      "parentUuid": "7cdf94f5_65d20e43",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4b68441_77d694ff",
@@ -116,6 +224,24 @@
       "writtenOn": "2024-02-15T18:29:51Z",
       "side": 1,
       "message": "Extra line no :56",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a02bc08b_3b738c3e",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-18T05:12:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4b68441_77d694ff",
       "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
