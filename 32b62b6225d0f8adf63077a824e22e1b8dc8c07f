@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dca9d186_9b34fde9",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T05:10:35Z",
+      "side": 1,
+      "message": "should we return success here or failure ? or not_supported for the moment ?\n\nWhat if this code is running on a non-ibm system , it is expected to do something rather than do-nothing and send ERROR ?",
+      "range": {
+        "startLine": 448,
+        "startChar": 4,
+        "endLine": 448,
+        "endChar": 22
+      },
+      "revId": "32b62b6225d0f8adf63077a824e22e1b8dc8c07f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
