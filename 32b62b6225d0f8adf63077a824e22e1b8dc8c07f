@@ -22,6 +22,30 @@
       },
       "revId": "32b62b6225d0f8adf63077a824e22e1b8dc8c07f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "621f9f74_751cb167",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-19T05:21:30Z",
+      "side": 1,
+      "message": "yes, I believe we can send PLDM_ERROR_UNSUPPORTED_PLDM_CMD for non-IBM record type as we are yet to implement the handling of the command. For IBM records this is the way of handling the IBM record.\n\nWe could implement the setFRUTable for non-IBM records in a different commit.\n\nDoes this look fine?",
+      "parentUuid": "dca9d186_9b34fde9",
+      "range": {
+        "startLine": 448,
+        "startChar": 4,
+        "endLine": 448,
+        "endChar": 22
+      },
+      "revId": "32b62b6225d0f8adf63077a824e22e1b8dc8c07f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
