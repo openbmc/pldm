@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e761f102_2f7f9390",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 42
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T08:22:38Z",
+      "side": 1,
+      "message": "what is CM ? can you fix it ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 27,
+        "endLine": 7,
+        "endChar": 34
+      },
+      "revId": "2d5a093cd32ad7e9f3bf863c48a607683d805fa1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
