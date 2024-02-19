@@ -46,6 +46,30 @@
       },
       "revId": "32b62b6225d0f8adf63077a824e22e1b8dc8c07f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfb7d38b_342c5bf1",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T05:43:10Z",
+      "side": 1,
+      "message": "yes, sending PLDM_ERROR_UNSUPPORTED_PLDM_CMD sounds good.",
+      "parentUuid": "621f9f74_751cb167",
+      "range": {
+        "startLine": 448,
+        "startChar": 4,
+        "endLine": 448,
+        "endChar": 22
+      },
+      "revId": "32b62b6225d0f8adf63077a824e22e1b8dc8c07f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
