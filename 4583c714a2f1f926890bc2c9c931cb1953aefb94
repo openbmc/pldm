@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c7a9dcb_6de2278b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T09:30:39Z",
+      "side": 1,
+      "message": "how is receiving system type related to BIOS table build lazily ? what was the problem if it was not built lazily ? can you add those details as well.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 65
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea6a6aa_3184c09f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T09:30:39Z",
+      "side": 1,
+      "message": "avoid the gerrit links as much as possible, prefer github links instead.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 61
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f747cd07_da29c3b8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T09:30:39Z",
+      "side": 1,
+      "message": "this is a proprietary simulator ..instead you could just mention that it is tested in a simulator.",
+      "range": {
+        "startLine": 30,
+        "startChar": 45,
+        "endLine": 30,
+        "endChar": 51
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb88b912_20001a0f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T09:30:39Z",
+      "side": 1,
+      "message": "i dont anticipate this to be used any where else in future \u0026 not all callbacks could be void ? do you think add this here would add value ?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 39
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45554516_fe47e1a4",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T09:30:39Z",
+      "side": 1,
+      "message": "may be change this to \n\n`BIOS Stack is not ready yet since System type is not obtained.`\n\nTry again ..does not really help much ..since the applications cannot see this and do any action. This is mostly for debug purpose right ?\n\nChange this every where.",
+      "range": {
+        "startLine": 234,
+        "startChar": 14,
+        "endLine": 234,
+        "endChar": 55
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6a8dc4f_e3deea96",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T09:30:39Z",
+      "side": 1,
+      "message": "can we have the callback variable name consistent across ?",
+      "range": {
+        "startLine": 93,
+        "startChar": 30,
+        "endLine": 93,
+        "endChar": 51
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a789e4_8aad2b2c",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-19T09:30:39Z",
+      "side": 1,
+      "message": "Would suggest to make this a variable than a vector , and change it to vector in future when we have multiple callbacks.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 37
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
