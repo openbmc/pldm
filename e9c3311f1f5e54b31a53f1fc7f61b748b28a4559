@@ -73,6 +73,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ade67ea5_861bdd69",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-19T05:28:35Z",
+      "side": 1,
+      "message": "Can we replace initializeBIOSAttributes -\u003e initBIOSAttributes?",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 66
+      },
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9910e9bf_c5b2c004",
         "filename": "libpldmresponder/bios_config.cpp",
         "patchSetId": 7
@@ -102,6 +125,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "9910e9bf_c5b2c004",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aad8e7d3_68338a6c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-19T05:28:35Z",
+      "side": 1,
+      "message": "no need to write function name initializeBIOSAttributes, please replace as mentioned in comment.",
+      "parentUuid": "1b02af60_4266033b",
       "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -143,6 +184,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aba6da81_926fd175",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-19T05:28:35Z",
+      "side": 1,
+      "message": "@return void -\u003e is correct.\n\ninstead of String replace with sysType at line 134.",
+      "parentUuid": "22120eb5_67366551",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cc28b64_1b5146cb",
         "filename": "libpldmresponder/bios_config.hpp",
         "patchSetId": 7
@@ -172,6 +231,24 @@
       "side": 1,
       "message": "1. Renamed to isBiosTableReady.\n\n2. About initializing in Constructor:\nMember initialization is allowed during declaration.\nhttps://en.cppreference.com/w/cpp/language/data_members#Member_initialization\nIs there any specific reason to move it to constructor?",
       "parentUuid": "8cc28b64_1b5146cb",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddc475e9_ec77c335",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-19T05:28:35Z",
+      "side": 1,
+      "message": "There is no rules such as but It\u0027s better to initialise variable in constructor with other variable, and it\u0027s easy in future to find variable value, if class don\u0027t have constructor then it\u0027s fine to initialising inside class.",
+      "parentUuid": "34a6e551_f13bc214",
       "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
