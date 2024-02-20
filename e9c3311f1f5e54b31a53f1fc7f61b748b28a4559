@@ -94,6 +94,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59bff069_4fc21bb6",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ade67ea5_861bdd69",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 66
+      },
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9910e9bf_c5b2c004",
@@ -147,6 +171,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3ad144d_9c0021a4",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aad8e7d3_68338a6c",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0fb9c02_57ae996d",
@@ -196,6 +238,24 @@
       "side": 1,
       "message": "@return void -\u003e is correct.\n\ninstead of String replace with sysType at line 134.",
       "parentUuid": "22120eb5_67366551",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a41fce37_a500317e",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aba6da81_926fd175",
       "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -267,6 +327,24 @@
       "side": 1,
       "message": "+1 agree with @kamal on the Initializing part.. if we can move the initialization to the constructor , it would be easy to figure out..since all the initializations will be at the same place. I dont think its syntactically wrong to have to down, but its just ease of debug.",
       "parentUuid": "ddc475e9_ec77c335",
+      "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04d016d5_b9777478",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49815c3c_901002b7",
       "revId": "e9c3311f1f5e54b31a53f1fc7f61b748b28a4559",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

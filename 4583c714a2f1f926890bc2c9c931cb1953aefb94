@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc96b7b2_fb276c3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c7a9dcb_6de2278b",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 65
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eea6a6aa_3184c09f",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-19T09:30:39Z",
       "side": 1,
       "message": "avoid the gerrit links as much as possible, prefer github links instead.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 61
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f20c60e8_fb71c684",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eea6a6aa_3184c09f",
       "range": {
         "startLine": 16,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3512f422_9829d7ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f747cd07_da29c3b8",
+      "range": {
+        "startLine": 30,
+        "startChar": 45,
+        "endLine": 30,
+        "endChar": 51
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb88b912_20001a0f",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-02-19T09:30:39Z",
       "side": 1,
       "message": "i dont anticipate this to be used any where else in future \u0026 not all callbacks could be void ? do you think add this here would add value ?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 39
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02c45508_14be6bdd",
+        "filename": "common/utils.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb88b912_20001a0f",
       "range": {
         "startLine": 48,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "047659cc_27959b79",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45554516_fe47e1a4",
+      "range": {
+        "startLine": 234,
+        "startChar": 14,
+        "endLine": 234,
+        "endChar": 55
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6a8dc4f_e3deea96",
@@ -139,6 +259,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9a10a35_099db6cc",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6a8dc4f_e3deea96",
+      "range": {
+        "startLine": 93,
+        "startChar": 30,
+        "endLine": 93,
+        "endChar": 51
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53a789e4_8aad2b2c",
@@ -152,6 +296,30 @@
       "writtenOn": "2024-02-19T09:30:39Z",
       "side": 1,
       "message": "Would suggest to make this a variable than a vector , and change it to vector in future when we have multiple callbacks.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 37
+      },
+      "revId": "4583c714a2f1f926890bc2c9c931cb1953aefb94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afbe118e_a6ea1908",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-20T13:45:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53a789e4_8aad2b2c",
       "range": {
         "startLine": 58,
         "startChar": 4,
