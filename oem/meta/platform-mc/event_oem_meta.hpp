@@ -27,6 +27,15 @@ void covertToDimmString(uint8_t cpu, uint8_t channel, uint8_t slot,
 void getCommonDimmLocation(const _dimm_info& dimmInfo,
                            std::string& dimmlocation, std::string& dimm);
 
+int handlePowerRailFail(const std::string board,
+                        const uint8_t error_description, const uint8_t action);
+
+int decodeBicEvent(tid_t tid, const uint8_t* eventData, size_t eventDataSize,
+                   const std::map<std::string, MctpEndpoint>& configurations);
+
+int decodeBiosEvent(tid_t tid, const uint8_t* eventData, size_t eventDataSize,
+                    const std::map<std::string, MctpEndpoint>& configurations);
+
 int processOemMetaEvent(
     tid_t tid, const uint8_t* eventData, size_t eventDataSize,
     const std::map<std::string, MctpEndpoint>& configurations);
