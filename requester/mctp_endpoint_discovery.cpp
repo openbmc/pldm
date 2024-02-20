@@ -20,15 +20,12 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
                            "/xyz/openbmc_project/mctp"),
                        std::bind_front(&MctpDiscovery::dicoverEndpoints, this))
 {
-    dbus::ObjectValueTree objects;
+    pldm::utils::ObjectValueTree objects;
 
     try
     {
-        auto method = bus.new_method_call(
-            "xyz.openbmc_project.MCTP", "/xyz/openbmc_project/mctp",
-            "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
-        auto reply = bus.call(method, dbusTimeout);
-        reply.read(objects);
+        objects = pldm::utils::DBusHandler::getManagedObj(MCTPService,
+                                                          MCTPPath);
     }
     catch (const std::exception& e)
     {

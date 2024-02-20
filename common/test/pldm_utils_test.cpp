@@ -1,10 +1,31 @@
 #include "common/utils.hpp"
+#include "mocked_utils.hpp"
 
 #include <libpldm/platform.h>
 
 #include <gtest/gtest.h>
 
 using namespace pldm::utils;
+
+TEST(GetInventoryObjects, testForEmptyObject)
+{
+    ObjectValueTree result = DBusHandler::getInventoryObjects<Mocked>();
+    EXPECT_TRUE(result.empty());
+}
+
+TEST(GetInventoryObjects, testForObject)
+{
+    std::string path = "/foo/bar";
+    std::string service = "foo.bar";
+    auto result = DBusHandler::getInventoryObjects<MockedObject>();
+    auto function =
+        std::get<bool>(result[path][service][std::string("Functional")]);
+    auto model =
+        std::get<std::string>(result[path][service][std::string("Model")]);
+    EXPECT_FALSE(result.empty());
+    EXPECT_TRUE(function);
+    EXPECT_EQ(model, std::string("1234 - 00Z"));
+}
 
 TEST(decodeDate, testGooduintToDate)
 {

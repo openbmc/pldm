@@ -559,6 +559,16 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     return bus.call(method, dbusTimeout).unpack<PropertyValue>();
 }
 
+ObjectValueTree DBusHandler::getManagedObj(const char* service,
+                                           const char* rootPath)
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(service, rootPath,
+                                      "org.freedesktop.DBus.ObjectManager",
+                                      "GetManagedObjects");
+    return bus.call(method).unpack<ObjectValueTree>();
+}
+
 PropertyValue jsonEntryToDbusVal(std::string_view type,
                                  const nlohmann::json& value)
 {

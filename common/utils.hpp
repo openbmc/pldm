@@ -14,6 +14,7 @@
 
 #include <nlohmann/json.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Inventory/Manager/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include <deque>
@@ -165,8 +166,12 @@ T decimalToBcd(T decimal)
     return bcd;
 }
 
+using inventoryManager =
+    sdbusplus::client::xyz::openbmc_project::inventory::Manager<>;
+
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 constexpr auto mapperService = "xyz.openbmc_project.ObjectMapper";
+constexpr auto inventoryPath = "/xyz/openbmc_project/inventory";
 
 struct DBusMapping
 {
@@ -178,7 +183,8 @@ struct DBusMapping
 
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string, std::vector<std::string>>;
+                 uint64_t, double, std::string, std::vector<uint8_t>,
+                 std::vector<std::string>>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -192,6 +198,7 @@ using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
+using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 
 /**
  * @brief The interface for DBusHandler
@@ -311,6 +318,34 @@ class DBusHandler : public DBusHandlerInterface
      */
     void setDbusProperty(const DBusMapping& dBusMap,
                          const PropertyValue& value) const override;
+
+    /** @brief This function retrieves the properties of an object managed
+     *  by the specified D-Bus service located at the given object path.
+     *
+     *  @param[in] service - The D-Bus service providing the managed object
+     *  @param[in] value - The object path of the managed object
+     *
+     *  @return A hierarchical structure representing the properties of the
+     * managed object.
+     *  @throw sdbusplus::exception::exception when it fails
+     */
+    static ObjectValueTree getManagedObj(const char* service, const char* path);
+
+    /** @brief Retrieve the inventory objects managed by a specified class.
+     *  The retrieved inventory objects are cached statically
+     *  and returned upon subsequent calls to this function.
+     *
+     *  @tparam ClassType - The class type that manages the inventory objects.
+     *
+     *  @return A reference to the cached inventory objects.
+     */
+    template <typename ClassType>
+    static auto& getInventoryObjects()
+    {
+        static ObjectValueTree object = ClassType::getManagedObj(
+            inventoryManager::interface, inventoryPath);
+        return object;
+    }
 };
 
 /** @brief Fetch parent D-Bus object based on pathname
