@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d968ac_3cc50911",
+        "filename": "common/utils.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-20T11:07:46Z",
+      "side": 1,
+      "message": "this can be removed and the string constants can be obtained from PDI interfaces. please refer to https://github.com/openbmc/pldm/commit/7b4d59aa8f6020b919d41415bece7f0651304b00 for more information and rework on this change.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 66
+      },
+      "revId": "f91ab73328f843610d5eb8433e71c0b97ea3fc97",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
