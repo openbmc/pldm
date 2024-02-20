@@ -46,14 +46,11 @@ std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
     static constexpr auto DUMP_MANAGER_BUSNAME =
         "xyz.openbmc_project.Dump.Manager";
     static constexpr auto DUMP_MANAGER_PATH = "/xyz/openbmc_project/dump";
-    static constexpr auto OBJECT_MANAGER_INTERFACE =
-        "org.freedesktop.DBus.ObjectManager";
-    auto& bus = pldm::utils::DBusHandler::getBus();
 
     // Stores the current resource dump entry path
     std::string curResDumpEntryPath{};
 
-    dbus::ObjectValueTree objects;
+    ObjectValueTree objects;
     // Select the dump entry interface for system dump or resource dump
     DumpEntryInterface dumpEntryIntf = systemDumpEntry;
     if ((dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP) ||
@@ -64,12 +61,8 @@ std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
 
     try
     {
-        auto method =
-            bus.new_method_call(DUMP_MANAGER_BUSNAME, DUMP_MANAGER_PATH,
-                                OBJECT_MANAGER_INTERFACE, "GetManagedObjects");
-
-        auto reply = bus.call(method, dbusTimeout);
-        reply.read(objects);
+        objects = pldm::utils::DBusHandler::getManagedObj(DUMP_MANAGER_BUSNAME,
+                                                          DUMP_MANAGER_PATH);
     }
     catch (const sdbusplus::exception_t& e)
     {

@@ -7,6 +7,9 @@
 namespace pldm
 {
 
+constexpr auto MCTPService = "xyz.openbmc_project.MCTP";
+constexpr auto MCTPPath = "/xyz/openbmc_project/mctp";
+
 class MctpDiscovery
 {
   public:
