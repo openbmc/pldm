@@ -22,6 +22,35 @@ inline bool operator==(const DBusMapping& lhs, const DBusMapping& rhs)
 } // namespace utils
 } // namespace pldm
 
+class GetManagedObject
+{
+  public:
+    static pldm::utils::ObjectValueTree getManagedObj(const char* /*service*/,
+                                                      const char* /*path*/)
+    {
+        return pldm::utils::ObjectValueTree{};
+    }
+};
+
+class GetManagedObject1
+{
+  public:
+    static pldm::utils::ObjectValueTree getManagedObj(const char* /*service*/,
+                                                      const char* /*path*/)
+    {
+        return pldm::utils::ObjectValueTree{
+            {sdbusplus::message::object_path("/foo/bar"),
+             {{"foo.bar",
+               {{"Functional", true},
+                {"Enabled", true},
+                {"PrettyName", "System"},
+                {"Present", true},
+                {"SerialNumber", "abc123z"},
+                {"Model", "1234 - 00Z"},
+                {"SubModel", "S0"}}}}}};
+    }
+};
+
 class MockdBusHandler : public pldm::utils::DBusHandler
 {
   public:
