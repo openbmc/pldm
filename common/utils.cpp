@@ -559,6 +559,21 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     return bus.call(method, dbusTimeout).unpack<PropertyValue>();
 }
 
+ObjectValueTree DBusHandler::getManagedObj(const char* service,
+                                           const char* rootPath)
+{
+    info("riya, L565 inside getManagedObj, service = {SER}, spath= {SPATH}",
+         "SER", service, "SPATH", rootPath);
+    ObjectValueTree objects;
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(service, rootPath,
+                                      "org.freedesktop.DBus.ObjectManager",
+                                      "GetManagedObjects");
+    auto reply = bus.call(method);
+    reply.read(objects);
+    return objects;
+}
+
 PropertyValue jsonEntryToDbusVal(std::string_view type,
                                  const nlohmann::json& value)
 {

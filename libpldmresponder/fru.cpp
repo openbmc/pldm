@@ -140,24 +140,21 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
 
 void FruImpl::buildFRUTable()
 {
+    info(" riya inside buildFRU");
     if (isBuilt)
     {
+        info("riya table isBuilt");
         return;
     }
 
     fru_parser::DBusLookupInfo dbusInfo;
-    // Read the all the inventory D-Bus objects
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    dbus::ObjectValueTree objects;
 
     try
     {
+        info(
+            "riya, L153 inside build fru table where get inventory object is called");
         dbusInfo = parser.inventoryLookup();
-        auto method = bus.new_method_call(
-            std::get<0>(dbusInfo).c_str(), std::get<1>(dbusInfo).c_str(),
-            "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
-        auto reply = bus.call(method, dbusTimeout);
-        reply.read(objects);
+        objects = pldm::utils::DBusHandler::getInventoryObjects();
     }
     catch (const std::exception& e)
     {
