@@ -1,10 +1,23 @@
 #include "common/utils.hpp"
+#include "mocked_utils.hpp"
 
 #include <libpldm/platform.h>
 
 #include <gtest/gtest.h>
 
 using namespace pldm::utils;
+
+TEST(GetInventoryObjects, testForEmptyObject)
+{
+    ObjectValueTree result = DBusHandler::getInventoryObjects<Mocked>();
+    EXPECT_TRUE(result.empty());
+}
+
+TEST(GetInventoryObjects, testForObject)
+{
+    auto result = DBusHandler::getInventoryObjects<MockedObject>();
+    EXPECT_FALSE(result.empty());
+}
 
 TEST(decodeDate, testGooduintToDate)
 {

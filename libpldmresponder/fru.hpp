@@ -24,9 +24,9 @@ namespace responder
 namespace dbus
 {
 
-using Value =
-    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string, std::vector<uint8_t>>;
+using Value = std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
+                           int64_t, uint64_t, double, std::string,
+                           std::vector<uint8_t>, std::vector<std::string>>;
 using PropertyMap = std::map<Property, Value>;
 using InterfaceMap = std::map<Interface, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
@@ -225,6 +225,7 @@ class FruImpl
     pldm_entity_association_tree* entityTree;
     pldm_entity_association_tree* bmcEntityTree;
     pldm::responder::oem_fru::Handler* oemFruHandler;
+    dbus::ObjectValueTree objects;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
