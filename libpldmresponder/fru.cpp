@@ -141,22 +141,18 @@ void FruImpl::buildFRUTable()
 {
     if (isBuilt)
     {
+        error("inside if of fru");
         return;
     }
 
     fru_parser::DBusLookupInfo dbusInfo;
-    // Read the all the inventory D-Bus objects
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    dbus::ObjectValueTree objects;
 
     try
     {
+        error("Inside fru try block");
         dbusInfo = parser.inventoryLookup();
-        auto method = bus.new_method_call(
-            std::get<0>(dbusInfo).c_str(), std::get<1>(dbusInfo).c_str(),
-            "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
-        auto reply = bus.call(method, dbusTimeout);
-        reply.read(objects);
+        objects = pldm::utils::DBusHandler::getInventoryObjects<
+            pldm::utils::DBusHandler>();
     }
     catch (const std::exception& e)
     {
