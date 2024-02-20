@@ -2,7 +2,10 @@
 
 #include "common/utils.hpp"
 
+#include <phosphor-logging/elog-errors.hpp>
+#include <phosphor-logging/elog.hpp>
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/PLDM/EventOEM/error.hpp>
 
 #include <cstdint>
 #include <iostream>
@@ -122,9 +125,82 @@ std::string
     return slotNumber;
 }
 
-int processOemMetaEvent(
-    tid_t tid, const uint8_t* eventData, [[maybe_unused]] size_t eventDataSize,
-    const std::map<std::string, MctpEndpoint>& configurations)
+std::string
+    getFRUName(tid_t tid,
+               const std::map<std::string, MctpEndpoint>& configurations)
+{
+    static constexpr auto fruInterface =
+        "xyz.openbmc_project.Inventory.Item.Board";
+    static constexpr auto fruProperty = "Name";
+    std::string fru_str = "Unknown";
+    for (const auto& [configDbusPath, mctpEndpoint] : configurations)
+    {
+        if (mctpEndpoint.EndpointId == tid)
+        {
+            std::vector<std::string> fruInterfaceList = {fruInterface};
+            pldm::utils::GetAncestorsResponse response;
+            std::string endpointDbusPath;
+            try
+            {
+                response = pldm::utils::DBusHandler().getAncestors(
+                    configDbusPath.c_str(), fruInterfaceList);
+                if (response.size() != 1)
+                {
+                    lg2::error(
+                        "{FUNC}: Only Board layer should have Decorator.Slot interface, got {SIZE} Dbus Object(s) have interface Decorator.Slot}",
+                        "FUNC", std::string(__func__), "SIZE", response.size());
+                    return fru_str; // return "Unknown"
+                }
+                endpointDbusPath = std::get<0>(response.front());
+            }
+            catch (const sdbusplus::exception_t& e)
+            {
+                lg2::error("{FUNC}: Failed to call GetAncestors, ERROR={ERROR}",
+                           "FUNC", std::string(__func__), "ERROR", e.what());
+                return fru_str; // return "Unknown";
+            }
+            try
+            {
+                fru_str =
+                    pldm::utils::DBusHandler().getDbusProperty<std::string>(
+                        endpointDbusPath.c_str(), fruProperty, fruInterface);
+            }
+            catch (const sdbusplus::exception_t& e)
+            {
+                lg2::error("{FUNC}: Failed to execute Dbus call, ERROR={ERROR}",
+                           "FUNC", std::string(__func__), "ERROR", e.what());
+                return fru_str; // return "Unknown"
+            }
+        }
+    }
+
+    return fru_str;
+}
+
+std::string extractBoardName(const std::string& fruname)
+{
+    std::string board;
+    static constexpr auto start_str = "Yosemite 4 ";
+    static constexpr auto end_str = " Slot";
+
+    size_t start_pos = fruname.find(start_str);
+    if (start_pos != std::string::npos)
+    {
+        start_pos += std::string(start_str)
+                         .length(); // Move start_pos after "Yosemite 4 "
+    }
+    size_t end_pos = fruname.find(end_str); // Find the position before " Slot"
+    board = fruname.substr(
+        start_pos,
+        end_pos -
+            start_pos); // Extract the substring between start_pos and end_pos
+
+    return board;
+}
+
+int decodeBiosEvent(tid_t tid, const uint8_t* eventData,
+                    [[maybe_unused]] size_t eventDataSize,
+                    const std::map<std::string, MctpEndpoint>& configurations)
 {
     enum : uint8_t
     {
@@ -617,6 +693,176 @@ int processOemMetaEvent(
     lg2::error("BIOS_IPMI_SEL: {ERROR}", "ERROR",
                message);                       // Create log in journal
     pldm::utils::reportError(message.c_str()); // Create log on Dbus
+    return 0;
+}
+
+void handlePowerRailFail(const std::string board,
+                         const uint8_t error_description, const uint8_t action,
+                         std::string& error_str, std::string& action_str)
+{
+    enum : uint8_t
+    {
+        SENTINELDOME = 0x0,
+        FLOATINGFALLS = 0x1,
+        WAILUAFALLS = 0x2,
+        FLOATINGFALLSCXL = 0x3,
+        WAILUAFALLSCXL = 0x4,
+    };
+
+    enum : uint8_t
+    {
+        SENTINELDOME_CPU0_POWER_OCP = 0x0,
+        SENTINELDOME_CPU1_POWER_OCP = 0x1,
+    };
+
+    enum : uint8_t
+    {
+        FLOATINGFALLS_ASIC_P0V8_POWER_RAIL_FAIL = 0x0,
+        FLOATINGFALLS_DDR_P1V2_POWER_RAIL_FAIL = 0x1,
+        FLOATINGFALLS_ASIC_P1V2_POWER_RAIL_FAIL = 0x2,
+        FLOATINGFALLS_ASIC_P0V85_POWER_RAIL_FAIL = 0x3,
+    };
+
+    enum : uint8_t
+    {
+        WAILUAFALLS_ASIC1_DDR_P1V2_POWER_RAIL_FAIL = 0x0,
+        WAILUAFALLS_ASIC1_P0V85_POWER_RAIL_FAIL = 0x1,
+        WAILUAFALLS_ASIC1_P0V8_POWER_RAIL_FAIL = 0x2,
+        WAILUAFALLS_ASIC2_DDR_P1V2_POWER_RAIL_FAIL = 0x3,
+        WAILUAFALLS_ASIC2_P0V85_POWER_RAIL_FAIL = 0x4,
+        WAILUAFALLS_ASIC2_P0V8_POWER_RAIL_FAIL = 0x5,
+    };
+
+    enum : uint8_t
+    {
+        REPLACEBOARD = 0x0,
+        // Other action...
+    };
+
+    std::vector<std::string> sentineldome_power_err = {
+        "PVDDCR_CPU0 power OCP/ Fault is triggered  [0.9V]",
+        "PVDDCR_CPU1 power OCP/ Fault is triggered  [0.9V]", "Reserved"};
+
+    std::vector<std::string> floatingfalls_power_err = {
+        "ASIC power rail fail [0.8V]", "DDR power rail fail [1.2V]",
+        "ASIC power rail fail [1.2V]", "ASIC power rail fail [0.85V]",
+        "Reserved"};
+
+    std::vector<std::string> wailuafalls_power_err = {
+        "ASIC1 DDR power rail fail [1.2V]",
+        "ASIC1 power rail fail [0.85V]",
+        "ASIC1 power rail fail [0.8V]",
+        "ASIC2 DDR power rail fail [1.2V]",
+        "ASIC2 power rail fail [0.85V]",
+        "ASIC2 power rail fail [0.8V]",
+        "Reserved"};
+
+    std::vector<std::string> action_list = {
+        "DC cycle the blade again or replace the Wailua falls even the blade",
+        "Reserved"};
+
+    std::unordered_map<std::string, std::vector<std::string>> error_lists = {
+        {"Floating Falls", floatingfalls_power_err},
+        {"Wailua Falls", wailuafalls_power_err},
+        {"Sentinel Dome", sentineldome_power_err}};
+
+    auto it = error_lists.find(board);
+    if (it != error_lists.end())
+    {
+        const std::vector<std::string>& error_list = it->second;
+        error_str = error_list[error_description];
+    }
+    else
+    {
+        lg2::error("Invalid option");
+    }
+
+    switch (action)
+    {
+        case REPLACEBOARD:
+            action_str = action_list[action];
+            break;
+        default:
+            action_str = "Unknown";
+            break;
+    }
+}
+
+int decodeBicEvent(tid_t tid, const uint8_t* eventData,
+                   [[maybe_unused]] size_t eventDataSize,
+                   const std::map<std::string, MctpEndpoint>& configurations)
+{
+    using namespace phosphor::logging;
+    using namespace sdbusplus::error::xyz::openbmc_project::pldm::event_oem;
+    using PowerRailFail = phosphor::logging::xyz::openbmc_project::pldm::
+        event_oem::PowerRailFailure;
+
+    enum : uint8_t
+    {
+        POWER_RAIL_FAIL = 0x0,
+        SOC_THERMAL = 0x1,
+        // Other type of event...
+    };
+
+    auto fru = getFRUName(tid, configurations);
+    auto board = extractBoardName(fru);
+    std::string board_str;
+    std::string error_str;
+    std::string action_str;
+
+    uint8_t error_type = eventData[1];
+    switch (error_type)
+    {
+        case POWER_RAIL_FAIL:
+            handlePowerRailFail(board, eventData[2], eventData[3], error_str,
+                                action_str);
+            break;
+        default:
+            error_str = "Unknown";
+            action_str = "Unknown";
+            break;
+    }
+
+    lg2::error("PLDM_OEM_SEL: FRU:{FRU} ERROR:{ERROR} ACT:{ACT}", "FRU", fru,
+               "ERROR", error_str, "ACT", action_str); // Create log in journal
+    report<PowerRailFailure>(PowerRailFail::FRU(fru.c_str()),
+                             PowerRailFail::ERROR(error_str.c_str()),
+                             PowerRailFail::ACT(action_str.c_str()));
+
+    return 0;
+}
+
+int processOemMetaEvent(
+    tid_t tid, const uint8_t* eventData, [[maybe_unused]] size_t eventDataSize,
+    const std::map<std::string, MctpEndpoint>& configurations)
+{
+    enum : uint8_t
+    {
+        BIC = 0x0,
+        BIOS = 0x1,
+    };
+
+    uint8_t event_source = eventData[0];
+    std::string errorLog;
+    switch (event_source)
+    {
+        case BIC:
+            decodeBicEvent(tid, eventData, eventDataSize, configurations);
+            break;
+        case BIOS:
+            decodeBiosEvent(tid, eventData, eventDataSize, configurations);
+            break;
+        default:
+        {
+            errorLog = "Undefined Event source(0x" +
+                       to_hex_string(event_source);
+            break;
+            std::string message = "TID: " + std::to_string(tid) + errorLog;
+            lg2::error("{ERROR}", "ERROR", message);   // Create log in journal
+            pldm::utils::reportError(message.c_str()); // Create log on Dbus
+        }
+    }
+
     return 0;
 }
 
