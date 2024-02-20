@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "adcf9adb_8c8f4cac",
         "filename": "libpldmresponder/fru.cpp",
@@ -20,10 +21,10 @@
         "endChar": 5
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "3c741539_4ccd2c5d",
         "filename": "libpldmresponder/fru.cpp",
@@ -44,10 +45,10 @@
         "endChar": 5
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "7a6e7084_43dd7325",
         "filename": "libpldmresponder/fru.hpp",
@@ -67,10 +68,10 @@
         "endChar": 43
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "6bd25a53_c3327450",
         "filename": "libpldmresponder/fru.hpp",
@@ -91,10 +92,10 @@
         "endChar": 43
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "e1556389_1af8b219",
         "filename": "libpldmresponder/oem_handler.hpp",
@@ -114,10 +115,10 @@
         "endChar": 2
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "89b76990_aa5e6119",
         "filename": "libpldmresponder/oem_handler.hpp",
@@ -138,10 +139,10 @@
         "endChar": 2
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a8f882c9_c1495b1e",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -161,10 +162,10 @@
         "endChar": 52
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "0377c41c_ca5c667d",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -185,10 +186,10 @@
         "endChar": 52
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "0ef694c9_6af00854",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -208,10 +209,10 @@
         "endChar": 56
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "72ea5495_625f5bbf",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -232,10 +233,10 @@
         "endChar": 56
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3dede778_fcf7d56e",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -255,10 +256,10 @@
         "endChar": 49
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "ca18a9f9_5a5f03a3",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -279,10 +280,10 @@
         "endChar": 49
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "af8db98a_44c76d72",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -302,10 +303,10 @@
         "endChar": 22
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "fcfd719c_c4283ee3",
         "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
@@ -326,10 +327,10 @@
         "endChar": 22
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "f61c07da_0f1ca504",
         "filename": "pldmd/pldmd.cpp",
@@ -349,10 +350,10 @@
         "endChar": 19
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "eab45c37_8091c114",
         "filename": "pldmd/pldmd.cpp",
@@ -373,8 +374,31 @@
         "endChar": 19
       },
       "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6db86281_b07a7300",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-20T04:39:46Z",
+      "side": 1,
+      "message": "This does not block this commit, we can work on the commit and change this to leverage the new infrastructure.",
+      "parentUuid": "eab45c37_8091c114",
+      "range": {
+        "startLine": 214,
+        "startChar": 4,
+        "endLine": 214,
+        "endChar": 19
+      },
+      "revId": "9e6b10ebbcfdf5c8920c250b8403af938ff87638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
