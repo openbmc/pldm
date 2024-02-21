@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "769ab801_89c6e84c",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-02-21T06:30:50Z",
+      "side": 1,
+      "message": "add exception message",
+      "range": {
+        "startLine": 175,
+        "startChar": 100,
+        "endLine": 175,
+        "endChar": 103
+      },
+      "revId": "22227b9a0b63ba66b32e4633ccea42f2f51089ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
