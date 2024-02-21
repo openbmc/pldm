@@ -95,13 +95,14 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
     {
         std::vector<uint8_t> sensorEventDataVec{};
         sensorEventDataVec.resize(sensorEventSize);
+        uint8_t previousState = PLDM_SENSOR_UNKNOWN;
         auto eventData = reinterpret_cast<struct pldm_sensor_event_data*>(
             sensorEventDataVec.data());
         eventData->sensor_id = sensorId;
         eventData->sensor_event_class_type = PLDM_STATE_SENSOR_STATE;
         eventData->event_class[0] = offset;
         eventData->event_class[1] = PLDM_SENSOR_UNKNOWN;
-        eventData->event_class[2] = PLDM_SENSOR_UNKNOWN;
+        eventData->event_class[2] = previousState;
 
         const auto& dbusMapping = dbusMappings[offset];
         const auto& dbusValueMapping = dbusValMaps[offset];
@@ -109,8 +110,8 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(dbusMapping.objectPath.c_str(),
                               dbusMapping.interface.c_str()),
-            [this, sensorEventDataVec, dbusValueMapping,
-             dbusMapping](auto& msg) mutable {
+            [this, sensorEventDataVec, previousState, dbusValueMapping,
+             dbusMapping, sensorId, offset](auto& msg) mutable {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
@@ -150,14 +151,29 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                         reinterpret_cast<struct pldm_sensor_event_data*>(
                             sensorEventDataVec.data());
                     eventData->event_class[1] = itr.first;
-                    eventData->event_class[2] = itr.first;
+                    if (sensorCacheMap.contains(sensorId) &&
+                        sensorCacheMap[sensorId][offset] != PLDM_SENSOR_UNKNOWN)
+                    {
+                        previousState = sensorCacheMap[sensorId][offset];
+                    }
+                    else
+                    {
+                        previousState = itr.first;
+                    }
+                    eventData->event_class[2] = previousState;
                     this->sendEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec);
+                    updateSensorCacheMaps(sensorId, offset, previousState);
                     break;
                 }
             }
         });
         stateSensorMatchs.emplace_back(std::move(stateSensorMatch));
     }
+}
+
+const stateSensorCacheMaps& DbusToPLDMEvent::getSensorCache()
+{
+    return sensorCacheMap;
 }
 
 void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,

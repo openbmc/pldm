@@ -786,9 +786,9 @@ Response Handler::getStateSensorReadings(const pldm_msg* request,
     else
     {
         rc = platform_state_sensor::getStateSensorReadingsHandler<
-            pldm::utils::DBusHandler, Handler>(dBusIntf, *this, sensorId,
-                                               sensorRearmCount, comSensorCnt,
-                                               stateField);
+            pldm::utils::DBusHandler, Handler>(
+            dBusIntf, *this, sensorId, sensorRearmCount, comSensorCnt,
+            stateField, dbusToPLDMEventHandler->getSensorCache());
     }
 
     if (rc != PLDM_SUCCESS)
