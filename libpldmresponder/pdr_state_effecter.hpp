@@ -160,8 +160,9 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             catch (const std::exception& e)
             {
                 error(
-                    "D-Bus object path does not exist, effecter ID: {EFFECTER_ID}",
-                    "EFFECTER_ID", static_cast<uint16_t>(pdr->effecter_id));
+                    "Failed to create effecter PDR, D-Bus object '{PATH}' returned {ERROR}",
+                    "PATH", objectPath, "ERROR", e);
+                continue;
             }
 
             dbusMappings.emplace_back(std::move(dbusMapping));
