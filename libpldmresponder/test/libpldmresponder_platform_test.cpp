@@ -1,5 +1,6 @@
 #include "common/test/mocked_utils.hpp"
 #include "common/utils.hpp"
+#include "host-bmc/dbus_to_event_handler.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
@@ -757,15 +758,17 @@ TEST(getStateSensorReadingsHandler, testGoodRequest)
                                        StrEq("xyz.openbmc_project.Foo.Bar")))
         .WillOnce(Return(
             PropertyValue(std::string("xyz.openbmc_project.Foo.Bar.V0"))));
-
+    EventStates cache = {PLDM_SENSOR_NORMAL};
+    pldm::stateSensorCacheMaps sensorCache;
+    sensorCache.emplace(0x1, cache);
     auto rc = platform_state_sensor::getStateSensorReadingsHandler<
         MockdBusHandler, Handler>(handlerObj, handler, 0x1, sensorRearmCnt,
-                                  compSensorCnt, stateField);
+                                  compSensorCnt, stateField, sensorCache);
     ASSERT_EQ(rc, 0);
     ASSERT_EQ(compSensorCnt, 1);
     ASSERT_EQ(stateField[0].sensor_op_state, PLDM_SENSOR_UNAVAILABLE);
     ASSERT_EQ(stateField[0].present_state, PLDM_SENSOR_NORMAL);
-    ASSERT_EQ(stateField[0].previous_state, PLDM_SENSOR_UNKNOWN);
+    ASSERT_EQ(stateField[0].previous_state, PLDM_SENSOR_NORMAL);
     ASSERT_EQ(stateField[0].event_state, PLDM_SENSOR_UNKNOWN);
 
     pldm_pdr_destroy(inPDRRepo);
@@ -800,9 +803,12 @@ TEST(getStateSensorReadingsHandler, testBadRequest)
     uint8_t sensorRearmCnt = 3;
 
     MockdBusHandler handlerObj;
+    EventStates cache = {PLDM_SENSOR_NORMAL};
+    pldm::stateSensorCacheMaps sensorCache;
+    sensorCache.emplace(0x1, cache);
     auto rc = platform_state_sensor::getStateSensorReadingsHandler<
         MockdBusHandler, Handler>(handlerObj, handler, 0x1, sensorRearmCnt,
-                                  compSensorCnt, stateField);
+                                  compSensorCnt, stateField, sensorCache);
     ASSERT_EQ(rc, PLDM_PLATFORM_REARM_UNAVAILABLE_IN_PRESENT_STATE);
 
     pldm_pdr_destroy(inPDRRepo);
