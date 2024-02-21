@@ -464,6 +464,22 @@ class Handler : public CmdHandler
         return fruHandler->getAssociateEntityMap();
     }
 
+    /** @brief update the sensor cache map
+     *  @param[in] sensorId - sensor id that needs an update
+     *  @param[in] sensorRearm - rearm value within the sensor
+     *  @param[in] value - value that needs to be cached
+     */
+
+    inline void updateSensorCache(pldm::pdr::SensorID sensorId,
+                                  size_t sensorRearm, uint8_t value)
+    {
+        if (dbusToPLDMEventHandler)
+        {
+            dbusToPLDMEventHandler->updateSensorCacheMaps(sensorId, sensorRearm,
+                                                          value);
+        }
+    }
+
     /** @brief process the actions that needs to be performed after a GetPDR
      *         call is received
      *  @param[in] source - sdeventplus event source

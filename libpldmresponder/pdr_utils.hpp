@@ -79,6 +79,7 @@ using PossibleValues = std::vector<uint8_t>;
 using StatestoDbusVal = std::map<State, pldm::utils::PropertyValue>;
 using DbusMappings = std::vector<pldm::utils::DBusMapping>;
 using DbusValMaps = std::vector<StatestoDbusVal>;
+using EventStates = std::array<uint8_t, 8>;
 
 /** @brief Parse PDR JSON file and output Json object
  *
