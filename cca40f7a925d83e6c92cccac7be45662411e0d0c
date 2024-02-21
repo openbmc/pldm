@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a503380_b6b9fcdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-21T14:56:30Z",
+      "side": 1,
+      "message": "how are these files copied into the BMC rootfs ? \n\nisn\u0027t there a need of some meson.build file to actually place these JSON files into the rootfs ?",
+      "revId": "cca40f7a925d83e6c92cccac7be45662411e0d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
