@@ -172,8 +172,9 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
             catch (const std::exception& e)
             {
                 error(
-                    "D-Bus object path does not exist, sensor ID: {SENSOR_ID}",
-                    "SENSOR_ID", static_cast<uint16_t>(pdr->sensor_id));
+                    "Failed to create sensor PDR, D-Bus object {PATH} returned {ERROR}",
+                    "PATH", "ERROR", objectPath, e);
+                continue;
             }
 
             dbusMappings.emplace_back(std::move(dbusMapping));
