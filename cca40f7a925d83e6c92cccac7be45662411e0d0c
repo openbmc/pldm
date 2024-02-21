@@ -16,6 +16,24 @@
       "message": "how are these files copied into the BMC rootfs ? \n\nisn\u0027t there a need of some meson.build file to actually place these JSON files into the rootfs ?",
       "revId": "cca40f7a925d83e6c92cccac7be45662411e0d0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "435f6e78_69d7c067",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-21T15:39:02Z",
+      "side": 1,
+      "message": "I think it is already taken by meson.build file\nhttps://github.com/openbmc/pldm/blob/master/configurations/meson.build#L14",
+      "parentUuid": "3a503380_b6b9fcdc",
+      "revId": "cca40f7a925d83e6c92cccac7be45662411e0d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
