@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbdc1ff3_8a0e2280",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-21T10:59:24Z",
+      "side": 1,
+      "message": "Yes , i will have a follow up commit to fix it.",
+      "parentUuid": "12424040_0783590d",
+      "revId": "22227b9a0b63ba66b32e4633ccea42f2f51089ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5199c1ae_980cddae",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed68c95b_bb8154af",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-21T10:59:24Z",
+      "side": 1,
+      "message": "Done, also included the exception, since it is not always ObjectdoesNotExists, it can also be DbusTimeout e.t.c",
+      "parentUuid": "5199c1ae_980cddae",
+      "range": {
+        "startLine": 174,
+        "startChar": 16,
+        "endLine": 174,
+        "endChar": 21
+      },
+      "revId": "22227b9a0b63ba66b32e4633ccea42f2f51089ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "769ab801_89c6e84c",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-02-21T06:30:50Z",
       "side": 1,
       "message": "add exception message",
+      "range": {
+        "startLine": 175,
+        "startChar": 100,
+        "endLine": 175,
+        "endChar": 103
+      },
+      "revId": "22227b9a0b63ba66b32e4633ccea42f2f51089ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5882a47a_5f23c178",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-21T10:59:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "769ab801_89c6e84c",
       "range": {
         "startLine": 175,
         "startChar": 100,
