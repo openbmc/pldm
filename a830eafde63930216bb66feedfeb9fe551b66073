@@ -33,6 +33,23 @@
       "message": "Looks close enough , still waiting on the design document mentioned in the commit message to be concluded and merged.",
       "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f57f56c_850747c3",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-02-21T07:55:29Z",
+      "side": 1,
+      "message": "We faced a issue that PLDMD would have chance to report this error message when it started at first time and PLDMD didn\u0027t discover MCTP EID even though there was already a MCTP EID device listed in `xyz.openbmc_project.MCTP` service.\n\nIf we restart PLDMD or MCTPD again, PLDMD could detect the EID.\n\nWould like to ask if there is any suggestion about this issue?",
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
