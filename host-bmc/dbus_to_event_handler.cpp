@@ -109,10 +109,11 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(dbusMapping.objectPath.c_str(),
                               dbusMapping.interface.c_str()),
-            [this, sensorEventDataVec, dbusValueMapping,
-             dbusMapping](auto& msg) mutable {
+            [this, sensorEventDataVec, dbusValueMapping, dbusMapping, sensorId,
+             offset](auto& msg) mutable {
             DbusChangedProps props{};
             std::string intf;
+            uint8_t previousState = PLDM_SENSOR_UNKNOWN;
             msg.read(intf, props);
             if (!props.contains(dbusMapping.propertyName))
             {
@@ -150,8 +151,18 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                         reinterpret_cast<struct pldm_sensor_event_data*>(
                             sensorEventDataVec.data());
                     eventData->event_class[1] = itr.first;
-                    eventData->event_class[2] = itr.first;
+                    if (sensorCacheMap.contains(sensorId) &&
+                        sensorCacheMap[sensorId][offset] != PLDM_SENSOR_UNKNOWN)
+                    {
+                        previousState = sensorCacheMap[sensorId][offset];
+                    }
+                    else
+                    {
+                        previousState = itr.first;
+                    }
+                    eventData->event_class[2] = previousState;
                     this->sendEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec);
+                    updateSensorCacheMaps(sensorId, offset, previousState);
                     break;
                 }
             }
