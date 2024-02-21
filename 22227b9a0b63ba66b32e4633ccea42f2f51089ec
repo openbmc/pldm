@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5199c1ae_980cddae",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-21T10:42:12Z",
+      "side": 1,
+      "message": "please rearrange like this:\n\nerror(\"Failed to create sensor PDR, D-Bus object \u0027{PATH}\u0027 does not exist\",\"PATH\", objectPath);",
+      "range": {
+        "startLine": 174,
+        "startChar": 16,
+        "endLine": 174,
+        "endChar": 21
+      },
+      "revId": "22227b9a0b63ba66b32e4633ccea42f2f51089ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "769ab801_89c6e84c",
         "filename": "libpldmresponder/pdr_state_sensor.hpp",
         "patchSetId": 1
