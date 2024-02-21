@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "705b3214_73c463fd",
+        "filename": "libpldmresponder/event_parser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-02-21T17:16:30Z",
+      "side": 0,
+      "message": "Not related to this change. I could include this as part of another commit if required.",
+      "range": {
+        "startLine": 8,
+        "startChar": 19,
+        "endLine": 8,
+        "endChar": 0
+      },
+      "revId": "b4ef4310bdda97566d20a6b8a04215c8fb4fb308",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
