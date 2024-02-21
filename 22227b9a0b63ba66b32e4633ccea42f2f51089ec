@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12424040_0783590d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-21T06:43:43Z",
+      "side": 1,
+      "message": "Do we need to handle this for effecters too?",
+      "revId": "22227b9a0b63ba66b32e4633ccea42f2f51089ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "769ab801_89c6e84c",
