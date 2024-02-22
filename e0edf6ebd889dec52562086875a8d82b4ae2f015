@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e8af25_297acc19",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "oem-ibm :",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8c3cf35_a0c2ec04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "PCIE -\u003e PCIe through out the commit.",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3824d724_6de15704",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "this commit only seem to see if its filled or not ..does not do any model checking ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 36
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6953566_c89d9df6",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "could use this from the PDI ?",
+      "range": {
+        "startLine": 147,
+        "startChar": 4,
+        "endLine": 148,
+        "endChar": 56
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f82e9003_53dee593",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "redundant, directly use the property name in the call",
+      "range": {
+        "startLine": 149,
+        "startChar": 3,
+        "endLine": 149,
+        "endChar": 43
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "240b7eec_43be357b",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "do we need to be sure that this function is being only called for pcie adapters ? and not any other objects ?",
+      "range": {
+        "startLine": 153,
+        "startChar": 8,
+        "endLine": 154,
+        "endChar": 71
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c434385d_8400806a",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "so if the model is filled, it is cable card, if not its not cable card ? can you document this as well in the commit message ?",
+      "range": {
+        "startLine": 156,
+        "startChar": 7,
+        "endLine": 159,
+        "endChar": 9
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4f90e33_27ff3cf1",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "const std::exception\u0026 e ?",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 161,
+        "endChar": 53
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6bfbf45_53cd115e",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T05:54:56Z",
+      "side": 1,
+      "message": "can this be any fru object path ? or just an adapter path ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 15,
+        "endLine": 41,
+        "endChar": 40
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
