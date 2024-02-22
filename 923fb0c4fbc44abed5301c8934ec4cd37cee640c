@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "698e93c5_8cb23f2e",
+        "filename": "libpldmresponder/test/event_jsons/good/event_state_sensor.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:32:52Z",
+      "side": 1,
+      "message": "add another entry in here, that has the same containerid, entitytype, instance number, sensoroffset but with a different state set id and add a new test case to test that .",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 16
+      },
+      "revId": "923fb0c4fbc44abed5301c8934ec4cd37cee640c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
