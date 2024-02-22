@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f40f1143_e9d4903c",
+        "filename": "libpldmresponder/bios.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:42:25Z",
+      "side": 1,
+      "message": "needs to be changed.",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 39
+      },
+      "revId": "5c27ed31b503e8547efbac4ecc21175ad57aef4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db652c01_4b222efe",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:42:25Z",
+      "side": 1,
+      "message": "fs::path",
+      "range": {
+        "startLine": 517,
+        "startChar": 4,
+        "endLine": 517,
+        "endChar": 21
+      },
+      "revId": "5c27ed31b503e8547efbac4ecc21175ad57aef4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55dd9171_cc4ec0b8",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:42:25Z",
+      "side": 1,
+      "message": "needs to be changed based on recent change ?",
+      "range": {
+        "startLine": 85,
+        "startChar": 2,
+        "endLine": 86,
+        "endChar": 59
+      },
+      "revId": "5c27ed31b503e8547efbac4ecc21175ad57aef4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25833812_c4bac504",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:42:25Z",
+      "side": 1,
+      "message": "BIOS",
+      "range": {
+        "startLine": 133,
+        "startChar": 29,
+        "endLine": 133,
+        "endChar": 33
+      },
+      "revId": "5c27ed31b503e8547efbac4ecc21175ad57aef4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ab251b2_e7b653be",
+        "filename": "libpldmresponder/test/libpldmresponder_bios_config_test.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:42:25Z",
+      "side": 1,
+      "message": "can you also add another test case to check the PLDM_ERROR_NOT_READY , when the bios table is not built ?",
+      "range": {
+        "startLine": 332,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 36
+      },
+      "revId": "5c27ed31b503e8547efbac4ecc21175ad57aef4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
