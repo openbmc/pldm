@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "929505e5_50ec944b",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-22T05:16:34Z",
+      "side": 1,
+      "message": "Variable previousState is not needed as its value is not used in lambda just a local variable in lambda function can serve the purpose.",
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b82aca03_6d5e6fd7",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-22T05:16:34Z",
+      "side": 1,
+      "message": "Offset and sensorRearm are they both same? If yes can we use same name all across to avoid confusion",
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "966b8776_a3ce46f7",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-22T05:16:34Z",
+      "side": 1,
+      "message": "To handle the case of out of range sensorId, shall we add this under try catch block?",
+      "range": {
+        "startLine": 153,
+        "startChar": 11,
+        "endLine": 153,
+        "endChar": 60
+      },
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e93ddcd_d34c0210",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-02-22T05:16:34Z",
+      "side": 1,
+      "message": "Rather than using \"i\" can we give some meaningful name?",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 8
+      },
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
