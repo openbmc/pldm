@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "01c4f78f_f0cabf11",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:48:24Z",
+      "side": 1,
+      "message": "please use the getsubtree() util function in the repository.",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f57f56c_850747c3",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 67
@@ -48,6 +71,116 @@
       "writtenOn": "2024-02-21T07:55:29Z",
       "side": 1,
       "message": "We faced a issue that PLDMD would have chance to report this error message when it started at first time and PLDMD didn\u0027t discover MCTP EID even though there was already a MCTP EID device listed in `xyz.openbmc_project.MCTP` service.\n\nIf we restart PLDMD or MCTPD again, PLDMD could detect the EID.\n\nWould like to ask if there is any suggestion about this issue?",
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da888314_1899d0ad",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:48:24Z",
+      "side": 1,
+      "message": "I think probably because MCTP service would have started after pldm service would have started. In that case we would end up with an exception.\n\nWe need to check for interfaces added signal if we get this except and read the EID\u0027s from the signal rather than just relying on the MCTP service to be present before pldm.",
+      "parentUuid": "8f57f56c_850747c3",
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91fadfbc_ed63543a",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:48:24Z",
+      "side": 1,
+      "message": "lg2 needed.",
+      "range": {
+        "startLine": 102,
+        "startChar": 23,
+        "endLine": 103,
+        "endChar": 70
+      },
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64f78c11_8a52d655",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:48:24Z",
+      "side": 1,
+      "message": "lg2 needed.",
+      "range": {
+        "startLine": 111,
+        "startChar": 15,
+        "endLine": 113,
+        "endChar": 60
+      },
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f3387d3_fa2d3cbb",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:48:24Z",
+      "side": 1,
+      "message": "lg2 needed",
+      "range": {
+        "startLine": 136,
+        "startChar": 7,
+        "endLine": 137,
+        "endChar": 43
+      },
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58523fba_1e54b52f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 67
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:48:24Z",
+      "side": 1,
+      "message": "lg2 here and everywhere",
+      "range": {
+        "startLine": 157,
+        "startChar": 20,
+        "endLine": 158,
+        "endChar": 66
+      },
       "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
