@@ -16,6 +16,24 @@
       "message": "can you highlight path:\n\"Failed to create effecter PDR, D-Bus object \u0027{PATH}\u0027 returned: {ERROR}\"",
       "revId": "17d0d13a98c083fef2cb4cdf6d5a38606717dda4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd2ae3f6_5d45ddd4",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-22T04:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45c3aa32_7ca389e1",
+      "revId": "17d0d13a98c083fef2cb4cdf6d5a38606717dda4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
