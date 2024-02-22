@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca78fae_75280121",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-22T06:17:23Z",
+      "side": 1,
+      "message": "CI is failing as its dependent on this commit - https://gerrit.openbmc.org/c/openbmc/pldm/+/45854\nI will rebase once the commit gets merged.",
+      "revId": "ef1020527f6b19d937d7570149bc68de1dc8f393",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
