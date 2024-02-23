@@ -313,7 +313,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         instanceID, effecterID, effecterCount, &stateField, request);
     if (rc != PLDM_SUCCESS)
     {
-        instanceIdDb.free(pldmTID, instanceID);
+        // instanceIdDb.free(pldmTID, instanceID);
         error("Message encode failure. PLDM error code = {RC}", "RC", lg2::hex,
               static_cast<int>(rc));
         return PLDM_ERROR;
@@ -324,7 +324,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                                    Timer::TimePoint /*time*/) mutable {
         if (!responseReceived)
         {
-            instanceIdDb.free(pldmTID, instanceID);
+            // instanceIdDb.free(pldmTID, instanceID);
             error(
                 "PLDM soft off: ERROR! Can't get the response for the PLDM request msg. Time out! Exit the pldm-softpoweroff");
             exit(-1);
@@ -376,7 +376,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 
         /* We have the right response, release the instance ID and process */
         io.set_enabled(Enabled::Off);
-        instanceIdDb.free(pldmTID, instanceID);
+        // instanceIdDb.free(pldmTID, instanceID);
 
         if (response->payload[0] != PLDM_SUCCESS)
         {
@@ -414,7 +414,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     rc = pldmTransport.sendMsg(pldmTID, requestMsg.data(), requestMsg.size());
     if (0 > rc)
     {
-        instanceIdDb.free(pldmTID, instanceID);
+        // instanceIdDb.free(pldmTID, instanceID);
         error(
             "Failed to send message/receive response. RC = {RC}, errno = {ERR}",
             "RC", static_cast<int>(rc), "ERR", errno);
@@ -430,7 +430,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         }
         catch (const sdeventplus::SdEventError& e)
         {
-            instanceIdDb.free(pldmTID, instanceID);
+            // instanceIdDb.free(pldmTID, instanceID);
             error(
                 "PLDM host soft off: Failure in processing request.ERROR= {ERR_EXCEP}",
                 "ERR_EXCEP", e.what());
