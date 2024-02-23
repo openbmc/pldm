@@ -9,8 +9,6 @@
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/State/Boot/Progress/client.hpp>
 
-#include <iostream>
-
 PHOSPHOR_LOG2_USING;
 
 namespace pldm

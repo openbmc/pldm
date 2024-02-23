@@ -9,7 +9,6 @@
 #include <xyz/openbmc_project/State/OperatingSystem/Status/server.hpp>
 
 #include <fstream>
-#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 

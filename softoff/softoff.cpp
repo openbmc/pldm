@@ -16,7 +16,6 @@
 #include <sdeventplus/source/time.hpp>
 
 #include <array>
-#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 

@@ -9,7 +9,6 @@
 #include <sdeventplus/source/io.hpp>
 
 #include <array>
-#include <iostream>
 
 using namespace sdeventplus;
 using namespace sdeventplus::source;

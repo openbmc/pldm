@@ -3,7 +3,6 @@
 #include "bios_config.hpp"
 #include "common/utils.hpp"
 
-#include <iostream>
 #include <variant>
 
 using namespace pldm::utils;

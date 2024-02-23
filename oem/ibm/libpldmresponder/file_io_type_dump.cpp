@@ -16,7 +16,6 @@
 
 #include <exception>
 #include <filesystem>
-#include <iostream>
 #include <type_traits>
 
 PHOSPHOR_LOG2_USING;

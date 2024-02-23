@@ -16,7 +16,6 @@
 
 #include <cstring>
 #include <fstream>
-#include <iostream>
 #include <memory>
 
 PHOSPHOR_LOG2_USING;

@@ -9,7 +9,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
-#include <iostream>
 #include <optional>
 #include <set>
 #include <stack>

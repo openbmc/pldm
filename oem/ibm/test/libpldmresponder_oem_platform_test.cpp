@@ -13,8 +13,6 @@
 
 #include <sdeventplus/event.hpp>
 
-#include <iostream>
-
 using namespace pldm::utils;
 using namespace pldm::responder;
 using namespace pldm::responder::pdr;

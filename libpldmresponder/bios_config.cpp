@@ -10,7 +10,6 @@
 #include <xyz/openbmc_project/BIOSConfig/Manager/server.hpp>
 
 #include <fstream>
-#include <iostream>
 
 #ifdef OEM_IBM
 #include "oem/ibm/libpldmresponder/platform_oem_ibm.hpp"

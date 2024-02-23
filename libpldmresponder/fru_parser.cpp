@@ -6,7 +6,6 @@
 
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 

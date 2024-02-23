@@ -6,7 +6,6 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <array>
-#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 

@@ -3,8 +3,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <iostream>
-
 PHOSPHOR_LOG2_USING;
 
 int main()

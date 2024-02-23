@@ -4,8 +4,6 @@
 
 #include <nlohmann/json.hpp>
 
-#include <iostream>
-
 #include <gtest/gtest.h>
 
 using namespace pldm::host_effecters;

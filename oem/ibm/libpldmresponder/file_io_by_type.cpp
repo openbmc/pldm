@@ -20,7 +20,6 @@
 #include <exception>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;

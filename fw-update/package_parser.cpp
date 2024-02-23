@@ -8,7 +8,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
-#include <iostream>
 #include <memory>
 
 PHOSPHOR_LOG2_USING;

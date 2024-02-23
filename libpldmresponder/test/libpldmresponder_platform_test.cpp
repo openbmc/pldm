@@ -11,8 +11,6 @@
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <sdeventplus/event.hpp>
 
-#include <iostream>
-
 using namespace pldm::pdr;
 using namespace pldm::utils;
 using namespace pldm::responder;

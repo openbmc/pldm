@@ -6,8 +6,6 @@
 #include <libpldm/pdr.h>
 #include <libpldm/pldm_types.h>
 
-#include <iostream>
-
 using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 
 namespace pldm
