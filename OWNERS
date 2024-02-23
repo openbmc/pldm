@@ -34,7 +34,6 @@
 owners:
 - deepak.kodihalli.83@gmail.com
 - rushtotom@gmail.com
-- sampmisr@in.ibm.com
 - manojkiran.eda@gmail.com
 
 reviewers:
@@ -43,7 +42,6 @@ reviewers:
 matchers:
 - partial_regex: ibm
   owners:
-  - sampmisr@in.ibm.com
   - manojkiran.eda@gmail.com
 - partial_regex: meta/
   owners:
@@ -65,9 +63,6 @@ openbmc:
 - name: Patrick Williams
   email: patrick@stwcx.xyz
   discord: stwcx
-- name: Sampa Misra
-  email: sampmisr@in.ibm.com
-  discord: sampmisr
 - name: Tom Joseph
   email: rushtotom@gmail.com
   discord: tomjose
