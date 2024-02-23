@@ -52,6 +52,24 @@
       "parentUuid": "360fe875_f80ba6bf",
       "revId": "e3607a3c59c70ef1684f5c2108be56b1af874e12",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fdad3e7_5aab355e",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-23T16:55:00Z",
+      "side": 0,
+      "message": "done",
+      "parentUuid": "b6d5913d_332ead45",
+      "revId": "e3607a3c59c70ef1684f5c2108be56b1af874e12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
