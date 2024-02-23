@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d528180f_c97d1433",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ba1cf6b_45ba3d0e",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbb73d95_28ce1823",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-22T06:00:16Z",
       "side": 1,
       "message": "What is firmware user access key ? why does host provide it ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 22,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a63355ea_f2c633f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbb73d95_28ce1823",
       "range": {
         "startLine": 9,
         "startChar": 22,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "754732b9_f2cb43ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Afaik only BMC",
+      "parentUuid": "3fe00ca5_90f9b15e",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 10,
+        "endChar": 11
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dad2388_e61a15a4",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c6d093_a81a7229",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6dad2388_e61a15a4",
+      "range": {
+        "startLine": 14,
+        "startChar": 14,
+        "endLine": 14,
+        "endChar": 26
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ccfaab1_4108c673",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-02-22T06:00:16Z",
       "side": 1,
       "message": "actual eeprom ?",
+      "range": {
+        "startLine": 15,
+        "startChar": 16,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf1d1894_fdab867d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "no, VPD backplane",
+      "parentUuid": "8ccfaab1_4108c673",
       "range": {
         "startLine": 15,
         "startChar": 16,
@@ -156,6 +276,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9689a0bd_ea345fa4",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d53a8b8b_62e83eae",
+      "range": {
+        "startLine": 160,
+        "startChar": 1,
+        "endLine": 162,
+        "endChar": 1
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67a357ce_700a8654",
@@ -169,6 +313,30 @@
       "writtenOn": "2024-02-22T06:00:16Z",
       "side": 1,
       "message": "redundant ..can be replaced into the dbus call",
+      "range": {
+        "startLine": 165,
+        "startChar": 5,
+        "endLine": 166,
+        "endChar": 44
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14bf0850_ef552154",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67a357ce_700a8654",
       "range": {
         "startLine": 165,
         "startChar": 5,
@@ -202,6 +370,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dd8d876_c50f25e6",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03d5b359_63c166b1",
+      "range": {
+        "startLine": 181,
+        "startChar": 6,
+        "endLine": 182,
+        "endChar": 38
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b870c0e9_f3ff99cd",
@@ -215,6 +407,30 @@
       "writtenOn": "2024-02-22T06:00:16Z",
       "side": 1,
       "message": "const reference ?",
+      "range": {
+        "startLine": 99,
+        "startChar": 24,
+        "endLine": 99,
+        "endChar": 44
+      },
+      "revId": "b20b4369829a47a3a26d6d058e0e59b8ebe5407c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f6fb557_0874ce15",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-23T07:46:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b870c0e9_f3ff99cd",
       "range": {
         "startLine": 99,
         "startChar": 24,
