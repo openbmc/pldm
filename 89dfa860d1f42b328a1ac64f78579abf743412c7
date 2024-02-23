@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26b8f330_c3057622",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-02-23T16:38:59Z",
+      "side": 1,
+      "message": "This makes no sense, very vague, which D-Bus query are you referring to here?\n\ncould have it something like - \"Fix pldm start-up crash\"?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "89dfa860d1f42b328a1ac64f78579abf743412c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50f9cb1a_038d9ebc",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-02-23T16:38:59Z",
+      "side": 1,
+      "message": "what are we using from this library?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "89dfa860d1f42b328a1ac64f78579abf743412c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
