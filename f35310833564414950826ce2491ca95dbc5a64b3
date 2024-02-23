@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "813ba794_e5a5fb0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-23T16:25:12Z",
+      "side": 1,
+      "message": "could be re-worded to pldm soft off stack notifies host via a set effecter call , and starts a timer once it gets response.",
+      "range": {
+        "startLine": 9,
+        "startChar": 44,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "f35310833564414950826ce2491ca95dbc5a64b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90866530_1b0765a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-23T16:25:12Z",
+      "side": 1,
+      "message": "https://github.com/openbmc/pldm/blob/master/meson.options#L154C12-L154C16 default value says 2hours ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 11,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "f35310833564414950826ce2491ca95dbc5a64b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f66f85e3_2e2c72b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-23T16:25:12Z",
+      "side": 1,
+      "message": "where is this requirement documented ? is there a design document reference for this in openbmc/docs ? and i don\u0027t see any valid reason for why a host shutdown down should result in a bmc dump ?\n\nseem like too much overhead in the host shutdown path ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 21,
+        "endLine": 13,
+        "endChar": 37
+      },
+      "revId": "f35310833564414950826ce2491ca95dbc5a64b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d59a188f_b8295d03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-02-23T16:25:12Z",
+      "side": 1,
+      "message": "From the look of it, this seems like we are sort of trying to push an oem-requirment into the common code without any agreement from the community. Please modify the commit message with the details that are relevant for the community to have this additional data collected during a host off.",
+      "revId": "f35310833564414950826ce2491ca95dbc5a64b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
