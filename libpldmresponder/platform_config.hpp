@@ -4,6 +4,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
+
 PHOSPHOR_LOG2_USING;
 
 namespace pldm
