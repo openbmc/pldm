@@ -15,7 +15,6 @@ namespace platform_config
 void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
 {
     sdbusplus::message::object_path path;
-
     pldm::utils::InterfaceMap interfaceMap;
 
     msg.read(path, interfaceMap);
@@ -60,43 +59,61 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
     }
 
     namespace fs = std::filesystem;
-    static constexpr auto orgFreeDesktopInterface =
-        "org.freedesktop.DBus.Properties";
-    static constexpr auto getMethod = "Get";
+    static const std::string entityMangerService =
+        "xyz.openbmc_project.EntityManager";
 
     static constexpr auto searchpath = "/xyz/openbmc_project/";
     int depth = 0;
     std::vector<std::string> systemCompatible = {compatibleInterface};
-    pldm::utils::GetSubTreeResponse response =
-        pldm::utils::DBusHandler().getSubtree(searchpath, depth,
-                                              systemCompatible);
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    std::variant<std::vector<std::string>> value;
 
-    for (const auto& [objectPath, serviceMap] : response)
+    try
     {
-        try
+        pldm::utils::GetSubTreeResponse response =
+            pldm::utils::DBusHandler().getSubtree(searchpath, depth,
+                                                  systemCompatible);
+        auto& bus = pldm::utils::DBusHandler::getBus();
+
+        for (const auto& [objectPath, serviceMap] : response)
         {
-            auto method = bus.new_method_call(
-                serviceMap[0].first.c_str(), objectPath.c_str(),
-                orgFreeDesktopInterface, getMethod);
-            method.append(systemCompatible[0].c_str(), namesProperty);
-            auto reply = bus.call(method);
-            reply.read(value);
-            auto systemList = std::get<std::vector<std::string>>(value);
-            if (!systemList.empty())
+            try
             {
-                systemType = systemList.at(0);
-                return fs::path{systemType};
+                auto record = std::find_if(
+                    serviceMap.begin(), serviceMap.end(),
+                    [](auto map) { return map.first == entityMangerService; });
+
+                if (record != serviceMap.end())
+                {
+                    auto method = bus.new_method_call(
+                        entityMangerService.c_str(), objectPath.c_str(),
+                        "org.freedesktop.DBus.Properties", "Get");
+                    method.append(compatibleInterface, namesProperty);
+                    auto propSystemList =
+                        bus.call(method, dbusTimeout).unpack<PropertyValue>();
+                    auto systemList =
+                        std::get<std::vector<std::string>>(propSystemList);
+
+                    if (!systemList.empty())
+                    {
+                        systemType = systemList.at(0);
+                        // once systemtype received,then resetting a callback
+                        systemCompatibleMatchCallBack.reset();
+                        return fs::path{systemType};
+                    }
+                }
+            }
+            catch (const std::exception& e)
+            {
+                error(
+                    "Error getting Names property at '{PATH}' on '{INTERFACE}': {ERROR}",
+                    "PATH", objectPath, "INTERFACE", compatibleInterface,
+                    "ERROR", e);
             }
         }
-        catch (const std::exception& e)
-        {
-            error(
-                "Error getting Names property at '{PATH}' on '{INTERFACE}': {ERROR}",
-                "PATH", objectPath, "INTERFACE", systemCompatible[0], "ERROR",
-                e);
-        }
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to make a d-bus call to get platform name {ERROR}",
+              "ERROR", e);
     }
     return std::nullopt;
 }
