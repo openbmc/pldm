@@ -93,6 +93,30 @@
       },
       "revId": "89dfa860d1f42b328a1ac64f78579abf743412c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2bf01fb_142ad881",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-02-23T16:44:46Z",
+      "side": 1,
+      "message": "then this should be referenced in the file where it is actually used.",
+      "parentUuid": "252008f6_d9012a31",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "89dfa860d1f42b328a1ac64f78579abf743412c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
