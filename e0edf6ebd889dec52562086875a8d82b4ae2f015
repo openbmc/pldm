@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af572479_25ddb260",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3e8af25_297acc19",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 8
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f02822_399dcfe4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c8c3cf35_a0c2ec04",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3824d724_6de15704",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-22T05:54:56Z",
       "side": 1,
       "message": "this commit only seem to see if its filled or not ..does not do any model checking ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 36
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd69553f_196ef3c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3824d724_6de15704",
       "range": {
         "startLine": 12,
         "startChar": 1,
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69460d9a_3e5c34fb",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6953566_c89d9df6",
+      "range": {
+        "startLine": 147,
+        "startChar": 4,
+        "endLine": 148,
+        "endChar": 56
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f82e9003_53dee593",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-02-22T05:54:56Z",
       "side": 1,
       "message": "redundant, directly use the property name in the call",
+      "range": {
+        "startLine": 149,
+        "startChar": 3,
+        "endLine": 149,
+        "endChar": 43
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01d203ce_7fe051c5",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f82e9003_53dee593",
       "range": {
         "startLine": 149,
         "startChar": 3,
@@ -139,6 +259,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35a16690_a31a1d3a",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Ack, no this can be a generic function. Changed the function name.",
+      "parentUuid": "240b7eec_43be357b",
+      "range": {
+        "startLine": 153,
+        "startChar": 8,
+        "endLine": 154,
+        "endChar": 71
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c434385d_8400806a",
@@ -152,6 +296,30 @@
       "writtenOn": "2024-02-22T05:54:56Z",
       "side": 1,
       "message": "so if the model is filled, it is cable card, if not its not cable card ? can you document this as well in the commit message ?",
+      "range": {
+        "startLine": 156,
+        "startChar": 7,
+        "endLine": 159,
+        "endChar": 9
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "039e7003_0828097c",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "If the model property is filled it is a IBM specific FRU, if not then that can be an industry standard FRUs.",
+      "parentUuid": "c434385d_8400806a",
       "range": {
         "startLine": 156,
         "startChar": 7,
@@ -185,6 +353,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ada7e81_084e1243",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4f90e33_27ff3cf1",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 161,
+        "endChar": 53
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6bfbf45_53cd115e",
@@ -198,6 +390,30 @@
       "writtenOn": "2024-02-22T05:54:56Z",
       "side": 1,
       "message": "can this be any fru object path ? or just an adapter path ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 15,
+        "endLine": 41,
+        "endChar": 40
+      },
+      "revId": "e0edf6ebd889dec52562086875a8d82b4ae2f015",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff87642_bdd85bb9",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-26T14:43:03Z",
+      "side": 1,
+      "message": "Changed the function name to checkIBMFru as deiscussed",
+      "parentUuid": "b6bfbf45_53cd115e",
       "range": {
         "startLine": 41,
         "startChar": 15,
