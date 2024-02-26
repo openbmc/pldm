@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/instance_id.hpp"
 #include "common/transport.hpp"
 #include "common/types.hpp"
 
@@ -22,8 +23,10 @@ class SoftPowerOff
      *
      *  @param[in] bus       - system D-Bus handler
      *  @param[in] event     - sd_event handler
+     *  @param[in] instanceDb - pldm instance database
      */
-    SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event);
+    SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
+                 InstanceIdDb& instanceIdDb);
 
     /** @brief Is the pldm-softpoweroff has error.
      * if hasError is true, that means the pldm-softpoweroff failed to
@@ -142,6 +145,10 @@ class SoftPowerOff
      * to BMC's pldmd, and the pldmd will emit the StateSensorEvent signal.
      **/
     std::unique_ptr<sdbusplus::bus::match_t> pldmEventSignal;
+
+    /** @brief Reference to the instance database
+     */
+    InstanceIdDb& instanceIdDb;
 };
 
 } // namespace pldm

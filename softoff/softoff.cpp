@@ -30,8 +30,10 @@ using Timer = Time<clockId>;
 constexpr pldm::pdr::TerminusID TID = 0; // TID will be implemented later.
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
-SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event) :
-    bus(bus), timer(event)
+SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
+                           pldm::InstanceIdDb& instanceIdDb) :
+    bus(bus),
+    timer(event), instanceIdDb(instanceIdDb)
 {
     getHostState();
     if (hasError || completed)
@@ -306,7 +308,6 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     set_effecter_state_field stateField{
         PLDM_REQUEST_SET, PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED};
-    pldm::InstanceIdDb instanceIdDb;
     instanceID = instanceIdDb.next(pldmTID);
     auto rc = encode_set_state_effecter_states_req(
         instanceID, effecterID, effecterCount, &stateField, request);
