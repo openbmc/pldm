@@ -16,6 +16,24 @@
       "message": "why change there?",
       "revId": "a410c6580f6734d14d37e1b6d7aa7993a51e9e5d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "633e2a4e_2b4ff767",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-27T11:01:44Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "d9360d1b_cb948f86",
+      "revId": "a410c6580f6734d14d37e1b6d7aa7993a51e9e5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
