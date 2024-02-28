@@ -33,6 +33,23 @@
       "message": "return is not required.",
       "revId": "2747f9c3e36ff6b2383dbda89def0a0ad75f9f6e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1b5ff19_0c879c13",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-02-28T11:15:46Z",
+      "side": 1,
+      "message": "Please change UAK to UAK (Update Access Key) for better code readability",
+      "revId": "2747f9c3e36ff6b2383dbda89def0a0ad75f9f6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
