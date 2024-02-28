@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b829a39_7bb1db67",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-28T05:39:34Z",
+      "side": 1,
+      "message": "iostream,exception is not required, since you are excessing using std namespace.",
+      "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4722465_ba6dd238",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-28T05:39:34Z",
+      "side": 1,
+      "message": "delete \u0027e\u0027, not required.",
+      "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
