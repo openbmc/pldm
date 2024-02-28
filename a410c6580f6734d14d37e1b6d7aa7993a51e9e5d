@@ -34,6 +34,23 @@
       "parentUuid": "d9360d1b_cb948f86",
       "revId": "a410c6580f6734d14d37e1b6d7aa7993a51e9e5d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5eb36b_2d1428cc",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-28T15:59:51Z",
+      "side": 0,
+      "message": "why this change of extra line? :-)",
+      "revId": "a410c6580f6734d14d37e1b6d7aa7993a51e9e5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
