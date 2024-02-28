@@ -33,6 +33,24 @@
       "message": "Did you mean e.what() ?",
       "revId": "0b578d9a7fc71bd7af18a8a53ec8972e1da653f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8abfc8fa_173a125e",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-28T11:30:57Z",
+      "side": 1,
+      "message": "e.what() is not required, since lg2 supports e and gives more info.",
+      "parentUuid": "b15cc859_cf218c18",
+      "revId": "0b578d9a7fc71bd7af18a8a53ec8972e1da653f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
