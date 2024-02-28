@@ -35,6 +35,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "055f61ec_d2eb4966",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 67
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-02-28T02:25:22Z",
+      "side": 1,
+      "message": "Patch set #64 is my latest patch set. It removed the static EID configuration as discussion. I also apply `lg2` but in new patch set from @Delphine my changing is removed. It seems the @Delphine removed all my changing and use the old code.",
+      "revId": "a830eafde63930216bb66feedfeb9fe551b66073",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01c4f78f_f0cabf11",
