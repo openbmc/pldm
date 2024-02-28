@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af1a3f18_5678979e",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-28T15:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b829a39_7bb1db67",
+      "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "459469a2_5addabcd",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-28T11:18:59Z",
       "side": 1,
       "message": "Are we safe to check for empty string ? Is there any chance that non-IBM FRUs possess with some model info ?",
+      "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dd838cc_67afdd86",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-28T15:42:40Z",
+      "side": 1,
+      "message": "We are checking if the string is not empty. The model property is being filled by VPD for IBM-specific FRUs.",
+      "parentUuid": "459469a2_5addabcd",
       "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b2d010_6cf4c755",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-28T15:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4722465_ba6dd238",
+      "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "039fac1d_bc38e74a",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-02-28T11:18:59Z",
       "side": 1,
       "message": "Please add the LG2 error () log here",
+      "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dd68552_c5705d8d",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-28T15:42:40Z",
+      "side": 1,
+      "message": "I guess the trace will not have any value as it is a boolean function ?",
+      "parentUuid": "039fac1d_bc38e74a",
       "revId": "f7a9bf597d5a516d7a41826dc9754614af50e987",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
