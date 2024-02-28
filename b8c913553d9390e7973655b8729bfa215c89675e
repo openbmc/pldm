@@ -167,6 +167,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee47fbc_86418593",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-02-28T06:06:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43fd8cff_2d462bfc",
+      "range": {
+        "startLine": 149,
+        "startChar": 50,
+        "endLine": 149,
+        "endChar": 62
+      },
+      "revId": "b8c913553d9390e7973655b8729bfa215c89675e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7769c32_e3e11c04",
