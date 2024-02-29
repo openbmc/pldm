@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3cca3f0d_f5d94c87",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-02-29T08:19:16Z",
+      "side": 1,
+      "message": "move to fru_oem_ibm.cpp",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "76e4a9a84a75532bc2c8c36dfaa010dca090d752",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "55b1d79f_aed7ee6a",
         "filename": "oem/ibm/libpldmresponder/utils.cpp",
         "patchSetId": 16
@@ -19,6 +42,29 @@
         "startChar": 37,
         "endLine": 144,
         "endChar": 41
+      },
+      "revId": "76e4a9a84a75532bc2c8c36dfaa010dca090d752",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c81b3b1_23a97a3c",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-02-29T08:19:16Z",
+      "side": 1,
+      "message": "is it better to move to common/utils?",
+      "range": {
+        "startLine": 42,
+        "startChar": 5,
+        "endLine": 42,
+        "endChar": 19
       },
       "revId": "76e4a9a84a75532bc2c8c36dfaa010dca090d752",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
