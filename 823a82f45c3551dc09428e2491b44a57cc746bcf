@@ -16,6 +16,24 @@
       "message": "tested section with the output previous result and the result with this change?",
       "revId": "823a82f45c3551dc09428e2491b44a57cc746bcf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "febb2fb9_c6a9477d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-02-29T15:38:58Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "38886efb_898652eb",
+      "revId": "823a82f45c3551dc09428e2491b44a57cc746bcf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
