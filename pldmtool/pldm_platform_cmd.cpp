@@ -725,7 +725,7 @@ class GetPDR : public CommandInterface
 
     void printCommonPDRHeader(const pldm_pdr_hdr* hdr, ordered_json& output)
     {
-        output["recordHandle"] = hdr->record_handle;
+        output["recordHandle"] = std::format("0x0{:x}", hdr->record_handle);
         output["PDRHeaderVersion"] = unsigned(hdr->version);
         output["PDRType"] = getPDRType(hdr->type);
         output["recordChangeNumber"] = hdr->record_change_num;
