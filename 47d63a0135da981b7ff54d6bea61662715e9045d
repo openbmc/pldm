@@ -16,6 +16,24 @@
       "message": "Declaration in header file  \nvoid setFirmwareUAK(const std::vector\u003cuint8_t\u003e\u0026 data);\ndoes not match the definition in here",
       "revId": "47d63a0135da981b7ff54d6bea61662715e9045d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d8b6ec_bc670709",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-02-29T09:27:32Z",
+      "side": 1,
+      "message": "ahh, I pushed the wrong patchset. Thank you for pointing!",
+      "parentUuid": "7e659363_03fa63ba",
+      "revId": "47d63a0135da981b7ff54d6bea61662715e9045d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
