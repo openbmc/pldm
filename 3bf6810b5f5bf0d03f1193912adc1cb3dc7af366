@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "0c17b838_9a3e0b82",
         "filename": "softoff/softoff.cpp",
@@ -14,8 +15,25 @@
       "side": 1,
       "message": "hardcoded value is used here because the TID in the PDR itself is 0.",
       "revId": "3bf6810b5f5bf0d03f1193912adc1cb3dc7af366",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58b91884_40999a61",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-01T05:24:41Z",
+      "side": 1,
+      "message": "is this still needed and relavant ? i think we need to double check if this is even needed at the moment.",
+      "parentUuid": "0c17b838_9a3e0b82",
+      "revId": "3bf6810b5f5bf0d03f1193912adc1cb3dc7af366",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

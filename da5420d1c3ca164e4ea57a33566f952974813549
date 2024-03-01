@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e56089f9_19549aaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-01T05:24:41Z",
+      "side": 1,
+      "message": "Still needs to re-check if most of this commit changes are relavant as of today. Despite the fact that we need to determine the TID\u0027s dynamically (which is already being driven by arj) - we should atleast have a static config file that mentions which PDR\u0027s from host that soft off should look at. And also we should have an override , so that other companies could use the override to pick the configuration dynamically.",
+      "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "45428caf_f295b3c2",
         "filename": "softoff/softoff.cpp",
@@ -20,10 +38,10 @@
         "endChar": 49
       },
       "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "aba7e6fb_2f027667",
         "filename": "softoff/softoff.cpp",
@@ -44,10 +62,10 @@
         "endChar": 49
       },
       "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "0dc69b75_1b114926",
         "filename": "softoff/softoff.cpp",
@@ -68,10 +86,10 @@
         "endChar": 49
       },
       "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "1e2ef192_3ef4b50c",
         "filename": "softoff/softoff.cpp",
@@ -92,8 +110,77 @@
         "endChar": 49
       },
       "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76ad3d36_4bd484f3",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-01T05:24:41Z",
+      "side": 1,
+      "message": "This should be ideally be fixed after @arj\u0027s code is merged. For more information look at https://discord.com/channels/775381525260664832/778790638563885086/1211491210250948658",
+      "parentUuid": "1e2ef192_3ef4b50c",
+      "range": {
+        "startLine": 35,
+        "startChar": 45,
+        "endLine": 35,
+        "endChar": 49
+      },
+      "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a2eab87_4cb4af90",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-01T05:24:41Z",
+      "side": 1,
+      "message": "Ideally we would want some sort of config file that soft off picks - which dictates the orders of PDR entities to be looked at. so that this would be scalable.",
+      "range": {
+        "startLine": 184,
+        "startChar": 3,
+        "endLine": 187,
+        "endChar": 14
+      },
+      "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd9be7ae_d805c58a",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-01T05:24:41Z",
+      "side": 1,
+      "message": "why are we setting terminus_handle to TID ? aren\u0027t they both different ?",
+      "range": {
+        "startLine": 215,
+        "startChar": 12,
+        "endLine": 215,
+        "endChar": 44
+      },
+      "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
