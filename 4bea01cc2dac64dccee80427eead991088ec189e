@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bcddf33_15453fb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 80
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-03-04T02:47:08Z",
+      "side": 1,
+      "message": "Updated the patch set to use new coroutine mechanism.",
+      "revId": "4bea01cc2dac64dccee80427eead991088ec189e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
