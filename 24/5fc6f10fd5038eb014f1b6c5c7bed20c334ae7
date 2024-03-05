@@ -1,0 +1,10 @@
+Code-Review+1: Jayashankar Padath <jayashankarpadath@gmail.com>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: Patel-Kamalkumar <kamalkumar.patel@ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Pavithra Barithaya <pavithra.b@ibm.com>
+Submitted-at: Tue, 05 Mar 2024 05:47:40 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/45854
+Comments-Total: 28
+Project: openbmc/pldm
+Branch: refs/heads/master
