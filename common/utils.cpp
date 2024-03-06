@@ -488,6 +488,23 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
         bus.call_noreply(method, dbusTimeout);
     };
 
+    auto setDbusArrayValue =
+        [&dBusMap, this](const std::vector<std::string>& list) {
+        auto& bus = getBus();
+        auto service = getService(dBusMap.objectPath.c_str(),
+                                  dBusMap.interface.c_str());
+        auto method = bus.new_method_call(
+            service.c_str(), dBusMap.objectPath.c_str(), dbusProperties, "Set");
+        method.append(dBusMap.interface.c_str(), dBusMap.propertyName.c_str(),
+                      list.size());
+        for (const auto& element : list)
+        {
+            method.append(element);
+        }
+
+        bus.call_noreply(method, dbusTimeout);
+    };
+
     if (dBusMap.propertyType == "uint8_t")
     {
         std::variant<uint8_t> v = std::get<uint8_t>(value);
@@ -537,6 +554,10 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
     {
         std::variant<std::string> v = std::get<std::string>(value);
         setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "stringArray")
+    {
+        setDbusArrayValue(std::get<std::vector<std::string>>(value));
     }
     else
     {
