@@ -194,6 +194,8 @@ using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using GetSubTreePathsResponse = std::vector<std::string>;
+using GetAncestorsResponse =
+    std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
@@ -215,6 +217,10 @@ class DBusHandlerInterface
     virtual GetSubTreePathsResponse getSubTreePaths(
         const std::string& objectPath, int depth,
         const std::vector<std::string>& ifaceList) const = 0;
+
+    virtual GetAncestorsResponse
+        getAncestors(const std::string& path,
+                     const std::vector<std::string>& ifaceList) const = 0;
 
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
@@ -288,6 +294,21 @@ class DBusHandler : public DBusHandlerInterface
     GetSubTreePathsResponse getSubTreePaths(
         const std::string& objectPath, int depth,
         const std::vector<std::string>& ifaceList) const override;
+
+    /**
+     *  @brief Get the Ancestors response from the mapper
+     *
+     *  @param[in] path - D-Bus object path
+     *  @param[in] ifaceList - an optional list of interfaces to constrain the
+     *                         search to queried from the mapper
+     *
+     *  @return GetAncestorsResponse - the mapper GetAncestors response
+     *
+     *  @throw sdbusplus::exception_t when it fails
+     */
+    GetAncestorsResponse
+        getAncestors(const std::string& path,
+                     const std::vector<std::string>& ifaceList) const override;
 
     /** @brief Get property(type: variant) from the requested dbus
      *
