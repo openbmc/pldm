@@ -284,6 +284,30 @@ const pldm_bios_attr_table_entry*
     constructEnumEntry(Table& table,
                        pldm_bios_table_attr_entry_enum_info* info);
 
+struct BootConfigSettingField
+{
+    uint8_t bootConfigType;
+    uint8_t supportedOrderedAndFailThoughModes;
+    uint8_t minimumBootSourceCount;
+    uint8_t maximumBootSourceCount;
+    std::vector<uint16_t> possibleSettingStringHandles;
+};
+
+/**
+ * @brief Decode integer boot_config_setting of attribute value table
+ * @param[in] entry Pointer to the BIOS attribute table entry to decode.
+ * @return The decoded `BootConfigSettingField` object.
+ */
+BootConfigSettingField
+    decodeBootConfigSettingEntry(const pldm_bios_attr_table_entry* entry);
+
+/** @brief decode boot_config_setting entry of attribute table
+ *  @param[in] entry - Pointer to an attribute table entry
+ *  @return Boot_config_setting field of the entry
+ */
+const pldm_bios_attr_table_entry* constructBootConfigSettingEntry(
+    Table& table, pldm_bios_table_attr_entry_boot_config_setting_info* info);
+
 } // namespace attribute
 
 namespace attribute_value
@@ -359,6 +383,29 @@ const pldm_bios_attr_val_table_entry* constructIntegerEntry(Table& table,
 const pldm_bios_attr_val_table_entry*
     constructEnumEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
                        const std::vector<uint8_t>& handleIndices);
+
+/** @brief Decode boot_config_setting entry of attribute value table
+ *  @param[in] entry - Pointer to an attribute value table entry
+ *  @return Current value string handle indices
+ */
+std::vector<uint8_t>
+    decodeBootConfigSettingEntry(const pldm_bios_attr_val_table_entry* entry);
+
+/**
+ * @brief Construct boot_config_setting entry of attribute value table at the
+ *         end of the given table
+ * @param[in] table The BIOS table to which the entry will be added.
+ * @param[in] attrHandle The attribute handle of the entry.
+ * @param[in] attrType The attribute type of the entry.
+ * @param[in] bootConfigType The boot configuration type of the entry.
+ * @param[in] orderAndFailThroughMode The order and fail-through mode of the
+ * entry.
+ * @param[in] handleIndices The handle indices of the entry.
+ * @return Pointer to the constructed entry
+ */
+const pldm_bios_attr_val_table_entry* constructBootConfigSettingEntry(
+    Table& table, uint16_t attrHandle, uint8_t attrType, uint8_t bootConfigType,
+    uint8_t orderAndFailThroughMode, const std::vector<uint8_t>& handleIndices);
 
 /** @brief construct a table with an new entry
  *  @param[in] table - the table need to be updated
