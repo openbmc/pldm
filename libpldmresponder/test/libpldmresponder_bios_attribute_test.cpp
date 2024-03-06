@@ -21,7 +21,8 @@ class TestAttribute : public BIOSAttribute
 
     void constructEntry(
         const BIOSStringTable&, Table&, Table&,
-        std::optional<std::variant<int64_t, std::string>>) override
+        std::optional<std::variant<int64_t, std::string,
+                                   std::vector<std::string>>>) override
     {}
 
     const std::optional<DBusMapping>& getDbusMap()
@@ -37,7 +38,8 @@ class TestAttribute : public BIOSAttribute
     }
 
     void generateAttributeEntry(
-        const std::variant<int64_t, std::string>& /*attributevalue*/,
+        const std::variant<int64_t, std::string,
+                           std::vector<std::string>>& /*attributevalue*/,
         Table& /*attrValueEntry*/) override
     {}
 };

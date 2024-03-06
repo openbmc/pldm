@@ -205,7 +205,8 @@ void BIOSEnumAttribute::populateValueDisplayNamesMap(uint16_t attrHandle)
 
 void BIOSEnumAttribute::constructEntry(
     const BIOSStringTable& stringTable, Table& attrTable, Table& attrValueTable,
-    std::optional<std::variant<int64_t, std::string>> optAttributeValue)
+    std::optional<std::variant<int64_t, std::string, std::vector<std::string>>>
+        optAttributeValue)
 {
     auto possibleValuesHandle = getPossibleValuesHandle(stringTable,
                                                         possibleValues);
@@ -268,7 +269,8 @@ int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
 }
 
 void BIOSEnumAttribute::generateAttributeEntry(
-    const std::variant<int64_t, std::string>& attributevalue,
+    const std::variant<int64_t, std::string, std::vector<std::string>>&
+        attributevalue,
     Table& attrValueEntry)
 {
     attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) + 1);
