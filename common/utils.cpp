@@ -279,6 +279,20 @@ GetSubTreePathsResponse DBusHandler::getSubTreePaths(
     return paths;
 }
 
+GetAncestorsResponse DBusHandler::getAncestors(
+    const std::string& path, const std::vector<std::string>& ifaceList) const
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(ObjectMapper::default_service,
+                                      ObjectMapper::instance_path,
+                                      ObjectMapper::interface, "GetAncestors");
+    method.append(path, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+    GetAncestorsResponse response;
+    reply.read(response);
+    return response;
+}
+
 void reportError(const char* errorMsg)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
