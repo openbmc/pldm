@@ -446,6 +446,13 @@ class GetBIOSTableHandler : public CommandInterface
                 std::cout << "Password attribute: Not Supported" << std::endl;
                 break;
             }
+            case PLDM_BIOS_BOOT_CONFIG_SETTING:
+            case PLDM_BIOS_BOOT_CONFIG_SETTING_READ_ONLY:
+            {
+                std::cout << "Boot config settiung attribute: Not Supported"
+                          << std::endl;
+                break;
+            }
         }
     }
 };
@@ -649,6 +656,12 @@ class GetBIOSTable : public GetBIOSTableHandler
                 case PLDM_BIOS_PASSWORD_READ_ONLY:
                     std::cout << "Password attribute: Not Supported"
                               << std::endl;
+                    break;
+                case PLDM_BIOS_BOOT_CONFIG_SETTING:
+                case PLDM_BIOS_BOOT_CONFIG_SETTING_READ_ONLY:
+                    std::cout << "Boot config settiung attribute: Not Supported"
+                              << std::endl;
+                    break;
             }
             output.emplace_back(std::move(attrdata));
         }

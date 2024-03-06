@@ -1,5 +1,6 @@
 #include "bios_config.hpp"
 
+#include "bios_boot_config_setting_attribute.hpp"
 #include "bios_enum_attribute.hpp"
 #include "bios_integer_attribute.hpp"
 #include "bios_string_attribute.hpp"
@@ -31,6 +32,7 @@ namespace
 using BIOSConfigManager =
     sdbusplus::xyz::openbmc_project::BIOSConfig::server::Manager;
 
+constexpr auto bootConfigSettingJsonFile = "boot_config_setting_attrs.json";
 constexpr auto enumJsonFile = "enum_attrs.json";
 constexpr auto stringJsonFile = "string_attrs.json";
 constexpr auto integerJsonFile = "integer_attrs.json";
@@ -208,6 +210,30 @@ int BIOSConfig::checkAttributeTable(const Table& table)
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
                         stringTable->data(), stringTable->size(),
                         pvHandls[defIndices[i]]);
+                    if (stringEntry == nullptr)
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
+                }
+                break;
+            }
+            case PLDM_BIOS_BOOT_CONFIG_SETTING:
+            case PLDM_BIOS_BOOT_CONFIG_SETTING_READ_ONLY:
+            {
+                uint8_t possibleBootSourcesNum;
+                pldm_bios_table_attr_entry_boot_config_setting_decode_pv_num_check(
+                    entry, &possibleBootSourcesNum);
+                std::vector<uint16_t> possibleBootSourceHandls(
+                    possibleBootSourcesNum);
+                pldm_bios_table_attr_entry_boot_config_setting_decode_pv_hdls_check(
+                    entry, possibleBootSourceHandls.data(),
+                    possibleBootSourceHandls.size());
+
+                for (const auto& bootSourceHandle : possibleBootSourceHandls)
+                {
+                    auto stringEntry = pldm_bios_table_string_find_by_handle(
+                        stringTable->data(), stringTable->size(),
+                        bootSourceHandle);
                     if (stringEntry == nullptr)
                     {
                         return PLDM_INVALID_BIOS_ATTR_HANDLE;
@@ -448,6 +474,13 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                                 "AttributeType.Password";
                 break;
             }
+            case PLDM_BIOS_BOOT_CONFIG_SETTING:
+            case PLDM_BIOS_BOOT_CONFIG_SETTING_READ_ONLY:
+            {
+                // TODO: Check for BootConfigSetting after the type is added to
+                // phosphor-dbus-interfaces
+                break;
+            }
             default:
                 return PLDM_INVALID_BIOS_ATTR_HANDLE;
         }
@@ -503,6 +536,10 @@ void BIOSConfig::constructAttributes()
     });
     load(jsonDir / sysType / enumJsonFile, [this](const Json& entry) {
         constructAttribute<BIOSEnumAttribute>(entry);
+    });
+    load(jsonDir / sysType / bootConfigSettingJsonFile,
+         [this](const Json& entry) {
+        constructAttribute<BIOSBootConfigSettingAttribute>(entry);
     });
 }
 
@@ -587,6 +624,15 @@ std::optional<Table> BIOSConfig::buildAndStoreStringTable()
         strings.emplace(entry.at("attribute_name"));
         auto possibleValues = entry.at("possible_values");
         for (auto& pv : possibleValues)
+        {
+            strings.emplace(pv);
+        }
+    });
+    load(jsonDir / sysType / bootConfigSettingJsonFile,
+         [&strings](const Json& entry) {
+        strings.emplace(entry.at("attribute_name"));
+        auto possibleSettings = entry.at("possible_boot_source_settings");
+        for (auto& pv : possibleSettings)
         {
             strings.emplace(pv);
         }
@@ -764,6 +810,28 @@ void BIOSConfig::traceBIOSUpdate(
                 "ATTR_NAME", attrName, "UPDATED_VAL", value, "CHK_BMC", chkBMC);
             break;
         }
+        case PLDM_BIOS_BOOT_CONFIG_SETTING:
+        case PLDM_BIOS_BOOT_CONFIG_SETTING_READ_ONLY:
+        {
+            auto count =
+                pldm_bios_table_attr_value_entry_boot_config_setting_decode_number(
+                    attrValueEntry);
+            std::vector<uint8_t> handles(count);
+            pldm_bios_table_attr_value_entry_boot_config_setting_decode_handles(
+                attrValueEntry, handles.data(), handles.size());
+
+            for (const auto& handle : handles)
+            {
+                auto newVal = displayStringHandle(attrHandle, handle, attrTable,
+                                                  stringTable);
+                auto chkBMC = isBMC ? "true" : "false";
+                info(
+                    "BIOS:{ATTR_NAME}, updated to value: {NEW_VAL}, by BMC: {CHK_BMC} ",
+                    "ATTR_NAME", attrName, "NEW_VAL", newVal, "CHK_BMC",
+                    chkBMC);
+            }
+            break;
+        }
         default:
             break;
     };
@@ -827,6 +895,37 @@ int BIOSConfig::checkAttrValueToUpdate(
                     "String: Length error, string = {ATTR_VALUE} length {LEN}",
                     "ATTR_VALUE", value, "LEN", value.size());
                 return PLDM_ERROR_INVALID_LENGTH;
+            }
+            return PLDM_SUCCESS;
+        }
+        case PLDM_BIOS_BOOT_CONFIG_SETTING:
+        case PLDM_BIOS_BOOT_CONFIG_SETTING_READ_ONLY:
+        {
+            auto values = table::attribute_value::decodeBootConfigSettingEntry(
+                attrValueEntry);
+            auto [bootConfigType, supportedOrderedAndFailThoughModes,
+                  minimumBootSourceCount, maximumBootSourceCount,
+                  possibleSettingStringHandles] =
+                table::attribute::decodeBootConfigSettingEntry(attrEntry);
+
+            if (values.size() < minimumBootSourceCount ||
+                values.size() > maximumBootSourceCount)
+            {
+                error(
+                    "BootConfigSetting: Length error, length={LEN},but minumum={MIN}, maximum={MAX}",
+                    "LEN", values.size(), "MIN", minimumBootSourceCount, "MAX",
+                    maximumBootSourceCount);
+                return PLDM_ERROR_INVALID_LENGTH;
+            }
+            for (const auto& bootSourceIndex : values)
+            {
+                if (bootSourceIndex >= possibleSettingStringHandles.size())
+                {
+                    error(
+                        "BootConfigSetting: Illgeal index, Index = {ATTR_INDEX}",
+                        "ATTR_INDEX", bootSourceIndex);
+                    return PLDM_ERROR_INVALID_DATA;
+                }
             }
             return PLDM_SUCCESS;
         }
