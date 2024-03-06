@@ -104,7 +104,7 @@ void BIOSIntegerAttribute::setAttrValueOnDbus(
 
 void BIOSIntegerAttribute::constructEntry(
     const BIOSStringTable& stringTable, Table& attrTable, Table& attrValueTable,
-    std::optional<std::variant<int64_t, std::string>> optAttributeValue)
+    std::optional<std::variant<int64_t, std::string, std::vector<std::string>>> optAttributeValue)
 {
     pldm_bios_table_attr_entry_integer_info info = {
         stringTable.findHandle(name), readOnly,
@@ -218,7 +218,7 @@ int BIOSIntegerAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
 }
 
 void BIOSIntegerAttribute::generateAttributeEntry(
-    const std::variant<int64_t, std::string>& attributevalue,
+    const std::variant<int64_t, std::string, std::vector<std::string>>& attributevalue,
     Table& attrValueEntry)
 {
     attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) +

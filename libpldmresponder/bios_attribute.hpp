@@ -63,7 +63,7 @@ class BIOSAttribute
     virtual void constructEntry(
         const BIOSStringTable& stringTable, Table& attrTable,
         Table& attrValueTable,
-        std::optional<std::variant<int64_t, std::string>> optAttributeValue =
+        std::optional<std::variant<int64_t, std::string, std::vector<std::string>>> optAttributeValue =
             std::nullopt) = 0;
 
     /** @brief Method to update the value for an attribute
@@ -84,7 +84,7 @@ class BIOSAttribute
      *  @param[in,out] attrValueEntry - attribute entry
      */
     virtual void generateAttributeEntry(
-        const std::variant<int64_t, std::string>& attributevalue,
+        const std::variant<int64_t, std::string, std::vector<std::string>>& attributevalue,
         Table& attrValueEntry) = 0;
 
     /** @brief Method to return the D-Bus map */

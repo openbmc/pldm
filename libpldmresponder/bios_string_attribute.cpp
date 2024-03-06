@@ -97,7 +97,7 @@ std::string BIOSStringAttribute::getAttrValue()
 
 void BIOSStringAttribute::constructEntry(
     const BIOSStringTable& stringTable, Table& attrTable, Table& attrValueTable,
-    std::optional<std::variant<int64_t, std::string>> optAttributeValue)
+    std::optional<std::variant<int64_t, std::string, std::vector<std::string>>> optAttributeValue)
 {
     pldm_bios_table_attr_entry_string_info info = {
         stringTable.findHandle(name), readOnly,
@@ -153,7 +153,7 @@ int BIOSStringAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
 }
 
 void BIOSStringAttribute::generateAttributeEntry(
-    const std::variant<int64_t, std::string>& attributevalue,
+    const std::variant<int64_t, std::string, std::vector<std::string>>& attributevalue,
     Table& attrValueEntry)
 {
     std::string value = std::get<std::string>(attributevalue);

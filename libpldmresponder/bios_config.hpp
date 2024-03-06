@@ -43,10 +43,10 @@ using ReadonlyStatus = bool;
 using DisplayName = std::string;
 using Description = std::string;
 using MenuPath = std::string;
-using CurrentValue = std::variant<int64_t, std::string>;
-using DefaultValue = std::variant<int64_t, std::string>;
+using CurrentValue = std::variant<int64_t, std::string, std::vector<std::string>>;
+using DefaultValue = std::variant<int64_t, std::string, std::vector<std::string>>;
 using OptionString = std::string;
-using OptionValue = std::variant<int64_t, std::string>;
+using OptionValue = std::variant<int64_t, std::string, std::vector<std::string>>;
 using ValueDisplayName = std::string;
 using Option =
     std::vector<std::tuple<OptionString, OptionValue, ValueDisplayName>>;
