@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a1869a8_d9f4cea3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-03-07T09:23:33Z",
+      "side": 1,
+      "message": "`https://gerrit.openbmc.org/c/openbmc/libpldm/+/69875`\nThis commit is depends on the new change for libpldm to define structures for BootConfigSettings, that commit is necessary for CI building.",
+      "revId": "40875687730a04709b9fc88109f952b493a65007",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
