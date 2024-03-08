@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb4f37a7_5beab49b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-08T09:00:59Z",
+      "side": 1,
+      "message": "could you also please add the spec and the table number which has this new type defined. and also where is the BIOS attribute added ? do you have a different commit to do that ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 17
+      },
+      "revId": "f9d3ee1c15a549dfdd883de2f7882716332ab52e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8703284e_d81bebde",
+        "filename": "libpldmresponder/bios_attribute.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-08T09:00:59Z",
+      "side": 1,
+      "message": "doxygen update needed throughout the entire file.",
+      "range": {
+        "startLine": 67,
+        "startChar": 6,
+        "endLine": 68,
+        "endChar": 48
+      },
+      "revId": "f9d3ee1c15a549dfdd883de2f7882716332ab52e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
