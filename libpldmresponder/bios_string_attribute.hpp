@@ -71,7 +71,8 @@ class BIOSStringAttribute : public BIOSAttribute
      */
     void constructEntry(const BIOSStringTable& stringTable, Table& attrTable,
                         Table& attrValueTable,
-                        std::optional<std::variant<int64_t, std::string>>
+                        std::optional<std::variant<int64_t, std::string,
+                                                   std::vector<std::string>>>
                             optAttributeValue = std::nullopt) override;
 
     /** @brief Generate attribute entry by the spec DSP0247_1.0.0 Table 14
@@ -80,7 +81,8 @@ class BIOSStringAttribute : public BIOSAttribute
      *  @param[in,out] attrValueEntry - attribute entry
      */
     void generateAttributeEntry(
-        const std::variant<int64_t, std::string>& attributevalue,
+        const std::variant<int64_t, std::string, std::vector<std::string>>&
+            attributevalue,
         Table& attrValueEntry) override;
 
     int updateAttrVal(Table& newValue, uint16_t attrHdl, uint8_t attrType,
