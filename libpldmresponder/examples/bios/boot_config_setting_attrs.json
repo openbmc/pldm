@@ -1,0 +1,55 @@
+// This is a sample JSON configuration file for BIOS Boot Config Setting type
+{
+    "entries": [
+        {
+            "attribute_name": "example_boot_config",
+            // Possible values of BootConfigType {Unknown=0x00, Default=0x01, Next=0x02,
+            // DefaultAndNext=0x03, Onetime=0x04, DefaultAndOnetime=0x05}
+            "boot_config_type": "Default",
+
+            // Possible values of SupportedOrdereredAndFailThroughModes
+            // {UnorderedAndLimitedFailThrough=0x00, UnorderedAndFailThrough=0x01,
+            // OrderedAndLimitedFailThrough=0x02, OrderedAndFailThrough=0x03, Unordered=0x04,
+            // Ordered=0x05, LimitedFailThrough=0x06, FailThrough=0x07, All=0x08}
+            "supported_ordered_and_fail_through_modes": "OrderedAndLimitedFailThrough",
+            "minimum_number_of_boot_sources_settings": 2,
+            "maximum_number_of_boot_sources_settings": 6,
+            "possible_boot_source_settings": [
+                "BootSource_USB",
+                "BootSource_Network",
+                "BootSource_HDD",
+                "BootSource_CDROM",
+                "BootSource_Other",
+                "BootSource_None"
+            ],
+
+            // Values of OrderAndFailThroughMode {UnorderedAndLimitedFailThrough=0x00,
+            // UnorderedAndFailThrough=0x01, OrderedAndLimitedFailThrough=0x02, OrderedAndFailThrough=0x03}
+            "default_order_and_fail_through_mode": "OrderedAndLimitedFailThrough",
+            "default_boot_source_settings": [
+                "BootSource_Network",
+                "BootSource_HDD",
+                "BootSource_CDROM",
+                "BootSource_USB",
+                "BootSource_Other"
+            ],
+            // Currently, runtime Update by Dbus is not supported for this attribute.
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/control/host1/boot_order",
+                "interface": "xyz.openbmc_project.Control.Boot.Source",
+                "property_name": "BootOrder",
+                "property_type": "stringArray",
+                // Number of property_values should match to the number of possible values.
+                // Each is entry in the possible_values is mapped to entry in property_values.
+                "property_values": [
+                    "xyz.openbmc_project.Control.Boot.Source.Sources.Network",
+                    "xyz.openbmc_project.Control.Boot.Source.Sources.Disk",
+                    "xyz.openbmc_project.Control.Boot.Source.Sources.ExternalMedia",
+                    "xyz.openbmc_project.Control.Boot.Source.Sources.Network",
+                    "xyz.openbmc_project.Control.Boot.Source.Sources.RemovableMedia",
+                    "xyz.openbmc_project.Control.Boot.Source.Sources.Default"
+                ]
+            }
+        }
+    ]
+}

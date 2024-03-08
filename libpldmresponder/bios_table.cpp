@@ -260,6 +260,67 @@ EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
     return {pvHdls, defIndices};
 }
 
+const pldm_bios_attr_table_entry* constructBootConfigSettingEntry(
+    Table& table, pldm_bios_table_attr_entry_boot_config_setting_info* info)
+{
+    auto entryLength =
+        pldm_bios_table_attr_entry_boot_config_setting_encode_length(
+            info->boot_config_type, info->supported_order_and_fail_through_mode,
+            info->minimum_boot_source_num, info->maximum_boot_source_num,
+            info->possible_boot_source_num);
+
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength, 0);
+    int rc = pldm_bios_table_attr_entry_boot_config_setting_encode_check(
+        table.data() + tableSize, entryLength, info);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to encode BIOS table boot config setting entry: {LIBPLDM_ERROR}",
+            "LIBPLDM_ERROR", rc);
+        throw std::runtime_error(
+            "Failed to encode BIOS table boot config setting entry");
+    }
+    return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
+                                                         tableSize);
+}
+
+BootConfigSettingField
+    decodeBootConfigSettingEntry(const pldm_bios_attr_table_entry* entry)
+{
+    uint8_t pvNum;
+    int rc = pldm_bios_table_attr_entry_boot_config_setting_decode_pv_num_check(
+        entry, &pvNum);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to decode the number of possible values for BIOS table boot config setting entry: {LIBPLDM_ERROR}",
+            "LIBPLDM_ERROR", rc);
+        throw std::runtime_error(
+            "Failed to decode the number of possible values for BIOS table enum entry");
+    }
+    std::vector<uint16_t> pvHdls(pvNum, 0);
+
+    pldm_bios_table_attr_entry_boot_config_setting_decode_pv_hdls_check(
+        entry, pvHdls.data(), pvNum);
+
+    uint8_t bootConfigType;
+    pldm_bios_table_attr_entry_boot_config_setting_decode_boot_config_type_check(
+        entry, &bootConfigType);
+    uint8_t supportedOrderAndFailThroughMode;
+    pldm_bios_table_attr_entry_boot_config_setting_decode_supported_order_and_fail_through_mode_check(
+        entry, &supportedOrderAndFailThroughMode);
+    uint8_t minimumBootSourceCount;
+    pldm_bios_table_attr_entry_boot_config_setting_decode_minimum_boot_source_num_check(
+        entry, &minimumBootSourceCount);
+    uint8_t maximumBootSourceCount;
+    pldm_bios_table_attr_entry_boot_config_setting_decode_maximum_boot_source_num_check(
+        entry, &maximumBootSourceCount);
+
+    return {bootConfigType, supportedOrderAndFailThroughMode,
+            minimumBootSourceCount, maximumBootSourceCount, pvHdls};
+}
+
 } // namespace attribute
 
 namespace attribute_value
@@ -293,6 +354,29 @@ std::vector<uint8_t>
     std::vector<uint8_t> currHdls(number, 0);
     pldm_bios_table_attr_value_entry_enum_decode_handles(entry, currHdls.data(),
                                                          currHdls.size());
+    return currHdls;
+}
+
+std::vector<uint8_t>
+    decodeBootConfigSettingEntry(const pldm_bios_attr_val_table_entry* entry)
+{
+    uint8_t bootSourceNum;
+    int rc =
+        pldm_bios_table_attr_entry_boot_config_setting_decode_boot_source_num_check(
+            entry, &bootSourceNum);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to decode the number of boot source for BIOS table boot config setting entry: {LIBPLDM_ERROR}",
+            "LIBPLDM_ERROR", rc);
+        throw std::runtime_error(
+            "Failed to decode the number of boot source for BIOS table enum entry");
+    }
+
+    std::vector<uint8_t> currHdls(bootSourceNum, 0);
+    pldm_bios_table_attr_value_entry_boot_config_setting_decode_handles(
+        entry, currHdls.data(), currHdls.size());
+
     return currHdls;
 }
 
@@ -361,6 +445,31 @@ const pldm_bios_attr_val_table_entry*
             "LIBPLDM_ERROR", rc);
         throw std::runtime_error(
             "Failed to encode BIOS attribute table enum entry");
+    }
+    return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
+                                                             tableSize);
+}
+
+const pldm_bios_attr_val_table_entry* constructBootConfigSettingEntry(
+    Table& table, uint16_t attrHandle, uint8_t attrType, uint8_t bootConfigType,
+    uint8_t orderAndFailThroughMode, const std::vector<uint8_t>& handleIndices)
+{
+    auto entryLength =
+        pldm_bios_table_attr_value_entry_encode_boot_config_setting_length(
+            handleIndices.size());
+    auto tableSize = table.size();
+    table.resize(tableSize + entryLength);
+    int rc = pldm_bios_table_attr_value_entry_encode_boot_config_setting_check(
+        table.data() + tableSize, entryLength, attrHandle, attrType,
+        bootConfigType, orderAndFailThroughMode, handleIndices.size(),
+        handleIndices.data());
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to encode BIOS attribute table boot config setting entry: {LIBPLDM_ERROR}",
+            "LIBPLDM_ERROR", rc);
+        throw std::runtime_error(
+            "Failed to encode BIOS attribute table boot config setting entry");
     }
     return reinterpret_cast<pldm_bios_attr_val_table_entry*>(table.data() +
                                                              tableSize);

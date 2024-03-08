@@ -16,6 +16,7 @@ sources = [
   'bios_string_attribute.cpp',
   'bios_integer_attribute.cpp',
   'bios_enum_attribute.cpp',
+  'bios_boot_config_setting_attribute.cpp',
   'bios_config.cpp',
   'pdr_utils.cpp',
   'pdr.cpp',
