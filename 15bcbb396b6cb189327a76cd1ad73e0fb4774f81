@@ -1,0 +1,395 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "240036f3_2daa5316",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "what does utility for getmanagedobjects mean ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11e1026a_3da7cce1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "does this help ? since we are anyways pushing code in openbmc/pldm repo.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5714e84a_90f2f813",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "its it supposed to return objects ? rather than object paths ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 37,
+        "endLine": 10,
+        "endChar": 12
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "870996d3_3ca38447",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "is this persisted into file system ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 19,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4e34d06_ce1c7d51",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "this has wrapping issues, please fix the commit message.\nplease follow this as an example : https://cbea.ms/git-commit/",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22cae5ba_3179b582",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "this does not really help anyone in the community. we usually prefer unit tests against functional tests.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4213b2e_07c075b9",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "can\u0027t we use unpack ? and reduce the ROI here ? example : https://github.com/openbmc/pldm/commit/75b8f4646e4f6715aec6e789b1ced84a64249ad0",
+      "range": {
+        "startLine": 570,
+        "startChar": 2,
+        "endLine": 572,
+        "endChar": 19
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9d90957_dd9a54cd",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "i believe this could be obtained from inventory header files ? \n\nlook at this for example : https://github.com/openbmc/pldm/commit/7b4d59aa8f6020b919d41415bece7f0651304b00",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 74
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68de8096_8e650897",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 319,
+        "startChar": 49,
+        "endLine": 319,
+        "endChar": 62
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d610183b_c5d7bcab",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "under those object ? you meant ?",
+      "range": {
+        "startLine": 320,
+        "startChar": 18,
+        "endLine": 321,
+        "endChar": 18
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec666e88_af12f817",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "wrapping issue, please fix it",
+      "range": {
+        "startLine": 319,
+        "startChar": 4,
+        "endLine": 321,
+        "endChar": 18
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dd28e7c_11e25530",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "do you mean object path here ?",
+      "range": {
+        "startLine": 323,
+        "startChar": 19,
+        "endLine": 323,
+        "endChar": 55
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc87e6c0_69500649",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "doxygen is supposed to tell what this map is ..should not subject the return type here..",
+      "range": {
+        "startLine": 325,
+        "startChar": 16,
+        "endLine": 325,
+        "endChar": 73
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85a0f5f8_1d740e3b",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 330,
+        "startChar": 50,
+        "endLine": 330,
+        "endChar": 62
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f90b4f1d_cc8afd6c",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "wrapping issue.",
+      "range": {
+        "startLine": 330,
+        "startChar": 4,
+        "endLine": 331,
+        "endChar": 14
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d439e156_3ff1294c",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "same comment here.",
+      "range": {
+        "startLine": 332,
+        "startChar": 6,
+        "endLine": 333,
+        "endChar": 73
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83502a76_d2252572",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-09T08:49:44Z",
+      "side": 1,
+      "message": "obtain these from MCTP PDI header files ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
