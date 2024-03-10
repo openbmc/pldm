@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e4ad9c_51099e7f",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-10T16:52:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "929505e5_50ec944b",
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b82aca03_6d5e6fd7",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-02-22T05:16:34Z",
       "side": 1,
       "message": "Offset and sensorRearm are they both same? If yes can we use same name all across to avoid confusion",
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c578d95_3785d1a5",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-10T16:52:58Z",
+      "side": 1,
+      "message": "yeah that makes sense, but that would have to come from a different commit as offset was not added as part of this commit. I can put another commit to fix that.",
+      "parentUuid": "b82aca03_6d5e6fd7",
       "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb309641_d9444326",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-10T16:52:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bd705ff_f903e211",
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "966b8776_a3ce46f7",
@@ -82,6 +136,30 @@
       "writtenOn": "2024-02-22T05:16:34Z",
       "side": 1,
       "message": "To handle the case of out of range sensorId, shall we add this under try catch block?",
+      "range": {
+        "startLine": 153,
+        "startChar": 11,
+        "endLine": 153,
+        "endChar": 60
+      },
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f87d5eaf_9016aaed",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-10T16:52:58Z",
+      "side": 1,
+      "message": "It is already handled at line number 169. if the sensor cache is not present for a sensor, we update the cache.",
+      "parentUuid": "966b8776_a3ce46f7",
       "range": {
         "startLine": 153,
         "startChar": 11,
@@ -152,6 +230,48 @@
       "writtenOn": "2024-02-29T05:27:30Z",
       "side": 1,
       "message": "range-based for loop can be used?",
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a09f7fc1_5f1cfd5e",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-10T16:52:58Z",
+      "side": 1,
+      "message": "I would prefer to do this in a different commit, since that change is not added as part of this commit.",
+      "parentUuid": "e519cf06_257a2618",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 8
+      },
+      "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6e2fff8_ce2c5fc5",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-10T16:52:58Z",
+      "side": 1,
+      "message": "same as above, i could do that as part of this commit , since that change is not added as part of this commit.",
+      "parentUuid": "6778e345_ce05e0ca",
       "revId": "2bb8af6f6b4656d1bf6fd46c57e4da0023d76200",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
