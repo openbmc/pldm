@@ -302,6 +302,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7348ab4_b82182a2",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-11T06:53:07Z",
+      "side": 1,
+      "message": "why did we make it static?",
+      "range": {
+        "startLine": 328,
+        "startChar": 4,
+        "endLine": 328,
+        "endChar": 10
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "85a0f5f8_1d740e3b",
         "filename": "common/utils.hpp",
         "patchSetId": 2
@@ -371,6 +394,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2bb63ac0_fb2b2d90",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-11T06:53:07Z",
+      "side": 1,
+      "message": "can we use get these directly from PDI?",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 49,
+        "endChar": 74
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83502a76_d2252572",
         "filename": "requester/mctp_endpoint_discovery.hpp",
         "patchSetId": 2
@@ -382,6 +428,30 @@
       "writtenOn": "2024-03-09T08:49:44Z",
       "side": 1,
       "message": "obtain these from MCTP PDI header files ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b683cacf_16affe05",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-11T06:53:07Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "83502a76_d2252572",
       "range": {
         "startLine": 9,
         "startChar": 0,
