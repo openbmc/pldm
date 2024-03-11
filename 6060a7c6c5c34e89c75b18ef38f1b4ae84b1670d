@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fc5aa6d_23b731f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-11T05:44:22Z",
+      "side": 1,
+      "message": "nit: Sensor Events",
+      "range": {
+        "startLine": 7,
+        "startChar": 34,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "6060a7c6c5c34e89c75b18ef38f1b4ae84b1670d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2733826_2ec8374c",
+        "filename": "libpldmresponder/pdr_utils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-11T05:44:22Z",
+      "side": 1,
+      "message": "can we make this a vector rather than a array?",
+      "revId": "6060a7c6c5c34e89c75b18ef38f1b4ae84b1670d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
