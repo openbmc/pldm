@@ -38,6 +38,7 @@ owners:
 
 reviewers:
 - liuxiwei@ieisystem.com
+- pavithrabarithaya07@gmail.com
 
 matchers:
 - partial_regex: ibm
@@ -66,3 +67,6 @@ openbmc:
 - name: Tom Joseph
   email: rushtotom@gmail.com
   discord: tomjose
+- name: Pavithra Barithaya
+  email: pavithrabarithaya07@gmail.com
+  discord: Pavithra B
