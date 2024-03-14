@@ -118,6 +118,41 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c58b4598_bc1582bb",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "I think there was some confusion on this comment because now the meson option seems to be completely gone.\n\n- I really don\u0027t want to see arbitrary files with `#ifdef OEM_META`.  We already have way too much `#ifdef OEM_IBM` sprinkled around and we shouldn\u0027t make this worse.\n\n- We _should_ be able to disable the oem/meta subdirectory for community members that don\u0027t want it.  This is where the meson.option comes into use.  We can add full source parts or remove full source parts as long as by default the CI has `oem-meta\u003denabled`.",
+      "parentUuid": "e5326053_bdb5ed3f",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "885a88ef_8c984cd3",
+        "filename": "meson.options",
+        "patchSetId": 9
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "I don\u0027t know if this got removed in some rebase with another commit or what, but we do want to keep this option.",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25b17ddc_99a14652",
@@ -196,6 +231,24 @@
       "side": 1,
       "message": "Is there any other case we can reference to?",
       "parentUuid": "787aefbb_bca38d44",
+      "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2c5f880_ed56b160",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "I guess Halfdome appears to have been the last system with more than 8 channels.  It does appear that they are still letters, but they are somewhat random in arrangement:\n\nA B D C H G E F",
+      "parentUuid": "7f5cfe73_8ba201da",
       "revId": "2363c9f04d8085cfea59803fdf66811b2550f8c5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

@@ -1,0 +1,514 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3bc47c_eb7b9ca0",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Don\u0027t use C-style struct definitions.  `struct dimm_info`",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 7
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75a52a89_b74eef66",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Don\u0027t use _ prefixes.",
+      "range": {
+        "startLine": 19,
+        "startChar": 15,
+        "endLine": 19,
+        "endChar": 25
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76748b51_bbf87a40",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Any reason these can\u0027t be `size_t` by the time we get to using it here?  I understand it comes from PLDM as a uint8_t, but we can turn it into an index quickly, right?",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 11
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5a7376c_f936cf44",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Why isn\u0027t this taking a `const dimm_info\u0026`?",
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17d00150_8f9bdb44",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Maybe add an `invalid location` constant?",
+      "range": {
+        "startLine": 55,
+        "startChar": 28,
+        "endLine": 55,
+        "endChar": 32
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c937362_2b9226f5",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "We have a lot of string concatenation through out this whole commit.  Would it be clearer to use std::format instead?",
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1b03dd8_84e25a80",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Why do we need to mask these?  Isn\u0027t this just hiding potential data problems and limiting the hardware size to the Yv4 design?  Seems like convertToDimmString already has index checking.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 44
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0eae42e_ee3f435b",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "We should be able to eliminate this variable.  By using a local variable you\u0027re potentially making it so the compiler can\u0027t use Return-Value-Optimization (RVO) and it isn\u0027t really providing any clarity or code simplicity (see later comments in this function).",
+      "range": {
+        "startLine": 85,
+        "startChar": 16,
+        "endLine": 85,
+        "endChar": 26
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5b6301e_9d7eac19",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "This is kind of silly, isn\u0027t it?  We\u0027ve used a variable and then also documented the expected default value of the variable?  Just `return \"Unknown\"`?",
+      "range": {
+        "startLine": 100,
+        "startChar": 27,
+        "endLine": 100,
+        "endChar": 58
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a6e566_a6bd6eb7",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Return it here?  Why keep going?",
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d896d640_01bd872d",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "You don\u0027t need to use `what` on any lg2 calls.",
+      "range": {
+        "startLine": 122,
+        "startChar": 67,
+        "endLine": 122,
+        "endChar": 75
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "891b71a7_aa85edb0",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "lg2 already inserts the source-location information.  Please don\u0027t add it manually also.",
+      "range": {
+        "startLine": 122,
+        "startChar": 27,
+        "endLine": 122,
+        "endChar": 57
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfb5c631_1058bc04",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "I\u0027m very afraid.\n\nWe have a buffer and a size.  We never look at the size variable?  How do you know you\u0027ve not overflowed the buffer?",
+      "range": {
+        "startLine": 131,
+        "startChar": 41,
+        "endLine": 131,
+        "endChar": 79
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1959fcf6_fbeb2abe",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "We should get this to be a typedef somewhere since it seems to be a regularly used type for PLDM handlers, right?",
+      "range": {
+        "startLine": 132,
+        "startChar": 10,
+        "endLine": 132,
+        "endChar": 46
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3d3372c_4ef80cbe",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "nit: auto?  (Can be done throughout a lot of this code)",
+      "range": {
+        "startLine": 258,
+        "startChar": 12,
+        "endLine": 258,
+        "endChar": 19
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dc2bd6c_57d3f3cd",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Why is 0 x86?  Need a constant here?",
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9053035_7ce56c79",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "nit:\n\nI would generally prefer to see this as:\n\n```\nauto [dimmLocation, dimm] \u003d getCommonDimmLocation(dimmInfo)\n```\n\nThis would require getCommonDimmLocation to return a `std::tuple\u003cstd::string, std::string\u003e`.",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 64
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b330b247_a4b90798",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Why is plat 0 Intel here but x86 earlier?",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 298,
+        "endChar": 30
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebe121da_c04c89dc",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Any time you\u0027re casting from an enumeration type here, you should really be using `std::to_underlying` instead.  Please fix these throughout.",
+      "range": {
+        "startLine": 303,
+        "startChar": 40,
+        "endLine": 303,
+        "endChar": 60
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f10f5948_5eca699a",
+        "filename": "oem/meta/platform-mc/event_oem_meta.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "This seems to be the only difference?  Can we improve the Intel BIC code to leave this field as zeros?",
+      "range": {
+        "startLine": 316,
+        "startChar": 42,
+        "endLine": 316,
+        "endChar": 62
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1dbe186_286aad30",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "We need to come up with some kind of IANA registration system so that code can register as \"I handle these IANA events\", just like we do for the OEM handlers.\n\nWe should not need to come up with independent functions like this for each OEM event.",
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9017bb20_c8e684ac",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "nit: IANA (this is an acronym)",
+      "range": {
+        "startLine": 114,
+        "startChar": 9,
+        "endLine": 114,
+        "endChar": 22
+      },
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3503c53d_32595dfe",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "I\u0027m quite confused how we ended up with a `*Meta*` function in a non-Meta file.",
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bcbbb7e_26347157",
+        "filename": "platform-mc/test/meson.build",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-03-14T17:33:07Z",
+      "side": 1,
+      "message": "Do we need any tests for the code we\u0027ve written?  There is a lot of code in this commit for not having a single test case to go with it.",
+      "revId": "c2ac7f0aa9ca56a2fca8986fb5a48dc0cec60f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
