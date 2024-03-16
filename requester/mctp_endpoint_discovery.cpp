@@ -76,8 +76,6 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                         types.end())
                     {
-                        info("Adding Endpoint networkId={NETWORK} EID={EID}",
-                             "NETWORK", networkId, "EID", unsigned(eid));
                         mctpInfos.emplace_back(
                             MctpInfo(eid, emptyUUID, "", networkId));
                     }
