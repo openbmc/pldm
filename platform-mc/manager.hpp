@@ -77,6 +77,15 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         sensorManager.startPolling(tid);
     }
 
+    /** @brief Helper function to reconfig event receiver for terminus which
+     *         support multiple medium interfaces
+     *
+     *  @param[in] tid - Terminus ID
+     *
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> reconfigEventReceiver(pldm_tid_t tid);
+
     /** @brief Helper function to set available state for pldm request (sensor
      *         polling and event polling) of the terminus TID. The `false` state
      *         will trigger stop flow in coroutine of sensor polling/event
