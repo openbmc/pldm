@@ -41,6 +41,13 @@ class PlatformManager
      */
     exec::task<int> initTerminus();
 
+    /** @brief Helper to get the supported event messages and set event receiver
+     *
+     *  @param[in] tid - Destination TID
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> configEventReceiver(pldm_tid_t tid);
+
   private:
     /** @brief Fetch all PDRs from terminus.
      *
