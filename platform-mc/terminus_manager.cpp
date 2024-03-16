@@ -11,7 +11,7 @@ namespace pldm
 namespace platform_mc
 {
 
-std::optional<MctpInfo> TerminusManager::toMctpInfo(const pldm_tid_t& tid)
+std::optional<MctpInfos> TerminusManager::toMctpInfos(const pldm_tid_t& tid)
 {
     if (tid == PLDM_TID_SPECIAL || tid == PLDM_TID_RESERVED)
     {
@@ -35,16 +35,17 @@ std::optional<MctpInfo> TerminusManager::toMctpInfo(const pldm_tid_t& tid)
 
 std::optional<pldm_tid_t> TerminusManager::toTid(const MctpInfo& mctpInfo) const
 {
-    auto mctpInfoTableIt = std::find_if(
-        mctpInfoTable.begin(), mctpInfoTable.end(), [&mctpInfo](auto& v) {
-        return (std::get<0>(v.second) == std::get<0>(mctpInfo)) &&
-               (std::get<3>(v.second) == std::get<3>(mctpInfo));
-    });
-    if (mctpInfoTableIt == mctpInfoTable.end())
+    for (auto its : mctpInfoTable)
     {
-        return std::nullopt;
+        auto& mctpInfos = its.second;
+        auto iter = std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo);
+        if (iter != mctpInfos.end())
+        {
+            return its.first;
+        }
     }
-    return mctpInfoTableIt->first;
+
+    return std::nullopt;
 }
 
 std::optional<pldm_tid_t>
@@ -55,14 +56,37 @@ std::optional<pldm_tid_t>
         return std::nullopt;
     }
 
-    if (tidPool[tid])
+    if (std::get<0>(mctpInfo) == PLDM_TID_SPECIAL ||
+        std::get<0>(mctpInfo) == PLDM_TID_RESERVED)
     {
         return std::nullopt;
     }
 
+    if (tidPool[tid])
+    {
+        /* Add new medium interface to terminus` interfaces list*/
+        if (manager)
+        {
+            manager->stopSensorPolling(tid);
+        }
+        auto mctpInfoTableIterator = mctpInfoTable.find(tid);
+        if (mctpInfoTableIterator != mctpInfoTable.end())
+        {
+            mctpInfoTableIterator->second.push_back(mctpInfo);
+            mctpInfoTable[tid] = mctpInfoTableIterator->second;
+        }
+
+        /* Recover the sensor polling on latest added medium interface*/
+        if (manager)
+        {
+            manager->startSensorPolling(tid);
+        }
+        return tid;
+    }
+
     tidPool[tid] = true;
     transportLayerTable[tid] = SupportedTransportLayer::MCTP;
-    mctpInfoTable[tid] = mctpInfo;
+    mctpInfoTable[tid] = {mctpInfo};
 
     return tid;
 }
@@ -75,14 +99,14 @@ std::optional<pldm_tid_t> TerminusManager::mapTid(const MctpInfo& mctpInfo)
         return std::nullopt;
     }
 
-    auto mctpInfoTableIt = std::find_if(
-        mctpInfoTable.begin(), mctpInfoTable.end(), [&mctpInfo](auto& v) {
-        return (std::get<0>(v.second) == std::get<0>(mctpInfo)) &&
-               (std::get<3>(v.second) == std::get<3>(mctpInfo));
-    });
-    if (mctpInfoTableIt != mctpInfoTable.end())
+    for (auto its : mctpInfoTable)
     {
-        return mctpInfoTableIt->first;
+        auto& mctpInfos = its.second;
+        auto iter = std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo);
+        if (iter != mctpInfos.end())
+        {
+            return its.first;
+        }
     }
 
     auto tidPoolIt = std::find(tidPool.begin(), tidPool.end(), false);
@@ -116,6 +140,45 @@ bool TerminusManager::unmapTid(const pldm_tid_t& tid)
     return true;
 }
 
+bool TerminusManager::unmapMctpInfo(const pldm_tid_t& tid,
+                                    const MctpInfo& mctpInfo)
+{
+    if (tid == PLDM_TID_SPECIAL || tid == PLDM_TID_RESERVED)
+    {
+        return false;
+    }
+
+    auto mctpInfoTableIterator = mctpInfoTable.find(tid);
+    if (mctpInfoTableIterator == mctpInfoTable.end())
+    {
+        return false;
+    }
+
+    auto mctpInfos = mctpInfoTableIterator->second;
+    if (mctpInfos.size() > 1)
+    {
+        auto iter = std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo);
+        if (iter != mctpInfos.end())
+        {
+            mctpInfos.erase(iter);
+            mctpInfoTable[tid] = mctpInfos;
+            return true;
+        }
+        return false;
+    }
+    else
+    {
+        auto iter = std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo);
+        if (iter == mctpInfos.end())
+        {
+            return false;
+        }
+        return unmapTid(tid);
+    }
+
+    return true;
+}
+
 void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
 {
     queuedMctpInfos.emplace(mctpInfos);
@@ -137,16 +200,29 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
 
 auto TerminusManager::findTeminusPtr(const MctpInfo& mctpInfo)
 {
-    auto foundIter = std::find_if(termini.begin(), termini.end(),
-                                  [&](const auto& terminusPair) {
-        auto terminusMctpInfo = toMctpInfo(terminusPair.first);
-        return (
-            terminusMctpInfo &&
-            (std::get<0>(terminusMctpInfo.value()) == std::get<0>(mctpInfo)) &&
-            (std::get<3>(terminusMctpInfo.value()) == std::get<3>(mctpInfo)));
-    });
+    bool found = false;
+    auto it = termini.begin();
+    for (; it != termini.end();)
+    {
+        auto terminusMctpInfos = toMctpInfos(it->first);
+        if (terminusMctpInfos)
+        {
+            auto& mctpInfos = *terminusMctpInfos;
+            auto iter = std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo);
+            if (iter != mctpInfos.end())
+            {
+                found = true;
+                break;
+            }
+        }
+        it++;
+    }
+    if (found)
+    {
+        return it;
+    }
 
-    return foundIter;
+    return termini.end();
 }
 
 exec::task<int> TerminusManager::discoverMctpTerminusTask()
@@ -205,11 +281,30 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
 
         if (manager)
         {
-            manager->stopSensorPolling(it->second->getTid());
+            manager->stopSensorPolling(it->first);
         }
 
-        unmapTid(it->first);
-        termini.erase(it);
+        auto terminusMctpInfos = toMctpInfos(it->first);
+        /* Terminus only has one medium interface */
+        if (terminusMctpInfos->size() == 1)
+        {
+            unmapTid(it->first);
+            termini.erase(it);
+        }
+        else if (terminusMctpInfos->size() == 0)
+        {
+            continue;
+        }
+        /* Terminus has multiple medium interfaces */
+        else
+        {
+            unmapMctpInfo(it->second->getTid(), mctpInfo);
+            /* Recover the sensor polling on latest added medium interface*/
+            if (manager)
+            {
+                manager->startSensorPolling(it->second->getTid());
+            }
+        }
     }
 }
 
@@ -218,6 +313,7 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     mctp_eid_t eid = std::get<0>(mctpInfo);
     pldm_tid_t tid = 0;
     bool isMapped = false;
+    bool isDiscovery = false;
     auto rc = co_await getTidOverMctp(eid, &tid);
     if (rc != PLDM_SUCCESS)
     {
@@ -238,25 +334,29 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         auto it = termini.find(tid);
         if (it != termini.end())
         {
-            auto terminusMctpInfo = toMctpInfo(it->first);
+            auto terminusMctpInfo = toMctpInfos(it->first);
             /* The discovered terminus has the same MCTP Info */
-            if (terminusMctpInfo &&
-                (std::get<0>(terminusMctpInfo.value()) ==
-                 std::get<0>(mctpInfo)) &&
-                (std::get<3>(terminusMctpInfo.value()) ==
-                 std::get<3>(mctpInfo)))
+            if (terminusMctpInfo)
             {
-                co_return PLDM_SUCCESS;
+                auto& mctpInfos = *terminusMctpInfo;
+                auto iter = std::find(mctpInfos.begin(), mctpInfos.end(),
+                                      mctpInfo);
+                if (iter != mctpInfos.end())
+                {
+                    co_return PLDM_SUCCESS;
+                }
             }
-            else
+
+            /* Terminus supports multiple medium interfaces */
+            auto mappedTid = storeTerminusInfo(mctpInfo, tid);
+            if (!mappedTid)
             {
-                /* ToDo:
-                 * Maybe the terminus supports multiple medium interfaces
-                 * Or the TID is used by other terminus.
-                 * Check the UUID to confirm.
-                 */
-                isMapped = false;
+                lg2::error("Failed to store Terminus Info for terminus {TID}.",
+                           "TID", tid);
+                co_return PLDM_ERROR;
             }
+            isMapped = true;
+            isDiscovery = true;
         }
         /* Use the terminus TID for mapping */
         else
@@ -308,7 +408,13 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
             co_return PLDM_SUCCESS;
         }
     }
+
     /* Discovery the mapped terminus */
+    if (isDiscovery)
+    {
+        co_return PLDM_SUCCESS;
+    }
+
     uint64_t supportedTypes = 0;
     rc = co_await getPLDMTypes(tid, supportedTypes);
     if (rc)
@@ -592,13 +698,14 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(pldm_tid_t tid,
         co_return PLDM_ERROR_NOT_READY;
     }
 
-    auto mctpInfo = toMctpInfo(tid);
-    if (!mctpInfo.has_value())
+    auto mctpInfos = toMctpInfos(tid);
+    if (!mctpInfos)
     {
         co_return PLDM_ERROR_NOT_READY;
     }
+    /* Use latest added medium interface to send the pldm messages */
+    auto eid = std::get<0>(mctpInfos->back());
 
-    auto eid = std::get<0>(mctpInfo.value());
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
     requestMsg->hdr.instance_id = instanceIdDb.next(eid);
     auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
