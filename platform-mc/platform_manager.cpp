@@ -63,92 +63,107 @@ exec::task<int> PlatformManager::initTerminus()
         terminus->maxBufferSize = std::min(terminus->maxBufferSize,
                                            terminusMaxBufferSize);
 
-        if (!terminus->doesSupportCommand(PLDM_PLATFORM,
-                                          PLDM_EVENT_MESSAGE_SUPPORTED))
+        auto rc = co_await configEventReceiver(tid);
+        if (rc)
         {
+            lg2::error(
+                "Failed to config event receiver for terminus with TID: {TID}, error: {ERROR}",
+                "TID", tid, "ERROR", rc);
+        }
+    }
+
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
+{
+    if (!termini.contains(tid))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    auto& terminus = termini[tid];
+    if (!terminus->doesSupportCommand(PLDM_PLATFORM,
+                                      PLDM_EVENT_MESSAGE_SUPPORTED))
+    {
+        terminus->synchronyConfigurationSupported.byte = 0;
+    }
+    else
+    {
+        /**
+         *  Get synchronyConfigurationSupported use PLDM command
+         *  eventMessageBufferSize
+         */
+        uint8_t synchronyConfiguration = 0;
+        uint8_t numberEventClassReturned = 0;
+        std::vector<uint8_t> eventClass{};
+        auto rc = co_await eventMessageSupported(
+            tid, 1, synchronyConfiguration,
+            terminus->synchronyConfigurationSupported, numberEventClassReturned,
+            eventClass);
+        if (rc != PLDM_SUCCESS)
+        {
+            lg2::error(
+                "Failed to get event message supported for terminus with TID: {TID}, error: {ERROR}",
+                "TID", tid, "ERROR", rc);
             terminus->synchronyConfigurationSupported.byte = 0;
         }
-        else
-        {
-            /**
-             *  Get synchronyConfigurationSupported use PLDM command
-             *  eventMessageBufferSize
-             */
-            uint8_t synchronyConfiguration = 0;
-            uint8_t numberEventClassReturned = 0;
-            std::vector<uint8_t> eventClass{};
-            auto rc = co_await eventMessageSupported(
-                tid, 1, synchronyConfiguration,
-                terminus->synchronyConfigurationSupported,
-                numberEventClassReturned, eventClass);
-            if (rc != PLDM_SUCCESS)
-            {
-                lg2::error(
-                    "Failed to get event message supported for terminus with TID: {TID}, error: {ERROR}",
-                    "TID", tid, "ERROR", rc);
-                terminus->synchronyConfigurationSupported.byte = 0;
-            }
-        }
+    }
 
-        if (!terminus->doesSupportCommand(PLDM_PLATFORM,
-                                          PLDM_SET_EVENT_RECEIVER))
-        {
-            lg2::error("Terminus {TID} does not support Event", "TID", tid);
-        }
-        else
-        {
-            /**
-             *  Set Event receiver base on synchronyConfigurationSupported data
-             *  use PLDM command SetEventReceiver
-             */
-            pldm_event_message_global_enable eventMessageGlobalEnable =
-                PLDM_EVENT_MESSAGE_GLOBAL_DISABLE;
-            uint16_t heartbeatTimer = 0;
+    if (!terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_SET_EVENT_RECEIVER))
+    {
+        lg2::error("Terminus {TID} does not support Event", "TID", tid);
+        co_return PLDM_ERROR;
+    }
 
-            /* Use PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE when
-             * for eventMessageGlobalEnable when the terminus supports that type
-             */
-            if (terminus->synchronyConfigurationSupported.byte &
-                (1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE))
-            {
-                heartbeatTimer = 0x78;
-                eventMessageGlobalEnable =
-                    PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
-            }
-            /* Use PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC when
-             * for eventMessageGlobalEnable when the terminus does not support
-             * PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE
-             * and supports PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC type
-             */
-            else if (terminus->synchronyConfigurationSupported.byte &
-                     (1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC))
-            {
-                eventMessageGlobalEnable =
-                    PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC;
-            }
-            /* Only use PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_POLLING
-             * for eventMessageGlobalEnable when the terminus only supports
-             * this type
-             */
-            else if (terminus->synchronyConfigurationSupported.byte &
-                     (1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_POLLING))
-            {
-                eventMessageGlobalEnable =
-                    PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_POLLING;
-            }
+    /**
+     *  Set Event receiver base on synchronyConfigurationSupported data
+     *  use PLDM command SetEventReceiver
+     */
+    pldm_event_message_global_enable eventMessageGlobalEnable =
+        PLDM_EVENT_MESSAGE_GLOBAL_DISABLE;
+    uint16_t heartbeatTimer = 0;
 
-            if (eventMessageGlobalEnable != PLDM_EVENT_MESSAGE_GLOBAL_DISABLE)
-            {
-                auto rc = co_await setEventReceiver(
-                    tid, eventMessageGlobalEnable,
-                    PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP, heartbeatTimer);
-                if (rc != PLDM_SUCCESS)
-                {
-                    lg2::error(
-                        "Failed to set event receiver for terminus with TID: {TID}, error: {ERROR}",
-                        "TID", tid, "ERROR", rc);
-                }
-            }
+    /* Use PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE when
+     * for eventMessageGlobalEnable when the terminus supports that type
+     */
+    if (terminus->synchronyConfigurationSupported.byte &
+        (1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE))
+    {
+        heartbeatTimer = 0x78;
+        eventMessageGlobalEnable =
+            PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
+    }
+    /* Use PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC when
+     * for eventMessageGlobalEnable when the terminus does not support
+     * PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE
+     * and supports PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC type
+     */
+    else if (terminus->synchronyConfigurationSupported.byte &
+             (1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC))
+    {
+        eventMessageGlobalEnable = PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC;
+    }
+    /* Only use PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_POLLING
+     * for eventMessageGlobalEnable when the terminus only supports
+     * this type
+     */
+    else if (terminus->synchronyConfigurationSupported.byte &
+             (1 << PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_POLLING))
+    {
+        eventMessageGlobalEnable = PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_POLLING;
+    }
+
+    if (eventMessageGlobalEnable != PLDM_EVENT_MESSAGE_GLOBAL_DISABLE)
+    {
+        auto rc = co_await setEventReceiver(tid, eventMessageGlobalEnable,
+                                            PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP,
+                                            heartbeatTimer);
+        if (rc != PLDM_SUCCESS)
+        {
+            lg2::error(
+                "Failed to set event receiver for terminus with TID: {TID}, error: {ERROR}",
+                "TID", tid, "ERROR", rc);
         }
     }
 
