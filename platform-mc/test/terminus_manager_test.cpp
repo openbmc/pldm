@@ -55,8 +55,8 @@ TEST_F(TerminusManagerTest, mapTidTest)
     auto tid1 = terminusManager.toTid(mctpInfo1);
     EXPECT_NE(tid1, std::nullopt);
 
-    auto mctpInfo2 = terminusManager.toMctpInfo(tid1.value());
-    EXPECT_EQ(mctpInfo1, mctpInfo2.value());
+    auto mctpInfo2 = terminusManager.toMctpInfos(tid1.value());
+    EXPECT_EQ(mctpInfo1, mctpInfo2->back());
 
     auto ret = terminusManager.unmapTid(tid1.value());
     EXPECT_EQ(ret, true);
@@ -83,7 +83,7 @@ TEST_F(TerminusManagerTest, negativeMapTidTest)
     auto mappedTid2 = terminusManager.mapTid(m2);
     auto mappedTid3 = terminusManager.mapTid(m3, mappedTid2.value());
     EXPECT_NE(mappedTid2, std::nullopt);
-    EXPECT_EQ(mappedTid3, std::nullopt);
+    EXPECT_NE(mappedTid3, std::nullopt);
 
     // map two mctpInfo with same EID but different network Id
     pldm::MctpInfo m4(12, "", "", 1);
@@ -104,20 +104,36 @@ TEST_F(TerminusManagerTest, negativeMapTidTest)
     EXPECT_EQ(mappedTid7, std::nullopt);
 
     // look up reserved TID(0)
-    auto mappedEid = terminusManager.toMctpInfo(0);
+    auto mappedEid = terminusManager.toMctpInfos(0);
     EXPECT_EQ(mappedEid, std::nullopt);
 
     // look up reserved TID(0xff)
-    mappedEid = terminusManager.toMctpInfo(0xff);
+    mappedEid = terminusManager.toMctpInfos(0xff);
     EXPECT_EQ(mappedEid, std::nullopt);
 
+    // unmap one medium interface of two from TID 1
+    auto ret = terminusManager.unmapMctpInfo(1, m3);
+    EXPECT_EQ(ret, true);
+
+    // unmap reserved TID(0)
+    ret = terminusManager.unmapMctpInfo(1, m4);
+    EXPECT_EQ(ret, false);
+
+    mappedEid = terminusManager.toMctpInfos(1);
+    EXPECT_NE(mappedEid, std::nullopt);
+
     // look up an unmapped TID
-    terminusManager.unmapTid(1);
-    mappedEid = terminusManager.toMctpInfo(1);
+    ret = terminusManager.unmapTid(1);
+    EXPECT_EQ(ret, true);
+    mappedEid = terminusManager.toMctpInfos(1);
     EXPECT_EQ(mappedEid, std::nullopt);
 
     // unmap reserved TID(0)
-    auto ret = terminusManager.unmapTid(0);
+    ret = terminusManager.unmapMctpInfo(1, m4);
+    EXPECT_EQ(ret, false);
+
+    // unmap reserved TID(0)
+    ret = terminusManager.unmapTid(0);
     EXPECT_EQ(ret, false);
 
     // unmap reserved TID(0)
@@ -153,7 +169,8 @@ TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    pldm::MctpInfo mctpInfo1(12, "", "", 1);
+    mctpInfos.emplace_back(mctpInfo1);
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
