@@ -96,12 +96,12 @@ class TerminusManager
 
     /** @brief member functions to map/unmap tid
      */
-    std::optional<MctpInfo> toMctpInfo(const pldm_tid_t& tid);
+    std::optional<MctpInfos> toMctpInfos(const pldm_tid_t& tid);
     std::optional<pldm_tid_t> toTid(const MctpInfo& mctpInfo);
     std::optional<pldm_tid_t> mapTid(const MctpInfo& mctpInfo);
     std::optional<pldm_tid_t> mapTid(const MctpInfo& mctpInfo, pldm_tid_t tid);
     bool unmapTid(const pldm_tid_t& tid);
-
+    bool unmapMctpInfo(const pldm_tid_t& tid, const MctpInfo& mctpInfo);
     /** @brief getter of local EID
      *
      *  @return uint8_t - local EID
@@ -110,6 +110,13 @@ class TerminusManager
     {
         return localEid;
     }
+
+    /** @brief Find the terminus object pointer in termini list.
+     *
+     *  @param[in] mctpInfos - information of removed MCTP endpoints
+     */
+    std::map<pldm_tid_t, std::shared_ptr<Terminus>>::iterator
+        findTeminusPtr(const MctpInfo& mctpInfo);
 
   private:
     /** @brief The coroutine task execute by discoverMctpTerminus()
@@ -133,13 +140,6 @@ class TerminusManager
      *  @return coroutine return_value - PLDM completion code
      */
     exec::task<int> getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid);
-
-    /** @brief Find the terminus object pointer in termini list.
-     *
-     *  @param[in] mctpInfos - information of removed MCTP endpoints
-     */
-    std::map<pldm_tid_t, std::shared_ptr<Terminus>>::iterator
-        findTeminusPtr(const MctpInfo& mctpInfo);
 
     /** @brief Send setTID command to destination EID.
      *
@@ -171,7 +171,7 @@ class TerminusManager
     /** @brief tables for maintaining assigned TID */
     std::vector<bool> tidPool;
     std::map<pldm_tid_t, SupportedTransportLayer> transportLayerTable;
-    std::map<pldm_tid_t, MctpInfo> mctpInfoTable;
+    std::map<pldm_tid_t, MctpInfos> mctpInfoTable;
 
     /** @brief A queue of MctpInfos to be discovered **/
     std::queue<MctpInfos> queuedMctpInfos{};
