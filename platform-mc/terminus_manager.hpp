@@ -108,7 +108,7 @@ class TerminusManager
 
     /** @brief member functions to map/unmap tid
      */
-    std::optional<MctpInfo> toMctpInfo(const pldm_tid_t& tid);
+    std::optional<MctpInfos> toMctpInfos(const pldm_tid_t& tid);
 
     /** @brief Member functions to response the TID of specific MCTP interface
      *
@@ -156,6 +156,15 @@ class TerminusManager
     {
         return localEid;
     }
+
+    /** @brief Member functions to remove the mctpInfo from the transportLayer
+     *         and mctpInfo table of one TID
+     *
+     *  @param[in] tid - Terminus tid
+     *
+     *  @return true/false - True when tid in the table otherwise return false
+     */
+    bool unmapMctpInfo(const pldm_tid_t& tid, const MctpInfo& mctpInfo);
 
   private:
     /** @brief Find the terminus object pointer in termini list.
@@ -241,7 +250,7 @@ class TerminusManager
     std::map<pldm_tid_t, SupportedTransportLayer> transportLayerTable;
 
     /** @brief Store the supported MCTP interface info of specific TID */
-    std::map<pldm_tid_t, MctpInfo> mctpInfoTable;
+    std::map<pldm_tid_t, MctpInfos> mctpInfoTable;
 
     /** @brief A queue of MctpInfos to be discovered **/
     std::queue<MctpInfos> queuedMctpInfos{};
