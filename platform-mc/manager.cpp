@@ -45,5 +45,21 @@ exec::task<int> Manager::pollForPlatformEvent(
     co_return PLDM_SUCCESS;
 }
 
+exec::task<int> Manager::reconfigEventReceiver(pldm_tid_t tid)
+{
+    auto rc = co_await platformManager.configEventReceiver(tid);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to reconfigure event receiver for terminus {TID}, error {RC}",
+            "TID", tid, "RC", rc);
+    }
+
+    lg2::info("Successfully reconfigure event receiver for terminus {TID}.",
+              "TID", tid);
+
+    co_return PLDM_SUCCESS;
+}
+
 } // namespace platform_mc
 } // namespace pldm
