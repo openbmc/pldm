@@ -376,6 +376,9 @@ int main(int argc, char** argv)
     };
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+#ifndef SYSTEM_SPECIFIC_BIOS_JSON
+    bus.request_name("xyz.openbmc_project.PLDM");
+#endif
     IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
     if (hostPDRHandler)

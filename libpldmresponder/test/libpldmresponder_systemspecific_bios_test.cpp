@@ -24,11 +24,11 @@ using ::testing::Return;
 using ::testing::StrEq;
 using ::testing::Throw;
 
-class TestBIOSConfig : public ::testing::Test
+class TestSystemSpecificBIOSConfig : public ::testing::Test
 {
   public:
     static void SetUpTestCase() // will execute once at the begining of all
-                                // TestBIOSConfig objects
+                                // TestSystemSpecificBIOSConfig objects
     {
         char tmpdir[] = "/tmp/BIOSTables.XXXXXX";
         tableDir = fs::path(mkdtemp(tmpdir));
@@ -66,7 +66,7 @@ class TestBIOSConfig : public ::testing::Test
     }
 
     static void TearDownTestCase() // will be executed once at th end of all
-                                   // TestBIOSConfig objects
+                                   // TestSystemSpecificBIOSConfig objects
     {
         fs::remove_all(tableDir);
     }
@@ -75,8 +75,8 @@ class TestBIOSConfig : public ::testing::Test
     static std::vector<Json> jsons;
 };
 
-fs::path TestBIOSConfig::tableDir;
-std::vector<Json> TestBIOSConfig::jsons;
+fs::path TestSystemSpecificBIOSConfig::tableDir;
+std::vector<Json> TestSystemSpecificBIOSConfig::jsons;
 
 class MockSystemConfig : public pldm::responder::platform_config::Handler
 {
@@ -86,11 +86,14 @@ class MockSystemConfig : public pldm::responder::platform_config::Handler
     MOCK_METHOD(std::optional<std::filesystem::path>, getPlatformName, ());
 };
 
-TEST_F(TestBIOSConfig, buildTablesTest)
+TEST_F(TestSystemSpecificBIOSConfig, buildTablesTest)
 {
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
-    std::string biosFilePath("./bios_jsons");
+    std::string biosFilePath("./");
+
+    EXPECT_CALL(mockSystemConfig, getPlatformName())
+        .WillOnce(Return(std::filesystem::path("bios_jsons")));
 
     BIOSConfig biosConfig(biosFilePath.c_str(), tableDir.c_str(), &dbusHandler,
                           0, 0, nullptr, nullptr, &mockSystemConfig, []() {});
@@ -256,11 +259,83 @@ TEST_F(TestBIOSConfig, buildTablesTest)
     }
 }
 
-TEST_F(TestBIOSConfig, setBIOSTable)
+TEST_F(TestSystemSpecificBIOSConfig, buildTablesSystemSpecificTest)
 {
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
 
+    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return(""));
+    ON_CALL(dbusHandler, getDbusPropertyVariant(_, _, _))
+        .WillByDefault(Throw(std::exception()));
+
+    BIOSConfig biosConfig("./system_type1/bios_jsons", tableDir.c_str(),
+                          &dbusHandler, 0, 0, nullptr, nullptr,
+                          &mockSystemConfig, []() {});
+
+    auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
+    auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
+    auto attrValueTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
+
+    EXPECT_TRUE(stringTable);
+    EXPECT_TRUE(attrTable);
+    EXPECT_TRUE(attrValueTable);
+
+    BIOSStringTable biosStringTable(*stringTable);
+
+    for (auto entry : BIOSTableIter<PLDM_BIOS_ATTR_TABLE>(attrTable->data(),
+                                                          attrTable->size()))
+    {
+        auto header = table::attribute::decodeHeader(entry);
+        auto attrName = biosStringTable.findString(header.stringHandle);
+        auto jsonEntry = findJsonEntry(attrName);
+        EXPECT_TRUE(jsonEntry);
+        switch (header.attrType)
+        {
+            case PLDM_BIOS_STRING:
+            case PLDM_BIOS_STRING_READ_ONLY:
+            {
+                if (attrName == "str_example2")
+                {
+                    auto stringField =
+                        table::attribute::decodeStringEntry(entry);
+                    EXPECT_EQ(stringField.maxLength, 200);
+                }
+
+                break;
+            }
+            case PLDM_BIOS_INTEGER:
+            case PLDM_BIOS_INTEGER_READ_ONLY:
+            {
+                if (attrName == "SBE_IMAGE_MINIMUM_VALID_ECS")
+                {
+                    auto integerField =
+                        table::attribute::decodeIntegerEntry(entry);
+                    EXPECT_EQ(integerField.upperBound, 30);
+                }
+                break;
+            }
+            case PLDM_BIOS_ENUMERATION:
+            case PLDM_BIOS_ENUMERATION_READ_ONLY:
+            {
+                if (attrName == "FWBootSide")
+                {
+                    auto [pvHdls,
+                          defInds] = table::attribute::decodeEnumEntry(entry);
+                    auto defValue =
+                        biosStringTable.findString(pvHdls[defInds[0]]);
+                    EXPECT_EQ(defValue, "Temp");
+                }
+            }
+        }
+    }
+}
+
+TEST_F(TestSystemSpecificBIOSConfig, setBIOSTable)
+{
+    MockdBusHandler dbusHandler;
+    MockSystemConfig mockSystemConfig;
+
+    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return("jsons"));
     BIOSConfig biosConfig("./", tableDir.c_str(), &dbusHandler, 0, 0, nullptr,
                           nullptr, &mockSystemConfig, []() {});
 
@@ -281,13 +356,14 @@ TEST_F(TestBIOSConfig, setBIOSTable)
     EXPECT_TRUE(stringTable);
 }
 
-TEST_F(TestBIOSConfig, getBIOSTableFailure)
+TEST_F(TestSystemSpecificBIOSConfig, getBIOSTableFailure)
 {
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
 
-    BIOSConfig biosConfig("./jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockSystemConfig, []() {});
+    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return("jsons"));
+    BIOSConfig biosConfig("./", tableDir.c_str(), &dbusHandler, 0, 0, nullptr,
+                          nullptr, &mockSystemConfig, []() {});
 
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
@@ -298,13 +374,14 @@ TEST_F(TestBIOSConfig, getBIOSTableFailure)
     EXPECT_FALSE(attrValueTable);
 }
 
-TEST_F(TestBIOSConfig, setAttrValueFailure)
+TEST_F(TestSystemSpecificBIOSConfig, setAttrValueFailure)
 {
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
 
-    BIOSConfig biosConfig("./jsons", tableDir.c_str(), &dbusHandler, 0, 0,
-                          nullptr, nullptr, &mockSystemConfig, []() {});
+    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return("jsons"));
+    BIOSConfig biosConfig("./", tableDir.c_str(), &dbusHandler, 0, 0, nullptr,
+                          nullptr, &mockSystemConfig, []() {});
 
     std::vector<uint8_t> attrValueEntry{
         0,   0,             /* attr handle */
@@ -319,13 +396,17 @@ TEST_F(TestBIOSConfig, setAttrValueFailure)
 
     auto rc = biosConfig.setAttrValue(attrValueEntry.data(),
                                       attrValueEntry.size(), false);
+    std::cout << "Error in settig Attribute " << rc << std::endl;
     EXPECT_EQ(rc, PLDM_BIOS_TABLE_UNAVAILABLE);
 }
 
-TEST_F(TestBIOSConfig, setAttrValue)
+TEST_F(TestSystemSpecificBIOSConfig, setAttrValue)
 {
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
+
+    EXPECT_CALL(mockSystemConfig, getPlatformName())
+        .WillOnce(Return(std::filesystem::path("")));
 
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
                           nullptr, nullptr, &mockSystemConfig, []() {});
