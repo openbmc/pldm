@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c13869e_85bf12b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-17T13:32:58Z",
+      "side": 1,
+      "message": "IM keyword is a property which populates the type of the chassis.",
+      "parentUuid": "86cb0d3a_ed858226",
+      "range": {
+        "startLine": 10,
+        "startChar": 50,
+        "endLine": 10,
+        "endChar": 52
+      },
+      "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6721355f_3365cb71",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-11T07:03:24Z",
       "side": 1,
       "message": "can we separate the commits? \n1.building BIOS lazily \n2.meson-option to \"system-specific-json\"",
+      "range": {
+        "startLine": 28,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 30
+      },
+      "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36933362_37d5fa68",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-17T13:32:58Z",
+      "side": 1,
+      "message": "Created another commit for system specific bios attribute as meson option https://gerrit.openbmc.org/c/openbmc/pldm/+/70083",
+      "parentUuid": "6721355f_3365cb71",
       "range": {
         "startLine": 28,
         "startChar": 1,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb745d7a_aa928f39",
+        "filename": "libpldmresponder/bios.hpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-17T13:32:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07934dc0_6be5eae4",
+      "range": {
+        "startLine": 39,
+        "startChar": 7,
+        "endLine": 39,
+        "endChar": 14
+      },
+      "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d8e70ab_f5f49e38",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-03-11T07:03:24Z",
       "side": 1,
       "message": "format",
+      "range": {
+        "startLine": 86,
+        "startChar": 7,
+        "endLine": 86,
+        "endChar": 14
+      },
+      "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9713fda8_47f9dbe9",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-17T13:32:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d8e70ab_f5f49e38",
       "range": {
         "startLine": 86,
         "startChar": 7,
