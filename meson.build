@@ -33,6 +33,7 @@ if cpp.has_header('poll.h')
 endif
 if get_option('libpldmresponder').allowed()
 conf_data.set_quoted('BIOS_JSONS_DIR', join_paths(package_datadir, 'bios'))
+conf_data.set('SYSTEM_SPECIFIC_BIOS_JSON', get_option('system-specific-bios-json').allowed())
 conf_data.set_quoted('BIOS_TABLES_DIR', join_paths(package_localstatedir, 'bios'))
 conf_data.set_quoted('PDR_JSONS_DIR', join_paths(package_datadir, 'pdr'))
 conf_data.set_quoted('FRU_JSONS_DIR', join_paths(package_datadir, 'fru'))
