@@ -64,6 +64,7 @@ BIOSConfig::BIOSConfig(
 
 bool BIOSConfig::isSystemTypeAvailable()
 {
+#ifdef SYSTEM_SPECIFIC_BIOS_JSON
     if (platformConfigHandler)
     {
         auto systemType = platformConfigHandler->getPlatformName();
@@ -78,6 +79,7 @@ bool BIOSConfig::isSystemTypeAvailable()
             return false;
         }
     }
+#endif
     return true;
 }
 
@@ -93,7 +95,9 @@ void BIOSConfig::initBIOSAttributes(const std::string& systemType)
     }
     constructAttributes();
     buildTables();
+#ifdef SYSTEM_SPECIFIC_BIOS_JSON
     requestPLDMServiceName();
+#endif
 }
 
 void BIOSConfig::buildTables()
