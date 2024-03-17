@@ -140,6 +140,14 @@ option(
                     requested by the FD, via RequestFirmwareData command'''
 )
 
+# Bios Attributes option
+option(
+    'system-specific-bios-json',
+    type : 'feature',
+    value: 'enabled',
+    description : 'Support for different set of bios attributes for different types of systems'
+)
+
 # PLDM Soft Power off options
 option(
     'softoff',
