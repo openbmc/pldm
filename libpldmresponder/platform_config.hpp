@@ -19,7 +19,7 @@ static constexpr auto compatibleInterface =
     "xyz.openbmc_project.Inventory.Decorator.Compatible";
 static constexpr auto namesProperty = "Names";
 
-using SystemTypeCallback = std::function<void(const std::string&)>;
+using SystemTypeCallback = std::function<void(const std::string&, bool)>;
 
 class Handler : public CmdHandler
 {
