@@ -90,12 +90,16 @@ TEST_F(TestBIOSConfig, buildTablesTest)
 {
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
+    std::string biosFilePath("./");
 
+#ifdef SYSTEM_SPECIFIC_BIOS_JSON
     EXPECT_CALL(mockSystemConfig, getPlatformName())
         .WillOnce(Return(std::filesystem::path("bios_jsons")));
-
-    BIOSConfig biosConfig("./", tableDir.c_str(), &dbusHandler, 0, 0, nullptr,
-                          nullptr, &mockSystemConfig, []() {});
+#else
+    biosFilePath += "bios_jsons";
+#endif
+    BIOSConfig biosConfig(biosFilePath.c_str(), tableDir.c_str(), &dbusHandler,
+                          0, 0, nullptr, nullptr, &mockSystemConfig, []() {});
     auto stringTable = biosConfig.getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_TABLE);
     auto attrValueTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
@@ -258,6 +262,7 @@ TEST_F(TestBIOSConfig, buildTablesTest)
     }
 }
 
+#ifdef SYSTEM_SPECIFIC_BIOS_JSON
 TEST_F(TestBIOSConfig, buildTablesSystemSpecificTest)
 {
     MockdBusHandler dbusHandler;
@@ -398,13 +403,17 @@ TEST_F(TestBIOSConfig, setAttrValueFailure)
     std::cout << "Error in settig Attribute " << rc << std::endl;
     EXPECT_EQ(rc, PLDM_BIOS_TABLE_UNAVAILABLE);
 }
+#endif
 
 TEST_F(TestBIOSConfig, setAttrValue)
 {
     MockdBusHandler dbusHandler;
     MockSystemConfig mockSystemConfig;
 
-    EXPECT_CALL(mockSystemConfig, getPlatformName()).WillOnce(Return(""));
+#ifdef SYSTEM_SPECIFIC_BIOS_JSON
+    EXPECT_CALL(mockSystemConfig, getPlatformName())
+        .WillOnce(Return(std::filesystem::path("")));
+#endif
     BIOSConfig biosConfig("./bios_jsons", tableDir.c_str(), &dbusHandler, 0, 0,
                           nullptr, nullptr, &mockSystemConfig, []() {});
 
