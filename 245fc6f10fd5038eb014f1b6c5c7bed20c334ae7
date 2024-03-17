@@ -34,6 +34,24 @@
       "parentUuid": "4895d04d_c69153ea",
       "revId": "245fc6f10fd5038eb014f1b6c5c7bed20c334ae7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e943e78_fa43dc44",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-17T13:33:45Z",
+      "side": 0,
+      "message": "Changes are added as part of https://gerrit.openbmc.org/c/openbmc/pldm/+/70083",
+      "parentUuid": "551df1b8_41e14798",
+      "revId": "245fc6f10fd5038eb014f1b6c5c7bed20c334ae7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
