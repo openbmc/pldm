@@ -42,7 +42,7 @@ void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
         systemType = names.front();
         if (sysTypeCallback)
         {
-            sysTypeCallback(systemType);
+            sysTypeCallback(systemType, true);
         }
     }
 

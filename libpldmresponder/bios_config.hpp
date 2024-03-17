@@ -132,10 +132,13 @@ class BIOSConfig
 
     /** @brief Construct the BIOS Attributes and build the tables
      *         after receiving system type from entity manager.
+     *         Also register the Service Name only if
+     *         System specific Bios attributes are supported
      *  @param[in] String - System Type
+     *  @param[in] bool - flag to register service name
      *  @return void
      */
-    void initBIOSAttributes(const std::string& sysType);
+    void initBIOSAttributes(const std::string& sysType, bool registerService);
 
   private:
     /** @enum Index into the fields in the BaseBIOSTable
@@ -203,12 +206,11 @@ class BIOSConfig
     void processBiosAttrChangeNotification(
         const DbusChObjProperties& chProperties, uint32_t biosAttrIndex);
 
-    /** @brief Method to get know if the system type is received from entity
-     *  manager or if we want to use the default bios json files.
-     *  @return - Returns true is the system type is received from EM or
-     *            if default option is chosen
+    /** @brief Method is used to initiate bios attributes only if system type
+     *  is already populated by entity manager.
+     *  Register the callback if system type is yet to be populated by Entity manager
      */
-    bool isSystemTypeAvailable();
+    void checkSystemTypeAvailability();
 
     /** @brief Construct an attribute and persist it
      *  @tparam T - attribute type

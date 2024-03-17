@@ -55,33 +55,36 @@ BIOSConfig::BIOSConfig(
 {
     fs::create_directories(tableDir);
     removeTables();
-    if (isSystemTypeAvailable())
-    {
-        initBIOSAttributes(sysType);
-    }
+
+#ifdef SYSTEM_SPECIFIC_BIOS_JSON
+     checkSystemTypeAvailability();
+#else
+     initBIOSAttributes(sysType, false);
+#endif
+
     listenPendingAttributes();
 }
 
-bool BIOSConfig::isSystemTypeAvailable()
+void BIOSConfig::checkSystemTypeAvailability()
 {
     if (platformConfigHandler)
     {
         auto systemType = platformConfigHandler->getPlatformName();
         if (systemType.has_value())
         {
+            // Received System Type from Entity Manager
             sysType = systemType.value();
+            initBIOSAttributes(sysType, true);
         }
         else
         {
             platformConfigHandler->registerSystemTypeCallback(std::bind(
-                &BIOSConfig::initBIOSAttributes, this, std::placeholders::_1));
-            return false;
+                &BIOSConfig::initBIOSAttributes, this, std::placeholders::_1, std::placeholders::_2));
         }
     }
-    return true;
 }
 
-void BIOSConfig::initBIOSAttributes(const std::string& systemType)
+void BIOSConfig::initBIOSAttributes(const std::string& systemType, bool registerService)
 {
     sysType = systemType;
     fs::path dir{jsonDir / sysType};
@@ -93,7 +96,10 @@ void BIOSConfig::initBIOSAttributes(const std::string& systemType)
     }
     constructAttributes();
     buildTables();
-    requestPLDMServiceName();
+    if (registerService)
+    {
+       requestPLDMServiceName();
+    }
 }
 
 void BIOSConfig::buildTables()
