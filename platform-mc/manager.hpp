@@ -76,6 +76,32 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         terminusManager.removeMctpTerminus(mctpInfos);
     }
 
+    /** @brief Helper function to invoke registered handlers for
+     *  updating the availability status of the MCTP endpoint
+     *
+     *  @param[in] mctpInfo - information of the target endpoint
+     *  @param[in] availability - new availability status
+     */
+    void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
+                                        Availability availability)
+    {
+        /* Get TID of initialized terminus */
+        auto tid = terminusManager.toTid(mctpInfo);
+        if (tid)
+        {
+            if (availability)
+            {
+                sensorManager.startSensorPollTimer(tid.value());
+            }
+            else
+            {
+                sensorManager.disableTerminusSensors(tid.value());
+            }
+            updateAvailableState(tid.value(), availability);
+        }
+        terminusManager.updateMctpEndpointAvailability(mctpInfo, availability);
+    }
+
     /** @brief Helper function to start sensor polling of the terminus TID
      */
     void startSensorPolling(pldm_tid_t tid)
