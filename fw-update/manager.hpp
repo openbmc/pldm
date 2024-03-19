@@ -72,6 +72,17 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return;
     }
 
+    /** @brief Helper function to invoke registered handlers for
+     *  updating the availability status of the MCTP endpoint
+     *
+     *  @param[in] mctpInfo - information of the target endpoint
+     *  @param[in] availability - new availability status
+     */
+    void updateMctpEndpointAvailability(const MctpInfo&, Availability)
+    {
+        return;
+    }
+
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
      *
