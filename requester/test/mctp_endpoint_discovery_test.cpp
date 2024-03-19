@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include "common/types.hpp"
 #include "common/utils.hpp"
 #include "requester/test/mock_mctp_discovery_handler_intf.hpp"
 
@@ -39,12 +40,12 @@ TEST(MctpEndpointDiscoveryTest, goodGetMctpInfos)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
-    pldm::MctpInfos mctpInfos;
+    std::map<pldm::MctpInfo, pldm::Availability> currentMctpInfoMap;
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
         bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
-    mctpDiscoveryHandler->getMctpInfos(mctpInfos);
-    EXPECT_EQ(mctpInfos.size(), 0);
+    mctpDiscoveryHandler->getMctpInfos(currentMctpInfoMap);
+    EXPECT_EQ(currentMctpInfoMap.size(), 0);
 }
 
 TEST(MctpEndpointDiscoveryTest, goodAddToExistingMctpInfos)
