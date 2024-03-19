@@ -60,22 +60,41 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
                 {
                     return PLDM_ERROR_INVALID_DATA;
                 }
-                auto vendorId = std::to_string(htole16(pcieData->vendorId));
-                auto deviceId = std::to_string(htole16(pcieData->deviceId));
-                auto revisionId = std::to_string(pcieData->revisionId);
+
+                std::stringstream vId;
+                vId << "0x" << std::setfill('0') << std::setw(4) << std::hex
+                    << htole16(pcieData->vendorId);
+                auto vendorId = vId.str();
+
+                std::stringstream dId;
+                dId << "0x" << std::setfill('0') << std::setw(4) << std::hex
+                    << htole16(pcieData->deviceId);
+                auto deviceId = dId.str();
+
+                std::stringstream rId;
+                rId << "0x" << std::setfill('0') << std::setw(2) << std::hex
+                    << htole16(pcieData->revisionId);
+                auto revisionId = rId.str();
 
                 std::stringstream ss;
-
+                ss << "0x";
                 for (const auto& ele : pcieData->classCode)
                 {
                     ss << std::setfill('0') << std::setw(2) << std::hex << ele;
                 }
-                std::string classCode = ss.str();
 
-                auto subSystemVendorId =
-                    std::to_string(htole16(pcieData->subSystemVendorId));
-                auto subSystemId =
-                    std::to_string(htole16(pcieData->subSystemId));
+                auto classCode = ss.str();
+
+                std::stringstream subSysVendorId;
+                subSysVendorId << "0x" << std::setfill('0') << std::setw(4)
+                               << std::hex
+                               << htole16(pcieData->subSystemVendorId);
+                auto subSystemVendorId = subSysVendorId.str();
+
+                std::stringstream subSysId;
+                subSysId << "0x" << std::setfill('0') << std::setw(4)
+                         << std::hex << htole16(pcieData->subSystemId);
+                auto subSystemId = subSysId.str();
 
                 updateDBusProperty(fruRSI, entityAssociationMap, vendorId,
                                    deviceId, revisionId, classCode,
