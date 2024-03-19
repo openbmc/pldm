@@ -17,7 +17,9 @@ namespace pldm
 const std::string emptyUUID = "00000000-0000-0000-0000-000000000000";
 constexpr const char* MCTPService = "xyz.openbmc_project.MCTP";
 constexpr const char* MCTPInterface = "xyz.openbmc_project.MCTP.Endpoint";
+constexpr const char* MCTPInterfaceCC = "au.com.CodeConstruct.MCTP.Endpoint";
 constexpr const char* MCTPPath = "/xyz/openbmc_project/mctp";
+constexpr const char* MCTPConnectivityProp = "Connectivity";
 
 /** @class MctpDiscoveryHandlerIntf
  *
@@ -29,6 +31,8 @@ class MctpDiscoveryHandlerIntf
   public:
     virtual void handleMctpEndpoints(const MctpInfos& mctpInfos) = 0;
     virtual void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) = 0;
+    virtual void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
+                                                Availability availability) = 0;
     virtual ~MctpDiscoveryHandlerIntf() {}
 };
 
@@ -61,12 +65,22 @@ class MctpDiscovery
     /** @brief Used to watch for the removed MCTP endpoints */
     sdbusplus::bus::match_t mctpEndpointRemovedSignal;
 
+    /** @brief Used to watch for new MCTP endpoints */
+    sdbusplus::bus::match_t mctpEndpointPropChangedSignal;
+
     /** @brief List of handlers need to notify when new MCTP
      * Endpoint is Added/Removed */
     std::vector<MctpDiscoveryHandlerIntf*> handlers;
 
     /** @brief The existing MCTP endpoints */
     MctpInfos existingMctpInfos;
+
+    /** @brief Callback function when the propertiesChanged D-Bus
+     * signal is triggered for MCTP endpoint's properties.
+     *
+     *  @param[in] msg - Data associated with subscribed signal
+     */
+    void propertiesChangedCb(sdbusplus::message_t& msg);
 
     /** @brief Callback function when MCTP endpoints addedInterface
      * D-Bus signal raised.
@@ -96,11 +110,21 @@ class MctpDiscovery
      */
     void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos);
 
+    /** @brief Helper function to invoke registered handlers for
+     *  updating the availability status of the MCTP endpoint
+     *
+     *  @param[in] mctpInfo - information of the target endpoint
+     *  @param[in] availability - new availability status
+     */
+    void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
+                                        Availability availability);
+
     /** @brief Get list of MctpInfos in MCTP control interface.
      *
-     *  @param[in] mctpInfos - information of discovered MCTP endpoints
+     *  @param[in] mctpInfoMap - information of discovered MCTP endpoints
+     *  and the availability status of each endpoint
      */
-    void getMctpInfos(MctpInfos& mctpInfos);
+    void getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap);
 
     /** @brief Get list of new MctpInfos in addedInterace D-Bus signal message.
      *
@@ -124,6 +148,27 @@ class MctpDiscovery
                                      MctpInfos& removedInfos);
 
   private:
+    /** @brief Get MCTP Endpoint D-Bus Properties in the
+     *         `xyz.openbmc_project.MCTP.Endpoint` D-Bus interface
+     *
+     *  @param[in] service - the MCTP service name
+     *  @param[in] path - the MCTP endpoints object path
+     *
+     *  @return tuple of Network Index, Endpoint ID and MCTP message types
+     */
+    MctpEndpointProps getMctpEndpointProps(const std::string& service,
+                                           const std::string& path);
+
+    /** @brief Get Endpoint Availability status from `Connectivity` D-Bus
+     *         property in the `au.com.codeconstruct.MCTP.Endpoint1` D-Bus
+     *         interface.
+     *
+     *  @param[in] path - the MCTP endpoints object path
+     *
+     *  @return Availability status: true if active false if inactive
+     */
+    Availability getEndpointConnectivityProp(const std::string& path);
+
     static constexpr uint8_t mctpTypePLDM = 1;
 };
 
