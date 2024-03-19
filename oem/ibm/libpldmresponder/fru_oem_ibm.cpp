@@ -4,6 +4,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <ranges>
+#include <format>
 
 PHOSPHOR_LOG2_USING;
 
@@ -60,22 +61,27 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
                 {
                     return PLDM_ERROR_INVALID_DATA;
                 }
-                auto vendorId = std::to_string(htole16(pcieData->vendorId));
-                auto deviceId = std::to_string(htole16(pcieData->deviceId));
-                auto revisionId = std::to_string(pcieData->revisionId);
 
-                std::stringstream ss;
+                auto vendorId = std::format("0x{:04x}", std::endian::little,
+                                            pcieData->vendorId);
+                auto deviceId = std::format("0x{:04x}", std::endian::little,
+                                            pcieData->deviceId);
+                auto revisionId = std::format("0x{:02x}", std::endian::little,
+                                              pcieData->revisionId);
 
+                std::string ss = "0x";
                 for (const auto& ele : pcieData->classCode)
                 {
-                    ss << std::setfill('0') << std::setw(2) << std::hex << ele;
+                    ss += std::format("{:02x}", ele);
                 }
-                std::string classCode = ss.str();
+
+                auto classCode = ss;
 
                 auto subSystemVendorId =
-                    std::to_string(htole16(pcieData->subSystemVendorId));
-                auto subSystemId =
-                    std::to_string(htole16(pcieData->subSystemId));
+                    std::format("0x{:04x}", std::endian::little,
+                                pcieData->subSystemVendorId);
+                auto subSystemId = std::format("0x{:04x}", std::endian::little,
+                                               pcieData->subSystemId);
 
                 updateDBusProperty(fruRSI, entityAssociationMap, vendorId,
                                    deviceId, revisionId, classCode,
