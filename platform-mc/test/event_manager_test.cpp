@@ -359,6 +359,9 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
         sizeof(eventMessageSupportedResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    terminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1), true);
+
     // queue SetEventReceiver response
     const size_t SetEventReceiverLen = 1;
     PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES;
@@ -482,6 +485,9 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
         reinterpret_cast<pldm_msg*>(pollForPlatformEventMessage3Resp.data()),
         sizeof(pollForPlatformEventMessage3Resp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    terminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1), true);
 
     EXPECT_CALL(eventManager, processCperEvent(_, _, _, _))
         .Times(1)

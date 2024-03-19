@@ -19,6 +19,7 @@ using eid = uint8_t;
 using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
+using MCTPMsgTypes = std::vector<uint8_t>;
 using Command = uint8_t;
 
 /** @brief MCTP Endpoint Medium type in string
@@ -39,6 +40,16 @@ using NetworkId = uint32_t;
  *         NetworkId: MCTP network index
  */
 using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
+
+/** @brief Type definition of MCTP endpoint D-Bus properties in
+ *         xyz.openbmc_project.MCTP.Endpoint D-Bus interface.
+ *
+ *         NetworkId: MCTP network index
+ *         eid : Endpoint EID in byte. Defined to match with MCTP D-Bus
+ *               interface
+ *         MCTPMsgTypes: MCTP message types
+ */
+using MctpEndpointProps = std::tuple<NetworkId, eid, MCTPMsgTypes>;
 
 /** @brief Type defined for list of MCTP interface information
  */
