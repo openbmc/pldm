@@ -359,6 +359,9 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
         sizeof(eventMessageSupportedResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    terminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1), true);
+
     // queue SetEventReceiver response
     const size_t SetEventReceiverLen = 1;
     PLDM_GET_PDR_REPOSITORY_INFO_RESP_BYTES;
