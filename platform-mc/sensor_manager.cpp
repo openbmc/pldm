@@ -52,6 +52,11 @@ void SensorManager::startPolling(pldm_tid_t tid)
         event.get(),
         std::bind_front(&SensorManager::doSensorPolling, this, tid));
 
+    startSensorPollTimer(tid);
+}
+
+void SensorManager::startSensorPollTimer(pldm_tid_t tid)
+{
     try
     {
         if (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning())
@@ -68,6 +73,22 @@ void SensorManager::startPolling(pldm_tid_t tid)
             "Terminus ID {TID}: Failed to start sensor polling timer. Exception: {EXCEPTION}",
             "TID", tid, "EXCEPTION", e);
         return;
+    }
+}
+
+void SensorManager::disableTerminusSensors(pldm_tid_t tid)
+{
+    if (!termini.contains(tid))
+    {
+        return;
+    }
+
+    // numeric sensor
+    auto terminus = termini[tid];
+    for (auto& sensor : terminus->numericSensors)
+    {
+        sensor->updateReading(true, false,
+                              std::numeric_limits<double>::quiet_NaN());
     }
 }
 
