@@ -125,6 +125,21 @@ bool TerminusManager::unmapTid(const pldm_tid_t& tid)
     return true;
 }
 
+void TerminusManager::updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
+                                                     Availability availability)
+{
+    mctpInfoAvailTable.insert_or_assign(mctpInfo, availability);
+
+    if (manager)
+    {
+        auto tid = toTid(mctpInfo);
+        if (tid)
+        {
+            manager->updateAvailableState(tid.value(), availability);
+        }
+    }
+}
+
 void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
 {
     queuedMctpInfos.emplace(mctpInfos);
@@ -176,6 +191,7 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             auto it = findTerminusPtr(mctpInfo);
             if (it == termini.end())
             {
+                mctpInfoAvailTable[mctpInfo] = true;
                 co_await initMctpTerminus(mctpInfo);
             }
 
@@ -183,6 +199,7 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             auto tid = toTid(mctpInfo);
             if (!tid)
             {
+                mctpInfoAvailTable.erase(mctpInfo);
                 co_return PLDM_ERROR;
             }
             addedTids.push_back(tid.value());
@@ -221,6 +238,7 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
 
         unmapTid(it->first);
         termini.erase(it);
+        mctpInfoAvailTable.erase(mctpInfo);
     }
 }
 
@@ -623,6 +641,17 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
 
     auto mctpInfo = toMctpInfo(tid);
     if (!mctpInfo.has_value())
+    {
+        co_return PLDM_ERROR_NOT_READY;
+    }
+
+    // There's a cost of maintaining another table to hold availability
+    // status as we can't ensure that it always synchronizes with the
+    // mctpInfoTable; std::map operator[] will insert a default of boolean
+    // which is false to the mctpInfoAvailTable if the mctpInfo key doesn't
+    // exist. Once we miss to initialize the availability of an available
+    // endpoint, it will drop all the messages to/from it.
+    if (!mctpInfoAvailTable[mctpInfo.value()])
     {
         co_return PLDM_ERROR_NOT_READY;
     }
