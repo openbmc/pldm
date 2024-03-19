@@ -50,6 +50,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d65bc63e_81257dbe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 21
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-19T06:51:26Z",
+      "side": 1,
+      "message": "Do you want to add this to commit message?",
+      "range": {
+        "startLine": 10,
+        "startChar": 50,
+        "endLine": 10,
+        "endChar": 52
+      },
+      "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6721355f_3365cb71",
         "filename": "/COMMIT_MSG",
         "patchSetId": 21
@@ -97,6 +120,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7126aea2_d227d6a1",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-19T06:51:26Z",
+      "side": 1,
+      "message": "I see we have removed the removeTables() and buildTables() when the biosConfig constructor is invoked. Should we not invoke this in some other place?\nI guess Remove and add would refresh the BIOS attributes table?",
+      "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07934dc0_6be5eae4",
         "filename": "libpldmresponder/bios.hpp",
         "patchSetId": 21
@@ -138,6 +178,23 @@
         "endLine": 39,
         "endChar": 14
       },
+      "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6290581b_b8eb6d0b",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-19T06:51:26Z",
+      "side": 1,
+      "message": "should we add removeTables() here before we build?",
       "revId": "e5a51d545a90f0314d4dafe74184183652bade91",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
