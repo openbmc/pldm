@@ -57,6 +57,14 @@ class Handler : public oem_fru::Handler
         return fruHandler->getAssociateEntityMap();
     }
 
+    inline std::string getHexString(uint16_t data, int width)
+    {
+        std::stringstream ss;
+        ss << "0x" << std::setfill('0') << std::setw(width) << std::hex
+           << htole16(data);
+        return ss.str();
+    }
+
     ~Handler() = default;
 
   private:
