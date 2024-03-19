@@ -182,8 +182,12 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         (pldm_msg*)getPdrAuxNameResp.data(), sizeof(getPdrAuxNameResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    mockTerminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1), true);
+
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
+    EXPECT_EQ(true, terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_GET_PDR));
     EXPECT_EQ(2, terminus->pdrs.size());
     EXPECT_EQ(1, terminus->numericSensors.size());
     EXPECT_EQ("S0", terminus->getTerminusName());
@@ -339,6 +343,9 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
     rc = mockTerminusManager.enqueueResponse(
         (pldm_msg*)getPdrAuxNameResp.data(), sizeof(getPdrAuxNameResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    mockTerminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1), true);
 
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
