@@ -145,6 +145,15 @@ class TerminusManager
      */
     bool unmapTid(const pldm_tid_t& tid);
 
+    /** @brief Helper function to invoke registered handlers for
+     *  updating the availability status of the MCTP endpoint
+     *
+     *  @param[in] mctpInfo - information of the target endpoint
+     *  @param[in] availability - new availability status
+     */
+    void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
+                                        Availability availability);
+
   private:
     /** @brief Find the terminus object pointer in termini list.
      *
@@ -233,6 +242,8 @@ class TerminusManager
 
     /** @brief A Manager interface for calling the hook functions **/
     Manager* manager;
+
+    std::map<MctpInfo, Availability> mctpInfoAvailTable;
 };
 } // namespace platform_mc
 } // namespace pldm
