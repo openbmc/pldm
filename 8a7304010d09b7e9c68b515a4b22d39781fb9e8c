@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0a90013_e9d5789b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-21T11:00:06Z",
+      "side": 1,
+      "message": "was the redfish validator changes introduced recently? if so could you point to that change here? \n\nAlso could this conversion be done at the redfish side?",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "8a7304010d09b7e9c68b515a4b22d39781fb9e8c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17a4683b_d28f22ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-21T11:00:06Z",
+      "side": 1,
+      "message": "could you post the output if possible? it would be easier to understand the change before and after.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 6
+      },
+      "revId": "8a7304010d09b7e9c68b515a4b22d39781fb9e8c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
