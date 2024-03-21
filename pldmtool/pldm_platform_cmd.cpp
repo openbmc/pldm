@@ -83,7 +83,7 @@ class GetPDR : public CommandInterface
                                    "[terminusLocator, stateSensor, "
                                    "numericEffecter, stateEffecter, "
                                    "compactNumericSensor, sensorauxname, "
-                                   "efffecterAuxName, "
+                                   "efffecterAuxName, numericsensor, "
                                    "EntityAssociation, fruRecord, ... ]");
 
         getPDRGroupOption = pdrOptionGroup->add_option(
@@ -603,6 +603,7 @@ class GetPDR : public CommandInterface
         {"sensorauxname", PLDM_SENSOR_AUXILIARY_NAMES_PDR},
         {"numericeffecter", PLDM_NUMERIC_EFFECTER_PDR},
         {"efffecterauxname", PLDM_EFFECTER_AUXILIARY_NAMES_PDR},
+        {"numericsensor", PLDM_NUMERIC_SENSOR_PDR},
         {"compactnumericsensor", PLDM_COMPACT_NUMERIC_SENSOR_PDR},
         {"stateeffecter", PLDM_STATE_EFFECTER_PDR},
         {"entityassociation", PLDM_PDR_ENTITY_ASSOCIATION},
@@ -1210,6 +1211,176 @@ class GetPDR : public CommandInterface
         return std::nullopt;
     }
 
+    /** @brief Format the Numeric Sensor PDR types to json output
+     *
+     *  @param[in] data - reference to the Numeric Sensor PDR
+     *  @param[in] data_length - number of PDR data bytes
+     *  @param[out] output - PDRs data fields in Json format
+     */
+    void printNumericSensorPDR(const uint8_t* data, const uint16_t data_length,
+                               ordered_json& output)
+    {
+        struct pldm_numeric_sensor_value_pdr pdr;
+        int rc = decode_numeric_sensor_pdr_data(data, (size_t)data_length,
+                                                &pdr);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to get numeric sensor PDR" << std::endl;
+            return;
+        }
+        output["PLDMTerminusHandle"] = pdr.terminus_handle;
+        output["sensorID"] = pdr.sensor_id;
+        output["entityType"] = getEntityName(pdr.entity_type);
+        output["entityInstanceNumber"] = pdr.entity_instance_num;
+        output["containerID"] = pdr.container_id;
+        output["sensorInit"] = pdr.sensor_init;
+        output["sensorAuxiliaryNamesPDR"] =
+            (pdr.sensor_auxiliary_names_pdr) ? true : false;
+        output["baseUnit"] = pdr.base_unit;
+        output["unitModifier"] = pdr.unit_modifier;
+        output["rateUnit"] = pdr.rate_unit;
+        output["baseOEMUnitHandle"] = pdr.base_oem_unit_handle;
+        output["auxUnit"] = pdr.aux_unit;
+        output["auxUnitModifier"] = pdr.aux_unit_modifier;
+        output["auxrateUnit"] = pdr.aux_rate_unit;
+        output["rel"] = pdr.rel;
+        output["auxOEMUnitHandle"] = pdr.aux_oem_unit_handle;
+        output["isLinear"] = (pdr.is_linear) ? true : false;
+        output["sensorDataSize"] = pdr.sensor_data_size;
+        output["resolution"] = pdr.resolution;
+        output["offset"] = pdr.offset;
+        output["accuracy"] = pdr.accuracy;
+        output["plusTolerance"] = pdr.plus_tolerance;
+        output["minusTolerance"] = pdr.minus_tolerance;
+
+        switch (pdr.sensor_data_size)
+        {
+            case PLDM_SENSOR_DATA_SIZE_UINT8:
+                output["hysteresis"] = pdr.hysteresis.value_u8;
+                output["maxReadable"] = pdr.max_readable.value_u8;
+                output["minReadable"] = pdr.min_readable.value_u8;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT8:
+                output["hysteresis"] = pdr.hysteresis.value_s8;
+                output["maxReadable"] = pdr.max_readable.value_s8;
+                output["minReadable"] = pdr.min_readable.value_s8;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT16:
+                output["hysteresis"] = pdr.hysteresis.value_u16;
+                output["maxReadable"] = pdr.max_readable.value_u16;
+                output["minReadable"] = pdr.min_readable.value_u16;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT16:
+                output["hysteresis"] = pdr.hysteresis.value_s16;
+                output["maxReadable"] = pdr.max_readable.value_s16;
+                output["minReadable"] = pdr.min_readable.value_s16;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_UINT32:
+                output["hysteresis"] = pdr.hysteresis.value_u32;
+                output["maxReadable"] = pdr.max_readable.value_u32;
+                output["minReadable"] = pdr.min_readable.value_u32;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT32:
+                output["hysteresis"] = pdr.hysteresis.value_s32;
+                output["maxReadable"] = pdr.max_readable.value_s32;
+                output["minReadable"] = pdr.min_readable.value_s32;
+                break;
+            default:
+                break;
+        }
+
+        output["supportedThresholds"] = pdr.supported_thresholds.byte;
+        output["thresholAndHysteresisVolatility"] =
+            pdr.threshold_and_hysteresis_volatility.byte;
+        output["stateTransitionInterval"] = pdr.state_transition_interval;
+        output["updateInterval"] = pdr.update_interval;
+        output["rangeFieldFormat"] = pdr.range_field_format;
+        output["rangeFieldSupport"] = pdr.range_field_support.byte;
+
+        switch (pdr.range_field_format)
+        {
+            case PLDM_RANGE_FIELD_FORMAT_UINT8:
+                output["nominalValue"] = pdr.nominal_value.value_u8;
+                output["normalMax"] = pdr.normal_max.value_u8;
+                output["normalMin"] = pdr.normal_min.value_u8;
+                output["warningHigh"] = pdr.warning_high.value_u8;
+                output["warningLow"] = pdr.warning_low.value_u8;
+                output["criticalHigh"] = pdr.critical_high.value_u8;
+                output["criticalLow"] = pdr.critical_low.value_u8;
+                output["fatalHigh"] = pdr.fatal_high.value_u8;
+                output["fatalLeow"] = pdr.fatal_low.value_u8;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT8:
+                output["nominalValue"] = pdr.nominal_value.value_s8;
+                output["normalMax"] = pdr.normal_max.value_s8;
+                output["normalMin"] = pdr.normal_min.value_s8;
+                output["warningHigh"] = pdr.warning_high.value_s8;
+                output["warningLow"] = pdr.warning_low.value_s8;
+                output["criticalHigh"] = pdr.critical_high.value_s8;
+                output["criticalLow"] = pdr.critical_low.value_s8;
+                output["fatalHigh"] = pdr.fatal_high.value_s8;
+                output["fatalLeow"] = pdr.fatal_low.value_s8;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT16:
+                output["nominalValue"] = pdr.nominal_value.value_u16;
+                output["normalMax"] = pdr.normal_max.value_u16;
+                output["normalMin"] = pdr.normal_min.value_u16;
+                output["warningHigh"] = pdr.warning_high.value_u16;
+                output["warningLow"] = pdr.warning_low.value_u16;
+                output["criticalHigh"] = pdr.critical_high.value_u16;
+                output["criticalLow"] = pdr.critical_low.value_u16;
+                output["fatalHigh"] = pdr.fatal_high.value_u16;
+                output["fatalLeow"] = pdr.fatal_low.value_u16;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT16:
+                output["nominalValue"] = pdr.nominal_value.value_s16;
+                output["normalMax"] = pdr.normal_max.value_s16;
+                output["normalMin"] = pdr.normal_min.value_s16;
+                output["warningHigh"] = pdr.warning_high.value_s16;
+                output["warningLow"] = pdr.warning_low.value_s16;
+                output["criticalHigh"] = pdr.critical_high.value_s16;
+                output["criticalLow"] = pdr.critical_low.value_s16;
+                output["fatalHigh"] = pdr.fatal_high.value_s16;
+                output["fatalLeow"] = pdr.fatal_low.value_s16;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT32:
+                output["nominalValue"] = pdr.nominal_value.value_u32;
+                output["normalMax"] = pdr.normal_max.value_u32;
+                output["normalMin"] = pdr.normal_min.value_u32;
+                output["warningHigh"] = pdr.warning_high.value_u32;
+                output["warningLow"] = pdr.warning_low.value_u32;
+                output["criticalHigh"] = pdr.critical_high.value_u32;
+                output["criticalLow"] = pdr.critical_low.value_u32;
+                output["fatalHigh"] = pdr.fatal_high.value_u32;
+                output["fatalLeow"] = pdr.fatal_low.value_u32;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT32:
+                output["nominalValue"] = pdr.nominal_value.value_s32;
+                output["normalMax"] = pdr.normal_max.value_s32;
+                output["normalMin"] = pdr.normal_min.value_s32;
+                output["warningHigh"] = pdr.warning_high.value_s32;
+                output["warningLow"] = pdr.warning_low.value_s32;
+                output["criticalHigh"] = pdr.critical_high.value_s32;
+                output["criticalLow"] = pdr.critical_low.value_s32;
+                output["fatalHigh"] = pdr.fatal_high.value_s32;
+                output["fatalLeow"] = pdr.fatal_low.value_s32;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_REAL32:
+                output["nominalValue"] = pdr.nominal_value.value_f32;
+                output["normalMax"] = pdr.normal_max.value_f32;
+                output["normalMin"] = pdr.normal_min.value_f32;
+                output["warningHigh"] = pdr.warning_high.value_f32;
+                output["warningLow"] = pdr.warning_low.value_f32;
+                output["criticalHigh"] = pdr.critical_high.value_f32;
+                output["criticalLow"] = pdr.critical_low.value_f32;
+                output["fatalHigh"] = pdr.fatal_high.value_f32;
+                output["fatalLeow"] = pdr.fatal_low.value_f32;
+                break;
+            default:
+                break;
+        }
+    }
+
     /** @brief Format the Compact Numeric Sensor PDR types to json output
      *
      *  @param[in] data - reference to the Compact Numeric Sensor PDR
@@ -1336,6 +1507,9 @@ class GetPDR : public CommandInterface
                 break;
             case PLDM_NUMERIC_EFFECTER_PDR:
                 printNumericEffecterPDR(data, output);
+                break;
+            case PLDM_NUMERIC_SENSOR_PDR:
+                printNumericSensorPDR(data, respCnt, output);
                 break;
             case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
                 printAuxNamePDR(data, output);
