@@ -39,7 +39,8 @@ class Manager
     explicit Manager(Event& event,
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
-        inventoryMgr(handler, instanceIdDb, descriptorMap, componentInfoMap),
+        inventoryMgr(handler, instanceIdDb, descriptorMap,
+                     downstreamDescriptorMap, componentInfoMap),
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap)
     {}
@@ -74,6 +75,10 @@ class Manager
   private:
     /** Descriptor information of all the discovered MCTP endpoints */
     DescriptorMap descriptorMap;
+
+    /** Downstream descriptor information of all the discovered MCTP endpoints
+     */
+    DownstreamDescriptorMap downstreamDescriptorMap;
 
     /** Component information of all the discovered MCTP endpoints */
     ComponentInfoMap componentInfoMap;
