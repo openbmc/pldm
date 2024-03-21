@@ -1,0 +1,374 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067226f7_97b57a6d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "oem-ibm: Add....",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0292d00_0cd1efb7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "tested section",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "880242b8_3699236f",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "doxygen update",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e0361c1_13e050d2",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "\u0026\u0026 oemPlatformHandler)",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7baed60c_7dd5f3fe",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "doxygen update",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c11e0246_dedf8c49",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "we can get this from dbus directly\nlook at this for example : https://github.com/openbmc/pldm/commit/7b4d59aa8f6020b919d41415bece7f0651304b00",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "429a9b8a_ec7ee1fe",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "can we get this from dbus directly",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "114dffc9_6e7b1afc",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "do we need this trace?",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d16d058_94262576",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "use ternary operator?",
+      "range": {
+        "startLine": 192,
+        "startChar": 8,
+        "endLine": 200,
+        "endChar": 5
+      },
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d757e18_bd6eaff5",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "lg2 log?",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34c7b155_35204919",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "need this trace?",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82a5bcaa_dd1b7237",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "move to lg2",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0468c77_092cd817",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "we can get this from PDI directly",
+      "range": {
+        "startLine": 28,
+        "startChar": 22,
+        "endLine": 28,
+        "endChar": 35
+      },
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25b80b59_cf30ed11",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "debug trace?",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b150ec3_d82c5d38",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "typo: buildAllSlotEnableEffecterPDR",
+      "range": {
+        "startLine": 235,
+        "startChar": 5,
+        "endLine": 235,
+        "endChar": 33
+      },
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "755338c5_ea351fa8",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "lg2 error",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8afbb0d_17d354a8",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "lg2 error",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ea505d_44eb0c8b",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "can we dynamically get the slot object paths from inventory?",
+      "range": {
+        "startLine": 427,
+        "startChar": 8,
+        "endLine": 438,
+        "endChar": 79
+      },
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "318f5f69_172e28d2",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "can we move this OEM-IBM libpldm?",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f7d3bed_7c65ab54",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-21T09:01:00Z",
+      "side": 1,
+      "message": "doxygen",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
