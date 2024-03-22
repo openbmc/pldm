@@ -33,6 +33,23 @@
       "message": "The heap memory usage of pldmd keeps increasing while BMC idle. There might be a memory leak problem. After some experiments, I found that it was caused by sensor polling, but I\u0027m not sure the reason yet. I suspect that it might be a problem caused by coroutine. Do you have any comment on this?",
       "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e6b8ba0_b9b3124f",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-03-22T01:44:32Z",
+      "side": 1,
+      "message": "Hi\nI checked the rangeFieldSupport of Numeric Sensor PDR in DSP0248_1.2.2 and it mentions that it is an error in the original specification that the “warningHigh” and “warningLow” fields are not listed in this field.\n\nWould like to ask should we follow the implementation of Compact Numeric Sensor PDR to check if it has \"Warning Thresholds\"?\n\nWould also like to discuss that if it appropriate to use HardShutdown.interface as the fatal level of threshold since Numeric Sensor PDR contains fatal level threshold but didn\u0027t used here.",
+      "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
