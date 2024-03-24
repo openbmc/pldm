@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3688c7_3afe99db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "11e1026a_3da7cce1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 6
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97f53e19_45d1cca6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "changed",
+      "parentUuid": "240036f3_2daa5316",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 35
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5714e84a_90f2f813",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-03-09T08:49:44Z",
       "side": 1,
       "message": "its it supposed to return objects ? rather than object paths ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 37,
+        "endLine": 10,
+        "endChar": 12
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22fcba93_5bd919c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5714e84a_90f2f813",
       "range": {
         "startLine": 9,
         "startChar": 37,
@@ -116,6 +188,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cb3829b_38723f0d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "I was referring to static function. Removed it.",
+      "parentUuid": "870996d3_3ca38447",
+      "range": {
+        "startLine": 11,
+        "startChar": 19,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaefc407_bdd723c3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4e34d06_ce1c7d51",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22cae5ba_3179b582",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-03-09T08:49:44Z",
       "side": 1,
       "message": "this does not really help anyone in the community. we usually prefer unit tests against functional tests.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c51dba6_d0495128",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22cae5ba_3179b582",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e803b3ad_9548e0f2",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4213b2e_07c075b9",
+      "range": {
+        "startLine": 570,
+        "startChar": 2,
+        "endLine": 572,
+        "endChar": 19
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9d90957_dd9a54cd",
@@ -185,6 +353,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05e1ce77_786102a6",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9d90957_dd9a54cd",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 74
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68de8096_8e650897",
@@ -198,6 +390,30 @@
       "writtenOn": "2024-03-09T08:49:44Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 319,
+        "startChar": 49,
+        "endLine": 319,
+        "endChar": 62
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c72d0f7_581cd7d5",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68de8096_8e650897",
       "range": {
         "startLine": 319,
         "startChar": 49,
@@ -254,6 +470,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c4e116b_932f6200",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec666e88_af12f817",
+      "range": {
+        "startLine": 319,
+        "startChar": 4,
+        "endLine": 321,
+        "endChar": 18
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b9c11db_19290ed6",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d610183b_c5d7bcab",
+      "range": {
+        "startLine": 320,
+        "startChar": 18,
+        "endLine": 321,
+        "endChar": 18
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dd28e7c_11e25530",
@@ -277,6 +541,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd242fd0_f022cb72",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Corrected",
+      "parentUuid": "9dd28e7c_11e25530",
+      "range": {
+        "startLine": 323,
+        "startChar": 19,
+        "endLine": 323,
+        "endChar": 55
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc87e6c0_69500649",
@@ -290,6 +578,30 @@
       "writtenOn": "2024-03-09T08:49:44Z",
       "side": 1,
       "message": "doxygen is supposed to tell what this map is ..should not subject the return type here..",
+      "range": {
+        "startLine": 325,
+        "startChar": 16,
+        "endLine": 325,
+        "endChar": 73
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3d1e270_afa18347",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc87e6c0_69500649",
       "range": {
         "startLine": 325,
         "startChar": 16,
@@ -346,6 +658,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02dbbfd2_cd602b8f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85a0f5f8_1d740e3b",
+      "range": {
+        "startLine": 330,
+        "startChar": 50,
+        "endLine": 330,
+        "endChar": 62
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f90b4f1d_cc8afd6c",
@@ -359,6 +695,30 @@
       "writtenOn": "2024-03-09T08:49:44Z",
       "side": 1,
       "message": "wrapping issue.",
+      "range": {
+        "startLine": 330,
+        "startChar": 4,
+        "endLine": 331,
+        "endChar": 14
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d244251f_853f5678",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f90b4f1d_cc8afd6c",
       "range": {
         "startLine": 330,
         "startChar": 4,
@@ -392,6 +752,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cd15d08_95268cea",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d439e156_3ff1294c",
+      "range": {
+        "startLine": 332,
+        "startChar": 6,
+        "endLine": 333,
+        "endChar": 73
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bb63ac0_fb2b2d90",
@@ -405,6 +789,30 @@
       "writtenOn": "2024-03-11T06:53:07Z",
       "side": 1,
       "message": "can we use get these directly from PDI?",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 49,
+        "endChar": 74
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f32e576_31964bcf",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "It is not present in PDI",
+      "parentUuid": "2bb63ac0_fb2b2d90",
       "range": {
         "startLine": 47,
         "startChar": 4,
@@ -452,6 +860,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "83502a76_d2252572",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "15bcbb396b6cb189327a76cd1ad73e0fb4774f81",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5df50cc5_087f5961",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-24T19:45:55Z",
+      "side": 1,
+      "message": "It is not present in PDI",
+      "parentUuid": "b683cacf_16affe05",
       "range": {
         "startLine": 9,
         "startChar": 0,
