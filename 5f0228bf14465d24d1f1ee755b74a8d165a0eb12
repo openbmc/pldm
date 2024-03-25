@@ -33,6 +33,24 @@
       "message": "@archana are you okay with the changes as well ?",
       "revId": "5f0228bf14465d24d1f1ee755b74a8d165a0eb12",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17cd5d64_0b631196",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-25T10:55:23Z",
+      "side": 1,
+      "message": "Yes Manoj",
+      "parentUuid": "82e5bdec_d27b3edd",
+      "revId": "5f0228bf14465d24d1f1ee755b74a8d165a0eb12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
