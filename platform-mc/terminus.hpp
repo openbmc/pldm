@@ -4,6 +4,7 @@
 
 #include "common/types.hpp"
 #include "numeric_sensor.hpp"
+#include "pdr_utils.hpp"
 #include "requester/handler.hpp"
 #include "terminus.hpp"
 
@@ -12,6 +13,7 @@
 #include <xyz/openbmc_project/Inventory/Item/Board/server.hpp>
 
 using namespace pldm::pdr;
+using namespace pldm::responder::pdr_utils;
 
 namespace pldm
 {
@@ -26,6 +28,29 @@ using SensorAuxiliaryNames = std::tuple<
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
 using InventoryItemBoardIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
+
+/** @brief Parse JSON file described in "configurations/pldm_devices.json" and
+ * output sensor name
+ *
+ *  @param[in] json - JSON object
+ *  @param[in] deviceId - device ID to find
+ *  @param[in] tid - tid to find
+ *
+ *  @return std::optional<std::string> - std::string if object exists or
+ * std::nullopt in other case
+ */
+inline std::optional<std::string> getName(const Json& json, int deviceId,
+                                          int tid)
+{
+    for (const auto& i : json)
+    {
+        if (i["sensorId"] == deviceId && i["tid"] == tid)
+        {
+            return i["name"];
+        }
+    }
+    return std::nullopt;
+}
 
 /**
  * @brief Terminus
@@ -100,6 +125,7 @@ class Terminus
 
     std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
     std::string inventoryPath;
+    Json PLDMDevices;
 };
 } // namespace platform_mc
 } // namespace pldm

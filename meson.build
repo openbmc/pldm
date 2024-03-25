@@ -37,6 +37,7 @@ conf_data.set_quoted('BIOS_TABLES_DIR', join_paths(package_localstatedir, 'bios'
 conf_data.set_quoted('PDR_JSONS_DIR', join_paths(package_datadir, 'pdr'))
 conf_data.set_quoted('FRU_JSONS_DIR', join_paths(package_datadir, 'fru'))
 conf_data.set_quoted('FRU_MASTER_JSON', join_paths(package_datadir, 'fru_master.json'))
+conf_data.set_quoted('PLDM_DEVICES_JSON', join_paths(package_datadir, 'pldm_devices.json'))
 conf_data.set_quoted('HOST_JSONS_DIR', join_paths(package_datadir, 'host'))
 conf_data.set_quoted('EVENTS_JSONS_DIR', join_paths(package_datadir, 'events'))
 conf_data.set('HEARTBEAT_TIMEOUT', get_option('heartbeat-timeout-seconds'))

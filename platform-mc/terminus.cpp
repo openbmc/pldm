@@ -16,6 +16,7 @@ Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
                     std::to_string(tid);
     inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
         utils::DBusHandler::getBus(), inventoryPath.c_str());
+    PLDMDevices = readJson(PLDM_DEVICES_JSON);
 }
 
 bool Terminus::doesSupport(uint8_t type)
@@ -163,8 +164,10 @@ void Terminus::addNumericSensor(
     const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
 {
     uint16_t sensorId = pdr->sensor_id;
-    std::string sensorName = "PLDM_Device_" + std::to_string(sensorId) + "_" +
-                             std::to_string(tid);
+    auto name = getName(PLDMDevices, sensorId, tid);
+    std::string sensorName = name ? name.value()
+                                  : "PLDM_Device_" + std::to_string(sensorId) +
+                                        "_" + std::to_string(tid);
 
     if (pdr->sensor_auxiliary_names_pdr)
     {
@@ -277,8 +280,10 @@ void Terminus::addCompactNumericSensor(
     const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr)
 {
     uint16_t sensorId = pdr->sensor_id;
-    std::string sensorName = "PLDM_Device_" + std::to_string(sensorId) + "_" +
-                             std::to_string(tid);
+    auto name = getName(PLDMDevices, sensorId, tid);
+    std::string sensorName = name ? name.value()
+                                  : "PLDM_Device_" + std::to_string(sensorId) +
+                                        "_" + std::to_string(tid);
 
     auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
     if (sensorAuxiliaryNames)
