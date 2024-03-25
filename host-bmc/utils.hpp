@@ -13,6 +13,7 @@
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
+using json = nlohmann::json;
 
 namespace pldm
 {
@@ -41,6 +42,10 @@ void updateEntityAssociation(
  *  @return returns the entity to DBus string mapping object
  */
 pldm::utils::EntityMaps parseEntityMap(const fs::path& filePath);
+
+pldm::utils::SavedObjs FromJSON(const json& jsonData);
+
+json ToJSON(const pldm::utils::SavedObjs& savedObjs);
 
 } // namespace utils
 } // namespace hostbmc

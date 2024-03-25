@@ -44,35 +44,21 @@ if cpp.has_header('poll.h')
     conf_data.set('PLDM_HAS_POLL', 1)
 endif
 if get_option('libpldmresponder').allowed()
-    conf_data.set_quoted('BIOS_JSONS_DIR', join_paths(package_datadir, 'bios'))
-    conf_data.set(
-        'SYSTEM_SPECIFIC_BIOS_JSON',
-        get_option('system-specific-bios-json').allowed(),
-    )
-    conf_data.set_quoted(
-        'BIOS_TABLES_DIR',
-        join_paths(package_localstatedir, 'bios'),
-    )
-    conf_data.set_quoted('PDR_JSONS_DIR', join_paths(package_datadir, 'pdr'))
-    conf_data.set_quoted('FRU_JSONS_DIR', join_paths(package_datadir, 'fru'))
-    conf_data.set_quoted(
-        'FRU_MASTER_JSON',
-        join_paths(package_datadir, 'fru_master.json'),
-    )
-    conf_data.set_quoted(
-        'ENTITY_MAP_JSON',
-        join_paths(package_datadir, 'entityMap.json'),
-    )
-    conf_data.set_quoted('HOST_JSONS_DIR', join_paths(package_datadir, 'host'))
-    conf_data.set_quoted(
-        'EVENTS_JSONS_DIR',
-        join_paths(package_datadir, 'events'),
-    )
-    conf_data.set('HEARTBEAT_TIMEOUT', get_option('heartbeat-timeout-seconds'))
-    conf_data.set('TERMINUS_ID', get_option('terminus-id'))
-    conf_data.set('TERMINUS_HANDLE', get_option('terminus-handle'))
-    conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))
-    add_project_arguments('-DLIBPLDMRESPONDER', language: 'cpp')
+conf_data.set_quoted('BIOS_JSONS_DIR', join_paths(package_datadir, 'bios'))
+conf_data.set('SYSTEM_SPECIFIC_BIOS_JSON', get_option('system-specific-bios-json').allowed())
+conf_data.set_quoted('BIOS_TABLES_DIR', join_paths(package_localstatedir, 'bios'))
+conf_data.set_quoted('PDR_JSONS_DIR', join_paths(package_datadir, 'pdr'))
+conf_data.set_quoted('FRU_JSONS_DIR', join_paths(package_datadir, 'fru'))
+conf_data.set_quoted('FRU_MASTER_JSON', join_paths(package_datadir, 'fru_master.json'))
+conf_data.set_quoted('ENTITY_MAP_JSON', join_paths(package_datadir, 'entityMap.json'))
+conf_data.set_quoted('HOST_JSONS_DIR', join_paths(package_datadir, 'host'))
+conf_data.set_quoted('EVENTS_JSONS_DIR', join_paths(package_datadir, 'events'))
+conf_data.set('HEARTBEAT_TIMEOUT', get_option('heartbeat-timeout-seconds'))
+conf_data.set('TERMINUS_ID', get_option('terminus-id'))
+conf_data.set('TERMINUS_HANDLE',get_option('terminus-handle'))
+conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))
+conf_data.set_quoted('PLDM_STORE_FILE', '/var/lib/pldm/pldm_store')
+add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
 endif
 if get_option('softoff').allowed()
     conf_data.set(
@@ -213,6 +199,23 @@ libpldmutils = declare_dependency(
     include_directories: include_directories(libpldmutils_headers),
     link_with: libpldmutils,
 )
+
+cereal_dep = dependency('cereal', required: false)
+has_cereal = cpp.has_header_symbol(
+    'cereal/cereal.hpp',
+    'cereal::specialize',
+    dependencies: cereal_dep,
+    required: false)
+if not has_cereal
+    cereal_opts = import('cmake').subproject_options()
+    cereal_opts.add_cmake_defines({'BUILD_TESTS': 'OFF'})
+    cereal_proj = import('cmake').subproject(
+        'cereal',
+        options: cereal_opts,
+        required: false)
+    assert(cereal_proj.found(), 'cereal is required')
+    cereal_dep = cereal_proj.dependency('cereal')
+endif
 
 deps = [
     libpldm_dep,

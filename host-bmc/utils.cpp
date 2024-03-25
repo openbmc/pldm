@@ -6,6 +6,7 @@
 #include <iostream>
 
 using namespace pldm::utils;
+using ordered_json = nlohmann::ordered_json;
 
 namespace pldm
 {
@@ -251,6 +252,103 @@ EntityMaps parseEntityMap(const fs::path& filePath)
     }
 
     return entityMaps;
+}
+
+json ToJSON(const pldm::utils::SavedObjs& savedObjs)
+{
+    ordered_json savedObjsJson;
+    for (const auto& [key1, map1] : savedObjs)
+    {
+        json objMapjson;
+        for (const auto& [key2, tupleValue] : map1)
+        {
+            auto& [val1, val2, interfaceMap] = tupleValue;
+            json innerMap;
+            for (const auto& [key3, propertyMap] : interfaceMap)
+            {
+                json innerMap2;
+                for (const auto& [path, property] : propertyMap)
+                {
+                    std::visit([&innerMap2,
+                                &path](auto& arg) { innerMap2[path] = arg; },
+                               property);
+                }
+                innerMap[key3] = innerMap2;
+            }
+            objMapjson[key2] = {val1, val2, innerMap};
+        }
+        savedObjsJson[std::to_string(key1)] = objMapjson;
+    }
+    return savedObjsJson;
+}
+
+pldm::utils::SavedObjs FromJSON(const json& jsonData)
+{
+    // std::unordered_map<uint16_t, std::unordered_map<std::string,
+    // std::tuple<uint16_t, uint16_t, InterfaceMap>> outerObject;
+    pldm::utils::SavedObjs savedObjs;
+    for (const auto& [key1, objMap] : jsonData.items())
+    {
+        pldm::utils::InsideMap map1;
+        for (const auto& [key2, tupleVal] : objMap.items())
+        {
+            uint16_t val1 = tupleVal[0].get<uint16_t>();
+            uint16_t val2 = tupleVal[1].get<uint16_t>();
+            pldm::utils::InterfaceMap interfaceMap;
+            for (const auto& [key3, innerMap] : tupleVal[2].items())
+            {
+                pldm::utils::PropertyMap propertyMap;
+                for (const auto& [key4, property] : innerMap.items())
+                {
+                    pldm::utils::PropertyValue prop;
+                    if (property.is_boolean())
+                    {
+                        prop = property.get<bool>();
+                    }
+                    else if (property.is_number_integer())
+                    {
+                        prop = property.get<uint16_t>();
+                    }
+                    else if (property.is_number_float())
+                    {
+                        prop = property.get<double>();
+                    }
+                    else if (property.is_string())
+                    {
+                        prop = property.get<std::string>();
+                    }
+                    else if (property.is_array())
+                    {
+                        if (property[0].is_number_integer())
+                        {
+                            std::vector<uint8_t> vec;
+                            for (const auto& elem : property)
+                            {
+                                vec.push_back(elem.get<uint8_t>());
+                            }
+                            prop = std::move(vec);
+                        }
+                        else if (property[0].is_string())
+                        {
+                            std::vector<std::string> vec;
+                            for (const auto& elem : property)
+                            {
+                                vec.push_back(elem.get<std::string>());
+                            }
+                            prop = std::move(vec);
+                        }
+                    }
+                    propertyMap[key4] = prop;
+                }
+                interfaceMap[key3] = propertyMap;
+            }
+            map1[key2] = std::make_tuple(val1, val2, interfaceMap);
+        }
+        uint16_t key = std::stoi(key1);
+        savedObjs[key] = map1;
+    }
+
+    return savedObjs;
 }
 
 } // namespace utils
