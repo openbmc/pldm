@@ -69,6 +69,24 @@
       "message": "Have we tested the oem-ibm\u003ddisabled combination ? does it just have bios table empty ?",
       "revId": "cca40f7a925d83e6c92cccac7be45662411e0d0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb68665f_56ac7f26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-25T11:49:56Z",
+      "side": 1,
+      "message": "Added new meson flag to decide if the bios attributes are fetched based on the system type. If the flag is disabled default bios attributes are chosen https://gerrit.openbmc.org/c/openbmc/pldm/+/70083",
+      "parentUuid": "4a388814_56e31a9d",
+      "revId": "cca40f7a925d83e6c92cccac7be45662411e0d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
