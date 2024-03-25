@@ -193,9 +193,12 @@ struct DBusMapping
     std::string propertyType; //!< D-Bus property type
 };
 
+using AssociationsObj =
+    std::vector<std::tuple<std::string, std::string, std::string>>;
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string, std::vector<std::string>>;
+                 uint64_t, double, std::string, std::vector<std::string>,
+                 AssociationsObj>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -209,6 +212,13 @@ using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
+
+// eg: {{entity type,  {object path, {entity instance number, entity,
+//          container, id,
+//              {interfaces, {property name, PropertyValue value}}}}}}
+using SavedObjs =
+    std::map<uint16_t, std::map<std::string,
+                                std::tuple<uint16_t, uint16_t, InterfaceMap>>>;
 
 /**
  * @brief The interface for DBusHandler
