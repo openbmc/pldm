@@ -5,7 +5,8 @@ libpldmresponder_deps = [
   sdbusplus,
   sdeventplus,
   libpldm_dep,
-  libpldmutils
+  libpldmutils,
+  cereal_dep
 ]
 
 sources = [
@@ -29,7 +30,7 @@ sources = [
   '../host-bmc/dbus_to_host_effecters.cpp',
   '../host-bmc/host_condition.cpp',
   '../host-bmc/custom_dbus.cpp',
-  '../host-bmc/utils.cpp',
+  '../host-bmc/dbus/serialize.cpp',
   'event_parser.cpp'
 ]
 
