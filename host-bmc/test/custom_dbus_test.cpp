@@ -1,4 +1,4 @@
-#include "../custom_dbus.hpp"
+#include "../dbus/custom_dbus.hpp"
 
 #include <gtest/gtest.h>
 

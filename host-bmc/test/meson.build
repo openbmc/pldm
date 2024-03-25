@@ -4,13 +4,17 @@ host_bmc_test_src = declare_dependency(
 
 test_sources = [
   '../../common/utils.cpp',
-  '../custom_dbus.cpp',
+  '../dbus/custom_dbus.cpp',
+  '../dbus/serialize.cpp',
+  '../dbus/deserialize.cpp'
 ]
 
 tests = [
   'dbus_to_host_effecter_test',
   'utils_test',
   'custom_dbus_test',
+  'serialize_test',
+  'deserialize_test'
 ]
 
 foreach t : tests
