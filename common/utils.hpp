@@ -166,6 +166,13 @@ using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 
+// eg: {{entity type,  {object path, {entity instance number, entity,
+//          container, id,
+//              {interfaces, {property name, PropertyValue value}}}}}}
+using SavedObjs =
+    std::map<uint16_t, std::map<std::string,
+                                std::tuple<uint16_t, uint16_t, InterfaceMap>>>;
+
 /**
  * @brief The interface for DBusHandler
  */
