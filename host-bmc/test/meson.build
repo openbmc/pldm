@@ -6,12 +6,14 @@ test_sources = [
   '../../common/utils.cpp',
   '../utils.cpp',
   '../custom_dbus.cpp',
+  '../dbus/serialize.cpp',
 ]
 
 tests = [
   'dbus_to_host_effecter_test',
   'utils_test',
   'custom_dbus_test',
+  'serialize_test'
 ]
 
 foreach t : tests
