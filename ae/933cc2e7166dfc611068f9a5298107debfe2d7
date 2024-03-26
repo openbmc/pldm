@@ -1,0 +1,10 @@
+Code-Review+1: Archana Kakani <archana.kakani@ibm.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: Pavithra Barithaya <pavithrabarithaya07@gmail.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Tue, 26 Mar 2024 04:24:47 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/69546
+Comments-Total: 22
+Project: openbmc/pldm
+Branch: refs/heads/master
