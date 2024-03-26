@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c033abb_d972671e",
+        "filename": "common/types.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002042
+      },
+      "writtenOn": "2024-03-26T08:14:06Z",
+      "side": 1,
+      "message": "I\u0027ve already tried this, but everything is still the same (I\u0027m talking about line 77 of the \u0027mctp_endpoint_discovery.cpp\u0027 file, for example, or line 130 in the same file).\n\nI\u0027ve written a simple example demonstrating this:\n```\n#include \u003ciostream\u003e\n#include \u003cvariant\u003e\n#include \u003ccinttypes\u003e\n#include \u003cvector\u003e\n\nusing NetworkId \u003d uint32_t;\n\nusing Value \u003d\n    std::variant\u003cbool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,\n                 uint64_t, double, std::string, std::vector\u003cuint8_t\u003e\u003e;\n\nint main()\n{\n    Value val(123u);\n    std::cout \u003c\u003c std::get\u003cNetworkId\u003e(val) \u003c\u003c std::endl;\n}\n```\n\nIf we add \u0027123u\u0027, it works. But if we write just \u0027123\u0027, it fails.\n\nIn my case, it looks like this:\n```\nterminate called after throwing an instance of \u0027std::bad_variant_access\u0027\n  what():  std::get: wrong index for variant\n[1]    72286 IOT instruction (core dumped)  ./a.out\n```\n\nIt seems to me that the \"under the hood\" value is set to \"int\", so it fails.\n\nDo I understand correctly that in your case nothing breaks at this stage?",
+      "parentUuid": "00ed1712_25f7a759",
+      "revId": "b9eafcfee590539e2e24cca7132a045a648871e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6dca2413_f7ca180a",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 71
