@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "00ed1712_25f7a759",
+        "filename": "common/types.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-03-26T01:29:44Z",
+      "side": 1,
+      "message": "You have to use `std::get\u003c3\u003e(mctpinfo)` or `std::get\u003cNetworkId\u003e(mctpinfo)` or `std::get\u003cuint32_t\u003e(mctpinfo)\u0027, I think.",
+      "parentUuid": "83d06c46_bf01c08b",
+      "revId": "b9eafcfee590539e2e24cca7132a045a648871e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6dca2413_f7ca180a",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 71
@@ -31,6 +49,24 @@
       "writtenOn": "2024-03-21T13:51:58Z",
       "side": 1,
       "message": "Shouldn\u0027t there be \"MCTP_INTERFACE\" here instead of \"pldm::utils::dbusProperties\"?",
+      "revId": "b9eafcfee590539e2e24cca7132a045a648871e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "693ad2ae_3db38797",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-03-26T01:29:44Z",
+      "side": 1,
+      "message": "@ruslan dbusProperties is already defined as string\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/51184/71/common/utils.hpp#55",
+      "parentUuid": "6dca2413_f7ca180a",
       "revId": "b9eafcfee590539e2e24cca7132a045a648871e8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
