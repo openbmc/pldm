@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab7a3ee8_1a5aa4bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-03-26T07:35:23Z",
+      "side": 1,
+      "message": "Could we use `decode_numeric_sensor_pdr_data` in parsing PDRs data?",
+      "revId": "084faeebaec750c6d24627020bea7566ec720e68",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
