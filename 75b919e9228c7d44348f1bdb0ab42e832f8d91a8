@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b741af6f_a99a5b66",
+        "filename": "common/types.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-26T15:16:16Z",
+      "side": 1,
+      "message": "Done, Thank you for pointing, changed the Enum values to be all small cases as specified here - https://en.cppreference.com/w/cpp/language/enum. \nAlso, I believe there is no need to explicitly specify the values of the enum if it\u0027s not needed in the use case. By default, it takes values from 0.",
+      "parentUuid": "926a6e4f_5d0f3adb",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 9
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76f2089f_714fc88d",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-26T09:27:15Z",
       "side": 1,
       "message": "this can be moved to the local scope of try block?",
+      "range": {
+        "startLine": 453,
+        "startChar": 4,
+        "endLine": 453,
+        "endChar": 75
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcf70b78_a082453f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-26T15:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76f2089f_714fc88d",
       "range": {
         "startLine": 453,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d911c96_6c153575",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-26T15:16:16Z",
+      "side": 1,
+      "message": "Done, was added as part of the clang-format issue.",
+      "parentUuid": "572e42a4_a7600c92",
+      "range": {
+        "startLine": 190,
+        "startChar": 16,
+        "endLine": 195,
+        "endChar": 36
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b56a2b0_1ba419dd",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3459acd9_dba600bf",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-26T15:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b56a2b0_1ba419dd",
+      "range": {
+        "startLine": 660,
+        "startChar": 4,
+        "endLine": 665,
+        "endChar": 11
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8edfa3bc_f3c3c672",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-03-26T09:27:15Z",
       "side": 1,
       "message": "failure to ack is not considered as \"ERROR\"?",
+      "range": {
+        "startLine": 228,
+        "startChar": 29,
+        "endLine": 228,
+        "endChar": 42
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eabe3c6_0c42a596",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-26T15:16:16Z",
+      "side": 1,
+      "message": "No, it was discussed that this pel would be just an informational pel rather than an error.",
+      "parentUuid": "8edfa3bc_f3c3c672",
       "range": {
         "startLine": 228,
         "startChar": 29,
