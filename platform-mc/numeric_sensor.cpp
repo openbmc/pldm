@@ -105,48 +105,76 @@ NumericSensor::NumericSensor(const tid_t tid, const bool sensorDisabled,
             hysteresis = pdr->hysteresis.value_s32;
             break;
     }
-
-    bool hasCriticalThresholds = false;
+    bool hasWarningHighThreshold = false;
+    bool hasWarningLowThreshold = false;
+    bool hasCriticalHighThreshold = false;
+    bool hasCriticalLowThreshold = false;
     double criticalHigh = std::numeric_limits<double>::quiet_NaN();
     double criticalLow = std::numeric_limits<double>::quiet_NaN();
     double warningHigh = std::numeric_limits<double>::quiet_NaN();
     double warningLow = std::numeric_limits<double>::quiet_NaN();
 
-    switch (pdr->range_field_format)
+    if (pdr->range_field_support.bits.bit0)
     {
-        case PLDM_RANGE_FIELD_FORMAT_UINT8:
-            warningHigh = pdr->warning_high.value_u8;
-            warningLow = pdr->warning_low.value_u8;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_SINT8:
-            warningHigh = pdr->warning_high.value_s8;
-            warningLow = pdr->warning_low.value_u8;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_UINT16:
-            warningHigh = pdr->warning_high.value_u16;
-            warningLow = pdr->warning_low.value_u16;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_SINT16:
-            warningHigh = pdr->warning_high.value_s16;
-            warningLow = pdr->warning_low.value_s16;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_UINT32:
-            warningHigh = pdr->warning_high.value_u32;
-            warningLow = pdr->warning_low.value_u32;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_SINT32:
-            warningHigh = pdr->warning_high.value_s32;
-            warningLow = pdr->warning_low.value_s32;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_REAL32:
-            warningHigh = pdr->warning_high.value_f32;
-            warningLow = pdr->warning_low.value_f32;
-            break;
+        hasWarningHighThreshold = true;
+        switch (pdr->range_field_format)
+        {
+            case PLDM_RANGE_FIELD_FORMAT_UINT8:
+                warningHigh = pdr->warning_high.value_u8;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT8:
+                warningHigh = pdr->warning_high.value_s8;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT16:
+                warningHigh = pdr->warning_high.value_u16;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT16:
+                warningHigh = pdr->warning_high.value_s16;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT32:
+                warningHigh = pdr->warning_high.value_u32;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT32:
+                warningHigh = pdr->warning_high.value_s32;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_REAL32:
+                warningHigh = pdr->warning_high.value_f32;
+                break;
+        }
     }
 
-    if (pdr->range_field_support.bits.bit3)
+    if (pdr->range_field_support.bits.bit1)
     {
-        hasCriticalThresholds = true;
+        hasWarningLowThreshold = true;
+        switch (pdr->range_field_format)
+        {
+            case PLDM_RANGE_FIELD_FORMAT_UINT8:
+                warningLow = pdr->warning_low.value_u8;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT8:
+                warningLow = pdr->warning_low.value_s8;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT16:
+                warningLow = pdr->warning_low.value_u16;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT16:
+                warningLow = pdr->warning_low.value_s16;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT32:
+                warningLow = pdr->warning_low.value_u32;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT32:
+                warningLow = pdr->warning_low.value_s32;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_REAL32:
+                warningLow = pdr->warning_low.value_f32;
+                break;
+        }
+    }
+
+    if (pdr->range_field_support.bits.bit2)
+    {
+        hasCriticalHighThreshold = true;
         switch (pdr->range_field_format)
         {
             case PLDM_RANGE_FIELD_FORMAT_UINT8:
@@ -173,9 +201,9 @@ NumericSensor::NumericSensor(const tid_t tid, const bool sensorDisabled,
         }
     }
 
-    if (pdr->range_field_support.bits.bit4)
+    if (pdr->range_field_support.bits.bit3)
     {
-        hasCriticalThresholds = true;
+        hasCriticalLowThreshold = true;
         switch (pdr->range_field_format)
         {
             case PLDM_RANGE_FIELD_FORMAT_UINT8:
@@ -226,17 +254,24 @@ NumericSensor::NumericSensor(const tid_t tid, const bool sensorDisabled,
         std::make_unique<OperationalStatusIntf>(bus, path.c_str());
     operationalStatusIntf->functional(!sensorDisabled);
 
-    thresholdWarningIntf = std::make_unique<ThresholdWarningIntf>(bus,
-                                                                  path.c_str());
-    thresholdWarningIntf->warningHigh(unitModifier(warningHigh));
-    thresholdWarningIntf->warningLow(unitModifier(warningLow));
+    if (hasWarningHighThreshold | hasWarningLowThreshold)
+    {
+        thresholdWarningIntf =
+            std::make_unique<ThresholdWarningIntf>(bus, path.c_str());
+        if (hasWarningHighThreshold)
+            thresholdWarningIntf->warningHigh(unitModifier(warningHigh));
+        if (hasWarningLowThreshold)
+            thresholdWarningIntf->warningLow(unitModifier(warningLow));
+    }
 
-    if (hasCriticalThresholds)
+    if (hasCriticalHighThreshold | hasCriticalLowThreshold)
     {
         thresholdCriticalIntf =
             std::make_unique<ThresholdCriticalIntf>(bus, path.c_str());
-        thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
-        thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
+        if (hasCriticalHighThreshold)
+            thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
+        if (hasCriticalLowThreshold)
+            thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
     }
 }
 
@@ -298,8 +333,10 @@ NumericSensor::NumericSensor(
 
     double maxValue = std::numeric_limits<double>::quiet_NaN();
     double minValue = std::numeric_limits<double>::quiet_NaN();
-    bool hasWarningThresholds = false;
-    bool hasCriticalThresholds = false;
+    bool hasWarningHighThreshold = false;
+    bool hasWarningLowThreshold = false;
+    bool hasCriticalHighThreshold = false;
+    bool hasCriticalLowThreshold = false;
     double criticalHigh = std::numeric_limits<double>::quiet_NaN();
     double criticalLow = std::numeric_limits<double>::quiet_NaN();
     double warningHigh = std::numeric_limits<double>::quiet_NaN();
@@ -307,24 +344,24 @@ NumericSensor::NumericSensor(
 
     if (pdr->range_field_support.bits.bit0)
     {
-        hasWarningThresholds = true;
+        hasWarningHighThreshold = true;
         warningHigh = pdr->warning_high;
     }
     if (pdr->range_field_support.bits.bit1)
     {
-        hasWarningThresholds = true;
+        hasWarningLowThreshold = true;
         warningLow = pdr->warning_low;
     }
 
     if (pdr->range_field_support.bits.bit2)
     {
-        hasCriticalThresholds = true;
+        hasCriticalHighThreshold = true;
         criticalHigh = pdr->critical_high;
     }
 
     if (pdr->range_field_support.bits.bit3)
     {
-        hasCriticalThresholds = true;
+        hasCriticalLowThreshold = true;
         criticalLow = pdr->critical_low;
     }
 
@@ -376,20 +413,24 @@ NumericSensor::NumericSensor(
         std::make_unique<OperationalStatusIntf>(bus, path.c_str());
     operationalStatusIntf->functional(!sensorDisabled);
 
-    if (hasWarningThresholds)
+    if (hasWarningHighThreshold | hasWarningLowThreshold)
     {
         thresholdWarningIntf =
             std::make_unique<ThresholdWarningIntf>(bus, path.c_str());
-        thresholdWarningIntf->warningHigh(unitModifier(warningHigh));
-        thresholdWarningIntf->warningLow(unitModifier(warningLow));
+        if (hasWarningHighThreshold)
+            thresholdWarningIntf->warningHigh(unitModifier(warningHigh));
+        if (hasWarningLowThreshold)
+            thresholdWarningIntf->warningLow(unitModifier(warningLow));
     }
 
-    if (hasCriticalThresholds)
+    if (hasCriticalHighThreshold | hasCriticalLowThreshold)
     {
         thresholdCriticalIntf =
             std::make_unique<ThresholdCriticalIntf>(bus, path.c_str());
-        thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
-        thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
+        if (hasCriticalHighThreshold)
+            thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
+        if (hasCriticalLowThreshold)
+            thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
     }
 }
 
