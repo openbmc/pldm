@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "926a6e4f_5d0f3adb",
+        "filename": "common/types.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-26T09:27:15Z",
+      "side": 1,
+      "message": "Follow a consistent naming convention for enum values. Use CamelCase or PascalCase for enum names and enum values. Avoid using all-uppercase names to differentiate them from macros.\n\nAlso, assign values explicitly to the enums.",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 9
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76f2089f_714fc88d",
+        "filename": "common/utils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-26T09:27:15Z",
+      "side": 1,
+      "message": "this can be moved to the local scope of try block?",
+      "range": {
+        "startLine": 453,
+        "startChar": 4,
+        "endLine": 453,
+        "endChar": 75
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "572e42a4_a7600c92",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-26T09:27:15Z",
+      "side": 1,
+      "message": "why include this change as part of this commit?",
+      "range": {
+        "startLine": 190,
+        "startChar": 16,
+        "endLine": 195,
+        "endChar": 36
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b56a2b0_1ba419dd",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-26T09:27:15Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 660,
+        "startChar": 4,
+        "endLine": 665,
+        "endChar": 11
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8edfa3bc_f3c3c672",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-26T09:27:15Z",
+      "side": 1,
+      "message": "failure to ack is not considered as \"ERROR\"?",
+      "range": {
+        "startLine": 228,
+        "startChar": 29,
+        "endLine": 228,
+        "endChar": 42
+      },
+      "revId": "75b919e9228c7d44348f1bdb0ab42e832f8d91a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
