@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef39da6f_8d0d684b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-27T04:49:18Z",
+      "side": 1,
+      "message": "What editor do you use to write your commit messages? Can we configure it to hard-wrap at the appropriate width? For instance, in vim you can use gq to wrap the text:\n\nhttps://vimhelp.org/change.txt.html#gq",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 18
+      },
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189428e3_bc890f6d",
+        "filename": "common/test/mocked_utils.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-27T04:49:18Z",
+      "side": 1,
+      "message": "Can we have some dummy value here, rather than the actual values?",
+      "range": {
+        "startLine": 48,
+        "startChar": 34,
+        "endLine": 48,
+        "endChar": 41
+      },
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f582e128_349f4ce3",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-27T04:49:18Z",
+      "side": 1,
+      "message": "trace not needed",
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a9382e5_cfc21102",
+        "filename": "common/utils.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-27T04:49:18Z",
+      "side": 1,
+      "message": "this is redundant. we can directly use `inventoryManager::interface` whenever the service is called.",
+      "range": {
+        "startLine": 174,
+        "startChar": 15,
+        "endLine": 174,
+        "endChar": 31
+      },
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "327587f4_e786c050",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-27T04:49:18Z",
+      "side": 1,
+      "message": "trace not needed.",
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e814a737_4b6dfa5a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-27T04:49:18Z",
+      "side": 1,
+      "message": "trace not needed",
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
