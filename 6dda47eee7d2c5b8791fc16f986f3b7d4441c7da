@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bbf0930_73f91cd0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-27T11:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef39da6f_8d0d684b",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 18
+      },
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "189428e3_bc890f6d",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-27T04:49:18Z",
       "side": 1,
       "message": "Can we have some dummy value here, rather than the actual values?",
+      "range": {
+        "startLine": 48,
+        "startChar": 34,
+        "endLine": 48,
+        "endChar": 41
+      },
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc600bf2_be166654",
+        "filename": "common/test/mocked_utils.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-27T11:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "189428e3_bc890f6d",
       "range": {
         "startLine": 48,
         "startChar": 34,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b2fca2_c4ae2ade",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-27T11:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f582e128_349f4ce3",
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a9382e5_cfc21102",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-03-27T04:49:18Z",
       "side": 1,
       "message": "this is redundant. we can directly use `inventoryManager::interface` whenever the service is called.",
+      "range": {
+        "startLine": 174,
+        "startChar": 15,
+        "endLine": 174,
+        "endChar": 31
+      },
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ded5f87_41195d54",
+        "filename": "common/utils.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-27T11:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a9382e5_cfc21102",
       "range": {
         "startLine": 174,
         "startChar": 15,
@@ -104,6 +194,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00be667f_e0002aff",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-27T11:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "327587f4_e786c050",
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e814a737_4b6dfa5a",
@@ -117,6 +225,24 @@
       "writtenOn": "2024-03-27T04:49:18Z",
       "side": 1,
       "message": "trace not needed",
+      "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e07461_b0987ec7",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-03-27T11:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e814a737_4b6dfa5a",
       "revId": "6dda47eee7d2c5b8791fc16f986f3b7d4441c7da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
