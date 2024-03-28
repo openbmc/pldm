@@ -4,6 +4,7 @@
 #include "common/transport.hpp"
 #include "common/types.hpp"
 
+#include <nlohmann/json.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
 #include <sdbusplus/server/object.hpp>
@@ -12,6 +13,7 @@
 
 namespace pldm
 {
+using Json = nlohmann::json;
 
 /** @class SoftPowerOff
  *  @brief Responsible for coordinating Host SoftPowerOff operation
@@ -26,7 +28,8 @@ class SoftPowerOff
      *  @param[in] instanceDb - pldm instance database
      */
     SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
-                 InstanceIdDb& instanceIdDb);
+                 InstanceIdDb& instanceIdDb, pldm::pdr::EntityType& entityType,
+                 pldm::pdr::StateSetId& stateSetId);
 
     /** @brief Is the pldm-softpoweroff has error.
      * if hasError is true, that means the pldm-softpoweroff failed to
@@ -79,6 +82,12 @@ class SoftPowerOff
         return timer.stop();
     }
 
+    /** @brief method to parse the config Json file for softoff
+     *
+     *  @return Json - Json object of
+     */
+    Json parseConfig();
+
     /** @brief When host soft off completed, stop the timer and
      *         set the completed to true.
      *
@@ -98,13 +107,15 @@ class SoftPowerOff
      *
      *  @return PLDM_SUCCESS or PLDM_ERROR
      */
-    int getEffecterID();
+    int getEffecterID(pldm::pdr::EntityType& entityType,
+                      pldm::pdr::StateSetId& stateSetId, Json& jsonData);
 
     /** @brief Get VMM/SystemFirmware Sensor info from PDRs.
      *
      *  @return PLDM_SUCCESS or PLDM_ERROR
      */
-    int getSensorInfo();
+    int getSensorInfo(pldm::pdr::EntityType& entityType,
+                      pldm::pdr::StateSetId& stateSetId);
 
     /** @brief effecterID
      */
@@ -132,7 +143,7 @@ class SoftPowerOff
 
     /** @brief Is the Virtual Machine Manager/VMM state effecter available.
      */
-    bool VMMPdrExist = true;
+    bool softoffPdrExist = true;
 
     /* @brief sdbusplus handle */
     sdbusplus::bus_t& bus;
@@ -149,6 +160,12 @@ class SoftPowerOff
     /** @brief Reference to the instance database
      */
     InstanceIdDb& instanceIdDb;
+
+    /* Entity type of soft off PDR*/
+    pldm::pdr::EntityType entityType;
+
+    /* State set ID of the soft off PDR*/
+    pldm::pdr::StateSetId stateSetId;
 };
 
 } // namespace pldm
