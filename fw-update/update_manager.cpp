@@ -40,8 +40,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
             software::Activation::Activations::Activating)
         {
             error(
-                "Activation of PLDM FW update package already in progress, PACKAGE_VERSION={PKG_VERS}",
-                "PKG_VERS", parser->pkgVersion);
+                "Activation of PLDM FW update package for '{VERSION}' already in progress.",
+                "VERSION", parser->pkgVersion);
             std::filesystem::remove(packageFilePath);
             return -1;
         }
@@ -55,9 +55,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
                  std::ios::binary | std::ios::in | std::ios::ate);
     if (!package.good())
     {
-        error(
-            "Opening the PLDM FW update package failed, ERR={ERR}, PACKAGEFILE={PKG_FILE}",
-            "ERR", unsigned(errno), "PKG_FILE", packageFilePath.c_str());
+        error("Opening the PLDM FW update package {FILE} failed - {ERROR}.",
+              "ERROR", unsigned(errno), "FILE", packageFilePath.c_str());
         package.close();
         std::filesystem::remove(packageFilePath);
         return -1;
@@ -67,8 +66,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     if (packageSize < sizeof(pldm_package_header_information))
     {
         error(
-            "PLDM FW update package length less than the length of the package header information, PACKAGESIZE={PKG_SIZE}",
-            "PKG_SIZE", packageSize);
+            "PLDM FW update package length {SIZE} less than the length of the package header information.",
+            "SIZE", packageSize);
         package.close();
         std::filesystem::remove(packageFilePath);
         return -1;
@@ -113,7 +112,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
     catch (const std::exception& e)
     {
-        error("Invalid PLDM package header: {ERROR}", "ERROR", e);
+        error("Invalid PLDM package header - {ERROR}", "ERROR", e);
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
