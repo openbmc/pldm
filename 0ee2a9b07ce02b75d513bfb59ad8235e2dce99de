@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3165e7fb_4858ff5b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "reword sentence like : \"Entity \u0027{TYPE}\u0027 fetched from remote...\"",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15b31531_f50a849e",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "(int) conversion is not required.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dcd8c2b_094211c6",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "1.when ever you make sentence and any path or value needs to be separated by single \u0027\u0027.\nlike \u0027{ENTITY_TYPE}\u0027 , \u0027{INSTANCE}\u0027 \n\n2. try to avoid underscore in macro name. {INST_NUM} -\u003e {INSTANCE}\n\nplease make changes for all over patch",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c692a3_0123e4e8",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "{ERR_EXCEP} \u003d\u003e replace it to {ERROR} everywhere to keep in sync.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "655b4b49_db0adc43",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "since this error call is common so please add more detailed log for it.\nFYR: https://github.com/openbmc/pldm/blob/ae933cc2e7166dfc611068f9a5298107debfe2d7/libpldmresponder/bios.cpp#L137",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84c5357_809d9779",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "c_str() conversion is not required.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dbb9f34_83f30033",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "1.first letter should always CAPITAL.\n2.{EID} \u003d\u003e \u0027{EID}\u0027\n\nplease make changes other place also.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc014876_ea1b5e68",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "comment should be above the trace.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75d11f3a_36ac83c4",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "comment should be above the trace.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da45e294_abd85e10",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "please avoid printing first value, instead reword sentence and keep in middle like \u0027{}\u0027.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b041989_4661a57a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-03-28T17:36:39Z",
+      "side": 1,
+      "message": "conversion not required.",
+      "revId": "0ee2a9b07ce02b75d513bfb59ad8235e2dce99de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
