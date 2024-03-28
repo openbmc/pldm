@@ -49,6 +49,76 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6525352b_a4a8b90b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "c23acd38_c08b4a94",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 15,
+        "endChar": 36
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2551bd17_536e908a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "What editor do you use to write your commit messages? Can we configure it to hard-wrap at the appropriate width? For instance, in vim you can use gq to wrap the text:\n\nhttps://vimhelp.org/change.txt.html#gq",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 46
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6799e8e_18019fd9",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "can we make this inline function?",
+      "range": {
+        "startLine": 114,
+        "startChar": 9,
+        "endLine": 114,
+        "endChar": 31
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46604230_f011680e",
         "filename": "host-bmc/dbus/type.hpp",
         "patchSetId": 3
@@ -66,6 +136,132 @@
         "endLine": 5,
         "endChar": 13
       },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c053f0_f19b2d70",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "why do we need this?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4951cde5_8dc9416c",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "can you format this?",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 52
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccb84088_081605fd",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "can we have dummy values, rather than original paths?",
+      "range": {
+        "startLine": 51,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 39
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb3d00b2_9a5c62d9",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "what happens wen we serialize a bad path? can we have a test case for that?",
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a1d3ea_ba6d083e",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 102,
+        "endChar": 14
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72a8db08_51db8036",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-03-28T06:43:49Z",
+      "side": 1,
+      "message": "can we add deserialize the good path test case?",
       "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
