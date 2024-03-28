@@ -16,6 +16,8 @@
 #include <sdeventplus/source/time.hpp>
 
 #include <array>
+#include <filesystem>
+#include <fstream>
 
 PHOSPHOR_LOG2_USING;
 
@@ -23,6 +25,7 @@ namespace pldm
 {
 using namespace sdeventplus;
 using namespace sdeventplus::source;
+namespace fs = std::filesystem;
 constexpr auto clockId = sdeventplus::ClockId::RealTime;
 using Clock = Clock<clockId>;
 using Timer = Time<clockId>;
@@ -30,6 +33,9 @@ using Timer = Time<clockId>;
 constexpr pldm::pdr::TerminusID TID = 0; // TID will be implemented later.
 namespace sdbusRule = sdbusplus::bus::match::rules;
 
+using Json = nlohmann::json;
+constexpr auto configJson = "softoff_config.json";
+const std::vector<Json> emptyJsonList{};
 SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
                            pldm::InstanceIdDb& instanceIdDb) :
     bus(bus),
@@ -132,101 +138,70 @@ void SoftPowerOff::hostSoftOffComplete(sdbusplus::message_t& msg)
 
 int SoftPowerOff::getEffecterID()
 {
-    auto& bus = pldm::utils::DBusHandler::getBus();
-
-    // VMM is a logical entity, so the bit 15 in entity type is set.
-    pdr::EntityType entityType = PLDM_ENTITY_VIRTUAL_MACHINE_MANAGER | 0x8000;
-
-    try
+    fs::path softoffConfigJson(fs::path(SOFTOFF_CONFIG_JSON) / configJson);
+    if (fs::exists(softoffConfigJson))
     {
-        std::vector<std::vector<uint8_t>> VMMResponse{};
-        auto VMMMethod = bus.new_method_call(
-            "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
-            "xyz.openbmc_project.PLDM.PDR", "FindStateEffecterPDR");
-        VMMMethod.append(TID, entityType,
-                         (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
-
-        auto VMMResponseMsg = bus.call(VMMMethod, dbusTimeout);
-
-        VMMResponseMsg.read(VMMResponse);
-        if (VMMResponse.size() != 0)
+        std::ifstream jsonFile(softoffConfigJson);
+        auto data = Json::parse(jsonFile);
+        if (data.is_discarded())
         {
-            for (auto& rep : VMMResponse)
-            {
-                auto VMMPdr =
-                    reinterpret_cast<pldm_state_effecter_pdr*>(rep.data());
-                effecterID = VMMPdr->effecter_id;
-            }
-        }
-        else
-        {
-            VMMPdrExist = false;
-        }
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("PLDM soft off: Error get VMM PDR,ERROR={ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
-        VMMPdrExist = false;
-    }
-
-    if (VMMPdrExist)
-    {
-        return PLDM_SUCCESS;
-    }
-
-    // If the Virtual Machine Manager PDRs doesn't exist, go find the System
-    // Firmware PDRs.
-    // System Firmware is a logical entity, so the bit 15 in entity type is set
-    entityType = PLDM_ENTITY_SYS_FIRMWARE | 0x8000;
-    try
-    {
-        std::vector<std::vector<uint8_t>> sysFwResponse{};
-        auto sysFwMethod = bus.new_method_call(
-            "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
-            "xyz.openbmc_project.PLDM.PDR", "FindStateEffecterPDR");
-        sysFwMethod.append(TID, entityType,
-                           (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
-
-        auto sysFwResponseMsg = bus.call(sysFwMethod, dbusTimeout);
-
-        sysFwResponseMsg.read(sysFwResponse);
-
-        if (sysFwResponse.size() == 0)
-        {
-            error("No effecter ID has been found that matches the criteria");
+            error("Parsing softoff config JSON file failed, FILE={FILE_PATH}",
+                  "FILE_PATH", softoffConfigJson.c_str());
             return PLDM_ERROR;
         }
-
-        for (auto& rep : sysFwResponse)
+        auto entries = data.value("entries", emptyJsonList);
+        for (const auto& entry : entries)
         {
-            auto sysFwPdr =
-                reinterpret_cast<pldm_state_effecter_pdr*>(rep.data());
-            effecterID = sysFwPdr->effecter_id;
+            entityType = entry.value("entityType", 0);
+            stateSetId = entry.value("stateSetId", 0);
+
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            try
+            {
+                std::vector<std::vector<uint8_t>> response{};
+                auto method = bus.new_method_call(
+                    "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
+                    "xyz.openbmc_project.PLDM.PDR", "FindStateEffecterPDR");
+                method.append(TID, entityType, stateSetId);
+                auto responseMsg = bus.call(method, dbusTimeout);
+
+                responseMsg.read(response);
+                if (response.size() != 0)
+                {
+                    for (auto& rep : response)
+                    {
+                        auto softoffPdr =
+                            reinterpret_cast<pldm_state_effecter_pdr*>(
+                                rep.data());
+                        effecterID = softoffPdr->effecter_id;
+                    }
+                    softoffPdrExist = true;
+                    break;
+                }
+                else
+                {
+                    softoffPdrExist = false;
+                }
+            }
+            catch (const sdbusplus::exception_t& e)
+            {
+                error(
+                    "PLDM soft off: Error get softPowerOff PDR,ERROR={ERR_EXCEP}",
+                    "ERR_EXCEP", e.what());
+            }
+        }
+        if (softoffPdrExist == false)
+        {
+            error("No effecter ID has been found that matches the criteria");
+            completed = true;
+            return PLDM_ERROR;
         }
     }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("PLDM soft off: Error get system firmware PDR,ERROR={ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
-        completed = true;
-        return PLDM_ERROR;
-    }
-
     return PLDM_SUCCESS;
 }
 
 int SoftPowerOff::getSensorInfo()
 {
-    pldm::pdr::EntityType entityType;
-
-    entityType = VMMPdrExist ? PLDM_ENTITY_VIRTUAL_MACHINE_MANAGER
-                             : PLDM_ENTITY_SYS_FIRMWARE;
-
-    // The Virtual machine manager/System firmware is logical entity, so bit 15
-    // need to be set.
-    entityType = entityType | 0x8000;
-
     try
     {
         auto& bus = pldm::utils::DBusHandler::getBus();
@@ -234,8 +209,7 @@ int SoftPowerOff::getSensorInfo()
         auto method = bus.new_method_call(
             "xyz.openbmc_project.PLDM", "/xyz/openbmc_project/pldm",
             "xyz.openbmc_project.PLDM.PDR", "FindStateSensorPDR");
-        method.append(TID, entityType,
-                      (uint16_t)PLDM_STATE_SET_SW_TERMINATION_STATUS);
+        method.append(TID, entityType, stateSetId);
 
         auto ResponseMsg = bus.call(method, dbusTimeout);
 

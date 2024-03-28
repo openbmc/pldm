@@ -132,7 +132,13 @@ class SoftPowerOff
 
     /** @brief Is the Virtual Machine Manager/VMM state effecter available.
      */
-    bool VMMPdrExist = true;
+    bool softoffPdrExist = true;
+
+    /* Entity type of soft off PDR*/
+    pldm::pdr::EntityType entityType;
+
+    /* State set ID of the soft off PDR*/
+    pldm::pdr::StateSetId stateSetId;
 
     /* @brief sdbusplus handle */
     sdbusplus::bus_t& bus;
