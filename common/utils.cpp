@@ -85,9 +85,9 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     pldm_entity node_entity = pldm_entity_extract(entity);
     if (!entityMaps.contains(node_entity.entity_type))
     {
-        lg2::info(
-            "{ENTITY_TYPE} Entity fetched from remote PLDM terminal does not exist.",
-            "ENTITY_TYPE", (int)node_entity.entity_type);
+        error(
+            "Entity type '{TYPE}' fetched from remote terminus does not exist.",
+            "TYPE", (int)node_entity.entity_type);
         return;
     }
 
@@ -193,9 +193,9 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             }
             catch (const std::exception& e)
             {
-                lg2::error(
-                    "Parent entity not found in the entityMaps, type: {ENTITY_TYPE}, num: {NUM}, e: {ERROR}",
-                    "ENTITY_TYPE", (int)parent.entity_type, "NUM",
+                error(
+                    "Failed to find parent entity type '{TYPE}' with instance ID '{INSTANCEID}' in the entity maps, error - {ERROR}",
+                    "TYPE", (int)parent.entity_type, "INSTANCEID",
                     (int)parent.entity_instance_num, "ERROR", e);
                 found = false;
                 break;
@@ -267,8 +267,7 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
     }
     catch (const std::exception& e)
     {
-        error(" Failed to obtain a record. ERROR = {ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to obtain a record, error - {ERROR}", "ERROR", e);
     }
 
     return pdrs;
@@ -321,8 +320,9 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t /*tid*/,
     }
     catch (const std::exception& e)
     {
-        error(" Failed to obtain a record. ERROR = {ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error(
+            "Failed to obtain a record with entity ID '{ENTITYID}', error - {ERROR}",
+            "ENTITYID", entityID, "ERROR", e);
     }
 
     return pdrs;
@@ -334,8 +334,8 @@ uint8_t readHostEID()
     std::ifstream eidFile{HOST_EID_PATH};
     if (!eidFile.good())
     {
-        error("Could not open host EID file: {HOST_PATH}", "HOST_PATH",
-              static_cast<std::string>(HOST_EID_PATH));
+        error("Failed to open remote terminus EID file at path '{PATH}'",
+              "PATH", static_cast<std::string>(HOST_EID_PATH));
     }
     else
     {
@@ -347,7 +347,7 @@ uint8_t readHostEID()
         }
         else
         {
-            error("Host EID file was empty");
+            error("Remote terminus EID file was empty");
         }
     }
 
@@ -467,12 +467,10 @@ GetSubTreePathsResponse DBusHandler::getSubTreePaths(
 void reportError(const char* errorMsg)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-
+    using LoggingCreate =
+        sdbusplus::client::xyz::openbmc_project::logging::Create<>;
     try
     {
-        using LoggingCreate =
-            sdbusplus::client::xyz::openbmc_project::logging::Create<>;
-
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
@@ -489,8 +487,9 @@ void reportError(const char* errorMsg)
     catch (const std::exception& e)
     {
         error(
-            "failed to make a d-bus call to create error log, ERROR={ERR_EXCEP}",
-            "ERR_EXCEP", e.what());
+            "Failed to do dbus call for creating error log for '{ERRMSG}' at path '{PATH}' and interface '{INTERFACE}', error - {ERROR}",
+            "ERRMSG", errorMsg, "PATH", LoggingCreate::instance_path,
+            "INTERFACE", LoggingCreate::interface, "ERROR", e);
     }
 }
 
@@ -560,7 +559,9 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
     }
     else
     {
-        throw std::invalid_argument("UnSpported Dbus Type");
+        error("Unsupported property type '{TYPE}'", "TYPE",
+              dBusMap.propertyType);
+        throw std::invalid_argument("UnSupported Dbus Type");
     }
 }
 
@@ -643,8 +644,7 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
     }
     else
     {
-        error("Unknown D-Bus property type, TYPE={OTHER_TYPE}", "OTHER_TYPE",
-              type);
+        error("Unknown D-Bus property type '{TYPE}'", "TYPE", type);
     }
 
     return propValue;
@@ -707,8 +707,7 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
     }
     catch (const std::exception& e)
     {
-        error("Error emitting pldm event signal:ERROR={ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to emit pldm event signal, error - {ERROR}", "ERROR", e);
         return PLDM_ERROR;
     }
 
@@ -823,9 +822,8 @@ bool checkForFruPresence(const std::string& objPath)
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
-        error(
-            "Failed to check for FRU presence for {OBJ_PATH} ERROR = {ERR_EXCEP}",
-            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e.what());
+        error("Failed to check for FRU presence at {PATH}, error - {ERROR}",
+              "PATH", objPath, "ERROR", e);
     }
     return isPresent;
 }
@@ -850,7 +848,7 @@ void setFruPresence(const std::string& fruObjPath, bool present)
     catch (const std::exception& e)
     {
         error(
-            "Failed to set the present property on path: '{PATH}' with {ERROR} ",
+            "Failed to set the present property on path '{PATH}', error - {ERROR}.",
             "PATH", fruObjPath, "ERROR", e);
     }
 }
