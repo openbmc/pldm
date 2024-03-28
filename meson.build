@@ -47,6 +47,7 @@ add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
 endif
 if get_option('softoff').allowed()
   conf_data.set('SOFTOFF_TIMEOUT_SECONDS', get_option('softoff-timeout-seconds'))
+  conf_data.set_quoted('SOFTOFF_CONFIG_JSON', join_paths(package_datadir, 'softoff'))
 endif
 if get_option('oem-ibm').allowed()
   conf_data.set_quoted('FILE_TABLE_JSON', join_paths(package_datadir, 'fileTable.json'))
