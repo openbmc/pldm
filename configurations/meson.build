@@ -4,6 +4,8 @@ install_subdir('host', install_dir: package_datadir)
 
 install_subdir('events', install_dir: package_datadir)
 
+install_subdir('softoff', install_dir: package_datadir)
+
 if get_option('oem-ibm').disabled()
 install_data('fru_master.json', install_dir: package_datadir)
 endif
