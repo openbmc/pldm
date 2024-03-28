@@ -17,10 +17,17 @@ int main()
     // Obtain the instance database
     pldm::InstanceIdDb instanceIdDb;
 
+    /* Entity type of soft off PDR*/
+    pldm::pdr::EntityType entityType;
+
+    /* State set ID of the soft off PDR*/
+    pldm::pdr::StateSetId stateSetId;
+
     // Attach the bus to sd_event to service user requests
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
-    pldm::SoftPowerOff softPower(bus, event.get(), instanceIdDb);
+    pldm::SoftPowerOff softPower(bus, event.get(), instanceIdDb, entityType,
+                                 stateSetId);
 
     if (softPower.isError())
     {
