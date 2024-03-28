@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9613ad4_aa36700d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-28T05:03:18Z",
+      "side": 1,
+      "message": "it is not clear as to what \"pldm data\" you are referring to here?",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c23acd38_c08b4a94",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-28T05:03:18Z",
+      "side": 1,
+      "message": "Again could you please specify what data we are talking about here that PLDM stores and needs after BMC reboot?",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 15,
+        "endChar": 36
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46604230_f011680e",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-03-28T05:03:18Z",
+      "side": 1,
+      "message": "Is this used?",
+      "range": {
+        "startLine": 5,
+        "startChar": 10,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
