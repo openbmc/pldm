@@ -85,7 +85,7 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     pldm_entity node_entity = pldm_entity_extract(entity);
     if (!entityMaps.contains(node_entity.entity_type))
     {
-        lg2::info(
+        info(
             "{ENTITY_TYPE} Entity fetched from remote PLDM terminal does not exist.",
             "ENTITY_TYPE", (int)node_entity.entity_type);
         return;
@@ -193,9 +193,9 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             }
             catch (const std::exception& e)
             {
-                lg2::error(
-                    "Parent entity not found in the entityMaps, type: {ENTITY_TYPE}, num: {NUM}, e: {ERROR}",
-                    "ENTITY_TYPE", (int)parent.entity_type, "NUM",
+                error(
+                    "Parent entity of {ENTITY_TYPE} with {INST_NUM} not found in the entityMaps: {ERROR}",
+                    "ENTITY_TYPE", (int)parent.entity_type, "INST_NUM",
                     (int)parent.entity_instance_num, "ERROR", e);
                 found = false;
                 break;
@@ -267,8 +267,7 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
     }
     catch (const std::exception& e)
     {
-        error(" Failed to obtain a record. ERROR = {ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to obtain a record: {ERR_EXCEP}", "ERR_EXCEP", e);
     }
 
     return pdrs;
@@ -321,8 +320,7 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t /*tid*/,
     }
     catch (const std::exception& e)
     {
-        error(" Failed to obtain a record. ERROR = {ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to obtain a record: {ERR_EXCEP}", "ERR_EXCEP", e);
     }
 
     return pdrs;
@@ -347,7 +345,7 @@ uint8_t readHostEID()
         }
         else
         {
-            error("Host EID file was empty");
+            info("Host EID file was empty");
         }
     }
 
@@ -472,9 +470,8 @@ void reportError(const char* errorMsg)
     }
     catch (const std::exception& e)
     {
-        error(
-            "failed to make a d-bus call to create error log, ERROR={ERR_EXCEP}",
-            "ERR_EXCEP", e.what());
+        error("Failed to make a d-bus call to create error log: {ERR_EXCEP}",
+              "ERR_EXCEP", e);
     }
 }
 
@@ -544,6 +541,8 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
     }
     else
     {
+        info("Property Type is:{DBUS_PROP_TYPE}", "DBUS_PROP_TYPE",
+             dBusMap.propertyType);
         throw std::invalid_argument("UnSpported Dbus Type");
     }
 }
@@ -605,8 +604,7 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
     }
     else
     {
-        error("Unknown D-Bus property type, TYPE={OTHER_TYPE}", "OTHER_TYPE",
-              type);
+        info("Unknown D-Bus property type: {OTHER_TYPE}", "OTHER_TYPE", type);
     }
 
     return propValue;
@@ -669,8 +667,7 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
     }
     catch (const std::exception& e)
     {
-        error("Error emitting pldm event signal:ERROR={ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Error emitting pldm event signal: {ERR_EXCEP}", "ERR_EXCEP", e);
         return PLDM_ERROR;
     }
 
@@ -799,8 +796,8 @@ bool checkForFruPresence(const std::string& objPath)
     catch (const sdbusplus::exception::SdBusError& e)
     {
         error(
-            "Failed to check for FRU presence for {OBJ_PATH} ERROR = {ERR_EXCEP}",
-            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e.what());
+            "Failed to check for FRU presence for {OBJ_PATH} with: {ERR_EXCEP}",
+            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e);
     }
     return isPresent;
 }

@@ -40,7 +40,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
             software::Activation::Activations::Activating)
         {
             error(
-                "Activation of PLDM FW update package already in progress, PACKAGE_VERSION={PKG_VERS}",
+                "Activation of PLDM FW update package for version {PKG_VERS} already in progress.",
                 "PKG_VERS", parser->pkgVersion);
             std::filesystem::remove(packageFilePath);
             return -1;
@@ -55,9 +55,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
                  std::ios::binary | std::ios::in | std::ios::ate);
     if (!package.good())
     {
-        error(
-            "Opening the PLDM FW update package failed, ERR={ERR}, PACKAGEFILE={PKG_FILE}",
-            "ERR", unsigned(errno), "PKG_FILE", packageFilePath.c_str());
+        error("Opening the PLDM FW update package {PKG_FILE} failed : {ERR}.",
+              "ERR", unsigned(errno), "PKG_FILE", packageFilePath.c_str());
         package.close();
         std::filesystem::remove(packageFilePath);
         return -1;
@@ -67,7 +66,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     if (packageSize < sizeof(pldm_package_header_information))
     {
         error(
-            "PLDM FW update package length less than the length of the package header information, PACKAGESIZE={PKG_SIZE}",
+            "PLDM FW update package length {PKG_SIZE} less than the length of the package header information.",
             "PKG_SIZE", packageSize);
         package.close();
         std::filesystem::remove(packageFilePath);

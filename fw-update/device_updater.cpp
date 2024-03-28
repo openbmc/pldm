@@ -49,7 +49,7 @@ void DeviceUpdater::startFwUpdateFlow()
     if (rc)
     {
         updateManager->instanceIdDb.free(eid, instanceId);
-        error("encode_request_update_req failed, EID = {EID}, RC = {RC}", "EID",
+        error("encode_request_update_req for {EID} failed : {RC}", "EID",
               unsigned(eid), "RC", rc);
         // Handle error scenario
     }
@@ -59,8 +59,8 @@ void DeviceUpdater::startFwUpdateFlow()
         std::move(std::bind_front(&DeviceUpdater::requestUpdate, this)));
     if (rc)
     {
-        error("Failed to send RequestUpdate request, EID = {EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Send RequestUpdate request for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         // Handle error scenario
     }
 }
@@ -71,7 +71,7 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
     if (response == nullptr || !respMsgLen)
     {
         // Handle error scenario
-        error("No response received for RequestUpdate, EID = {EID}", "EID",
+        error("No response received for RequestUpdate of {EID}", "EID",
               unsigned(eid));
         return;
     }
@@ -84,14 +84,14 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
                                          &fdMetaDataLen, &fdWillSendPkgData);
     if (rc)
     {
-        error("Decoding RequestUpdate response failed, EID = {EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Decoding RequestUpdate response of {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         return;
     }
     if (completionCode)
     {
         error(
-            "RequestUpdate response failed with error completion code, EID = {EID}, CC = {CC}",
+            "RequestUpdate response of {EID} failed with error completion code : {CC}",
             "EID", unsigned(eid), "CC", unsigned(completionCode));
         return;
     }
@@ -171,7 +171,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     if (rc)
     {
         updateManager->instanceIdDb.free(eid, instanceId);
-        error("encode_pass_component_table_req failed, EID = {EID}, RC = {RC}",
+        error("encode_pass_component_table_req for {EID} failed : RC = {RC}",
               "EID", unsigned(eid), "RC", rc);
         // Handle error scenario
     }
@@ -182,9 +182,8 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         std::move(std::bind_front(&DeviceUpdater::passCompTable, this)));
     if (rc)
     {
-        error(
-            "Failed to send PassComponentTable request, EID = {EID}, RC = {RC}",
-            "EID", unsigned(eid), "RC", rc);
+        error("Send PassComponentTable request for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         // Handle error scenario
     }
 }
@@ -195,7 +194,7 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
     if (response == nullptr || !respMsgLen)
     {
         // Handle error scenario
-        error("No response received for PassComponentTable, EID = {EID}", "EID",
+        error("No response received for PassComponentTable for {EID}", "EID",
               unsigned(eid));
         return;
     }
@@ -210,16 +209,15 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
     if (rc)
     {
         // Handle error scenario
-        error(
-            "Decoding PassComponentTable response failed, EID={EID}, RC = {RC}",
-            "EID", unsigned(eid), "RC", rc);
+        error("Decoding PassComponentTable response for {EID} failed : {RC}",
+              "EID", unsigned(eid), "RC", rc);
         return;
     }
     if (completionCode)
     {
         // Handle error scenario
         error(
-            "PassComponentTable response failed with error completion code, EID = {EID}, CC = {CC}",
+            "PassComponentTable response for {EID} failed with error completion code : {CC}",
             "EID", unsigned(eid), "CC", unsigned(completionCode));
         return;
     }
@@ -298,7 +296,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     if (rc)
     {
         updateManager->instanceIdDb.free(eid, instanceId);
-        error("encode_update_component_req failed, EID={EID}, RC = {RC}", "EID",
+        error("encode_update_component_req for {EID} failed : {RC}", "EID",
               unsigned(eid), "RC", rc);
         // Handle error scenario
     }
@@ -308,8 +306,8 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         std::move(std::bind_front(&DeviceUpdater::updateComponent, this)));
     if (rc)
     {
-        error("Failed to send UpdateComponent request, EID={EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Send UpdateComponent request for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         // Handle error scenario
     }
 }
@@ -320,7 +318,7 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     if (response == nullptr || !respMsgLen)
     {
         // Handle error scenario
-        error("No response received for updateComponent, EID={EID}", "EID",
+        error("No response received for updateComponent for {EID}", "EID",
               unsigned(eid));
         return;
     }
@@ -337,14 +335,14 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
         &timeBeforeReqFWData);
     if (rc)
     {
-        error("Decoding UpdateComponent response failed, EID={EID}, RC = {RC}",
+        error("Decoding UpdateComponent response for {EID} failed : {RC}",
               "EID", unsigned(eid), "RC", rc);
         return;
     }
     if (completionCode)
     {
         error(
-            "UpdateComponent response failed with error completion code, EID = {EID}, CC = {CC}",
+            "UpdateComponent response for {EID} failed with error completion code : {CC}",
             "EID", unsigned(eid), "CC", unsigned(completionCode));
         return;
     }
@@ -362,16 +360,15 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
                                                &length);
     if (rc)
     {
-        error(
-            "Decoding RequestFirmwareData request failed, EID={EID}, RC = {RC}",
-            "EID", unsigned(eid), "RC", rc);
+        error("Decoding RequestFirmwareData request for {EID} failed : {RC}",
+              "EID", unsigned(eid), "RC", rc);
         rc = encode_request_firmware_data_resp(
             request->hdr.instance_id, PLDM_ERROR_INVALID_DATA, responseMsg,
             sizeof(completionCode));
         if (rc)
         {
             error(
-                "Encoding RequestFirmwareData response failed, EID = {EID}, RC = {RC}",
+                "Encoding RequestFirmwareData response for {EID} failed : {RC}",
                 "EID", unsigned(eid), "RC", rc);
         }
         return response;
@@ -382,8 +379,8 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     auto compOffset = std::get<5>(comp);
     auto compSize = std::get<6>(comp);
-    error("offset = {OFFSET}, length = {LEN}", "OFFSET", unsigned(offset),
-          "LEN", unsigned(length));
+    error("{OFFSET} and {LEN} of decoded fw request data.", "OFFSET",
+          unsigned(offset), "LEN", unsigned(length));
     if (length < PLDM_FWUP_BASELINE_TRANSFER_SIZE || length > maxTransferSize)
     {
         rc = encode_request_firmware_data_resp(
@@ -392,7 +389,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         if (rc)
         {
             error(
-                "Encoding RequestFirmwareData response failed, EID={EID}, RC = {RC}",
+                "Encoding RequestFirmwareData response for {EID} failed : {RC}",
                 "EID", unsigned(eid), "RC", rc);
         }
         return response;
@@ -406,7 +403,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         if (rc)
         {
             error(
-                "Encoding RequestFirmwareData response failed, EID={EID}, RC = {RC}",
+                "Encoding RequestFirmwareData response for {EID} failed : {RC}",
                 "EID", unsigned(eid), "RC", rc);
         }
         return response;
@@ -430,9 +427,8 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
                                            sizeof(completionCode));
     if (rc)
     {
-        error(
-            "Encoding RequestFirmwareData response failed, EID={EID}, RC = {RC}",
-            "EID", unsigned(eid), "RC", rc);
+        error("Encoding RequestFirmwareData response for {EID} failed : {RC}",
+              "EID", unsigned(eid), "RC", rc);
         return response;
     }
 
@@ -451,16 +447,15 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
                                            &transferResult);
     if (rc)
     {
-        error("Decoding TransferComplete request failed, EID={EID}, RC = {RC}",
+        error("Decoding TransferComplete request for {EID} failed : {RC}",
               "EID", unsigned(eid), "RC", rc);
         rc = encode_transfer_complete_resp(request->hdr.instance_id,
                                            PLDM_ERROR_INVALID_DATA, responseMsg,
                                            sizeof(completionCode));
         if (rc)
         {
-            error(
-                "Encoding TransferComplete response failed, EID={EID}, RC = {RC}",
-                "EID", unsigned(eid), "RC", rc);
+            error("Encoding TransferComplete response for {EID} failed : {RC}",
+                  "EID", unsigned(eid), "RC", rc);
         }
         return response;
     }
@@ -472,14 +467,13 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
 
     if (transferResult == PLDM_FWUP_TRANSFER_SUCCESS)
     {
-        info(
-            "Component Transfer complete, EID = {EID}, COMPONENT_VERSION = {COMP_VERS}",
-            "EID", unsigned(eid), "COMP_VERS", compVersion);
+        info("Component {EID} with {COMP_VERS} transfer complete.", "EID",
+             unsigned(eid), "COMP_VERS", compVersion);
     }
     else
     {
         error(
-            "Transfer of the component failed, EID={EID}, COMPONENT_VERSION = {COMP_VERS}, TRANSFER_RESULT = {TRANS_RES}",
+            "Transfer of the component {EID} with {COMP_VERS} failed : {TRANS_RES}",
             "EID", unsigned(eid), "COMP_VERS", compVersion, "TRANS_RES",
             unsigned(transferResult));
     }
@@ -488,7 +482,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
                                        responseMsg, sizeof(completionCode));
     if (rc)
     {
-        error("Encoding TransferComplete response failed, EID={EID}, RC = {RC}",
+        error("Encoding Transfer Complete response of {EID} failed: {RC}",
               "EID", unsigned(eid), "RC", rc);
         return response;
     }
@@ -507,8 +501,8 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
     auto rc = decode_verify_complete_req(request, payloadLength, &verifyResult);
     if (rc)
     {
-        error("Decoding VerifyComplete request failed, EID = {EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Decoding VerifyComplete request of {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         rc = encode_verify_complete_resp(request->hdr.instance_id,
                                          PLDM_ERROR_INVALID_DATA, responseMsg,
                                          sizeof(completionCode));
@@ -528,15 +522,14 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
 
     if (verifyResult == PLDM_FWUP_VERIFY_SUCCESS)
     {
-        info(
-            "Component verification complete, EID={EID}, COMPONENT_VERSION={COMP_VERS}",
-            "EID", unsigned(eid), "COMP_VERS", compVersion);
+        info("Component {EID} with {COMP_VERS}, verification complete.", "EID",
+             unsigned(eid), "COMP_VERS", compVersion);
     }
     else
     {
         error(
-            "Component verification failed, EID={EID}, COMPONENT_VERSION={COMP_VERS}, VERIFY_RESULT={VERIFY_RES}",
-            "EID", unsigned(eid), "COMP_VERS", compVersion, "VERIFY_RES",
+            "Component {EID} with {COMP_VERS} verification failed: {VERIFY_RESULT}",
+            "EID", unsigned(eid), "COMP_VERS", compVersion, "VERIFY_RESULT",
             unsigned(verifyResult));
     }
 
@@ -544,8 +537,8 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
                                      responseMsg, sizeof(completionCode));
     if (rc)
     {
-        error("Encoding VerifyComplete response failed, EID={EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Encoding VerifyComplete response for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         return response;
     }
 
@@ -565,16 +558,15 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
                                         &compActivationModification);
     if (rc)
     {
-        error("Decoding ApplyComplete request failed, EID={EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Decoding ApplyComplete request for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         rc = encode_apply_complete_resp(request->hdr.instance_id,
                                         PLDM_ERROR_INVALID_DATA, responseMsg,
                                         sizeof(completionCode));
         if (rc)
         {
-            error(
-                "Encoding ApplyComplete response failed, EID={EID}, RC = {RC}",
-                "EID", unsigned(eid), "RC", rc);
+            error("Encoding ApplyComplete response for {EID} failed : {RC}",
+                  "EID", unsigned(eid), "RC", rc);
         }
         return response;
     }
@@ -587,9 +579,8 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     if (applyResult == PLDM_FWUP_APPLY_SUCCESS ||
         applyResult == PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD)
     {
-        info(
-            "Component apply complete, EID = {EID}, COMPONENT_VERSION = {COMP_VERS}",
-            "EID", unsigned(eid), "COMP_VERS", compVersion);
+        info("Component {EID} with {COMP_VERS} apply complete.", "EID",
+             unsigned(eid), "COMP_VERS", compVersion);
         updateManager->updateActivationProgress();
     }
     else
@@ -604,8 +595,8 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
                                     responseMsg, sizeof(completionCode));
     if (rc)
     {
-        error("Encoding ApplyComplete response failed, EID={EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Encoding ApplyComplete response for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
         return response;
     }
 
@@ -642,8 +633,8 @@ void DeviceUpdater::sendActivateFirmwareRequest()
     if (rc)
     {
         updateManager->instanceIdDb.free(eid, instanceId);
-        error("encode_activate_firmware_req failed, EID={EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("encode_activate_firmware_req for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
     }
 
     rc = updateManager->handler.registerRequest(
@@ -651,8 +642,8 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         std::move(std::bind_front(&DeviceUpdater::activateFirmware, this)));
     if (rc)
     {
-        error("Failed to send ActivateFirmware request, EID={EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+        error("Send ActivateFirmware request for {EID} failed : {RC}", "EID",
+              unsigned(eid), "RC", rc);
     }
 }
 
@@ -662,7 +653,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     if (response == nullptr || !respMsgLen)
     {
         // Handle error scenario
-        error("No response received for ActivateFirmware, EID={EID}", "EID",
+        error("No response received for ActivateFirmware for {EID}", "EID",
               unsigned(eid));
         return;
     }
@@ -675,7 +666,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     if (rc)
     {
         // Handle error scenario
-        error("Decoding ActivateFirmware response failed, EID={EID}, RC = {RC}",
+        error("Decoding ActivateFirmware response for {EID} failed : {RC}",
               "EID", unsigned(eid), "RC", rc);
         return;
     }
@@ -683,7 +674,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     {
         // Handle error scenario
         error(
-            "ActivateFirmware response failed with error completion code, EID = {EID}, CC = {CC}",
+            "ActivateFirmware response for {EID} failed with error completion code : {CC}",
             "EID", unsigned(eid), "CC", unsigned(completionCode));
         return;
     }
