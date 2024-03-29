@@ -70,6 +70,29 @@
       "parentUuid": "8a3d4be9_efc45bdc",
       "revId": "31d0e41cfda208c064df69ee845611125c4b8d2c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57cfd3f9_a3bbf97a",
+        "filename": "common/utils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:57:45Z",
+      "side": 1,
+      "message": "please use map.contains(), the find() method is old and is not easily readable.",
+      "range": {
+        "startLine": 467,
+        "startChar": 6,
+        "endLine": 471,
+        "endChar": 9
+      },
+      "revId": "31d0e41cfda208c064df69ee845611125c4b8d2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
