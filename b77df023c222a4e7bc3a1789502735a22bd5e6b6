@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b305d41_bccb4659",
+        "filename": "configurations/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "should not this be inside the oem-ibm ? or can this be generic .",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e2d06a_306179bc",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "is this needed at the global scope ?",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b304efbd_a1868fa5",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "do we need this to be a global variable ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 40
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c4e2748_77730506",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "can we have like a parseconfig() which returns the jsonobject that run as part of the softoff object construction - and move this logic there",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 149,
+        "endChar": 58
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "889da2ef_01eb4bcb",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "we also need the TID from the json, since we could have same entitytype, statesetid across multiple PLDM terminus.",
+      "range": {
+        "startLine": 155,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 1
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9120ea1c_d7632599",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "this seem like a redundant variable ? if we figure out that we got just one PDR, then we dont really need to go to the next entry right ?",
+      "range": {
+        "startLine": 178,
+        "startChar": 20,
+        "endLine": 178,
+        "endChar": 43
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce36a55_c08ec6ec",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "if(!softoffPdrExist)",
+      "range": {
+        "startLine": 193,
+        "startChar": 8,
+        "endLine": 193,
+        "endChar": 37
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be3226ea_76abe13e",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "what if the JSON has 2 entries, and only one of them is modelled in the PDR, it is still a valid case right ? should we return an ERROR ?",
+      "range": {
+        "startLine": 193,
+        "startChar": 8,
+        "endLine": 198,
+        "endChar": 9
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c99efbf6_7c042632",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T05:12:43Z",
+      "side": 1,
+      "message": "do we really need them to be class variables ? why can\u0027t they be passed over functions ?  (they are being replacing in for loop when we parse the JSON)",
+      "range": {
+        "startLine": 137,
+        "startChar": 3,
+        "endLine": 141,
+        "endChar": 36
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
