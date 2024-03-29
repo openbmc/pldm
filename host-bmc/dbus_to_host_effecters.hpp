@@ -96,8 +96,8 @@ class HostEffecterParser
         catch (const std::exception& e)
         {
             error(
-                "The json file does not exist or malformed, ERROR={ERR_EXCEP}",
-                "ERR_EXCEP", e.what());
+                "The json file '{PATH}' does not exist or malformed, error - '{ERROR}'",
+                "PATH", jsonPath, "ERROR", e);
         }
     }
 
