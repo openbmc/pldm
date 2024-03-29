@@ -40,16 +40,14 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
     fs::path jsonDir(jsonPath);
     if (!fs::exists(jsonDir) || fs::is_empty(jsonDir))
     {
-        error("Host Effecter json path does not exist, DIR = {JSON_PATH}",
-              "JSON_PATH", jsonPath.c_str());
+        error("Host Effecter json '{PATH}' does not exist.", "PATH", jsonPath);
         return;
     }
 
     fs::path jsonFilePath = jsonDir / hostEffecterJson;
     if (!fs::exists(jsonFilePath))
     {
-        error("json does not exist, PATH = {JSON_PATH}", "JSON_PATH",
-              jsonFilePath.c_str());
+        error("Json at {PATH} does not exist.", "PATH", jsonFilePath.c_str());
         throw InternalFailure();
     }
 
@@ -57,8 +55,7 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
     auto data = Json::parse(jsonFile, nullptr, false);
     if (data.is_discarded())
     {
-        error("Parsing json file failed, FILE = {JSON_PATH}", "JSON_PATH",
-              jsonFilePath.c_str());
+        error("Parsing json file {PATH} failed.", "PATH", jsonFilePath.c_str());
         throw InternalFailure();
     }
     const Json empty{};
@@ -101,9 +98,9 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
             if (dbusInfo.propertyValues.size() != states.size())
             {
                 error(
-                    "Number of states do not match with number of D-Bus property values in the json. Object path {OBJ_PATH} and property {PROP_NAME}  will not be monitored",
-                    "OBJ_PATH", dbusInfo.dbusMap.objectPath.c_str(),
-                    "PROP_NAME", dbusInfo.dbusMap.propertyName);
+                    "Number of states do not match with number of D-Bus property values in the json. Object path at {PATH} and property {PROPERTY}  will not be monitored",
+                    "PATH", dbusInfo.dbusMap.objectPath.c_str(), "PROPERTY",
+                    dbusInfo.dbusMap.propertyName);
                 continue;
             }
             for (const auto& s : states)
@@ -173,16 +170,16 @@ void HostEffecterParser::processHostEffecterChangeNotification(
             currHostState != Stages::OSRunning &&
             currHostState != Stages::SystemSetup)
         {
-            info("Host is not up. Current host state: {CUR_HOST_STATE}",
-                 "CUR_HOST_STATE", currHostState);
+            info("Host is not up. '{CURRENT_HOST_STATE}'", "CURRENT_HOST_STATE",
+                 currHostState);
             return;
         }
     }
     catch (const sdbusplus::exception_t& e)
     {
         error(
-            "Error in getting current host state. Will still continue to set the host effecter - {ERR_EXCEP}",
-            "ERR_EXCEP", e.what());
+            "Error in getting current host state. Will still continue to set the host effecter - '{ERROR}'",
+            "ERROR", e);
     }
     uint8_t newState{};
     try
@@ -192,7 +189,7 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     }
     catch (const std::out_of_range& e)
     {
-        error("New state not found in json: {ERROR}", "ERROR", e);
+        error("New state not found in json - '{ERROR}'", "ERROR", e);
         return;
     }
 
@@ -216,12 +213,12 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     }
     catch (const std::runtime_error& e)
     {
-        error("Could not set host state effecter");
+        error("Could not set host state effecter - '{ERROR}'", "ERROR", e);
         return;
     }
     if (rc != PLDM_SUCCESS)
     {
-        error("Could not set the host state effecter, rc= {RC}", "RC", rc);
+        error("Could not set the host state effecter - '{RC}'", "RC", rc);
     }
 }
 
@@ -267,7 +264,7 @@ int HostEffecterParser::setHostStateEffecter(
 
     if (rc != PLDM_SUCCESS)
     {
-        error("Message encode failure. PLDM error code = {RC}", "RC", lg2::hex,
+        error("Message encode failure. PLDM error code {RC}", "RC", lg2::hex,
               rc);
         instanceIdDb->free(mctpEid, instanceId);
         return rc;
@@ -286,14 +283,14 @@ int HostEffecterParser::setHostStateEffecter(
                                                         &completionCode);
         if (rc)
         {
-            error("Failed to decode setStateEffecterStates response, rc {RC}",
+            error("Failed to decode setStateEffecterStates response - '{RC}'",
                   "RC", rc);
             pldm::utils::reportError(
                 "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
         }
         if (completionCode)
         {
-            error("Failed to set a Host effecter, cc = {CC}", "CC",
+            error("Failed to set a Host effecter - '{CC}'", "CC",
                   static_cast<unsigned>(completionCode));
             pldm::utils::reportError(
                 "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
@@ -305,7 +302,8 @@ int HostEffecterParser::setHostStateEffecter(
         std::move(requestMsg), std::move(setStateEffecterStatesRespHandler));
     if (rc)
     {
-        error("Failed to send request to set an effecter on Host");
+        error("Failed to send request to set an effecter on Host - '{RC}'",
+              "RC", rc);
     }
     return rc;
 }
