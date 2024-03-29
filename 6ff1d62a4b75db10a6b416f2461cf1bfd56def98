@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b81b091_237899d5",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1253,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-03-29T06:05:03Z",
+      "side": 1,
+      "message": "there is no need to explicit casting for any of these fields, please remove them.",
+      "range": {
+        "startLine": 1230,
+        "startChar": 8,
+        "endLine": 1253,
+        "endChar": 65
+      },
+      "revId": "6ff1d62a4b75db10a6b416f2461cf1bfd56def98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
