@@ -41,8 +41,9 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        error("Failed to encode_platform_event_message_req, rc = {RC}", "RC",
-              rc);
+        error(
+            "Failed to encode_platform_event_message_req, response code '{RC}'",
+            "RC", rc);
         return;
     }
 
@@ -60,7 +61,7 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
         if (rc || completionCode)
         {
             error(
-                "Failed to decode_platform_event_message_resp: rc = {RC}, cc = {CC}",
+                "Failed to decode_platform_event_message_resp with response code '{RC}' and completion code '{CC}'",
                 "RC", rc, "CC", static_cast<unsigned>(completionCode));
         }
     };
