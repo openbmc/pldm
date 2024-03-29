@@ -96,6 +96,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8be51e8c_6cd59db0",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-29T04:25:55Z",
+      "side": 1,
+      "message": "Is there any specific need to have this function? Can we save the data using only\npath, interface, property name, value format",
+      "range": {
+        "startLine": 72,
+        "startChar": 3,
+        "endLine": 72,
+        "endChar": 76
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6799e8e_18019fd9",
         "filename": "host-bmc/dbus/serialize.hpp",
         "patchSetId": 3
@@ -107,6 +130,29 @@
       "writtenOn": "2024-03-28T06:43:49Z",
       "side": 1,
       "message": "can we make this inline function?",
+      "range": {
+        "startLine": 114,
+        "startChar": 9,
+        "endLine": 114,
+        "endChar": 31
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2ea4726_ac7a84ec",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-29T04:25:55Z",
+      "side": 1,
+      "message": "Can we avoid this function and pass file path as a default parameter to getSerialize function, whose default value will be PERSISTENT_FILE",
       "range": {
         "startLine": 114,
         "startChar": 9,
@@ -159,6 +205,23 @@
         "endLine": 11,
         "endChar": 20
       },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef885ea5_daaafd17",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-29T04:25:55Z",
+      "side": 1,
+      "message": "Can we reuse the variable defined at \nhttps://github.com/openbmc/pldm/blob/master/common/utils.hpp#L179",
       "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -262,6 +325,29 @@
       "writtenOn": "2024-03-28T06:43:49Z",
       "side": 1,
       "message": "can we add deserialize the good path test case?",
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50428eb1_e2cc6d7d",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-03-29T04:25:55Z",
+      "side": 1,
+      "message": "Please change it to \nconf_data.set_quoted(\u0027PERSISTENT_FILE\u0027, join_paths(package_localstatedir, \u0027persist\u0027))",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 64
+      },
       "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
