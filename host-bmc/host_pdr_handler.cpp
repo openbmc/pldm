@@ -109,7 +109,7 @@ HostPDRHandler::HostPDRHandler(
             auto data = Json::parse(jsonFile, nullptr, false);
             if (data.is_discarded())
             {
-                error("Parsing Host FRU json file failed");
+                error("Parsing remote pldm terminus FRU json file failed");
             }
             else
             {
@@ -127,8 +127,9 @@ HostPDRHandler::HostPDRHandler(
         }
         catch (const std::exception& e)
         {
-            error("Parsing Host FRU json file failed, exception = {ERR_EXCEP}",
-                  "ERR_EXCEP", e.what());
+            error(
+                "Parsing remote pldm terminus FRU json file failed, error - {ERROR}",
+                "ERROR", e);
         }
     }
 
@@ -222,7 +223,8 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        error("Failed to encode_get_pdr_req, rc = {RC}", "RC", rc);
+        error("Failed to encode get pdr request, response code '{RC}'", "RC",
+              rc);
         return;
     }
 
@@ -232,7 +234,9 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
         std::move(std::bind_front(&HostPDRHandler::processHostPDRs, this)));
     if (rc)
     {
-        error("Failed to send the GetPDR request to Host");
+        error(
+            "Failed to send the GetPDR request to remote pldm terminus, response code '{RC}'",
+            "RC", rc);
     }
 }
 
@@ -242,7 +246,8 @@ int HostPDRHandler::handleStateSensorEvent(const StateSensorEntry& entry,
     auto rc = stateSensorHandler.eventAction(entry, state);
     if (rc != PLDM_SUCCESS)
     {
-        error("Failed to fetch and update D-bus property, rc = {RC}", "RC", rc);
+        error("Failed to fetch and update D-bus property, response code '{RC}'",
+              "RC", rc);
         return rc;
     }
     return PLDM_SUCCESS;
@@ -322,7 +327,7 @@ void HostPDRHandler::mergeEntityAssociations(
         pldm_find_entity_ref_in_tree(entityTree, entities[0], &node);
         if (node == nullptr)
         {
-            error("could not find referrence of the entity in the tree");
+            error("Could not find referrence of the entity in the tree");
         }
         else
         {
@@ -348,8 +353,8 @@ void HostPDRHandler::mergeEntityAssociations(
             if (rc)
             {
                 error(
-                    "Failed to add entity association PDR from node: {LIBPLDM_ERROR}",
-                    "LIBPLDM_ERROR", rc);
+                    "Failed to add entity association PDR from node, response code '{RC}'",
+                    "RC", rc);
             }
         }
     }
@@ -403,8 +408,9 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         &firstEntry, eventData, &actualSize, maxSize);
     if (rc != PLDM_SUCCESS)
     {
-        error("Failed to encode_pldm_pdr_repository_chg_event_data, rc = {RC}",
-              "RC", rc);
+        error(
+            "Failed to encode pldm pdr repository change event data, response code '{RC}'",
+            "RC", rc);
         return;
     }
     auto instanceId = instanceIdDb.next(mctp_eid);
@@ -419,8 +425,9 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        error("Failed to encode_platform_event_message_req, rc = {RC}", "RC",
-              rc);
+        error(
+            "Failed to encode platform event message request, response code '{RC}'",
+            "RC", rc);
         return;
     }
 
@@ -441,8 +448,8 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         if (rc || completionCode)
         {
             error(
-                "Failed to decode_platform_event_message_resp: {RC}, cc = {CC}",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "Failed to decode platform event message response, response code '{RC}' and completion code '{CC}'",
+                "RC", rc, "CC", completionCode);
         }
     };
 
@@ -451,7 +458,9 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         std::move(requestMsg), std::move(platformEventMessageResponseHandler));
     if (rc)
     {
-        error("Failed to send the PDR repository changed event request");
+        error(
+            "Failed to send the PDR repository changed event request, response code '{RC}'",
+            "RC", rc);
     }
 }
 
@@ -512,7 +521,9 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     memcpy(responsePDRMsg.data(), response, respMsgLen + sizeof(pldm_msg_hdr));
     if (rc != PLDM_SUCCESS)
     {
-        error("Failed to decode_get_pdr_resp, rc = {RC}", "RC", rc);
+        error(
+            "Failed to decode get pdr response for next record handle '{NEXT_RECORD_HANDLE}', response code '{RC}'",
+            "NEXT_RECORD_HANDLE", nextRecordHandle, "RC", rc);
         return;
     }
     else
@@ -524,8 +535,11 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                                  respCount, &transferCRC);
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            error("Failed to decode_get_pdr_resp: rc = {RC}, cc = {CC}", "RC",
-                  rc, "CC", static_cast<unsigned>(completionCode));
+            error(
+                "Failed to decode get pdr response for next record handle '{NEXT_RECORD_HANDLE}', next data transfer handle '{DATA_TRANSFER_HANDLE}' and transfer flag '{FLAG}', response code '{RC}' and completion code '{CC}'",
+                "NEXT_RECORD_HANDLE", nextRecordHandle, "DATA_TRANSFER_HANDLE",
+                nextDataTransferHandle, "FLAG", transferFlag, "RC", rc, "CC",
+                completionCode);
             return;
         }
         else
@@ -728,7 +742,7 @@ void HostPDRHandler::setHostFirmwareCondition()
                                      PLDM_BASE, request);
     if (rc != PLDM_SUCCESS)
     {
-        error("GetPLDMVersion encode failure. PLDM error code = {RC}", "RC",
+        error("GetPLDMVersion encode failure, response code {RC}", "RC",
               lg2::hex, rc);
         instanceIdDb.free(mctp_eid, instanceId);
         return;
@@ -743,7 +757,7 @@ void HostPDRHandler::setHostFirmwareCondition()
                 "Failed to receive response for getPLDMVersion command, Host seems to be off");
             return;
         }
-        info("Getting the response. PLDM RC = {RC}", "RC", lg2::hex,
+        info("Getting the response code '{RC}'", "RC", lg2::hex,
              static_cast<uint16_t>(response->payload[0]));
         this->responseReceived = true;
         getHostPDR();
@@ -804,8 +818,9 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                 {
                     instanceIdDb.free(mctp_eid, instanceId);
                     error(
-                        "Failed to encode_get_state_sensor_readings_req, rc = {RC}",
-                        "RC", rc);
+                        "Failed to encode get state sensor readings request for sensorID '{SENSOR_ID}' and  instanceID '{INSTANCE}', response code '{RC}'",
+                        "SENSOR_ID", sensorId, "INSTANCE", instanceId, "RC",
+                        rc);
                     pldm::utils::reportError(
                         "xyz.openbmc_project.bmc.pldm.InternalFailure");
                     return;
@@ -817,7 +832,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                     if (response == nullptr || !respMsgLen)
                     {
                         error(
-                            "Failed to receive response for getStateSensorReading command");
+                            "Failed to receive response for get state sensor reading command for sensorID '{SENSOR_ID}' and  instanceID '{INSTANCE}'",
+                            "SENSOR_ID", sensorId, "INSTANCE", instanceId);
                         return;
                     }
                     std::array<get_sensor_state_field, 8> stateField{};
@@ -831,9 +847,9 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                     if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
                     {
                         error(
-                            "Failed to decode_get_state_sensor_readings_resp, rc = {RC} cc = {CC}",
-                            "RC", rc, "CC",
-                            static_cast<unsigned>(completionCode));
+                            "Failed to decode get state sensor readings response for sensorID '{SENSOR_ID}' and  instanceID '{INSTANCE}', response code'{RC}' and completion code '{CC}'",
+                            "SENSOR_ID", sensorId, "INSTANCE", instanceId, "RC",
+                            rc, "CC", completionCode);
                         pldm::utils::reportError(
                             "xyz.openbmc_project.bmc.pldm.InternalFailure");
                     }
@@ -882,7 +898,9 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 
                         if (sensorOffset > compositeSensorStates.size())
                         {
-                            error("Error Invalid data, Invalid sensor offset");
+                            error(
+                                "Error Invalid data, Invalid sensor offset '{SENSOR_OFFSET}'",
+                                "SENSOR_OFFSET", sensorOffset);
                             return;
                         }
 
@@ -891,7 +909,9 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                         if (possibleStates.find(eventState) ==
                             possibleStates.end())
                         {
-                            error("Error invalid_data, Invalid event state");
+                            error(
+                                "Error invalid_data, Invalid event state '{STATE}'",
+                                "STATE", eventState);
                             return;
                         }
                         const auto& [containerId, entityType,
@@ -913,7 +933,9 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                 if (rc != PLDM_SUCCESS)
                 {
                     error(
-                        "Failed to send request to get State sensor reading on Host");
+                        "Failed to send request to get state sensor reading on remote pldm terminus for sensorID '{SENSOR_ID}' and  instanceID '{INSTANCE}', response code '{RC}'",
+                        "SENSOR_ID", sensorId, "INSTANCE", instanceId, "RC",
+                        rc);
                 }
             }
         }
@@ -934,8 +956,8 @@ void HostPDRHandler::getFRURecordTableMetadataByRemote(
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        lg2::error(
-            "Failed to encode_get_fru_record_table_metadata_req, rc = {RC}",
+        error(
+            "Failed to encode get fru record table metadata request, response code '{RC}'",
             "RC", lg2::hex, rc);
         return;
     }
@@ -945,8 +967,8 @@ void HostPDRHandler::getFRURecordTableMetadataByRemote(
                                  size_t respMsgLen) {
         if (response == nullptr || !respMsgLen)
         {
-            lg2::error(
-                "Failed to receive response for the Get FRU Record Table Metadata");
+            error(
+                "Failed to receive response for the get fru record table metadata");
             return;
         }
 
@@ -964,8 +986,8 @@ void HostPDRHandler::getFRURecordTableMetadataByRemote(
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            lg2::error(
-                "Faile to decode get fru record table metadata resp, Message Error: {RC}, cc: {CC}",
+            error(
+                "Failed to decode get fru record table metadata response, response code '{RC}' and completion code '{CC}'",
                 "RC", lg2::hex, rc, "CC", cc);
             return;
         }
@@ -980,7 +1002,9 @@ void HostPDRHandler::getFRURecordTableMetadataByRemote(
         std::move(getFruRecordTableMetadataResponseHandler));
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error("Failed to send the the Set State Effecter States request");
+        error(
+            "Failed to send the the set state effecter states request, response code '{RC}'",
+            "RC", rc);
     }
 
     return;
@@ -993,7 +1017,7 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
 
     if (!totalTableRecords)
     {
-        lg2::error("Failed to get fru record table");
+        error("Failed to get fru record table");
         return;
     }
 
@@ -1009,8 +1033,9 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb.free(mctp_eid, instanceId);
-        lg2::error("Failed to encode_get_fru_record_table_req, rc = {RC}", "RC",
-                   lg2::hex, rc);
+        error(
+            "Failed to encode get fru record table request, response code '{RC}'",
+            "RC", lg2::hex, rc);
         return;
     }
 
@@ -1019,8 +1044,7 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
             mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
         if (response == nullptr || !respMsgLen)
         {
-            lg2::error(
-                "Failed to receive response for the Get FRU Record Table");
+            error("Failed to receive response for the get fru record table");
             return;
         }
 
@@ -1038,8 +1062,8 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            lg2::error(
-                "Failed to decode get fru record table resp, Message Error: {RC}, cc: {CC}",
+            error(
+                "Failed to decode get fru record table resp, response code '{RC}' and completion code '{CC}'",
                 "RC", lg2::hex, rc, "CC", cc);
             return;
         }
@@ -1051,7 +1075,7 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
         {
             fruRecordData.clear();
 
-            lg2::error("failed to parse fru recrod data format.");
+            error("Failed to parse fru recrod data format.");
             return;
         }
 
@@ -1063,7 +1087,7 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
         std::move(requestMsg), std::move(getFruRecordTableResponseHandler));
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error("Failed to send the the Set State Effecter States request");
+        error("Failed to send the the set state effecter states request");
     }
 }
 
