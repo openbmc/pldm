@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0a16f8b_0875d7c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001049
+      },
+      "writtenOn": "2024-03-30T15:48:12Z",
+      "side": 1,
+      "message": "Nit comments",
+      "revId": "1b317dc037908e4ca5384630271126be48ebbb83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90ceb260_830f5468",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1001,
+      "author": {
+        "id": 1001049
+      },
+      "writtenOn": "2024-03-30T15:48:12Z",
+      "side": 1,
+      "message": "Can reason be added in commit msg?",
+      "range": {
+        "startLine": 1001,
+        "startChar": 37,
+        "endLine": 1001,
+        "endChar": 47
+      },
+      "revId": "1b317dc037908e4ca5384630271126be48ebbb83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11c5336e_5df26105",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1001,
+      "author": {
+        "id": 1001049
+      },
+      "writtenOn": "2024-03-30T15:48:12Z",
+      "side": 1,
+      "message": "Why this is changed?",
+      "range": {
+        "startLine": 1001,
+        "startChar": 37,
+        "endLine": 1001,
+        "endChar": 47
+      },
+      "revId": "1b317dc037908e4ca5384630271126be48ebbb83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
