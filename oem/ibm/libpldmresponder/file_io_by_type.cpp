@@ -7,6 +7,7 @@
 #include "file_io_type_pel.hpp"
 #include "file_io_type_progress_src.hpp"
 #include "file_io_type_vpd.hpp"
+#include "file_io_type_pcie.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/base.h>
@@ -171,6 +172,11 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         case PLDM_FILE_TYPE_PSPD_VPD_PDD_KEYWORD:
         {
             return std::make_unique<keywordHandler>(fileHandle, fileType);
+        }
+        case PLDM_FILE_TYPE_PCIE_TOPOLOGY:
+        case PLDM_FILE_TYPE_CABLE_INFO:
+        {
+            return std::make_unique<PCIeInfoHandler>(fileHandle, fileType);
         }
         default:
         {
