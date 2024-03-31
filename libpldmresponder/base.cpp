@@ -8,8 +8,6 @@
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
 
-#include <phosphor-logging/lg2.hpp>
-
 #include <array>
 #include <cstring>
 #include <map>
@@ -20,8 +18,6 @@
 #include <libpldm/oem/ibm/file_io.h>
 #include <libpldm/oem/ibm/host.h>
 #endif
-
-PHOSPHOR_LOG2_USING;
 
 namespace pldm
 {
