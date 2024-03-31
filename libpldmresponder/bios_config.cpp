@@ -488,8 +488,8 @@ void BIOSConfig::updateBaseBIOSTableProperty()
     }
     catch (const std::exception& e)
     {
-        error("failed to update BaseBIOSTable property, ERROR={ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
+        error("Failed to update BaseBIOSTable property, error - {ERROR}",
+              "ERROR", e);
     }
 }
 
@@ -537,8 +537,8 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
     // bios-settings-manager in sync
     catch (const std::exception& e)
     {
-        error("Failed to read BaseBIOSTable property, ERROR={ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
+        error("Failed to read BaseBIOSTable property, error - {ERROR}", "ERROR",
+              e);
     }
 
     Table attrTable, attrValueTable;
@@ -563,8 +563,9 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
         }
         catch (const std::exception& e)
         {
-            error("Error constructing table entry for '{ATTR}': {ERROR}",
-                  "ATTR", attr->name, "ERROR", e);
+            error(
+                "Failed to construct table entry for attribute attribute '{ATTRIBUTE}', error - {ERROR}",
+                "ATTRIBUTE", attr->name, "ERROR", e);
         }
     }
 
@@ -647,15 +648,15 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
                 catch (const std::exception& e)
                 {
                     error(
-                        "Failed to parse JSON config file(entry handler) : {JSON_PATH}, {ERR_EXCEP}",
-                        "JSON_PATH", filePath.c_str(), "ERR_EXCEP", e.what());
+                        "Failed to parse JSON config file(entry handler) at path '{PATH}', error - {ERROR}",
+                        "PATH", filePath.c_str(), "ERROR", e);
                 }
             }
         }
         catch (const std::exception& e)
         {
-            error("Failed to parse JSON config at '{PATH}': {ERROR}", "PATH",
-                  filePath.c_str(), "ERROR", e);
+            error("Failed to parse JSON config file '{PATH}', error - {ERROR}",
+                  "PATH", filePath.c_str(), "ERROR", e);
         }
     }
 }
@@ -685,8 +686,8 @@ std::string
     if (rc != PLDM_SUCCESS)
     {
         error(
-            "Failed to decode BIOS table possible values for attribute entry: {LIPBLDM_ERROR}",
-            "LIBPLDM_ERROR", rc);
+            "Failed to decode BIOS table possible values for attribute entry, response code '{RC}'",
+            "RC", rc);
         throw std::runtime_error(
             "Failed to decode BIOS table possible values for attribute entry");
     }
@@ -737,8 +738,8 @@ void BIOSConfig::traceBIOSUpdate(
                                                  stringTable);
                 auto chkBMC = isBMC ? "true" : "false";
                 info(
-                    "BIOS:{ATTR_NAME}, updated to value: {NEW_VAL}, by BMC: {CHK_BMC} ",
-                    "ATTR_NAME", attrName, "NEW_VAL", nwVal, "CHK_BMC", chkBMC);
+                    "BIOS attribute '{ATTRIBUTE}' updated to value {VALUE} by BMC: {CHECK_BMC} ",
+                    "ATTRIBUTE", attrName, "VALUE", nwVal, "CHECK_BMC", chkBMC);
             }
             break;
         }
@@ -749,8 +750,8 @@ void BIOSConfig::traceBIOSUpdate(
                 table::attribute_value::decodeIntegerEntry(attrValueEntry);
             auto chkBMC = isBMC ? "true" : "false";
             info(
-                "BIOS:  {ATTR_NAME}, updated to value: {UPDATED_VAL}, by BMC: {CHK_BMC}",
-                "ATTR_NAME", attrName, "UPDATED_VAL", value, "CHK_BMC", chkBMC);
+                "BIOS attribute '{ATTRIBUTE}' updated to value '{VALUE}' by BMC: {CHECK_BMC}",
+                "ATTRIBUTE", attrName, "VALUE", value, "CHECK_BMC", chkBMC);
             break;
         }
         case PLDM_BIOS_STRING:
@@ -760,8 +761,8 @@ void BIOSConfig::traceBIOSUpdate(
                 table::attribute_value::decodeStringEntry(attrValueEntry);
             auto chkBMC = isBMC ? "true" : "false";
             info(
-                "BIOS:  {ATTR_NAME}, updated to value: {UPDATED_VAL}, by BMC: {CHK_BMC}",
-                "ATTR_NAME", attrName, "UPDATED_VAL", value, "CHK_BMC", chkBMC);
+                "BIOS attribute '{ATTRIBUTE}' updated to value '{VALUE}' by BMC: {CHECK_BMC}",
+                "ATTRIBUTE", attrName, "VALUE", value, "CHECK_BMC", chkBMC);
             break;
         }
         default:
@@ -792,8 +793,7 @@ int BIOSConfig::checkAttrValueToUpdate(
             }
             if (value[0] >= pvHdls.size())
             {
-                error("Enum: Illgeal index, Index = {ATTR_INDEX}", "ATTR_INDEX",
-                      (int)value[0]);
+                error("Enum: Illgeal index '{INDEX}'", "INDEX", (int)value[0]);
                 return PLDM_ERROR_INVALID_DATA;
             }
             return PLDM_SUCCESS;
@@ -808,8 +808,9 @@ int BIOSConfig::checkAttrValueToUpdate(
 
             if (value < lower || value > upper)
             {
-                error("Integer: out of bound, value = {ATTR_VALUE}",
-                      "ATTR_VALUE", value);
+                error(
+                    "Integer: out of bound, attribute value '{ATTRIBUTE_VALUE}'",
+                    "ATTRIBUTE_VALUE", value);
                 return PLDM_ERROR_INVALID_DATA;
             }
             return PLDM_SUCCESS;
@@ -824,15 +825,14 @@ int BIOSConfig::checkAttrValueToUpdate(
                 value.size() > stringConf.maxLength)
             {
                 error(
-                    "String: Length error, string = {ATTR_VALUE} length {LEN}",
-                    "ATTR_VALUE", value, "LEN", value.size());
+                    "String: Length error, attribute value '{ATTRIBUTE_VALUE}' and length '{LENGTH}'",
+                    "ATTRIBUTE_VALUE", value, "LENGTH", value.size());
                 return PLDM_ERROR_INVALID_LENGTH;
             }
             return PLDM_SUCCESS;
         }
         default:
-            error("ReadOnly or Unspported type, type = {ATTR_TYPE}",
-                  "ATTR_TYPE", attrType);
+            error("ReadOnly or Unsupported type '{TYPE}'", "TYPE", attrType);
             return PLDM_ERROR;
     };
 }
@@ -896,7 +896,7 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool isBMC,
     }
     catch (const std::exception& e)
     {
-        error("Set attribute value error: {ERR_EXCEP}", "ERR_EXCEP", e.what());
+        error("Set attribute value error - {ERROR}", "ERROR", e);
         return PLDM_ERROR;
     }
 
@@ -917,7 +917,7 @@ void BIOSConfig::removeTables()
     }
     catch (const std::exception& e)
     {
-        error("Remove the tables error: {ERR_EXCEP}", "ERR_EXCEP", e.what());
+        error("Remove the tables error - {ERROR}", "ERROR", e);
     }
 }
 
@@ -949,8 +949,9 @@ void BIOSConfig::processBiosAttrChangeNotification(
     }
     catch (const std::invalid_argument& e)
     {
-        error("Missing handle for '{ATTR}': {ERROR}", "ATTR", attrName, "ERROR",
-              e);
+        error(
+            "Missing handle for attribute attribute '{ATTRIBUTE}', error - '{ERROR}'",
+            "ATTRIBUTE", attrName, "ERROR", e);
         return;
     }
 
@@ -965,8 +966,8 @@ void BIOSConfig::processBiosAttrChangeNotification(
     if (tableEntry == nullptr)
     {
         error(
-            "Attribute not found in attribute table, name= {ATTR_NAME} name handle={ATTR_HANDLE}",
-            "ATTR_NAME", attrName.c_str(), "ATTR_HANDLE", attrNameHdl);
+            "Attribute {ATTRIBUTE} not found in attribute table and attribute handle '{ATTR_HANDLE}'",
+            "ATTRIBUTE", attrName, "ATTR_HANDLE", attrNameHdl);
         return;
     }
 
@@ -987,8 +988,8 @@ void BIOSConfig::processBiosAttrChangeNotification(
     if (rc != PLDM_SUCCESS)
     {
         error(
-            "Could not update the attribute value table for attribute handle={ATTR_HANDLE} and type={ATTR_TYPE}",
-            "ATTR_HANDLE", attrHdl, "ATTR_TYPE", (uint32_t)attrType);
+            "Could not update the attribute value table for attribute handle '{ATTR_HANDLE}' and  attribute type '{TYPE}'",
+            "ATTR_HANDLE", attrHdl, "TYPE", (uint32_t)attrType);
         return;
     }
     auto destTable = table::attribute_value::updateTable(
@@ -1001,8 +1002,9 @@ void BIOSConfig::processBiosAttrChangeNotification(
     rc = setAttrValue(newValue.data(), newValue.size(), true, false);
     if (rc != PLDM_SUCCESS)
     {
-        error("could not setAttrValue on base bios table and dbus, rc = {RC}",
-              "RC", rc);
+        error(
+            "Could not setAttrValue on base bios table and dbus, response code '{RC}'",
+            "RC", rc);
     }
 }
 
@@ -1046,8 +1048,7 @@ void BIOSConfig::constructPendingAttribute(
 
         if (iter == biosAttributes.end())
         {
-            error("Wrong attribute name, attributeName = {ATTR_NAME}",
-                  "ATTR_NAME", attributeName);
+            error("Wrong attribute name {NAME}", "NAME", attributeName);
             continue;
         }
 
@@ -1063,8 +1064,8 @@ void BIOSConfig::constructPendingAttribute(
             type != BIOSConfigManager::AttributeType::String &&
             type != BIOSConfigManager::AttributeType::Integer)
         {
-            error("Attribute type not supported, attributeType = {ATTR_TYPE}",
-                  "ATTR_TYPE", attributeType);
+            error("Attribute type '{TYPE}' not supported", "TYPE",
+                  attributeType);
             continue;
         }
 

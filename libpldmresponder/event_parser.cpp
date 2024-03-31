@@ -27,8 +27,8 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
     fs::path dir(dirPath);
     if (!fs::exists(dir) || fs::is_empty(dir))
     {
-        error("Event config directory does not exist or empty, DIR={DIR_PATH}",
-              "DIR_PATH", dirPath.c_str());
+        error("Event config directory at '{PATH}' does not exist or empty",
+              "PATH", dirPath.c_str());
         return;
     }
 
@@ -39,9 +39,8 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
         auto data = Json::parse(jsonFile, nullptr, false);
         if (data.is_discarded())
         {
-            error(
-                "Parsing Event state sensor JSON file failed, FILE={FILE_PATH}",
-                "FILE_PATH", file.path().c_str());
+            error("Parsing Event state sensor JSON file at '{PATH}' failed",
+                  "PATH", file.path().c_str());
             continue;
         }
 
@@ -72,10 +71,10 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
                 !supportedDbusPropertyTypes.contains(dbusInfo.propertyType))
             {
                 error(
-                    "Invalid dbus config, OBJPATH= {DBUS_OBJ_PATH} INTERFACE={DBUS_INTF} PROPERTY_NAME={DBUS_PROP} PROPERTY_TYPE={DBUS_PROP_TYPE}",
-                    "DBUS_OBJ_PATH", dbusInfo.objectPath.c_str(), "DBUS_INTF",
-                    dbusInfo.interface, "DBUS_PROP", dbusInfo.propertyName,
-                    "DBUS_PROP_TYPE", dbusInfo.propertyType);
+                    "Invalid dbus config at '{PATH}', interface '{DBUS_INTERFACE}', property name '{PROPERTY_NAME}' and property type '{PROPERTY_TYPE}'",
+                    "PATH", dbusInfo.objectPath.c_str(), "DBUS_INTERFACE",
+                    dbusInfo.interface, "PROPERTY_NAME", dbusInfo.propertyName,
+                    "PROPERTY_TYPE", dbusInfo.propertyType);
                 continue;
             }
 
@@ -85,9 +84,9 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
                 (eventStates.size() != propertyValues.size()))
             {
                 error(
-                    "Invalid event state JSON config, EVENT_STATE_SIZE={EVENT_STATE_SIZE} PROPERTY_VALUE_SIZE={PROP_VAL_SIZE}",
-                    "EVENT_STATE_SIZE", eventStates.size(), "PROP_VAL_SIZE",
-                    propertyValues.size());
+                    "Invalid event state JSON config size '{EVENT_STATE_SIZE}' and property value size '{PROPERTY_VALUE_SIZE}'",
+                    "EVENT_STATE_SIZE", eventStates.size(),
+                    "PROPERTY_VALUE_SIZE", propertyValues.size());
                 continue;
             }
 
@@ -129,8 +128,8 @@ int StateSensorHandler::eventAction(const StateSensorEntry& entry,
         }
         catch (const std::out_of_range& e)
         {
-            error("Invalid event state '{EVENT_STATE}': {ERROR}", "EVENT_STATE",
-                  state, "ERROR", e);
+            error("Invalid event state '{EVENT_STATE}', error - {ERROR}",
+                  "EVENT_STATE", state, "ERROR", e);
             return PLDM_ERROR_INVALID_DATA;
         }
 
@@ -141,7 +140,7 @@ int StateSensorHandler::eventAction(const StateSensorEntry& entry,
         catch (const std::exception& e)
         {
             error(
-                "Error setting property value '{PROPERTY}' on interface '{INTERFACE}' at '{PATH}': {ERROR}",
+                "Failed to  set property '{PROPERTY}' on interface '{INTERFACE}' at path '{PATH}', error - {ERROR}",
                 "PROPERTY", dbusMapping.propertyName, "INTERFACE",
                 dbusMapping.interface, "PATH", dbusMapping.objectPath, "ERROR",
                 e);

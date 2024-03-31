@@ -42,7 +42,7 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
             if (!statesSize)
             {
                 error(
-                    "Malformed PDR JSON return pdrEntry;- no state set info, TYPE={STATE_SENSOR_PDR}",
+                    "Malformed PDR JSON return pdrEntry; no state set info for state sensor pdr '{STATE_SENSOR_PDR}'",
                     "STATE_SENSOR_PDR",
                     static_cast<int>(PLDM_STATE_SENSOR_PDR));
                 throw InternalFailure();
@@ -171,7 +171,7 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
             catch (const std::exception& e)
             {
                 error(
-                    "Failed to create sensor PDR, D-Bus object '{PATH}' returned {ERROR}",
+                    "Failed to create sensor PDR, D-Bus object '{PATH}' returned error - {ERROR}",
                     "PATH", objectPath, "ERROR", e);
                 continue;
             }
