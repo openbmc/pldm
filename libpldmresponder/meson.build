@@ -52,6 +52,7 @@ if get_option('oem-ibm').allowed()
     '../oem/ibm/requester/dbus_to_file_handler.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_progress_src.cpp',
     '../oem/ibm/libpldmresponder/file_io_type_vpd.cpp',
+    '../oem/ibm/libpldmresponder/file_io_type_pcie.cpp',
   ]
 endif
 
