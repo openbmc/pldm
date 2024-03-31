@@ -1,5 +1,9 @@
 #include "platform_config.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 namespace responder
@@ -109,7 +113,7 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
             catch (const std::exception& e)
             {
                 error(
-                    "Error getting Names property at '{PATH}' on '{INTERFACE}': {ERROR}",
+                    "Failed to get Names property at '{PATH}' on interface '{INTERFACE}', error - {ERROR}",
                     "PATH", objectPath, "INTERFACE", compatibleInterface,
                     "ERROR", e);
             }
@@ -117,8 +121,9 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
     }
     catch (const std::exception& e)
     {
-        error("Failed to make a d-bus call to get platform name {ERROR}",
-              "ERROR", e);
+        error(
+            "Failed to make a d-bus call to get platform name, error - {ERROR}",
+            "ERROR", e);
     }
     return std::nullopt;
 }
