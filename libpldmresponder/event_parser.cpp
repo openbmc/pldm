@@ -69,8 +69,7 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
             dbusInfo.propertyType = dbus.value("property_type", "");
             if (dbusInfo.objectPath.empty() || dbusInfo.interface.empty() ||
                 dbusInfo.propertyName.empty() ||
-                (supportedDbusPropertyTypes.find(dbusInfo.propertyType) ==
-                 supportedDbusPropertyTypes.end()))
+                !supportedDbusPropertyTypes.contains(dbusInfo.propertyType))
             {
                 error(
                     "Invalid dbus config, OBJPATH= {DBUS_OBJ_PATH} INTERFACE={DBUS_INTF} PROPERTY_NAME={DBUS_PROP} PROPERTY_TYPE={DBUS_PROP_TYPE}",
