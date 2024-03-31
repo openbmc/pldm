@@ -26,8 +26,7 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
                                  uint64_t address,
                                  oem_platform::Handler* /*oemPlatformHandler*/)
 {
-    auto it = certMap.find(certType);
-    if (it == certMap.end())
+    if (!certMap.contains(certType))
     {
         error(
             "CertHandler::writeFromMemory:file for type {CERT_TYPE} doesn't exist",
@@ -35,8 +34,8 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
         return PLDM_ERROR;
     }
 
-    auto fd = std::get<0>(it->second);
-    auto& remSize = std::get<1>(it->second);
+    auto fd = std::get<0>(certMap.at(certType));
+    auto& remSize = std::get<1>(certMap.at(certType));
     auto rc = transferFileData(fd, false, offset, length, address);
     if (rc == PLDM_SUCCESS)
     {
@@ -44,7 +43,7 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
         if (!remSize)
         {
             close(fd);
-            certMap.erase(it);
+            certMap.erase(certType);
         }
     }
     return rc;
@@ -93,15 +92,14 @@ int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
 int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
                        oem_platform::Handler* /*oemPlatformHandler*/)
 {
-    auto it = certMap.find(certType);
-    if (it == certMap.end())
+    if (!certMap.contains(certType))
     {
         error("CertHandler::write:file for type {CERT_TYPE} doesn't exist",
               "CERT_TYPE", certType);
         return PLDM_ERROR;
     }
 
-    auto fd = std::get<0>(it->second);
+    auto fd = std::get<0>(certMap.at(certType));
     int rc = lseek(fd, offset, SEEK_SET);
     if (rc == -1)
     {
@@ -118,12 +116,12 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
         return PLDM_ERROR;
     }
     length = rc;
-    auto& remSize = std::get<1>(it->second);
+    auto& remSize = std::get<1>(certMap.at(certType));
     remSize -= length;
     if (!remSize)
     {
         close(fd);
-        certMap.erase(it);
+        certMap.erase(certType);
     }
 
     if (certType == PLDM_FILE_TYPE_SIGNED_CERT)

@@ -140,12 +140,11 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
         auto propValue = dbusHandler->getDbusPropertyVariant(
             dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
             dBusMap->interface.c_str());
-        auto iter = valMap.find(propValue);
-        if (iter == valMap.end())
+        if (!valMap.contains(propValue))
         {
             return defaultValueIndex;
         }
-        auto currentValue = iter->second;
+        auto currentValue = valMap[propValue];
         return getValueIndex(currentValue, possibleValues);
     }
     catch (const std::exception&)
@@ -250,14 +249,13 @@ int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
                                      uint8_t attrType,
                                      const PropertyValue& newPropVal)
 {
-    auto iter = valMap.find(newPropVal);
-    if (iter == valMap.end())
+    if (!valMap.contains(newPropVal))
     {
         error("Could not find index for new BIOS enum, value={PROP_VAL}",
               "PROP_VAL", std::get<std::string>(newPropVal));
         return PLDM_ERROR;
     }
-    auto currentValue = iter->second;
+    auto currentValue = valMap[newPropVal];
     std::vector<uint8_t> handleIndices{
         getValueIndex(currentValue, possibleValues)};
     table::attribute_value::constructEnumEntry(newValue, attrHdl, attrType,

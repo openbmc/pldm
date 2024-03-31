@@ -74,10 +74,9 @@ Entry::Level getEntryLevelFromPEL(const std::string& pelFileName)
             // Get the type
             sev = sev & 0xF0;
 
-            auto entry = severityMap.find(sev);
-            if (entry != severityMap.end())
+            if (severityMap.contains(sev))
             {
-                return entry->second;
+                return severityMap.at(sev);
             }
         }
         else

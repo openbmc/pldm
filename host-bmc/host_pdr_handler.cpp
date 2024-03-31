@@ -140,10 +140,9 @@ HostPDRHandler::HostPDRHandler(
         DbusChangedProps props{};
         std::string intf;
         msg.read(intf, props);
-        const auto itr = props.find("CurrentHostState");
-        if (itr != props.end())
+        if (props.contains("CurrentHostState"))
         {
-            PropertyValue value = itr->second;
+            PropertyValue value = props["CurrentHostState"];
             auto propVal = std::get<std::string>(value);
             if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
             {

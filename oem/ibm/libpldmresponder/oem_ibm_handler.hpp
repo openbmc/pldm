@@ -56,10 +56,9 @@ class Handler : public oem_platform::Handler
             pldm::utils::DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
-            const auto itr = props.find("CurrentHostState");
-            if (itr != props.end())
+            if (props.contains("CurrentHostState"))
             {
-                pldm::utils::PropertyValue value = itr->second;
+                pldm::utils::PropertyValue value = props["CurrentHostState"];
                 auto propVal = std::get<std::string>(value);
                 if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
                 {

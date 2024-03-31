@@ -227,10 +227,9 @@ class BIOSConfig
                     DbusIfacesAdded interfaces;
 
                     msg.read(path, interfaces);
-                    auto ifaceIt = interfaces.find(interface);
-                    if (ifaceIt != interfaces.end())
+                    if (interfaces.contains(interface))
                     {
-                        processBiosAttrChangeNotification(ifaceIt->second,
+                        processBiosAttrChangeNotification(interfaces[interface],
                                                           biosAttrIndex);
                     }
                 }));

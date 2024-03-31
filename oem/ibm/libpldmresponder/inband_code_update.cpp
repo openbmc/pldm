@@ -247,10 +247,10 @@ void CodeUpdate::setVersions()
                                 DbusChangedProps props;
                                 std::string iface;
                                 msg.read(iface, props);
-                                const auto itr = props.find("Activation");
-                                if (itr != props.end())
+                                if (props.contains("Activation"))
                                 {
-                                    PropertyValue value = itr->second;
+                                    PropertyValue value =
+                                        props.at("Activation");
                                     auto propVal = std::get<std::string>(value);
                                     if (propVal ==
                                         "xyz.openbmc_project.Software."
@@ -321,12 +321,11 @@ void CodeUpdate::processPriorityChangeNotification(
     const DbusChangedProps& chProperties)
 {
     static constexpr auto propName = "Priority";
-    const auto it = chProperties.find(propName);
-    if (it == chProperties.end())
+    if (!chProperties.contains(propName))
     {
         return;
     }
-    uint8_t newVal = std::get<uint8_t>(it->second);
+    uint8_t newVal = std::get<uint8_t>(chProperties.at(propName));
     nextBootSide = (newVal == 0) ? currBootSide
                                  : ((currBootSide == Tside) ? Pside : Tside);
 }

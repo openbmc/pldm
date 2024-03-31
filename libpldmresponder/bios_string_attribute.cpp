@@ -22,15 +22,14 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
     BIOSAttribute(entry, dbusHandler)
 {
     std::string strTypeTmp = entry.at("string_type");
-    auto iter = strTypeMap.find(strTypeTmp);
-    if (iter == strTypeMap.end())
+    if (!strTypeMap.contains(strTypeTmp))
     {
         error(
             "Wrong string type, STRING_TYPE={STR_TYPE} ATTRIBUTE_NAME={ATTR_NAME}",
             "STR_TYP", strTypeTmp, "ATTR_NAME", name);
         throw std::invalid_argument("Wrong string type");
     }
-    stringInfo.stringType = static_cast<uint8_t>(iter->second);
+    stringInfo.stringType = static_cast<uint8_t>(strTypeMap.at(strTypeTmp));
 
     stringInfo.minLength = entry.at("minimum_string_length");
     stringInfo.maxLength = entry.at("maximum_string_length");

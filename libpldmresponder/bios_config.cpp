@@ -547,8 +547,7 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
     {
         try
         {
-            auto iter = biosTable.find(attr->name);
-            if (iter == biosTable.end())
+            if (!biosTable.contains(attr->name))
             {
                 attr->constructEntry(biosStringTable, attrTable, attrValueTable,
                                      std::nullopt);
@@ -558,7 +557,7 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
                 attr->constructEntry(
                     biosStringTable, attrTable, attrValueTable,
                     std::get<static_cast<uint8_t>(Index::currentValue)>(
-                        iter->second));
+                        biosTable[attr->name]));
             }
         }
         catch (const std::exception& e)
@@ -928,13 +927,12 @@ void BIOSConfig::processBiosAttrChangeNotification(
     const auto& propertyName = dBusMap->propertyName;
     const auto& attrName = biosAttributes[biosAttrIndex]->name;
 
-    const auto it = chProperties.find(propertyName);
-    if (it == chProperties.end())
+    if (!chProperties.contains(propertyName))
     {
         return;
     }
 
-    PropertyValue newPropVal = it->second;
+    PropertyValue newPropVal = chProperties.at(propertyName);
     auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
     if (!stringTable.has_value())
     {
@@ -1118,14 +1116,13 @@ void BIOSConfig::listenPendingAttributes()
         std::string intf;
         msg.read(intf, props);
 
-        auto valPropMap = props.find(propertyName);
-        if (valPropMap == props.end())
+        if (!props.contains(propertyName))
         {
             return;
         }
 
         PendingAttributes pendingAttributes =
-            std::get<PendingAttributes>(valPropMap->second);
+            std::get<PendingAttributes>(props[propertyName]);
         this->constructPendingAttribute(pendingAttributes);
     });
 

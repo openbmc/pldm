@@ -133,9 +133,7 @@ void HostEffecterParser::processHostEffecterChangeNotification(
                                    .dbusInfo[dbusInfoIndex]
                                    .dbusMap.propertyName;
 
-    const auto& it = chProperties.find(propertyName);
-
-    if (it == chProperties.end())
+    if (!chProperties.contains(propertyName))
     {
         return;
     }
@@ -188,7 +186,7 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     try
     {
         newState = findNewStateValue(effecterInfoIndex, dbusInfoIndex,
-                                     it->second);
+                                     chProperties.at(propertyName));
     }
     catch (const std::out_of_range& e)
     {

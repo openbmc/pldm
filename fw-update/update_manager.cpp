@@ -144,12 +144,12 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     {
         const auto& fwDeviceIDRecord =
             fwDeviceIDRecords[deviceUpdaterInfo.second];
-        auto search = componentInfoMap.find(deviceUpdaterInfo.first);
-        deviceUpdaterMap.emplace(
-            deviceUpdaterInfo.first,
-            std::make_unique<DeviceUpdater>(
-                deviceUpdaterInfo.first, package, fwDeviceIDRecord,
-                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+        auto search = componentInfoMap.at(deviceUpdaterInfo.first);
+        deviceUpdaterMap.emplace(deviceUpdaterInfo.first,
+                                 std::make_unique<DeviceUpdater>(
+                                     deviceUpdaterInfo.first, package,
+                                     fwDeviceIDRecord, compImageInfos, search,
+                                     MAXIMUM_TRANSFER_SIZE, this));
     }
 
     fwPackageFilePath = packageFilePath;

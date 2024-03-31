@@ -447,10 +447,9 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
         DbusChangedProps props{};
         std::string intf;
         msg.read(intf, props);
-        const auto itr = props.find("CurrentPowerState");
-        if (itr != props.end())
+        if (props.contains("CurrentPowerState"))
         {
-            PropertyValue value = itr->second;
+            PropertyValue value = props.at("CurrentPowerState");
             auto propVal = std::get<std::string>(value);
             if (propVal == "xyz.openbmc_project.State.Chassis.PowerState.Off")
             {
