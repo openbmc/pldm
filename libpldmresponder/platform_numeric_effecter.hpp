@@ -223,7 +223,7 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
     }
     else
     {
-        error("Wrong field effecterDataSize...");
+        error("Unknown Effecter Size {SIZE}", "SIZE", effecterDataSize);
         return {PLDM_ERROR, {}};
     }
 }
@@ -295,7 +295,8 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
 
     if (effecterValueLength != effecterValueArrayLength)
     {
-        error("effecter data size is incorrect.");
+        error("Effecter data size {SIZE} is incorrect.", "SIZE",
+              effecterValueLength);
         return PLDM_ERROR_INVALID_DATA;
     }
 
@@ -321,17 +322,17 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
         catch (const std::exception& e)
         {
             error(
-                "Error setting property, ERROR={ERR_EXCEP} PROPERTY={DBUS_PROP} INTERFACE={DBUS_INTF} PATH={DBUS_OBJ_PATH}",
-                "ERR_EXCEP", e.what(), "DBUS_PROP", dbusMapping.propertyName,
-                "DBUS_INTF", dbusMapping.interface, "DBUS_OBJ_PATH",
-                dbusMapping.objectPath.c_str());
+                "Failed to set property '{PROPERTY}', interface '{INTERFACE}' and path '{PATH}', error - {ERROR}",
+                "PROPERTY", dbusMapping.propertyName, "INTERFACE",
+                dbusMapping.interface, "PATH", dbusMapping.objectPath.c_str(),
+                "ERROR", e);
             return PLDM_ERROR;
         }
     }
     catch (const std::out_of_range& e)
     {
-        error("Unknown effecter ID : {EFFECTER_ID} {ERR_EXCEP}", "EFFECTER_ID",
-              effecterId, "ERR_EXCEP", e.what());
+        error("Unknown effecter ID '{EFFECTERID}', error - {ERROR}",
+              "EFFECTERID", effecterId, "ERROR", e);
         return PLDM_ERROR;
     }
 
@@ -415,7 +416,7 @@ int getEffecterValue(T propertyValue, uint8_t effecterDataSize,
         }
         default:
         {
-            error("Unknown Effecter Size");
+            error("Unknown Effecter Size {SIZE}", "SIZE", effecterDataSize);
             return PLDM_ERROR;
         }
     }
@@ -467,8 +468,7 @@ int getNumericEffecterValueHandler(const std::string& propertyType,
     }
     else
     {
-        error("Property Type [{PROPERTYTYPE}] not supported", "PROPERTYTYPE",
-              propertyType);
+        error("Property type '{TYPE}' not supported", "TYPE", propertyType);
     }
     return PLDM_ERROR;
 }
@@ -529,8 +529,8 @@ int getNumericEffecterData(const DBusInterface& dBusIntf, Handler& handler,
 
     if (!pdr)
     {
-        error("The Numeric Effecter not found EFFECTERID={EFFECTERID}",
-              "EFFECTERID", effecterId);
+        error("The Numeric Effecter ID {EFFECTERID} not found.", "EFFECTERID",
+              effecterId);
         return PLDM_PLATFORM_INVALID_EFFECTER_ID;
     }
 
@@ -555,11 +555,11 @@ int getNumericEffecterData(const DBusInterface& dBusIntf, Handler& handler,
     catch (const std::exception& e)
     {
         error(
-            "Dbus Mapping or the Dbus query for the Effecter failed for effecter id: {EFFECTER_ID}, {ERR_EXCEP}",
-            "EFFECTER_ID", effecterId, "ERR_EXCEP", e.what());
+            "Dbus Mapping or the Dbus query for the effecter ID '{EFFECTERID}' failed, error - {ERROR}",
+            "EFFECTERID", effecterId, "ERROR", e);
         error(
-            "Dbus Details objPath : [{OBJ_PATH}] interface : [{INTF}], property : [{PROPERTY}]",
-            "OBJ_PATH", dbusMapping.objectPath.c_str(), "INTF",
+            "Dbus Details path [{PATH}], interface [{INTERFACE}], property [{PROPERTY}]",
+            "PATH", dbusMapping.objectPath.c_str(), "INTERFACE",
             dbusMapping.interface.c_str(), "PROPERTY",
             dbusMapping.propertyName.c_str());
         return PLDM_ERROR;
