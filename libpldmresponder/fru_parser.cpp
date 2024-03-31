@@ -150,16 +150,14 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
             fruInfo = std::make_tuple(recordType, encType,
                                       std::move(fieldInfo));
 
-            auto search = recordMap.find(dbusIntfName);
-
             // PLDM FRU can have multiple records for the same FRU like General
             // FRU record and multiple OEM FRU records. If the FRU item
             // interface name is already in the map, that indicates a record
             // info is already added for the FRU, so append the new record info
             // to the same data.
-            if (search != recordMap.end())
+            if (recordMap.contains(dbusIntfName))
             {
-                search->second.emplace_back(std::move(fruInfo));
+                recordMap[dbusIntfName].emplace_back(std::move(fruInfo));
             }
             else
             {

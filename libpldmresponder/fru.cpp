@@ -172,7 +172,7 @@ void FruImpl::buildFRUTable()
         const auto& interfaces = object.second;
         for (const auto& interface : interfaces)
         {
-            if (itemIntfsLookup.find(interface.first) != itemIntfsLookup.end())
+            if (itemIntfsLookup.contains(interface.first))
             {
                 // checking fru present property is available or not.
                 if (!pldm::utils::checkForFruPresence(object.first.str))
