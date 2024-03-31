@@ -4,6 +4,7 @@
 #include "libpldmresponder/file_io_type_cert.hpp"
 #include "libpldmresponder/file_io_type_dump.hpp"
 #include "libpldmresponder/file_io_type_lid.hpp"
+#include "libpldmresponder/file_io_type_pcie.hpp"
 #include "libpldmresponder/file_io_type_pel.hpp"
 #include "libpldmresponder/file_table.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
@@ -882,6 +883,14 @@ TEST(getHandlerByType, allPaths)
     handler = getHandlerByType(PLDM_FILE_TYPE_SIGNED_CERT, fileHandle);
     certType = dynamic_cast<CertHandler*>(handler.get());
     ASSERT_TRUE(certType != nullptr);
+
+    handler = getHandlerByType(PLDM_FILE_TYPE_PCIE_TOPOLOGY, fileHandle);
+    auto pcieTopologyType = dynamic_cast<PCIeInfoHandler*>(handler.get());
+    ASSERT_TRUE(pcieTopologyType != nullptr);
+
+    handler = getHandlerByType(PLDM_FILE_TYPE_CABLE_INFO, fileHandle);
+    auto cableInfoType = dynamic_cast<PCIeInfoHandler*>(handler.get());
+    ASSERT_TRUE(cableInfoType != nullptr);
 
     handler = getHandlerByType(PLDM_FILE_TYPE_ROOT_CERT, fileHandle);
     certType = dynamic_cast<CertHandler*>(handler.get());
