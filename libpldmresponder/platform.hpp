@@ -361,9 +361,9 @@ class Handler : public CmdHandler
             if (compEffecterCnt > pdr->composite_effecter_count)
             {
                 error(
-                    "The requester sent wrong composite effecter count for the effecter, EFFECTER_ID={EFFECTER_ID} COMP_EFF_CNT={COMP_EFF_CNT}",
-                    "EFFECTER_ID", (unsigned)effecterId, "COMP_EFF_CNT",
-                    (unsigned)compEffecterCnt);
+                    "The requester sent wrong composite effecter count '{COMPOSITE_EFFECTER_COUNT}' for the effecter ID '{EFFECTERID}'.",
+                    "COMPOSITE_EFFECTER_COUNT", (unsigned)compEffecterCnt,
+                    "EFFECTERID", (unsigned)effecterId);
                 return PLDM_ERROR_INVALID_DATA;
             }
             break;
@@ -392,10 +392,10 @@ class Handler : public CmdHandler
                     !(states->states[bitfieldIndex].byte & (1 << bit)))
                 {
                     error(
-                        "Invalid state set value, EFFECTER_ID={EFFECTER_ID} VALUE={EFFECTER_STATE} COMPOSITE_EFFECTER_ID={CURR_STATE} DBUS_PATH={DBUS_OBJ_PATH}",
-                        "EFFECTER_ID", (unsigned)effecterId, "EFFECTER_STATE",
+                        "Invalid state set value for effecter ID '{EFFECTERID}', effecter state '{EFFECTER_STATE}', composite effecter ID '{COMPOSITE_EFFECTER_ID}' and path '{PATH}'.",
+                        "EFFECTERID", (unsigned)effecterId, "EFFECTER_STATE",
                         (unsigned)stateField[currState].effecter_state,
-                        "CURR_STATE", (unsigned)currState, "DBUS_OBJ_PATH",
+                        "COMPOSITE_EFFECTER_COUNT", (unsigned)currState, "PATH",
                         dbusMappings[currState].objectPath.c_str());
                     rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                     break;
@@ -416,11 +416,10 @@ class Handler : public CmdHandler
                     catch (const std::exception& e)
                     {
                         error(
-                            "Error setting property, ERROR={ERR_EXCEP} PROPERTY={DBUS_PROP} INTERFACE={DBUS_INTF} PATH={DBUS_OBJ_PATH}",
-                            "ERR_EXCEP", e.what(), "DBUS_PROP",
-                            dbusMapping.propertyName, "DBUS_INTF",
+                            "Failed to set property '{PROPERTY}' of interface '{INTERFACE}' at path '{PATH}', error - {ERROR}",
+                            "PROPERTY", dbusMapping.propertyName, "DBUS_INTF",
                             dbusMapping.interface, "DBUS_OBJ_PATH",
-                            dbusMapping.objectPath.c_str());
+                            dbusMapping.objectPath.c_str(), "ERROR", e);
                         return PLDM_ERROR;
                     }
                 }
@@ -436,8 +435,8 @@ class Handler : public CmdHandler
         catch (const std::out_of_range& e)
         {
             error(
-                "the effecterId does not exist. effecter id: {EFFECTER_ID} {ERR_EXCEP}",
-                "EFFECTER_ID", (unsigned)effecterId, "ERR_EXCEP", e.what());
+                "The effecter ID '{EFFECTERID}' does not exist, error - {ERROR}.",
+                "EFFECTERID", (unsigned)effecterId, "ERROR", e);
         }
 
         return rc;
