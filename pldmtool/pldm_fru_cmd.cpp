@@ -152,8 +152,7 @@ class FRUTablePrint
                         auto oemIPZValue = fruFieldValuestring(tlv->value,
                                                                tlv->length);
 
-                        if (populateMaps.find(oemIPZValue) !=
-                            populateMaps.end())
+                        if (populateMaps.contains(oemIPZValue))
                         {
                             const std::map<uint8_t, std::string> IPZTypes =
                                 populateMaps.at(oemIPZValue);
