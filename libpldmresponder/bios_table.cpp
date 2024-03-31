@@ -8,6 +8,8 @@
 
 #include <fstream>
 
+PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
 namespace responder
@@ -156,8 +158,8 @@ const pldm_bios_attr_table_entry*
         table.data() + tableSize, entryLength, info);
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error("Failed to encode BIOS table string entry: {LIBPLDM_ERROR}",
-                   "LIBPLDM_ERROR", rc);
+        error("Failed to encode BIOS table string entry - '{LIBPLDM_ERROR}'",
+              "LIBPLDM_ERROR", rc);
         throw std::runtime_error("Failed to encode BIOS table string entry");
     }
     return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
@@ -175,8 +177,8 @@ const pldm_bios_attr_table_entry*
         table.data() + tableSize, entryLength, info);
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error(
-            "Failed to encode BIOS attribute table integer entry: {LIBPLDM_ERROR}",
+        error(
+            "Failed to encode BIOS attribute table integer entry - '{LIBPLDM_ERROR}'",
             "LIBPLDM_ERROR", rc);
         throw std::runtime_error(
             "Failed to encode BIOS attribute table integer entry");
@@ -195,8 +197,8 @@ StringField decodeStringEntry(const pldm_bios_attr_table_entry* entry)
         entry, &defLength);
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error(
-            "Failed to decode BIOS table string definition length: {LIBPLDM_ERROR}",
+        error(
+            "Failed to decode BIOS table string definition length - '{LIBPLDM_ERROR}'",
             "LIBPLDM_ERROR", rc);
         throw std::runtime_error(
             "Failed to decode BIOS table string definitionlength");
@@ -241,8 +243,8 @@ EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
     int rc = pldm_bios_table_attr_entry_enum_decode_pv_num_check(entry, &pvNum);
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error(
-            "Failed to decode the number of possible values for BIOS table enum entry: {LIBPLDM_ERROR}",
+        error(
+            "Failed to decode the number of possible values for BIOS table enum entry - '{LIBPLDM_ERROR}'",
             "LIBPLDM_ERROR", rc);
         throw std::runtime_error(
             "Failed to decode the number of possible values for BIOS table enum entry");
@@ -310,8 +312,8 @@ const pldm_bios_attr_val_table_entry*
         str.c_str());
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error(
-            "Failed to encode BIOS attribute table string entry: {LIBPLDM_ERROR}",
+        error(
+            "Failed to encode BIOS attribute table string entry - '{LIBPLDM_ERROR}'",
             "LIBPLDM_ERROR", rc);
         throw std::runtime_error(
             "Failed to encode BIOS attribute table string entry");
@@ -333,8 +335,8 @@ const pldm_bios_attr_val_table_entry* constructIntegerEntry(Table& table,
         table.data() + tableSize, entryLength, attrHandle, attrType, value);
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error(
-            "Failed to encode BIOS attribute table integer entry: {LIBPLDM_ERROR}",
+        error(
+            "Failed to encode BIOS attribute table integer entry - '{LIBPLDM_ERROR}'",
             "LIBPLDM_ERROR", rc);
         throw std::runtime_error(
             "Failed to encode BIOS attribute table integery entry");
@@ -356,8 +358,8 @@ const pldm_bios_attr_val_table_entry*
         handleIndices.size(), handleIndices.data());
     if (rc != PLDM_SUCCESS)
     {
-        lg2::error(
-            "Failed to encode BIOS attribute table enum entry: {LIBPLDM_ERROR}",
+        error(
+            "Failed to encode BIOS attribute table enum entry - '{LIBPLDM_ERROR}'",
             "LIBPLDM_ERROR", rc);
         throw std::runtime_error(
             "Failed to encode BIOS attribute table enum entry");

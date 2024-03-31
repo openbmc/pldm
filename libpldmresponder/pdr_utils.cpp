@@ -98,8 +98,9 @@ StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
     if (dBusValues.size() != pv.size())
     {
         error(
-            "dBusValues size is not equal to pv size, dBusValues Size: {DBUS_VAL_SIZE}, pv Size: {PV_SIZE}",
-            "DBUS_VAL_SIZE", dBusValues.size(), "PV_SIZE", pv.size());
+            "DBusValues size is not equal to pv size, '{DBUS_VALUE_SIZE}' and '{PROPERTY_VALUE_SIZE}'",
+            "DBUS_VALUE_SIZE", dBusValues.size(), "PROPERTY_VALUE_SIZE",
+            pv.size());
         return {};
     }
 
@@ -147,8 +148,7 @@ StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
         }
         else
         {
-            error("Unknown D-Bus property type, TYPE={OTHER_TYPE}",
-                  "OTHER_TYPE", type.c_str());
+            error("Unknown D-Bus property '{TYPE}'", "TYPE", type);
             return {};
         }
 
@@ -218,7 +218,7 @@ std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
     // uint8_t(FRU Field Type), uint8_t(FRU Field Length)
     if (fruLen < fruRecordDataFormatLength)
     {
-        lg2::error("Invalid fru len: {FRULEN}", "FRULEN", fruLen);
+        error("Invalid FRU '{LENGTH}'", "LENGTH", fruLen);
         return {};
     }
 

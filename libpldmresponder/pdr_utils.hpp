@@ -98,8 +98,7 @@ inline Json readJson(const std::string& path)
     std::ifstream jsonFile(path);
     if (!jsonFile.is_open())
     {
-        error("Error opening PDR JSON file, PATH={JSON_PATH}", "JSON_PATH",
-              path);
+        error("Error opening PDR JSON file at {PATH}", "PATH", path);
         return {};
     }
 

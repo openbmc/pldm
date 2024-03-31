@@ -37,10 +37,10 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     if (rc != PLDM_SUCCESS)
     {
         error(
-            "Wrong field for integer attribute, ATTRIBUTE_NAME={ATTR_NAME} ERRMSG= {ERR_MSG} LOWER_BOUND={LOW_BOUND} UPPER_BOUND={UPPER_BOUND} DEFAULT_VALUE={DEF_VAL} SCALAR_INCREMENT={SCALAR_INCREMENT}",
-            "ATTR_NAME", attr.c_str(), "ERR_MSG", errmsg, "LOW_BOUND",
+            "Wrong field for integer '{ATTRIBUTE}', '{ERROR}', '{LOW_BOUND}', '{UPPER_BOUND}', '{DEFAULT_VALUE}' and '{SCALAR_INCREMENT}'",
+            "ATTRIBUTE", attr, "ERROR", errmsg, "LOW_BOUND",
             integerInfo.lowerBound, "UPPER_BOUND", integerInfo.upperBound,
-            "DEF_VAL", integerInfo.defaultValue, "SCALAR_INCREMENT",
+            "DEFAULT_VALUE", integerInfo.defaultValue, "SCALAR_INCREMENT",
             integerInfo.scalarIncrement);
         throw std::invalid_argument("Wrong field for integer attribute");
     }
@@ -97,7 +97,7 @@ void BIOSIntegerAttribute::setAttrValueOnDbus(
                                             static_cast<double>(currentValue));
     }
 
-    error("Unsupported property type on dbus: {DBUS_PROP}", "DBUS_PROP",
+    error("Unsupported property '{TYPE}' on dbus", "TYPE",
           dBusMap->propertyType);
     throw std::invalid_argument("dbus type error");
 }
@@ -177,8 +177,8 @@ uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
     }
     else
     {
-        error("Unsupported property type for getAttrValue: {DBUS_PROP}",
-              "DBUS_PROP", dBusMap->propertyType);
+        error("Unsupported property '{TYPE}' for getAttrValue", "TYPE",
+              dBusMap->propertyType);
         throw std::invalid_argument("dbus type error");
     }
     return value;
@@ -202,8 +202,8 @@ uint64_t BIOSIntegerAttribute::getAttrValue()
     catch (const std::exception& e)
     {
         error(
-            "Error getting integer attribute '{ATTR}' from '{INTERFACE}': {ERROR}",
-            "ATTR", name, "INTERFACE", dBusMap->interface, "ERROR", e);
+            "Error getting integer '{ATTRIBUTE}' from '{INTERFACE}' - '{ERROR}'",
+            "ATTRIBUTE", name, "INTERFACE", dBusMap->interface, "ERROR", e);
         return integerInfo.defaultValue;
     }
 }

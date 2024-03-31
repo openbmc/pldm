@@ -218,8 +218,9 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         catch (const std::exception& e)
         {
             error(
-                "D-Bus object path does not exist, effecter ID: {EFFECTER_ID}",
-                "EFFECTER_ID", static_cast<uint16_t>(pdr->effecter_id));
+                "D-Bus object path does not exist for '{EFFECTER_ID}' - '{ERROR}'",
+                "EFFECTER_ID", static_cast<uint16_t>(pdr->effecter_id), "ERROR",
+                e);
         }
         dbusMappings.emplace_back(std::move(dbusMapping));
 

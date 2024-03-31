@@ -70,7 +70,7 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
 {
     for (const auto& directory : dir)
     {
-        info("checking if : {DIR} exists", "DIR", directory);
+        info("Checking if '{DIRECTORY}' exists", "DIRECTORY", directory);
         if (!fs::exists(directory))
         {
             return;
@@ -136,20 +136,22 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
             catch (const InternalFailure& e)
             {
                 error(
-                    "PDR config directory '{PATH}' does not exist or empty for '{TYPE}' pdr: {ERROR}",
+                    "PDR config directory '{PATH}' does not exist or empty for '{TYPE}' pdr - '{ERROR}'.",
                     "TYPE", pdrType, "PATH", dirEntry.path(), "ERROR", e);
             }
             catch (const Json::exception& e)
             {
-                error("Failed parsing PDR JSON file for '{TYPE}' pdr: {ERROR}",
-                      "TYPE", pdrType, "ERROR", e);
+                error(
+                    "Failed parsing PDR JSON file for '{TYPE}' pdr - '{ERROR}'",
+                    "TYPE", pdrType, "ERROR", e);
                 pldm::utils::reportError(
                     "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail");
             }
             catch (const std::exception& e)
             {
-                error("Failed parsing PDR JSON file for '{TYPE}' pdr: {ERROR}",
-                      "TYPE", pdrType, "ERROR", e);
+                error(
+                    "Failed parsing PDR JSON file for '{TYPE}' pdr - '{ERROR}'",
+                    "TYPE", pdrType, "ERROR", e);
                 pldm::utils::reportError(
                     "xyz.openbmc_project.PLDM.Error.Generate.PDRJsonFileParseFail");
             }
@@ -268,8 +270,8 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     }
     catch (const std::exception& e)
     {
-        error("Error accessing PDR, HANDLE={REC_HANDLE} ERROR={ERR_EXCEP}",
-              "REC_HANDLE", recordHandle, "ERR_EXCEP", e.what());
+        error("Error accessing PDR '{RECORD_HANDLE}' - '{ERROR}'.",
+              "RECORD_HANDLE", recordHandle, "ERROR", e);
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
     return response;
@@ -379,7 +381,8 @@ Response Handler::platformEventMessage(const pldm_msg* request,
         }
         catch (const std::out_of_range& e)
         {
-            error("Error in handling platform event msg: {ERROR}", "ERROR", e);
+            error("Error in handling platform event msg - '{ERROR}'", "ERROR",
+                  e);
             return CmdHandler::ccOnlyResponse(request, PLDM_ERROR_INVALID_DATA);
         }
     }
@@ -675,8 +678,8 @@ Response Handler::getNumericEffecterValue(const pldm_msg* request,
     if (rc != PLDM_SUCCESS)
     {
         error(
-            "Reponse to GetNumericEffecterValue failed RC={RC} for EffectorId={EFFECTER_ID} ",
-            "RC", rc, "EFFECTER_ID", effecterId);
+            "Reponse to GetNumericEffecterValue failed '{RC}' for '{EFFECTERID}'.",
+            "RC", rc, "EFFECTERID", effecterId);
         return ccOnlyResponse(request, rc);
     }
     return response;
@@ -864,8 +867,8 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
         if (sensorRearmCount > tmpCompSensorCnt)
         {
             error(
-                "The requester sent wrong sensorRearm count for the sensor, SENSOR_ID={SENSOR_ID} SENSOR_REARM_COUNT={SENSOR_REARM_CNT}",
-                "SENSOR_ID", sensorId, "SENSOR_REARM_CNT",
+                "The requester sent wrong '{SENSOR_REARM_COUNT}' for the '{SENSORID}'.",
+                "SENSORID", sensorId, "SENSOR_REARM_COUNT",
                 (uint16_t)sensorRearmCount);
             break;
         }
@@ -934,8 +937,8 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
         if (compEffecterCnt > pdr->composite_effecter_count)
         {
             error(
-                "The requester sent wrong composite effecter count for the effecter, EFFECTER_ID={EFFECTER_ID} COMP_EFF_CNT={COMP_EFF_CNT}",
-                "EFFECTER_ID", effecterId, "COMP_EFF_CNT",
+                "The requester sent wrong '{COMPOSITE_EFFECTER_COUNT}' for the '{EFFECTERID}'.",
+                "EFFECTERID", effecterId, "COMPOSITE_EFFECTER_COUNT",
                 (uint16_t)compEffecterCnt);
             return false;
         }
@@ -976,7 +979,7 @@ void Handler::setEventReceiver()
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb->free(eid, instanceId);
-        error("Failed to encode_set_event_receiver_req, rc = {RC}", "RC",
+        error("Failed to encode_set_event_receiver_req - '{RC}'.", "RC",
               lg2::hex, rc);
         return;
     }
@@ -995,7 +998,7 @@ void Handler::setEventReceiver()
         if (rc || completionCode)
         {
             error(
-                "Failed to decode setEventReceiver command response, rc = {RC}, cc = {CC}",
+                "Failed to decode setEventReceiver command response - '{RC}' and '{CC}'",
                 "RC", rc, "CC", (unsigned)completionCode);
             pldm::utils::reportError(
                 "xyz.openbmc_project.PLDM.Error.InternalFailure");

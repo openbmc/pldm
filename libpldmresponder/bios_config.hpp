@@ -238,8 +238,7 @@ class BIOSConfig
         }
         catch (const std::exception& e)
         {
-            error("Constructs Attribute Error, {ERR_EXCEP}", "ERR_EXCEP",
-                  e.what());
+            error("Constructs Attribute '{ERROR}'", "ERROR", e);
         }
     }
 

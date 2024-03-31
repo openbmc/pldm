@@ -188,9 +188,9 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     catch (const std::exception& e)
     {
         error(
-            "Error getting the time sync property, PATH={TIME_SYNC_PATH} INTERFACE={SYNC_INTERFACE} PROPERTY={SYNC_PROP} ERROR={ERR_EXCEP}",
+            "Error getting the time sync property at {TIME_SYNC_PATH}, '{SYNC_INTERFACE}', '{SYNC_PROPERTY}' and '{ERROR}'",
             "TIME_SYNC_PATH", timeSyncPath, "SYNC_INTERFACE", timeSyncInterface,
-            "SYNC_PROP", timeSyncProperty, "ERR_EXCEP", e.what());
+            "SYNC_PROPERTY", timeSyncProperty, "ERROR", e);
     }
 
     constexpr auto setTimeInterface = "xyz.openbmc_project.Time.EpochTime";
@@ -218,9 +218,9 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     catch (const std::exception& e)
     {
         error(
-            "Error Setting time,PATH={SET_TIME_PATH} TIME INTERFACE={TIME_INTERFACE} ERROR={ERR_EXCEP}",
+            "Error Setting time at {SET_TIME_PATH}, '{TIME_INTERFACE}' and '{ERROR}'",
             "SET_TIME_PATH", setTimePath, "TIME_INTERFACE", setTimeInterface,
-            "ERR_EXCEP", e.what());
+            "ERROR", e);
         return ccOnlyResponse(request, PLDM_ERROR);
     }
 
