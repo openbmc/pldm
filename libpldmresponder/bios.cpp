@@ -134,7 +134,7 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     catch (const sdbusplus::exception_t& e)
     {
         error(
-            "Error getting time from Elapsed property at '{PATH}' on '{INTERFACE}': {ERROR}",
+            "Error getting time from Elapsed property at path '{PATH}' on interface '{INTERFACE}': {ERROR}",
             "PATH", bmcTimePath, "INTERFACE", timeInterface, "ERROR", e);
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
@@ -188,9 +188,9 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     catch (const std::exception& e)
     {
         error(
-            "Error getting the time sync property, PATH={TIME_SYNC_PATH} INTERFACE={SYNC_INTERFACE} PROPERTY={SYNC_PROP} ERROR={ERR_EXCEP}",
+            "Failed to get the time sync property at {TIME_SYNC_PATH}, interface '{SYNC_INTERFACE}' and property '{SYNC_PROPERTY}', error - '{ERROR}'",
             "TIME_SYNC_PATH", timeSyncPath, "SYNC_INTERFACE", timeSyncInterface,
-            "SYNC_PROP", timeSyncProperty, "ERR_EXCEP", e.what());
+            "SYNC_PROPERTY", timeSyncProperty, "ERROR", e);
     }
 
     constexpr auto setTimeInterface = "xyz.openbmc_project.Time.EpochTime";
@@ -218,9 +218,9 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     catch (const std::exception& e)
     {
         error(
-            "Error Setting time,PATH={SET_TIME_PATH} TIME INTERFACE={TIME_INTERFACE} ERROR={ERR_EXCEP}",
+            "Failed to set time at {SET_TIME_PATH}, interface '{TIME_INTERFACE}' and error - {ERROR}",
             "SET_TIME_PATH", setTimePath, "TIME_INTERFACE", setTimeInterface,
-            "ERR_EXCEP", e.what());
+            "ERROR", e);
         return ccOnlyResponse(request, PLDM_ERROR);
     }
 

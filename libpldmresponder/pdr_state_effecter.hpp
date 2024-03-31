@@ -43,7 +43,7 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             if (!statesSize)
             {
                 error(
-                    "Malformed PDR JSON return pdrEntry;- no state set info, TYPE={STATE_EFFECTER_PDR}",
+                    "Malformed PDR JSON return pdrEntry; no state set info for state effecter pdr '{STATE_EFFECTER_PDR}'",
                     "STATE_EFFECTER_PDR",
                     static_cast<unsigned>(PLDM_STATE_EFFECTER_PDR));
                 throw InternalFailure();
@@ -159,7 +159,7 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             catch (const std::exception& e)
             {
                 error(
-                    "Failed to create effecter PDR, D-Bus object '{PATH}' returned {ERROR}",
+                    "Failed to create effecter PDR, D-Bus object '{PATH}' returned error - {ERROR}",
                     "PATH", objectPath, "ERROR", e);
                 continue;
             }

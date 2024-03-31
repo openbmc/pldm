@@ -160,8 +160,9 @@ void FruImpl::buildFRUTable()
     }
     catch (const std::exception& e)
     {
-        error("Failed building FRU table due to inventory lookup: {ERROR}",
-              "ERROR", e);
+        error(
+            "Failed building FRU table due to inventory lookup, error - {ERROR}",
+            "ERROR", e);
         return;
     }
 
@@ -204,8 +205,8 @@ void FruImpl::buildFRUTable()
                 catch (const std::exception& e)
                 {
                     error(
-                        "Config JSONs missing for the item interface type, interface = {INTF}",
-                        "INTF", interface.first);
+                        "Config JSONs missing for the item '{INTERFACE}', error - {ERROR}",
+                        "INTERFACE", interface.first, "ERROR", e);
                     break;
                 }
             }
@@ -217,8 +218,8 @@ void FruImpl::buildFRUTable()
     if (rc < 0)
     {
         // pldm_entity_assocation_pdr_add() assert()ed on failure
-        error("Failed to add PLDM entity association PDR: {LIBPLDM_ERROR}",
-              "LIBPLDM_ERROR", rc);
+        error("Failed to add PLDM entity association PDR, response code '{RC}'",
+              "RC", rc);
         throw std::runtime_error("Failed to add PLDM entity association PDR");
     }
 
@@ -250,8 +251,8 @@ std::string FruImpl::populatefwVersion()
     }
     catch (const std::exception& e)
     {
-        error("failed to make a d-bus call Asociation, ERROR= {ERR_EXCEP}",
-              "ERR_EXCEP", e.what());
+        error("Failed to make a d-bus call Asociation, error - {ERROR}",
+              "ERROR", e);
         return {};
     }
     return currentBmcVersion;

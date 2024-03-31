@@ -119,7 +119,7 @@ void BIOSEnumAttribute::buildValMap(const Json& dbusVals)
         }
         else
         {
-            error("Unknown D-Bus property type, TYPE={PROP_TYPE}", "PROP_TYPE",
+            error("Unknown D-Bus property type '{TYPE}'", "TYPE",
                   dBusMap->propertyType);
             throw std::invalid_argument("Unknown D-BUS property type");
         }
@@ -253,8 +253,8 @@ int BIOSEnumAttribute::updateAttrVal(Table& newValue, uint16_t attrHdl,
     auto iter = valMap.find(newPropVal);
     if (iter == valMap.end())
     {
-        error("Could not find index for new BIOS enum, value={PROP_VAL}",
-              "PROP_VAL", std::get<std::string>(newPropVal));
+        error("Could not find index for new BIOS enum value '{VALUE}'", "VALUE",
+              std::get<std::string>(newPropVal));
         return PLDM_ERROR;
     }
     auto currentValue = iter->second;

@@ -2,10 +2,6 @@
 #include "common/utils.hpp"
 #include "pldmd/handler.hpp"
 
-#include <phosphor-logging/lg2.hpp>
-
-PHOSPHOR_LOG2_USING;
-
 namespace pldm
 {
 namespace responder
