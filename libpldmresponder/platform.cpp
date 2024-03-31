@@ -481,7 +481,7 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         }
 
         const auto& possibleStates = compositeSensorStates[sensorOffset];
-        if (possibleStates.find(eventState) == possibleStates.end())
+        if (!possibleStates.contains(eventState))
         {
             return PLDM_ERROR_INVALID_DATA;
         }
