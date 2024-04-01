@@ -422,7 +422,140 @@ void InventoryManager::queryDownstreamIdentifiers(mctp_eid_t eid,
             break;
         case PLDM_START_AND_END:
             downstreamDescriptorMap.emplace(eid, std::move(downstreamDevices));
+            /** DataTransferHandle will be skipped when TransferOperationFlag is
+             *  `GetFirstPart`. Use 0x0 as default by following example in
+             *  Figure 9 in DSP0267 1.1.0
+             */
+            sendGetDownstreamFirmwareParametersRequest(eid, 0x0,
+                                                       PLDM_GET_FIRSTPART);
             break;
+        case PLDM_END:
+            sendGetDownstreamFirmwareParametersRequest(eid, 0x0,
+                                                       PLDM_GET_FIRSTPART);
+            break;
+    }
+}
+
+void InventoryManager::sendGetDownstreamFirmwareParametersRequest(
+    mctp_eid_t eid, uint32_t dataTransferHandle, uint8_t transferOperationFlag)
+{
+    Request requestMsg(sizeof(pldm_msg_hdr) +
+                       sizeof(pldm_get_downstream_firmware_params_req));
+    auto instanceId = instanceIdDb.next(eid);
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto rc = encode_get_downstream_firmware_params_req(
+        instanceId, dataTransferHandle, transferOperationFlag,
+        sizeof(pldm_get_downstream_firmware_params_req), request);
+    if (rc)
+    {
+        instanceIdDb.free(eid, instanceId);
+        error(
+            "encode_query_downstream_firmware_param_req failed, EID={EID}, RC = {RC}",
+            "EID", unsigned(eid), "RC", rc);
+        throw std::runtime_error(
+            "encode_query_device_firmware_param_req failed");
+    }
+
+    rc = handler.registerRequest(
+        eid, instanceId, PLDM_FWUP, PLDM_QUERY_DOWNSTREAM_FIRMWARE_PARAMETERS,
+        std::move(requestMsg),
+        std::move(std::bind_front(
+            &InventoryManager::getDownstreamFirmwareParameters, this)));
+    if (rc)
+    {
+        error(
+            "Failed to send QueryDownstreamFirmwareParameters request, EID={EID}, RC = {RC}",
+            "EID", unsigned(eid), "RC", rc);
+    }
+}
+
+void InventoryManager::getDownstreamFirmwareParameters(mctp_eid_t eid,
+                                                       const pldm_msg* response,
+                                                       size_t respMsgLen)
+{
+    if (response == nullptr || !respMsgLen)
+    {
+        error(
+            "No response received for QueryDownstreamFirmwareParameters, EID={EID}",
+            "EID", unsigned(eid));
+        descriptorMap.erase(eid);
+        return;
+    }
+
+    pldm_get_downstream_firmware_params_resp downstreamFirmwareParams{};
+    variable_field downstreamDeviceParamTable{};
+
+    auto rc = decode_get_downstream_firmware_params_resp(
+        response, respMsgLen, &downstreamFirmwareParams,
+        &downstreamDeviceParamTable);
+
+    if (rc)
+    {
+        error(
+            "Decoding QueryDownstreamFirmwareParameters response failed, EID={EID}, RC = {RC}",
+            "EID", unsigned(eid), "RC", rc);
+        return;
+    }
+
+    if (downstreamFirmwareParams.completion_code)
+    {
+        error(
+            "QueryDownstreamFirmwareParameters response failed with error completion code, EID={EID}, CC = {CC}",
+            "EID", unsigned(eid), "CC",
+            unsigned(downstreamFirmwareParams.completion_code));
+        return;
+    }
+
+    auto currentDevice = downstreamDeviceParamTable.ptr;
+    auto paramTableLen = downstreamDeviceParamTable.length;
+    pldm_component_parameter_entry compEntry{};
+    variable_field activeCompVerStr{};
+    variable_field pendingCompVerStr{};
+
+    ComponentInfo componentInfo{};
+
+    while (downstreamFirmwareParams.downstream_device_count-- &&
+           (paramTableLen > 0))
+    {
+        auto rc = decode_get_firmware_parameters_resp_comp_entry(
+            currentDevice, paramTableLen, &compEntry, &activeCompVerStr,
+            &pendingCompVerStr);
+        if (rc)
+        {
+            error(
+                "Decoding component parameter table entry failed, EID={EID}, RC = {RC}",
+                "EID", unsigned(eid), "RC", rc);
+            return;
+        }
+
+        auto compClassification = compEntry.comp_classification;
+        auto compIdentifier = compEntry.comp_identifier;
+        componentInfo.emplace(
+            std::make_pair(compClassification, compIdentifier),
+            compEntry.comp_classification_index);
+        currentDevice += sizeof(pldm_component_parameter_entry) +
+                         activeCompVerStr.length + pendingCompVerStr.length;
+        paramTableLen -= sizeof(pldm_component_parameter_entry) +
+                         activeCompVerStr.length + pendingCompVerStr.length;
+    }
+
+    switch (downstreamFirmwareParams.transfer_flag)
+    {
+        case PLDM_START:
+        case PLDM_MIDDLE:
+            sendGetDownstreamFirmwareParametersRequest(
+                eid, downstreamFirmwareParams.next_data_transfer_handle,
+                PLDM_GET_NEXTPART);
+            break;
+    }
+
+    if (componentInfoMap.contains(eid))
+    {
+        componentInfoMap.at(eid).merge(componentInfo);
+    }
+    else
+    {
+        componentInfoMap.emplace(eid, std::move(componentInfo));
     }
 }
 
