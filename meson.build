@@ -1,5 +1,5 @@
 project('pldm', ['c', 'cpp'],
-        version: '0.1', meson_version: '>=1.1.1',
+        version: '0.1', meson_version: '>=1.4.0',
         default_options: [
           'warning_level=3',
           'default_library=shared',
@@ -73,7 +73,7 @@ config = configure_file(output: 'config.h',
   configuration: conf_data
 )
 
-add_project_arguments('-include', '@0@'.format(config), language: 'cpp')
+add_project_arguments('-include', '@0@'.format(config.full_path()), language: 'cpp')
 
 filesystem = import('fs')
 
