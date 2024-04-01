@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21e57509_af4aa247",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "mentioned in commit msg.",
+      "parentUuid": "d9613ad4_aa36700d",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c23acd38_c08b4a94",
@@ -71,6 +95,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e017d61_4d168d50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "mentioned in commit msg.",
+      "parentUuid": "6525352b_a4a8b90b",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 15,
+        "endChar": 36
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2551bd17_536e908a",
@@ -94,6 +142,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "820abbd3_6ffe4777",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "2551bd17_536e908a",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 46
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8be51e8c_6cd59db0",
@@ -107,6 +179,30 @@
       "writtenOn": "2024-03-29T04:25:55Z",
       "side": 1,
       "message": "Is there any specific need to have this function? Can we save the data using only\npath, interface, property name, value format",
+      "range": {
+        "startLine": 72,
+        "startChar": 3,
+        "endLine": 72,
+        "endChar": 76
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f736862e_581f2249",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "removed since function is not required.",
+      "parentUuid": "8be51e8c_6cd59db0",
       "range": {
         "startLine": 72,
         "startChar": 3,
@@ -163,6 +259,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee0d5717_29400099",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "default PERSISTENT_FILE path is initialised as file path but to test the functionality using unit test need to add this function because file path is private in class.",
+      "parentUuid": "f2ea4726_ac7a84ec",
+      "range": {
+        "startLine": 114,
+        "startChar": 9,
+        "endLine": 114,
+        "endChar": 31
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2104b1d_6f276826",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "b6799e8e_18019fd9",
+      "range": {
+        "startLine": 114,
+        "startChar": 9,
+        "endLine": 114,
+        "endChar": 31
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46604230_f011680e",
@@ -176,6 +320,30 @@
       "writtenOn": "2024-03-28T05:03:18Z",
       "side": 1,
       "message": "Is this used?",
+      "range": {
+        "startLine": 5,
+        "startChar": 10,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c1cdfa_cc70f0b1",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "removed.",
+      "parentUuid": "46604230_f011680e",
       "range": {
         "startLine": 5,
         "startChar": 10,
@@ -209,6 +377,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07b2914a_cedbeb65",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "Removed type.cpp since it has common data as util.cpp.",
+      "parentUuid": "23c053f0_f19b2d70",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef885ea5_daaafd17",
@@ -226,6 +418,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4c840e1_cb4ede24",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "Removed redundant code and used existing code as suggested.",
+      "parentUuid": "ef885ea5_daaafd17",
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4951cde5_8dc9416c",
@@ -239,6 +449,30 @@
       "writtenOn": "2024-03-28T06:43:49Z",
       "side": 1,
       "message": "can you format this?",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 52
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a42b72e8_a26404b3",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "done.",
+      "parentUuid": "4951cde5_8dc9416c",
       "range": {
         "startLine": 25,
         "startChar": 3,
@@ -272,6 +506,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e80f5204_ccd32f1e",
+        "filename": "host-bmc/dbus/type.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "removed redundant code as suggested.",
+      "parentUuid": "2ccc56be_55fb6536",
+      "range": {
+        "startLine": 30,
+        "startChar": 3,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccb84088_081605fd",
@@ -285,6 +543,30 @@
       "writtenOn": "2024-03-28T06:43:49Z",
       "side": 1,
       "message": "can we have dummy values, rather than original paths?",
+      "range": {
+        "startLine": 51,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 39
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "116ec8b9_8f14b05c",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccb84088_081605fd",
       "range": {
         "startLine": 51,
         "startChar": 4,
@@ -312,6 +594,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "245259d2_b71a39e7",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "Serialize returns void so can\u0027t test bad path here.\ninstead passing required values and checking, is it working fine and we got the data what we stored.",
+      "parentUuid": "bb3d00b2_9a5c62d9",
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06a1d3ea_ba6d083e",
@@ -335,6 +635,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4dc968e_c28f8ccc",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06a1d3ea_ba6d083e",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 102,
+        "endChar": 14
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72a8db08_51db8036",
@@ -348,6 +672,24 @@
       "writtenOn": "2024-03-28T06:43:49Z",
       "side": 1,
       "message": "can we add deserialize the good path test case?",
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94feb2d8_8f7b2fbd",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72a8db08_51db8036",
       "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -389,6 +731,30 @@
       "side": 1,
       "message": "Did this work while testing? 😊",
       "parentUuid": "50428eb1_e2cc6d7d",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 64
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79b3177c_03d92ed8",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T10:30:27Z",
+      "side": 1,
+      "message": "since FILE PATH is static, not using as suggested but in upcoming commits will change as per suggestion while testing.",
+      "parentUuid": "052e8442_e2e277f3",
       "range": {
         "startLine": 46,
         "startChar": 0,
