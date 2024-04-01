@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "182fc34d_4df2fab5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "Appreciate if you could quote this from a more reliable source rather than the likes of \"stack overflow\". That being said, thanks for picking out this information, acknowledged. In the case where we want to use the element contained in the map using contains(), then it would do 2 searches instead of 1 in the case where we use find() which fetches the element from the map also.\n\nHere are some relevant links to C++ documentation and resources:\n\n1. cppreference.com:\n   - std::map::find: https://en.cppreference.com/w/cpp/container/map/find\n   - std::map::contains: https://en.cppreference.com/w/cpp/container/map/contains\n\n2. C++20 Standard Draft (N4861):\n   This is the latest publicly available draft of the C++20 standard. You can search for the sections related to std::map::find and std::map::contains to understand their behavior and usage.\n   - Working Draft: https://wg21.link/N4861\n\n3. ISO C++ Standards Committee Papers:\n   This paper introduces the contains member function for associative containers, including std::map, as part of the C++20 feature set. It provides rationale and examples for its usage.\n   - P0943R2: Range-based for loops with initializer: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0943r2.html",
+      "parentUuid": "0d1fb3d4_82e6b43d",
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff44ffa6_30aad57e",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-04-01T07:53:11Z",
       "side": 1,
       "message": "Here the element is accessed right away and `.find()` is more preferrable.",
+      "range": {
+        "startLine": 147,
+        "startChar": 7,
+        "endLine": 152,
+        "endChar": 67
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ef1a5ca_280caa29",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ff44ffa6_30aad57e",
       "range": {
         "startLine": 147,
         "startChar": 7,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed8abb52_e625ae09",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "43a9a2f0_839c9d8f",
+      "range": {
+        "startLine": 143,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 60
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1cb65b43_7a68ec44",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-04-01T07:53:11Z",
       "side": 1,
       "message": "here when we use `.at` exceptions should be handled explicitly.",
+      "range": {
+        "startLine": 162,
+        "startChar": 20,
+        "endLine": 162,
+        "endChar": 39
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f263a93_0e2cc851",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": ".at returns exception only if the element is not present in the map, we are already checking at line 156 that the element exists in the map.",
+      "parentUuid": "1cb65b43_7a68ec44",
       "range": {
         "startLine": 162,
         "startChar": 20,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecf0d251_d0307a4d",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e57c7ccd_ec9a8376",
+      "range": {
+        "startLine": 560,
+        "startChar": 24,
+        "endLine": 560,
+        "endChar": 33
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ada9d446_3afea7a9",
@@ -123,6 +237,30 @@
       "writtenOn": "2024-04-01T07:53:11Z",
       "side": 1,
       "message": "`.find` is better here as we use the value immediately",
+      "range": {
+        "startLine": 935,
+        "startChar": 44,
+        "endLine": 935,
+        "endChar": 46
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a0caed7_7d02255b",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ada9d446_3afea7a9",
       "range": {
         "startLine": 935,
         "startChar": 44,
@@ -156,6 +294,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55b284a_b9069e7c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c3e839a_5b93a4c3",
+      "range": {
+        "startLine": 1125,
+        "startChar": 40,
+        "endLine": 1125,
+        "endChar": 59
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b154476_867d2dfc",
@@ -169,6 +331,30 @@
       "writtenOn": "2024-04-01T07:53:11Z",
       "side": 1,
       "message": "when we use a [] - operator[] value-initializes a new value for the corresponding key if no value exists there. `.find` would be better?\n\nhttps://stackoverflow.com/questions/10821405/difference-between-map-and-map-at-in-c",
+      "range": {
+        "startLine": 232,
+        "startChar": 58,
+        "endLine": 232,
+        "endChar": 80
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffcb7810_9a79b13b",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "we are already checking if the key is contained in the map. Although, as agreed upon, find() is better here as we using the value.",
+      "parentUuid": "3b154476_867d2dfc",
       "range": {
         "startLine": 232,
         "startChar": 58,
@@ -202,6 +388,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "333586d8_b2c1a9ea",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a3b22d9f_0d725077",
+      "range": {
+        "startLine": 251,
+        "startChar": 1,
+        "endLine": 259,
+        "endChar": 39
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8fb16aa_bcf2899a",
@@ -225,6 +435,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a9e1dd7_15fde371",
+        "filename": "libpldmresponder/bios_string_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "check other replies",
+      "parentUuid": "c8fb16aa_bcf2899a",
+      "range": {
+        "startLine": 32,
+        "startChar": 60,
+        "endLine": 32,
+        "endChar": 62
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b68bdf61_7c70a1ff",
@@ -238,6 +472,30 @@
       "writtenOn": "2024-04-01T07:53:11Z",
       "side": 1,
       "message": "same here",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 40
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "756f90f6_0cdc4b58",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T09:24:42Z",
+      "side": 1,
+      "message": "could you elaborate the \"same here\" you are referring to?",
+      "parentUuid": "b68bdf61_7c70a1ff",
       "range": {
         "startLine": 160,
         "startChar": 16,
