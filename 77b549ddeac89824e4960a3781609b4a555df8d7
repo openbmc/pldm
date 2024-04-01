@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4283baf3_80e75fa6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-01T10:35:09Z",
+      "side": 1,
+      "message": "Hey sagar, thanks for pushing this patch. Its a lot cleaner now. And apologies for leading you astray by telling that contains() is better than find(). Its only today I figured out the disadvantages of it. \n\nI have used the same stack overflow link in other reviews to indicate the committers why we have to be choosy in migrating the to contains(). I felt the stackoverflow has simple enough explanation.\n\nThanks for pointing out the links. I did try to find a good link to demonstrate that , but i could not. Is it burried under some subsection in the links that you mentioned that I missed ? - where we have the time complexity comparison between using find \u0026 contains(). \n\nCan you paste the paragraph that explains this from the links that you mentioned above and also document that in the commit message pointing to the links ,so that it will help the community?",
+      "parentUuid": "182fc34d_4df2fab5",
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff44ffa6_30aad57e",
@@ -167,6 +185,30 @@
       "side": 1,
       "message": ".at returns exception only if the element is not present in the map, we are already checking at line 156 that the element exists in the map.",
       "parentUuid": "1cb65b43_7a68ec44",
+      "range": {
+        "startLine": 162,
+        "startChar": 20,
+        "endLine": 162,
+        "endChar": 39
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88d93da0_97d9b5e1",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-01T10:35:09Z",
+      "side": 1,
+      "message": "but it is still twice as much time complexity to get the element from the map right ?",
+      "parentUuid": "7f263a93_0e2cc851",
       "range": {
         "startLine": 162,
         "startChar": 20,
