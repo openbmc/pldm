@@ -1,0 +1,297 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d1fb3d4_82e6b43d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "map. contains() is better only in certain chosen cases where there is no need to access the found element. since in this case, the element found is being used, it\u0027s better to go back to find().\n\nHowever, if you do not need to access the found element at all, but rather want to return a boolean existence flag, contains would make more sense.\n\nplease find the relevant info at: https://stackoverflow.com/questions/76087701/c20-contains-and-get-value-vs-find\n\n\nCan we please check all the files wherever relevant?",
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff44ffa6_30aad57e",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "Here the element is accessed right away and `.find()` is more preferrable.",
+      "range": {
+        "startLine": 147,
+        "startChar": 7,
+        "endLine": 152,
+        "endChar": 67
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a9a2f0_839c9d8f",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "even here same `.find` is preferred",
+      "range": {
+        "startLine": 143,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 60
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cb65b43_7a68ec44",
+        "filename": "libpldmresponder/base.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "here when we use `.at` exceptions should be handled explicitly.",
+      "range": {
+        "startLine": 162,
+        "startChar": 20,
+        "endLine": 162,
+        "endChar": 39
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e57c7ccd_ec9a8376",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "same as above file comment",
+      "range": {
+        "startLine": 560,
+        "startChar": 24,
+        "endLine": 560,
+        "endChar": 33
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada9d446_3afea7a9",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "`.find` is better here as we use the value immediately",
+      "range": {
+        "startLine": 935,
+        "startChar": 44,
+        "endLine": 935,
+        "endChar": 46
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c3e839a_5b93a4c3",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "same as above file comment - []operator",
+      "range": {
+        "startLine": 1125,
+        "startChar": 40,
+        "endLine": 1125,
+        "endChar": 59
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b154476_867d2dfc",
+        "filename": "libpldmresponder/bios_config.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "when we use a [] - operator[] value-initializes a new value for the corresponding key if no value exists there. `.find` would be better?\n\nhttps://stackoverflow.com/questions/10821405/difference-between-map-and-map-at-in-c",
+      "range": {
+        "startLine": 232,
+        "startChar": 58,
+        "endLine": 232,
+        "endChar": 80
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3b22d9f_0d725077",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "`find` seems better?",
+      "range": {
+        "startLine": 251,
+        "startChar": 1,
+        "endLine": 259,
+        "endChar": 39
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8fb16aa_bcf2899a",
+        "filename": "libpldmresponder/bios_string_attribute.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "handle exception explicitly as `.at` is not exception-safe.",
+      "range": {
+        "startLine": 32,
+        "startChar": 60,
+        "endLine": 32,
+        "endChar": 62
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b68bdf61_7c70a1ff",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 40
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41946625_b8349f80",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "here `contains` is preferred as it\u0027s just the boolean existence check",
+      "range": {
+        "startLine": 484,
+        "startChar": 28,
+        "endLine": 484,
+        "endChar": 36
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40b447cc_d42c9a7f",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T07:53:11Z",
+      "side": 1,
+      "message": "here `contains` is preferred",
+      "range": {
+        "startLine": 155,
+        "startChar": 41,
+        "endLine": 155,
+        "endChar": 49
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
