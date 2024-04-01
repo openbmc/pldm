@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc33a69_60cb426a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-01T06:29:21Z",
+      "side": 1,
+      "message": "could you please add working string example, for which regex is working fine.",
+      "revId": "b9f2060b921a40987ec48f4780f0a6bbbaf32fc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
