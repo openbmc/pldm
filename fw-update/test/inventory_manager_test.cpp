@@ -146,6 +146,51 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
     ASSERT_EQ(outDownstreamDescriptorMap.size(), 0);
 }
 
+TEST_F(InventoryManagerTest, handleGetDownstreamFirmwareParametersResponse)
+{
+    constexpr uint8_t eid = 1;
+    constexpr uint16_t compClassification = 0xFFFF; /*Downstream Device*/
+    constexpr uint16_t compIdentifier = 1;
+    constexpr uint8_t compClassificationIndex = 0;
+
+    constexpr size_t respPayloadLength =
+        sizeof(pldm_get_downstream_firmware_params_resp) +
+        sizeof(pldm_component_parameter_entry);
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
+        getDownstreamFwParametersResp{
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00,
+            0x00, 0x00, 0x01, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(getDownstreamFwParametersResp.data());
+    inventoryManager.getDownstreamFirmwareParameters(eid, responseMsg,
+                                                     respPayloadLength);
+
+    ComponentInfoMap componentInfoMap{
+        {eid,
+         {{std::make_pair(compClassification, compIdentifier),
+           compClassificationIndex}}}};
+
+    ASSERT_EQ(outComponentInfoMap.size(), componentInfoMap.size());
+    ASSERT_EQ(outComponentInfoMap, componentInfoMap);
+}
+
+TEST_F(InventoryManagerTest, handleGetDownstreamFwParametersResponseErrorCC)
+{
+    constexpr size_t respPayloadLength = 1;
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
+        getDownstreamFwParametersResp{0x00, 0x00, 0x00, 0x01};
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(getDownstreamFwParametersResp.data());
+    inventoryManager.getDownstreamFirmwareParameters(1, responseMsg,
+                                                     respPayloadLength);
+
+    ASSERT_EQ(outComponentInfoMap.size(), 0);
+}
+
 TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
 {
     // constexpr uint16_t compCount = 2;
