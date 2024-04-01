@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fda278bb_9d88cdf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T10:59:52Z",
+      "side": 1,
+      "message": "My intention in the above comment was not to disapprove the link posted by the reviewer, the explanation in the link posted was clear enough which is what I have quoted in my reply as well. \"In the case where we want to use the element contained in the map using contains(), then it would do 2 searches instead of 1 in the case where we use find() which fetches the element from the map also.\"\n\nHowever, these are individual answers given by people on the community, rather if we could add relevant Link to go through and make the reviewers make their own understanding of the topic at hand. And hence I have posted the relevant links, which gives more information about both the functions in question(find() and contains()). I did acknowledge the intent of the comment and made changes accordingly.\n\nRegarding pointing to the exact paragraph where it is mentioned, there isn\u0027t one, rather it gives more understanding of the way both find() and contains() are designed to work internally from which we could draw conclusions of the appropriate usage of these functions.",
+      "parentUuid": "4283baf3_80e75fa6",
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff44ffa6_30aad57e",
