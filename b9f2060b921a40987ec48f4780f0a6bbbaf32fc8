@@ -16,6 +16,24 @@
       "message": "could you please add working string example, for which regex is working fine.",
       "revId": "b9f2060b921a40987ec48f4780f0a6bbbaf32fc8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abdbeead_057951a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T09:18:30Z",
+      "side": 1,
+      "message": "the value would be having 0x in the beginning of it. As mentioned below, the value 0x5348 was expected.",
+      "parentUuid": "7dc33a69_60cb426a",
+      "revId": "b9f2060b921a40987ec48f4780f0a6bbbaf32fc8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

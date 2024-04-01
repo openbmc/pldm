@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "542e5a9b_16fd705a",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T09:18:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebd56b3b_920b7464",
+      "range": {
+        "startLine": 64,
+        "startChar": 32,
+        "endLine": 64,
+        "endChar": 44
+      },
+      "revId": "5f2cdd9d9d208d1d6d4fafe02277d5909bcab7cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c60ab7dc_84d86b1b",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-04-01T06:29:21Z",
       "side": 1,
       "message": "why we need 0x here instead we can concatinate in std::format it self.\nis there any use case?",
+      "revId": "5f2cdd9d9d208d1d6d4fafe02277d5909bcab7cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81ab4edc_82260784",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T09:18:30Z",
+      "side": 1,
+      "message": "yes, class code is a blob of data we need to parse it and then add 0x at the beginning. if we add it to std::format that would be wrong.",
+      "parentUuid": "c60ab7dc_84d86b1b",
       "revId": "5f2cdd9d9d208d1d6d4fafe02277d5909bcab7cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f96da6e_bc363135",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T09:18:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d6b38a4_5ea08bf3",
+      "revId": "5f2cdd9d9d208d1d6d4fafe02277d5909bcab7cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19f2b5f7_975aa053",
@@ -71,6 +131,24 @@
       "writtenOn": "2024-04-01T06:29:21Z",
       "side": 1,
       "message": "we don\u0027t need this function, if we found it\u0027s required then please use std::format to convert to hex string.",
+      "revId": "5f2cdd9d9d208d1d6d4fafe02277d5909bcab7cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e8b195_02283620",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T09:18:30Z",
+      "side": 1,
+      "message": "we need this, but I made use of std::format.",
+      "parentUuid": "19f2b5f7_975aa053",
       "revId": "5f2cdd9d9d208d1d6d4fafe02277d5909bcab7cc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
