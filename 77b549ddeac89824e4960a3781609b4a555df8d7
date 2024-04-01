@@ -506,6 +506,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "533fb960_35cf2e16",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T09:35:56Z",
+      "side": 1,
+      "message": "usage of the [] operator as mentioned here - https://gerrit.openbmc.org/c/openbmc/pldm/+/70368/1..2/libpldmresponder/bios_config.hpp#b232\nand since the element is used `find` is preferred?",
+      "parentUuid": "756f90f6_0cdc4b58",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 40
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "41946625_b8349f80",

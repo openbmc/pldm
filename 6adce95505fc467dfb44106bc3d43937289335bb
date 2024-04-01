@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6812106_b56ac897",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-01T09:35:56Z",
+      "side": 1,
+      "message": "The link I specified was clear and understandable to me and not on the likes of \"stack overflow\" :). Glad you found some good links. I appreciate your understanding of the issue at hand.",
+      "revId": "6adce95505fc467dfb44106bc3d43937289335bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
