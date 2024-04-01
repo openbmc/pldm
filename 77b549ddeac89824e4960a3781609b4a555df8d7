@@ -532,6 +532,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9b7f7f65_7e56d800",
+        "filename": "libpldmresponder/fru_parser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-01T10:07:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "533fb960_35cf2e16",
+      "range": {
+        "startLine": 160,
+        "startChar": 16,
+        "endLine": 160,
+        "endChar": 40
+      },
+      "revId": "77b549ddeac89824e4960a3781609b4a555df8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "41946625_b8349f80",
         "filename": "libpldmresponder/platform.cpp",
         "patchSetId": 1
