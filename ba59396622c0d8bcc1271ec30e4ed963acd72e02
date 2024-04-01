@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a25dbb27_bc6fc6db",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-04-01T15:19:12Z",
+      "side": 1,
+      "message": "Yocto doesn\u0027t use 1.4.0 yet.  I\u0027m not sure we should upgrade just to get `full_path` since the documentation on it implies it is only intended to be used for debug purposes.",
+      "revId": "ba59396622c0d8bcc1271ec30e4ed963acd72e02",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
