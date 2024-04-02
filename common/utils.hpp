@@ -506,6 +506,12 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
                                uint8_t sensorOffset, uint8_t eventState,
                                uint8_t previousEventState);
 
+/**
+ *  @brief call Recover() method to recover an MCTP Endpoint
+ *  @param[in] MCTP Endpoint's object path
+ */
+void recoverMctpEndpoint(const std::string& endpointObjPath);
+
 /** @brief Print the buffer
  *
  *  @param[in]  isTx - True if the buffer is an outgoing PLDM message, false if
