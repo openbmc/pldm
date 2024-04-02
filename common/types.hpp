@@ -20,6 +20,11 @@ using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using Command = uint8_t;
+ 
+using Association = std::tuple<std::string, std::string, std::string>;
+using DownstreamDeviceIndex = uint16_t;
+using InventoryPath = std::string;
+using FirmwareDeviceName = std::string;
 
 /** @brief MCTP Endpoint Medium type in string
  *         Reserved for future purpose

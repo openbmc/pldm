@@ -7,6 +7,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <functional>
 
 PHOSPHOR_LOG2_USING;
@@ -15,12 +16,18 @@ namespace pldm
 {
 namespace fw_update
 {
-void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
+
+#define EID_INDEX 0
+#define INVENTORY_PATH_INDEX 4
+
+void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
-    for (const auto& eid : eids)
+    for (const auto& mctpInfo : mctpInfos)
     {
+        auto eid = std::get<EID_INDEX>(mctpInfo);
         try
-        {
+         {
+            refreshInventoryPath(mctpInfo);
             sendQueryDeviceIdentifiersRequest(eid);
             sendQueryDownstreamDevicesRequest(eid);
         }
@@ -31,6 +38,23 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
         }
     }
 }
+ 
+void InventoryManager::refreshInventoryPath(const MctpInfo& mctpInfo)
+{
+    const auto eid = std::get<EID_INDEX>(mctpInfo);
+    const std::map<std::string, MctpEndpoint>& configurations =
+        configurationDiscovery->getConfigurations();
+
+    for (const auto& [configDbusPath, mctpEndpoint] : configurations)
+    {
+        if (eid == mctpEndpoint.EndpointId)
+        {
+            inventoryItemManager.refreshInventoryPath(eid, configDbusPath);
+            break;
+        }
+    }
+}
+
 
 void InventoryManager::sendQueryDeviceIdentifiersRequest(mctp_eid_t eid)
 {
@@ -161,6 +185,7 @@ void InventoryManager::queryDeviceIdentifiers(
 
     descriptorMap.emplace(eid, std::move(descriptors));
 
+    updateFirmwareDeviceName(eid, descriptors);
     // Send GetFirmwareParameters request
     sendGetFirmwareParametersRequest(eid);
 }
@@ -393,6 +418,8 @@ void InventoryManager::queryDownstreamIdentifiers(
         }
         downstreamDevices->emplace_back(
             DownstreamDeviceInfo{dev.downstream_device_index, descriptors});
+        updateDownstreamDeviceName(eid, dev.downstream_device_index,
+                                   descriptors);
     }
     if (rc)
     {
@@ -469,6 +496,91 @@ void InventoryManager::sendGetDownstreamFirmwareParametersRequest(
     }
 }
 
+void InventoryManager::updateDownstreamDeviceName(
+    const eid& eid, const DownstreamDeviceIndex& downstreamDeviceIndex,
+    const Descriptors& descriptors)
+{
+    FirmwareDeviceName deviceName =
+        obtainDeviceNameFromDescriptors(descriptors);
+
+    if (deviceName.empty())
+    {
+        deviceName = "Downstream_Device_" +
+                     std::to_string(downstreamDeviceIndex);
+    }
+
+    downstreamDeviceNameMap.emplace(std::make_tuple(eid, downstreamDeviceIndex),
+                                    deviceName);
+}
+
+FirmwareDeviceName InventoryManager::obtainDeviceNameFromDescriptors(
+    const Descriptors& descriptors)
+{
+    FirmwareDeviceName deviceName{};
+    for (const auto& [descriptorType, descriptorData] : descriptors)
+    {
+        if (descriptorType == PLDM_FWUP_ASCII_MODEL_NUMBER_LONG_STRING)
+        {
+            auto modelNumberData = std::get<DescriptorData>(descriptorData);
+            std::string modelNumber(
+                modelNumberData.begin(),
+                std::find(modelNumberData.begin(), modelNumberData.end(), 0x0));
+            if (deviceName.empty())
+            {
+                deviceName = modelNumber;
+            }
+            else
+            {
+                deviceName.insert(0, modelNumber + "_");
+            }
+        }
+        else if (descriptorType == PLDM_FWUP_ASCII_MODEL_NUMBER_SHORT_STRING)
+        {
+            auto modelNumberData = std::get<DescriptorData>(descriptorData);
+            std::string modelNumber(
+                modelNumberData.begin(),
+                std::find(modelNumberData.begin(), modelNumberData.end(), 0x0));
+            if (deviceName.empty())
+            {
+                deviceName = modelNumber;
+            }
+            else
+            {
+                deviceName += "_" + modelNumber;
+            }
+        }
+    }
+
+    return deviceName;
+}
+
+void InventoryManager::updateFirmwareDeviceName(const eid& eid,
+                                                const Descriptors& descriptors)
+{
+    auto config = configurationDiscovery->getConfigurations();
+    FirmwareDeviceName firmwareDeviceName;
+    for (const auto& [configDbusPath, mctpEndpoint] : config)
+    {
+        if (mctpEndpoint.EndpointId == eid)
+        {
+            firmwareDeviceName =
+                configDbusPath.substr(configDbusPath.find_last_of('/') + 1);
+        }
+    }
+
+    if (firmwareDeviceName.empty())
+    {
+        firmwareDeviceName = obtainDeviceNameFromDescriptors(descriptors);
+    }
+
+    if (firmwareDeviceName.empty())
+    {
+        firmwareDeviceName = "Firmware_Device_" + std::to_string(eid);
+    }
+
+    firmwareDeviceNameMap.emplace(eid, firmwareDeviceName);
+}
+
 void InventoryManager::getDownstreamFirmwareParameters(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
@@ -535,6 +647,11 @@ void InventoryManager::getDownstreamFirmwareParameters(
                          activeCompVerStr.length + pendingCompVerStr.length;
         paramTableLen -= sizeof(pldm_component_parameter_entry) +
                          activeCompVerStr.length + pendingCompVerStr.length;
+
+        inventoryItemManager.createInventoryItem(
+            eid,
+            downstreamDeviceNameMap.at(std::make_tuple(eid, compIdentifier)),
+            utils::toString(activeCompVerStr));
     }
 
     switch (downstreamFirmwareParams.transfer_flag)
@@ -653,6 +770,11 @@ void InventoryManager::getFirmwareParameters(
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
     }
+
+    inventoryItemManager.createInventoryItem(
+        eid, firmwareDeviceNameMap.at(eid),
+        utils::toString(activeCompImageSetVerStr));
+
     componentInfoMap.emplace(eid, std::move(componentInfo));
 }
 
