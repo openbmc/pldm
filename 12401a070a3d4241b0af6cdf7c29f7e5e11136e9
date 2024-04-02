@@ -309,6 +309,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41eb4112_94de25a2",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-02T18:16:13Z",
+      "side": 1,
+      "message": "Do you see any advantage of having the function to set the file path for testcases over the static file path?",
+      "parentUuid": "ee0d5717_29400099",
+      "range": {
+        "startLine": 114,
+        "startChar": 9,
+        "endLine": 114,
+        "endChar": 31
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46604230_f011680e",
         "filename": "host-bmc/dbus/type.hpp",
         "patchSetId": 3
@@ -755,6 +779,30 @@
       "side": 1,
       "message": "since FILE PATH is static, not using as suggested but in upcoming commits will change as per suggestion while testing.",
       "parentUuid": "052e8442_e2e277f3",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 64
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2081437_46e727b2",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-02T18:16:13Z",
+      "side": 1,
+      "message": "I do not see the change in existing patch set. Also as mentioned above still testing is pending so marking this comment as unresolved",
+      "parentUuid": "79b3177c_03d92ed8",
       "range": {
         "startLine": 46,
         "startChar": 0,
