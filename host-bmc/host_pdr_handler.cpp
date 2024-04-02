@@ -4,7 +4,10 @@
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>
 #endif
+
 #include "dbus/custom_dbus.hpp"
+#include "dbus/deserialize.hpp"
+#include "dbus/serialize.hpp"
 
 #include <assert.h>
 
@@ -630,6 +633,8 @@ void HostPDRHandler::processHostPDRs(
     {
         updateEntityAssociation(entityAssociations, entityTree, objPathMap,
                                 entityMaps, oemPlatformHandler);
+        pldm::serialize::Serialize::getSerialize().setObjectPathMaps(
+            objPathMap);
         if (oemUtilsHandler)
         {
             oemUtilsHandler->setCoreCount(entityAssociations, entityMaps);

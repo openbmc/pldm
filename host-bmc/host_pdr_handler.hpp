@@ -189,6 +189,17 @@ class HostPDRHandler
         oemUtilsHandler = handler;
     }
 
+    /** @brief Updating the entity object path and entity node in map
+     *
+     * @param[in] path - object path
+     * @param[in] entity - pldm entity node
+     */
+    inline void updateObjectPathMaps(const std::string& path,
+                                     const pldm_entity entity)
+    {
+        objPathMap[path] = entity;
+    }
+
     /** @brief map that captures various terminus information **/
     TLPDRMap tlPDRInfo;
 

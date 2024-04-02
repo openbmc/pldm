@@ -18,7 +18,7 @@ tests = [
   'dbus_to_terminus_effecter_test',
   'utils_test',
   'custom_dbus_test',
-  'serialize_test'
+  'serialize_test',
 ]
 
 foreach t : tests
