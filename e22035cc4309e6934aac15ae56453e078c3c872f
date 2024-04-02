@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd419bda_fddd2568",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-02T07:01:35Z",
+      "side": 1,
+      "message": "nit : classcode or ss is a redundant variable ? we could use std::string classcode \u003d \"0x\";\n\nand then modify it and then pass that itseld to the updateDBusProperty",
+      "range": {
+        "startLine": 78,
+        "startChar": 14,
+        "endLine": 78,
+        "endChar": 36
+      },
+      "revId": "e22035cc4309e6934aac15ae56453e078c3c872f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
