@@ -1,5 +1,7 @@
 #include "custom_dbus.hpp"
 
+#include "serialize.hpp"
+
 namespace pldm
 {
 namespace dbus
