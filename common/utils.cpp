@@ -27,6 +27,11 @@ namespace pldm
 namespace utils
 {
 
+using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
+
+constexpr const char* MCTP_INTERFACE_CC = "au.com.codeconstruct.MCTP.Endpoint1";
+constexpr const char* MCTP_ENDPOINT_RECOVER_METHOD = "Recover";
+
 std::vector<std::vector<uint8_t>> findStateEffecterPDR(
     uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
     const pldm_pdr* repo)
@@ -540,6 +545,27 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
     }
 
     return PLDM_SUCCESS;
+}
+
+void recoverMctpEndpoint(const std::string& endpointObjPath)
+{
+    auto& bus = DBusHandler::getBus();
+    try
+    {
+        std::string service = DBusHandler().getService(endpointObjPath.c_str(),
+                                                       MCTP_INTERFACE_CC);
+
+        auto method = bus.new_method_call(
+            service.c_str(), endpointObjPath.c_str(), MCTP_INTERFACE_CC,
+            MCTP_ENDPOINT_RECOVER_METHOD);
+        bus.call_noreply(method, dbusTimeout);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "failed to make a D-Bus call to recover MCTP Endpoint, ERROR {ERR_EXCEP}",
+            "ERR_EXCEP", e);
+    }
 }
 
 uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
