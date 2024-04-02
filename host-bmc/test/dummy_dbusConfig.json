@@ -1,0 +1,8 @@
+{
+    "store": {
+        "entityTypes": [1234]
+    },
+    "restore": {
+        "entityTypes": [2345]
+    }
+}

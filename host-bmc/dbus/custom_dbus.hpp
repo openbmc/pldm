@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "cpu_core.hpp"
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
@@ -60,8 +61,17 @@ class CustomDBus
      */
     std::optional<std::string> getLocationCode(const std::string& path) const;
 
+    /** @brief Set the microcode property
+     *
+     *  @param[in] path   - The object path
+     *
+     *  @param[in] value  - microcode value
+     */
+    void setMicrocode(const std::string& path, uint32_t value);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
+    std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
 };
 
 } // namespace dbus
