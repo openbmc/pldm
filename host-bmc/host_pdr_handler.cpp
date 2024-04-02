@@ -4,7 +4,10 @@
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>
 #endif
-#include "custom_dbus.hpp"
+
+#include "dbus/custom_dbus.hpp"
+#include "dbus/deserialize.hpp"
+#include "dbus/serialize.hpp"
 
 #include <assert.h>
 
@@ -145,7 +148,7 @@ HostPDRHandler::HostPDRHandler(
         const auto itr = props.find("CurrentHostState");
         if (itr != props.end())
         {
-            PropertyValue value = itr->second;
+            pldm::utils::PropertyValue value = itr->second;
             auto propVal = std::get<std::string>(value);
             if (propVal == "xyz.openbmc_project.State.Host.HostState.Off")
             {
@@ -1131,6 +1134,12 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
     // TODO: Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
 
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
+}
+
+void HostPDRHandler::updateObjectPathMaps(const std::string& path,
+                                          pldm_entity node)
+{
+    objPathMap[path] = node;
 }
 
 } // namespace pldm

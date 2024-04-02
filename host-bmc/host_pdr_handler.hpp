@@ -171,6 +171,14 @@ class HostPDRHandler
      */
     bool isHostUp();
 
+    /** @brief Update objectPathMaps, if path does not exist, you need to add,
+     *         if it exists, replace
+     *
+     * @param[in] path - object path
+     * @param[in] node - pldm entity node pointer
+     */
+    void updateObjectPathMaps(const std::string& path, pldm_entity node);
+
     /** @brief map that captures various terminus information **/
     TLPDRMap tlPDRInfo;
 
