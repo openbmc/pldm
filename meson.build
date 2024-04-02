@@ -46,6 +46,7 @@ conf_data.set('TERMINUS_ID', get_option('terminus-id'))
 conf_data.set('TERMINUS_HANDLE',get_option('terminus-handle'))
 conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))
 conf_data.set_quoted('PLDM_STORE_FILE', '/var/lib/pldm/pldm_store')
+conf_data.set_quoted('DBUS_JSON_FILE', '/usr/share/pldm/dbus-config.json')
 add_project_arguments('-DLIBPLDMRESPONDER', language : ['c','cpp'])
 endif
 if get_option('softoff').allowed()
