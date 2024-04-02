@@ -140,6 +140,14 @@ void TerminusManager::updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
     }
 }
 
+std::string TerminusManager::constructEndpointObjPath(const MctpInfo& mctpInfo)
+{
+    std::string eidStr = std::to_string(std::get<0>(mctpInfo));
+    std::string networkIDStr = std::to_string(std::get<3>(mctpInfo));
+    return std::format("{}/networks/{}/endpoints/{}", MCTPPath, networkIDStr,
+                       eidStr);
+}
+
 void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
 {
     queuedMctpInfos.emplace(mctpInfos);
@@ -661,6 +669,18 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
     requestMsg->hdr.instance_id = instanceIdDb.next(eid);
     auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
                                                responseLen);
+
+    if (rc == PLDM_ERROR_NOT_READY)
+    {
+        // Call Recover() to check enpoint's availability
+        // Set endpoint's availability in mctpInfoTable to false in advance
+        // to prevent message forwarding through this endpoint while mctpd
+        // is checking the endpoint.
+        std::string endpointObjPath =
+            constructEndpointObjPath(mctpInfo.value());
+        pldm::utils::recoverMctpEndpoint(endpointObjPath);
+        updateMctpEndpointAvailability(mctpInfo.value(), false);
+    }
 
     co_return rc;
 }
