@@ -163,6 +163,13 @@ class TerminusManager
     void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                         Availability availability);
 
+    /** @brief Construct MCTP Endpoint object path base on the MCTP endpoint
+     *  info
+     *
+     *  @param[in] mctpInfo - information of the target endpoint
+     */
+    std::string constructEndpointObjPath(const MctpInfo& mctpInfo);
+
   private:
     /** @brief Find the terminus object pointer in termini list.
      *
