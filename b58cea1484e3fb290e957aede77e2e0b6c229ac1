@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d28d9cd2_d36b8c2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-02T06:30:06Z",
+      "side": 1,
+      "message": "Hi Kamal, since this is the infrastructure commit for storing the PLDM data as mentioned, can we have a separate commit for restoring the PLDM data information?\nor we could add restore files in the same commit which would give us the whole infrastructure in a single commit.\n\nI see the restore added in a commit on top of this which talks about CPU core store and restore. Rather can we have a commit split?",
+      "revId": "b58cea1484e3fb290e957aede77e2e0b6c229ac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dce7482_c2e6a9b0",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-02T06:30:06Z",
+      "side": 1,
+      "message": "Can we add a error statement before we return?",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 33,
+        "endChar": 14
+      },
+      "revId": "b58cea1484e3fb290e957aede77e2e0b6c229ac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01430c95_32cea1b1",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-02T06:30:06Z",
+      "side": 1,
+      "message": "error statement ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 14
+      },
+      "revId": "b58cea1484e3fb290e957aede77e2e0b6c229ac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "add49458_56865362",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-02T06:30:06Z",
+      "side": 1,
+      "message": "error statement ?",
+      "range": {
+        "startLine": 59,
+        "startChar": 12,
+        "endLine": 59,
+        "endChar": 18
+      },
+      "revId": "b58cea1484e3fb290e957aede77e2e0b6c229ac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b40c0b18_789c60c2",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-02T06:30:06Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 81,
+        "startChar": 24,
+        "endLine": 81,
+        "endChar": 35
+      },
+      "revId": "b58cea1484e3fb290e957aede77e2e0b6c229ac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "805a5dd4_0d524709",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-02T06:30:06Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 98,
+        "startChar": 28,
+        "endLine": 98,
+        "endChar": 39
+      },
+      "revId": "b58cea1484e3fb290e957aede77e2e0b6c229ac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cc5b9fa_d89f3dff",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-02T06:30:06Z",
+      "side": 1,
+      "message": "add an error statement if needed?",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 14
+      },
+      "revId": "b58cea1484e3fb290e957aede77e2e0b6c229ac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
