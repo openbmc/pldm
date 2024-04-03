@@ -162,6 +162,14 @@ HostPDRHandler::HostPDRHandler(
                 this->sensorMap.clear();
                 this->responseReceived = false;
                 this->mergedHostParents = false;
+
+                // After a power off , the remote nodes will be deleted
+                // from the entity association tree, making the nodes point
+                // to junk values, so set them to nullptr
+                for (const auto& element : this->objPathMap)
+                {
+                    this->objPathMap[element.first] = nullptr;
+                }
             }
         }
     });
@@ -1128,6 +1136,18 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
     // TODO: Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
 
+    for (const auto& entity : objPathMap)
+    {
+        pldm_entity node = pldm_entity_extract(entity.second);
+
+        switch (node.entity_type)
+        {
+            case 32903:
+                CustomDBus::getCustomDBus().implementCpuCoreInterface(
+                    entity.first);
+                break;
+        }
+    }
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
 }
 

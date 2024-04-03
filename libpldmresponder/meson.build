@@ -30,6 +30,7 @@ sources = [
   '../host-bmc/dbus/custom_dbus.cpp',
   '../host-bmc/dbus/serialize.cpp',
   '../host-bmc/dbus/deserialize.cpp',
+  '../host-bmc/dbus/cpu_core.cpp',
   'event_parser.cpp'
 ]
 
