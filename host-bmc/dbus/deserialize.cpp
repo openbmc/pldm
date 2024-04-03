@@ -1,5 +1,5 @@
 #include "deserialize.hpp"
-
+#include "cpu_core.hpp"
 #include "custom_dbus.hpp"
 #include "serialize.hpp"
 
@@ -22,7 +22,20 @@ using Json = nlohmann::json;
 using callback =
     std::function<void(const std::string& path, PropertyMap values)>;
 
-std::unordered_map<std::string, callback> ibmDbusHandler{};
+std::unordered_map<std::string, callback> ibmDbusHandler{
+      {"CPUCore",
+     [](const std::string& path, Properties values) {
+    if (values.contains("microcode"))
+    {
+        pldm::dbus::CustomDBus::getCustomDBus().setMicrocode(
+            path, std::get<uint32_t>(values.at("microcode")));
+    }
+    else
+    {
+        pldm::dbus::CustomDBus::getCustomDBus().implementCpuCoreInterface(path);
+    }
+}}
+};
 
 std::pair<std::set<uint16_t>, std::set<uint16_t>>
     getEntityTypes(const fs::path& path)

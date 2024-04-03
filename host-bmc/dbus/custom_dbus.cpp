@@ -29,5 +29,25 @@ std::optional<std::string>
     return std::nullopt;
 }
 
+void CustomDBus::implementCpuCoreInterface(const std::string& path)
+{
+    if (cpuCore.find(path) == cpuCore.end())
+    {
+        cpuCore.emplace(
+            path, std::make_unique<CPUCore>(pldm::utils::DBusHandler::getBus(),
+                                            path.c_str()));
+    }
+}
+
+void CustomDBus::setMicrocode(const std::string& path, uint32_t value)
+{
+    if (cpuCore.find(path) == cpuCore.end())
+    {
+        cpuCore.emplace(
+            path, std::make_unique<CPUCore>(pldm::utils::DBusHandler::getBus(),
+                                            path.c_str()));
+    }
+    cpuCore.at(path)->microcode(value);
+}
 } // namespace dbus
 } // namespace pldm

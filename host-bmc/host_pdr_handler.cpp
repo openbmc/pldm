@@ -160,6 +160,15 @@ HostPDRHandler::HostPDRHandler(
                 this->sensorMap.clear();
                 this->responseReceived = false;
                 this->mergedHostParents = false;
+                this->objMapIndex = objPathMap.begin();
+
+                // After a power off , the remote nodes will be deleted
+                // from the entity association tree, making the nodes point
+                // to junk values, so set them to nullptr
+                for (const auto& element : this->objPathMap)
+                {
+                    this->objPathMap[element.first] = nullptr;
+                }
             }
         }
     });

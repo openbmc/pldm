@@ -60,8 +60,29 @@ class CustomDBus
      */
     std::optional<std::string> getLocationCode(const std::string& path) const;
 
+    /** @brief Implement CpuCore Interface
+     *  @param[in] path - The object path
+     *
+     * @note This API will also implement the following interface
+     *       xyz.openbmc_project.Object.Enable::Enabled dbus property
+     *       which is mapped with the "Processor:Enabled" Redfish property
+     *       to do either enable or disable the particular resource
+     *       via Redfish client so the Enabled dbus property needs to host
+     *       in the PLDM created core inventory item object.
+     */
+    void implementCpuCoreInterface(const std::string& path);
+
+    /** @brief Set the microcode property
+     *
+     *  @param[in] path   - The object path
+     *
+     *  @param[in] value  - microcode value
+     */
+    void setMicrocode(const std::string& path, uint32_t value);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
+    std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
 };
 
 } // namespace dbus
