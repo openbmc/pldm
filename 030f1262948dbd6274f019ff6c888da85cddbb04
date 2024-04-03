@@ -72,6 +72,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "357d4398_cf299dbd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T17:49:21Z",
+      "side": 1,
+      "message": "could you please add what test case you performed.",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b88a645_a3a38c5d",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
         "patchSetId": 2
@@ -118,6 +135,57 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8bea7ff2_e6a0c85b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T17:49:21Z",
+      "side": 1,
+      "message": "not sure here, why are you checking object creation is empty?\ninstead use try catch mechanism if object creation throws an error.",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff5748b2_9d467521",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T17:49:21Z",
+      "side": 1,
+      "message": "not sure here, why are you checking object creation is empty?",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11403a03_430da434",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T17:49:21Z",
+      "side": 1,
+      "message": "TYPE is missing from argument.",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f01d94f_240d6dcb",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
         "patchSetId": 2
@@ -158,6 +226,47 @@
         "endLine": 104,
         "endChar": 56
       },
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f637392_573adeb9",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T17:49:21Z",
+      "side": 1,
+      "message": "+1 you could optimise this code.",
+      "parentUuid": "8e9a9d83_e83819ff",
+      "range": {
+        "startLine": 100,
+        "startChar": 2,
+        "endLine": 104,
+        "endChar": 56
+      },
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdcfca81_ed12a2b5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T17:49:21Z",
+      "side": 1,
+      "message": "we could move this PLDM_ERROR_UNSUPPORTED_PLDM_CMD to .hpp, no need to create function here.",
       "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
