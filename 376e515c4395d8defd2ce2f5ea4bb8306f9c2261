@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85db3f93_e89d64df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "Hey riya, this looks close - just minor formatting issues.",
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8b863a7_7ef479ba",
+        "filename": "common/test/mocked_utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "GetManagedObject",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 12
+      },
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1770dd6c_757844c3",
+        "filename": "common/test/mocked_utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "GetManagedObject1 probably ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 6,
+        "endLine": 35,
+        "endChar": 18
+      },
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "027fc9ec_aeb9963a",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "can you add checks for comparing Interfacename \u0026 object path.",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 16,
+        "endChar": 40
+      },
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03916095_0fc4ed00",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "alignment issue.",
+      "range": {
+        "startLine": 322,
+        "startChar": 8,
+        "endLine": 323,
+        "endChar": 71
+      },
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8fd1ca_07e92462",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "wrapping issue.",
+      "range": {
+        "startLine": 328,
+        "startChar": 8,
+        "endLine": 329,
+        "endChar": 22
+      },
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af24dd3f_534c18a6",
+        "filename": "common/utils.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "alignment issue.",
+      "range": {
+        "startLine": 334,
+        "startChar": 5,
+        "endLine": 336,
+        "endChar": 58
+      },
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2368e5f_d98a95c1",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-03T05:10:48Z",
+      "side": 1,
+      "message": "need spacing here.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "376e515c4395d8defd2ce2f5ea4bb8306f9c2261",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
