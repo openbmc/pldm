@@ -22,7 +22,20 @@ using Json = nlohmann::json;
 using callback =
     std::function<void(const std::string& path, PropertyMap values)>;
 
-std::unordered_map<std::string, callback> dBusInterfaceHandler{};
+std::unordered_map<std::string, callback> dBusInterfaceHandler{
+    {"CPUCore",
+     [](const std::string& path, PropertyMap values) {
+    if (values.contains("microcode"))
+    {
+        pldm::dbus::CustomDBus::getCustomDBus().setMicrocode(
+            path, std::get<uint32_t>(values.at("microcode")));
+    }
+    else
+    {
+        pldm::dbus::CustomDBus::getCustomDBus().implementCpuCoreInterface(path);
+    }
+}},
+};
 
 std::pair<std::set<uint16_t>, std::set<uint16_t>>
     getEntityTypes(const fs::path& path)
