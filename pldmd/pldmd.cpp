@@ -5,6 +5,7 @@
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
 #include "fw-update/manager.hpp"
+#include "host-bmc/dbus/deserialize.hpp"
 #include "invoker.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
@@ -302,6 +303,8 @@ int main(int argc, char** argv)
     dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
         bus, "/xyz/openbmc_project/pldm");
+
+    pldm::deserialize::restoreDbusObj(hostPDRHandler.get());
 
 #endif
 

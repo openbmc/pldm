@@ -6,6 +6,7 @@ test_sources = [
   '../../common/utils.cpp',
   '../utils.cpp',
   '../dbus/custom_dbus.cpp',
+  '../dbus/cpu_core.cpp',
   '../dbus/serialize.cpp',
 ]
 
