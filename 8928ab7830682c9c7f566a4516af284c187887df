@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fca5d76_1d784b7c",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:17:32Z",
+      "side": 1,
+      "message": "please remove implicit type cast, since lg2 supports uint16_t type.\napplicable all over the patch.",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c53f2b7_1d5cc344",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:17:32Z",
+      "side": 1,
+      "message": "i can see many places trace is incomplete. eg.\nhow this trace will pring in json and journal-\u003e\nEncoding Transfer Complete response of \u00279\u0027 failed - \u00271\u0027 \u003d\u003e what do you understand from it?\n\nit should be properly readable as like\u003d\u003e\n\nEncoding of Transfer response failed for endpoint ID \u00279\u0027 and response code is \u00271\u0027.\n\n\nplease correct the all over the patch.",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "893f0074_4e35d59a",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:17:32Z",
+      "side": 1,
+      "message": "please improve tracing:\n\nPackage size \u0027{PKG_SIZE}\u0027 does not match calculated package size \u0027{CALCULATED_PACKAGE_SIZE}\u0027",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cfb7933_cb189234",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:17:32Z",
+      "side": 1,
+      "message": "here also improve the trace by adding both header length.",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
