@@ -1142,6 +1142,16 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
     // TODO: Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
 
+    for (const auto& entity : objPathMap)
+    {
+        switch (entity.second.entity_type)
+        {
+            case 32903:
+                CustomDBus::getCustomDBus().implementCpuCoreInterface(
+                    entity.first);
+                break;
+        }
+    }
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
 }
 
