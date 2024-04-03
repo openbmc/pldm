@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96580856_dbb06295",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:26:32Z",
+      "side": 1,
+      "message": "please improve like as suggested: \nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/70327/comment/8c53f2b7_1d5cc344/",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05f74961_49b51707",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:26:32Z",
+      "side": 1,
+      "message": "please change as per below:\nHost Effecter json file \u0027{PATH}\u0027 does not exist.",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "086daefe_f09969f9",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:26:32Z",
+      "side": 1,
+      "message": "please improve trace here:\nHost is not up and Current host state is:{CURRENT_HOST_STATE}",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "559c3ed7_9e0e98c4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-03T18:26:32Z",
+      "side": 1,
+      "message": "what is LIBPLDM_ERROR error? it\u0027s just an status of API.\nif it\u0027s mentioned in lg2 json like : LIBPLDM_ERROR:-1  \u003d\u003e how do you know what is the error?\nplease correct it.",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
