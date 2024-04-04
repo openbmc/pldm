@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66855cd2_77788f84",
+        "filename": "common/utils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T05:30:51Z",
+      "side": 1,
+      "message": "The issue is packed attribute I tried removing and this is the error which I pasted in last time also - \nutils.cpp:90:33: error: cannot bind packed field \u0027node_entity.pldm_entity::entity_type\u0027 to \u0027lg2::details::header_str_conversion_t\u003cshort unsigned int\u0026\u003e\u0027 {aka \u0027short unsigned int\u0026\u0027}",
+      "parentUuid": "8fca5d76_1d784b7c",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c53f2b7_1d5cc344",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 6
@@ -31,6 +49,24 @@
       "writtenOn": "2024-04-03T18:17:32Z",
       "side": 1,
       "message": "i can see many places trace is incomplete. eg.\nhow this trace will pring in json and journal-\u003e\nEncoding Transfer Complete response of \u00279\u0027 failed - \u00271\u0027 \u003d\u003e what do you understand from it?\n\nit should be properly readable as like\u003d\u003e\n\nEncoding of Transfer response failed for endpoint ID \u00279\u0027 and response code is \u00271\u0027.\n\n\nplease correct the all over the patch.",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee107245_8c58607a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T05:30:51Z",
+      "side": 1,
+      "message": "I misunderstood one of the comments, fixed it!",
+      "parentUuid": "8c53f2b7_1d5cc344",
       "revId": "8928ab7830682c9c7f566a4516af284c187887df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc91d2a6_1440325a",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T05:30:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "893f0074_4e35d59a",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3cfb7933_cb189234",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-04-03T18:17:32Z",
       "side": 1,
       "message": "here also improve the trace by adding both header length.",
+      "revId": "8928ab7830682c9c7f566a4516af284c187887df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f0732f3_2dd7af84",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T05:30:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cfb7933_cb189234",
       "revId": "8928ab7830682c9c7f566a4516af284c187887df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
