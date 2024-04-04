@@ -331,6 +331,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a07e5c0_992eb68c",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-04T13:45:25Z",
+      "side": 1,
+      "message": "there is no alternate solution to test the functionality.please suggest if you have any idea.",
+      "parentUuid": "41eb4112_94de25a2",
+      "range": {
+        "startLine": 114,
+        "startChar": 9,
+        "endLine": 114,
+        "endChar": 31
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46604230_f011680e",
@@ -803,6 +827,30 @@
       "side": 1,
       "message": "I do not see the change in existing patch set. Also as mentioned above still testing is pending so marking this comment as unresolved",
       "parentUuid": "79b3177c_03d92ed8",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 64
+      },
+      "revId": "12401a070a3d4241b0af6cdf7c29f7e5e11136e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be559ff3_4b95c80b",
+        "filename": "meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-04T13:45:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2081437_46e727b2",
       "range": {
         "startLine": 46,
         "startChar": 0,
