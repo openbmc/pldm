@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd69dfb7_fcc26bfb",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-04T17:31:36Z",
+      "side": 1,
+      "message": "this should work without any typecasting, i have done it already in earlier commit.",
+      "revId": "96a79c8981bf4f1a6db605ea79f7c92b3e528b60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e3e3fde_55b03a7b",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-04T17:31:36Z",
+      "side": 1,
+      "message": "c_str() is not required.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 14
+      },
+      "revId": "96a79c8981bf4f1a6db605ea79f7c92b3e528b60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f5a4e5a_562de01a",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-04T17:31:36Z",
+      "side": 1,
+      "message": "please remove typecasting.",
+      "revId": "96a79c8981bf4f1a6db605ea79f7c92b3e528b60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b557d212_124359c4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-04T17:31:36Z",
+      "side": 1,
+      "message": "please remove type casting",
+      "revId": "96a79c8981bf4f1a6db605ea79f7c92b3e528b60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
