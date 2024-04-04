@@ -89,6 +89,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "807ab381_8411b8a5",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-04-04T05:01:32Z",
+      "side": 1,
+      "message": "Add these newly supported types in test at oem/ibm/test/libpldmresponder_fileio_test.cpp",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b88a645_a3a38c5d",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
         "patchSetId": 2
@@ -209,6 +226,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99845182_5524a6ac",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-04-04T05:01:32Z",
+      "side": 1,
+      "message": "Can you be more specific here as which type is failed ?",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e9a9d83_e83819ff",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
         "patchSetId": 2
@@ -267,6 +301,74 @@
       "writtenOn": "2024-04-03T17:49:21Z",
       "side": 1,
       "message": "we could move this PLDM_ERROR_UNSUPPORTED_PLDM_CMD to .hpp, no need to create function here.",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "919ccdef_4fa36bd2",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-04-04T05:01:32Z",
+      "side": 1,
+      "message": "Move this to hpp",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b3680a4_8187a453",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-04-04T05:01:32Z",
+      "side": 1,
+      "message": "Move this to hpp",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fedb8ad0_d8882626",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-04-04T05:01:32Z",
+      "side": 1,
+      "message": "Move this to hpp",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13e8f99_149f634d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-04-04T05:01:32Z",
+      "side": 1,
+      "message": "Move this to hpp",
       "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
