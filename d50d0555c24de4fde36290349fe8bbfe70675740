@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f8ee5c_21c1ba9b",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T11:22:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96580856_dbb06295",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05f74961_49b51707",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-04-03T18:26:32Z",
       "side": 1,
       "message": "please change as per below:\nHost Effecter json file \u0027{PATH}\u0027 does not exist.",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d01486f_7bb8d2ae",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T11:22:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05f74961_49b51707",
       "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "383be294_3fe69efd",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T11:22:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "086daefe_f09969f9",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "559c3ed7_9e0e98c4",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-04-03T18:26:32Z",
       "side": 1,
       "message": "what is LIBPLDM_ERROR error? it\u0027s just an status of API.\nif it\u0027s mentioned in lg2 json like : LIBPLDM_ERROR:-1  \u003d\u003e how do you know what is the error?\nplease correct it.",
+      "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef7cbdf0_4fd2f0ee",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-04T11:22:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "559c3ed7_9e0e98c4",
       "revId": "d50d0555c24de4fde36290349fe8bbfe70675740",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
