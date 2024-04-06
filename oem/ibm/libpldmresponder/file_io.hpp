@@ -117,8 +117,7 @@ Response transferAll(DMAInterface* intf, uint8_t command, fs::path& path,
     int file = open(path.string().c_str(), flags);
     if (file == -1)
     {
-        error("File does not exist, path = {FILE_PATH}", "FILE_PATH",
-              path.string());
+        error("File at path '{PATH}' does not exist", "PATH", path.string());
         encode_rw_file_memory_resp(instanceId, command, PLDM_ERROR, 0,
                                    responsePtr);
         return response;

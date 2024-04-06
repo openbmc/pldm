@@ -41,16 +41,15 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
     catch (const std::exception& e)
     {
         error(
-            "Get keyword error from dbus interface :{KEYWORD_INTF} ERROR={ERR_EXCEP}",
-            "KEYWORD_INTF", keywrdInterface, "ERR_EXCEP", e.what());
+            "Get keyword error from dbus interface {INTERFACE}, error - {ERROR}",
+            "INTERFACE", keywrdInterface, "ERROR", e);
     }
 
     uint32_t keywrdSize = std::get<std::vector<byte>>(keywrd).size();
     if (length < keywrdSize)
     {
-        error(
-            "length requested is less the keyword size, length:{LEN} keyword size:{KEYWORD_SIZE}",
-            "LEN", length, "KEYWORD_SIZE", keywrdSize);
+        error("Length '{LENGTH}' requested is less the keyword size '{SIZE}'",
+              "LENGTH", length, "SIZE", keywrdSize);
         return PLDM_ERROR_INVALID_DATA;
     }
 
@@ -69,8 +68,8 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
     auto fd = open(keywrdFilePath, std::ios::out | std::ofstream::binary);
     if (!keywrdFile)
     {
-        error("VPD keyword file open error: {KEYWORD_FILE_PATH} errno: {ERR}",
-              "KEYWORD_FILE_PATH", keywrdFilePath, "ERR", errno);
+        error("VPD keyword file '{PATH}' open failed, error - {ERROR}", "PATH",
+              keywrdFilePath, "ERROR", errno);
         pldm::utils::reportError(
             "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileOpenError");
         return PLDM_ERROR;
@@ -78,8 +77,8 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
 
     if (offset > keywrdSize)
     {
-        error("Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE}",
-              "OFFSET", offset, "FILE_SIZE", keywrdSize);
+        error("Offset '{OFFSET}' exceeds file size '{SIZE}'", "OFFSET", offset,
+              "SIZE", keywrdSize);
         return PLDM_DATA_OUT_OF_RANGE;
     }
 
@@ -90,7 +89,9 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
     auto returnCode = lseek(fd, offset, SEEK_SET);
     if (returnCode == -1)
     {
-        error("Could not find keyword data at given offset. File Seek failed");
+        error(
+            "Could not find keyword data at given offset. File Seek failed with response code '{RC}'",
+            "RC", returnCode);
         return PLDM_ERROR;
     }
 
@@ -98,8 +99,7 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
                      keywrdSize);
     if (keywrdFile.bad())
     {
-        error("Error while writing to file: {KEYWORD_FILE_PATH}",
-              "KEYWORD_FILE_PATH", keywrdFilePath);
+        error("Error while writing to file '{PATH}'", "PATH", keywrdFilePath);
     }
     keywrdFile.close();
 
@@ -107,8 +107,8 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
     fs::remove(keywrdFilePath);
     if (rc)
     {
-        error("Read error for keyword file with size: {KEYWORD_SIZE}",
-              "KEYWORD_SIZE", keywrdSize);
+        error("Read error for keyword file with size '{SIZE}'", "SIZE",
+              keywrdSize);
         pldm::utils::reportError(
             "xyz.openbmc_project.PLDM.Error.readKeywordHandler.keywordFileReadError");
         return PLDM_ERROR;

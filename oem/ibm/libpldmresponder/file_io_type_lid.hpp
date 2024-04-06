@@ -129,7 +129,7 @@ class LidHandler : public FileHandler
         auto fd = open(lidPath.c_str(), flags, S_IRUSR);
         if (fd == -1)
         {
-            error("Could not open file for writing  {LID_PATH}", "LID_PATH",
+            error("Could not open file '{LID_PATH}' for writing", "LID_PATH",
                   lidPath.c_str());
             return PLDM_ERROR;
         }
@@ -138,7 +138,8 @@ class LidHandler : public FileHandler
         rc = transferFileData(lidPath, false, offset, length, address);
         if (rc != PLDM_SUCCESS)
         {
-            error("writeFileFromMemory failed with rc= {RC}", "RC", rc);
+            error("WriteFileFromMemory failed with response code '{RC}'", "RC",
+                  rc);
             return rc;
         }
         if (lidType == PLDM_FILE_TYPE_LID_MARKER)
@@ -207,8 +208,8 @@ class LidHandler : public FileHandler
             if (offset > fileSize)
             {
                 error(
-                    "Offset exceeds file size, OFFSET={OFFSET} FILE_SIZE={FILE_SIZE} FILE_HANDLE{FILE_HANDLE}",
-                    "OFFSET", offset, "FILE_SIZE", fileSize, "FILE_HANDLE",
+                    "Offset '{OFFSET}' exceeds file size '{SIZE}', file handle '{FILE_HANDLE}'",
+                    "OFFSET", offset, "SIZE", fileSize, "FILE_HANDLE",
                     fileHandle);
                 return PLDM_DATA_OUT_OF_RANGE;
             }
@@ -218,30 +219,31 @@ class LidHandler : public FileHandler
             flags = O_WRONLY | O_CREAT | O_TRUNC | O_SYNC;
             if (offset > 0)
             {
-                error("Offset is non zero in a new file");
+                error("Offset '{OFFSET}' is non zero in a new file", "OFFSET",
+                      offset);
                 return PLDM_DATA_OUT_OF_RANGE;
             }
         }
         auto fd = open(lidPath.c_str(), flags, S_IRUSR);
         if (fd == -1)
         {
-            error("could not open file {LID_PATH}", "LID_PATH",
+            error("Could not open file '{LID_PATH}'", "LID_PATH",
                   lidPath.c_str());
             return PLDM_ERROR;
         }
         rc = lseek(fd, offset, SEEK_SET);
         if (rc == -1)
         {
-            error("lseek failed, ERROR={ERR}, OFFSET={OFFSET}", "ERR", errno,
-                  "OFFSET", offset);
+            error("Lseek at offset '{OFFSET}' failed, error - {ERROR}", "ERROR",
+                  errno, "OFFSET", offset);
             return PLDM_ERROR;
         }
         rc = ::write(fd, buffer, length);
         if (rc == -1)
         {
             error(
-                "file write failed, ERROR={ERR}, LENGTH={LEN}, OFFSET={OFFSET}",
-                "ERR", errno, "LEN", length, "OFFSET", offset);
+                "File write of length '{LENGTH}' at offset '{OFFSET}' failed, error - {ERROR}",
+                "LENGTH", length, "OFFSET", offset, "ERROR", errno);
             return PLDM_ERROR;
         }
         else if (rc == static_cast<int>(length))

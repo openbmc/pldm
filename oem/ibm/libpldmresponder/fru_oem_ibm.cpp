@@ -158,8 +158,8 @@ void Handler::dbus_map_update(const std::string& adapterObjPath,
     }
     catch (const std::exception& e)
     {
-        error("Failed to set '{PROPERTY}' property: {ERROR}", "PROPERTY",
-              propertyName, "ERROR", e);
+        error("Failed to set '{PROPERTY}' property, error - {ERROR}",
+              "PROPERTY", propertyName, "ERROR", e);
     }
 }
 
@@ -184,7 +184,8 @@ void Handler::setFirmwareUAK(const std::vector<uint8_t>& data)
     }
     catch (const std::exception& e)
     {
-        error("Failed to make a DBus call to VPD manager: {ERROR}", "ERROR", e);
+        error("Failed to make a DBus call to VPD manager, error - {ERROR}",
+              "ERROR", e);
     }
 }
 
