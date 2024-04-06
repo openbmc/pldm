@@ -145,16 +145,17 @@ class Handler
         auto eid = key.eid;
         if (this->handlers.contains(key))
         {
-            error("The eid:InstanceID {EID}:{IID} is using.", "EID",
-                  (unsigned)key.eid, "IID", (unsigned)key.instanceId);
+            info("Instance ID expiry for EID '{EID}' using InstanceID '{INSTANCEID}'", "EID",
+                 (unsigned)key.eid, "INSTANCEID", (unsigned)key.instanceId);
             auto& [request, responseHandler,
                    timerInstance] = this->handlers[key];
             request->stop();
             auto rc = timerInstance->stop();
             if (rc)
             {
-                error("Failed to stop the instance ID expiry timer. RC = {RC}",
-                      "RC", static_cast<int>(rc));
+                error(
+                    "Failed to stop the instance ID expiry timer, response code '{RC}'",
+                    "RC", static_cast<int>(rc));
             }
             // Call response handler with an empty response to indicate no
             // response
@@ -205,7 +206,9 @@ class Handler
         if (rc)
         {
             instanceIdDb.free(requestMsg->key.eid, requestMsg->key.instanceId);
-            error("Failure to send the PLDM request message");
+            error(
+                "Failure to send the PLDM request message, repsonse code '{RC}'",
+                "RC", rc);
             endpointMessageQueues[eid]->activeRequest = false;
             return rc;
         }
@@ -219,8 +222,8 @@ class Handler
         {
             instanceIdDb.free(requestMsg->key.eid, requestMsg->key.instanceId);
             error(
-                "Failed to start the instance ID expiry timer. RC = {ERR_EXCEP}",
-                "ERR_EXCEP", e.what());
+                "Failed to start the instance ID expiry timer, error - {ERROR}",
+                "ERROR", e);
             endpointMessageQueues[eid]->activeRequest = false;
             return PLDM_ERROR;
         }
@@ -251,8 +254,8 @@ class Handler
 
         if (handlers.contains(key))
         {
-            error("The eid:InstanceID {EID}:{IID} is using.", "EID",
-                  (unsigned)eid, "IID", (unsigned)instanceId);
+            info("Register request for EID '{EID}' is using InstanceID '{INSTANCEID}'", "EID",
+                 (unsigned)eid, "INSTANCEID", (unsigned)instanceId);
             return PLDM_ERROR;
         }
 
@@ -297,8 +300,9 @@ class Handler
             auto rc = timerInstance->stop();
             if (rc)
             {
-                error("Failed to stop the instance ID expiry timer. RC = {RC}",
-                      "RC", static_cast<int>(rc));
+                error(
+                    "Failed to stop the instance ID expiry timer, response code '{RC}'",
+                    "RC", static_cast<int>(rc));
             }
             responseHandler(eid, response, respMsgLen);
             instanceIdDb.free(key.eid, key.instanceId);
