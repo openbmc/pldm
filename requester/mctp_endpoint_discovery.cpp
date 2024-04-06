@@ -29,7 +29,9 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
     }
     catch (const std::exception& e)
     {
-        error("Failed to call the D-Bus Method: {ERROR}", "ERROR", e);
+        error(
+            "Failed to call the D-Bus Method getManagedObject for service '{SERVICE}' on path '{PATH}' , error - {ERROR}",
+            "SERVICE", MCTPService, "PATH", MCTPPath, "ERROR", e);
         return;
     }
 
