@@ -48,8 +48,9 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("getSubtree call failed with, {ERROR} {PATH} {INTERFACE}",
-              "ERROR", e, "PATH", MCTPPath, "INTERFACE", MCTPInterface);
+        error(
+            "Failed to getSubtree call at path '{PATH}' and interface '{INTERFACE}', error - {ERROR} ",
+            "ERROR", e, "PATH", MCTPPath, "INTERFACE", MCTPInterface);
         return;
     }
 
@@ -76,8 +77,9 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                     if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                         types.end())
                     {
-                        info("Adding Endpoint networkId={NETWORK} EID={EID}",
-                             "NETWORK", networkId, "EID", unsigned(eid));
+                        info(
+                            "Adding Endpoint networkId '{NETWORK}' and EID '{EID}'",
+                            "NETWORK", networkId, "EID", unsigned(eid));
                         mctpInfos.emplace_back(
                             MctpInfo(eid, emptyUUID, "", networkId));
                     }
@@ -86,7 +88,7 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
             catch (const sdbusplus::exception_t& e)
             {
                 error(
-                    "Error reading MCTP Endpoint property, {ERROR} {SERVICE} {PATH}",
+                    "Error reading MCTP Endpoint property at path '{PATH}' and service '{SERVICE}', error - {ERROR}",
                     "ERROR", e, "SERVICE", service, "PATH", path);
                 return;
             }
@@ -109,8 +111,9 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Error reading MCTP Endpoint addedInterace message, {ERROR}",
-              "ERROR", e);
+        error(
+            "Error reading MCTP Endpoint added interface message, error - {ERROR}",
+            "ERROR", e);
         return;
     }
 
@@ -130,8 +133,9 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                     types.end())
                 {
-                    info("Adding Endpoint networkId={NETWORK} EID={EID}",
-                         "NETWORK", networkId, "EID", unsigned(eid));
+                    info(
+                        "Adding Endpoint networkId '{NETWORK}' and EID '{EID}'",
+                        "NETWORK", networkId, "EID", unsigned(eid));
                     mctpInfos.emplace_back(
                         MctpInfo(eid, emptyUUID, "", networkId));
                 }
@@ -165,8 +169,9 @@ void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
     }
     for (const auto& mctpInfo : removedInfos)
     {
-        info("Removing Endpoint networkId={NETWORK} EID={EID}", "NETWORK",
-             std::get<3>(mctpInfo), "EID", unsigned(std::get<0>(mctpInfo)));
+        info("Removing Endpoint networkId '{NETWORK}' and  EID '{EID}'",
+             "NETWORK", std::get<3>(mctpInfo), "EID",
+             unsigned(std::get<0>(mctpInfo)));
         existingMctpInfos.erase(std::remove(existingMctpInfos.begin(),
                                             existingMctpInfos.end(), mctpInfo),
                                 existingMctpInfos.end());

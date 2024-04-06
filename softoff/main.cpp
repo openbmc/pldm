@@ -25,14 +25,14 @@ int main()
     if (softPower.isError())
     {
         error(
-            "Host failed to gracefully shutdown, exiting pldm-softpoweroff app");
+            "Failure in gracefully shutdown by remote terminus, exiting pldm-softpoweroff app");
         return -1;
     }
 
     if (softPower.isCompleted())
     {
         error(
-            "Host current state is not Running, exiting pldm-softpoweroff app");
+            "Remote terminus current state is not Running, exiting pldm-softpoweroff app");
         return 0;
     }
 
@@ -41,7 +41,7 @@ int main()
     if (softPower.hostSoftOff(event))
     {
         error(
-            "pldm-softpoweroff:Failure in sending soft off request to the host. Exiting pldm-softpoweroff app");
+            "Failure in sending soft off request to the remote terminus. Exiting pldm-softpoweroff app");
         return -1;
     }
 
@@ -50,7 +50,7 @@ int main()
         pldm::utils::reportError(
             "pldm soft off: Waiting for the host soft off timeout");
         error(
-            "PLDM host soft off: ERROR! Wait for the host soft off timeout. Exit the pldm-softpoweroff");
+            "ERROR! Waiting for the host soft off timeout. Exit the pldm-softpoweroff");
         return -1;
     }
 
