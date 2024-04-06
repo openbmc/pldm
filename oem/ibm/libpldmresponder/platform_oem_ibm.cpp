@@ -57,8 +57,8 @@ int sendBiosAttributeUpdateEvent(
     catch (const sdbusplus::exception_t& e)
     {
         error(
-            "Error in getting current host state, {EXCEP_NAME} Continue sending the bios attribute update event ...",
-            "EXCEP_NAME", e.name());
+            "Error in getting current remote terminus state, error - '{ERROR}' Continue sending the bios attribute update event ...",
+            "ERROR", e);
     }
 
     auto instanceId = instanceIdDb->next(eid);
@@ -77,7 +77,7 @@ int sendBiosAttributeUpdateEvent(
     if (rc != PLDM_SUCCESS)
     {
         error(
-            "BIOS Attribute update event message encode failure. PLDM error code = {RC}",
+            "Failed to encode BIOS Attribute update event message, response code '{RC}'",
             "RC", lg2::hex, rc);
         instanceIdDb->free(eid, instanceId);
         return rc;
@@ -97,7 +97,7 @@ int sendBiosAttributeUpdateEvent(
         if (rc || completionCode)
         {
             error(
-                "Failed to decode BIOS Attribute update platform_event_message_resp: rc = {RC}, cc= {CC}",
+                "Failed to decode BIOS Attribute update platform event message response with response code '{RC}' and completion code '{CC}'",
                 "RC", rc, "CC", static_cast<unsigned>(completionCode));
         }
     };
@@ -107,7 +107,8 @@ int sendBiosAttributeUpdateEvent(
     if (rc)
     {
         error(
-            "Failed to send BIOS Attribute update the platform event message");
+            "Failed to send BIOS Attribute update the platform event message, response code '{RC}'",
+            "RC", rc);
     }
 
     return rc;
