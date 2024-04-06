@@ -75,8 +75,8 @@ class RequestRetryTimer
         }
         catch (const std::runtime_error& e)
         {
-            error("Failed to start the request timer. RC = {ERR_EXCEP}",
-                  "ERR_EXCEP", e.what());
+            error("Failed to start the request timer, error - {ERROR}", "ERROR",
+                  e);
             return PLDM_ERROR;
         }
 
@@ -89,8 +89,8 @@ class RequestRetryTimer
         auto rc = timer.stop();
         if (rc)
         {
-            error("Failed to stop the request timer. RC = {RC}", "RC",
-                  static_cast<int>(rc));
+            error("Failed to stop the request timer, response code '{RC}'",
+                  "RC", static_cast<int>(rc));
         }
     }
 
@@ -195,8 +195,9 @@ class Request final : public RequestRetryTimer
                                          requestMsg.data(), requestMsg.size());
         if (rc < 0)
         {
-            error("Failed to send PLDM message. RC = {RC}, errno = {ERR}", "RC",
-                  static_cast<int>(rc), "ERR", errno);
+            error(
+                "Failed to send PLDM message, response code '{RC}' and error - {ERROR}",
+                "RC", static_cast<int>(rc), "ERROR", errno);
             return PLDM_ERROR;
         }
         return PLDM_SUCCESS;

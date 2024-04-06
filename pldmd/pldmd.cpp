@@ -129,7 +129,8 @@ static std::optional<Response>
             header.command = hdrFields.command;
             if (PLDM_SUCCESS != pack_pldm_header(&header, responseHdr))
             {
-                error("Failed adding response header: {ERROR}", "ERROR", e);
+                error("Failed adding response header, error - {ERROR}", "ERROR",
+                      e);
                 return std::nullopt;
             }
             response.insert(response.end(), completion_code);
@@ -357,7 +358,10 @@ int main(int argc, char** argv)
             // recovery mechanism for this daemon is to restart, and hence exit
             // the event loop, that will cause this daemon to exit with a
             // failure code.
-            error("io exiting");
+            error("I/O exiting");
+            error(
+                "MCTP daemon has closed the connection hence exiting the event loop, error return code {RC}",
+                "RC", returnCode);
             io.get_event().exit(0);
         }
         else
