@@ -17,15 +17,16 @@ FileTable::FileTable(const std::string& fileTableConfigPath)
     std::ifstream jsonFile(fileTableConfigPath);
     if (!jsonFile.is_open())
     {
-        error("File table config file does not exist, FILE={TABLE_CONFIG_PATH}",
-              "TABLE_CONFIG_PATH", fileTableConfigPath.c_str());
+        error("File table config file '{PATH}' does not exist", "PATH",
+              fileTableConfigPath);
         return;
     }
 
     auto data = Json::parse(jsonFile, nullptr, false);
     if (data.is_discarded())
     {
-        error("Parsing config file failed");
+        error("Parsing config file '{PATH}' failed", "PATH",
+              fileTableConfigPath);
         return;
     }
 
