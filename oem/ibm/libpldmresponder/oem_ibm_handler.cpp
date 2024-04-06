@@ -167,7 +167,7 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
         reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
     if (!pdr)
     {
-        error("Failed to get record by PDR type, ERROR:{ERR_CODE}", "ERR_CODE",
+        error("Failed to get record by PDR type, error - {ERROR}", "ERROR",
               lg2::hex,
               static_cast<unsigned>(PLDM_PLATFORM_INVALID_EFFECTER_ID));
         return;
@@ -219,7 +219,7 @@ void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
         reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
     if (!pdr)
     {
-        error("Failed to get record by PDR type, ERROR:{ERR_CODE}", "ERR_CODE",
+        error("Failed to get record by PDR type, error - {ERROR}", "ERROR",
               lg2::hex, static_cast<unsigned>(PLDM_PLATFORM_INVALID_SENSOR_ID));
         return;
     }
@@ -321,7 +321,7 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         if (rc || completionCode)
         {
             error(
-                "Failed to decode_platform_event_message_resp: for code update event rc={RC}, cc={CC}",
+                "Failed to decode platform event message response for code update event with response code '{RC}' and completion code '{CC}'",
                 "RC", rc, "CC", static_cast<unsigned>(completionCode));
         }
     };
@@ -376,14 +376,17 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
                              instanceId);
     if (rc != PLDM_SUCCESS)
     {
-        error("Failed to encode state sensor event, rc = {RC}", "RC", rc);
+        error("Failed to encode state sensor event with response code '{RC}'",
+              "RC", rc);
         instanceIdDb.free(mctp_eid, instanceId);
         return;
     }
     rc = sendEventToHost(requestMsg, instanceId);
     if (rc != PLDM_SUCCESS)
     {
-        error("Failed to send event to host: rc={RC}", "RC", rc);
+        error(
+            "Failed to send event to remote pldm terminus with response code '{RC}'",
+            "RC", rc);
     }
     return;
 }
@@ -434,8 +437,8 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
     catch (const std::exception& e)
     {
         error(
-            "Chassis State transition to Off failed, unable to set property RequestedPowerTransition ERROR={ERR_EXCEP}",
-            "ERR_EXCEP", e.what());
+            "Chassis State transition to Off failed, unable to set property RequestedPowerTransition, error - {ERROR}",
+            "ERROR", e);
     }
 
     using namespace sdbusplus::bus::match::rules;
@@ -468,8 +471,8 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                 catch (const std::exception& e)
                 {
                     error(
-                        "Setting one-time restore policy failed, unable to set property PowerRestorePolicy ERROR={ERR_EXCEP}",
-                        "ERR_EXCEP", e.what());
+                        "Setting one-time restore policy failed, unable to set property PowerRestorePolicy, error - {ERROR}",
+                        "ERROR", e);
                 }
                 dbusMapping = pldm::utils::DBusMapping{
                     "/xyz/openbmc_project/state/bmc0",
@@ -483,8 +486,8 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
                 catch (const std::exception& e)
                 {
                     error(
-                        "BMC state transition to reboot failed, unable to set property RequestedBMCTransition ERROR={ERR_EXCEP}",
-                        "ERR_EXCEP", e.what());
+                        "BMC state transition to reboot failed, unable to set property RequestedBMCTransition , error - {ERROR}",
+                        "ERROR", e);
                 }
             }
         }
@@ -546,8 +549,7 @@ void pldm::responder::oem_ibm_platform::Handler::resetWatchDogTimer()
     }
     catch (const std::exception& e)
     {
-        error("Failed To reset watchdog timer ERROR={ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to reset watchdog timer, error - {ERROR}", "ERROR", e);
         return;
     }
 }
@@ -570,8 +572,7 @@ void pldm::responder::oem_ibm_platform::Handler::disableWatchDogTimer()
     }
     catch (const std::exception& e)
     {
-        error("Failed To disable watchdog timer ERROR={ERR_EXCEP}", "ERR_EXCEP",
-              e.what());
+        error("Failed to disable watchdog timer, error - {ERROR}", "ERROR", e);
     }
 }
 int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
@@ -594,7 +595,8 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
     }
     catch (const std::exception& e)
     {
-        error("Error getting the current BMC state: {ERROR}", "ERROR", e);
+        error("Error getting the current BMC state, error - {ERROR}", "ERROR",
+              e);
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;

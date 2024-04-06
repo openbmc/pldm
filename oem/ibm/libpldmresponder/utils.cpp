@@ -28,7 +28,7 @@ int setupUnixSocket(const std::string& socketInterface)
     if (strnlen(socketInterface.c_str(), sizeof(addr.sun_path)) ==
         sizeof(addr.sun_path))
     {
-        error("setupUnixSocket: UNIX socket path too long");
+        error("Setup unix socket path too long");
         return -1;
     }
 
@@ -36,21 +36,21 @@ int setupUnixSocket(const std::string& socketInterface)
 
     if ((sock = socket(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0)) == -1)
     {
-        error("setupUnixSocket: socket() call failed");
+        error("Failed to open unix socket");
         return -1;
     }
 
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1)
     {
-        error("setupUnixSocket: bind() call failed  with errno {ERR}", "ERR",
-              errno);
+        error("Failed to bind unix socket, error number - {ERROR_NUM}",
+              "ERROR_NUM", errno);
         close(sock);
         return -1;
     }
 
     if (listen(sock, 1) == -1)
     {
-        error("setupUnixSocket: listen() call failed");
+        error("Failed listen() call while setting up unix socket");
         close(sock);
         return -1;
     }
@@ -68,7 +68,9 @@ int setupUnixSocket(const std::string& socketInterface)
     int retval = select(nfd, &rfd, NULL, NULL, &tv);
     if (retval < 0)
     {
-        error("setupUnixSocket: select call failed {ERR}", "ERR", errno);
+        error(
+            "Failed select() call while setting up unix socket, error number - {ERROR_NUM}",
+            "ERROR_NUM", errno);
         close(sock);
         return -1;
     }
@@ -78,7 +80,9 @@ int setupUnixSocket(const std::string& socketInterface)
         fd = accept(sock, NULL, NULL);
         if (fd < 0)
         {
-            error("setupUnixSocket: accept() call failed {ERR}", "ERR", errno);
+            error(
+                "Failed accept() call while setting up unix socket, error number - {ERROR_NUM}",
+                "ERROR_NUM", errno);
             close(sock);
             return -1;
         }
@@ -106,7 +110,9 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
         int retval = select(nfd, NULL, &wfd, NULL, &tv);
         if (retval < 0)
         {
-            error("writeToUnixSocket: select call failed {ERR}", "ERR", errno);
+            error(
+                "Failed to write to unix socket select, error number - {ERROR_NUM}",
+                "ERROR_NUM", errno);
             close(sock);
             return -1;
         }
@@ -123,11 +129,13 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
                 if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)
                 {
                     error(
-                        "writeToUnixSocket: Write call failed with EAGAIN or EWOULDBLOCK or EINTR");
+                        "Failed to write to unix socket with EAGAIN or EWOULDBLOCK or EINTR");
                     nwrite = 0;
                     continue;
                 }
-                error("writeToUnixSocket: Failed to write {ERR}", "ERR", errno);
+                error(
+                    "Failed to write to unix socket, error number - {ERROR_NUM}",
+                    "ERROR_NUM", errno);
                 close(sock);
                 return -1;
             }
