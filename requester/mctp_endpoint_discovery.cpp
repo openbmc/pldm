@@ -32,7 +32,7 @@ MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
     }
     catch (const std::exception& e)
     {
-        error("Failed to call the D-Bus Method: {ERROR}", "ERROR", e);
+        error("Failed to call the D-Bus Method, error - {ERROR}", "ERROR", e);
         return;
     }
 
