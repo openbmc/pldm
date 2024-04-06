@@ -32,7 +32,7 @@ int main(int argc, char** argv)
                                                    &stateField, request);
     if (rc != PLDM_SUCCESS)
     {
-        error("Message encode failure. PLDM error code = {RC}", "RC", lg2::hex,
+        error("Message encode failure, response code '{RC}'", "RC", lg2::hex,
               rc);
         return -1;
     }
@@ -48,13 +48,14 @@ int main(int argc, char** argv)
     if (0 > rc)
     {
         error(
-            "Failed to send message/receive response. RC = {RC}, errno = {ERR}",
-            "RC", rc, "ERR", errno);
+            "Failed to send message/receive response, response code '{RC}' and error - {ERROR}",
+            "RC", rc, "ERROR", errno);
         return -1;
     }
     pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg);
-    info("Done. PLDM RC = {RC}", "RC", lg2::hex,
-         static_cast<uint16_t>(response->payload[0]));
+    info(
+        "Done! Got the response for PLDM request message, response code '{RC}'",
+        "RC", lg2::hex, static_cast<uint16_t>(response->payload[0]));
     free(responseMsg);
 
     return 0;
