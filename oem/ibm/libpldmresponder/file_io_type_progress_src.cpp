@@ -40,8 +40,8 @@ int ProgressCodeHandler::setRawBootProperty(
     catch (const std::exception& e)
     {
         error(
-            "failed to make a d-bus call to host-postd daemon, ERROR={ERR_EXCEP}",
-            "ERR_EXCEP", e.what());
+            "Failed to make a d-bus call to host-postd daemon, error - {ERROR}",
+            "ERROR", e);
         return PLDM_ERROR;
     }
 
