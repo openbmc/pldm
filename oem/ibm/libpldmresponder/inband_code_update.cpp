@@ -93,9 +93,8 @@ int CodeUpdate::setNextBootSide(const std::string& nextSide)
     }
     catch (const std::exception& e)
     {
-        error(
-            "failed to set the next boot side to {OBJ_PATH} ERROR={ERR_EXCEP}",
-            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e.what());
+        error("Failed to set the next boot side to {PATH} , error - {ERROR}",
+              "PATH", objPath, "ERROR", e);
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
@@ -118,10 +117,9 @@ int CodeUpdate::setRequestedApplyTime()
     catch (const std::exception& e)
     {
         error(
-            "Failed To set RequestedApplyTime property, OBJ_PATH={OBJ_PATH}, INTERFACE={INTERFACE}, PROP_NAME={PROP_NAME}, ERROR={ERR_EXCEP}",
-            "OBJ_PATH", dbusMapping.objectPath, "INTERFACE",
-            dbusMapping.interface, "PROP_NAME", dbusMapping.propertyName,
-            "ERR_EXCEP", e.what());
+            "Failed to set property '{PROPERTY}' at path '{PATH}' and interface '{INTERFACE}', error - {ERROR}",
+            "PATH", dbusMapping.objectPath, "INTERFACE", dbusMapping.interface,
+            "PROPERTY", dbusMapping.propertyName, "ERROR", e);
         rc = PLDM_ERROR;
     }
     return rc;
@@ -144,10 +142,9 @@ int CodeUpdate::setRequestedActivation()
     catch (const std::exception& e)
     {
         error(
-            "Failed To set RequestedActivation property, OBJ_PATH={OBJ_PATH}, INTERFACE={INTERFACE}, PROP_NAME={PROP_NAME}, ERROR={ERR_EXCEP}",
-            "OBJ_PATH", dbusMapping.objectPath, "INTERFACE",
-            dbusMapping.interface, "PROP_NAME", dbusMapping.propertyName,
-            "ERR_EXCEP", e.what());
+            "Failed to set property {PROPERTY} at path '{PATH}' and interface '{INTERFACE}', error - {ERROR}",
+            "PATH", dbusMapping.objectPath, "INTERFACE", dbusMapping.interface,
+            "PROPERTY", dbusMapping.propertyName, "ERROR", e);
         rc = PLDM_ERROR;
     }
     return rc;
@@ -193,8 +190,8 @@ void CodeUpdate::setVersions()
     catch (const std::exception& e)
     {
         error(
-            "failed to make a d-bus call to Object Mapper Association, ERROR={ERR_EXCEP}",
-            "ERR_EXCEP", e.what());
+            "Failed to make a d-bus call to Object Mapper Association, error - {ERROR}",
+            "ERROR", e);
         return;
     }
 
@@ -300,7 +297,7 @@ void CodeUpdate::setVersions()
                                 sensorId, PLDM_STATE_SENSOR_STATE, 0,
                                 uint8_t(state),
                                 uint8_t(CodeUpdateState::START));
-                            error("could not set RequestedActivation");
+                            error("Could not set Requested Activation");
                         }
                         break;
                     }
@@ -308,9 +305,9 @@ void CodeUpdate::setVersions()
                 catch (const sdbusplus::exception_t& e)
                 {
                     error(
-                        "Error in getting Activation status,ERROR= {ERR_EXCEP}, INTERFACE={IMG_INTERFACE}, OBJECT PATH={OBJ_PATH}",
-                        "ERR_EXCEP", e.what(), "IMG_INTERFACE", imageInterface,
-                        "OBJ_PATH", imageObjPath);
+                        "Failed to get activation status for interface '{INTERFACE}' and object path '{PATH}', error - {ERROR}",
+                        "ERROR", e, "INTERFACE", imageInterface, "PATH",
+                        imageObjPath);
                 }
             }
         }
@@ -341,8 +338,7 @@ void CodeUpdate::clearDirPath(const std::string& dirPath)
 {
     if (!fs::is_directory(dirPath))
     {
-        error("The directory does not exist, dirPath = {DIR_PATH}", "DIR_PATH",
-              dirPath.c_str());
+        error("The directory '{PATH}' does not exist", "PATH", dirPath);
         return;
     }
     for (const auto& iter : fs::directory_iterator(dirPath))
@@ -380,9 +376,8 @@ void CodeUpdate::deleteImage()
     catch (const std::exception& e)
     {
         error(
-            "Failed to delete image, OBJ_PATH={OBJ_PATH}, INTERFACE={INTERFACE}, ERROR={ERR_EXCEP}",
-            "OBJ_PATH", SW_OBJ_PATH, "INTERFACE", DELETE_INTF, "ERR_EXCEP",
-            e.what());
+            "Failed to delete image at path '{PATH}' and interface '{INTERFACE}', error - {ERROR}",
+            "PATH", SW_OBJ_PATH, "INTERFACE", DELETE_INTF, "ERROR", e);
         return;
     }
 }
@@ -477,7 +472,7 @@ int processCodeUpdateLid(const std::string& filePath)
     std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
     if (!ifs)
     {
-        error("ifstream open error: {DIR_PATH}", "DIR_PATH", filePath.c_str());
+        error("Opening file '{FILE}' ifstream failed", "PATH", filePath);
         return PLDM_ERROR;
     }
     ifs.seekg(0);
@@ -496,7 +491,7 @@ int processCodeUpdateLid(const std::string& filePath)
     constexpr auto magicNumber = 0x0222;
     if (htons(header.magicNumber) != magicNumber)
     {
-        error("Invalid magic number: {DIR_PATH}", "DIR_PATH", filePath.c_str());
+        error("Invalid magic number: {PATH}", "PATH", filePath);
         ifs.close();
         return PLDM_ERROR;
     }
@@ -544,9 +539,8 @@ int CodeUpdate::assembleCodeUpdateImage()
         {
             // Create the hostfw squashfs image from the LID files without
             // header
-            auto rc = executeCmd("/usr/sbin/mksquashfs", lidDirPath.c_str(),
-                                 hostfwImagePath.c_str(), "-all-root",
-                                 "-no-recovery");
+            auto rc = executeCmd("/usr/sbin/mksquashfs", lidDirPath,
+                                 hostfwImagePath, "-all-root", "-no-recovery");
             if (rc < 0)
             {
                 error("Error occurred during the mksqusquashfs call");
@@ -561,7 +555,7 @@ int CodeUpdate::assembleCodeUpdateImage()
             fs::create_directories(updateDirPath);
 
             // Extract the BMC tarball content
-            rc = executeCmd("/bin/tar", "-xf", tarImagePath.c_str(), "-C",
+            rc = executeCmd("/bin/tar", "-xf", tarImagePath, "-C",
                             updateDirPath);
             if (rc < 0)
             {
@@ -609,7 +603,8 @@ int CodeUpdate::assembleCodeUpdateImage()
         }
         else if (nextPid < 0)
         {
-            error("Error occurred during fork. ERROR={ERR}", "ERR", errno);
+            error("Failure occurred during fork, error number - {ERROR_NUM}",
+                  "ERROR_NUM", errno);
             exit(EXIT_FAILURE);
         }
 
@@ -622,21 +617,23 @@ int CodeUpdate::assembleCodeUpdateImage()
         int status;
         if (waitpid(pid, &status, 0) < 0)
         {
-            error("Error occurred during waitpid. ERROR={ERR}", "ERR", errno);
+            error("Error occurred during waitpid, error number - {ERROR_NUM}",
+                  "ERROR_NUM", errno);
 
             return PLDM_ERROR;
         }
         else if (WEXITSTATUS(status) != 0)
         {
             error(
-                "Failed to execute the assembling of the image. STATUS={IMG_STATUS}",
+                "Failed to execute the assembling of the image, status is {IMG_STATUS}",
                 "IMG_STATUS", status);
             return PLDM_ERROR;
         }
     }
     else
     {
-        error("Error occurred during fork. ERROR={ERR}", "ERR", errno);
+        error("Error occurred during fork, error number - {ERROR_NUM}}",
+              "ERROR_NUM", errno);
         return PLDM_ERROR;
     }
 
