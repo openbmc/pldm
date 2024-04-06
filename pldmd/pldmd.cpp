@@ -129,7 +129,9 @@ static std::optional<Response>
             header.command = hdrFields.command;
             if (PLDM_SUCCESS != pack_pldm_header(&header, responseHdr))
             {
-                error("Failed adding response header: {ERROR}", "ERROR", e);
+                error(
+                    "Failed adding response header for processing Rx, error - {ERROR}",
+                    "ERROR", e);
                 return std::nullopt;
             }
             response.insert(response.end(), completion_code);
@@ -344,8 +346,9 @@ int main(int argc, char** argv)
                                                    (*response).size());
                 if (returnCode != PLDM_REQUESTER_SUCCESS)
                 {
-                    warning("Failed to send PLDM response: {RETURN_CODE}",
-                            "RETURN_CODE", returnCode);
+                    warning(
+                        "Failed to send pldmTransport message for TID '{TID}', response code '{RETURN_CODE}'",
+                        "TID", TID, "RETURN_CODE", returnCode);
                 }
             }
         }
@@ -357,13 +360,16 @@ int main(int argc, char** argv)
             // recovery mechanism for this daemon is to restart, and hence exit
             // the event loop, that will cause this daemon to exit with a
             // failure code.
-            error("io exiting");
+            error(
+                "MCTP daemon closed the socket, IO exiting with response code '{RC}'",
+                "RC", returnCode);
             io.get_event().exit(0);
         }
         else
         {
-            warning("Failed to receive PLDM request: {RETURN_CODE}",
-                    "RETURN_CODE", returnCode);
+            warning(
+                "Failed to receive PLDM request for pldmTransport, response code '{RETURN_CODE}'",
+                "RETURN_CODE", returnCode);
         }
         /* Free requestMsg after using */
         free(requestMsg);
