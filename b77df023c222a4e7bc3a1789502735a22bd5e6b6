@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "836543b0_fe98f141",
+        "filename": "configurations/meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "I figured, the soft off app itself is in the generic path, and currently entity types are hard coded inside soft off app.",
+      "parentUuid": "2b305d41_bccb4659",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5e2d06a_306179bc",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-29T05:12:43Z",
       "side": 1,
       "message": "is this needed at the global scope ?",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 50
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "783e8188_b39aee1d",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5e2d06a_306179bc",
       "range": {
         "startLine": 37,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "812f1037_c7037fcc",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b304efbd_a1868fa5",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 40
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c4e2748_77730506",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85cf55a5_41b0f386",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c4e2748_77730506",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 149,
+        "endChar": 58
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "889da2ef_01eb4bcb",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-03-29T05:12:43Z",
       "side": 1,
       "message": "we also need the TID from the json, since we could have same entitytype, statesetid across multiple PLDM terminus.",
+      "range": {
+        "startLine": 155,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 1
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60cc2e18_b2e7dc3f",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "889da2ef_01eb4bcb",
       "range": {
         "startLine": 155,
         "startChar": 12,
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ebea66e_0b8f3b2a",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "But the order which we have defined in our Json is that it looks for VMM PDR first and then the system chassis PDR. It will be important when we do not find either PDR from the Json entries then we will have to get to line 193, where we check for this.",
+      "parentUuid": "9120ea1c_d7632599",
+      "range": {
+        "startLine": 178,
+        "startChar": 20,
+        "endLine": 178,
+        "endChar": 43
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cce36a55_c08ec6ec",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 1
@@ -152,6 +296,30 @@
       "writtenOn": "2024-03-29T05:12:43Z",
       "side": 1,
       "message": "if(!softoffPdrExist)",
+      "range": {
+        "startLine": 193,
+        "startChar": 8,
+        "endLine": 193,
+        "endChar": 37
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f888609_34cb7e29",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cce36a55_c08ec6ec",
       "range": {
         "startLine": 193,
         "startChar": 8,
@@ -185,6 +353,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec41740b_d23b5a01",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "This condition is hit only after parsing all the entries in the JSON and we do not get any PDR that is modelled.",
+      "parentUuid": "be3226ea_76abe13e",
+      "range": {
+        "startLine": 193,
+        "startChar": 8,
+        "endLine": 198,
+        "endChar": 9
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c99efbf6_7c042632",
@@ -198,6 +390,30 @@
       "writtenOn": "2024-03-29T05:12:43Z",
       "side": 1,
       "message": "do we really need them to be class variables ? why can\u0027t they be passed over functions ?  (they are being replacing in for loop when we parse the JSON)",
+      "range": {
+        "startLine": 137,
+        "startChar": 3,
+        "endLine": 141,
+        "endChar": 36
+      },
+      "revId": "b77df023c222a4e7bc3a1789502735a22bd5e6b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d91841a5_d86fbba4",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T04:06:05Z",
+      "side": 1,
+      "message": "Done, but we will still need as class variables as we have passed them as in/out parameters from main.",
+      "parentUuid": "c99efbf6_7c042632",
       "range": {
         "startLine": 137,
         "startChar": 3,
