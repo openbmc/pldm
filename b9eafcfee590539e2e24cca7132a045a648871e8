@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c322d85a_8dd5f0de",
+        "filename": "common/types.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-08T06:48:37Z",
+      "side": 1,
+      "message": "Type of `123` and `123u` is different. `std::get\u003cNetworkId\u003e` need the `val` type should be uint32_t. Please check the type of `networkId` property in your mctp interface.\n```\nxyz.openbmc_project.MCTP.Endpoint   interface -         -                                      -\n.EID                                property  y         8                                      const\n.NetworkId                          property  u         1                                      const\n.SupportedMessageTypes              property  ay        1 0                                    const\n```",
+      "parentUuid": "6c033abb_d972671e",
+      "revId": "b9eafcfee590539e2e24cca7132a045a648871e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6dca2413_f7ca180a",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 71
