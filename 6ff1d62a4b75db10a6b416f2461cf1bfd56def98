@@ -46,6 +46,30 @@
       },
       "revId": "6ff1d62a4b75db10a6b416f2461cf1bfd56def98",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f35f632f_f0eb2ef6",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1253,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-08T04:39:42Z",
+      "side": 1,
+      "message": "yeah you dont need any casting at all , and that is what i have mentioned earlier right ? can you please fix the code ?",
+      "parentUuid": "74daa2cf_838743ce",
+      "range": {
+        "startLine": 1230,
+        "startChar": 8,
+        "endLine": 1253,
+        "endChar": 65
+      },
+      "revId": "6ff1d62a4b75db10a6b416f2461cf1bfd56def98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
