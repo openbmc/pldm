@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef02ef96_d848e76f",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T12:35:55Z",
+      "side": 1,
+      "message": "isn\u0027t this redundant? \nwe could just have  - \n info(\"The eid:InstanceID is using.\", \"EID\", (unsigned)key.eid, \"INSTANCEID\", (unsigned)key.instanceId);",
+      "range": {
+        "startLine": 148,
+        "startChar": 37,
+        "endLine": 148,
+        "endChar": 55
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96d84815_a8512ab9",
         "filename": "requester/handler.hpp",
         "patchSetId": 2
@@ -66,6 +89,29 @@
         "startChar": 9,
         "endLine": 258,
         "endChar": 68
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6aca4497_7247f3fd",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-08T12:35:55Z",
+      "side": 1,
+      "message": "why do we need this change? the deamon name is pldm-softpoweroff",
+      "range": {
+        "startLine": 47,
+        "startChar": 15,
+        "endLine": 47,
+        "endChar": 34
       },
       "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
