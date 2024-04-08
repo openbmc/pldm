@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f470c63_1cb97546",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-08T11:43:52Z",
+      "side": 1,
+      "message": "I changed it to info as it was not reporting any error. Do you think otherwise? How do you want the string to be framed ?",
+      "parentUuid": "96d84815_a8512ab9",
+      "range": {
+        "startLine": 256,
+        "startChar": 9,
+        "endLine": 258,
+        "endChar": 68
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d9ced340_95e2dcaf",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 2
