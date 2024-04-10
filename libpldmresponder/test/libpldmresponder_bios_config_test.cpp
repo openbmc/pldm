@@ -39,7 +39,7 @@ class TestBIOSConfig : public ::testing::Test
             "./bios_jsons/enum_attrs.json",
         };
 
-        for (auto& path : paths)
+        for (const auto& path : paths)
         {
             std::ifstream file;
             file.open(path);

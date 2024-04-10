@@ -100,7 +100,7 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
 
                 pldm_entity entity = *entityPtr;
 
-                for (auto& it : objToEntityNode)
+                for (const auto& it : objToEntityNode)
                 {
                     pldm_entity node = pldm_entity_extract(it.second);
                     if (node.entity_type == entity.entity_type)
