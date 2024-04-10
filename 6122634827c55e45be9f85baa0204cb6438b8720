@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1835ff8_eafc571e",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-10T03:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77501070_2b6f6431",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 32
+      },
+      "revId": "6122634827c55e45be9f85baa0204cb6438b8720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e47d9e5_07904d84",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-29T05:29:25Z",
       "side": 1,
       "message": "i think the default should be disabled by default \u0026 then we could enable it via meson option in meta layer.",
+      "range": {
+        "startLine": 147,
+        "startChar": 12,
+        "endLine": 147,
+        "endChar": 19
+      },
+      "revId": "6122634827c55e45be9f85baa0204cb6438b8720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69090bbf_0ff4b42b",
+        "filename": "meson.options",
+        "patchSetId": 6
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-10T03:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e47d9e5_07904d84",
       "range": {
         "startLine": 147,
         "startChar": 12,
