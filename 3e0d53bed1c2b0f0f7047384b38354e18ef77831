@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed46537_2464a006",
+        "filename": "softoff/main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-10T05:13:07Z",
+      "side": 1,
+      "message": "what is the value of entityType and stateSetId passed to the constructor ? is it junk ?",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 30,
+        "endChar": 44
+      },
+      "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f30cf5d_ca9b149f",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-10T05:13:07Z",
+      "side": 1,
+      "message": "softoff_config.json can be directly used while fs::path is being constructed. we could eliminate the need for configJson variable ?",
+      "range": {
+        "startLine": 150,
+        "startChar": 63,
+        "endLine": 150,
+        "endChar": 73
+      },
+      "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86432180_466a8f3f",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-10T05:13:07Z",
+      "side": 1,
+      "message": "the softoffPdrExist\u003d true by default, and if we hit this exception ? then we dont change it , but assume that the PDR\u0027s are present and return success from this function right ? is that supposed to happen ?",
+      "range": {
+        "startLine": 201,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 9
+      },
+      "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
