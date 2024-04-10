@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a8a2f17_ef1fe331",
+        "filename": "libpldmresponder/platform_state_effecter.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-10T04:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a60f4c1d_106006f5",
+      "range": {
+        "startLine": 63,
+        "startChar": 14,
+        "endLine": 63,
+        "endChar": 49
+      },
+      "revId": "e98234b44ac978dacfc8919cc00b41b03d3b55c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cffa71a0_da40119e",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-08T05:23:02Z",
       "side": 1,
       "message": "same here. Can we improve the trace?",
+      "range": {
+        "startLine": 103,
+        "startChar": 8,
+        "endLine": 103,
+        "endChar": 51
+      },
+      "revId": "e98234b44ac978dacfc8919cc00b41b03d3b55c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a450ee85_d93ed534",
+        "filename": "libpldmresponder/platform_state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-10T04:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cffa71a0_da40119e",
       "range": {
         "startLine": 103,
         "startChar": 8,
