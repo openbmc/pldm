@@ -129,7 +129,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                         props.at(dbusMapping.propertyName));
 
                     auto values = pldm::utils::split(src, "||", " ");
-                    for (auto& value : values)
+                    for (const auto& value : values)
                     {
                         if (value == dst)
                         {
