@@ -88,6 +88,24 @@
       "parentUuid": "732dd5ab_2d4e0528",
       "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac66b85e_07688f46",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-10T07:23:16Z",
+      "side": 1,
+      "message": "About `PLDM_SENSOR_DISABLED : Functional False, Available False`, I think it should be `PLDM_SENSOR_DISABLED : Functional True, Available False` because the sensor is still functional, it just unavailable because it is disabled.",
+      "parentUuid": "cb5af255_d210079c",
+      "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
