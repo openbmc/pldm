@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ca53de7_16942587",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 82
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-10T07:15:42Z",
+      "side": 1,
+      "message": "Fixed in patch set #85.",
+      "parentUuid": "e67dec8a_25e8cc13",
+      "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e6b8ba0_b9b3124f",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-03-22T01:44:32Z",
       "side": 1,
       "message": "Hi\nI checked the rangeFieldSupport of Numeric Sensor PDR in DSP0248_1.2.2 and it mentions that it is an error in the original specification that the “warningHigh” and “warningLow” fields are not listed in this field.\n\nWould like to ask should we follow the implementation of Compact Numeric Sensor PDR to check if it has \"Warning Thresholds\"?\n\nWould also like to discuss that if it appropriate to use HardShutdown.interface as the fatal level of threshold since Numeric Sensor PDR contains fatal level threshold but didn\u0027t used here.",
+      "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a26ae96_aeefcbfa",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-10T07:15:42Z",
+      "side": 1,
+      "message": "\u003e Hi\n\u003e I checked the rangeFieldSupport of Numeric Sensor PDR in DSP0248_1.2.2 and it mentions that it is an error in the original specification that the “warningHigh” and “warningLow” fields are not listed in this field.\n\u003e \n\u003e Would like to ask should we follow the implementation of Compact Numeric Sensor PDR to check if it has \"Warning Thresholds\"?\n\u003e \nFor `numeric sensors` we are following the spec which there is no `rangeFieldSupport` bit for `warningHigh` and `warningLow` fields.\nThat why we are assuming that `warningHigh` and `warningLow` always existing as line #115 to #158\n\nFor `Compact Numeric Sensors` we are following spec, we check the bit field of `warningHigh` and `warningLow`.\n\n\u003e Would also like to discuss that if it appropriate to use HardShutdown.interface as the fatal level of threshold since Numeric Sensor PDR contains fatal level threshold but didn\u0027t used here.\n\nI agree with you that we can use HardShutdown.interface as fatal level. Let bring the discussion about this to the `pmci` discord for more discussion. After that we can create new patch set to support that if we get the agreement from the community.",
+      "parentUuid": "7e6b8ba0_b9b3124f",
       "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
