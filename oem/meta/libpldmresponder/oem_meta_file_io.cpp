@@ -1,5 +1,6 @@
 #include "oem_meta_file_io.hpp"
 
+#include "oem_meta_file_io_type_bios_version.hpp"
 #include "oem_meta_file_io_type_post_code.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
@@ -21,7 +22,11 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(uint8_t messageTid,
     {
         case POST_CODE:
             return std::make_unique<PostCodeHandler>(
-                messageTid, configurationDescovery->getConfigurations());
+                messageTid, configurationDiscovery->getConfigurations());
+        case BIOS_VERSION:
+            return std::make_unique<BIOSVersionHandler>(
+                messageTid, configurationDiscovery->getConfigurations(),
+                dBusIntf);
         default:
             error("Get invalid file io type, FILEIOTYPE={FILEIOTYPE}",
                   "FILEIOTYPE", fileIOType);
