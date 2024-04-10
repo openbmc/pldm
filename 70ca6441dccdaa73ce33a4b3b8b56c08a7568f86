@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f78b3a17_57f0614b",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T10:12:33Z",
+      "side": 1,
+      "message": "do we need to get the bus for every entry? can we move this out of the for loop?",
+      "range": {
+        "startLine": 174,
+        "startChar": 8,
+        "endLine": 174,
+        "endChar": 55
+      },
+      "revId": "70ca6441dccdaa73ce33a4b3b8b56c08a7568f86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91874a73_36aaaa97",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T10:12:33Z",
+      "side": 1,
+      "message": "if(response.size()) ?",
+      "range": {
+        "startLine": 185,
+        "startChar": 12,
+        "endLine": 185,
+        "endChar": 37
+      },
+      "revId": "70ca6441dccdaa73ce33a4b3b8b56c08a7568f86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4931fc0_3954d88e",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T10:12:33Z",
+      "side": 1,
+      "message": "can we improve the lg2 trace? - https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings\u0027\u0027\u0026apos",
+      "range": {
+        "startLine": 203,
+        "startChar": 12,
+        "endLine": 204,
+        "endChar": 41
+      },
+      "revId": "70ca6441dccdaa73ce33a4b3b8b56c08a7568f86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9c40cfc_ee77f26e",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T10:12:33Z",
+      "side": 1,
+      "message": "doxygen update",
+      "revId": "70ca6441dccdaa73ce33a4b3b8b56c08a7568f86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ced89468_a25b647c",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T10:12:33Z",
+      "side": 1,
+      "message": "doxygen update",
+      "revId": "70ca6441dccdaa73ce33a4b3b8b56c08a7568f86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de4b0006_defbee9f",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T10:12:33Z",
+      "side": 1,
+      "message": "doxygen update",
+      "revId": "70ca6441dccdaa73ce33a4b3b8b56c08a7568f86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
