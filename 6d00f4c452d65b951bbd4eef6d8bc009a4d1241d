@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9cdce5b_cf9b6ebc",
+        "filename": "common/utils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-10T05:10:40Z",
+      "side": 1,
+      "message": "is it okay to have empty hostEid file? is it not the error?",
+      "range": {
+        "startLine": 350,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 44
+      },
+      "revId": "6d00f4c452d65b951bbd4eef6d8bc009a4d1241d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
