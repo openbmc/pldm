@@ -16,6 +16,24 @@
       "message": "Line no 63 and 91 are exactly same. Please add some difference for journal readability. Other changes looks fine.",
       "revId": "4649e6f522bb8d2af9ccd69279a5448214e66a9b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ee5a0b1_8ce70fc6",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-10T05:03:17Z",
+      "side": 1,
+      "message": "As lg2 logging provides all the details about the function name and line from where the trace is getting printed, it should be okay to have same trace",
+      "parentUuid": "716456e9_fdcf31c2",
+      "revId": "4649e6f522bb8d2af9ccd69279a5448214e66a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

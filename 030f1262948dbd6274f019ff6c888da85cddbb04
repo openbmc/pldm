@@ -235,6 +235,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02884dde_a4b3612f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-10T05:03:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b88a645_a3a38c5d",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 27
+      },
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88eced05_77642811",
@@ -369,6 +393,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b2feb79_5be37f03",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-10T05:03:17Z",
+      "side": 1,
+      "message": "This trace is been removed as part of new patchset",
+      "parentUuid": "11403a03_430da434",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f01d94f_240d6dcb",
@@ -429,6 +471,24 @@
       "writtenOn": "2024-04-04T05:01:32Z",
       "side": 1,
       "message": "Can you be more specific here as which type is failed ?",
+      "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38f74722_828d629b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-10T05:03:17Z",
+      "side": 1,
+      "message": "This part of code is been removed with latest changes",
+      "parentUuid": "99845182_5524a6ac",
       "revId": "030f1262948dbd6274f019ff6c888da85cddbb04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
