@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "557ccbca_7981916d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T05:39:08Z",
+      "side": 1,
+      "message": "Can we configure it to hard-wrap at the appropriate width? For instance, in vim you can use gq to wrap the text:\n\nhttps://vimhelp.org/change.txt.html#gq",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ed46537_2464a006",
         "filename": "softoff/main.cpp",
         "patchSetId": 2
@@ -42,6 +65,52 @@
         "startChar": 63,
         "endLine": 150,
         "endChar": 73
+      },
+      "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14dc2e58_7a7e3388",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T05:39:08Z",
+      "side": 1,
+      "message": "we could rename this function also if we do not return the effecter ID. We could rename it as getEffecterInfo()?",
+      "range": {
+        "startLine": 162,
+        "startChar": 18,
+        "endLine": 162,
+        "endChar": 31
+      },
+      "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6611d133_2ea833ee",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-10T05:39:08Z",
+      "side": 1,
+      "message": "do we use this effecter ID? This function just returns success or error right, so do we need to extract that effecter ID?",
+      "range": {
+        "startLine": 191,
+        "startChar": 19,
+        "endLine": 191,
+        "endChar": 57
       },
       "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
