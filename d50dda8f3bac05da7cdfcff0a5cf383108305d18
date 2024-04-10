@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d09d405c_9ed4a563",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-10T04:31:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c08a62ca_aa89ce8d",
+      "range": {
+        "startLine": 361,
+        "startChar": 12,
+        "endLine": 364,
+        "endChar": 34
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef02ef96_d848e76f",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-08T12:35:55Z",
       "side": 1,
       "message": "isn\u0027t this redundant? \nwe could just have  - \n info(\"The eid:InstanceID is using.\", \"EID\", (unsigned)key.eid, \"INSTANCEID\", (unsigned)key.instanceId);",
+      "range": {
+        "startLine": 148,
+        "startChar": 37,
+        "endLine": 148,
+        "endChar": 55
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84078a18_2b671ce3",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-10T04:31:32Z",
+      "side": 1,
+      "message": "That will be incorrect way of writing lg2 logs, \u0027EID and InstanceID not declared but used\u0027 should be the error or something similar, I dont\u0027t remember exactly.",
+      "parentUuid": "ef02ef96_d848e76f",
       "range": {
         "startLine": 148,
         "startChar": 37,
@@ -94,6 +142,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2e397b7_ccdf63ab",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-10T04:31:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f470c63_1cb97546",
+      "range": {
+        "startLine": 256,
+        "startChar": 9,
+        "endLine": 258,
+        "endChar": 68
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6aca4497_7247f3fd",
@@ -117,6 +189,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2f3991c_13a60bfe",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-10T04:31:32Z",
+      "side": 1,
+      "message": "I received review comment in one of the commits to make first alphabet of string capital so I did it everywhere - \nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/70327/comment/3dbb9f34_83f30033/",
+      "parentUuid": "6aca4497_7247f3fd",
+      "range": {
+        "startLine": 47,
+        "startChar": 15,
+        "endLine": 47,
+        "endChar": 34
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9ced340_95e2dcaf",
@@ -130,6 +226,30 @@
       "writtenOn": "2024-04-08T05:14:53Z",
       "side": 1,
       "message": "typo \"in\"",
+      "range": {
+        "startLine": 409,
+        "startChar": 66,
+        "endLine": 409,
+        "endChar": 68
+      },
+      "revId": "d50dda8f3bac05da7cdfcff0a5cf383108305d18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f701aa7f_03796ccc",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-10T04:31:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9ced340_95e2dcaf",
       "range": {
         "startLine": 409,
         "startChar": 66,
