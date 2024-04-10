@@ -271,7 +271,7 @@ int main(int argc, char** argv)
 #ifdef OEM_META
     invoker.registerHandler(
         PLDM_OEM, std::make_unique<pldm::responder::oem_meta::FileIOHandler>(
-                      configurationDiscovery.get()));
+                      &dbusHandler, configurationDiscovery.get()));
 #endif
 
     auto biosHandler = std::make_unique<bios::Handler>(

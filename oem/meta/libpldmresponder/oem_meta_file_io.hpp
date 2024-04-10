@@ -17,8 +17,10 @@ namespace pldm::responder::oem_meta
 class FileIOHandler : public CmdHandler
 {
   public:
-    FileIOHandler(pldm::ConfigurationDiscoveryHandler* configurationDescovery) :
-        configurationDescovery(configurationDescovery)
+    FileIOHandler(pldm::utils::DBusHandler* dBusIntf,
+                  pldm::ConfigurationDiscoveryHandler* configurationDiscovery) :
+        dBusIntf(dBusIntf),
+        configurationDiscovery(configurationDiscovery)
     {
         handlers.emplace(PLDM_OEM_META_FILEIO_CMD_WRITE_FILE,
                          [this](pldm_tid_t tid, const pldm_msg* request,
@@ -42,7 +44,13 @@ class FileIOHandler : public CmdHandler
     std::unique_ptr<FileHandler> getHandlerByType(pldm_tid_t tid,
                                                   uint8_t fileIOType);
 
-    pldm::ConfigurationDiscoveryHandler* configurationDescovery;
+    /** @brief D-Bus Interface object*/
+    const pldm::utils::DBusHandler* dBusIntf;
+
+    /** @brief Configuration Discovery Object which stores
+     * EntityManager's config
+     */
+    pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
 };
 
 } // namespace pldm::responder::oem_meta
