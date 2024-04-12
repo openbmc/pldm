@@ -1092,8 +1092,8 @@ void HostPDRHandler::setFRUDataOnDBus(
 #ifdef OEM_IBM
     for (const auto& entity : objPathMap)
     {
-        pldm_entity node = pldm_entity_extract(entity.second);
-        auto fruRSI = getRSI(fruRecordSetPDRs, node);
+        // pldm_entity node = pldm_entity_extract(entity.second);
+        auto fruRSI = getRSI(fruRecordSetPDRs, *entity.second);
 
         for (const auto& data : fruRecordData)
         {
