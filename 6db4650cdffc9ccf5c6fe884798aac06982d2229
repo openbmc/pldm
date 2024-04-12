@@ -60,6 +60,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "020cba78_2b8c154f",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-12T06:10:27Z",
+      "side": 1,
+      "message": "I did it for consistency in logs, as it was little unclear what is being printed so  for error printing made this change.",
+      "parentUuid": "119ae36f_d81a327b",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "759a58ec_3ad88c41",
         "filename": "oem/ibm/libpldmresponder/file_io.cpp",
         "patchSetId": 1
@@ -94,6 +112,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3520027_c7ee9d6b",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-12T06:10:27Z",
+      "side": 1,
+      "message": "I did it for consistency in logs, as it was little unclear what is being printed so for error printing made this change.",
+      "parentUuid": "9bb60f14_b8a129ea",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd04179a_e7c71068",
         "filename": "oem/ibm/libpldmresponder/file_io.cpp",
         "patchSetId": 1
@@ -105,6 +141,24 @@
       "writtenOn": "2024-04-12T05:51:08Z",
       "side": 1,
       "message": "there are multiple \u0027Unknown file type\u0027 similar kind of traces which confused developer, could you please enhance traces.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7fa484a_6305ac40",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-12T06:10:27Z",
+      "side": 1,
+      "message": "I agree this trace is at multiple places but developer can use json for more details like line number, file it is coming from and more info to do the exact debugging. Other than this what enhancement is required, I can do please let me know?",
+      "parentUuid": "dd04179a_e7c71068",
       "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
