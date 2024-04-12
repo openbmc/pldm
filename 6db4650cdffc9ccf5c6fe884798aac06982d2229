@@ -1,0 +1,231 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b702dfcf_d46ecb91",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "remove this function name from trace \u0027TransferDataHost\u0027",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96c6d4e1_0cec39e0",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "from where UPSTREAM tag will be picked?",
+      "range": {
+        "startLine": 202,
+        "startChar": 45,
+        "endLine": 202,
+        "endChar": 53
+      },
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "119ae36f_d81a327b",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "why this change required?",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "759a58ec_3ad88c41",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "1.make trace align with other trace at line no:287.\n2.print file path also value.fsPath to enhance tracing.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb60f14_b8a129ea",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "why this change required?\nplease check for other traces also.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd04179a_e7c71068",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "there are multiple \u0027Unknown file type\u0027 similar kind of traces which confused developer, could you please enhance traces.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5901e6ef_837067f9",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "c_str not required, please check without it thorough out the Patch",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27283c7d_9d53e9c2",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "please remove class name and rephrase it better way all over the file/patch",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8105d55a_cffd2bbc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "nice rephrasing of sentence here.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffe24bac_07fd965b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_lid.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "you could mention \"failed with error number:{ERROR_NUM}\".\nsince exception and error number are different here.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fe61f85_587421f7",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "TMP_FILE is missing",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "022529d3_9a938722",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "could you print offset value and file size.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c40c2b90_57834a12",
+        "filename": "oem/ibm/libpldmresponder/file_table.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T05:51:08Z",
+      "side": 1,
+      "message": "c_str() not needed.",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
