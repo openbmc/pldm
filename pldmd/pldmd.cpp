@@ -365,6 +365,8 @@ int main(int argc, char** argv)
             warning("Failed to receive PLDM request: {RETURN_CODE}",
                     "RETURN_CODE", returnCode);
         }
+        /* Free requestMsg after using */
+        free(requestMsg);
     };
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
