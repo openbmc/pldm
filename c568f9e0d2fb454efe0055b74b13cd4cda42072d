@@ -50,6 +50,23 @@
       "message": "could you please enhance trace by printing deviceIdentifiersLen, descriptorType etc..\n\nplease add more information all over the patch.",
       "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3fe2cbd_df8ce813",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T06:41:52Z",
+      "side": 1,
+      "message": "please print  pkgSize, calcPkgSize here also.",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
