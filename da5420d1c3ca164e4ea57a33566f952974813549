@@ -160,6 +160,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "129d523f_692285af",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-12T12:48:17Z",
+      "side": 1,
+      "message": "this is taken care at https://gerrit.openbmc.org/c/openbmc/pldm/+/70328",
+      "parentUuid": "7a2eab87_4cb4af90",
+      "range": {
+        "startLine": 184,
+        "startChar": 3,
+        "endLine": 187,
+        "endChar": 14
+      },
+      "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd9be7ae_d805c58a",
@@ -173,6 +197,30 @@
       "writtenOn": "2024-03-01T05:24:41Z",
       "side": 1,
       "message": "why are we setting terminus_handle to TID ? aren\u0027t they both different ?",
+      "range": {
+        "startLine": 215,
+        "startChar": 12,
+        "endLine": 215,
+        "endChar": 44
+      },
+      "revId": "da5420d1c3ca164e4ea57a33566f952974813549",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eee59564_d982d1e4",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-12T12:48:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cd9be7ae_d805c58a",
       "range": {
         "startLine": 215,
         "startChar": 12,

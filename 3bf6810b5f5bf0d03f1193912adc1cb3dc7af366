@@ -34,6 +34,24 @@
       "parentUuid": "0c17b838_9a3e0b82",
       "revId": "3bf6810b5f5bf0d03f1193912adc1cb3dc7af366",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e743222f_e316cae4",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-12T12:48:17Z",
+      "side": 1,
+      "message": "this is taken care at https://gerrit.openbmc.org/c/openbmc/pldm/+/70328 where the TID is coming in from the json config file.",
+      "parentUuid": "58b91884_40999a61",
+      "revId": "3bf6810b5f5bf0d03f1193912adc1cb3dc7af366",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
