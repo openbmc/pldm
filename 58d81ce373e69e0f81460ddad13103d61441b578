@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c5341e0_08fafae3",
+        "filename": "softoff/main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-12T12:16:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f03e8c77_96f0d59e",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 41
+      },
+      "revId": "58d81ce373e69e0f81460ddad13103d61441b578",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03053289_35af9ac9",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-12T04:48:56Z",
       "side": 1,
       "message": "if it is indeed a class variable ? then why do we need to pass it as well ? i think if we want to pass the variable - then we should not have it as a class variable at all.",
+      "range": {
+        "startLine": 172,
+        "startChar": 8,
+        "endLine": 173,
+        "endChar": 50
+      },
+      "revId": "58d81ce373e69e0f81460ddad13103d61441b578",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07d6f72a_764c8677",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-12T12:16:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03053289_35af9ac9",
       "range": {
         "startLine": 172,
         "startChar": 8,

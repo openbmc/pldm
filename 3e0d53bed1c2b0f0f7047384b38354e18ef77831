@@ -305,6 +305,30 @@
       },
       "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb816e6d_1160e474",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-12T12:16:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93126be5_2de7fcbe",
+      "range": {
+        "startLine": 201,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 9
+      },
+      "revId": "3e0d53bed1c2b0f0f7047384b38354e18ef77831",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
