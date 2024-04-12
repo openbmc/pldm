@@ -38,7 +38,7 @@ Entities getParentEntites(const EntityAssociations& entityAssoc)
 
     bool found = false;
     for (auto it = parents.begin(); it != parents.end();
-         it = found ? parents.erase(it) : std::next(it))
+         it == found ? parents.erase(it) : std::next(it))
     {
         uint16_t parent_contained_id =
             pldm_entity_node_get_remote_container_id(*it);
