@@ -40,10 +40,10 @@ void Serialize::serialize(const std::string& path, const std::string& intf,
               "PATH", path);
         return;
     }
-
-    uint16_t type = entityPathMaps[path].entity_type;
-    uint16_t num = entityPathMaps[path].entity_instance_num;
-    uint16_t cid = entityPathMaps[path].entity_container_id;
+    auto entity = entityPathMaps[path];
+    uint16_t type = entity.entity_type;
+    uint16_t num = entity.entity_instance_num;
+    uint16_t cid = entity.entity_container_id;
 
     if (!savedObjs.contains(type) || !savedObjs[type].contains(path))
     {
@@ -68,7 +68,7 @@ void Serialize::serialize(const std::string& path, const std::string& intf,
         objs[intf][name] = value;
     }
 
-    if (!storeEntityTypes.contains(entityPathMaps[path].entity_type))
+    if (!storeEntityTypes.contains(entity.entity_type))
     {
         return;
     }
@@ -116,9 +116,8 @@ void Serialize::setEntityTypes(const std::set<uint16_t>& storeEntities)
 
 void Serialize::setObjectPathMaps(const ObjectPathMaps& maps)
 {
-    for (const auto& [objpath, nodeentity] : maps)
+    for (const auto& [objpath, entity] : maps)
     {
-        pldm_entity entity = pldm_entity_extract(nodeentity);
         entityPathMaps.emplace(objpath, entity);
     }
 }

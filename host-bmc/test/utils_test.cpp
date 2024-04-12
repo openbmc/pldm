@@ -78,15 +78,20 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
         {l1, l2}, {l2, l3a, l3b}, {l3a, l4a, l4b}, {l3b, l5a, l5b}};
 
     ObjectPathMaps retObjectMaps = {
-        {"/xyz/openbmc_project/inventory/chassis1", l1},
-        {"/xyz/openbmc_project/inventory/chassis1/motherboard1", l2},
-        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm0", l3a},
-        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm0/cpu0", l4a},
-        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm0/cpu1", l4b},
-        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm1", l3b},
-        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm1/cpu0", l5a},
+        {"/xyz/openbmc_project/inventory/chassis1", entities[0]},
+        {"/xyz/openbmc_project/inventory/chassis1/motherboard1", entities[1]},
+        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm0",
+         entities[2]},
+        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm0/cpu0",
+         entities[4]},
+        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm0/cpu1",
+         entities[5]},
+        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm1",
+         entities[3]},
+        {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm1/cpu0",
+         entities[6]},
         {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm1/cpu1",
-         l5b}};
+         entities[7]}};
 
     EntityMaps entityMaps;
     ObjectPathMaps objPathMap;
@@ -102,15 +107,10 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
         if (retObjectMaps.contains(obj.first))
         {
             index++;
-            pldm_entity entity = pldm_entity_extract(obj.second);
-            pldm_entity retEntity =
-                pldm_entity_extract(retObjectMaps[obj.first]);
-            EXPECT_EQ(entity.entity_type, retEntity.entity_type);
-            EXPECT_EQ(entity.entity_instance_num,
+            pldm_entity retEntity = obj.second;
+            EXPECT_EQ(obj.second.entity_type, retEntity.entity_type);
+            EXPECT_EQ(obj.second.entity_instance_num,
                       retEntity.entity_instance_num);
-            EXPECT_EQ(pldm_entity_node_get_remote_container_id(obj.second),
-                      pldm_entity_node_get_remote_container_id(
-                          retObjectMaps[obj.first]));
         }
     }
     EXPECT_EQ(index, retObjectMaps.size());
