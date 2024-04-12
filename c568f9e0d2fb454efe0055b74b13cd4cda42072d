@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e600b46b_e00fcedc",
+        "filename": "common/utils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T06:09:40Z",
+      "side": 1,
+      "message": "why comma before failed?",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e93dd0a_4bb68619",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T06:09:40Z",
+      "side": 1,
+      "message": "could you add descriptorCount to enhance trace?",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "340e98d7_3fff0972",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-12T06:09:40Z",
+      "side": 1,
+      "message": "could you please enhance trace by printing deviceIdentifiersLen, descriptorType etc..\n\nplease add more information all over the patch.",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
