@@ -344,7 +344,7 @@ class DBusHandler : public DBusHandlerInterface
      *
      *  @return A hierarchical structure representing the properties of the
      *          managed object.
-     *  @throw sdbusplus::exception::exception when it fails
+     *  @throw sdbusplus::exception_t when it fails
      */
     static ObjectValueTree getManagedObj(const char* service, const char* path);
 
