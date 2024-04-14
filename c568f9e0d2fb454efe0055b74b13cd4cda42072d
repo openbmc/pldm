@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abe1581f_84d5bbeb",
+        "filename": "common/utils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-14T19:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e600b46b_e00fcedc",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e93dd0a_4bb68619",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-04-12T06:09:40Z",
       "side": 1,
       "message": "could you add descriptorCount to enhance trace?",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65aaf342_57ec0f39",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-14T19:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e93dd0a_4bb68619",
       "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64b876ae_1a6e0125",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-14T19:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "340e98d7_3fff0972",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3fe2cbd_df8ce813",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-04-12T06:41:52Z",
       "side": 1,
       "message": "please print  pkgSize, calcPkgSize here also.",
+      "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c48370c_ca8424c5",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-14T19:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3fe2cbd_df8ce813",
       "revId": "c568f9e0d2fb454efe0055b74b13cd4cda42072d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
