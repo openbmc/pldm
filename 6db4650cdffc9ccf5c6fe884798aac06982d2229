@@ -279,6 +279,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d4ad384_7fa0e6f8",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "Unknown File Type. Read/write of file into memory stopped. - we use this , it will allow us to understand the we failed rwFileByTypeIntoMemory. Can we follow this for all Unknown file type traces?",
+      "parentUuid": "f7fa484a_6305ac40",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5901e6ef_837067f9",
         "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
         "patchSetId": 1
@@ -436,6 +454,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee2112de_70b41fa9",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "4fe61f85_587421f7",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "022529d3_9a938722",
         "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
         "patchSetId": 1
@@ -464,6 +500,24 @@
       "writtenOn": "2024-04-15T05:07:55Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "022529d3_9a938722",
+      "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "715c9951_580685a5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "adding a note as done if you have addressed this review comment helps to not recheck previous review comments",
       "parentUuid": "022529d3_9a938722",
       "revId": "6db4650cdffc9ccf5c6fe884798aac06982d2229",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"

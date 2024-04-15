@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b908142f_e685f975",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "Do we really need to use the word \"Downstream\" here?",
+      "range": {
+        "startLine": 232,
+        "startChar": 17,
+        "endLine": 232,
+        "endChar": 41
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20659374_ecf266d7",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "what does file write uptstream mean here? can we add a more generic phrase here?",
+      "range": {
+        "startLine": 240,
+        "startChar": 69,
+        "endLine": 240,
+        "endChar": 88
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a8f9b47_62440762",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "Packet length is a non multiple of minimum DMA size",
+      "range": {
+        "startLine": 666,
+        "startChar": 44,
+        "endLine": 666,
+        "endChar": 76
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da9e1f9e_c2280e49",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "do we need to print the length and offset also here?",
+      "range": {
+        "startLine": 216,
+        "startChar": 11,
+        "endLine": 216,
+        "endChar": 48
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5ad097_9acccb41",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "I feel the word certificate is added here randomly. \"Cannot find file type \u0027{TYPE}\u0027 in map. Write from memory during certificate exchange failed\" - does this sound better?",
+      "range": {
+        "startLine": 33,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 29
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea3ff119_939f52a8",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "I dont think we need to add the word Certificate here. We can frame the sentence in a better way. In this case - \"Read file response for Sign CSR failed. file handle: {FILE_HANDLE}\" will suffice because Sign CSR is done during certificate exchange only",
+      "range": {
+        "startLine": 76,
+        "startChar": 9,
+        "endLine": 76,
+        "endChar": 30
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ae527f6_7c1c929a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "can we frame these traces in a better way?",
+      "range": {
+        "startLine": 99,
+        "startChar": 15,
+        "endLine": 99,
+        "endChar": 42
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "429b9050_a40714ce",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "I understand we removed CertHandler. Please try to frame these traces in a better way. Check if this change applied for all traces with \"Certificate\" used in the beginning. The intention is to make add a trace that will help us debug faster",
+      "range": {
+        "startLine": 200,
+        "startChar": 21,
+        "endLine": 200,
+        "endChar": 32
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cb6ae3c_e4e40d86",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "Change this trace. Difficult to understand",
+      "range": {
+        "startLine": 225,
+        "startChar": 13,
+        "endLine": 225,
+        "endChar": 54
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48a7f4b3_37e8c797",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "I think u should keep this as HostReject here. HostReject is the dbus object",
+      "range": {
+        "startLine": 287,
+        "startChar": 19,
+        "endLine": 287,
+        "endChar": 30
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8865ac8f_74ee8b1f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "is less than keyword size?",
+      "range": {
+        "startLine": 51,
+        "startChar": 43,
+        "endLine": 51,
+        "endChar": 67
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aca8b0e8_dbc8a0f3",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-15T05:59:01Z",
+      "side": 1,
+      "message": "file open failed",
+      "range": {
+        "startLine": 72,
+        "startChar": 39,
+        "endLine": 72,
+        "endChar": 51
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
