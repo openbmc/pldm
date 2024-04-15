@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcfad126_9422f8fc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-15T04:20:23Z",
+      "side": 1,
+      "message": "do we need this file?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 27
+      },
+      "revId": "5d96ea9a0e1d2a71122ddac28c454673ad0f1e89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cecf81b6_cb6d38f6",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-15T04:20:23Z",
+      "side": 1,
+      "message": "format issue?",
+      "range": {
+        "startLine": 78,
+        "startChar": 22,
+        "endLine": 84,
+        "endChar": 26
+      },
+      "revId": "5d96ea9a0e1d2a71122ddac28c454673ad0f1e89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48854b0_1409bc2e",
+        "filename": "oem/ibm/test/libpldmresponder_fileio_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 888,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-15T04:20:23Z",
+      "side": 1,
+      "message": "camelCase",
+      "range": {
+        "startLine": 888,
+        "startChar": 9,
+        "endLine": 888,
+        "endChar": 25
+      },
+      "revId": "5d96ea9a0e1d2a71122ddac28c454673ad0f1e89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e81e3bea_03d76209",
+        "filename": "oem/ibm/test/libpldmresponder_fileio_test.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-15T04:20:23Z",
+      "side": 1,
+      "message": "camelCase",
+      "range": {
+        "startLine": 892,
+        "startChar": 9,
+        "endLine": 892,
+        "endChar": 22
+      },
+      "revId": "5d96ea9a0e1d2a71122ddac28c454673ad0f1e89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
