@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40269046_db913e8d",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-15T05:37:02Z",
+      "side": 1,
+      "message": "do you want to print which json file is not present?",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84beccc1_3b9505fd",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-15T05:37:02Z",
+      "side": 1,
+      "message": "do you want to print which json file parsing failed?",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2b6e110_84de4a5d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-15T05:37:02Z",
+      "side": 1,
+      "message": "do we need conversion here?",
+      "range": {
+        "startLine": 536,
+        "startChar": 38,
+        "endLine": 536,
+        "endChar": 52
+      },
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64697e95_2e2e596d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1021,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-15T05:37:02Z",
+      "side": 1,
+      "message": "why hex conversion is needed for rc?",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9dc2203_ed3956b0",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-15T05:37:02Z",
+      "side": 1,
+      "message": "why conversion is needed for rc ?",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
