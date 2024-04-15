@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d881bbfe_e93130cc",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-15T04:30:00Z",
+      "side": 1,
+      "message": "no TODO\u0027s in the code please, this sort of comments would pollute the code.if needed please maintain some sort of github issue or some trello card for tracking this - would not like to see source code as a issue tracker.",
+      "range": {
+        "startLine": 107,
+        "startChar": 12,
+        "endLine": 107,
+        "endChar": 44
+      },
+      "revId": "5d96ea9a0e1d2a71122ddac28c454673ad0f1e89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cecf81b6_cb6d38f6",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
         "patchSetId": 6
