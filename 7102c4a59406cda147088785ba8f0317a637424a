@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7af55bbe_28d5de7d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-15T06:04:30Z",
+      "side": 1,
+      "message": "Doesn\u0027t add much value, I think we can continue with this.",
+      "parentUuid": "84beccc1_3b9505fd",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2b6e110_84de4a5d",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-04-15T05:37:02Z",
       "side": 1,
       "message": "do we need conversion here?",
+      "range": {
+        "startLine": 536,
+        "startChar": 38,
+        "endLine": 536,
+        "endChar": 52
+      },
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efc5bba9_78639a28",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-15T06:04:30Z",
+      "side": 1,
+      "message": "As discussed, I will take this up a separate commit where I will remove all the unnecessary type casting in logs.",
+      "parentUuid": "f2b6e110_84de4a5d",
       "range": {
         "startLine": 536,
         "startChar": 38,
@@ -75,6 +117,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b151e3b_ddc08f1e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1021,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-15T06:04:30Z",
+      "side": 1,
+      "message": "I did not change it, Additionally maybe during debugging or something it may have been needed to be printed in hex so it is there.",
+      "parentUuid": "64697e95_2e2e596d",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9dc2203_ed3956b0",
@@ -88,6 +148,24 @@
       "writtenOn": "2024-04-15T05:37:02Z",
       "side": 1,
       "message": "why conversion is needed for rc ?",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eb0eb99_f0cfef21",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-15T06:04:30Z",
+      "side": 1,
+      "message": "I did not change it, Additionally maybe during debugging or something it may have been needed to be printed in hex so it is there.",
+      "parentUuid": "c9dc2203_ed3956b0",
       "revId": "7102c4a59406cda147088785ba8f0317a637424a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
