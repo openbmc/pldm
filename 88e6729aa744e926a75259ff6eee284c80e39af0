@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2df9a19_707616a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-15T04:04:34Z",
+      "side": 1,
+      "message": "@sagar - almost close, just couple of minor comments in the doxygen , otherwise it\u0027s good to go.",
+      "revId": "88e6729aa744e926a75259ff6eee284c80e39af0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce81526_5a22689f",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-15T04:04:34Z",
+      "side": 1,
+      "message": "these are not in/out anymore ? just `in`",
+      "range": {
+        "startLine": 107,
+        "startChar": 6,
+        "endLine": 109,
+        "endChar": 24
+      },
+      "revId": "88e6729aa744e926a75259ff6eee284c80e39af0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f358e68_9d5b890e",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-15T04:04:34Z",
+      "side": 1,
+      "message": "same here as well.",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 120,
+        "endChar": 34
+      },
+      "revId": "88e6729aa744e926a75259ff6eee284c80e39af0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
