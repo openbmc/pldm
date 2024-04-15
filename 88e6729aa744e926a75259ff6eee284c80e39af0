@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "440f3d37_07cf6b23",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-15T04:38:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cce81526_5a22689f",
+      "range": {
+        "startLine": 107,
+        "startChar": 6,
+        "endLine": 109,
+        "endChar": 24
+      },
+      "revId": "88e6729aa744e926a75259ff6eee284c80e39af0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f358e68_9d5b890e",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-04-15T04:04:34Z",
       "side": 1,
       "message": "same here as well.",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 120,
+        "endChar": 34
+      },
+      "revId": "88e6729aa744e926a75259ff6eee284c80e39af0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37df5dc3_647b94bd",
+        "filename": "softoff/softoff.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-15T04:38:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2f358e68_9d5b890e",
       "range": {
         "startLine": 118,
         "startChar": 8,
