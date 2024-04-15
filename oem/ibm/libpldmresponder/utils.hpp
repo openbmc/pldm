@@ -44,6 +44,15 @@ int writeToUnixSocket(const int sock, const char* buf,
  */
 bool checkIfIBMFru(const std::string& objPath);
 
+/** @brief finds the ports under an adapter
+ *
+ *  @param[in] adapterObjPath - D-Bus object path for the adapter
+ *  @param[out] portObjects - the ports under the adapter
+ *
+ */
+void findPortObjects(const std::string& adapterObjPath,
+                     std::vector<std::string>& portObjects);
+
 } // namespace utils
 } // namespace responder
 } // namespace pldm

@@ -10,6 +10,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/Asset/client.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Connector/client.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
 PHOSPHOR_LOG2_USING;
 
@@ -162,6 +164,31 @@ bool checkIfIBMFru(const std::string& objPath)
     return false;
 }
 
+void findPortObjects(const std::string& adapterObjPath,
+                     std::vector<std::string>& portObjects)
+{
+    using ObjectMapper =
+        sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
+    using ItemConnector =
+        sdbusplus::client::xyz::openbmc_project::inventory::item::Connector<>;
+
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        auto method = bus.new_method_call(
+            ObjectMapper::default_service, ObjectMapper::instance_path,
+            ObjectMapper::interface, "GetSubTreePaths");
+        method.append(adapterObjPath, 0,
+                      std::vector<std::string>({ItemConnector::interface}));
+        auto reply = bus.call(method, dbusTimeout);
+        reply.read(portObjects);
+    }
+    catch (const std::exception& e)
+    {
+        error("No ports under adapter '{ADAPTER_OBJ_PATH}'  - {ERROR}.",
+              "ADAPTER_OBJ_PATH", adapterObjPath.c_str(), "ERROR", e);
+    }
+}
 } // namespace utils
 } // namespace responder
 } // namespace pldm
