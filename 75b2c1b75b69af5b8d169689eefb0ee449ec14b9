@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb49a59_72ee25e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-15T04:22:58Z",
+      "side": 1,
+      "message": "please also point to relavant discord discussions \u0026 also the relevant libpldm commit links which drove this change,",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 48
+      },
+      "revId": "75b2c1b75b69af5b8d169689eefb0ee449ec14b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f15308d9_3d917f58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-15T04:22:58Z",
+      "side": 1,
+      "message": "@kamal - the commit by itself looks good to me. But the commit message could use a bit of detailing.",
+      "revId": "75b2c1b75b69af5b8d169689eefb0ee449ec14b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ec582c8_acc48e10",
+        "filename": "common/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-15T04:22:58Z",
+      "side": 1,
+      "message": "why not pldm_entity ? this could reduce one additional de-reference per operation right ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 42,
+        "endLine": 61,
+        "endChar": 54
+      },
+      "revId": "75b2c1b75b69af5b8d169689eefb0ee449ec14b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
