@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b6481d1_1ab5f9aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "are you talking about the link you mentioned ? then probably telling it as anti-pattern document would be better.",
+      "range": {
+        "startLine": 11,
+        "startChar": 17,
+        "endLine": 11,
+        "endChar": 39
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "010f7771_670b7c76",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "this commit ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 12,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc3f6a8_9859fce6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "extra space",
+      "range": {
+        "startLine": 12,
+        "startChar": 19,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe28f5f1_ae64923b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "i have recently learnt that the correct way to document links is by using the github format for documenting the links.\n\nlook at https://gerrit.openbmc.org/c/openbmc/docs/+/70717/comment/54221986_c8619129/ for more info and correct this based on that.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 118
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43fd1e07_000e0090",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "this looks like a paragraph to me, probably rephrase this as \n\n`MCTP daemon closed the socket, IO exiting with rc {RC}`",
+      "range": {
+        "startLine": 362,
+        "startChar": 16,
+        "endLine": 362,
+        "endChar": 124
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81398d04_30431e46",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 212,
+        "startChar": 59,
+        "endLine": 212,
+        "endChar": 68
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72970e0c_e04e5ccf",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "how can this be an info , when we are returning PLDM_ERROR in this condition.",
+      "range": {
+        "startLine": 259,
+        "startChar": 12,
+        "endLine": 261,
+        "endChar": 74
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "166088db_4fff0761",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "add object path and service name, we dont know what failed here",
+      "range": {
+        "startLine": 32,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 78
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b1be934_e446e831",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "what message is it ? \n\nif we see this in journal , do we know what message is this ?",
+      "range": {
+        "startLine": 296,
+        "startChar": 8,
+        "endLine": 296,
+        "endChar": 80
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "564a150d_8a921390",
+        "filename": "utilities/requester/set_state_effecter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-16T10:40:03Z",
+      "side": 1,
+      "message": "not sure if this is making sense , how do we know what message did we get the response for ? audit these type of errors through out the patchset and see if we can add more details into it.",
+      "range": {
+        "startLine": 56,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 69
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
