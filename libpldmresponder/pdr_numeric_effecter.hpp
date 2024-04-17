@@ -52,7 +52,6 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                           sizeof(pldm_pdr_hdr);
 
         pdr->terminus_handle = e.value("terminus_handle", 0);
-        pdr->effecter_id = handler.getNextEffecterId();
 
         try
         {
@@ -220,9 +219,10 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             error(
                 "D-Bus object path does not exist, effecter ID: {EFFECTER_ID}",
                 "EFFECTER_ID", static_cast<uint16_t>(pdr->effecter_id));
+            continue;
         }
         dbusMappings.emplace_back(std::move(dbusMapping));
-
+        pdr->effecter_id = handler.getNextEffecterId();
         handler.addDbusObjMaps(
             pdr->effecter_id,
             std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)));

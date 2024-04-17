@@ -98,7 +98,17 @@ int setStateEffecterStatesHandler(
     {
         const auto& [dbusMappings,
                      dbusValMaps] = handler.getDbusObjMaps(effecterId);
-        for (uint8_t currState = 0; currState < compEffecterCnt; ++currState)
+        if (dbusMappings.empty() || dbusValMaps.empty())
+        {
+            error("dbusMappings for effecter id : {EFFECTER_ID} is missing",
+                  "EFFECTER_ID", effecterId);
+            return PLDM_ERROR;
+        }
+
+        for (uint8_t currState = 0;
+             currState < compEffecterCnt && currState < dbusMappings.size() &&
+             currState < dbusValMaps.size();
+             ++currState)
         {
             std::vector<StateSetNum> allowed{};
             // computation is based on table 79 from DSP0248 v1.1.1
