@@ -73,7 +73,6 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         HTOLE16(pdr->hdr.length);
 
         pdr->terminus_handle = TERMINUS_HANDLE;
-        pdr->sensor_id = handler.getNextSensorId();
 
         try
         {
@@ -118,7 +117,6 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         pdr->composite_sensor_count = sensors.size();
 
         HTOLE16(pdr->terminus_handle);
-        HTOLE16(pdr->sensor_id);
         HTOLE16(pdr->entity_type);
         HTOLE16(pdr->entity_instance);
         HTOLE16(pdr->container_id);
@@ -173,21 +171,26 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                 error(
                     "Failed to create sensor PDR, D-Bus object '{PATH}' returned {ERROR}",
                     "PATH", objectPath, "ERROR", e);
-                continue;
+                break;
             }
-
             dbusMappings.emplace_back(std::move(dbusMapping));
             dbusValMaps.emplace_back(std::move(dbusIdToValMap));
         }
 
-        handler.addDbusObjMaps(
-            pdr->sensor_id,
-            std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)),
-            pldm::responder::pdr_utils::TypeId::PLDM_SENSOR_ID);
-        pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-        pdrEntry.data = entry.data();
-        pdrEntry.size = pdrSize;
-        repo.addRecord(pdrEntry);
+        if (!(dbusMappings.empty() && dbusValMaps.empty()))
+        {
+            pdr->sensor_id = handler.getNextSensorId();
+            HTOLE16(pdr->sensor_id);
+            handler.addDbusObjMaps(
+                pdr->sensor_id,
+                std::make_tuple(std::move(dbusMappings),
+                                std::move(dbusValMaps)),
+                pldm::responder::pdr_utils::TypeId::PLDM_SENSOR_ID);
+            pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = pdrSize;
+            repo.addRecord(pdrEntry);
+        }
     }
 }
 
