@@ -153,12 +153,15 @@ int getStateSensorReadingsHandler(
             sensorCacheforSensor = sensorCache.at(sensorId);
         }
         stateField.clear();
-        for (std::size_t i{0}; i < sensorRearmCnt; i++)
+        for (std::size_t offset{0};
+             offset < sensorRearmCnt && offset < dbusMappings.size() &&
+             offset < dbusValMaps.size();
+             offset++)
         {
-            auto& dbusMapping = dbusMappings[i];
+            auto& dbusMapping = dbusMappings[offset];
 
             uint8_t sensorEvent = getStateSensorEventState<DBusInterface>(
-                dBusIntf, dbusValMaps[i], dbusMapping);
+                dBusIntf, dbusValMaps[offset], dbusMapping);
 
             uint8_t previousState = PLDM_SENSOR_UNKNOWN;
 
@@ -166,16 +169,16 @@ int getStateSensorReadingsHandler(
             // get_state_sensor_reading on this sensor, set the previous state
             // as the current state
 
-            if (sensorCacheforSensor.at(i) == PLDM_SENSOR_UNKNOWN)
+            if (sensorCacheforSensor.at(offset) == PLDM_SENSOR_UNKNOWN)
             {
                 previousState = sensorEvent;
-                handler.updateSensorCache(sensorId, i, previousState);
+                handler.updateSensorCache(sensorId, offset, previousState);
             }
             else
             {
                 // sensor cache is not empty, so get the previous state from
                 // the sensor cache
-                previousState = sensorCacheforSensor[i];
+                previousState = sensorCacheforSensor[offset];
             }
             uint8_t opState = PLDM_SENSOR_ENABLED;
             if (sensorEvent == PLDM_SENSOR_UNKNOWN)
