@@ -70,7 +70,6 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
 
         pdr->terminus_handle = TERMINUS_HANDLE;
-        pdr->effecter_id = handler.getNextEffecterId();
 
         try
         {
@@ -161,19 +160,22 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 error(
                     "Failed to create effecter PDR, D-Bus object '{PATH}' returned {ERROR}",
                     "PATH", objectPath, "ERROR", e);
-                continue;
+                break;
             }
-
             dbusMappings.emplace_back(std::move(dbusMapping));
             dbusValMaps.emplace_back(std::move(dbusIdToValMap));
         }
-        handler.addDbusObjMaps(
-            pdr->effecter_id,
-            std::make_tuple(std::move(dbusMappings), std::move(dbusValMaps)));
-        pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-        pdrEntry.data = entry.data();
-        pdrEntry.size = pdrSize;
-        repo.addRecord(pdrEntry);
+        if (!(dbusMappings.empty() && dbusValMaps.empty()))
+        {
+            pdr->effecter_id = handler.getNextEffecterId();
+            handler.addDbusObjMaps(pdr->effecter_id,
+                                   std::make_tuple(std::move(dbusMappings),
+                                                   std::move(dbusValMaps)));
+            pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = pdrSize;
+            repo.addRecord(pdrEntry);
+        }
     }
 }
 
