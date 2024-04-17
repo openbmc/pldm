@@ -48,7 +48,7 @@ int main()
     if (softPower.isTimerExpired() && softPower.isReceiveResponse())
     {
         pldm::utils::reportError(
-            "xyz.openbmc_project.PLDM.Error.SoftPowerOff.HostSoftOffTimeOut");
+            "pldm soft off: Waiting for the host soft off timeout");
         error(
             "PLDM host soft off: ERROR! Wait for the host soft off timeout. Exit the pldm-softpoweroff");
         return -1;
