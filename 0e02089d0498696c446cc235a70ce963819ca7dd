@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed47d80_028b17b2",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-18T05:50:06Z",
+      "side": 1,
+      "message": "While testing master, i could see that the trace in line 780 and rest of the traces in this function have inconsistent spacing in the begining, i could not see any other places where there is spacing issue.",
+      "parentUuid": "93d368d9_549a7488",
+      "revId": "0e02089d0498696c446cc235a70ce963819ca7dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0f31436_452eddf8",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-04-18T05:46:02Z",
       "side": 1,
       "message": "Do we need to keep it consistent for all other values ?",
+      "revId": "0e02089d0498696c446cc235a70ce963819ca7dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "551bb07b_cacc87a3",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-18T05:50:06Z",
+      "side": 1,
+      "message": "you mean other traces ? what does other values mean ?",
+      "parentUuid": "a0f31436_452eddf8",
       "revId": "0e02089d0498696c446cc235a70ce963819ca7dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
