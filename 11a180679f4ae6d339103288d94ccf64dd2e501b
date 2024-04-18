@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a70bf7e8_5918c9b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-18T15:18:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0bed483_c220e799",
+      "revId": "11a180679f4ae6d339103288d94ccf64dd2e501b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aef48147_1777459a",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-04-18T07:10:30Z",
       "side": 1,
       "message": "Do we really need extra variable? Do you see any issue in checking for empty dbusMappings??",
+      "revId": "11a180679f4ae6d339103288d94ccf64dd2e501b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "153375de_e7899a1f",
+        "filename": "libpldmresponder/pdr_state_effecter.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-18T15:18:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aef48147_1777459a",
       "revId": "11a180679f4ae6d339103288d94ccf64dd2e501b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0a1b7f2_3808c075",
+        "filename": "libpldmresponder/pdr_state_sensor.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-18T15:18:59Z",
+      "side": 1,
+      "message": "We cannot as HTOLE16 is a macro \u0026 it does not accept a function call as an argument.\n\nAlthough we could optimise it by using htole16() function , but that would add extra re-assignment in code. I will try to evaluate the need for using these macro\u0027s and come up with a different patchset with these changes.",
+      "parentUuid": "dc20254f_2ea49b3b",
+      "revId": "11a180679f4ae6d339103288d94ccf64dd2e501b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3decf2fe_fab1b627",
@@ -65,6 +119,30 @@
       "writtenOn": "2024-04-18T07:10:30Z",
       "side": 1,
       "message": "is it really needed?? for loop at line 108 does handle this use case",
+      "range": {
+        "startLine": 101,
+        "startChar": 3,
+        "endLine": 106,
+        "endChar": 9
+      },
+      "revId": "11a180679f4ae6d339103288d94ccf64dd2e501b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "728e1f4b_7b64abb3",
+        "filename": "libpldmresponder/platform_state_effecter.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-18T15:18:59Z",
+      "side": 1,
+      "message": "Cannot think of a different logic to return error back. Since the checks are inside the conposite effecter forloop. Leaving this check as it is for now, since removing this would add additional code making it a little complicated.",
+      "parentUuid": "3decf2fe_fab1b627",
       "range": {
         "startLine": 101,
         "startChar": 3,
