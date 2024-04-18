@@ -778,7 +778,7 @@ void BIOSConfig::traceBIOSUpdate(
                                                  stringTable);
                 auto chkBMC = isBMC ? "true" : "false";
                 info(
-                    "BIOS:{ATTR_NAME}, updated to value: {NEW_VAL}, by BMC: {CHK_BMC} ",
+                    "BIOS: {ATTR_NAME}, updated to value: {NEW_VAL}, by BMC: {CHK_BMC} ",
                     "ATTR_NAME", attrName, "NEW_VAL", nwVal, "CHK_BMC", chkBMC);
             }
             break;
@@ -790,7 +790,7 @@ void BIOSConfig::traceBIOSUpdate(
                 table::attribute_value::decodeIntegerEntry(attrValueEntry);
             auto chkBMC = isBMC ? "true" : "false";
             info(
-                "BIOS:  {ATTR_NAME}, updated to value: {UPDATED_VAL}, by BMC: {CHK_BMC}",
+                "BIOS: {ATTR_NAME}, updated to value: {UPDATED_VAL}, by BMC: {CHK_BMC}",
                 "ATTR_NAME", attrName, "UPDATED_VAL", value, "CHK_BMC", chkBMC);
             break;
         }
@@ -801,7 +801,7 @@ void BIOSConfig::traceBIOSUpdate(
                 table::attribute_value::decodeStringEntry(attrValueEntry);
             auto chkBMC = isBMC ? "true" : "false";
             info(
-                "BIOS:  {ATTR_NAME}, updated to value: {UPDATED_VAL}, by BMC: {CHK_BMC}",
+                "BIOS: {ATTR_NAME}, updated to value: {UPDATED_VAL}, by BMC: {CHK_BMC}",
                 "ATTR_NAME", attrName, "UPDATED_VAL", value, "CHK_BMC", chkBMC);
             break;
         }
