@@ -69,6 +69,24 @@
       "parentUuid": "a0f31436_452eddf8",
       "revId": "0e02089d0498696c446cc235a70ce963819ca7dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a824509c_992534ae",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-19T08:30:48Z",
+      "side": 1,
+      "message": "\"updated to value: {UPDATED_VAL}\", here also can we remove space?",
+      "parentUuid": "551bb07b_cacc87a3",
+      "revId": "0e02089d0498696c446cc235a70ce963819ca7dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
