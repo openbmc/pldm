@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "921101ab_429ebe82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-19T05:51:56Z",
+      "side": 1,
+      "message": "Do we need this change for numeric effecters as well?",
+      "revId": "a8c2d4ec2378c32b04eb594e5adedd0bd4026c36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
