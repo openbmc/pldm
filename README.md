@@ -157,3 +157,27 @@ PDR repository. Platform specific PDR modifications would likely just result in
 JSON updates. New PDR type support would require JSON updates as well as PDR
 generation code. The PDR generator is a map of PDR Type -> C++ lambda to create
 PDR entries for that type based on the JSON, and to update the central PDR repo.
+
+# BIOS Attributes Implementation
+
+The BIOS attributes within OpenBMC are organized and represented in JSON files,
+following the specifications outlined in the BIOS Management Profile. These
+files are named based on the attribute type, such as enum_attrs.json,
+integer_attrs.json, and string_attrs.json.
+
+Since PLDM BIOS Attributes can vary across platforms and systems, it's essential
+to support system-specific BIOS attributes. To achieve this, BIOS JSON files are
+created under folders named after the system type. The system type information
+is fetched from the Entity Manager service, which hosts the compatible interface
+The compatible interface dynamically populates the Names property with the
+system type information.
+Given that the compatible interface and the Names property are dynamically
+created by the Entity Manager, determining the system type in the application
+space may take some time. Consequently, in cases where system-specific BIOS
+attribute support is needed, BIOS tables are built lazily after receiving the
+system type.
+
+To enable the system-specific BIOS attribute support within PLDM, the build
+option system-specific-bios-json can be utilized. This option facilitates the
+inclusion of JSON files containing BIOS attributes specific to different system
+types during runtime.
