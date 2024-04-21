@@ -157,3 +157,43 @@ PDR repository. Platform specific PDR modifications would likely just result in
 JSON updates. New PDR type support would require JSON updates as well as PDR
 generation code. The PDR generator is a map of PDR Type -> C++ lambda to create
 PDR entries for that type based on the JSON, and to update the central PDR repo.
+
+# BIOS Attributes Implementation
+
+The BIOS attributes, also known as BIOS parameters or configuration settings,
+are structured and represented in JSON files, conforming to the specifications
+outlined in the BIOS Management Profile. Each BIOS attribute is characterized
+by a name, type, and type-specific metadata and values.
+
+To accommodate the varying metadata associated with different attribute types,
+separate JSON files are created based on attribute types. These files include
+enum_attrs.json, integer_attrs.json, and string_attrs.json, tailored to enum,
+integer, and string attribute types respectively.
+
+For instance, integer attribute details within the JSON format include:
+{
+    "attribute_name": "integer_attribute",
+    "lower_bound": 0,
+    "upper_bound": 32,
+    "scalar_increment": 1,
+    "default_value": 0,
+    "helpText": "Attribute usage",
+    "displayName": "Display Name"
+}
+
+Since PLDM BIOS Attributes can vary across platforms and systems, it's essential
+to support system-specific BIOS attributes. To achieve this, BIOS JSON files are
+created under folders named after the system type. The system type information
+is fetched from the Entity Manager service, which hosts the compatible interface
+The compatible interface dynamically populates the Names property with the
+system type information.
+Given that the compatible interface and the Names property are dynamically
+created by the Entity Manager, determining the system type in the application
+space may take some time. Consequently, in cases where system-specific BIOS
+attribute support is needed, BIOS tables are built lazily after receiving the
+system type.
+
+To enable the system-specific BIOS attribute support within PLDM, the build
+option system-specific-bios-json can be utilized. This option facilitates the
+inclusion of JSON files containing BIOS attributes specific to different system
+types during runtime.
