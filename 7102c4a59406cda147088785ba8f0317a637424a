@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a94834_8e76ab15",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-21T08:55:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40269046_db913e8d",
+      "revId": "7102c4a59406cda147088785ba8f0317a637424a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84beccc1_3b9505fd",
