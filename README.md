@@ -76,7 +76,7 @@ Following directory structure has to be used:
 
 <oem_name> - This folder must be created with the name of the OEM/vendor in
 lower case. Folders named libpldm and libpldmresponder must be created under the
-folder <oem_name>
+folder <oem_name>.
 
 Files having the oem functionality for the libpldmresponder library should be
 placed under the folder oem/<oem_name>/libpldmresponder. They must be adhering
@@ -108,39 +108,39 @@ This section documents important code flow paths.
 
 ## BMC as PLDM responder
 
-a) PLDM daemon receives PLDM request message from underlying transport (MCTP).
+1. PLDM daemon receives PLDM request message from underlying transport (MCTP).
 
-b) PLDM daemon routes message to message handler, based on the PLDM command.
+2. PLDM daemon routes message to message handler, based on the PLDM command.
 
-c) Message handler decodes request payload into various field(s) of the request
-message. It can make use of a decode_foo_req() API, and doesn't have to perform
-deserialization of the request payload by itself.
+3. Message handler decodes request payload into various field(s) of the request
+   message. It can make use of a decode_foo_req() API, and doesn't have to
+   perform deserialization of the request payload by itself.
 
-d) Message handler works with the request field(s) and generates response
-field(s).
+4. Message handler works with the request field(s) and generates response
+   field(s).
 
-e) Message handler prepares a response message. It can make use of an
-encode_foo_resp() API, and doesn't have to perform the serialization of the
-response field(s) by itself.
+5. Message handler prepares a response message. It can make use of an
+   encode_foo_resp() API, and doesn't have to perform the serialization of the
+   response field(s) by itself.
 
-f) The PLDM daemon sends the response message prepared at step e) to the remote
-PLDM device.
+6. The PLDM daemon sends the response message prepared at step 6 to the remote
+   PLDM device.
 
 ## BMC as PLDM requester
 
-a) A BMC PLDM requester app prepares a PLDM request message. There would be
-several requester apps (based on functionality/PLDM remote device). Each of them
-needn't bother with the serialization of request field(s), and can instead make
-use of an encode_foo_req() API.
+1. A BMC PLDM requester app prepares a PLDM request message. There would be
+   several requester apps (based on functionality/PLDM remote device). Each of
+   them needn't bother with the serialization of request field(s), and can
+   instead make use of an encode_foo_req() API.
 
-b) BMC requester app requests PLDM daemon to send the request message to remote
-PLDM device.
+2. BMC requester app requests PLDM daemon to send the request message to remote
+   PLDM device.
 
-c) Once the PLDM daemon receives a corresponding response message, it notifies
-the requester app.
+3. Once the PLDM daemon receives a corresponding response message, it notifies
+   the requester app.
 
-d) The requester app has to work with the response field(s). It can make use of
-a decode_foo_resp() API to deserialize the response message.
+4. The requester app has to work with the response field(s). It can make use of
+   a decode_foo_resp() API to deserialize the response message.
 
 # PDR Implementation
 
@@ -157,3 +157,79 @@ PDR repository. Platform specific PDR modifications would likely just result in
 JSON updates. New PDR type support would require JSON updates as well as PDR
 generation code. The PDR generator is a map of PDR Type -> C++ lambda to create
 PDR entries for that type based on the JSON, and to update the central PDR repo.
+
+## BIOS Support
+
+BIOS functionality is integrated into PLDM according to the guidelines in the
+[PLDM BIOS Specification](https://www.dmtf.org/sites/default/files/standards/documents/DSP0247_1.0.0.pdf)
+BIOS attributes, also referred to as BIOS parameters or configuration settings,
+are structured within JSON files. Each attribute is defined by its name, type,
+and type-specific metadata and values. PLDM parses all the
+[JSON files](https://github.com/openbmc/pldm/tree/master/oem/ibm/configurations/bios/com.ibm.Hardware.Chassis.Model.Rainier2U)
+and assigns the data to the
+[Base BIOS Table](https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/BIOSConfig/Manager.interface.yaml)
+hosted by [BIOS Config Manager](https://github.com/openbmc/bios-settings-mgr).
+The design is documented in
+[DesignDoc](https://github.com/openbmc/docs/blob/master/designs/remote-bios-configuration.md).
+
+Also PLDM creates BIOS tables using these values. All the
+`bios attribute json files are kept under OEM`
+[Path](https://github.com/openbmc/pldm/tree/master/oem). To accommodate the
+diverse metadata associated with different attribute types, separate JSON files
+are generated based on attribute types. These files, namely enum_attrs.json,
+integer_attrs.json, and string_attrs.json, are tailored to enum, integer, and
+string attribute types, respectively.
+
+Below are examples of integer, enum, and string attributes:
+
+```json
+Integer Attribute
+{
+    "attribute_name": "Attribute Name",
+    "lower_bound": "The lower bound on the integer value",
+    "upper_bound": "The upper bound on the integer value",
+    "scalar_increment": "The scalar value that is used for the increments to this integer ",
+    "default_value": "The default value of the integer",
+    "helpText": "Help text about attribute usage",
+    "displayName": "Attribute Display Name",
+    "readOnly": "Read only Attribute"
+}
+Enum Attribute
+{
+    "attribute_name": "Attribute Name",
+    "possible_values": ["An array of character strings of variable to indicate the possible values of the BIOS attribute"],
+    "default_values": "Default value",
+    "helpText": "Help text about attribute usage",
+    "displayName": "Display Name",
+    "readOnly": "Read only Attribute"
+}
+String Attribute
+{
+    "attribute_name": "Attribute Name",
+    "string_type": "The type of the string. It identifies the character encoding used for this string",
+    "minimum_string_length": "The minimum length of the string in bytes",
+    "maximum_string_length": "The maximum length of the string in bytes",
+    "default_string_length": "The length of the default string in bytes",
+    "default_string": "The default string itself",
+    "helpText": "Help text about attribute usage",
+    "displayName": "Attribute Display Name",
+    "readOnly": "Read only Attribute"
+}
+```
+
+As PLDM BIOS Attributes may differ across platforms and systems, supporting
+system-specific BIOS attributes is crucial. To achieve this, BIOS JSON files are
+organized under folders named after the system type. System type information is
+retrieved from the Entity Manager service, which hosts the
+[Compatible Interface](https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Inventory/Decorator/Compatible.interface.yaml).
+
+This interface dynamically populates the Names property with system type
+information. However, determining the system type in the application space may
+take some time since the compatible interface and the Names property are
+dynamically created by the Entity Manager. Consequently, BIOS tables are lazily
+constructed upon receiving the system type.
+
+To enable system-specific BIOS attribute support within PLDM, the meson option
+`system-specific-bios-json` can be utilized. With `system-specific-bios-json`
+option enabled BIOS JSON files specific to the system type are fetched during
+runtime.
