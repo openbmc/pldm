@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e74f5e8_ebacfd00",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-04-21T22:51:05Z",
+      "side": 1,
+      "message": "What goes in the JSON?  Can we have at least a trivial example?\n\nWhy would we have made 3 different JSON files?  That seems strange.",
+      "revId": "4e9e2719d37a430e8c574363e84a09eca2102655",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
