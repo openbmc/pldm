@@ -157,3 +157,77 @@ PDR repository. Platform specific PDR modifications would likely just result in
 JSON updates. New PDR type support would require JSON updates as well as PDR
 generation code. The PDR generator is a map of PDR Type -> C++ lambda to create
 PDR entries for that type based on the JSON, and to update the central PDR repo.
+
+# BIOS Attributes Implementation
+
+BIOS attributes, also referred to as BIOS parameters or configuration settings,
+are structured within JSON files according to the specifications outlined in the
+BIOS Management Profile[BIOS Management Profile]. Each attribute is defined by
+its name, type, and type-specific metadata and values.
+
+PLDM parses all the JSON files and assigns the data to the Base BIOS tables of
+the BIOS config manager[BiosConfigManager - BaseBiosTable PDI]. To accommodate
+the diverse metadata associated with different attribute types, separate JSON
+files are generated based on attribute types. These files, namely
+enum_attrs.json, integer_attrs.json, and string_attrs.json, are tailored to
+enum, integer, and string attribute types, respectively.
+
+Below are examples of integer, enum, and string attributes:
+
+```
+Integer Attribute
+{
+    "attribute_name": "Attribute Name",
+    "lower_bound": "Minimum value allowed for the attribute",
+    "upper_bound": "Maximum value allowed for the attribute",
+    "scalar_increment": "Increment value for the attribute",
+    "default_value": "Default value",
+    "helpText": "Help text about attribute usage",
+    "displayName": "Attribute Display Name",
+    "readOnly": "true/false (By default taken as false)"
+}
+Enum Attribute
+{
+    "attribute_name": "Attribute Name",
+    "possible_values": ["Array of possible values the attribute can take"],
+    "default_values": "Default value",
+    "helpText": "Help text about attribute usage",
+    "displayName": "Display Name",
+    "readOnly": "true/false (By default taken as false)"
+}
+String Attribute
+{
+    "attribute_name": "Attribute Name",
+    "string_type": "Type of the string expected for the attribute (for example 'ASCII')",
+    "minimum_string_length": "Minimum attribute string length",
+    "maximum_string_length": "Maximum attribute string length",
+    "default_string_length": "Default string length",
+    "default_string": "Default attribute value",
+    "helpText": "Help text about attribute usage",
+    "displayName": "Attribute Display Name",
+    "readOnly": "true/false (By default taken as false)"
+}
+```
+
+As PLDM BIOS Attributes may differ across platforms and systems, supporting
+system-specific BIOS attributes is crucial. To achieve this, BIOS JSON files are
+organized under folders named after the system type. System type information is
+retrieved from the Entity Manager service, which hosts the compatible
+interface[EM - Compatible Interface PDI]. This interface dynamically populates
+the Names property with system type information. However, determining the system
+type in the application space may take some time since the compatible interface
+and the Names property are dynamically created by the Entity Manager.
+Consequently, for cases requiring system-specific BIOS attribute support, BIOS
+tables are lazily constructed upon receiving the system type.
+
+To enable system-specific BIOS attribute support within PLDM, the build option
+system-specific-bios-json can be utilized. This option simplifies the inclusion
+of JSON files containing BIOS attributes specific to different system types
+during runtime.
+
+[BIOS Management Profile]:
+  https://www.dmtf.org/sites/default/files/standards/documents/DSP1061_1.0.0.pdf
+[BiosConfigManager - BaseBiosTable PDI]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/BIOSConfig/Manager.interface.yaml
+[EM - Compatible Interface PDI]:
+  https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Inventory/Decorator/Compatible.interface.yamld
