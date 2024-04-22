@@ -34,6 +34,24 @@
       "parentUuid": "4e74f5e8_ebacfd00",
       "revId": "4e9e2719d37a430e8c574363e84a09eca2102655",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9ced96b_04d97079",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-04-22T20:54:19Z",
+      "side": 1,
+      "message": "\u003e What goes in the JSON?\n\u003e BIOS Attributes are added to the json file. BIOS attribute represents a specific \u003e BIOS parameter or configuration setting. Example would be providing the default OS type for the CEC to boot.\n\nThis still doesn\u0027t tell me how to create one of these.  There is no sample JSON and no example in the text.",
+      "parentUuid": "4e3566ca_a297d78e",
+      "revId": "4e9e2719d37a430e8c574363e84a09eca2102655",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
