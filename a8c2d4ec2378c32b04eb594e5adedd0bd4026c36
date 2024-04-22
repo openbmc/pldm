@@ -16,6 +16,24 @@
       "message": "Do we need this change for numeric effecters as well?",
       "revId": "a8c2d4ec2378c32b04eb594e5adedd0bd4026c36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec58066_1a0efd7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-22T00:54:43Z",
+      "side": 1,
+      "message": "yes , we need this for numeric effecters.\n\nI have added the fix in numeric effecter code as well in the latest patchset.",
+      "parentUuid": "921101ab_429ebe82",
+      "revId": "a8c2d4ec2378c32b04eb594e5adedd0bd4026c36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
