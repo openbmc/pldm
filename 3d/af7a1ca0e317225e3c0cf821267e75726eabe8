@@ -1,0 +1,11 @@
+Code-Review+1: George Liu <liuxiwei@ieisystem.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Pavithra Barithaya <pavithrabarithaya07@gmail.com>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Code-Review+1: Archana Kakani <archana.kakani@ibm.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 22 Apr 2024 13:23:00 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/70921
+Comments-Total: 14
+Project: openbmc/pldm
+Branch: refs/heads/master
