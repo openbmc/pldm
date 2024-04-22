@@ -22,6 +22,30 @@
       },
       "revId": "9b73cfde6330600d1a0ec3e62667c16480b39ef8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7f728df_4c4656fc",
+        "filename": "libpldmresponder/pdr_numeric_effecter.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-22T05:37:10Z",
+      "side": 1,
+      "message": "all the parsing has been completed by the time we hit the exception. Its just that we found that the dbus objects are not present, so we skip creating the effecter entry(by not hadling the effecter_id inside the handler) by retrun directly from the catch block.",
+      "parentUuid": "46162b2b_3dbfcc2e",
+      "range": {
+        "startLine": 222,
+        "startChar": 12,
+        "endLine": 222,
+        "endChar": 19
+      },
+      "revId": "9b73cfde6330600d1a0ec3e62667c16480b39ef8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
