@@ -87,6 +87,24 @@
       "parentUuid": "551bb07b_cacc87a3",
       "revId": "0e02089d0498696c446cc235a70ce963819ca7dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd3437d_c6a16db4",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-22T10:01:11Z",
+      "side": 1,
+      "message": "ah no, its okay to have space here, its just looks a little odd when the trace beginning itself has space, when few of the similar traces does not have.",
+      "parentUuid": "a824509c_992534ae",
+      "revId": "0e02089d0498696c446cc235a70ce963819ca7dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
