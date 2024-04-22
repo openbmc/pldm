@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f9adf00_32671b14",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "Do not use host, since word is not relevant to community. remove host and reframe it everywhere.",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b908142f_e685f975",
         "filename": "oem/ibm/libpldmresponder/file_io.cpp",
         "patchSetId": 3
@@ -91,6 +108,23 @@
         "endLine": 240,
         "endChar": 88
       },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6820543a_c5e6301b",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "\"File_Handle does not exist\" didn\u0027t make any sense better reframe it like this:\n\"File \u0027{PATH}\u0027 does not exist with file handle \u0027{FILE_HANDLE}\u0027\"",
       "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -330,6 +364,91 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc1a283f_9b7eac7c",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "Change this trace also. \n\"Failed to open new available file which filetype is\u0027{}\u0027....\"\n\ndoes it sound better?",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "323926a5_907aeb6a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "Failed to make a D-bus call to DUMP manager for reseting source dump file:\u0027{PATH}\u0027 which source Dump ID is: \u0027{ID}\u0027\n\nrephrase like this for better readability.\nplease make similar thing for below some of the traces.",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3873da0f_f8eadaa0",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "we are printing in hex so do we still need to append \"0x\"?",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0045b60a_8a91d643",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "what is file seek? there is not concept of file seek, please improve trace",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c30b01e_ce51c90d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "same here like this: https://gerrit.openbmc.org/c/openbmc/pldm/+/70654/comment/48a7f4b3_37e8c797/",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48a7f4b3_37e8c797",
         "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
         "patchSetId": 3
@@ -393,6 +512,182 @@
         "endLine": 72,
         "endChar": 51
       },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10495dc8_cb8f563d",
+        "filename": "oem/ibm/libpldmresponder/fru_oem_ibm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "please print object path, interface path here.",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15e792ed_51ec7d20",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "printing invalid magic number but printing path? please improve trace.",
+      "range": {
+        "startLine": 494,
+        "startChar": 54,
+        "endLine": 494,
+        "endChar": 62
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ca0053_20022653",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "since this commit is improvement of trace then why other code change is required? \nplease undo this change and do as part of separate commit.",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08971c5a_745ebe02",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "conversion is not required.",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d44b6342_94b6ce1e",
+        "filename": "oem/ibm/libpldmresponder/platform_oem_ibm.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "here also.",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83fb3581_700fc5a1",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "rephrase it like: \n\"Failed to open unix socket\"",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa4050fc_cd0fc6bc",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "\"Failed to bind unix socket\"",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ebe5971_15604b13",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "\"Failed listen() call while setting up unix socket\"",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79dbc32f_fadc991d",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "\"Failed select() call while setting up unix socket\"",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ad2ddd8_99e49ca2",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-22T15:15:54Z",
+      "side": 1,
+      "message": "\"Failed accept() call while setting up unix socket\"",
       "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
