@@ -16,6 +16,24 @@
       "message": "What goes in the JSON?  Can we have at least a trivial example?\n\nWhy would we have made 3 different JSON files?  That seems strange.",
       "revId": "4e9e2719d37a430e8c574363e84a09eca2102655",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e3566ca_a297d78e",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-22T15:51:37Z",
+      "side": 1,
+      "message": "PLDM BIOS configuration support was already there(3 json files were already added), My commit just adds support for system specific bios attributes as BIOS attributes may posses different properties for different variants of the same system.\n\nWhat goes in the JSON?\nBIOS Attributes are added to the json file. BIOS attribute represents a specific BIOS parameter or configuration setting. Example would be providing the default OS type for the CEC to boot.\n\nWhy would we have made 3 different JSON files\nEach BIOS attribute is characterized by a name, type, and type-specific metadata. \nTo accommodate the varying metadata associated with different attribute types, separate JSON files are created based on attribute types.",
+      "parentUuid": "4e74f5e8_ebacfd00",
+      "revId": "4e9e2719d37a430e8c574363e84a09eca2102655",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
