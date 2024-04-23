@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f1a715_378ec3bf",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-04-23T07:32:23Z",
+      "side": 1,
+      "message": "Please follow c++ style:\n```\nif (buffer.empty())\n{\n  return;\n}\n```",
+      "range": {
+        "startLine": 723,
+        "startChar": 4,
+        "endLine": 724,
+        "endChar": 15
+      },
+      "revId": "8e67d216443328cc720114f1ddeb7d4744fcf6a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
