@@ -1,0 +1,337 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "430ca672_5750cf20",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "Document BIOS support in PLDM",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 51
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe8acadf_d9ca03ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "wrap 72 characters.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 26
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad58ae85_c4210033",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "all of these are merged already , so please use github link instead.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 49
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a10b788_1aa60ae3",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "nit : BIOS Support / BIOS Implementation",
+      "range": {
+        "startLine": 161,
+        "startChar": 2,
+        "endLine": 161,
+        "endChar": 32
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f88ed61b_ff0c6b49",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "Its better to use it this way:\n```\n[BIOS Management Profile](\n  https://www.dmtf.org/sites/default/files/standards/documents/DSP1061_1.0.0.pdf)\n```",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 48
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8739ce8d_d88df069",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "nit: table",
+      "range": {
+        "startLine": 168,
+        "startChar": 69,
+        "endLine": 168,
+        "endChar": 75
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe39cad5_2d44d64c",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "probably point a link to the OEM JSON files folder ?",
+      "range": {
+        "startLine": 168,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 30
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95467f5c_eaac22b9",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "```\n[BIOS table](https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/BIOSConfig/Manager.interface.yaml)\n```",
+      "range": {
+        "startLine": 168,
+        "startChar": 59,
+        "endLine": 168,
+        "endChar": 68
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5a4840_b45223ae",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "hosted by",
+      "range": {
+        "startLine": 168,
+        "startChar": 76,
+        "endLine": 169,
+        "endChar": 3
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f19a93b_01c41484",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "```\n[bios-settings-mgr](https://github.com/openbmc/bios-settings-mgr)\n```",
+      "range": {
+        "startLine": 169,
+        "startChar": 4,
+        "endLine": 169,
+        "endChar": 62
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ba99a72_d3ebd128",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "i think its better to use direct terms from the specficiation here.",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 187,
+        "endChar": 56
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d9a2898_a0eec198",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "enclose this with `json` so that we could get json block highlighting in git (for more info : https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks#syntax-highlighting)\n```\n```json\n```",
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "349e06fb_dc4f652b",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "same here as well, please change this to `[]()` style.",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 40
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f229da9b_4fa3a929",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "I think it\u0027s also worth to mention that pldm logic is implemented adhering to the design mentioned at https://github.com/openbmc/docs/blob/master/designs/remote-bios-configuration.md \u0026 also probably highlight that BIOS attributes are always coming from oem directories since no two companies have same BIOS options.",
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99321c77_8ab5f813",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-23T09:33:35Z",
+      "side": 1,
+      "message": "typo ?",
+      "range": {
+        "startLine": 233,
+        "startChar": 132,
+        "endLine": 233,
+        "endChar": 137
+      },
+      "revId": "b24775733254c85beef127459b4d4ce664231f87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
