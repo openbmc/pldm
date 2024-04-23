@@ -52,7 +52,8 @@ class UpdateManager
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
         watch(event.get(),
-              std::bind_front(&UpdateManager::processPackage, this))
+              std::bind_front(&UpdateManager::processPackage, this)),
+	totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 
     /** @brief Handle PLDM request for the commands in the FW update
