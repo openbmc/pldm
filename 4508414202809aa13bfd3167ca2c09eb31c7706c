@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7b00765_f21bd501",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 46
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-04-23T05:53:32Z",
+      "side": 1,
+      "message": "Due to a misoperation, the patchset 46 is revert to patchset 44. Please ingore the 45.",
+      "revId": "4508414202809aa13bfd3167ca2c09eb31c7706c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
