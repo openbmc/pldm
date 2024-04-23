@@ -105,6 +105,30 @@
       },
       "revId": "6ff1d62a4b75db10a6b416f2461cf1bfd56def98",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd146711_955d4246",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1253,
+      "author": {
+        "id": 1002042
+      },
+      "writtenOn": "2024-04-23T19:27:46Z",
+      "side": 1,
+      "message": "ah, I thought you meant lines 1230-1253 :)\nDone",
+      "parentUuid": "f35f632f_f0eb2ef6",
+      "range": {
+        "startLine": 1230,
+        "startChar": 8,
+        "endLine": 1253,
+        "endChar": 65
+      },
+      "revId": "6ff1d62a4b75db10a6b416f2461cf1bfd56def98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
