@@ -66,6 +66,12 @@ class SensorManager
         return availableState[tid];
     };
 
+    /** @brief Retrieve the initial values of state sensors of the input tid
+     *         by calling GetStateSensorReadings and forward the result to
+     *         sensor objects
+     */
+    exec::task<int> retrieveInitialStates(pldm_tid_t tid);
+
   protected:
     /** @brief start a coroutine for polling all sensors.
      */

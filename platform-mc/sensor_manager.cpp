@@ -372,5 +372,87 @@ exec::task<int> SensorManager::getSensorReading(
     co_return completionCode;
 }
 
+exec::task<int> SensorManager::retrieveInitialStates(pldm_tid_t tid)
+{
+    if (!termini.contains(tid))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    bitfield8_t sensorRearm;
+    sensorRearm.byte = 0;
+
+    const auto& terminus = termini[tid];
+    for (const auto& sensor : terminus->stateSensors)
+    {
+        const auto& sensorId = sensor->sensorId;
+
+        Request request(
+            sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+
+        auto requestMsg = new (request.data()) pldm_msg;
+
+        auto rc = encode_get_state_sensor_readings_req(0, sensorId, sensorRearm,
+                                                       0, requestMsg);
+
+        if (rc)
+        {
+            lg2::error(
+                "Failed to encode request GetStateSensorReadings for terminus ID {TID}, sensor ID {ID}, error {RC}",
+                "TID", tid, "ID", sensorId, "RC", rc);
+            co_return rc;
+        }
+
+        const pldm_msg* responseMsg = nullptr;
+        size_t responseLen = 0;
+
+        rc = co_await terminusManager.sendRecvPldmMsg(
+            tid, request, &responseMsg, &responseLen);
+        if (rc)
+        {
+            lg2::error(
+                "Failed to send GetStateSensorReadings for terminus {TID}, error {RC}",
+                "TID", tid, "RC", rc);
+            co_return rc;
+        }
+
+        uint8_t completionCode = PLDM_SUCCESS;
+        // DSP0248 - maximum composite sensor count of state sensor is 8
+        std::array<get_sensor_state_field,
+                   PLDM_STATE_SENSOR_MAX_COMPOSITE_SENSOR_COUNT>
+            stateField{};
+        uint8_t comp_sensor_count = 0;
+
+        rc = decode_get_state_sensor_readings_resp(
+            responseMsg, responseLen, &completionCode, &comp_sensor_count,
+            stateField.data());
+
+        if (rc)
+        {
+            lg2::error(
+                "Failed to decode response GetStateSensorReadings for terminus ID {TID}, sensor ID {ID}, error {RC}",
+                "TID", tid, "ID", sensorId, "RC", rc);
+            co_return rc;
+        }
+
+        if (completionCode != PLDM_SUCCESS)
+        {
+            lg2::error(
+                "Error : GetStateSensorReadings for terminus ID {TID}, complete code {CC}.",
+                "TID", tid, "CC", completionCode);
+            co_return completionCode;
+        }
+
+        rc = sensor->processStateSensorReadings(stateField, comp_sensor_count);
+
+        if (rc)
+        {
+            lg2::error(
+                "Failed to proccess StateSensorReadings for terminus ID {TID}, sensor ID {ID}, error {RC}",
+                "TID", tid, "ID", sensorId, "RC", rc);
+        }
+    }
+    co_return PLDM_SUCCESS;
+}
 } // namespace platform_mc
 } // namespace pldm

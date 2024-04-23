@@ -69,6 +69,7 @@ constexpr uint8_t BmcMctpEid = 8;
  * buffer size is 256 bytes
  */
 #define PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE 256
+#define PLDM_STATE_SENSOR_MAX_COMPOSITE_SENSOR_COUNT 8
 
 namespace dbus
 {
@@ -187,6 +188,9 @@ using CompositeSensorStates = std::vector<PossibleStates>;
 using EntityInfo = std::tuple<ContainerID, EntityType, EntityInstance>;
 using SensorInfo =
     std::tuple<EntityInfo, CompositeSensorStates, std::vector<StateSetId>>;
+using PDR = std::vector<uint8_t>;
+using PDRList = std::vector<PDR>;
+using CompositeStates = std::vector<std::tuple<StateSetId, PossibleStates>>;
 
 } // namespace pdr
 

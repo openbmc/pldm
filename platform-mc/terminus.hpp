@@ -5,8 +5,10 @@
 
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
+#include "libpldmresponder/event_parser.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
+#include "state_sensor.hpp"
 #include "terminus.hpp"
 
 #include <sdbusplus/server/object.hpp>
@@ -156,7 +158,7 @@ class Terminus
     void updateInventoryWithFru(const uint8_t* fruData, const size_t fruLen);
 
     /** @brief A list of PDRs fetched from Terminus */
-    std::vector<std::vector<uint8_t>> pdrs{};
+    PDRList pdrs{};
 
     /** @brief A flag to indicate if terminus has been initialized */
     bool initialized = false;
@@ -186,6 +188,9 @@ class Terminus
      *         command.
      */
     uint32_t pollDataTransferHandle;
+
+    /** @brief A list of stateSensors */
+    std::vector<std::shared_ptr<StateSensor>> stateSensors{};
 
     /** @brief Get Sensor Auxiliary Names by sensorID
      *
@@ -224,6 +229,22 @@ class Terminus
      *  @return pointer to numeric sensor info struct
      */
     std::shared_ptr<pldm_numeric_sensor_value_pdr> parseNumericSensorPDR(
+        const std::vector<uint8_t>& pdrData);
+
+    /** @brief Contruct the StateSensor sensor class for the PLDM sensor.
+     *         The StateSensor class will handle create D-Bus object path,
+     *         provide the APIs to update sensor state, ...
+     *
+     *  @param[in] pdr - pointer to the PDR data vector
+     */
+    void addStateSensor(const std::shared_ptr<PDR> pdr);
+
+    /** @brief Parse the state sensor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to the PDR data vector
+     */
+    std::shared_ptr<PDR> parseStateSensorPDR(
         const std::vector<uint8_t>& pdrData);
 
     /** @brief Parse the sensor Auxiliary name PDRs
@@ -310,6 +331,10 @@ class Terminus
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
+
+    /** @brief Handler to parse state sensor JSON configuration
+     *        and create mapping between sensors and D-Bus information */
+    pldm::responder::events::StateSensorHandler stateSensorHandler;
 };
 } // namespace platform_mc
 } // namespace pldm

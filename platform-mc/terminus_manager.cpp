@@ -194,6 +194,7 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             for (const auto& tid : addedTids)
             {
                 manager->startSensorPolling(tid);
+                co_await manager->retrieveInitialStates(tid);
             }
         }
 

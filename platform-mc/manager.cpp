@@ -56,5 +56,12 @@ exec::task<int> Manager::oemPollForPlatformEvent(pldm_tid_t tid)
     }
     co_return PLDM_SUCCESS;
 }
+
+exec::task<int> Manager::retrieveInitialStates(pldm_tid_t tid)
+{
+    auto rc = co_await sensorManager.retrieveInitialStates(tid);
+    co_return rc;
+}
+
 } // namespace platform_mc
 } // namespace pldm

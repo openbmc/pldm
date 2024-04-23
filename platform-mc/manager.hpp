@@ -56,6 +56,12 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     exec::task<int> afterDiscoverTerminus();
 
+    /** @brief Helper function to retrieve the initial values of state sensors
+     *
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> retrieveInitialStates(pldm_tid_t tid);
+
     /** @brief Helper function to invoke registered handlers for
      *         the added MCTP endpoints
      *

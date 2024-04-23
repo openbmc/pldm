@@ -7,8 +7,10 @@ test_src = declare_dependency(
         '../dbus_impl_fru.cpp',
         '../sensor_manager.cpp',
         '../numeric_sensor.cpp',
+        '../state_sensor.cpp',
         '../event_manager.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
+        '../../libpldmresponder/event_parser.cpp'
     ],
     include_directories: ['../../requester', '../../pldmd'],
 )
@@ -19,6 +21,7 @@ tests = [
     'platform_manager_test',
     'sensor_manager_test',
     'numeric_sensor_test',
+    'state_sensor_test',
     'event_manager_test',
 ]
 

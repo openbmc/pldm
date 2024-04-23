@@ -64,10 +64,14 @@ if get_option('libpldmresponder').allowed()
         join_paths(package_datadir, 'entityMap.json'),
     )
     conf_data.set_quoted('HOST_JSONS_DIR', join_paths(package_datadir, 'host'))
-    conf_data.set_quoted(
-        'EVENTS_JSONS_DIR',
-        join_paths(package_datadir, 'events'),
-    )
+    if not get_option('tests').allowed()
+        conf_data.set_quoted(
+            'EVENTS_JSONS_DIR',
+            join_paths(package_datadir, 'events'),
+        )
+    else
+        conf_data.set_quoted('EVENTS_JSONS_DIR', './events')
+    endif
     conf_data.set('HEARTBEAT_TIMEOUT', get_option('heartbeat-timeout-seconds'))
     conf_data.set('TERMINUS_ID', get_option('terminus-id'))
     conf_data.set('TERMINUS_HANDLE', get_option('terminus-handle'))
@@ -255,6 +259,7 @@ executable(
     'platform-mc/manager.cpp',
     'platform-mc/sensor_manager.cpp',
     'platform-mc/numeric_sensor.cpp',
+    'platform-mc/state_sensor.cpp',
     'platform-mc/event_manager.cpp',
     oem_files,
     'requester/mctp_endpoint_discovery.cpp',
