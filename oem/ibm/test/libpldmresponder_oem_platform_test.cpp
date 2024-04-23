@@ -187,7 +187,6 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    std::filesystem::path dbPath;
     TestInstanceIdDb instanceIdDb;
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
     auto event = sdeventplus::Event::get_default();
@@ -293,7 +292,6 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
 {
     auto inPDRRepo = pldm_pdr_init();
     sdbusplus::bus_t bus(sdbusplus::bus::new_default());
-    std::filesystem::path dbPath;
     TestInstanceIdDb instanceIdDb;
 
     auto mockDbusHandler = std::make_unique<MockdBusHandler>();
