@@ -720,24 +720,16 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
 
 void printBuffer(bool isTx, const std::vector<uint8_t>& buffer)
 {
-    if (!buffer.empty())
-    {
-        if (isTx)
-        {
-            std::cout << "Tx: ";
-        }
-        else
-        {
-            std::cout << "Rx: ";
-        }
-        std::ostringstream tempStream;
-        for (int byte : buffer)
-        {
-            tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
-                       << " ";
-        }
-        std::cout << tempStream.str() << std::endl;
-    }
+    if (buffer.empty())
+        return;
+
+    std::cout << (isTx ? "Tx: " : "Rx: ");
+
+    std::ranges::for_each(buffer, [](uint8_t byte) {
+        std::cout << std::format("{:02x} ", byte);
+    });
+
+    std::cout << std::endl;
 }
 
 std::string toString(const struct variable_field& var)
