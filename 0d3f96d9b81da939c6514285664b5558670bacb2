@@ -381,6 +381,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8170e223_a3c15223",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-23T21:51:40Z",
+      "side": 1,
+      "message": "So there is no significance of New file available step that happens in file transfer flow? I should remove it in other places too?",
+      "parentUuid": "dc1a283f_9b7eac7c",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "323926a5_907aeb6a",
         "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
         "patchSetId": 3
@@ -506,6 +524,30 @@
       "writtenOn": "2024-04-15T05:59:01Z",
       "side": 1,
       "message": "file open failed",
+      "range": {
+        "startLine": 72,
+        "startChar": 39,
+        "endLine": 72,
+        "endChar": 51
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "840b0a4f_0c325906",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-23T21:51:40Z",
+      "side": 1,
+      "message": "I did not understand, are you suggesting omitting the PATH ?",
+      "parentUuid": "aca8b0e8_dbc8a0f3",
       "range": {
         "startLine": 72,
         "startChar": 39,
