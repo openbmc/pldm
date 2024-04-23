@@ -673,7 +673,6 @@ class GetPDR : public CommandInterface
                                       const std::vector<uint8_t>& value)
     {
         std::vector<std::string> data{};
-        std::map<uint8_t, std::string> stateNameMaps;
 
         for (const auto& s : value)
         {
