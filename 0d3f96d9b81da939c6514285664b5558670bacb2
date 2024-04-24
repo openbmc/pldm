@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6cc9352_657e7096",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-24T08:35:05Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "2f9adf00_32671b14",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b908142f_e685f975",
         "filename": "oem/ibm/libpldmresponder/file_io.cpp",
         "patchSetId": 3
@@ -67,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29dfc199_dcd7085c",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-24T08:35:05Z",
+      "side": 1,
+      "message": "the original trace says lseek failed and adds the name of function for better debug. You dont need to use the word downstream/upstream in a sentence. \"Downstream data transfer between BMC and Host with lseek upstream at offset failed \" \u003c\u003c- this is confusing. \n\nData transfer between BMC and host(or more generic word for host) failed with lseek failure. UPSTREAM\u003d ....\n\nFrame the trace in a better way",
+      "parentUuid": "30b9026e_9877f6eb",
+      "range": {
+        "startLine": 232,
+        "startChar": 17,
+        "endLine": 232,
+        "endChar": 41
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20659374_ecf266d7",
         "filename": "oem/ibm/libpldmresponder/file_io.cpp",
         "patchSetId": 3
@@ -102,6 +144,30 @@
       "side": 1,
       "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/70654/comment/b908142f_e685f975/ Please suggest improvement.",
       "parentUuid": "20659374_ecf266d7",
+      "range": {
+        "startLine": 240,
+        "startChar": 69,
+        "endLine": 240,
+        "endChar": 88
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d330222_73f875c2",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-24T08:35:05Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "a7e677fb_f061de0a",
       "range": {
         "startLine": 240,
         "startChar": 69,
@@ -201,6 +267,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6944637f_dc5d3bab",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-24T08:35:05Z",
+      "side": 1,
+      "message": "Add length and offset here. Should not harm anything",
+      "parentUuid": "ae8c3cb0_4bc4b3a1",
+      "range": {
+        "startLine": 216,
+        "startChar": 11,
+        "endLine": 216,
+        "endChar": 48
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c5ad097_9acccb41",
         "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
         "patchSetId": 3
@@ -236,6 +326,30 @@
       "side": 1,
       "message": "Sure I can but just saying \u0027map\u0027 becomes little generic? Certificate Map is should be better I think ? Additionally please correct me - \u0027file type\u0027 in string can also be replaced with \u0027certificate type\u0027?",
       "parentUuid": "3c5ad097_9acccb41",
+      "range": {
+        "startLine": 33,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 29
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "457102d0_f2e48d13",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-24T08:35:05Z",
+      "side": 1,
+      "message": "you can add Certificate map. \nwhat do u mean by certificate type? there is no such thing right?",
+      "parentUuid": "2c6a6895_7b1099b5",
       "range": {
         "startLine": 33,
         "startChar": 13,
@@ -548,6 +662,30 @@
       "side": 1,
       "message": "I did not understand, are you suggesting omitting the PATH ?",
       "parentUuid": "aca8b0e8_dbc8a0f3",
+      "range": {
+        "startLine": 72,
+        "startChar": 39,
+        "endLine": 72,
+        "endChar": 51
+      },
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d1bc42b_b47774bd",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_vpd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-04-24T08:35:05Z",
+      "side": 1,
+      "message": "change the sentence to file open failed or failed to open file",
+      "parentUuid": "840b0a4f_0c325906",
       "range": {
         "startLine": 72,
         "startChar": 39,
