@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31cbe0f4_b2455923",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 78
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-24T12:11:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "585e8be6_9342c91d",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 17
+      },
+      "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d900b1b_dc1f5d5d",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-23T11:27:17Z",
       "side": 1,
       "message": "same here as well.",
+      "range": {
+        "startLine": 65,
+        "startChar": 8,
+        "endLine": 65,
+        "endChar": 19
+      },
+      "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f899f2ce_6aa7a589",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 78
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-24T12:11:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d900b1b_dc1f5d5d",
       "range": {
         "startLine": 65,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33762571_f744a1aa",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 78
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-24T12:11:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57dea656_e80bc5db",
+      "range": {
+        "startLine": 51,
+        "startChar": 15,
+        "endLine": 51,
+        "endChar": 16
+      },
+      "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5da1171c_432262c7",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9344ca1_97bdba2d",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 78
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-24T12:11:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5da1171c_432262c7",
+      "range": {
+        "startLine": 184,
+        "startChar": 36,
+        "endLine": 184,
+        "endChar": 78
+      },
+      "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "baa62944_ea619aa3",
@@ -106,6 +202,24 @@
       "writtenOn": "2024-04-23T11:27:17Z",
       "side": 1,
       "message": "The tests written are good, but these tests are not enough , we need to add tests to test all the functions that are written. we could mock the dbus calls to MCTP and return dummy data \u0026 verify if the functions that are written are supposedly doing what they are supposed to do.",
+      "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61e82814_76b40f8d",
+        "filename": "requester/test/mctp_endpoint_discovery_test.cpp",
+        "patchSetId": 78
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-24T12:11:16Z",
+      "side": 1,
+      "message": "The added functions and codes is tested with real Ampere with below case:\n1. New MCTP Endpoint is added in the MCTP D_Bus interface.\n2. One of two MCTP Endpoint is removed from the MCTP D_Bus interface.\n3. Both MCTP Endpoints D-Bus object paths are removed.\n4. Restart `pldmd` service when there are two MCTP Endpoints D-Bus object paths.\nThe functional of mctp-endpoint-discovery code worked as expected.\n\nI knew that adding the software testing is good but I think the real test in the real system can be acceptable.\nAnd DelphineCCChiu from Wiwynn also tested the code.",
+      "parentUuid": "baa62944_ea619aa3",
       "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
