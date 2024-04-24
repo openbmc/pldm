@@ -14,13 +14,9 @@ The simplest way of running the tests is as described by the meson man page:
 meson setup builddir && meson setup test -C builddir
 ```
 
-Alternatively, tests can be run in the OpenBMC CI docker container, or with an
-OpenBMC x86 sdk(see below for x86 steps).
-
-```
-meson setup -Doe-sdk=enabled build
-ninja -C build test
-```
+Alternatively, tests can be run in the OpenBMC CI docker container using
+[these](https://github.com/openbmc/docs/blob/master/testing/local-ci-build.md)
+steps.
 
 ## To enable pldm verbosity
 
