@@ -119,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3fa775f_e01350df",
+        "filename": "common/utils.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-24T12:12:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "341d179f_c6dcacf9",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 61
+      },
+      "revId": "87a72002fc0b00a6746065c826d203dfd5060d02",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61a6b6c8_fdbbb96c",
@@ -156,6 +180,30 @@
       "side": 1,
       "message": "We should. When the EID Object Path of one Endpoint is removed from the MCTP D-Bus interfaces, that means that endpoint is not available in the MCTP network. The Endpoint handlers (terminus handler, sensor handler...) of that endpoint in `pldmd` should be removed.",
       "parentUuid": "61a6b6c8_fdbbb96c",
+      "range": {
+        "startLine": 68,
+        "startChar": 3,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "87a72002fc0b00a6746065c826d203dfd5060d02",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa012707_6f005f77",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-24T12:12:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c286c13d_2144d9d4",
       "range": {
         "startLine": 68,
         "startChar": 3,
