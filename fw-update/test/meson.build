@@ -17,8 +17,6 @@ foreach t : tests
   test(t, executable(t.underscorify(), t + '.cpp',
                      implicit_include_directories: false,
                      include_directories: '../../pldmd',
-                     link_args: dynamic_linker,
-                     build_rpath: get_option('oe-sdk').allowed() ? rpath : '',
                      dependencies: [
                          fw_update_test_src,
                          gmock,
