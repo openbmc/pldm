@@ -776,16 +776,9 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
 
 std::string getCurrentSystemTime()
 {
-    using namespace std::chrono;
-    const time_point<system_clock> tp = system_clock::now();
-    std::time_t tt = system_clock::to_time_t(tp);
-    auto ms = duration_cast<microseconds>(tp.time_since_epoch()) -
-              duration_cast<seconds>(tp.time_since_epoch());
-
-    std::stringstream ss;
-    ss << std::put_time(std::localtime(&tt), "%F %Z %T.")
-       << std::to_string(ms.count());
-    return ss.str();
+    const auto zonedTime{std::chrono::zoned_time{
+        std::chrono::current_zone(), std::chrono::system_clock::now()}};
+    return std::format("{:%F %Z %T}", zonedTime);
 }
 
 bool checkForFruPresence(const std::string& objPath)
