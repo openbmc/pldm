@@ -7,13 +7,6 @@ option(
 )
 
 option(
-    'oe-sdk',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable OE SDK'
-)
-
-option(
     'utilities',
     type: 'feature',
     value: 'enabled',

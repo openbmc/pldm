@@ -17,8 +17,6 @@ foreach t : tests
   test(t, executable(t.underscorify(), t + '.cpp',
                      test_sources,
                      implicit_include_directories: false,
-                     link_args: dynamic_linker,
-                     build_rpath: get_option('oe-sdk').allowed() ? rpath : '',
                      dependencies: [
                          gtest,
                          gmock,
