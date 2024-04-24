@@ -8,6 +8,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
 #include <optional>
 #include <set>
@@ -438,6 +439,65 @@ int FruImpl::setFRUTable(const std::vector<uint8_t>& fruData)
         }
     }
     return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+}
+
+void FruImpl::subscribeFruPresence(
+    const std::string& inventoryObjPath, const std::string& fruInterface,
+    const std::string& itemInterface,
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>>& fruHotPlugMatch)
+{
+    using ObjectMapper =
+        sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
+
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        std::vector<std::string> fruObjPaths;
+        auto method = bus.new_method_call(
+            ObjectMapper::default_service, ObjectMapper::instance_path,
+            ObjectMapper::interface, "GetSubTreePaths");
+        method.append(inventoryObjPath, 0,
+                      std::vector<std::string>({fruInterface}));
+        auto reply = bus.call(method);
+        reply.read(fruObjPaths);
+
+        for (const auto& fruObjPath : fruObjPaths)
+        {
+            using namespace sdbusplus::bus::match::rules;
+            fruHotPlugMatch.push_back(
+                std::make_unique<sdbusplus::bus::match::match>(
+                    bus, propertiesChanged(fruObjPath, itemInterface),
+                    [this, fruObjPath,
+                     itemInterface](sdbusplus::message::message& msg) {
+                DbusChangedProps props;
+                std::string iface;
+                msg.read(iface, props);
+                processFruPresenceChange(props, fruObjPath, itemInterface);
+            }));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "could not subscribe for concurrent maintenance of fru: '{FRU_INTF}'error - '{ERROR}'",
+            "FRU_INTF", fruInterface, "ERROR", e);
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.CMsubscribeFailure");
+    }
+}
+
+void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties,
+                                       const std::string& /*fruObjPath*/,
+                                       const std::string& /*itemInterface*/)
+{
+    static constexpr auto propertyName = "Present";
+    const auto it = chProperties.find(propertyName);
+
+    if (it == chProperties.end())
+    {
+        return;
+    }
+    // processing will be handled in the subsequent commits
 }
 
 namespace fru
