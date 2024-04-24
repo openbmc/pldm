@@ -58,6 +58,7 @@ using FruRecordInfos = std::vector<FruRecordInfo>;
 
 using ItemIntfName = std::string;
 using FruRecordMap = std::map<ItemIntfName, FruRecordInfos>;
+using HotPluggableIntf = std::vector<ItemIntfName>;
 
 /** @class FruParser
  *
@@ -108,6 +109,11 @@ class FruParser
         return intfToEntityType.at(intf);
     }
 
+    std::vector<std::string> getHotPluggableInterfaces() const
+    {
+        return hotPlugIntfNames;
+    }
+
   private:
     /** @brief Parse the FRU Configuration JSON file in the directory path
      *         except the FRU_Master.json and build the FRU record information
@@ -133,6 +139,7 @@ class FruParser
     std::map<pldm::responder::dbus::Interface,
              pldm::responder::dbus::EntityType>
         intfToEntityType;
+    HotPluggableIntf hotPlugIntfNames;
 };
 
 } // namespace fru_parser
