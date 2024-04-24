@@ -440,6 +440,57 @@ int FruImpl::setFRUTable(const std::vector<uint8_t>& fruData)
     return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
 }
 
+void FruImpl::subscribeFruPresence(
+    const std::string& inventoryObjPath, const std::string& fruInterface,
+    const std::string& itemInterface,
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>>& fruHotPlugMatch)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        pldm::utils::GetSubTreePathsResponse response =
+            pldm::utils::DBusHandler().getSubTreePaths(
+                inventoryObjPath, 0, std::vector<std::string>({fruInterface}));
+
+        for (const auto& fruObjPath : response)
+        {
+            using namespace sdbusplus::bus::match::rules;
+            fruHotPlugMatch.push_back(
+                std::make_unique<sdbusplus::bus::match::match>(
+                    bus, propertiesChanged(fruObjPath, itemInterface),
+                    [this, fruObjPath,
+                     itemInterface](sdbusplus::message::message& msg) {
+                DbusChangedProps props;
+                std::string iface;
+                msg.read(iface, props);
+                processFruPresenceChange(props, fruObjPath, itemInterface);
+            }));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "could not subscribe for concurrent maintenance of fru: '{FRU_INTF}'error - '{ERROR}'",
+            "FRU_INTF", fruInterface, "ERROR", e);
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.CMsubscribeFailure");
+    }
+}
+
+void FruImpl::processFruPresenceChange(const DbusChangedProps& chProperties,
+                                       const std::string& /*fruObjPath*/,
+                                       const std::string& /*itemInterface*/)
+{
+    static constexpr auto propertyName = "Present";
+    const auto it = chProperties.find(propertyName);
+
+    if (it == chProperties.end())
+    {
+        return;
+    }
+    // processing will be handled in the subsequent commits
+}
+
 namespace fru
 {
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
