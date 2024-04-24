@@ -294,7 +294,6 @@ class HostPDRHandler
     /** @brief list of PDR record handles modified pointing to host PDRs */
     PDRRecordHandles modifiedPDRRecordHandles;
 
-    std::map<EntityType, pldm_entity> parents;
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
 
