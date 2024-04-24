@@ -78,6 +78,25 @@ void FruParser::setupDefaultDBusLookup(const fs::path& masterJsonPath)
     }
 
     lookupInfo.emplace(service, rootPath, std::move(interfaces));
+
+    HotPluggableIntf hotPluggableInterfaces{};
+    auto hotPluggableMap = data.value("HotPluggableMap", emptyJson);
+    for (const auto& element : hotPluggableMap.items())
+    {
+        try
+        {
+            hotPluggableInterfaces.emplace_back(element.key());
+        }
+        catch (const std::exception& e)
+        {
+            error("FRU hotPluggable lookup map format error: {ERROR}", "ERROR", e);
+            throw InternalFailure();
+        }
+       hotPlugIntfNames.insert(
+        hotPlugIntfNames.end(),
+        std::make_move_iterator(hotPluggableInterfaces.begin()),
+        std::make_move_iterator(hotPluggableInterfaces.end()));
+    }
 }
 
 void FruParser::setupDefaultFruRecordMap()

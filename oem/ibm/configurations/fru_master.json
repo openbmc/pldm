@@ -15,5 +15,9 @@
         "xyz.openbmc_project.Inventory.Item.PCIeSlot": 186,
         "xyz.openbmc_project.Inventory.Item.System": 11521,
         "xyz.openbmc_project.Inventory.Item.Tpm": 24576
+    },
+    "HotPluggableMap": {
+        "xyz.openbmc_project.Inventory.Item.Fan": true,
+        "xyz.openbmc_project.Inventory.Item.PowerSupply": true
     }
 }
