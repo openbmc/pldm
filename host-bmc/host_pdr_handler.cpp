@@ -880,7 +880,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             }
                         }
 
-                        if (sensorOffset > compositeSensorStates.size())
+                        if ((compositeSensorStates.size() > 1) &&
+                            (sensorOffset > (compositeSensorStates.size() - 1)))
                         {
                             error("Error Invalid data, Invalid sensor offset");
                             return;
