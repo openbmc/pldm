@@ -8,6 +8,7 @@
 
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Metric/Value/server.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Critical/server.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Warning/server.hpp>
 #include <xyz/openbmc_project/Sensor/Value/server.hpp>
@@ -21,9 +22,15 @@ namespace pldm
 namespace platform_mc
 {
 
+constexpr const char* SENSOR_VALUE_INTF = "xyz.openbmc_project.Sensor.Value";
+constexpr const char* METRIC_VALUE_INTF = "xyz.openbmc_project.Metric.Value";
+
 using SensorUnit = sdbusplus::xyz::openbmc_project::Sensor::server::Value::Unit;
 using ValueIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Sensor::server::Value>;
+using MetricUnit = sdbusplus::xyz::openbmc_project::Metric::server::Value::Unit;
+using MetricIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Metric::server::Value>;
 using ThresholdWarningIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Sensor::Threshold::server::Warning>;
 using ThresholdCriticalIntf = sdbusplus::server::object_t<
@@ -206,6 +213,7 @@ class NumericSensor
      */
     void updateThresholds();
 
+    std::unique_ptr<MetricIntf> metricIntf = nullptr;
     std::unique_ptr<ValueIntf> valueIntf = nullptr;
     std::unique_ptr<ThresholdWarningIntf> thresholdWarningIntf = nullptr;
     std::unique_ptr<ThresholdCriticalIntf> thresholdCriticalIntf = nullptr;
@@ -226,6 +234,7 @@ class NumericSensor
 
     /** @brief A power-of-10 multiplier for baseUnit */
     int8_t baseUnitModifier;
+    bool useMetricInterface = false;
 };
 } // namespace platform_mc
 } // namespace pldm
