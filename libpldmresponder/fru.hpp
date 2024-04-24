@@ -71,7 +71,20 @@ class FruImpl
         parser(configPath, fruMasterJsonPath),
         pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree),
         oemFruHandler(oemFruHandler)
-    {}
+    {
+        static constexpr auto inventoryObjPath =
+            "/xyz/openbmc_project/inventory/system/chassis";
+        static constexpr auto fanInterface =
+            "xyz.openbmc_project.Inventory.Item.Fan";
+        static constexpr auto itemInterface =
+            "xyz.openbmc_project.Inventory.Item";
+        static constexpr auto psuInterface =
+            "xyz.openbmc_project.Inventory.Item.PowerSupply";
+        subscribeFruPresence(inventoryObjPath, fanInterface, itemInterface,
+                             fanHotplugMatch);
+        subscribeFruPresence(inventoryObjPath, psuInterface, itemInterface,
+                             psuHotplugMatch);
+    }
 
     /** @brief Total length of the FRU table in bytes, this includes the pad
      *         bytes and the checksum.
@@ -241,9 +254,41 @@ class FruImpl
                          const fru_parser::FruRecordInfos& recordInfos,
                          const pldm_entity& entity);
 
+    /** @brief subscribeFruPresence subscribes for the "Present" property
+     *         change signal. This enables pldm to know when a fru is
+     *         added or removed.
+     *
+     *  @param[in] inventoryObjPath - the inventory object path for chassis
+     *  @param[in] fruInterface - the fru interface to look for
+     *  @param[in] itemInterface - the inventory item interface
+     *  @param[in] fruHotPlugMatch - D-Bus property changed signal match
+     *                               for the fru
+     */
+    void subscribeFruPresence(
+        const std::string& inventoryObjPath, const std::string& fruInterface,
+        const std::string& itemInterface,
+        std::vector<std::unique_ptr<sdbusplus::bus::match::match>>&
+            fruHotPlugMatch);
+
+    /** @brief processFruPresenceChange processes the "Present" property change
+     *         signal for a fru.
+     *
+     *  @param[in] chProperties - list of properties which have changed
+     *  @param[in] fruObjPath - fru object path
+     *  @param[in] fruInterface - fru interface
+     */
+    void processFruPresenceChange(const DbusChangedProps& chProperties,
+                                  const std::string& fruObjPath,
+                                  const std::string& fruInterface);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
+
+    /** @brief vectors to catch the D-Bus property change signals for the frus
+     */
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> fanHotplugMatch;
+    std::vector<std::unique_ptr<sdbusplus::bus::match::match>> psuHotplugMatch;
 };
 
 namespace fru
