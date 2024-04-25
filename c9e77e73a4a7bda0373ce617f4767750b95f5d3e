@@ -86,6 +86,24 @@
       "parentUuid": "7e6b8ba0_b9b3124f",
       "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "038928b3_63e22930",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-04-25T01:32:42Z",
+      "side": 1,
+      "message": "For the numeric sensor threshold issue, the desciption of rangeFieldSupport of Numeric Sensor PDR in DSP0248_1.2.2 mentions that it is an error in the original specification that the “warningHigh” and “warningLow” fields are not listed in this field.\nI\u0027ve submitted gerrit 70169 to revise the threshold handling, maybe we can discuss there.",
+      "parentUuid": "7a26ae96_aeefcbfa",
+      "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

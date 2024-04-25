@@ -106,6 +106,24 @@
       "parentUuid": "cb5af255_d210079c",
       "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2b8cf40_0ec0e853",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-04-25T01:32:42Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "ac66b85e_07688f46",
+      "revId": "5eff0c6ece90b0b9d405c6237965b53821bd9f73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
