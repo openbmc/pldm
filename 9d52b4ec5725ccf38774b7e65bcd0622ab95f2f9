@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca759a9a_8711ca99",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b6481d1_1ab5f9aa",
+      "range": {
+        "startLine": 11,
+        "startChar": 17,
+        "endLine": 11,
+        "endChar": 39
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "010f7771_670b7c76",
@@ -70,6 +94,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e49e1d5_157979b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "010f7771_670b7c76",
+      "range": {
+        "startLine": 12,
+        "startChar": 12,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a677328_e4f098f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5dc3f6a8_9859fce6",
+      "range": {
+        "startLine": 12,
+        "startChar": 19,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe28f5f1_ae64923b",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-04-16T10:40:03Z",
       "side": 1,
       "message": "i have recently learnt that the correct way to document links is by using the github format for documenting the links.\n\nlook at https://gerrit.openbmc.org/c/openbmc/docs/+/70717/comment/54221986_c8619129/ for more info and correct this based on that.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 118
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eed4d7fd_ea67fd30",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe28f5f1_ae64923b",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c889d5df_025fe13f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43fd1e07_000e0090",
+      "range": {
+        "startLine": 362,
+        "startChar": 16,
+        "endLine": 362,
+        "endChar": 124
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81398d04_30431e46",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-04-16T10:40:03Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 212,
+        "startChar": 59,
+        "endLine": 212,
+        "endChar": 68
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "983f27e8_b089ba91",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81398d04_30431e46",
       "range": {
         "startLine": 212,
         "startChar": 59,
@@ -162,6 +306,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63cc9b68_abbf2a00",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72970e0c_e04e5ccf",
+      "range": {
+        "startLine": 259,
+        "startChar": 12,
+        "endLine": 261,
+        "endChar": 74
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "166088db_4fff0761",
@@ -175,6 +343,30 @@
       "writtenOn": "2024-04-16T10:40:03Z",
       "side": 1,
       "message": "add object path and service name, we dont know what failed here",
+      "range": {
+        "startLine": 32,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 78
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b0bf54_c20ab448",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "166088db_4fff0761",
       "range": {
         "startLine": 32,
         "startChar": 8,
@@ -208,6 +400,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5400420_683cc80d",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b1be934_e446e831",
+      "range": {
+        "startLine": 296,
+        "startChar": 8,
+        "endLine": 296,
+        "endChar": 80
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "564a150d_8a921390",
@@ -221,6 +437,30 @@
       "writtenOn": "2024-04-16T10:40:03Z",
       "side": 1,
       "message": "not sure if this is making sense , how do we know what message did we get the response for ? audit these type of errors through out the patchset and see if we can add more details into it.",
+      "range": {
+        "startLine": 56,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 69
+      },
+      "revId": "9d52b4ec5725ccf38774b7e65bcd0622ab95f2f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afb09517_238d8708",
+        "filename": "utilities/requester/set_state_effecter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-04-25T04:18:05Z",
+      "side": 1,
+      "message": "I have reframed based on my understanding. Wherever more information is needed or the string isn\u0027t apt, please suggest what the reframing can be I will make the changes.",
+      "parentUuid": "564a150d_8a921390",
       "range": {
         "startLine": 56,
         "startChar": 4,
