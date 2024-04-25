@@ -312,12 +312,6 @@ class HostPDRHandler
      */
     bool mergedHostParents;
 
-    /** @brief whether timed out waiting for a response from Host */
-    bool timeOut;
-
-    /** @brief request message instance id */
-    uint8_t insId;
-
     /** @brief maps an object path to pldm_entity from the BMC's entity
      *         association tree
      */
@@ -334,9 +328,6 @@ class HostPDRHandler
     /** @OEM platform handler */
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
 
-    /** @brief Object path and entity association and is only loaded once
-     */
-    bool objPathEntityAssociation;
 };
 
 } // namespace pldm
