@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaca17bc_6977eb17",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-25T07:11:51Z",
+      "side": 1,
+      "message": "use https://github.com/openbmc/pldm/blob/master/common/utils.cpp#L437 instead of write a new non-oem util API for GetSubTreePaths ?",
+      "range": {
+        "startLine": 178,
+        "startChar": 8,
+        "endLine": 183,
+        "endChar": 51
+      },
+      "revId": "44ec08a2e9a9680649199483177b3a07d7b84e44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
