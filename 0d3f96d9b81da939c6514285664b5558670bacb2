@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "846d49ab_7d69177b",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-25T06:08:35Z",
+      "side": 1,
+      "message": "Actually , we could have term `host` in oem code , its okay. Just never wanted to have term `host` in generic pldm code.\n\nBut its preferaable to use word `remote pldm terminus` instead of word `host`.",
+      "parentUuid": "c6cc9352_657e7096",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b908142f_e685f975",
         "filename": "oem/ibm/libpldmresponder/file_io.cpp",
         "patchSetId": 3
