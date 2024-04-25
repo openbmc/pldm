@@ -104,6 +104,24 @@
       "parentUuid": "7a26ae96_aeefcbfa",
       "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e57595_cfa105e0",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-25T02:27:16Z",
+      "side": 1,
+      "message": "I updated the code to use `supported_thresholds` field in Numeric Sensor PDRs to identify the existing of thresholds to follow `Table 78 – Numeric Sensor PDR format`.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/51489/88..91/platform-mc/numeric_sensor.cpp#116\nCan you take a look?",
+      "parentUuid": "038928b3_63e22930",
+      "revId": "c9e77e73a4a7bda0373ce617f4767750b95f5d3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
