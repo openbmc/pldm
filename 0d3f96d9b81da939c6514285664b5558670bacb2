@@ -513,6 +513,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "191e0dd8_cdcdcf92",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-25T05:48:44Z",
+      "side": 1,
+      "message": "yes, reword like above sentence for better readability.",
+      "parentUuid": "8170e223_a3c15223",
+      "revId": "0d3f96d9b81da939c6514285664b5558670bacb2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "323926a5_907aeb6a",
         "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
         "patchSetId": 3
