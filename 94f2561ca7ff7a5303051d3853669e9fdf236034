@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102efa3e_f287a4c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-04-25T02:29:52Z",
+      "side": 1,
+      "message": "For numeric sensors, we should use `supportedThresholds` field in `Table 78 – Numeric Sensor PDR format` DSP0248 V1.2.2.\nI updated the `Sensor Handling` patch set. https://gerrit.openbmc.org/c/openbmc/pldm/+/51489/88..91/platform-mc/numeric_sensor.cpp#116",
+      "revId": "94f2561ca7ff7a5303051d3853669e9fdf236034",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
