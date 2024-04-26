@@ -98,6 +98,7 @@ HostPDRHandler::HostPDRHandler(
     oemPlatformHandler(oemPlatformHandler)
 {
     mergedHostParents = false;
+    pldm::utils::parsingEntityMap(entityMaps);
     fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
     if (fs::exists(hostFruJson))
     {
@@ -649,7 +650,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
-        updateEntityAssociation(entityAssociations, entityTree, objPathMap);
+        updateEntityAssociation(entityAssociations, entityTree, objPathMap,
+                                entityMaps);
 
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);

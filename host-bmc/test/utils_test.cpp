@@ -10,6 +10,13 @@ namespace fs = std::filesystem;
 using namespace pldm;
 using namespace pldm::utils;
 
+TEST(EntityAssociation, parsingEntityMap)
+{
+    EntityMaps entityMaps;
+    parsingEntityMap(entityMaps);
+    EXPECT_EQ(entityMaps.size(), 19);
+}
+
 TEST(EntityAssociation, addObjectPathEntityAssociations1)
 {
     pldm_entity entities[8]{};
@@ -79,8 +86,10 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
         {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm1/cpu1",
          l5b}};
 
-    ObjectPathMaps objPathMap;
-    updateEntityAssociation(entityAssociations, tree, objPathMap);
+    utils::EntityMaps entityMaps;
+    utils::ObjectPathMaps objPathMap;
+    parsingEntityMap(entityMaps);
+    updateEntityAssociation(entityAssociations, tree, objPathMap, entityMaps);
 
     EXPECT_EQ(objPathMap.size(), retObjectMaps.size());
 
@@ -101,6 +110,7 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
                           retObjectMaps[obj.first]));
         }
     }
+
     EXPECT_EQ(index, retObjectMaps.size());
     pldm_entity_association_tree_destroy(tree);
 }

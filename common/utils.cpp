@@ -74,7 +74,8 @@ Entities getParentEntites(const EntityAssociations& entityAssoc)
 void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
                                      pldm_entity_node* entity,
                                      const fs::path& path,
-                                     ObjectPathMaps& objPathMap)
+                                     ObjectPathMaps& objPathMap,
+                                     EntityMaps entityMaps)
 {
     if (entity == nullptr)
     {
@@ -136,7 +137,7 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
             for (size_t i = 1; i < ev.size(); i++)
             {
                 addObjectPathEntityAssociations(entityAssoc, ev[i], p,
-                                                objPathMap);
+                                                objPathMap, entityMaps);
             }
             found = true;
         }
@@ -147,7 +148,6 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
         std::string dbusPath =
             path / fs::path{entityName +
                             std::to_string(node_entity.entity_instance_num)};
-
         try
         {
             pldm::utils::DBusHandler().getService(dbusPath.c_str(), nullptr);
@@ -161,7 +161,7 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
 
 void updateEntityAssociation(const EntityAssociations& entityAssoc,
                              pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap)
+                             ObjectPathMaps& objPathMap, EntityMaps entityMaps)
 {
     std::vector<pldm_entity_node*> parentsEntity =
         getParentEntites(entityAssoc);
@@ -215,8 +215,8 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             path = path / fs::path{paths.back()};
             paths.pop_back();
         }
-
-        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap);
+        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap,
+                                        entityMaps);
     }
 }
 
@@ -831,6 +831,35 @@ void setFruPresence(const std::string& fruObjPath, bool present)
         error(
             "Failed to set the present property on path: '{PATH}' with {ERROR} ",
             "PATH", fruObjPath, "ERROR", e);
+    }
+}
+
+void parsingEntityMap(EntityMaps& entityMaps)
+{
+    const Json emptyJson{};
+    std::string jsonPath{ENTITY_MAP_JSON};
+    std::ifstream jsonFile(jsonPath);
+    auto data = Json::parse(jsonFile);
+    if (data.is_discarded())
+    {
+        error("Failed parsing of EntityMap data from json file: '{JSON_PATH}'",
+              "JSON_PATH", jsonPath);
+        return;
+    }
+    auto entities = data.value("EntityKeyValueMap", emptyJson);
+    for (const auto& element : entities.items())
+    {
+        try
+        {
+            std::string key = static_cast<EntityName>(element.key());
+            entityMaps.emplace(atoi(key.c_str()),
+                               static_cast<EntityName>(element.value()));
+        }
+        catch (const std::exception& e)
+        {
+            error("Failed to create Entitymap keyvalue pair: {ERROR}", "ERROR",
+                  e);
+        }
     }
 }
 

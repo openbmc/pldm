@@ -337,6 +337,10 @@ class HostPDRHandler
     /** @brief Object path and entity association and is only loaded once
      */
     bool objPathEntityAssociation;
+
+    /** @brief entityID and entity name is only loaded once
+     */
+    utils::EntityMaps entityMaps;
 };
 
 } // namespace pldm
