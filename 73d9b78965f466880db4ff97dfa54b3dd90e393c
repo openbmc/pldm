@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5656f61_9f8c279f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-28T15:12:22Z",
+      "side": 1,
+      "message": "Please test poweron/off and oem-ibm disabled option.",
+      "range": {
+        "startLine": 13,
+        "startChar": 7,
+        "endLine": 13,
+        "endChar": 52
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3637d8bd_bb4c966f",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-28T15:12:22Z",
+      "side": 1,
+      "message": "Why do we need createOemFruHandler and createOemIbmFruHandler? We are inside OEM-IBM, can\u0027t we directly call createOemIbmFruHandler?",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1c64b6e_0507f686",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-28T15:12:22Z",
+      "side": 1,
+      "message": "doxygen about all the functions",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
