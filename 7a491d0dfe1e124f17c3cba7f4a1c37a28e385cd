@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ed292f1_9b12dc2a",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-29T08:10:19Z",
+      "side": 1,
+      "message": "do you think only effecter ID(which is invalid) is enough to debug the issue? \nthere could be problem with other input parameter which got changed.\nprint more data to identify the issue.",
+      "revId": "7a491d0dfe1e124f17c3cba7f4a1c37a28e385cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce5c4164_bc9acf51",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-29T08:10:19Z",
+      "side": 1,
+      "message": "please print more variable which adds value in case of issue.",
+      "revId": "7a491d0dfe1e124f17c3cba7f4a1c37a28e385cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b91d1aca_b65d7510",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-29T08:10:19Z",
+      "side": 1,
+      "message": "please print more variable which adds value in case of issue.",
+      "revId": "7a491d0dfe1e124f17c3cba7f4a1c37a28e385cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc5e862a_7db18ed5",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-04-29T08:10:19Z",
+      "side": 1,
+      "message": "please print more variable which adds value in case of issue.",
+      "revId": "7a491d0dfe1e124f17c3cba7f4a1c37a28e385cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
