@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95cdbaa4_976e5731",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-29T10:22:41Z",
+      "side": 1,
+      "message": "It is better to Create all the OEM handlers inside this class, to maintain uniformity.",
+      "parentUuid": "3637d8bd_bb4c966f",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1c64b6e_0507f686",
         "filename": "pldmd/oem_ibm.hpp",
         "patchSetId": 5
@@ -118,6 +136,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eed1a36e_dcdd76a1",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-29T10:22:41Z",
+      "side": 1,
+      "message": "If OEM_IBM is enabled the flow will not reach line number 258, this needs to be done for \"HostFirmware interface needs access to hostPDR to know if host is running\". line number 258 is in the else part.",
+      "parentUuid": "0085bbea_3e646f0f",
+      "range": {
+        "startLine": 245,
+        "startChar": 3,
+        "endLine": 245,
+        "endChar": 47
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9bbe1a30_a1a17f17",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 5
@@ -129,6 +171,30 @@
       "writtenOn": "2024-04-29T08:12:57Z",
       "side": 1,
       "message": "can\u0027t these be set as part of the constructor itself. why do we need another public function to set the handlers.",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 46
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d28011ee_7cdd4266",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-29T10:22:41Z",
+      "side": 1,
+      "message": "oemPlatformHandler is used to pass as an argument for registering pldm base handler at line 287.\nsimilarly, platformHandler and fruHandler are passed as arguments for registering and platform snd fro handlers. We need to pass the right handlers for registration.",
+      "parentUuid": "9bbe1a30_a1a17f17",
       "range": {
         "startLine": 244,
         "startChar": 0,
@@ -175,6 +241,30 @@
       "writtenOn": "2024-04-29T05:00:33Z",
       "side": 1,
       "message": "will this be invoked if oem-ibm is enabled and we want the hostPDRHandler to be initialised too if hostEID is present? this portion is a else of ifdef OEM_IBM, right?",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 21
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e5210ef_77baa085",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-04-29T10:22:41Z",
+      "side": 1,
+      "message": "if OEM_IBM is enabled then we enter into oemIBM class where are doing this step also. please check oemIBM class constructor pldmd/oem_ibm.hpp. There again we are checking for hostEID and hostPDRHandler is populated.",
+      "parentUuid": "6e34a2cd_cf2168f1",
       "range": {
         "startLine": 249,
         "startChar": 0,
