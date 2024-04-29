@@ -214,6 +214,9 @@ class DBusHandlerInterface
         getSubtree(const std::string& path, int depth,
                    const std::vector<std::string>& ifaceList) const = 0;
 
+    virtual std::vector<std::string>
+        getSubTreePaths(const std::string& objectPath, int depth,
+                        const std::vector<std::string>& ifaceList) const = 0;
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
 
@@ -269,6 +272,19 @@ class DBusHandler : public DBusHandlerInterface
     GetSubTreeResponse
         getSubtree(const std::string& path, int depth,
                    const std::vector<std::string>& ifaceList) const override;
+
+    /** @brief Get Subtree path response from the mapper
+     *
+     *  @param[in] path - DBUS object path
+     *  @param[in] depth - Search depth
+     *  @param[in] ifaceList - list of the interface that are being
+     *                         queried from the mapper
+     *
+     *  @return std::vector<std::string> vector of subtree paths
+     */
+    std::vector<std::string> getSubTreePaths(
+        const std::string& objectPath, int depth,
+        const std::vector<std::string>& ifaceList) const override;
 
     /** @brief Get property(type: variant) from the requested dbus
      *

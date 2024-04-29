@@ -448,6 +448,22 @@ GetSubTreeResponse
     return response;
 }
 
+std::vector<std::string>
+    getSubTreePaths(const std::string& objectPath, int depth,
+                    const std::vector<std::string>& ifaceList) const
+{
+    std::vector<std::string> paths;
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, "GetSubTreePaths");
+    method.append(objectPath, depth, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+
+    reply.read(paths);
+    return paths;
+}
+
 void reportError(const char* errorMsg)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
