@@ -198,6 +198,7 @@ using ServiceName = std::string;
 using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
+using GetSubTreePathsResponse = std::vector<std::string>;
 using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
@@ -215,6 +216,10 @@ class DBusHandlerInterface
     virtual GetSubTreeResponse
         getSubtree(const std::string& path, int depth,
                    const std::vector<std::string>& ifaceList) const = 0;
+
+    virtual GetSubTreePathsResponse
+        getSubTreePaths(const std::string& objectPath, int depth,
+                        const std::vector<std::string>& ifaceList) const = 0;
 
     virtual void setDbusProperty(const DBusMapping& dBusMap,
                                  const PropertyValue& value) const = 0;
@@ -275,6 +280,19 @@ class DBusHandler : public DBusHandlerInterface
     GetSubTreeResponse
         getSubtree(const std::string& path, int depth,
                    const std::vector<std::string>& ifaceList) const override;
+
+    /** @brief Get Subtree path response from the mapper
+     *
+     *  @param[in] path - DBUS object path
+     *  @param[in] depth - Search depth
+     *  @param[in] ifaceList - list of the interface that are being
+     *                         queried from the mapper
+     *
+     *  @return std::vector<std::string> vector of subtree paths
+     */
+    GetSubTreePathsResponse getSubTreePaths(
+        const std::string& objectPath, int depth,
+        const std::vector<std::string>& ifaceList) const override;
 
     /** @brief Get property(type: variant) from the requested dbus
      *
