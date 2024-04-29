@@ -56,6 +56,64 @@
       "message": "doxygen about all the functions",
       "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32a12b8c_eb37db44",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-29T05:00:33Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "b1c64b6e_0507f686",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5de80632_5c3d075a",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-29T05:00:33Z",
+      "side": 1,
+      "message": "can you add doxygen about all variables?",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e34a2cd_cf2168f1",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-04-29T05:00:33Z",
+      "side": 1,
+      "message": "will this be invoked if oem-ibm is enabled and we want the hostPDRHandler to be initialised too if hostEID is present? this portion is a else of ifdef OEM_IBM, right?",
+      "range": {
+        "startLine": 249,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 21
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
