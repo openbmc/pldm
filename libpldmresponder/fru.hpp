@@ -68,8 +68,8 @@ class FruImpl
             pldm_entity_association_tree* entityTree,
             pldm_entity_association_tree* bmcEntityTree,
             pldm::responder::oem_fru::Handler* oemFruHandler) :
-        parser(configPath, fruMasterJsonPath),
-        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree),
+        parser(configPath, fruMasterJsonPath), pdrRepo(pdrRepo),
+        entityTree(entityTree), bmcEntityTree(bmcEntityTree),
         oemFruHandler(oemFruHandler)
     {}
 

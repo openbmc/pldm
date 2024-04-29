@@ -13,8 +13,7 @@ namespace pldm
 {
 MctpDiscovery::MctpDiscovery(sdbusplus::bus_t& bus,
                              fw_update::Manager* fwManager) :
-    bus(bus),
-    fwManager(fwManager),
+    bus(bus), fwManager(fwManager),
     mctpEndpointSignal(bus,
                        sdbusplus::bus::match::rules::interfacesAdded(
                            "/xyz/openbmc_project/mctp"),

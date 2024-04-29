@@ -111,8 +111,8 @@ class GetStatus : public CommandInterface
             &reasonCode, &updateOptionFlagsEnabled);
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode << "\n";
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)completionCode << "\n";
             return;
         }
 
@@ -196,9 +196,8 @@ class GetFwParams : public CommandInterface
             &pendingCompImageSetVersion, &compParameterTable);
         if (rc != PLDM_SUCCESS || fwParams.completion_code != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)fwParams.completion_code
-                      << "\n";
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)fwParams.completion_code << "\n";
             return;
         }
 

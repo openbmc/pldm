@@ -47,9 +47,8 @@ BIOSConfig::BIOSConfig(
     pldm::requester::Handler<pldm::requester::Request>* handler,
     pldm::responder::platform_config::Handler* platformConfigHandler,
     pldm::responder::bios::Callback requestPLDMServiceName) :
-    jsonDir(jsonDir),
-    tableDir(tableDir), dbusHandler(dbusHandler), fd(fd), eid(eid),
-    instanceIdDb(instanceIdDb), handler(handler),
+    jsonDir(jsonDir), tableDir(tableDir), dbusHandler(dbusHandler), fd(fd),
+    eid(eid), instanceIdDb(instanceIdDb), handler(handler),
     platformConfigHandler(platformConfigHandler),
     requestPLDMServiceName(requestPLDMServiceName)
 {

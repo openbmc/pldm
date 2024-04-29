@@ -134,9 +134,8 @@ class Handler
         uint8_t numRetries = static_cast<uint8_t>(NUMBER_OF_REQUEST_RETRIES),
         std::chrono::milliseconds responseTimeOut =
             std::chrono::milliseconds(RESPONSE_TIME_OUT)) :
-        pldmTransport(pldmTransport),
-        event(event), instanceIdDb(instanceIdDb), verbose(verbose),
-        instanceIdExpiryInterval(instanceIdExpiryInterval),
+        pldmTransport(pldmTransport), event(event), instanceIdDb(instanceIdDb),
+        verbose(verbose), instanceIdExpiryInterval(instanceIdExpiryInterval),
         numRetries(numRetries), responseTimeOut(responseTimeOut)
     {}
 

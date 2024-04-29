@@ -41,9 +41,8 @@ class InventoryManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         ComponentInfoMap& componentInfoMap) :
-        handler(handler),
-        instanceIdDb(instanceIdDb), descriptorMap(descriptorMap),
-        componentInfoMap(componentInfoMap)
+        handler(handler), instanceIdDb(instanceIdDb),
+        descriptorMap(descriptorMap), componentInfoMap(componentInfoMap)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs

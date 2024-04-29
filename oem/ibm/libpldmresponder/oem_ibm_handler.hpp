@@ -39,10 +39,9 @@ class Handler : public oem_platform::Handler
             uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
             sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
-        oem_platform::Handler(dBusIntf),
-        codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), instanceIdDb(instanceIdDb), event(event),
-        handler(handler)
+        oem_platform::Handler(dBusIntf), codeUpdate(codeUpdate),
+        platformHandler(nullptr), mctp_fd(mctp_fd), mctp_eid(mctp_eid),
+        instanceIdDb(instanceIdDb), event(event), handler(handler)
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;

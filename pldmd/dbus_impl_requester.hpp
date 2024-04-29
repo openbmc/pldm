@@ -42,8 +42,7 @@ class Requester : public RequesterIntf
      */
     Requester(sdbusplus::bus_t& bus, const std::string& path,
               InstanceIdDb& db) :
-        RequesterIntf(bus, path.c_str()),
-        pldmInstanceIdDb(db){};
+        RequesterIntf(bus, path.c_str()), pldmInstanceIdDb(db){};
 
     /** @brief Implementation for RequesterIntf.GetInstanceId */
     uint8_t getInstanceId(uint8_t eid) override

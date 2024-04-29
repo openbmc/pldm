@@ -170,9 +170,8 @@ class Handler : public CmdHandler
     Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
             uint8_t hostEid, pldm::InstanceIdDb* instanceIdDb,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
-        oemPlatformHandler(oemPlatformHandler),
-        hostSockFd(hostSockFd), hostEid(hostEid), instanceIdDb(instanceIdDb),
-        handler(handler)
+        oemPlatformHandler(oemPlatformHandler), hostSockFd(hostSockFd),
+        hostEid(hostEid), instanceIdDb(instanceIdDb), handler(handler)
     {
         handlers.emplace(
             PLDM_READ_FILE_INTO_MEMORY,

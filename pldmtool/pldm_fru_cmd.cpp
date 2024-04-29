@@ -63,8 +63,8 @@ class GetFruRecordTableMetadata : public CommandInterface
             &total_record_set_identifiers, &total_table_records, &checksum);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
         ordered_json output;
@@ -384,8 +384,8 @@ class GetFRURecordByOption : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
 
@@ -436,8 +436,8 @@ class GetFruRecordTable : public CommandInterface
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)cc << std::endl;
             return;
         }
 

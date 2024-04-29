@@ -91,8 +91,7 @@ HostPDRHandler::HostPDRHandler(
     pldm::InstanceIdDb& instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler,
     pldm::responder::oem_platform::Handler* oemPlatformHandler) :
-    mctp_fd(mctp_fd),
-    mctp_eid(mctp_eid), event(event), repo(repo),
+    mctp_fd(mctp_fd), mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler),
     oemPlatformHandler(oemPlatformHandler)
@@ -149,7 +148,7 @@ HostPDRHandler::HostPDRHandler(
             {
                 // Delete all the remote terminus information
                 std::erase_if(tlPDRInfo, [](const auto& item) {
-                    auto const& [key, value] = item;
+                    const auto& [key, value] = item;
                     return key != TERMINUS_HANDLE;
                 });
                 pldm_pdr_remove_remote_pdrs(repo);

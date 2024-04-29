@@ -39,8 +39,7 @@ namespace sdbusRule = sdbusplus::bus::match::rules;
 
 SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
                            pldm::InstanceIdDb& instanceIdDb) :
-    bus(bus),
-    timer(event), instanceIdDb(instanceIdDb)
+    bus(bus), timer(event), instanceIdDb(instanceIdDb)
 {
     auto jsonData = parseConfig();
 

@@ -22,8 +22,7 @@ class Handler : public CmdHandler
   public:
     Handler(sdeventplus::Event& event,
             pldm::responder::oem_platform::Handler* oemPlatformHandler) :
-        event(event),
-        oemPlatformHandler(oemPlatformHandler)
+        event(event), oemPlatformHandler(oemPlatformHandler)
     {
         handlers.emplace(
             PLDM_GET_PLDM_TYPES,

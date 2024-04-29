@@ -109,8 +109,8 @@ class GetPLDMTypes : public CommandInterface
                                         types.data());
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)cc << "\n";
             return;
         }
 
@@ -180,8 +180,8 @@ class GetPLDMVersion : public CommandInterface
                                           &version);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)cc << "\n";
             return;
         }
         char buffer[16] = {0};
@@ -230,8 +230,8 @@ class GetTID : public CommandInterface
         auto rc = decode_get_tid_resp(responsePtr, payloadLength, &cc, &tid);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)cc << "\n";
             return;
         }
         ordered_json data;
@@ -251,8 +251,7 @@ class GetPLDMCommands : public CommandInterface
     GetPLDMCommands& operator=(GetPLDMCommands&&) = delete;
 
     explicit GetPLDMCommands(const char* type, const char* name,
-                             CLI::App* app) :
-        CommandInterface(type, name, app)
+                             CLI::App* app) : CommandInterface(type, name, app)
     {
         app->add_option("-t,--type", pldmType, "pldm supported type")
             ->required()
@@ -278,8 +277,8 @@ class GetPLDMCommands : public CommandInterface
                                            cmdTypes.data());
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)cc << "\n";
             return;
         }
         printPldmCommands(cmdTypes, pldmType);
