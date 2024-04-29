@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb920d49_a3ced6f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "fix the url",
+      "range": {
+        "startLine": 14,
+        "startChar": 117,
+        "endLine": 14,
+        "endChar": 120
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7432c75_e881abe6",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "not needed,please remove the section in ()",
+      "range": {
+        "startLine": 692,
+        "startChar": 57,
+        "endLine": 692,
+        "endChar": 72
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ae9ee8a_474c5c9b",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "lg2 supports fs. so we dont need to again to c -string.",
+      "range": {
+        "startLine": 693,
+        "startChar": 32,
+        "endLine": 693,
+        "endChar": 48
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfd67db2_fd720d87",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "same here.",
+      "range": {
+        "startLine": 700,
+        "startChar": 26,
+        "endLine": 700,
+        "endChar": 42
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1275344_2011e004",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "still have : ? should we not remove it to make it readable ?",
+      "range": {
+        "startLine": 782,
+        "startChar": 80,
+        "endLine": 782,
+        "endChar": 82
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8531ee67_9777b66c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 794,
+        "startChar": 79,
+        "endLine": 794,
+        "endChar": 81
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "110f6f2d_ce8460a8",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "same here.",
+      "range": {
+        "startLine": 805,
+        "startChar": 79,
+        "endLine": 805,
+        "endChar": 80
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4afee92_c52b45ff",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "also print name, lower \u0026 upper bounds.",
+      "range": {
+        "startLine": 853,
+        "startChar": 20,
+        "endLine": 854,
+        "endChar": 45
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a2ceabf_0b5d5017",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-04-29T08:34:36Z",
+      "side": 1,
+      "message": "i think its better to print attribute name as well here.",
+      "range": {
+        "startLine": 876,
+        "startChar": 19,
+        "endLine": 876,
+        "endChar": 49
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
