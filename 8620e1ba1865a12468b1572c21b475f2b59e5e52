@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "004cb4c8_db566098",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-30T01:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89ceb320_db1d4e75",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 105
+      },
+      "revId": "8620e1ba1865a12468b1572c21b475f2b59e5e52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ec73247_77edc283",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-29T09:13:47Z",
       "side": 1,
       "message": "create baseBIOSTable",
+      "range": {
+        "startLine": 165,
+        "startChar": 4,
+        "endLine": 165,
+        "endChar": 15
+      },
+      "revId": "8620e1ba1865a12468b1572c21b475f2b59e5e52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af5bbbbe_a3aa6068",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-30T01:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ec73247_77edc283",
       "range": {
         "startLine": 165,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "546bf8d4_3e35c234",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-30T01:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f1529df_4bcea966",
+      "range": {
+        "startLine": 166,
+        "startChar": 17,
+        "endLine": 166,
+        "endChar": 141
+      },
+      "revId": "8620e1ba1865a12468b1572c21b475f2b59e5e52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9e4b090_ae494de7",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-04-29T09:13:47Z",
       "side": 1,
       "message": "After the JSON files are parsed, pldm would also create the stringtable, atttribute table, and attributevalue table per spec \u003clink section\u003e in memory , so that we could exchange those tables with remote PLDM terminus using the GET_BIOS_TABLE commands spec \u003csection, link \u003e ?",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 49
+      },
+      "revId": "8620e1ba1865a12468b1572c21b475f2b59e5e52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af665326_479d9106",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-30T01:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9e4b090_ae494de7",
       "range": {
         "startLine": 171,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db12a00_322db1a6",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-30T01:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d02b9e49_31a5abe5",
+      "range": {
+        "startLine": 179,
+        "startChar": 1,
+        "endLine": 179,
+        "endChar": 59
+      },
+      "revId": "8620e1ba1865a12468b1572c21b475f2b59e5e52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa1cf766_5fde3536",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-04-29T09:13:47Z",
       "side": 1,
       "message": "highlight enabled",
+      "range": {
+        "startLine": 230,
+        "startChar": 7,
+        "endLine": 230,
+        "endChar": 14
+      },
+      "revId": "8620e1ba1865a12468b1572c21b475f2b59e5e52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7affb87_5cc9eb92",
+        "filename": "README.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-04-30T01:32:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa1cf766_5fde3536",
       "range": {
         "startLine": 230,
         "startChar": 7,
