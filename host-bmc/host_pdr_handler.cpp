@@ -652,7 +652,7 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     if (!nextRecordHandle)
     {
         updateEntityAssociation(entityAssociations, entityTree, objPathMap,
-                                entityMaps);
+                                entityMaps, oemPlatformHandler);
 
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);

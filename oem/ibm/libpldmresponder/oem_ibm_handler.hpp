@@ -186,6 +186,9 @@ class Handler : public oem_platform::Handler
     /** @brief to check the BMC state*/
     int checkBMCState();
 
+    /** @brief update the dbus object paths */
+    void updateOemDbusPaths(std::string& dbusPath);
+
     /** @brief Method to fetch the last BMC record from the PDR repo
      *
      * @param[in] repo - pointer to BMC's primary PDR repo

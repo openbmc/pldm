@@ -91,7 +91,8 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
     EntityMaps entityMaps;
     ObjectPathMaps objPathMap;
     parsingEntityMap(entityMaps);
-    updateEntityAssociation(entityAssociations, tree, objPathMap, entityMaps);
+    updateEntityAssociation(entityAssociations, tree, objPathMap, entityMaps,
+                            nullptr);
 
     EXPECT_EQ(objPathMap.size(), retObjectMaps.size());
 

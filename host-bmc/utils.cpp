@@ -55,11 +55,10 @@ Entities getParentEntites(const EntityAssociations& entityAssoc)
     return parents;
 }
 
-void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
-                                     pldm_entity_node* entity,
-                                     const fs::path& path,
-                                     ObjectPathMaps& objPathMap,
-                                     EntityMaps entityMaps)
+void addObjectPathEntityAssociations(
+    const EntityAssociations& entityAssoc, pldm_entity_node* entity,
+    const fs::path& path, ObjectPathMaps& objPathMap, EntityMaps entityMaps,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler)
 {
     if (entity == nullptr)
     {
@@ -97,6 +96,10 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
                                          std::to_string(
                                              node_entity.entity_instance_num)};
             std::string entity_path = p.string();
+            if (oemPlatformHandler != nullptr)
+            {
+                oemPlatformHandler->updateOemDbusPaths(entity_path);
+            }
             // If the entity obtained from the remote PLDM terminal is not in
             // the MAP, or there is no auxiliary name PDR, add it directly.
             // Otherwise, check whether the DBus service of entity_path exists,
@@ -121,7 +124,8 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
             for (size_t i = 1; i < ev.size(); i++)
             {
                 addObjectPathEntityAssociations(entityAssoc, ev[i], p,
-                                                objPathMap, entityMaps);
+                                                objPathMap, entityMaps,
+                                                oemPlatformHandler);
             }
             found = true;
         }
@@ -132,7 +136,10 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
         std::string dbusPath =
             path / fs::path{entityName +
                             std::to_string(node_entity.entity_instance_num)};
-
+        if (oemPlatformHandler != nullptr)
+        {
+            oemPlatformHandler->updateOemDbusPaths(dbusPath);
+        }
         try
         {
             pldm::utils::DBusHandler().getService(dbusPath.c_str(), nullptr);
@@ -144,9 +151,11 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     }
 }
 
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap, EntityMaps entityMaps)
+void updateEntityAssociation(
+    const EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
+    EntityMaps entityMaps,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler)
 {
     std::vector<pldm_entity_node*> parentsEntity =
         getParentEntites(entityAssoc);
@@ -202,7 +211,7 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
         }
 
         addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap,
-                                        entityMaps);
+                                        entityMaps, oemPlatformHandler);
     }
 }
 

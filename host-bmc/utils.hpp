@@ -1,5 +1,7 @@
 #include "libpldm/pdr.h"
 
+#include "libpldmresponder/oem_handler.hpp"
+
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 
@@ -33,9 +35,11 @@ namespace utils
  *                               BMC's entity association tree
  *  @return
  */
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap, EntityMaps entityMaps);
+void updateEntityAssociation(
+    const EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
+    EntityMaps entityMaps,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
 /** @brief parsing Entity map data from json file
  *  which can be configured as per requirement
