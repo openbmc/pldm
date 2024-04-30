@@ -26,6 +26,7 @@ using namespace pldm::responder::events;
 using namespace pldm::utils;
 using namespace sdbusplus::bus::match::rules;
 using namespace pldm::responder::pdr_utils;
+using namespace pldm::hostbmc::utils;
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace pldm::dbus;
@@ -98,6 +99,44 @@ HostPDRHandler::HostPDRHandler(
     oemPlatformHandler(oemPlatformHandler)
 {
     mergedHostParents = false;
+<<<<<<< PATCH SET (498d69 Adding Configuration support for EntityMap)
+    parsingEntityMap(entityMaps);
+    fs::path hostFruJson(fs::path(HOST_JSONS_DIR) / fruJson);
+    if (fs::exists(hostFruJson))
+    {
+        // Note parent entities for entities sent down by the host firmware.
+        // This will enable a merge of entity associations.
+        try
+        {
+            std::ifstream jsonFile(hostFruJson);
+            auto data = Json::parse(jsonFile, nullptr, false);
+            if (data.is_discarded())
+            {
+                error("Parsing Host FRU json file failed");
+            }
+            else
+            {
+                auto entities = data.value("entities", emptyJsonList);
+                for (auto& entity : entities)
+                {
+                    EntityType entityType = entity.value("entity_type", 0);
+                    auto parent = entity.value("parent", emptyJson);
+                    pldm_entity p{};
+                    p.entity_type = parent.value("entity_type", 0);
+                    p.entity_instance_num = parent.value("entity_instance", 0);
+                    parents.emplace(entityType, std::move(p));
+                }
+            }
+        }
+        catch (const std::exception& e)
+        {
+            error("Parsing Host FRU json file failed, exception = {ERR_EXCEP}",
+                  "ERR_EXCEP", e.what());
+        }
+    }
+
+=======
+>>>>>>> BASE      (a13bf1 Remove dead host_pdr_handler code & json-file)
     hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
@@ -615,7 +654,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
-        updateEntityAssociation(entityAssociations, entityTree, objPathMap);
+        updateEntityAssociation(entityAssociations, entityTree, objPathMap,
+                                entityMaps);
 
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);

@@ -1,3 +1,4 @@
+#include "../utils.hpp"
 #include "common/utils.hpp"
 
 #include <libpldm/pdr.h>
@@ -9,6 +10,14 @@
 namespace fs = std::filesystem;
 using namespace pldm;
 using namespace pldm::utils;
+using namespace pldm::hostbmc::utils;
+
+TEST(EntityAssociation, parsingEntityMap)
+{
+    EntityMaps entityMaps;
+    parsingEntityMap(entityMaps);
+    EXPECT_EQ(entityMaps.size(), 19);
+}
 
 TEST(EntityAssociation, addObjectPathEntityAssociations1)
 {
@@ -79,8 +88,10 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
         {"/xyz/openbmc_project/inventory/chassis1/motherboard1/dcm1/cpu1",
          l5b}};
 
+    EntityMaps entityMaps;
     ObjectPathMaps objPathMap;
-    updateEntityAssociation(entityAssociations, tree, objPathMap);
+    parsingEntityMap(entityMaps);
+    updateEntityAssociation(entityAssociations, tree, objPathMap, entityMaps);
 
     EXPECT_EQ(objPathMap.size(), retObjectMaps.size());
 
