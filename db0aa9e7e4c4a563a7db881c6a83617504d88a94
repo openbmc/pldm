@@ -222,6 +222,24 @@
       "parentUuid": "baa62944_ea619aa3",
       "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df1287b3_8a9aa517",
+        "filename": "requester/test/mctp_endpoint_discovery_test.cpp",
+        "patchSetId": 78
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-01T02:37:10Z",
+      "side": 1,
+      "message": "\u003e I knew that adding the software testing is good but I think the real test in the real system can be acceptable.\n\nI understand that it is tested good with hardware, but not every one will have the necessary hardware infrastructure to test this code, Unit tests are a way to get confidence on how the code works. We cannot always go by words on people saying \"I have tested this , and it works on my platform\". With the number of patch-sets in this commit \u0026 and the churn \u0026 contribution from various people in this commit,i would feel a bit more confident if we have the code unit tests improved. It helps will maintainability.\n\n\ncontributing document also states that same : https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md\n```\nCommits which include changes that can be tested by a unit test should also include a unit test to exercise that change, within the same commit. Unit tests should be clearly written - even more so than production code, unit tests are meant primarily to be read by humans - and should test both good and bad behaviors.\n```",
+      "parentUuid": "61e82814_76b40f8d",
+      "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
