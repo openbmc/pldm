@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fb04cac6_b7829198",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-01T11:03:47Z",
+      "side": 1,
+      "message": "added discussion link for reference",
+      "parentUuid": "adb49a59_72ee25e2",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 48
+      },
+      "revId": "75b2c1b75b69af5b8d169689eefb0ee449ec14b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f15308d9_3d917f58",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2024-04-15T04:22:58Z",
       "side": 1,
       "message": "why not pldm_entity ? this could reduce one additional de-reference per operation right ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 42,
+        "endLine": 61,
+        "endChar": 54
+      },
+      "revId": "75b2c1b75b69af5b8d169689eefb0ee449ec14b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eef6477_248a88d7",
+        "filename": "common/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-01T11:03:47Z",
+      "side": 1,
+      "message": "fixed as suggestion.",
+      "parentUuid": "8ec582c8_acc48e10",
       "range": {
         "startLine": 61,
         "startChar": 42,
