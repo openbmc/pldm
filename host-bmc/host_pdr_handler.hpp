@@ -96,7 +96,8 @@ class HostPDRHandler
         pldm_entity_association_tree* bmcEntityTree,
         pldm::InstanceIdDb& instanceIdDb,
         pldm::requester::Handler<pldm::requester::Request>* handler,
-        pldm::responder::oem_platform::Handler* oemPlatformHandler);
+        pldm::responder::oem_platform::Handler* oemPlatformHandler,
+        pldm::responder::oem_utils::Handler* oemUtilsHandler);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -327,6 +328,9 @@ class HostPDRHandler
 
     /** @OEM platform handler */
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+
+    /** @OEM Utils handler */
+    pldm::responder::oem_utils::Handler* oemUtilsHandler;
 
     /** @brief entityID and entity name is only loaded once
      */
