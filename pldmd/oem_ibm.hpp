@@ -5,6 +5,7 @@
 #include "../oem/ibm/libpldmresponder/file_io.hpp"
 #include "../oem/ibm/libpldmresponder/fru_oem_ibm.hpp"
 #include "../oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
+#include "../oem/ibm/libpldmresponder/utils.hpp"
 #include "common/utils.hpp"
 #include "dbus_impl_requester.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
@@ -72,8 +73,9 @@ class OemIBM
 
         createCodeUpdate();
         createOemPlatformHandler();
+        createOemIbmUtilsHandler();
         codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
-        hostPDRHandler->setOemPlatformHandler(oemPlatformHandler.get());
+        hostPDRHandler->setOemPlatformHandler(oemUtilsHandler.get());
         platformHandler->setOemPlatformHandler(oemPlatformHandler.get());
         baseHandler->setOemPlatformHandler(oemPlatformHandler.get());
 
@@ -115,6 +117,12 @@ class OemIBM
     void createOemFruHandler()
     {
         oemFruHandler = std::make_unique<oem_ibm_fru::Handler>(repo);
+    }
+
+    /** @brief Method for creating oemIbmUtilsHandler */
+    void createOemIbmUtilsHandler()
+    {
+        oemUtilsHandler = std::make_unique<oem_ibm_utils::Handler>();
     }
 
     /** @brief Method for creating oemIbmFruHandler */
@@ -176,6 +184,9 @@ class OemIBM
 
     /** @brief oem IBM Fru handler*/
     pldm::responder::oem_ibm_fru::Handler* oemIbmFruHandler = nullptr;
+
+    /** @brief oem IBM Utils handler*/
+    std::unique_ptr<oem_utils::Handler> oemUtilsHandler;
 };
 
 } // namespace oem_ibm
