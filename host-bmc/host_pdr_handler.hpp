@@ -87,6 +87,8 @@ class HostPDRHandler
      *  @param[in] bmcEntityTree - pointer to BMC's entity association tree
      *  @param[in] instanceIdDb - reference to an InstanceIdDb object
      *  @param[in] handler - PLDM request handler
+     *  @param[in] oemPlatformHandler - pointer to platform handler
+     *  @param[in] oemUtilsHandler - pointer oem utils handler
      */
     explicit HostPDRHandler(
         int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event,
@@ -95,7 +97,8 @@ class HostPDRHandler
         pldm_entity_association_tree* bmcEntityTree,
         pldm::InstanceIdDb& instanceIdDb,
         pldm::requester::Handler<pldm::requester::Request>* handler,
-        pldm::responder::oem_platform::Handler* oemPlatformHandler);
+        pldm::responder::oem_platform::Handler* oemPlatformHandler,
+        pldm::responder::oem_utils::Handler* oemUtilsHandler);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -326,6 +329,9 @@ class HostPDRHandler
 
     /** @OEM platform handler */
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+
+    /** @OEM Utils handler */
+    pldm::responder::oem_utils::Handler* oemUtilsHandler;
 
     /** @brief entityID and entity name is only loaded once
      */
