@@ -49,6 +49,12 @@ void updateEntityAssociation(
  */
 EntityMaps parseEntityMap(const fs::path& filePath);
 
+/** @brief Collecting core count data and setting to
+ *  Dbus properties
+ */
+void setCoreCount(const EntityAssociations& entityAssociation,
+                  EntityMaps entityMaps);
+
 } // namespace utils
 } // namespace hostbmc
 } // namespace pldm
