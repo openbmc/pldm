@@ -150,6 +150,29 @@ class Handler : public CmdHandler
 
 } // namespace oem_fru
 
+namespace oem_utils
+{
+using namespace pldm::utils;
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler() {}
+
+    /** @brief Collecting core count data and setting to Dbus properties
+     *
+     *  @param[in] associations - the data of entity association
+     *  @param[in] entityMaps - the mapping of entity to DBus string
+     *
+     */
+    virtual void setCoreCount(const EntityAssociations& associations,
+                              const EntityMaps entityMaps) = 0;
+
+    virtual ~Handler() = default;
+};
+
+} // namespace oem_utils
+
 } // namespace responder
 
 } // namespace pldm
