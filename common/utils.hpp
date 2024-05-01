@@ -159,13 +159,6 @@ using DBusInterfaceAdded = std::vector<
                                     std::variant<pldm::dbus::Property>>>>>;
 
 using ObjectPath = std::string;
-using EntityName = std::string;
-using EntityType = uint16_t;
-using Entities = std::vector<pldm_entity_node*>;
-using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
-using EntityMaps = std::map<EntityType, EntityName>;
-
 using ServiceName = std::string;
 using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
@@ -174,6 +167,12 @@ using GetSubTreePathsResponse = std::vector<std::string>;
 using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
+using EntityName = std::string;
+using EntityType = uint16_t;
+using Entities = std::vector<pldm_entity_node*>;
+using EntityAssociations = std::vector<Entities>;
+using ObjectPathMaps = std::unordered_map<fs::path, pldm_entity_node*>;
+using EntityMaps = std::unordered_map<EntityType, EntityName>;
 
 /**
  * @brief The interface for DBusHandler
