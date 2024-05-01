@@ -95,7 +95,7 @@ HostPDRHandler::HostPDRHandler(
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler),
-    entityMaps(parseEntityMap(ENTITY_MAP_JSON))
+    entityMaps(parseEntityMap(ENTITY_MAP_JSON)), oemUtilsHandler(nullptr)
 {
     mergedHostParents = false;
     hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
@@ -632,7 +632,10 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     {
         updateEntityAssociation(entityAssociations, entityTree, objPathMap,
                                 entityMaps, oemPlatformHandler);
-
+        if (oemUtilsHandler)
+        {
+            oemUtilsHandler->setCoreCount(entityAssociations, entityMaps);
+        }
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);
         this->createDbusObjects(fruRecordSetPDRs);

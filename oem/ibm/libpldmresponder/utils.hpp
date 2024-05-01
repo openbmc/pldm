@@ -1,5 +1,7 @@
 #pragma once
 
+#include "libpldmresponder/oem_handler.hpp"
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -54,5 +56,33 @@ bool checkIfIBMFru(const std::string& objPath);
 std::vector<std::string> findPortObjects(const std::string& adapterObjPath);
 
 } // namespace utils
+
+namespace oem_ibm_utils
+{
+
+class Handler : public oem_utils::Handler
+{
+  public:
+    Handler(const pldm::utils::DBusHandler* dBusIntf) :
+        oem_utils::Handler(dBusIntf), dBusIntf(dBusIntf)
+    {}
+
+    /** @brief Collecting core count data and setting to Dbus properties
+     *
+     *  @param[in] associations - the data of entity association
+     *  @param[in] entityMaps - the mapping of entity to DBus string
+     *
+     */
+    virtual int
+        setCoreCount(const pldm::utils::EntityAssociations& associations,
+                     const pldm::utils::EntityMaps entityMaps);
+
+    virtual ~Handler() = default;
+
+  protected:
+    const pldm::utils::DBusHandler* dBusIntf;
+};
+
+} // namespace oem_ibm_utils
 } // namespace responder
 } // namespace pldm
