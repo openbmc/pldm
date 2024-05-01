@@ -1,23 +1,40 @@
 #include "common/test/mocked_utils.hpp"
 #include "common/utils.hpp"
+#include "host-bmc/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
 #include "oem/ibm/libpldmresponder/inband_code_update.hpp"
 #include "oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
+#include "oem/ibm/libpldmresponder/utils.hpp"
 #include "test/test_instance_id.hpp"
 
 #include <libpldm/entity.h>
 #include <libpldm/oem/ibm/entity.h>
+#include <libpldm/pdr.h>
 
+#include <nlohmann/json.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/event.hpp>
+
+#include <filesystem>
+#include <fstream>
 
 using namespace pldm::utils;
 using namespace pldm::responder;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
 using namespace pldm::responder::oem_ibm_platform;
+using ::testing::Return;
+
+class MockOemUtilsHandler : public oem_ibm_utils::Handler
+{
+  public:
+    MockOemUtilsHandler(const pldm::utils::DBusHandler* dBusIntf) :
+        oem_ibm_utils::Handler(dBusIntf)
+    {}
+};
 
 class MockCodeUpdate : public CodeUpdate
 {
@@ -408,4 +425,87 @@ TEST(updateOemDbusPath, testgoodpath)
     dbuspath = "/inventory/system/chassis/socket1/motherboard/dcm0";
     mockoemPlatformHandler->updateOemDbusPaths(dbuspath);
     EXPECT_EQ(dbuspath, "/inventory/system/chassis/motherboard/dcm0");
+}
+
+TEST(SetCoreCount, testgoodpath)
+{
+    pldm::utils::EntityMaps entityMaps = pldm::hostbmc::utils::parseEntityMap(
+        "../../oem/ibm/test/entitymap_test.json");
+    MockdBusHandler mockedDbusUtils;
+    pldm_entity entities[9]{};
+
+    entities[0].entity_type = 45;
+    entities[0].entity_container_id = 0;
+
+    entities[1].entity_type = 64;
+    entities[1].entity_container_id = 1;
+
+    entities[2].entity_type = 67;
+    entities[2].entity_container_id = 2;
+    entities[3].entity_type = 67;
+    entities[3].entity_container_id = 2;
+
+    entities[4].entity_type = 135;
+    entities[4].entity_container_id = 3;
+    entities[5].entity_type = 135;
+    entities[5].entity_container_id = 3;
+    entities[6].entity_type = 135;
+    entities[6].entity_container_id = 3;
+    entities[7].entity_type = 135;
+    entities[7].entity_container_id = 3;
+    entities[8].entity_type = 32903;
+    entities[8].entity_container_id = 3;
+
+    auto tree = pldm_entity_association_tree_init();
+
+    auto l1 = pldm_entity_association_tree_add_entity(
+        tree, &entities[0], 1, nullptr, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true,
+        true, 0xFFFF);
+
+    auto l2 = pldm_entity_association_tree_add_entity(
+        tree, &entities[1], 1, l1, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+
+    auto l3a = pldm_entity_association_tree_add_entity(
+        tree, &entities[2], 0, l2, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+    auto l3b = pldm_entity_association_tree_add_entity(
+        tree, &entities[3], 1, l2, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+
+    auto l4a = pldm_entity_association_tree_add_entity(
+        tree, &entities[4], 0, l3a, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+    auto l4b = pldm_entity_association_tree_add_entity(
+        tree, &entities[5], 1, l3a, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+
+    auto l5a = pldm_entity_association_tree_add_entity(
+        tree, &entities[6], 0, l3b, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+    auto l5b = pldm_entity_association_tree_add_entity(
+        tree, &entities[7], 1, l3b, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+
+    auto l5c = pldm_entity_association_tree_add_entity(
+        tree, &entities[8], 0, l5a, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+
+    auto l5ca = pldm_entity_association_tree_add_entity(
+        tree, &entities[8], 0, l5b, PLDM_ENTITY_ASSOCIAION_PHYSICAL, true, true,
+        0xFFFF);
+
+    pldm::utils::EntityAssociations entityAssociations = {
+        {l1, l2},        {l2, l3a, l3b}, {l3a, l4a, l4b},
+        {l3b, l5a, l5b}, {l5a, l5c},     {l5b, l5ca}};
+
+    DBusMapping dbusMapping{"/foo/bar", "xyz.openbmc_project.Foo.Bar",
+                            "propertyName", "uint64_t"};
+    std::vector<std::string> cpuInterface = {"xyz.openbmc_project.Foo.Bar"};
+    auto oemMockedUtils =
+        std::make_unique<MockOemUtilsHandler>(&mockedDbusUtils);
+    int coreCount = oemMockedUtils->setCoreCount(entityAssociations,
+                                                 entityMaps);
+    EXPECT_EQ(coreCount, 2);
+    pldm_entity_association_tree_destroy(tree);
 }
