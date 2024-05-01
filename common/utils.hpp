@@ -163,9 +163,8 @@ using EntityName = std::string;
 using EntityType = uint16_t;
 using Entities = std::vector<pldm_entity_node*>;
 using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
-using EntityMaps = std::map<EntityType, EntityName>;
-
+using ObjectPathMaps = std::unordered_map<fs::path, pldm_entity_node*>;
+using EntityMaps = std::unordered_map<EntityType, EntityName>;
 using ServiceName = std::string;
 using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
