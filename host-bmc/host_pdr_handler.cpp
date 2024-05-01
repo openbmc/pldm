@@ -667,6 +667,11 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                                 entityMaps, oemPlatformHandler);
         pldm::serialize::Serialize::getSerialize().setObjectPathMaps(
             objPathMap);
+
+        if (oemPlatformHandler != nullptr)
+        {
+            pldm::hostbmc::utils::setCoreCount(entityAssociations, entityMaps);
+        }
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);
         this->createDbusObjects(fruRecordSetPDRs);
