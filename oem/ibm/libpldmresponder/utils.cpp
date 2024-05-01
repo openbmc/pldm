@@ -3,6 +3,7 @@
 #include "common/utils.hpp"
 
 #include <libpldm/base.h>
+#include <libpldm/platform.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
@@ -197,6 +198,73 @@ std::vector<std::string> findPortObjects(const std::string& adapterObjPath)
 
     return portObjects;
 }
+
 } // namespace utils
+
+namespace oem_ibm_utils
+{
+
+void pldm::responder::oem_ibm_utils::Handler::setCoreCount(
+    const EntityAssociations& Associations, EntityMaps entityMaps)
+{
+    static constexpr auto searchpath = "/xyz/openbmc_project/";
+    std::vector<std::string> cpuInterface = {
+        "xyz.openbmc_project.Inventory.Item.Cpu"};
+    pldm::utils::GetSubTreeResponse response =
+        pldm::utils::DBusHandler().getSubtree(searchpath, 0 /* depth */,
+                                              cpuInterface);
+
+    // get the CPU pldm entities
+    for (const auto& entries : Associations)
+    {
+        auto parent = pldm_entity_extract(entries[0]);
+        // entries[0] would be the parent in the entity association map
+        if (parent.entity_type == PLDM_ENTITY_PROC)
+        {
+            int coreCount = 0;
+            for (const auto& entry : entries)
+            {
+                auto child = pldm_entity_extract(entry);
+                if (child.entity_type == (PLDM_ENTITY_PROC | 0x8000))
+                {
+                    // got a core child
+                    ++coreCount;
+                }
+            }
+
+            auto grand_parent = pldm_entity_get_parent(entries[0]);
+            std::string grepWord = std::format(
+                "{}{}/{}{}", entityMaps.at(grand_parent.entity_type),
+                std::to_string(grand_parent.entity_instance_num),
+                entityMaps.at(parent.entity_type),
+                std::to_string(parent.entity_instance_num));
+
+            for (const auto& [objectPath, serviceMap] : response)
+            {
+                // find the object path with first occurance of coreX
+                if (objectPath.contains(grepWord))
+                {
+                    pldm::utils::DBusMapping dbusMapping{
+                        objectPath, cpuInterface[0], "CoreCount", "uint16_t"};
+                    pldm::utils::PropertyValue value =
+                        static_cast<uint16_t>(coreCount);
+                    try
+                    {
+                        pldm::utils::DBusHandler().setDbusProperty(dbusMapping,
+                                                                   value);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        error(
+                            "Failed to set the core count property at interface '{INTERFACE}': {ERROR}",
+                            "INTERFACE", cpuInterface[0], "ERROR", e);
+                    }
+                }
+            }
+        }
+    }
+}
+
+} // namespace oem_ibm_utils
 } // namespace responder
 } // namespace pldm
