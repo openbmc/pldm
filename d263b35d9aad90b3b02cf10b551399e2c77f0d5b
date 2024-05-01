@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "870ac48d_87e24638",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-01T11:00:51Z",
+      "side": 1,
+      "message": "yes dbus object path.",
+      "parentUuid": "1a2d978d_e34371ff",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 13
+      },
+      "revId": "d263b35d9aad90b3b02cf10b551399e2c77f0d5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0265854d_98c55f56",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-04T14:34:13Z",
       "side": 1,
       "message": "does it mean, in absence of persistence file BMC reboot will fail?",
+      "range": {
+        "startLine": 15,
+        "startChar": 23,
+        "endLine": 16,
+        "endChar": 36
+      },
+      "revId": "d263b35d9aad90b3b02cf10b551399e2c77f0d5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7b26475_07cac8d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-01T11:00:51Z",
+      "side": 1,
+      "message": "no, if persistent file not present then core count and other vital information will not be restored in dbus properties and same information will not be visible to redfish.",
+      "parentUuid": "0265854d_98c55f56",
       "range": {
         "startLine": 15,
         "startChar": 23,
