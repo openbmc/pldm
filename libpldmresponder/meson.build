@@ -29,6 +29,11 @@ sources = [
   '../host-bmc/dbus_to_host_effecters.cpp',
   '../host-bmc/host_condition.cpp',
   '../host-bmc/dbus/custom_dbus.cpp',
+  '../host-bmc/dbus/asset.cpp',
+  '../host-bmc/dbus/associations.cpp',
+  '../host-bmc/dbus/cable.cpp',
+  '../host-bmc/dbus/pcie_device.cpp',
+  '../host-bmc/dbus/pcie_slot.cpp',
   '../host-bmc/dbus/serialize.cpp',
   '../host-bmc/dbus/deserialize.cpp',
   'event_parser.cpp'
