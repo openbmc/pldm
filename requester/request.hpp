@@ -90,7 +90,7 @@ class RequestRetryTimer
         if (rc)
         {
             error("Failed to stop the request timer, response code '{RC}'",
-                  "RC", static_cast<int>(rc));
+                  "RC", rc);
         }
     }
 
@@ -197,7 +197,7 @@ class Request final : public RequestRetryTimer
         {
             error(
                 "Failed to send pldmTransport message, response code '{RC}' and error - {ERROR}",
-                "RC", static_cast<int>(rc), "ERROR", errno);
+                "RC", rc, "ERROR", errno);
             return PLDM_ERROR;
         }
         return PLDM_SUCCESS;

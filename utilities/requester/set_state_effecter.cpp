@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg);
     info(
         "Done! Got the response for PLDM send receive message request, response code '{RC}'",
-        "RC", lg2::hex, static_cast<uint16_t>(response->payload[0]));
+        "RC", lg2::hex, response->payload[0]);
     free(responseMsg);
 
     return 0;

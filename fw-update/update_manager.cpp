@@ -57,7 +57,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     {
         error(
             "Failed to open the PLDM fw update package file '{FILE}', error - {ERROR}.",
-            "ERROR", unsigned(errno), "FILE", packageFilePath.c_str());
+            "ERROR", errno, "FILE", packageFilePath);
         package.close();
         std::filesystem::remove(packageFilePath);
         return -1;

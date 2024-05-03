@@ -55,7 +55,7 @@ uint8_t getStateSensorEventState(
     {
         error(
             "Failed to get state sensor event state from dbus interface '{PATH}', error - {ERROR}.",
-            "PATH", dbusMapping.objectPath.c_str(), "ERROR", e);
+            "PATH", dbusMapping.objectPath, "ERROR", e);
     }
 
     return PLDM_SENSOR_UNKNOWN;

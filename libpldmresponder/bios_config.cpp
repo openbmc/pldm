@@ -93,7 +93,7 @@ void BIOSConfig::initBIOSAttributes(const std::string& systemType,
     if (!fs::exists(dir))
     {
         error("System specific bios attribute directory {DIR} does not exit",
-              "DIR", dir.string());
+              "DIR", dir);
         return;
     }
     constructAttributes();
@@ -690,14 +690,14 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
                 {
                     error(
                         "Failed to parse JSON config file at path '{PATH}', error - {ERROR}",
-                        "PATH", filePath.c_str(), "ERROR", e);
+                        "PATH", filePath, "ERROR", e);
                 }
             }
         }
         catch (const std::exception& e)
         {
             error("Failed to parse JSON config file '{PATH}', error - {ERROR}",
-                  "PATH", filePath.c_str(), "ERROR", e);
+                  "PATH", filePath, "ERROR", e);
         }
     }
 }
@@ -836,7 +836,7 @@ int BIOSConfig::checkAttrValueToUpdate(
             {
                 error(
                     "Invalid index '{INDEX}' encountered for Enum type BIOS attribute",
-                    "INDEX", (int)value[0]);
+                    "INDEX", value[0]);
                 return PLDM_ERROR_INVALID_DATA;
             }
             return PLDM_SUCCESS;
@@ -1034,7 +1034,7 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         error(
             "Failed to update the attribute value table for attribute handle '{ATTR_HANDLE}' and  attribute type '{TYPE}'",
-            "ATTR_HANDLE", attrHdl, "TYPE", (uint32_t)attrType);
+            "ATTR_HANDLE", attrHdl, "TYPE", attrType);
         return;
     }
     auto destTable = table::attribute_value::updateTable(

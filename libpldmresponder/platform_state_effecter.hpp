@@ -125,7 +125,7 @@ int setStateEffecterStatesHandler(
                     "EFFECTER_ID", effecterId, "EFFECTER_STATE",
                     stateField[currState].effecter_state,
                     "COMPOSITE_EFFECTER_ID", currState, "PATH",
-                    dbusMappings[currState].objectPath.c_str(), "RC", rc);
+                    dbusMappings[currState].objectPath, "RC", rc);
                 break;
             }
             const DBusMapping& dbusMapping = dbusMappings[currState];
@@ -145,8 +145,8 @@ int setStateEffecterStatesHandler(
                     error(
                         "Failed to set property '{PROPERTY}', interface '{INTERFACE}' and path '{PATH}', error - '{ERROR}'",
                         "PROPERTY", dbusMapping.propertyName, "INTERFACE",
-                        dbusMapping.interface, "PATH",
-                        dbusMapping.objectPath.c_str(), "ERROR", e);
+                        dbusMapping.interface, "PATH", dbusMapping.objectPath,
+                        "ERROR", e);
                     return PLDM_ERROR;
                 }
             }
