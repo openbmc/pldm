@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62322a9f_0df74101",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:54:07Z",
+      "side": 1,
+      "message": "DBus",
+      "range": {
+        "startLine": 9,
+        "startChar": 62,
+        "endLine": 9,
+        "endChar": 66
+      },
+      "revId": "36c47758b8836bc25b7e8ba652aeb9314f21a6ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bf0fea6_c72e4ddd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:54:07Z",
+      "side": 1,
+      "message": "what does the default numbering system mean?",
+      "range": {
+        "startLine": 12,
+        "startChar": 31,
+        "endLine": 12,
+        "endChar": 48
+      },
+      "revId": "36c47758b8836bc25b7e8ba652aeb9314f21a6ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d186841c_6cec9477",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:54:07Z",
+      "side": 1,
+      "message": "if(oemPlatformHandler)",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 46
+      },
+      "revId": "36c47758b8836bc25b7e8ba652aeb9314f21a6ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40ca58ab_4e15fedf",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:54:07Z",
+      "side": 1,
+      "message": "if(oemPlatformHandler)",
+      "range": {
+        "startLine": 139,
+        "startChar": 8,
+        "endLine": 139,
+        "endChar": 42
+      },
+      "revId": "36c47758b8836bc25b7e8ba652aeb9314f21a6ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4824153e_280a9db0",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:54:07Z",
+      "side": 1,
+      "message": "can you add doxygen as to what this regex is trying to do?",
+      "range": {
+        "startLine": 439,
+        "startChar": 4,
+        "endLine": 444,
+        "endChar": 5
+      },
+      "revId": "36c47758b8836bc25b7e8ba652aeb9314f21a6ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
