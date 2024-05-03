@@ -148,8 +148,7 @@ class Handler
         {
             info(
                 "Instance ID expiry for EID '{EID}' using InstanceID '{INSTANCEID}'",
-                "EID", (unsigned)key.eid, "INSTANCEID",
-                (unsigned)key.instanceId);
+                "EID", key.eid, "INSTANCEID", key.instanceId);
             auto& [request, responseHandler,
                    timerInstance] = this->handlers[key];
             request->stop();
@@ -158,7 +157,7 @@ class Handler
             {
                 error(
                     "Failed to stop the instance ID expiry timer, response code '{RC}'",
-                    "RC", static_cast<int>(rc));
+                    "RC", rc);
             }
             // Call response handler with an empty response to indicate no
             // response
@@ -259,7 +258,7 @@ class Handler
         {
             error(
                 "Register request for EID '{EID}' is using InstanceID '{INSTANCEID}'",
-                "EID", (unsigned)eid, "INSTANCEID", (unsigned)instanceId);
+                "EID", eid, "INSTANCEID", instanceId);
             return PLDM_ERROR;
         }
 
@@ -372,7 +371,7 @@ class Handler
             {
                 error(
                     "Failed to stop the instance ID expiry timer, response code '{RC}'",
-                    "RC", static_cast<int>(rc));
+                    "RC", rc);
             }
             responseHandler(eid, response, respMsgLen);
             instanceIdDb.free(key.eid, key.instanceId);

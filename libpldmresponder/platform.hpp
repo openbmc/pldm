@@ -362,8 +362,8 @@ class Handler : public CmdHandler
             {
                 error(
                     "The requester sent wrong composite effecter count '{COMPOSITE_EFFECTER_COUNT}' for the effecter ID '{EFFECTERID}'.",
-                    "COMPOSITE_EFFECTER_COUNT", (unsigned)compEffecterCnt,
-                    "EFFECTERID", (unsigned)effecterId);
+                    "COMPOSITE_EFFECTER_COUNT", compEffecterCnt, "EFFECTERID",
+                    effecterId);
                 return PLDM_ERROR_INVALID_DATA;
             }
             break;
@@ -393,10 +393,10 @@ class Handler : public CmdHandler
                 {
                     error(
                         "Invalid state set value for effecter ID '{EFFECTERID}', effecter state '{EFFECTER_STATE}', composite effecter ID '{COMPOSITE_EFFECTER_ID}' and path '{PATH}'.",
-                        "EFFECTERID", (unsigned)effecterId, "EFFECTER_STATE",
-                        (unsigned)stateField[currState].effecter_state,
-                        "COMPOSITE_EFFECTER_COUNT", (unsigned)currState, "PATH",
-                        dbusMappings[currState].objectPath.c_str());
+                        "EFFECTERID", effecterId, "EFFECTER_STATE",
+                        stateField[currState].effecter_state,
+                        "COMPOSITE_EFFECTER_COUNT", currState, "PATH",
+                        dbusMappings[currState].objectPath);
                     rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                     break;
                 }
@@ -419,7 +419,7 @@ class Handler : public CmdHandler
                             "Failed to set property '{PROPERTY}' of interface '{INTERFACE}' at path '{PATH}', error - {ERROR}",
                             "PROPERTY", dbusMapping.propertyName, "DBUS_INTF",
                             dbusMapping.interface, "DBUS_OBJ_PATH",
-                            dbusMapping.objectPath.c_str(), "ERROR", e);
+                            dbusMapping.objectPath, "ERROR", e);
                         return PLDM_ERROR;
                     }
                 }
@@ -436,7 +436,7 @@ class Handler : public CmdHandler
         {
             error(
                 "The effecter ID '{EFFECTERID}' does not exist, error - {ERROR}.",
-                "EFFECTERID", (unsigned)effecterId, "ERROR", e);
+                "EFFECTERID", effecterId, "ERROR", e);
         }
 
         return rc;

@@ -73,7 +73,7 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
         {
             error(
                 "Failed to decode new file available response or remote terminus returned error, response code '{RC}' and completion code '{CC}'",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
             reportResourceDumpFailure();
         }
     };
@@ -279,7 +279,7 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
         {
             error(
                 "Failed to decode new file available response for vmi or remote terminus returned error, response code '{RC}' and completion code '{CC}'",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
             pldm::utils::reportError(
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }

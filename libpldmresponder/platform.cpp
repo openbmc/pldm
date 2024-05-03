@@ -948,8 +948,8 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
         {
             error(
                 "The requester sent wrong composite effecter count '{COMPOSITE_EFFECTER_COUNT}' for the effecter ID '{EFFECTERID}'.",
-                "COMPOSITE_EFFECTER_COUNT", (uint16_t)compEffecterCnt,
-                "EFFECTERID", effecterId);
+                "COMPOSITE_EFFECTER_COUNT", compEffecterCnt, "EFFECTERID",
+                effecterId);
             return false;
         }
 
@@ -1010,7 +1010,7 @@ void Handler::setEventReceiver()
         {
             error(
                 "Failed to decode setEventReceiver command, response code '{RC}' and completion code '{CC}'",
-                "RC", rc, "CC", (unsigned)completionCode);
+                "RC", rc, "CC", completionCode);
             pldm::utils::reportError(
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }

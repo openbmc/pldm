@@ -324,8 +324,8 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
             error(
                 "Failed to set property '{PROPERTY}', interface '{INTERFACE}' and path '{PATH}', error - {ERROR}",
                 "PROPERTY", dbusMapping.propertyName, "INTERFACE",
-                dbusMapping.interface, "PATH", dbusMapping.objectPath.c_str(),
-                "ERROR", e);
+                dbusMapping.interface, "PATH", dbusMapping.objectPath, "ERROR",
+                e);
             return PLDM_ERROR;
         }
     }
@@ -559,9 +559,8 @@ int getNumericEffecterData(const DBusInterface& dBusIntf, Handler& handler,
             "EFFECTERID", effecterId, "ERROR", e);
         error(
             "Dbus Details path [{PATH}], interface [{INTERFACE}] and  property [{PROPERTY}]",
-            "PATH", dbusMapping.objectPath.c_str(), "INTERFACE",
-            dbusMapping.interface.c_str(), "PROPERTY",
-            dbusMapping.propertyName.c_str());
+            "PATH", dbusMapping.objectPath, "INTERFACE", dbusMapping.interface,
+            "PROPERTY", dbusMapping.propertyName);
         return PLDM_ERROR;
     }
 
