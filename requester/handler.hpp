@@ -145,8 +145,8 @@ class Handler
         auto eid = key.eid;
         if (this->handlers.contains(key))
         {
-            error("The eid:InstanceID {EID}:{IID} is using.", "EID",
-                  (unsigned)key.eid, "IID", (unsigned)key.instanceId);
+            error("The eid:InstanceID {EID}:{IID} is using.", "EID", key.eid,
+                  "IID", key.instanceId);
             auto& [request, responseHandler,
                    timerInstance] = this->handlers[key];
             request->stop();
@@ -154,7 +154,7 @@ class Handler
             if (rc)
             {
                 error("Failed to stop the instance ID expiry timer. RC = {RC}",
-                      "RC", static_cast<int>(rc));
+                      "RC", rc);
             }
             // Call response handler with an empty response to indicate no
             // response
@@ -251,8 +251,8 @@ class Handler
 
         if (handlers.contains(key))
         {
-            error("The eid:InstanceID {EID}:{IID} is using.", "EID",
-                  (unsigned)eid, "IID", (unsigned)instanceId);
+            error("The eid:InstanceID {EID}:{IID} is using.", "EID", eid, "IID",
+                  instanceId);
             return PLDM_ERROR;
         }
 
@@ -298,7 +298,7 @@ class Handler
             if (rc)
             {
                 error("Failed to stop the instance ID expiry timer. RC = {RC}",
-                      "RC", static_cast<int>(rc));
+                      "RC", rc);
             }
             responseHandler(eid, response, respMsgLen);
             instanceIdDb.free(key.eid, key.instanceId);
