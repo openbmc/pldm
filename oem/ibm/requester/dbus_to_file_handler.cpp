@@ -72,7 +72,7 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
         {
             error(
                 "Failed to decode_new_file_resp or Host returned error for new_file_available rc={RC}, cc = {CC}",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
             reportResourceDumpFailure();
         }
     };
@@ -124,9 +124,8 @@ void DbusToFileHandler::processNewResourceDump(
     {
         error(
             "Error {ERR_EXCEP} found in getting current resource dump status while initiating a new resource dump with objPath={DUMP_OBJ_PATH} and intf={DUMP_PROG_INTF}",
-            "ERR_EXCEP", e.what(), "DUMP_OBJ_PATH",
-            resDumpCurrentObjPath.str.c_str(), "DUMP_PROG_INTF",
-            resDumpProgressIntf);
+            "ERR_EXCEP", e.what(), "DUMP_OBJ_PATH", resDumpCurrentObjPath,
+            "DUMP_PROG_INTF", resDumpProgressIntf);
     }
 
     namespace fs = std::filesystem;
@@ -224,8 +223,7 @@ void DbusToFileHandler::newCsrFileAvailable(const std::string& csr,
 
     if (!certFile)
     {
-        error("cert file open error: {CERT_PATH}", "CERT_PATH",
-              certFilePath.c_str());
+        error("cert file open error: {CERT_PATH}", "CERT_PATH", certFilePath);
         return;
     }
 
@@ -277,7 +275,7 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
         {
             error(
                 "Failed to decode_new_file_resp for vmi, or Host returned error for new_file_available rc = {RC}, cc = {CC}",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
             pldm::utils::reportError(
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
         }

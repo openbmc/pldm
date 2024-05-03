@@ -130,7 +130,7 @@ class LidHandler : public FileHandler
         if (fd == -1)
         {
             error("Could not open file for writing  {LID_PATH}", "LID_PATH",
-                  lidPath.c_str());
+                  lidPath);
             return PLDM_ERROR;
         }
         close(fd);
@@ -225,8 +225,7 @@ class LidHandler : public FileHandler
         auto fd = open(lidPath.c_str(), flags, S_IRUSR);
         if (fd == -1)
         {
-            error("could not open file {LID_PATH}", "LID_PATH",
-                  lidPath.c_str());
+            error("could not open file {LID_PATH}", "LID_PATH", lidPath);
             return PLDM_ERROR;
         }
         rc = lseek(fd, offset, SEEK_SET);

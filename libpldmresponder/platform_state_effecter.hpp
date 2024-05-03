@@ -123,7 +123,7 @@ int setStateEffecterStatesHandler(
                     "EFFECTER_ID", effecterId, "EFFECTER_STATE",
                     stateField[currState].effecter_state, "CURR_STATE",
                     currState, "DBUS_OBJ_PATH",
-                    dbusMappings[currState].objectPath.c_str());
+                    dbusMappings[currState].objectPath);
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                 break;
             }
@@ -146,7 +146,7 @@ int setStateEffecterStatesHandler(
                         "ERR_EXCEP", e.what(), "DBUS_PROP",
                         dbusMapping.propertyName, "DBUS_INTF",
                         dbusMapping.interface, "DBUS_OBJ_PATH",
-                        dbusMapping.objectPath.c_str());
+                        dbusMapping.objectPath);
                     return PLDM_ERROR;
                 }
             }

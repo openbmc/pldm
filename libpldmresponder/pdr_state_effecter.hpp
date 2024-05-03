@@ -44,8 +44,7 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             {
                 error(
                     "Malformed PDR JSON return pdrEntry;- no state set info, TYPE={STATE_EFFECTER_PDR}",
-                    "STATE_EFFECTER_PDR",
-                    static_cast<unsigned>(PLDM_STATE_EFFECTER_PDR));
+                    "STATE_EFFECTER_PDR", PLDM_STATE_EFFECTER_PDR);
                 throw InternalFailure();
             }
             pdrSize += sizeof(state_effecter_possible_states) -
