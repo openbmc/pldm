@@ -362,8 +362,8 @@ class Handler : public CmdHandler
             {
                 error(
                     "The requester sent wrong composite effecter count for the effecter, EFFECTER_ID={EFFECTER_ID} COMP_EFF_CNT={COMP_EFF_CNT}",
-                    "EFFECTER_ID", (unsigned)effecterId, "COMP_EFF_CNT",
-                    (unsigned)compEffecterCnt);
+                    "EFFECTER_ID", effecterId, "COMP_EFF_CNT",
+                    compEffecterCnt);
                 return PLDM_ERROR_INVALID_DATA;
             }
             break;
@@ -393,10 +393,10 @@ class Handler : public CmdHandler
                 {
                     error(
                         "Invalid state set value, EFFECTER_ID={EFFECTER_ID} VALUE={EFFECTER_STATE} COMPOSITE_EFFECTER_ID={CURR_STATE} DBUS_PATH={DBUS_OBJ_PATH}",
-                        "EFFECTER_ID", (unsigned)effecterId, "EFFECTER_STATE",
-                        (unsigned)stateField[currState].effecter_state,
-                        "CURR_STATE", (unsigned)currState, "DBUS_OBJ_PATH",
-                        dbusMappings[currState].objectPath.c_str());
+                        "EFFECTER_ID", effecterId, "EFFECTER_STATE",
+                        stateField[currState].effecter_state,
+                        "CURR_STATE", currState, "DBUS_OBJ_PATH",
+                        dbusMappings[currState].objectPath);
                     rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
                     break;
                 }
@@ -420,7 +420,7 @@ class Handler : public CmdHandler
                             "ERR_EXCEP", e.what(), "DBUS_PROP",
                             dbusMapping.propertyName, "DBUS_INTF",
                             dbusMapping.interface, "DBUS_OBJ_PATH",
-                            dbusMapping.objectPath.c_str());
+                            dbusMapping.objectPath);
                         return PLDM_ERROR;
                     }
                 }
@@ -437,7 +437,7 @@ class Handler : public CmdHandler
         {
             error(
                 "the effecterId does not exist. effecter id: {EFFECTER_ID} {ERR_EXCEP}",
-                "EFFECTER_ID", (unsigned)effecterId, "ERR_EXCEP", e.what());
+                "EFFECTER_ID", effecterId, "ERR_EXCEP", e.what());
         }
 
         return rc;

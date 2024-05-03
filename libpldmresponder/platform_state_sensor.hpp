@@ -55,7 +55,7 @@ uint8_t getStateSensorEventState(
     {
         error(
             "Get StateSensor EventState from dbus Error, interface : {DBUS_OBJ_PATH}, exception : {ERR_EXCEP}",
-            "DBUS_OBJ_PATH", dbusMapping.objectPath.c_str(), "ERR_EXCEP",
+            "DBUS_OBJ_PATH", dbusMapping.objectPath, "ERR_EXCEP",
             e.what());
     }
 

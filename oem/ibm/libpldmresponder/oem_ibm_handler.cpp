@@ -322,7 +322,7 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         {
             error(
                 "Failed to decode_platform_event_message_resp: for code update event rc={RC}, cc={CC}",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
         }
     };
     auto rc = handler->registerRequest(

@@ -44,7 +44,7 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                 error(
                     "Malformed PDR JSON return pdrEntry;- no state set info, TYPE={STATE_SENSOR_PDR}",
                     "STATE_SENSOR_PDR",
-                    static_cast<int>(PLDM_STATE_SENSOR_PDR));
+                    PLDM_STATE_SENSOR_PDR);
                 throw InternalFailure();
             }
             pdrSize += sizeof(state_sensor_possible_states) -

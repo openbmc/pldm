@@ -95,7 +95,7 @@ int CodeUpdate::setNextBootSide(const std::string& nextSide)
     {
         error(
             "failed to set the next boot side to {OBJ_PATH} ERROR={ERR_EXCEP}",
-            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e.what());
+            "OBJ_PATH", objPath, "ERR_EXCEP", e.what());
         return PLDM_ERROR;
     }
     return PLDM_SUCCESS;
@@ -342,7 +342,7 @@ void CodeUpdate::clearDirPath(const std::string& dirPath)
     if (!fs::is_directory(dirPath))
     {
         error("The directory does not exist, dirPath = {DIR_PATH}", "DIR_PATH",
-              dirPath.c_str());
+              dirPath);
         return;
     }
     for (const auto& iter : fs::directory_iterator(dirPath))
@@ -477,7 +477,7 @@ int processCodeUpdateLid(const std::string& filePath)
     std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
     if (!ifs)
     {
-        error("ifstream open error: {DIR_PATH}", "DIR_PATH", filePath.c_str());
+        error("ifstream open error: {DIR_PATH}", "DIR_PATH", filePath);
         return PLDM_ERROR;
     }
     ifs.seekg(0);
@@ -496,7 +496,7 @@ int processCodeUpdateLid(const std::string& filePath)
     constexpr auto magicNumber = 0x0222;
     if (htons(header.magicNumber) != magicNumber)
     {
-        error("Invalid magic number: {DIR_PATH}", "DIR_PATH", filePath.c_str());
+        error("Invalid magic number: {DIR_PATH}", "DIR_PATH", filePath);
         ifs.close();
         return PLDM_ERROR;
     }

@@ -75,7 +75,7 @@ int main(int argc, char** argv)
         // out
         io.set_enabled(Enabled::Off);
         info("Done. PLDM RC = {RC}", "RC", lg2::hex,
-             static_cast<uint16_t>(response->payload[0]));
+             response->payload[0]);
         free(responseMsg);
         exit(EXIT_SUCCESS);
     };

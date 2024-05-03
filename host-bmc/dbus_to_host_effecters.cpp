@@ -41,7 +41,7 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
     if (!fs::exists(jsonDir) || fs::is_empty(jsonDir))
     {
         error("Host Effecter json path does not exist, DIR = {JSON_PATH}",
-              "JSON_PATH", jsonPath.c_str());
+              "JSON_PATH", jsonPath);
         return;
     }
 
@@ -49,7 +49,7 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
     if (!fs::exists(jsonFilePath))
     {
         error("json does not exist, PATH = {JSON_PATH}", "JSON_PATH",
-              jsonFilePath.c_str());
+              jsonFilePath);
         throw InternalFailure();
     }
 
@@ -58,7 +58,7 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
     if (data.is_discarded())
     {
         error("Parsing json file failed, FILE = {JSON_PATH}", "JSON_PATH",
-              jsonFilePath.c_str());
+              jsonFilePath);
         throw InternalFailure();
     }
     const Json empty{};
@@ -102,7 +102,7 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
             {
                 error(
                     "Number of states do not match with number of D-Bus property values in the json. Object path {OBJ_PATH} and property {PROP_NAME}  will not be monitored",
-                    "OBJ_PATH", dbusInfo.dbusMap.objectPath.c_str(),
+                    "OBJ_PATH", dbusInfo.dbusMap.objectPath,
                     "PROP_NAME", dbusInfo.dbusMap.propertyName);
                 continue;
             }
@@ -294,7 +294,7 @@ int HostEffecterParser::setHostStateEffecter(
         if (completionCode)
         {
             error("Failed to set a Host effecter, cc = {CC}", "CC",
-                  static_cast<unsigned>(completionCode));
+                  completionCode);
             pldm::utils::reportError(
                 "xyz.openbmc_project.bmc.pldm.SetHostEffecterFailed");
         }

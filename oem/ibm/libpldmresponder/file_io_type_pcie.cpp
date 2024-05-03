@@ -59,7 +59,7 @@ int PCIeInfoHandler::writeFromMemory(
     catch (const std::exception& e)
     {
         error("Create/Write data to the File type {TYPE}, failed {ERROR}",
-              "TYPE", (int)infoType, "ERROR", e);
+              "TYPE", infoType, "ERROR", e);
         return PLDM_ERROR;
     }
 }
@@ -87,7 +87,7 @@ int PCIeInfoHandler::write(const char* buffer, uint32_t, uint32_t& length,
     catch (const std::exception& e)
     {
         error("Create/Write data to the File type {TYPE}, failed {ERROR}",
-              "TYPE", (int)infoType, "ERROR", e);
+              "TYPE", infoType, "ERROR", e);
         return PLDM_ERROR;
     }
 

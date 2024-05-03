@@ -98,7 +98,7 @@ int sendBiosAttributeUpdateEvent(
         {
             error(
                 "Failed to decode BIOS Attribute update platform_event_message_resp: rc = {RC}, cc= {CC}",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
         }
     };
     rc = handler->registerRequest(
