@@ -240,6 +240,24 @@
       "parentUuid": "61e82814_76b40f8d",
       "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53a6816f_73393d08",
+        "filename": "requester/test/mctp_endpoint_discovery_test.cpp",
+        "patchSetId": 78
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-03T16:02:43Z",
+      "side": 1,
+      "message": "I added the test case for `removeFromExistingMctpInfos`, `getMctpInfos`, `addToExistingMctpInfos` and `removeEndpoints`.\nBecause those functional is `private` to test them I have to change them to public.",
+      "parentUuid": "df1287b3_8a9aa517",
+      "revId": "db0aa9e7e4c4a563a7db881c6a83617504d88a94",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
