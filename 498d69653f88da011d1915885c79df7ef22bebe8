@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a15627db_24ec8fd8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:49:19Z",
+      "side": 1,
+      "message": "can you write briefly what challenges that led to this change?",
+      "range": {
+        "startLine": 10,
+        "startChar": 49,
+        "endLine": 10,
+        "endChar": 59
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ebaef98_3e0c675e",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:49:19Z",
+      "side": 1,
+      "message": "why did we move these functions from common/utils to host-bmc/utils? Is there a strong reason?",
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c304f16_a1f12487",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:49:19Z",
+      "side": 1,
+      "message": "we could add this in common/utils also right?",
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94fbc39d_f9db5ee2",
+        "filename": "oem/ibm/configurations/entityMap.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-03T08:49:19Z",
+      "side": 1,
+      "message": "why do we have the same entityMap.json file in oem-ibm also and in the default path as well? Can we not keep oem-ibm alone?",
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
