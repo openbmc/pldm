@@ -81,8 +81,7 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
         fileExists = fs::exists(path);
         if (!fileExists)
         {
-            error("File does not exist. PATH={FILE_PATH}", "FILE_PATH",
-                  path.c_str());
+            error("File does not exist. PATH={FILE_PATH}", "FILE_PATH", path);
             return PLDM_INVALID_FILE_HANDLE;
         }
 
@@ -117,8 +116,7 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
     int file = open(path.string().c_str(), flags);
     if (file == -1)
     {
-        error("File does not exist, PATH = {FILE_PATH}", "FILE_PATH",
-              path.string());
+        error("File does not exist, PATH = {FILE_PATH}", "FILE_PATH", path);
         return PLDM_ERROR;
     }
     utils::CustomFD fd(file);
@@ -193,7 +191,7 @@ int FileHandler::readFile(const std::string& filePath, uint32_t offset,
     if (!fs::exists(filePath))
     {
         error("File does not exist, HANDLE={FILE_HANDLE} PATH={FILE_PATH}",
-              "FILE_HANDLE", fileHandle, "FILE_PATH", filePath.c_str());
+              "FILE_HANDLE", fileHandle, "FILE_PATH", filePath);
         return PLDM_INVALID_FILE_HANDLE;
     }
 
@@ -222,8 +220,7 @@ int FileHandler::readFile(const std::string& filePath, uint32_t offset,
         stream.read(filePos, length);
         return PLDM_SUCCESS;
     }
-    error("Unable to read file, FILE={FILE_PATH}", "FILE_PATH",
-          filePath.c_str());
+    error("Unable to read file, FILE={FILE_PATH}", "FILE_PATH", filePath);
     return PLDM_ERROR;
 }
 

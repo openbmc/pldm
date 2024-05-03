@@ -61,7 +61,7 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
         if (rc || completionCode)
         {
             error(
-                "Failed to decode response of platform_event message, response code '{RC}' and completion code '{CC}'",
+                "Failed to decode response of platform event message, response code '{RC}' and completion code '{CC}'",
                 "RC", rc, "CC", completionCode);
         }
     };
