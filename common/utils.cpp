@@ -85,9 +85,10 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     pldm_entity node_entity = pldm_entity_extract(entity);
     if (!entityMaps.contains(node_entity.entity_type))
     {
+        uint16_t node_ent_type = node_entity.entity_type;
         error(
-            "Entity type '{TYPE}' fetched from remote terminus does not exist.",
-            "TYPE", (int)node_entity.entity_type);
+            "Entity type '{TYPE}' fetched from remote terminus does not exist",
+            "TYPE", node_ent_type);
         return;
     }
 
@@ -193,10 +194,12 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             }
             catch (const std::exception& e)
             {
+                uint16_t parent_ent_type = parent.entity_type;
+                uint16_t parent_ent_instance_num = parent.entity_instance_num;
                 error(
                     "Failed to find parent entity type '{TYPE}' with instance ID '{INSTANCEID}' in the entity maps, error - {ERROR}",
-                    "TYPE", (int)parent.entity_type, "INSTANCEID",
-                    (int)parent.entity_instance_num, "ERROR", e);
+                    "TYPE", parent_ent_type, "INSTANCEID",
+                    parent_ent_instance_num, "ERROR", e);
                 found = false;
                 break;
             }
