@@ -28,7 +28,7 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
     if (!fs::exists(dir) || fs::is_empty(dir))
     {
         error("Event config directory does not exist or empty, DIR={DIR_PATH}",
-              "DIR_PATH", dirPath.c_str());
+              "DIR_PATH", dirPath);
         return;
     }
 
@@ -41,7 +41,7 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
         {
             error(
                 "Parsing Event state sensor JSON file failed, FILE={FILE_PATH}",
-                "FILE_PATH", file.path().c_str());
+                "FILE_PATH", file.path());
             continue;
         }
 
@@ -73,7 +73,7 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
             {
                 error(
                     "Invalid dbus config, OBJPATH= {DBUS_OBJ_PATH} INTERFACE={DBUS_INTF} PROPERTY_NAME={DBUS_PROP} PROPERTY_TYPE={DBUS_PROP_TYPE}",
-                    "DBUS_OBJ_PATH", dbusInfo.objectPath.c_str(), "DBUS_INTF",
+                    "DBUS_OBJ_PATH", dbusInfo.objectPath, "DBUS_INTF",
                     dbusInfo.interface, "DBUS_PROP", dbusInfo.propertyName,
                     "DBUS_PROP_TYPE", dbusInfo.propertyType);
                 continue;

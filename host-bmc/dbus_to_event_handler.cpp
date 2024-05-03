@@ -61,7 +61,7 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
         {
             error(
                 "Failed to decode_platform_event_message_resp: rc = {RC}, cc = {CC}",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
         }
     };
 

@@ -50,7 +50,7 @@ void FruParser::setupDefaultDBusLookup(const fs::path& masterJsonPath)
     {
         error(
             "Parsing FRU Dbus Lookup Map config file failed, FILE={JSON_PATH}",
-            "JSON_PATH", masterJsonPath.c_str());
+            "JSON_PATH", masterJsonPath);
         std::abort();
     }
     std::map<Interface, EntityType> defIntfToEntityType;
@@ -118,7 +118,7 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
         if (data.is_discarded())
         {
             error("Parsing FRU config file failed, FILE={FILE_PATH}",
-                  "FILE_PATH", file.path().c_str());
+                  "FILE_PATH", file.path());
             throw InternalFailure();
         }
 

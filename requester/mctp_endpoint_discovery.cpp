@@ -77,7 +77,7 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
                         types.end())
                     {
                         info("Adding Endpoint networkId={NETWORK} EID={EID}",
-                             "NETWORK", networkId, "EID", unsigned(eid));
+                             "NETWORK", networkId, "EID", eid);
                         mctpInfos.emplace_back(
                             MctpInfo(eid, emptyUUID, "", networkId));
                     }
@@ -131,7 +131,7 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                     types.end())
                 {
                     info("Adding Endpoint networkId={NETWORK} EID={EID}",
-                         "NETWORK", networkId, "EID", unsigned(eid));
+                         "NETWORK", networkId, "EID", eid);
                     mctpInfos.emplace_back(
                         MctpInfo(eid, emptyUUID, "", networkId));
                 }
@@ -166,7 +166,7 @@ void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
     for (const auto& mctpInfo : removedInfos)
     {
         info("Removing Endpoint networkId={NETWORK} EID={EID}", "NETWORK",
-             std::get<3>(mctpInfo), "EID", unsigned(std::get<0>(mctpInfo)));
+             std::get<3>(mctpInfo), "EID", std::get<0>(mctpInfo));
         existingMctpInfos.erase(std::remove(existingMctpInfos.begin(),
                                             existingMctpInfos.end(), mctpInfo),
                                 existingMctpInfos.end());

@@ -30,7 +30,7 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
             instanceIdDb.free(eid, instanceId);
             error(
                 "encode_query_device_identifiers_req failed, EID={EID}, RC = {RC}",
-                "EID", unsigned(eid), "RC", rc);
+                "EID", eid, "RC", rc);
             continue;
         }
 
@@ -43,7 +43,7 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
         {
             error(
                 "Failed to send QueryDeviceIdentifiers request, EID={EID}, RC = {RC}",
-                "EID", unsigned(eid), "RC", rc);
+                "EID", eid, "RC", rc);
         }
     }
 }
@@ -55,7 +55,7 @@ void InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid,
     if (response == nullptr || !respMsgLen)
     {
         error("No response received for QueryDeviceIdentifiers, EID={EID}",
-              "EID", unsigned(eid));
+              "EID", eid);
         return;
     }
 
@@ -71,7 +71,7 @@ void InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid,
     {
         error(
             "Decoding QueryDeviceIdentifiers response failed, EID={EID}, RC = {RC}",
-            "EID", unsigned(eid), "RC", rc);
+            "EID", eid, "RC", rc);
         return;
     }
 
@@ -79,7 +79,7 @@ void InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid,
     {
         error(
             "QueryDeviceIdentifiers response failed with error completion code, EID={EID}, CC = {CC}",
-            "EID", unsigned(eid), "CC", unsigned(completionCode));
+            "EID", eid, "CC", completionCode);
         return;
     }
 
@@ -96,7 +96,7 @@ void InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid,
         {
             error(
                 "Decoding descriptor type, length and value failed, EID={EID}, RC = {RC}",
-                "EID", unsigned(eid), "RC", rc);
+                "EID", eid, "RC", rc);
             return;
         }
 
@@ -120,7 +120,7 @@ void InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid,
             {
                 error(
                     "Decoding Vendor-defined descriptor value failed, EID={EID}, RC = {RC}",
-                    "EID", unsigned(eid), "RC", rc);
+                    "EID", eid, "RC", rc);
                 return;
             }
 
@@ -160,7 +160,7 @@ void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
     {
         instanceIdDb.free(eid, instanceId);
         error("encode_get_firmware_parameters_req failed, EID={EID}, RC = {RC}",
-              "EID", unsigned(eid), "RC", rc);
+              "EID", eid, "RC", rc);
         return;
     }
 
@@ -173,7 +173,7 @@ void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
     {
         error(
             "Failed to send GetFirmwareParameters request, EID={EID}, RC = {RC}",
-            "EID", unsigned(eid), "RC", rc);
+            "EID", eid, "RC", rc);
     }
 }
 
@@ -184,7 +184,7 @@ void InventoryManager::getFirmwareParameters(mctp_eid_t eid,
     if (response == nullptr || !respMsgLen)
     {
         error("No response received for GetFirmwareParameters, EID={EID}",
-              "EID", unsigned(eid));
+              "EID", eid);
         descriptorMap.erase(eid);
         return;
     }
@@ -201,15 +201,16 @@ void InventoryManager::getFirmwareParameters(mctp_eid_t eid,
     {
         error(
             "Decoding GetFirmwareParameters response failed, EID={EID}, RC = {RC}",
-            "EID", unsigned(eid), "RC", rc);
+            "EID", eid, "RC", rc);
         return;
     }
 
     if (fwParams.completion_code)
     {
+        auto fw_param_cc = fwParams.completion_code;
         error(
             "GetFirmwareParameters response failed with error completion code, EID={EID}, CC = {CC}",
-            "EID", unsigned(eid), "CC", unsigned(fwParams.completion_code));
+            "EID", eid, "CC", fw_param_cc);
         return;
     }
 
@@ -229,7 +230,7 @@ void InventoryManager::getFirmwareParameters(mctp_eid_t eid,
         {
             error(
                 "Decoding component parameter table entry failed, EID={EID}, RC = {RC}",
-                "EID", unsigned(eid), "RC", rc);
+                "EID", eid, "RC", rc);
             return;
         }
 
