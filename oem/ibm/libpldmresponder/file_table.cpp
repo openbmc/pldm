@@ -18,7 +18,7 @@ FileTable::FileTable(const std::string& fileTableConfigPath)
     if (!jsonFile.is_open())
     {
         error("File table config file does not exist, FILE={TABLE_CONFIG_PATH}",
-              "TABLE_CONFIG_PATH", fileTableConfigPath.c_str());
+              "TABLE_CONFIG_PATH", fileTableConfigPath);
         return;
     }
 

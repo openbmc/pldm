@@ -723,7 +723,7 @@ void HostPDRHandler::setHostFirmwareCondition()
             return;
         }
         info("Getting the response code '{RC}'", "RC", lg2::hex,
-             static_cast<uint16_t>(response->payload[0]));
+             response->payload[0]);
         this->responseReceived = true;
         getHostPDR();
     };

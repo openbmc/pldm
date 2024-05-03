@@ -148,7 +148,7 @@ StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
         else
         {
             error("Unknown D-Bus property type, TYPE={OTHER_TYPE}",
-                  "OTHER_TYPE", type.c_str());
+                  "OTHER_TYPE", type);
             return {};
         }
 
