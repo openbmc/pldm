@@ -70,7 +70,7 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
             if (rc != PLDM_SUCCESS)
             {
                 error("Message get Sensor PDRs error. PLDM error code = {RC}",
-                      "RC", lg2::hex, static_cast<int>(rc));
+                      "RC", lg2::hex, rc);
                 hasError = true;
                 return;
             }
@@ -292,7 +292,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     {
         instanceIdDb.free(pldmTID, instanceID);
         error("Message encode failure. PLDM error code = {RC}", "RC", lg2::hex,
-              static_cast<int>(rc));
+              rc);
         return PLDM_ERROR;
     }
 
@@ -332,7 +332,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         if (rc)
         {
             error("Soft off: failed to recv pldm data. PLDM RC = {RC}", "RC",
-                  static_cast<int>(rc));
+                  rc);
             return;
         }
 
@@ -358,7 +358,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         if (response->payload[0] != PLDM_SUCCESS)
         {
             error("Getting the wrong response. PLDM RC = {RC}", "RC",
-                  (unsigned)response->payload[0]);
+                  response->payload[0]);
             exit(-1);
         }
 
@@ -394,7 +394,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         instanceIdDb.free(pldmTID, instanceID);
         error(
             "Failed to send message/receive response. RC = {RC}, errno = {ERR}",
-            "RC", static_cast<int>(rc), "ERR", errno);
+            "RC", rc, "ERR", errno);
         return PLDM_ERROR;
     }
 

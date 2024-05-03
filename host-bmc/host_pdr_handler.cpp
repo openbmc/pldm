@@ -442,7 +442,7 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
         {
             error(
                 "Failed to decode_platform_event_message_resp: {RC}, cc = {CC}",
-                "RC", rc, "CC", static_cast<unsigned>(completionCode));
+                "RC", rc, "CC", completionCode);
         }
     };
 
@@ -525,7 +525,7 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
             error("Failed to decode_get_pdr_resp: rc = {RC}, cc = {CC}", "RC",
-                  rc, "CC", static_cast<unsigned>(completionCode));
+                  rc, "CC", completionCode);
             return;
         }
         else
@@ -744,7 +744,7 @@ void HostPDRHandler::setHostFirmwareCondition()
             return;
         }
         info("Getting the response. PLDM RC = {RC}", "RC", lg2::hex,
-             static_cast<uint16_t>(response->payload[0]));
+             response->payload[0]);
         this->responseReceived = true;
         getHostPDR();
     };
@@ -832,8 +832,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                     {
                         error(
                             "Failed to decode_get_state_sensor_readings_resp, rc = {RC} cc = {CC}",
-                            "RC", rc, "CC",
-                            static_cast<unsigned>(completionCode));
+                            "RC", rc, "CC", completionCode);
                         pldm::utils::reportError(
                             "xyz.openbmc_project.bmc.pldm.InternalFailure");
                     }

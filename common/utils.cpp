@@ -85,9 +85,10 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     pldm_entity node_entity = pldm_entity_extract(entity);
     if (!entityMaps.contains(node_entity.entity_type))
     {
+        auto node_ent_type = node_entity.entity_type;
         lg2::info(
             "{ENTITY_TYPE} Entity fetched from remote PLDM terminal does not exist.",
-            "ENTITY_TYPE", (int)node_entity.entity_type);
+            "ENTITY_TYPE", node_ent_type);
         return;
     }
 
@@ -193,10 +194,12 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             }
             catch (const std::exception& e)
             {
+                auto parent_ent_type = parent.entity_type; // gives error
+                auto parent_ent_instance_num = parent.entity_instance_num;
                 lg2::error(
                     "Parent entity not found in the entityMaps, type: {ENTITY_TYPE}, num: {NUM}, e: {ERROR}",
-                    "ENTITY_TYPE", (int)parent.entity_type, "NUM",
-                    (int)parent.entity_instance_num, "ERROR", e);
+                    "ENTITY_TYPE", parent_ent_type, "NUM",
+                    parent_ent_instance_num, "ERROR", e);
                 found = false;
                 break;
             }
@@ -335,7 +338,7 @@ uint8_t readHostEID()
     if (!eidFile.good())
     {
         error("Could not open host EID file: {HOST_PATH}", "HOST_PATH",
-              static_cast<std::string>(HOST_EID_PATH));
+              static_cast<std::string>(HOST_EID_PATH)); // gives error
     }
     else
     {
@@ -797,7 +800,7 @@ bool checkForFruPresence(const std::string& objPath)
     {
         error(
             "Failed to check for FRU presence for {OBJ_PATH} ERROR = {ERR_EXCEP}",
-            "OBJ_PATH", objPath.c_str(), "ERR_EXCEP", e.what());
+            "OBJ_PATH", objPath, "ERR_EXCEP", e.what());
     }
     return isPresent;
 }

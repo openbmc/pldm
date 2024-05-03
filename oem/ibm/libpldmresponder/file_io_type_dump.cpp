@@ -163,7 +163,7 @@ std::string DumpHandler::getOffloadUri(uint32_t fileHandle)
     {
         error(
             "getOffloadUri: Error {ERR_EXCEP} found while fetching the dump offload URI with objPath={OBJ_PATH} and intf={SOCKET_INTF}",
-            "ERR_EXCEP", e.what(), "OBJ_PATH", path.c_str(), "SOCKET_INTF",
+            "ERR_EXCEP", e.what(), "OBJ_PATH", path, "SOCKET_INTF",
             socketInterface);
     }
 
@@ -234,7 +234,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             {
                 error(
                     "fileAck: Error {ERR_EXCEP} found while setting the dump progress status as Failed with objPath={OBJ_PATH} and intf=Common.Progress",
-                    "ERR_EXCEP", e.what(), "OBJ_PATH", path.c_str());
+                    "ERR_EXCEP", e.what(), "OBJ_PATH", path);
             }
         }
 
@@ -268,7 +268,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             {
                 error(
                     "fileAck: Failed to make a d-bus call to DUMP manager to reset source dump id of {FILE_PATH}, with ERROR={ERR_EXCEP}",
-                    "FILE_PATH", path.c_str(), "ERR_EXCEP", e.what());
+                    "FILE_PATH", path, "ERR_EXCEP", e.what());
                 pldm::utils::reportError(
                     "xyz.openbmc_project.bmc.PLDM.fileAck.SourceDumpIdResetFail");
                 return PLDM_ERROR;
@@ -286,7 +286,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             {
                 error(
                     "fileAck: Failed to make a d-bus method to delete the dump entry {FILE_PATH}, with ERROR={ERR_EXCEP}",
-                    "FILE_PATH", path.c_str(), "ERR_EXCEP", e.what());
+                    "FILE_PATH", path, "ERR_EXCEP", e.what());
                 pldm::utils::reportError(
                     "xyz.openbmc_project.bmc.PLDM.fileAck.DumpEntryDeleteFail");
                 return PLDM_ERROR;
@@ -307,7 +307,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             {
                 error(
                     "fileAck: Failed to make a d-bus method to set the dump offloaded property to true with path={FILE_PATH} and with ERROR={ERR_EXCEP}",
-                    "FILE_PATH", path.c_str(), "ERR_EXCEP", e.what());
+                    "FILE_PATH", path, "ERR_EXCEP", e.what());
             }
 
             auto socketInterface = getOffloadUri(fileHandle);

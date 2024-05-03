@@ -93,7 +93,7 @@ void BIOSConfig::initBIOSAttributes(const std::string& systemType,
     if (!fs::exists(dir))
     {
         error("System specific bios attribute directory {DIR} does not exit",
-              "DIR", dir.string());
+              "DIR", dir);
         return;
     }
     constructAttributes();
@@ -689,14 +689,14 @@ void BIOSConfig::load(const fs::path& filePath, ParseHandler handler)
                 {
                     error(
                         "Failed to parse JSON config file(entry handler) : {JSON_PATH}, {ERR_EXCEP}",
-                        "JSON_PATH", filePath.c_str(), "ERR_EXCEP", e.what());
+                        "JSON_PATH", filePath, "ERR_EXCEP", e.what());
                 }
             }
         }
         catch (const std::exception& e)
         {
             error("Failed to parse JSON config at '{PATH}': {ERROR}", "PATH",
-                  filePath.c_str(), "ERROR", e);
+                  filePath, "ERROR", e);
         }
     }
 }
@@ -834,7 +834,7 @@ int BIOSConfig::checkAttrValueToUpdate(
             if (value[0] >= pvHdls.size())
             {
                 error("Enum: Illgeal index, Index = {ATTR_INDEX}", "ATTR_INDEX",
-                      (int)value[0]);
+                      value[0]);
                 return PLDM_ERROR_INVALID_DATA;
             }
             return PLDM_SUCCESS;
@@ -1007,7 +1007,7 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         error(
             "Attribute not found in attribute table, name= {ATTR_NAME} name handle={ATTR_HANDLE}",
-            "ATTR_NAME", attrName.c_str(), "ATTR_HANDLE", attrNameHdl);
+            "ATTR_NAME", attrName, "ATTR_HANDLE", attrNameHdl);
         return;
     }
 
@@ -1029,7 +1029,7 @@ void BIOSConfig::processBiosAttrChangeNotification(
     {
         error(
             "Could not update the attribute value table for attribute handle={ATTR_HANDLE} and type={ATTR_TYPE}",
-            "ATTR_HANDLE", attrHdl, "ATTR_TYPE", (uint32_t)attrType);
+            "ATTR_HANDLE", attrHdl, "ATTR_TYPE", attrType);
         return;
     }
     auto destTable = table::attribute_value::updateTable(

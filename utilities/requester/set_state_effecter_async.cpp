@@ -74,8 +74,7 @@ int main(int argc, char** argv)
         // We've got the response meant for the PLDM request msg that was sent
         // out
         io.set_enabled(Enabled::Off);
-        info("Done. PLDM RC = {RC}", "RC", lg2::hex,
-             static_cast<uint16_t>(response->payload[0]));
+        info("Done. PLDM RC = {RC}", "RC", lg2::hex, response->payload[0]);
         free(responseMsg);
         exit(EXIT_SUCCESS);
     };
