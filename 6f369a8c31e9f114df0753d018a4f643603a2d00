@@ -94,6 +94,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd6d128_1b31d5f6",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T14:33:51Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/71269",
+      "parentUuid": "20624482_593c07dd",
+      "range": {
+        "startLine": 693,
+        "startChar": 32,
+        "endLine": 693,
+        "endChar": 48
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfd67db2_fd720d87",
@@ -131,6 +155,30 @@
       "side": 1,
       "message": "I am correcting the type castings in logs in a separate commit.",
       "parentUuid": "bfd67db2_fd720d87",
+      "range": {
+        "startLine": 700,
+        "startChar": 26,
+        "endLine": 700,
+        "endChar": 42
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8066f11_106fe980",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T14:33:51Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/71269",
+      "parentUuid": "e688e308_b2d5090c",
       "range": {
         "startLine": 700,
         "startChar": 26,
