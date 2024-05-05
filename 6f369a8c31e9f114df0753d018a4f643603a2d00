@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9a6a57e_d91e6679",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T17:55:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb920d49_a3ced6f6",
+      "range": {
+        "startLine": 14,
+        "startChar": 117,
+        "endLine": 14,
+        "endChar": 120
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7432c75_e881abe6",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-04-29T08:34:36Z",
       "side": 1,
       "message": "not needed,please remove the section in ()",
+      "range": {
+        "startLine": 692,
+        "startChar": 57,
+        "endLine": 692,
+        "endChar": 72
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfc17ead_ab414b84",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T17:55:41Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "c7432c75_e881abe6",
       "range": {
         "startLine": 692,
         "startChar": 57,
@@ -212,6 +260,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "682da6b0_85f04e47",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T17:55:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1275344_2011e004",
+      "range": {
+        "startLine": 782,
+        "startChar": 80,
+        "endLine": 782,
+        "endChar": 82
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8531ee67_9777b66c",
@@ -225,6 +297,30 @@
       "writtenOn": "2024-04-29T08:34:36Z",
       "side": 1,
       "message": "same here",
+      "range": {
+        "startLine": 794,
+        "startChar": 79,
+        "endLine": 794,
+        "endChar": 81
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2a098d_3098acec",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T17:55:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8531ee67_9777b66c",
       "range": {
         "startLine": 794,
         "startChar": 79,
@@ -258,6 +354,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "403bf7e0_5beb2387",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T17:55:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "110f6f2d_ce8460a8",
+      "range": {
+        "startLine": 805,
+        "startChar": 79,
+        "endLine": 805,
+        "endChar": 80
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4afee92_c52b45ff",
@@ -281,6 +401,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0390d87_b4ee6302",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T17:55:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4afee92_c52b45ff",
+      "range": {
+        "startLine": 853,
+        "startChar": 20,
+        "endLine": 854,
+        "endChar": 45
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a2ceabf_0b5d5017",
@@ -294,6 +438,30 @@
       "writtenOn": "2024-04-29T08:34:36Z",
       "side": 1,
       "message": "i think its better to print attribute name as well here.",
+      "range": {
+        "startLine": 876,
+        "startChar": 19,
+        "endLine": 876,
+        "endChar": 49
+      },
+      "revId": "6f369a8c31e9f114df0753d018a4f643603a2d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5334f42_1a4308d5",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-05T17:55:41Z",
+      "side": 1,
+      "message": "https://github.com/openbmc/pldm/blob/cea52d9b245b3097f9fd6eb96c1b30c8a8addd5b/libpldmresponder/bios_table.cpp#L265 decode functions are available based on attribute value type, that is why attribute value is being fetched only in the cases. So, how should I do for default?",
+      "parentUuid": "4a2ceabf_0b5d5017",
       "range": {
         "startLine": 876,
         "startChar": 19,
