@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cd48195_be12b1ce",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-06T14:48:52Z",
+      "side": 1,
+      "message": "does \u0027remote pldm terminus\u0027 refer to any hypervisor or pldm client ?\nor only \u0027remote terminal\u0027 is good?",
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75b2ca4c_9fc57cef",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-06T14:48:52Z",
+      "side": 1,
+      "message": "rephase like \"Effecter file for remote terminus does not exist\"",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 44,
+        "endChar": 24
+      },
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b20ff3d_12e8dd73",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-06T14:48:52Z",
+      "side": 1,
+      "message": "why this \u0027failed\u0027 is always last?\n\nuse always in begging as discussed in all patches.",
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5909122_499c5fa8",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-06T14:48:52Z",
+      "side": 1,
+      "message": "rephase \"Remote Terminus is not UP/Active, Current Remote Terminus status is:\"",
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
