@@ -16,6 +16,218 @@
       "message": "@patrick - do you have any more comments on this one ?",
       "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a43f47a7_cb933dca",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "This is, frankly, still a poor decision.  Why do we need 3 different files to express these just because they\u0027re 3 different attribute types?  You could have just as easily done:\n\n```\n{  \"integers\" : [ ... ],\n   ...\n}\n```\n\nor\n\n```\n[ { \"type\": \"integer\" ... } ]\n```",
+      "range": {
+        "startLine": 179,
+        "startChar": 40,
+        "endLine": 181,
+        "endChar": 37
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c2f1f94_99104bf1",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "How do you express multiple?  Is it expected to a JSON array?",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30656267_7829079d",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "Table 6, 7, and 9 aren\u0027t even JSON though....",
+      "range": {
+        "startLine": 183,
+        "startChar": 60,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22e4e852_f89d7a19",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "nit: suggest making this a link [PLDM BIOS Specification] rather than a file-name.",
+      "range": {
+        "startLine": 184,
+        "startChar": 14,
+        "endLine": 184,
+        "endChar": 31
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a51685_b29415e6",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "nit: This isn\u0027t valid JSON because you\u0027ve added these fields.  It probably would be better to either do these sub-headings outside of the escapes or as json5-style comments (which might require changing ```json to ```json5.",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1964a922_be7afe1d",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "Why are we mixing camelCase and snake_case?",
+      "range": {
+        "startLine": 194,
+        "startChar": 5,
+        "endLine": 194,
+        "endChar": 13
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19ba0111_eaacb7e3",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "Why do we need \"help text\"?  Who is the consumer of this?",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91d697e4_54454cbe",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "Display where?",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab229e7_01bc9dde",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "What use do we have for this?  Can\u0027t we make them all ASCII or UTF-8?\n\nShouldn\u0027t we specify _exactly_ what we support?  There is no way for us to support a \"Vendor Specific\" string type, for example.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 103
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f52bc21_0832a7b1",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-06T14:05:53Z",
+      "side": 1,
+      "message": "You can\u0027t do `string.length()` in code?  You need a human to tell you this?",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 73
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
