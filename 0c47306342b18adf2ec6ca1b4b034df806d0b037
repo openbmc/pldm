@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19f066a8_7badacf8",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-06T14:57:37Z",
+      "side": 1,
+      "message": "what is PLDM soft off here?\n\nis it PLDM soft off failure or stoping timer failure?\nmisleading tracing please correct it all over the patch",
+      "revId": "0c47306342b18adf2ec6ca1b4b034df806d0b037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb3c089_dfcc03c5",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-06T14:57:37Z",
+      "side": 1,
+      "message": "is it PLDM soft off failure or getting softPowerOff PDR failure?\n\nmisleading tracing please correct it.",
+      "revId": "0c47306342b18adf2ec6ca1b4b034df806d0b037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
