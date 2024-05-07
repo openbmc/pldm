@@ -58,7 +58,8 @@ Entities getParentEntites(const EntityAssociations& entityAssoc)
 void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
                                      pldm_entity_node* entity,
                                      const fs::path& path,
-                                     ObjectPathMaps& objPathMap)
+                                     ObjectPathMaps& objPathMap,
+                                     EntityMaps entityMaps)
 {
     if (entity == nullptr)
     {
@@ -120,7 +121,7 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
             for (size_t i = 1; i < ev.size(); i++)
             {
                 addObjectPathEntityAssociations(entityAssoc, ev[i], p,
-                                                objPathMap);
+                                                objPathMap, entityMaps);
             }
             found = true;
         }
@@ -131,7 +132,10 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
         std::string dbusPath =
             path / fs::path{entityName +
                             std::to_string(node_entity.entity_instance_num)};
+<<<<<<< HEAD
 
+=======
+>>>>>>> 96fe864 (Add Json Config support for entity to DBus string)
         try
         {
             pldm::utils::DBusHandler().getService(dbusPath.c_str(), nullptr);
@@ -145,7 +149,7 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
 
 void updateEntityAssociation(const EntityAssociations& entityAssoc,
                              pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap)
+                             ObjectPathMaps& objPathMap, EntityMaps entityMaps)
 {
     std::vector<pldm_entity_node*> parentsEntity =
         getParentEntites(entityAssoc);
@@ -200,9 +204,42 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             paths.pop_back();
         }
 
-        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap);
+        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap,
+                                        entityMaps);
     }
 }
+
+EntityMaps parseEntityMap(const fs::path& filePath)
+{
+    const Json emptyJson{};
+    EntityMaps entityMaps{};
+    std::ifstream jsonFile(filePath);
+    auto data = Json::parse(jsonFile);
+    if (data.is_discarded())
+    {
+        error("Failed parsing of EntityMap data from json file: '{JSON_PATH}'",
+              "JSON_PATH", filePath);
+        return entityMaps;
+    }
+    auto entities = data.value("EntityTypeToDbusStringMap", emptyJson);
+    try
+    {
+        std::ranges::transform(entities.items(),
+                               std::inserter(entityMaps, entityMaps.begin()),
+                               [](const auto& element) {
+            std::string key = static_cast<EntityName>(element.key());
+            return std::make_pair(atoi(key.c_str()),
+                                  static_cast<EntityName>(element.value()));
+        });
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to create Entitymap keyvalue pair: {ERROR}", "ERROR", e);
+    }
+
+    return entityMaps;
+}
+
 } // namespace utils
 } // namespace hostbmc
 } // namespace pldm
