@@ -55,10 +55,10 @@ Entities getParentEntites(const EntityAssociations& entityAssoc)
     return parents;
 }
 
-void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
-                                     pldm_entity_node* entity,
-                                     const fs::path& path,
-                                     ObjectPathMaps& objPathMap)
+void addObjectPathEntityAssociations(
+    const EntityAssociations& entityAssoc, pldm_entity_node* entity,
+    const fs::path& path, ObjectPathMaps& objPathMap, EntityMaps entityMaps,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler)
 {
     if (entity == nullptr)
     {
@@ -96,6 +96,10 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
                                          std::to_string(
                                              node_entity.entity_instance_num)};
             std::string entity_path = p.string();
+            if (oemPlatformHandler)
+            {
+                oemPlatformHandler->updateOemDbusPaths(entity_path);
+            }
             // If the entity obtained from the remote PLDM terminal is not in
             // the MAP, or there is no auxiliary name PDR, add it directly.
             // Otherwise, check whether the DBus service of entity_path exists,
@@ -120,7 +124,8 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
             for (size_t i = 1; i < ev.size(); i++)
             {
                 addObjectPathEntityAssociations(entityAssoc, ev[i], p,
-                                                objPathMap);
+                                                objPathMap, entityMaps,
+                                                oemPlatformHandler);
             }
             found = true;
         }
@@ -131,7 +136,10 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
         std::string dbusPath =
             path / fs::path{entityName +
                             std::to_string(node_entity.entity_instance_num)};
-
+        if (oemPlatformHandler)
+        {
+            oemPlatformHandler->updateOemDbusPaths(dbusPath);
+        }
         try
         {
             pldm::utils::DBusHandler().getService(dbusPath.c_str(), nullptr);
@@ -143,9 +151,11 @@ void addObjectPathEntityAssociations(const EntityAssociations& entityAssoc,
     }
 }
 
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap)
+void updateEntityAssociation(
+    const EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
+    EntityMaps entityMaps,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler)
 {
     std::vector<pldm_entity_node*> parentsEntity =
         getParentEntites(entityAssoc);
@@ -200,9 +210,42 @@ void updateEntityAssociation(const EntityAssociations& entityAssoc,
             paths.pop_back();
         }
 
-        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap);
+        addObjectPathEntityAssociations(entityAssoc, entity, path, objPathMap,
+                                        entityMaps, oemPlatformHandler);
     }
 }
+
+EntityMaps parseEntityMap(const fs::path& filePath)
+{
+    const Json emptyJson{};
+    EntityMaps entityMaps{};
+    std::ifstream jsonFile(filePath);
+    auto data = Json::parse(jsonFile);
+    if (data.is_discarded())
+    {
+        error("Failed parsing of EntityMap data from json file: '{JSON_PATH}'",
+              "JSON_PATH", filePath);
+        return entityMaps;
+    }
+    auto entities = data.value("EntityTypeToDbusStringMap", emptyJson);
+    try
+    {
+        std::ranges::transform(entities.items(),
+                               std::inserter(entityMaps, entityMaps.begin()),
+                               [](const auto& element) {
+            std::string key = static_cast<EntityName>(element.key());
+            return std::make_pair(atoi(key.c_str()),
+                                  static_cast<EntityName>(element.value()));
+        });
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to create Entitymap keyvalue pair: {ERROR}", "ERROR", e);
+    }
+
+    return entityMaps;
+}
+
 } // namespace utils
 } // namespace hostbmc
 } // namespace pldm
