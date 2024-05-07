@@ -21,8 +21,8 @@ using EntityName = std::string;
 using EntityType = uint16_t;
 using Entities = std::vector<pldm_entity_node*>;
 using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<ObjectPath, pldm_entity_node*>;
-using EntityMaps = std::map<EntityType, EntityName>;
+using ObjectPathMaps = std::unordered_map<ObjectPath, pldm_entity>;
+using EntityMaps = std::unordered_map<EntityType, EntityName>;
 namespace hostbmc
 {
 namespace utils
