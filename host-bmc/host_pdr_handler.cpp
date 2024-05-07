@@ -1094,8 +1094,7 @@ void HostPDRHandler::setFRUDataOnDBus(
 #ifdef OEM_IBM
     for (const auto& entity : objPathMap)
     {
-        pldm_entity node = pldm_entity_extract(entity.second);
-        auto fruRSI = getRSI(fruRecordSetPDRs, node);
+        auto fruRSI = getRSI(fruRecordSetPDRs, entity.second);
 
         for (const auto& data : fruRecordData)
         {
@@ -1128,8 +1127,7 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
     // TODO: Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
     for (const auto& entity : objPathMap)
     {
-        pldm_entity node = pldm_entity_extract(entity.second);
-        switch (node.entity_type)
+        switch (entity.second.entity_type)
         {
             case PLDM_ENTITY_PROC | 0x8000:
                 CustomDBus::getCustomDBus().implementCpuCoreInterface(

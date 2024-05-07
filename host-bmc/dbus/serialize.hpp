@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../common/utils.hpp"
+#include "../utils.hpp"
 
 #include <libpldm/pdr.h>
 
@@ -16,8 +17,6 @@ namespace pldm
 namespace serialize
 {
 namespace fs = std::filesystem;
-using ObjectPath = fs::path;
-using ObjectPathMaps = std::map<ObjectPath, pldm_entity_node*>;
 
 using namespace pldm::utils;
 
@@ -99,7 +98,7 @@ class Serialize
     SavedObjs savedObjs;
     fs::path filePath;
     std::set<uint16_t> storeEntityTypes;
-    std::unordered_map<ObjectPath, pldm_entity> entityPathMaps;
+    ObjectPathMaps entityPathMaps;
 };
 
 } // namespace serialize

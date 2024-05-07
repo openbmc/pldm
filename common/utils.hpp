@@ -170,7 +170,7 @@ using ObjectPath = std::string;
 using EntityName = std::string;
 using Entities = std::vector<pldm_entity_node*>;
 using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
+using ObjectPathMaps = std::map<fs::path, pldm_entity>;
 using EntityMaps = std::map<pldm::pdr::EntityType, EntityName>;
 
 using ServiceName = std::string;
