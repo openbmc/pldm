@@ -389,3 +389,23 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
 
     pldm_pdr_destroy(inPDRRepo);
 }
+
+TEST(updateOemDbusPath, testgoodpath)
+{
+    TestInstanceIdDb instanceIdDb;
+    auto mockDbusHandler = std::make_unique<MockdBusHandler>();
+    auto event = sdeventplus::Event::get_default();
+    std::unique_ptr<CodeUpdate> mockCodeUpdate =
+        std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
+    std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
+        std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
+                                                 mockCodeUpdate.get(), 0x1, 0x9,
+                                                 instanceIdDb, event);
+    std::string dbuspath = "/inventory/system1/chassis1/motherboard1/dcm0";
+    mockoemPlatformHandler->updateOemDbusPaths(dbuspath);
+    EXPECT_EQ(dbuspath, "/inventory/system/chassis/motherboard/dcm0");
+
+    dbuspath = "/inventory/system/chassis/socket1/motherboard/dcm0";
+    mockoemPlatformHandler->updateOemDbusPaths(dbuspath);
+    EXPECT_EQ(dbuspath, "/inventory/system/chassis/motherboard/dcm0");
+}
