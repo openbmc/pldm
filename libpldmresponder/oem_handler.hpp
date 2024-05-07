@@ -90,6 +90,9 @@ class Handler : public CmdHandler
     /** @brief Interface to check the BMC state */
     virtual int checkBMCState() = 0;
 
+    /** @brief update the dbus object paths */
+    virtual void updateOemDbusPaths(std::string& dbusPath) = 0;
+
     /** @brief Interface to fetch the last BMC record from the PDR repository
      *
      *  @param[in] repo - pointer to BMC's primary PDR repo
