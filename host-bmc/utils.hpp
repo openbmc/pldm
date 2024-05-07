@@ -35,9 +35,11 @@ namespace utils
  *                               BMC's entity association tree
  *  @return
  */
-void updateEntityAssociation(const EntityAssociations& entityAssoc,
-                             pldm_entity_association_tree* entityTree,
-                             ObjectPathMaps& objPathMap, EntityMaps entityMaps);
+void updateEntityAssociation(
+    const EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
+    EntityMaps entityMaps,
+    pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
 /** @brief Parsing entity to DBus string mapping from json file
  *
