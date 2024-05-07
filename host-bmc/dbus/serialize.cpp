@@ -73,7 +73,7 @@ void Serialize::serialize(const std::string& path, const std::string& intf,
         }
     }
 
-    if (!storeEntityTypes.contains(entityPathMaps[path].entity_type))
+    if (!storeEntityTypes.contains(entity.entity_type))
     {
         return;
     }
@@ -121,11 +121,7 @@ void Serialize::setEntityTypes(const std::set<uint16_t>& storeEntities)
 
 void Serialize::setObjectPathMaps(const ObjectPathMaps& maps)
 {
-    for (const auto& [objpath, nodeentity] : maps)
-    {
-        pldm_entity entity = pldm_entity_extract(nodeentity);
-        entityPathMaps.emplace(objpath, entity);
-    }
+    entityPathMaps = maps;
 }
 
 void Serialize::reSerialize(const std::vector<uint16_t>& types)
