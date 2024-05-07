@@ -40,16 +40,13 @@ namespace fs = std::filesystem;
 using Json = nlohmann::json;
 constexpr bool Tx = true;
 constexpr bool Rx = false;
-
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
-
 using inventoryManager =
     sdbusplus::client::xyz::openbmc_project::inventory::Manager<>;
 
 constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 constexpr auto mapperService = ObjectMapper::default_service;
 constexpr auto inventoryPath = "/xyz/openbmc_project/inventory";
-
 /** @struct CustomFD
  *
  *  RAII wrapper for file descriptor.

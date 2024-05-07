@@ -1,4 +1,5 @@
 #include "../utils.hpp"
+#include "common/utils.hpp"
 
 #include <libpldm/pdr.h>
 
@@ -9,6 +10,13 @@
 namespace fs = std::filesystem;
 using namespace pldm;
 using namespace pldm::utils;
+using namespace pldm::hostbmc::utils;
+
+TEST(EntityAssociation, parseEntityMap)
+{
+    EntityMaps entityMaps = parseEntityMap("./entitymap_test.json");
+    EXPECT_EQ(entityMaps.size(), 10);
+}
 
 TEST(EntityAssociation, addObjectPathEntityAssociations1)
 {
@@ -80,8 +88,8 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
          l5b}};
 
     ObjectPathMaps objPathMap;
-    pldm::hostbmc::utils::updateEntityAssociation(entityAssociations, tree,
-                                                  objPathMap);
+    EntityMaps entityMaps = parseEntityMap("./entitymap_test.json");
+    updateEntityAssociation(entityAssociations, tree, objPathMap, entityMaps);
 
     EXPECT_EQ(objPathMap.size(), retObjectMaps.size());
 
