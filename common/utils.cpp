@@ -26,8 +26,6 @@ namespace pldm
 namespace utils
 {
 
-using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
-
 std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t /*tid*/,
                                                        uint16_t entityID,
                                                        uint16_t stateSetId,
