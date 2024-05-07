@@ -327,6 +327,10 @@ class HostPDRHandler
 
     /** @OEM platform handler */
     pldm::responder::oem_platform::Handler* oemPlatformHandler;
+
+    /** @brief entityID and entity name is only loaded once
+     */
+    EntityMaps entityMaps;
 };
 
 } // namespace pldm
