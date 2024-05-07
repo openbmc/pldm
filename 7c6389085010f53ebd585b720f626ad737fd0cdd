@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "634a871b_5b6d46a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "there is no severity related logs are there, all severity related log has been removed from upstream.",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ec2771b_ada0ea5b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "why two times failed?",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d7db936_bb98d3d9",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "why two times failed?",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c98e3e05_1011d4a9",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "can you add at what position lseek failed?",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b21724b_a4bec46b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "can you add at what position and length read failed?",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75d1be11_58662db9",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "can you please move this error line at line 293, bcz if it\u0027s stuck at sendStateSensorEvent then we could get atleast ffdc log first.",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b3ca3a0_6e73abe2",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "can you print what path and it\u0027s size it long for socket?",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5048d073_1e721d45",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "if you print err no then easy to know why it\u0027s failed instead of guessing out of 3 err code.",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd5eaf9a_efa54a21",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "can you please print SourceDumpId which here are searching?",
+      "revId": "4a0ab1c79f1e7367cf396476e7491576b3420666",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d223bd_f2945b30",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-07T06:27:36Z",
+      "side": 1,
+      "message": "can you please include full interface name?",
+      "revId": "4a0ab1c79f1e7367cf396476e7491576b3420666",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
