@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "056c239c_06d655c9",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-07T08:48:56Z",
+      "side": 1,
+      "message": "why an auto and not uint16?",
+      "range": {
+        "startLine": 88,
+        "startChar": 8,
+        "endLine": 88,
+        "endChar": 12
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d26b6cb5_676704b6",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-07T08:48:56Z",
+      "side": 1,
+      "message": "is it necessary to be auto? uint16?",
+      "range": {
+        "startLine": 198,
+        "startChar": 16,
+        "endLine": 198,
+        "endChar": 20
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4faeaf04_c764ed10",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-07T08:48:56Z",
+      "side": 1,
+      "message": "this is still making use of e.what() ?",
+      "range": {
+        "startLine": 801,
+        "startChar": 8,
+        "endLine": 803,
+        "endChar": 56
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "158029b5_3dd954c5",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-07T08:48:56Z",
+      "side": 1,
+      "message": "eid is uint8 value, will this trace have a valid eid printed in lg2, if casting is removed?\niostream usually needed the unsigned cast for uint8 value to be printed",
+      "range": {
+        "startLine": 53,
+        "startChar": 14,
+        "endLine": 53,
+        "endChar": 17
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
