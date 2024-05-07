@@ -26,6 +26,7 @@ using namespace pldm::responder::events;
 using namespace pldm::utils;
 using namespace sdbusplus::bus::match::rules;
 using namespace pldm::responder::pdr_utils;
+using namespace pldm::hostbmc::utils;
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace pldm::dbus;
@@ -95,7 +96,8 @@ HostPDRHandler::HostPDRHandler(
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler),
-    oemPlatformHandler(oemPlatformHandler)
+    oemPlatformHandler(oemPlatformHandler),
+    entityMaps(parseEntityMap(ENTITY_MAP_JSON))
 {
     mergedHostParents = false;
     hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
@@ -615,7 +617,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
-        updateEntityAssociation(entityAssociations, entityTree, objPathMap);
+        updateEntityAssociation(entityAssociations, entityTree, objPathMap,
+                                entityMaps);
 
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);
