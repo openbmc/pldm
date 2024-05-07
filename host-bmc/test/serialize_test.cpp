@@ -25,12 +25,12 @@ TEST(Serialize, SerializeGoodPath)
                                                PLDM_ENTITY_ASSOCIAION_PHYSICAL);
     EXPECT_NE(l1, nullptr);
     std::set<uint16_t> entitytypes{entities.entity_type};
-    ObjectPathMaps objectMaps;
+    pldm::ObjectPathMaps objectMaps;
     std::string path = "/xyz/local_project/DEF";
     std::string interface = "com.abc.DEF.TEST";
     std::string propertyname = "TEST";
     std::string propValue = "unittest";
-    objectMaps[path] = l1;
+    objectMaps[path] = entities;
 
     // Changing file location to store data for testing
     pldm::serialize::Serialize::getSerialize(filepath);
