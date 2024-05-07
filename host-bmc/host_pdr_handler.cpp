@@ -127,6 +127,15 @@ HostPDRHandler::HostPDRHandler(
                 this->sensorMap.clear();
                 this->responseReceived = false;
                 this->mergedHostParents = false;
+
+                // After a power off , the remote nodes will be deleted
+                // from the entity association tree, making the nodes point
+                // to junk values, so set them to nullptr
+                for (const auto& element : this->objPathMap)
+                {
+                    pldm_entity obj{};
+                    this->objPathMap[element.first] = obj;
+                }
             }
         }
     });
@@ -1088,8 +1097,7 @@ void HostPDRHandler::setFRUDataOnDBus(
 #ifdef OEM_IBM
     for (const auto& entity : objPathMap)
     {
-        pldm_entity node = pldm_entity_extract(entity.second);
-        auto fruRSI = getRSI(fruRecordSetPDRs, node);
+        auto fruRSI = getRSI(fruRecordSetPDRs, entity.second);
 
         for (const auto& data : fruRecordData)
         {
