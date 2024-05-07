@@ -10,6 +10,8 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/State/BMC/client.hpp>
 
+#include <regex>
+
 PHOSPHOR_LOG2_USING;
 
 using namespace pldm::pdr;
@@ -417,6 +419,29 @@ void pldm::responder::oem_ibm_platform::Handler::_processStartUpdate(
     auto sensorId = codeUpdate->getFirmwareUpdateSensor();
     sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0, uint8_t(state),
                          uint8_t(CodeUpdateState::END));
+}
+
+void pldm::responder::oem_ibm_platform::Handler::updateOemDbusPaths(
+    std::string& dbusPath)
+{
+    std::string toFind("system1/chassis1/motherboard1");
+    if (dbusPath.find(toFind) != std::string::npos)
+    {
+        size_t pos = dbusPath.find(toFind);
+        dbusPath.replace(pos, toFind.length(), "system/chassis/motherboard");
+    }
+    toFind = "system1";
+    if (dbusPath.find(toFind) != std::string::npos)
+    {
+        size_t pos = dbusPath.find(toFind);
+        dbusPath.replace(pos, toFind.length(), "system");
+    }
+    toFind = "socket";
+    if (dbusPath.find(toFind) != std::string::npos)
+    {
+        std::regex reg(R"(\/motherboard\/socket[0-9]+)");
+        dbusPath = regex_replace(dbusPath, reg, "/motherboard");
+    }
 }
 
 void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
