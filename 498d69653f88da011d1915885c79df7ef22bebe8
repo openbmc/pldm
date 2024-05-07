@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e79ce8fd_4f0ec327",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-07T05:23:49Z",
+      "side": 1,
+      "message": "going forward , we should ideally have two ways to add this support:\n1. Use entity aux names PDR to get the name of the fru from the remote entity and stick that in the object path.\n2. If there are no aux names PDR\u0027s present, then we could fall back to use this static json file to get the object name.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 42
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a15627db_24ec8fd8",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -19,6 +42,75 @@
         "startChar": 49,
         "endLine": 10,
         "endChar": 59
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c8d5b29_7fde1194",
+        "filename": "configurations/entityMap.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-07T05:23:49Z",
+      "side": 1,
+      "message": "add some example and documentation on how this JSON file should be used.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 26
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9207848e_e106d519",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-07T05:23:49Z",
+      "side": 1,
+      "message": "parseEntityMap",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 20
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf02162f_fb174a18",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-07T05:23:49Z",
+      "side": 1,
+      "message": "do we really need this as a class variable ? why cant the parseFunction return the JSON object directly.",
+      "range": {
+        "startLine": 332,
+        "startChar": 2,
+        "endLine": 334,
+        "endChar": 26
       },
       "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -54,6 +146,24 @@
       "writtenOn": "2024-05-03T08:49:19Z",
       "side": 1,
       "message": "we could add this in common/utils also right?",
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e33030de_73e15f93",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-07T05:23:49Z",
+      "side": 1,
+      "message": "no this cannot be a common one, because it needs a certain json format.",
+      "parentUuid": "0c304f16_a1f12487",
       "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
