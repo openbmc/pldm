@@ -47,5 +47,15 @@ void CustomDBus::setMicrocode(const std::string& path, uint32_t value)
     }
     cpuCore.at(path)->microcode(value);
 }
+
+void CustomDBus::implementMotherboardInterface(const std::string& path)
+{
+    if (!motherboard.contains(path))
+    {
+        motherboard.emplace(
+            path, std::make_unique<Motherboard>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
 } // namespace dbus
 } // namespace pldm
