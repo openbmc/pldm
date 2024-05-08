@@ -2,6 +2,7 @@
 
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
+#include "motherboard.hpp"
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
@@ -82,9 +83,18 @@ class CustomDBus
      */
     void setMicrocode(const std::string& path, uint32_t value);
 
+    /** @brief Implement interface for motherboard property
+     *
+     *  @param[in] path  - The object path
+     *
+     *  @return
+     */
+    void implementMotherboardInterface(const std::string& path);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
+    std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
 };
 
 } // namespace dbus
