@@ -91,7 +91,7 @@ Entry::Level getEntryLevelFromPEL(const std::string& pelFileName)
 }
 } // namespace detail
 
-int PelHandler::readIntoMemory(uint32_t offset, uint32_t& length,
+int PelHandler::readIntoMemory(uint32_t offset, uint32_t length,
                                uint64_t address,
                                oem_platform::Handler* /*oemPlatformHandler*/)
 {
