@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0bf4143_f2162492",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-08T13:30:32Z",
+      "side": 1,
+      "message": "Magic number?",
+      "range": {
+        "startLine": 1116,
+        "startChar": 17,
+        "endLine": 1116,
+        "endChar": 22
+      },
+      "revId": "356f5361e2bbdda19a68a86ae828f3438be57096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
