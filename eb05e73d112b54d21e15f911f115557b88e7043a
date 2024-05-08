@@ -16,6 +16,24 @@
       "message": "In compact numeric sensor, the `occurrenceRate` field doesn\u0027t mean update interval, it has the same mean as in numeric sensor\u0027s `unitRate` field which shouldn\u0027t be tied to the update time (this was verified by one of the DMTF members).\n\nThis is an issue because in this implementation sensors with `No Occurrence Rate` will not be updated at all.\n\nAnother issue is that the current pldm specs do not provide a way to determine the update time for compact numeric sensors.\n\nMaybe a better way to solve it is to provide a special compiler flag for compact numeric sensor update time?",
       "revId": "eb05e73d112b54d21e15f911f115557b88e7043a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba6361d1_f0d16037",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-08T00:57:15Z",
+      "side": 1,
+      "message": "\u003e In compact numeric sensor, the `occurrenceRate` field doesn\u0027t mean update interval, it has the same mean as in numeric sensor\u0027s `unitRate` field which shouldn\u0027t be tied to the update time (this was verified by one of the DMTF members).\n\u003e \nWould you mind to share that confirmation from DMTF members?\n\n\u003e This is an issue because in this implementation sensors with `No Occurrence Rate` will not be updated at all.\n\u003e \n\u003e Another issue is that the current pldm specs do not provide a way to determine the update time for compact numeric sensors.\n\u003e \n\u003e Maybe a better way to solve it is to provide a special compiler flag for compact numeric sensor update time?\n\nYes, Compiler flag is one option.",
+      "parentUuid": "fa10584b_994d914a",
+      "revId": "eb05e73d112b54d21e15f911f115557b88e7043a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
