@@ -35,7 +35,9 @@ std::unordered_map<std::string, callback> dBusInterfaceHandler{
         pldm::dbus::CustomDBus::getCustomDBus().implementCpuCoreInterface(path);
     }
 }},
-};
+    {"Motherboard", [](const std::string& path, PropertyMap /* values */) {
+    pldm::dbus::CustomDBus::getCustomDBus().implementMotherboardInterface(path);
+}}};
 
 std::pair<std::set<uint16_t>, std::set<uint16_t>>
     getEntityTypes(const fs::path& path)
