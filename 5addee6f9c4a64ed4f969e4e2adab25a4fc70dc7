@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08646cb0_712efe7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-08T13:23:00Z",
+      "side": 1,
+      "message": "@kamal can we have the commit message across this chain as something like below?  \n\nAdd support for the `coreCount` property in DBus\n\nThis commit introduces support for tracking the number of CPU cores during BMC power-on and persisting this information to a DBus property named `coreCount`. Upon BMC power-on, the system detects the number of CPU cores and updates the `coreCount` property accordingly. Additionally, the commit implements a persistence mechanism using the Cereal file write mechanism to store the `coreCount` value in a persistent file. Upon BMC restart, the system retrieves the `coreCount` value from the persistent file and restores it to the `coreCount` DBus property, ensuring consistency across system restarts.\n\nChanges:\n- Added `coreCount` property to DBus to store CPU core count information.\n- Implemented logic to detect and update `coreCount` property during BMC power-on.\n- Implemented persistence mechanism using Cereal file write to store `coreCount` value in a persistent file.\n- Implemented logic to restore `coreCount` value from the persistent file upon BMC restart.\n\nTested:",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 51
+      },
+      "revId": "5addee6f9c4a64ed4f969e4e2adab25a4fc70dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "631fb9a7_a1f3faf3",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-08T13:23:00Z",
+      "side": 1,
+      "message": "any reason for placing this function in utils? do you foresee anywhere else this will be called?",
+      "revId": "5addee6f9c4a64ed4f969e4e2adab25a4fc70dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
