@@ -117,5 +117,14 @@ void CustomDBus::setCableAttributes(const std::string& path, double length,
     }
 }
 
+void CustomDBus::implementMotherboardInterface(const std::string& path)
+{
+    if (!motherboard.contains(path))
+    {
+        motherboard.emplace(path,
+                            std::make_unique<Motherboard>(
+                                pldm::utils::DBusHandler::getBus(), path));
+    }
+}
 } // namespace dbus
 } // namespace pldm
