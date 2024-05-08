@@ -50,7 +50,7 @@ int CertHandler::writeFromMemory(uint32_t offset, uint32_t length,
     return rc;
 }
 
-int CertHandler::readIntoMemory(uint32_t offset, uint32_t& length,
+int CertHandler::readIntoMemory(uint32_t offset, uint32_t length,
                                 uint64_t address,
                                 oem_platform::Handler* /*oemPlatformHandler*/)
 {
