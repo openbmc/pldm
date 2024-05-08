@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f97c03_cd4c909f",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "this all could be eliminated if we change the code to \n\n```\nerror(\"Failed to encode response for command \u0027{COMMAND}\u0027 with rc \u0027{RC}\u0027\",\"COMMAND\",\"RC,command,rc)\n```\n\nsame for `encodeRWTypeResponseHandler` function as well.",
+      "range": {
+        "startLine": 259,
+        "startChar": 7,
+        "endLine": 271,
+        "endChar": 9
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91ef1acf_c18a117e",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "full stop in tracing seem unnecessary. I have not personally seen `.` anywhere in other component traces.",
+      "range": {
+        "startLine": 375,
+        "startChar": 100,
+        "endLine": 375,
+        "endChar": 103
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d9fe7a9_5f43c2e7",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "file_size returns a size_t, so you could do something like \n```\nif(!fileSize)\n```",
+      "range": {
+        "startLine": 421,
+        "startChar": 3,
+        "endLine": 421,
+        "endChar": 22
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce9a95b3_1f5caab9",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "shouldn\u0027t we remove `\u003d` from the traces based on your other patches that fixes the lg2 tracing ?",
+      "range": {
+        "startLine": 434,
+        "startChar": 0,
+        "endLine": 434,
+        "endChar": 103
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50403eb4_9e13aaaa",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "`if(!length || length % dma::minSize)`",
+      "range": {
+        "startLine": 447,
+        "startChar": 4,
+        "endLine": 447,
+        "endChar": 45
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9201fa55_aa7eb949",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "if(!length || \u003c\u003e)",
+      "range": {
+        "startLine": 495,
+        "startChar": 4,
+        "endLine": 495,
+        "endChar": 20
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ca9bcc6_4f61f0f0",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "`if(!fileSize)`\n\ndo you also want to add what is the file type here ?",
+      "range": {
+        "startLine": 535,
+        "startChar": 4,
+        "endLine": 539,
+        "endChar": 5
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aee94c5_8f9ef89c",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "which attribute table is this ? because we also have bios attribute table. Make this trace better, and also remove fullstop at the end.",
+      "range": {
+        "startLine": 610,
+        "startChar": 8,
+        "endLine": 610,
+        "endChar": 43
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e000f1_16f52a6a",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "if(!fileSize)",
+      "range": {
+        "startLine": 684,
+        "startChar": 3,
+        "endLine": 684,
+        "endChar": 22
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "366fa611_2073bcfe",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "fullstop , please remove.",
+      "range": {
+        "startLine": 816,
+        "startChar": 101,
+        "endLine": 816,
+        "endChar": 102
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f745ad9_c48ceef7",
+        "filename": "oem/ibm/libpldmresponder/file_io.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-08T09:44:09Z",
+      "side": 1,
+      "message": "change here as well",
+      "range": {
+        "startLine": 842,
+        "startChar": 4,
+        "endLine": 842,
+        "endChar": 45
+      },
+      "revId": "a2887e1c80a48c2744a64b09e8519c5ac3890b90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
