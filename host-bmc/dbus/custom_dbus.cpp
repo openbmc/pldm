@@ -55,5 +55,15 @@ std::optional<uint32_t> CustomDBus::getMicroCode(const std::string& path) const
 
     return std::nullopt;
 }
+
+void CustomDBus::implementMotherboardInterface(const std::string& path)
+{
+    if (!motherboard.contains(path))
+    {
+        motherboard.emplace(path,
+                            std::make_unique<Motherboard>(
+                                pldm::utils::DBusHandler::getBus(), path));
+    }
+}
 } // namespace dbus
 } // namespace pldm
