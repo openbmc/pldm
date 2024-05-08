@@ -3,6 +3,7 @@
 #include "cable.hpp"
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
+#include "motherboard.hpp"
 #include "pcie_device.hpp"
 #include "pcie_slot.hpp"
 
@@ -127,6 +128,12 @@ class CustomDBus
      */
     void setCableAttributes(const std::string& path, double length,
                             const std::string& cableDescription);
+    /** @brief Implement interface for motherboard property
+     *
+     *  @param[in] path  - The object path
+     *
+     */
+    void implementMotherboardInterface(const std::string& path);
 
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
@@ -134,6 +141,7 @@ class CustomDBus
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
     std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;
+    std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
 };
 
 } // namespace dbus
