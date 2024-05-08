@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d88cdd94_c6d9856e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "yes, we will get more idea once AUX PDR implementation is done, then will do change as per suggestion",
+      "parentUuid": "e79ce8fd_4f0ec327",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 42
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a15627db_24ec8fd8",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-03T08:49:19Z",
       "side": 1,
       "message": "can you write briefly what challenges that led to this change?",
+      "range": {
+        "startLine": 10,
+        "startChar": 49,
+        "endLine": 10,
+        "endChar": 59
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05b8ad1c_bf2c37c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "a15627db_24ec8fd8",
       "range": {
         "startLine": 10,
         "startChar": 49,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa497903_4aec8eb9",
+        "filename": "configurations/entityMap.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "added description as json format since comments are not allowed in json",
+      "parentUuid": "9c8d5b29_7fde1194",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 26
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9207848e_e106d519",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-07T05:23:49Z",
       "side": 1,
       "message": "parseEntityMap",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 20
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ec0fe83_b417f2f1",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "9207848e_e106d519",
       "range": {
         "startLine": 102,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ff49363_27e4e398",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "we can, but there are 3 reason.\n1. storing json object v/s storing map \u003d\u003e same thing \n2. map value comparison v/s jason value comparison which need to convert and compare which is redundant operation.\n3. map is easy to find value",
+      "parentUuid": "cf02162f_fb174a18",
+      "range": {
+        "startLine": 332,
+        "startChar": 2,
+        "endLine": 334,
+        "endChar": 26
+      },
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ebaef98_3e0c675e",
@@ -129,6 +249,24 @@
       "writtenOn": "2024-05-03T08:49:19Z",
       "side": 1,
       "message": "why did we move these functions from common/utils to host-bmc/utils? Is there a strong reason?",
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbec9db0_93f96d23",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "there are cyclic dependency between common/util.hpp and host_pdr_handler.hpp, so to avoid reference issue at multiple places better to use separate file.",
+      "parentUuid": "9ebaef98_3e0c675e",
       "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -168,6 +306,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d371144_65eeca6c",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "there are cyclic dependency between common/util.hpp and host_pdr_handler.hpp, so to avoid reference issue at multiple places better to use separate file.",
+      "parentUuid": "e33030de_73e15f93",
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94fbc39d_f9db5ee2",
@@ -181,6 +337,24 @@
       "writtenOn": "2024-05-03T08:49:19Z",
       "side": 1,
       "message": "why do we have the same entityMap.json file in oem-ibm also and in the default path as well? Can we not keep oem-ibm alone?",
+      "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c51ebe3_290c4d63",
+        "filename": "oem/ibm/configurations/entityMap.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-08T10:54:48Z",
+      "side": 1,
+      "message": "it\u0027s not same entitymap.json file, system value is different from default config and oem config path.",
+      "parentUuid": "94fbc39d_f9db5ee2",
       "revId": "498d69653f88da011d1915885c79df7ef22bebe8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
