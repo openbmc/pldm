@@ -324,7 +324,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
     return PLDM_ERROR;
 }
 
-int DumpHandler::readIntoMemory(uint32_t offset, uint32_t& length,
+int DumpHandler::readIntoMemory(uint32_t offset, uint32_t length,
                                 uint64_t address,
                                 oem_platform::Handler* /*oemPlatformHandler*/)
 {
