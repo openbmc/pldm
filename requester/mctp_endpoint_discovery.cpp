@@ -22,7 +22,7 @@ PHOSPHOR_LOG2_USING;
 namespace pldm
 {
 MctpDiscovery::MctpDiscovery(
-    sdbusplus::bus::bus& bus,
+    sdbusplus::bus_t& bus,
     std::initializer_list<MctpDiscoveryHandlerIntf*> list) :
     bus(bus),
     mctpEndpointAddedSignal(

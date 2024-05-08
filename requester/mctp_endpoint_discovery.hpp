@@ -49,7 +49,7 @@ class MctpDiscovery
      *  @param[in] list - initializer list to the MctpDiscoveryHandlerIntf
      */
     explicit MctpDiscovery(
-        sdbusplus::bus::bus& bus,
+        sdbusplus::bus_t& bus,
         std::initializer_list<MctpDiscoveryHandlerIntf*> list);
 
     /** @brief reference to the systemd bus */
