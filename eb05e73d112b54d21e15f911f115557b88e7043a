@@ -34,6 +34,24 @@
       "parentUuid": "fa10584b_994d914a",
       "revId": "eb05e73d112b54d21e15f911f115557b88e7043a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15beff00_af2fac4c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-08T04:18:12Z",
+      "side": 1,
+      "message": "Updated code.",
+      "parentUuid": "ba6361d1_f0d16037",
+      "revId": "eb05e73d112b54d21e15f911f115557b88e7043a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
