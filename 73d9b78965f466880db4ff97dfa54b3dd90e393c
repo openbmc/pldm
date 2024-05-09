@@ -24,6 +24,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5edda076_387f4f91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T06:13:42Z",
+      "side": 1,
+      "message": "@sagar - This still feels a lot more clumsy than how the code is already as of today. Need to refactor this a bit more.",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3637d8bd_bb4c966f",
@@ -113,6 +130,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44e00307_6027bcba",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T06:13:42Z",
+      "side": 1,
+      "message": "this can be changed to \n```\n std::tie(hostPDRHandler, oemPlatformHandler, fruHandler) \u003d\n        std::make_tuple(oemIBM-\u003egetHostPDRHandler(),\n                        oemIBM-\u003egetOemPlatformHandler(), oemIBM-\u003egetFruHandler());\n```",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0085bbea_3e646f0f",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 5
@@ -151,6 +185,29 @@
       "range": {
         "startLine": 245,
         "startChar": 3,
+        "endLine": 245,
+        "endChar": 47
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "556fadc1_5ea6a8a2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T06:13:42Z",
+      "side": 1,
+      "message": "can any of these work ? if the hostEID is not present ? shouldn\u0027t this be under if(hostEID) section ?\n\nif we move this logic inside hostEID,section ? then we already have hostPDRHandler there ? and also setHostPdrObj() does not have any special IBM code + since we get hostPDRhandler in the if(hostEID) section , we might be able to eleminate another dbusImplHost.setHostPdrObj().",
+      "range": {
+        "startLine": 237,
+        "startChar": 4,
         "endLine": 245,
         "endChar": 47
       },
