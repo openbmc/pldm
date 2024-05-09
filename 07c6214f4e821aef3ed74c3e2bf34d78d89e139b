@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53e698e1_fd9e65d8",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:24:48Z",
+      "side": 1,
+      "message": "why do we need this twice ? once here and once at 139 line number.",
+      "range": {
+        "startLine": 99,
+        "startChar": 9,
+        "endLine": 102,
+        "endChar": 13
+      },
+      "revId": "07c6214f4e821aef3ed74c3e2bf34d78d89e139b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

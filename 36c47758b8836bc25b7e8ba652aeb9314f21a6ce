@@ -114,6 +114,30 @@
       },
       "revId": "36c47758b8836bc25b7e8ba652aeb9314f21a6ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ec03507_759537a2",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:24:48Z",
+      "side": 1,
+      "message": "std::regex is slow and considered to have poor performance, need this to be re-written without the use of regex.",
+      "parentUuid": "4824153e_280a9db0",
+      "range": {
+        "startLine": 439,
+        "startChar": 4,
+        "endLine": 444,
+        "endChar": 5
+      },
+      "revId": "36c47758b8836bc25b7e8ba652aeb9314f21a6ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
