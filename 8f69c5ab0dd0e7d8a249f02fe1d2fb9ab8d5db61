@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d0d3833_db5bd723",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:55:20Z",
+      "side": 1,
+      "message": "I was implying by severity level of logs is using error, info, etc. appropriately and corrected it for logs wherever required.",
+      "parentUuid": "9be52aa3_058ac32a",
+      "revId": "8f69c5ab0dd0e7d8a249f02fe1d2fb9ab8d5db61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10c0b1ec_d8c6b13a",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "894a296b_751b0c70",
+        "filename": "common/utils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:55:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10c0b1ec_d8c6b13a",
+      "revId": "8f69c5ab0dd0e7d8a249f02fe1d2fb9ab8d5db61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b5965b3_2cb640d6",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-05-06T14:34:53Z",
       "side": 1,
       "message": "why c_str?",
+      "revId": "8f69c5ab0dd0e7d8a249f02fe1d2fb9ab8d5db61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e565e5b_62cab7f1",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:55:20Z",
+      "side": 1,
+      "message": "addressed here - https://gerrit.openbmc.org/c/openbmc/pldm/+/71269",
+      "parentUuid": "7b5965b3_2cb640d6",
       "revId": "8f69c5ab0dd0e7d8a249f02fe1d2fb9ab8d5db61",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
