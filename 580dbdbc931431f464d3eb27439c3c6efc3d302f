@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a170b076_b3293afa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:56:13Z",
+      "side": 1,
+      "message": "I was implying by severity level of logs is using error, info, etc. appropriately and corrected it for logs wherever required.",
+      "parentUuid": "fd8ce99a_7282c90f",
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cd48195_be12b1ce",
@@ -58,6 +76,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be909e23_27da8f6f",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75b2ca4c_9fc57cef",
+      "range": {
+        "startLine": 44,
+        "startChar": 20,
+        "endLine": 44,
+        "endChar": 24
+      },
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a5eb981_8cb455ec",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cd48195_be12b1ce",
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b20ff3d_12e8dd73",
@@ -75,6 +135,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b01fcd8_566888c3",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b20ff3d_12e8dd73",
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5909122_499c5fa8",
@@ -88,6 +166,24 @@
       "writtenOn": "2024-05-06T14:48:52Z",
       "side": 1,
       "message": "rephase \"Remote Terminus is not UP/Active, Current Remote Terminus status is:\"",
+      "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2a2adbc_69b28ac4",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-09T18:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5909122_499c5fa8",
       "revId": "580dbdbc931431f464d3eb27439c3c6efc3d302f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
