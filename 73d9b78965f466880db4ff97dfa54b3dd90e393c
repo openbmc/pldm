@@ -147,6 +147,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b738a80e_ee0f8d05",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T06:15:40Z",
+      "side": 1,
+      "message": "rather than passing empty pointers fir platformCOnfigHandler, hostPDRHandler ,  cant we send nullptr instead ?",
+      "range": {
+        "startLine": 242,
+        "startChar": 12,
+        "endLine": 242,
+        "endChar": 39
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0085bbea_3e646f0f",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 5
