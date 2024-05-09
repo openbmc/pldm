@@ -1,0 +1,435 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e110bc6d_22817f9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "what pldm data are we storing ? is it dbus objects ? lets be specific. rather \n\n`Add support to persist pldm dbus objects`\nhow does this sound ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 43
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f9f0267_11a2a500",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "remove bullets and make this a paragraph.\n\nalso we are adding a new dependency cereal to pldm, we need a recipe change for this in meta-phosphor layer.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 50
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33efe386_d2f9d6c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "`Unit tests passed` , should be good enough.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93986d7c_e13cc236",
+        "filename": "common/utils.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "aligment in the comment does not seem right ? can you align it properly and also as its multiline , use /* */ instead.",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 70
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "632242e3_5615e7c6",
+        "filename": "common/utils.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "do we need an ordered_map ? or unordered would do ?",
+      "range": {
+        "startLine": 173,
+        "startChar": 4,
+        "endLine": 173,
+        "endChar": 12
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c350cfb_26dce3aa",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "remove full stop.",
+      "range": {
+        "startLine": 32,
+        "startChar": 66,
+        "endLine": 32,
+        "endChar": 67
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5073d8c0_261a28c3",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "exist",
+      "range": {
+        "startLine": 38,
+        "startChar": 40,
+        "endLine": 38,
+        "endChar": 45
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2b3b2db_22b84ed6",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "use std::tie instead to initialize all the 3 values at once.",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 46
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee8c7383_67f1cccc",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "can\u0027t this be done in the constructor ?",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 1
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64237b96_728cdcfe",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 48,
+        "startChar": 16,
+        "endLine": 48,
+        "endChar": 26
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "792192d9_3dc6e7ab",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "`const fs::path path{}` instead ?",
+      "range": {
+        "startLine": 50,
+        "startChar": 35,
+        "endLine": 50,
+        "endChar": 59
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4704413b_62dfb305",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "`if(!path.empty())` ?",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 23
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f7a24d3_10aaaa0f",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "const reference ?",
+      "range": {
+        "startLine": 87,
+        "startChar": 21,
+        "endLine": 87,
+        "endChar": 49
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e22a72ad_70246c8f",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "can\u0027t this be initialized in the constructor ?",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 101,
+        "endChar": 39
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6a12f4_526047d8",
+        "filename": "host-bmc/dbus/serialize.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "need an ordered map ?",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 13
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e0460a_0c11bdb2",
+        "filename": "host-bmc/test/serialize_test.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "need to delete the /tmp file as well ? or leave it there ?",
+      "range": {
+        "startLine": 77,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 47
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "badf3708_8af6e251",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "lets call it `pldm_store` instead. persist is too much generic need a pldm name in that for better reasons.",
+      "range": {
+        "startLine": 48,
+        "startChar": 75,
+        "endLine": 48,
+        "endChar": 82
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2cb2217_3d6669f2",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "need to check for cereal dependency and break compilation if not found.",
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5907aaef_15859716",
+        "filename": "meson.build",
+        "patchSetId": 15
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-09T05:46:25Z",
+      "side": 1,
+      "message": "cereal dependency should not added here as well.\n\nwithout these changes bitbake will fail.",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 10
+      },
+      "revId": "fc2301adc4dc48567feb276a0403f2a42383ce77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
