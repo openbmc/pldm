@@ -1,4 +1,4 @@
-#include "common/utils.hpp"
+#include "../utils.hpp"
 
 #include <libpldm/pdr.h>
 
@@ -80,7 +80,8 @@ TEST(EntityAssociation, addObjectPathEntityAssociations1)
          l5b}};
 
     ObjectPathMaps objPathMap;
-    updateEntityAssociation(entityAssociations, tree, objPathMap);
+    pldm::hostbmc::utils::updateEntityAssociation(entityAssociations, tree,
+                                                  objPathMap);
 
     EXPECT_EQ(objPathMap.size(), retObjectMaps.size());
 

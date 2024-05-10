@@ -615,7 +615,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     }
     if (!nextRecordHandle)
     {
-        updateEntityAssociation(entityAssociations, entityTree, objPathMap);
+        pldm::hostbmc::utils::updateEntityAssociation(entityAssociations,
+                                                      entityTree, objPathMap);
 
         /*received last record*/
         this->parseStateSensorPDRs(stateSensorPDRs);

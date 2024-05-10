@@ -7,6 +7,7 @@
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "requester/handler.hpp"
+#include "utils.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/platform.h>
@@ -314,11 +315,11 @@ class HostPDRHandler
     /** @brief maps an object path to pldm_entity from the BMC's entity
      *         association tree
      */
-    utils::ObjectPathMaps objPathMap;
+    ObjectPathMaps objPathMap;
 
     /** @brief maps an entity name to map, maps to entity name to pldm_entity
      */
-    utils::EntityAssociations entityAssociations;
+    EntityAssociations entityAssociations;
 
     /** @brief the vector of FRU Record Data Format
      */
