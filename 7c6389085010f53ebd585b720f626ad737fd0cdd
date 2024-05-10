@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39a90a42_885581fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "I was implying by severity level of logs is using error, info, etc. appropriately and corrected it for logs wherever required.",
+      "parentUuid": "634a871b_5b6d46a7",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ec2771b_ada0ea5b",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-05-07T06:27:36Z",
       "side": 1,
       "message": "why two times failed?",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a5567a8_be544f43",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ec2771b_ada0ea5b",
       "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b50ea698_8b7bb540",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d7db936_bb98d3d9",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c98e3e05_1011d4a9",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-05-07T06:27:36Z",
       "side": 1,
       "message": "can you add at what position lseek failed?",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffb0ab49_5e83bc7d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c98e3e05_1011d4a9",
       "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b3ade9c_72fb46a5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b21724b_a4bec46b",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75d1be11_58662db9",
@@ -99,6 +189,24 @@
       "writtenOn": "2024-05-07T06:27:36Z",
       "side": 1,
       "message": "can you please move this error line at line 293, bcz if it\u0027s stuck at sendStateSensorEvent then we could get atleast ffdc log first.",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc17ea96_848c8b07",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75d1be11_58662db9",
       "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1090b31e_770934f4",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b3ca3a0_6e73abe2",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5048d073_1e721d45",
@@ -133,6 +259,24 @@
       "writtenOn": "2024-05-07T06:27:36Z",
       "side": 1,
       "message": "if you print err no then easy to know why it\u0027s failed instead of guessing out of 3 err code.",
+      "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa2441d0_40fc5612",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5048d073_1e721d45",
       "revId": "7c6389085010f53ebd585b720f626ad737fd0cdd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
