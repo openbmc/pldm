@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8f1e279_ff84ec9f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "056c239c_06d655c9",
+      "range": {
+        "startLine": 88,
+        "startChar": 8,
+        "endLine": 88,
+        "endChar": 12
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d26b6cb5_676704b6",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-07T08:48:56Z",
       "side": 1,
       "message": "is it necessary to be auto? uint16?",
+      "range": {
+        "startLine": 198,
+        "startChar": 16,
+        "endLine": 198,
+        "endChar": 20
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87d7463b_a4a5e44b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d26b6cb5_676704b6",
       "range": {
         "startLine": 198,
         "startChar": 16,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01ad829b_a878b116",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:42:40Z",
+      "side": 1,
+      "message": "This is handled in improving logs commit, it is yet to get merged.",
+      "parentUuid": "4faeaf04_c764ed10",
+      "range": {
+        "startLine": 801,
+        "startChar": 8,
+        "endLine": 803,
+        "endChar": 56
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "158029b5_3dd954c5",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-07T08:48:56Z",
       "side": 1,
       "message": "eid is uint8 value, will this trace have a valid eid printed in lg2, if casting is removed?\niostream usually needed the unsigned cast for uint8 value to be printed",
+      "range": {
+        "startLine": 53,
+        "startChar": 14,
+        "endLine": 53,
+        "endChar": 17
+      },
+      "revId": "82897f3e9b37eff9d00548a42647027157909870",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "815daba3_14ebad63",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-10T06:42:40Z",
+      "side": 1,
+      "message": "This is what document says - \nThe APIs can handle (and format appropriately) any data of the following types: signed or unsigned integers, floating point numbers, booleans, strings (C-strings, std::strings, or std::string_views), sdbusplus enums and object_paths, generic enumerations (as numbers), exceptions, and pointers. The APIs will also allow arbitrary type formatting for any type which has a to_string function defined.\n\nSo, I think we are good.",
+      "parentUuid": "158029b5_3dd954c5",
       "range": {
         "startLine": 53,
         "startChar": 14,
