@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cacec9d7_fa6e414b",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:55:19Z",
+      "side": 1,
+      "message": "if you print softoffConfigJson path then user can decide that file not exist or it\u0027s empty with single trace",
+      "range": {
+        "startLine": 160,
+        "startChar": 55,
+        "endLine": 160,
+        "endChar": 72
+      },
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f23ec5c1_45e81bf0",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:55:19Z",
+      "side": 1,
+      "message": "Failed to get state sensor PDR during softoff",
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15114bea_f3aa6f04",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:55:19Z",
+      "side": 1,
+      "message": "soft off is not failed to receive pldm data but it\u0027s failed to receive data during soft off.\n\nsoft-off is procedure when remote terminus forcefully shutting down.\n\nmisleading trace correct it.",
+      "range": {
+        "startLine": 335,
+        "startChar": 51,
+        "endLine": 335,
+        "endChar": 55
+      },
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "819761f5_38e9663c",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:55:19Z",
+      "side": 1,
+      "message": "\"Failure to start remote terminus soft off wait timer, Exit the pldm-softpoweroff with response code:{NUM}\"\"",
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dadb6c7e_31e4a020",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:55:19Z",
+      "side": 1,
+      "message": "misleading trace.\nrephase like:\n\"Failed to process request while remote terminus soft off\"",
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
