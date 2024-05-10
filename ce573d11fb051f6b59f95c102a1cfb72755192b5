@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd4c9ec3_8f540563",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T13:11:23Z",
+      "side": 1,
+      "message": "i see Surveillance is implemented in oem layer, so it could be \u0027oem-ibm\u0027 instead of \u0027PLDM\u0027",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba8e44a6_455be1d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T13:11:23Z",
+      "side": 1,
+      "message": "remote terminus",
+      "range": {
+        "startLine": 10,
+        "startChar": 12,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "269e117d_63df0299",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T13:11:23Z",
+      "side": 1,
+      "message": "do want to mention how much time interval for Surveillance?",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f241a6d_5146ffb6",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T13:11:23Z",
+      "side": 1,
+      "message": "remote terminus all over the patch.",
+      "range": {
+        "startLine": 106,
+        "startChar": 51,
+        "endLine": 106,
+        "endChar": 55
+      },
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51aaec08_e34f5b13",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T13:11:23Z",
+      "side": 1,
+      "message": "improve logs as suggested.\ninfo(“Failed to stop surveillance timer while remote terminus status is ‘{HOST_TRANST_OFF}’ with Terminus ID ‘{ID}’ “)",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "193de24d_e8640d3b",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T13:11:23Z",
+      "side": 1,
+      "message": "can we have this function as private ? so no body can call explicitly timer to start/stop. let setSurvTimer do all the job.",
+      "range": {
+        "startLine": 240,
+        "startChar": 9,
+        "endLine": 240,
+        "endChar": 23
+      },
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53e90f28_3bbe25d4",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T13:11:23Z",
+      "side": 1,
+      "message": "can we have initialisation at constructor level both parameter?",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
