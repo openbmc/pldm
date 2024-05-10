@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d71e3b5_d4f5b0cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd6971d9_e54626fe",
+      "revId": "356f5361e2bbdda19a68a86ae828f3438be57096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c93b5823_c30e435c",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-05-08T13:40:54Z",
       "side": 1,
       "message": "[1] https://gerrit.openbmc.org/c/openbmc/pldm/+/70260",
+      "range": {
+        "startLine": 15,
+        "startChar": 2,
+        "endLine": 15,
+        "endChar": 51
+      },
+      "revId": "356f5361e2bbdda19a68a86ae828f3438be57096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "668bbfe4_d21c4e64",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c93b5823_c30e435c",
       "range": {
         "startLine": 15,
         "startChar": 2,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7838a7a1_509a1028",
+        "filename": "host-bmc/dbus/cpu_core.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:36Z",
+      "side": 1,
+      "message": "Microcode is computer software that is stored in nonvolatile storage on your tape device or library hardware. It controls the operation of your hardware. When your tape device or library hardware was manufactured, a microcode load was installed and shipped with your device.\n\nIf you are having trouble with your hardware, IBM® service personnel ask what level of microcode you have on your hardware. If they believe that you need a new level of microcode, they might instruct you to install a newer level of microcode on your hardware. They can provide you with updated microcode.\n\nYou can query the current level of microcode by issuing commands on the front panel of your hardware. Consult the appropriate hardware reference manual for specific instructions on querying your microcode level.",
+      "parentUuid": "6843fd58_72006c4f",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 30
+      },
+      "revId": "356f5361e2bbdda19a68a86ae828f3438be57096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cfd3324_4ffc2a66",
@@ -87,6 +153,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ddc501f_8a7e47d7",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9cfd3324_4ffc2a66",
+      "range": {
+        "startLine": 65,
+        "startChar": 8,
+        "endLine": 65,
+        "endChar": 41
+      },
+      "revId": "356f5361e2bbdda19a68a86ae828f3438be57096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0bf4143_f2162492",
@@ -100,6 +190,30 @@
       "writtenOn": "2024-05-08T13:30:32Z",
       "side": 1,
       "message": "Magic number?",
+      "range": {
+        "startLine": 1116,
+        "startChar": 17,
+        "endLine": 1116,
+        "endChar": 22
+      },
+      "revId": "356f5361e2bbdda19a68a86ae828f3438be57096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74ce4012_1919933e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:36Z",
+      "side": 1,
+      "message": "replaced with proper enum",
+      "parentUuid": "f0bf4143_f2162492",
       "range": {
         "startLine": 1116,
         "startChar": 17,
