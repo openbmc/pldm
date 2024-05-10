@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4e1f99_3c2f40ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "updated commit message as per suggestion.",
+      "parentUuid": "b24fb19c_6fe6775d",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 43
+      },
+      "revId": "56a7b26c8353501c61891a807405eed4dc43d8d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f64433d_377e9f4a",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cded6cea_3d4201d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f64433d_377e9f4a",
+      "range": {
+        "startLine": 9,
+        "startChar": 57,
+        "endLine": 9,
+        "endChar": 68
+      },
+      "revId": "56a7b26c8353501c61891a807405eed4dc43d8d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66717062_462d59f5",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-05-09T05:56:39Z",
       "side": 1,
       "message": "This commit message is having statements that were not in a flow , they were breaking abruptly. please re-phrase this commit message",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 45
+      },
+      "revId": "56a7b26c8353501c61891a807405eed4dc43d8d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "705e2a66_bffd78a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "corrected.",
+      "parentUuid": "66717062_462d59f5",
       "range": {
         "startLine": 17,
         "startChar": 0,
@@ -110,6 +182,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf902fa5_68a4f363",
+        "filename": "host-bmc/dbus/serialize.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "since serialise is singleton object and it\u0027s called from multiple places and can\u0027t expect each property can provide object path everytime, but here set corecount will\ncall first time serialise object creation but we can\u0027t guarantee that set corecount only will create first serialize object, so the intention is as soon as we get all the object path data then we can set object path to  serialise the property.",
+      "parentUuid": "6bdf2a74_aaa56de4",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 26
+      },
+      "revId": "56a7b26c8353501c61891a807405eed4dc43d8d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed0ef62d_fe20aeaa",
@@ -123,6 +219,30 @@
       "writtenOn": "2024-05-09T05:56:39Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 131,
+        "startChar": 50,
+        "endLine": 131,
+        "endChar": 55
+      },
+      "revId": "56a7b26c8353501c61891a807405eed4dc43d8d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2810633_d7f0bd50",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed0ef62d_fe20aeaa",
       "range": {
         "startLine": 131,
         "startChar": 50,

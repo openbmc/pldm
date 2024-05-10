@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d7fb3e9_ddf5e889",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "d0990e77_26547052",
+      "range": {
+        "startLine": 11,
+        "startChar": 41,
+        "endLine": 11,
+        "endChar": 43
+      },
+      "revId": "a818591ec3b47f5c55419775032428279d7bd0f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7017f2ed_da367e5b",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d369a87_80faf8fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "7017f2ed_da367e5b",
+      "range": {
+        "startLine": 12,
+        "startChar": 46,
+        "endLine": 12,
+        "endChar": 51
+      },
+      "revId": "a818591ec3b47f5c55419775032428279d7bd0f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d18f995_30922e31",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-05-08T12:46:22Z",
       "side": 1,
       "message": "could you briefly tell about the limited scope you are talking about? or give an example of a use case?",
+      "range": {
+        "startLine": 15,
+        "startChar": 27,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "a818591ec3b47f5c55419775032428279d7bd0f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22e9bd96_37b7ee7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:14Z",
+      "side": 1,
+      "message": "added as bcz of opaque pointer",
+      "parentUuid": "6d18f995_30922e31",
       "range": {
         "startLine": 15,
         "startChar": 27,
