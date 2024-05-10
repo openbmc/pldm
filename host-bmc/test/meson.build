@@ -7,6 +7,11 @@ test_sources = [
   '../utils.cpp',
   '../dbus/custom_dbus.cpp',
   '../dbus/serialize.cpp',
+  '../dbus/asset.cpp',
+  '../dbus/associations.cpp',
+  '../dbus/cable.cpp',
+  '../dbus/pcie_device.cpp',
+  '../dbus/pcie_slot.cpp',
 ]
 
 tests = [
