@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b600c5be_18b04612",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64a8deda_55f2d6b6",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 54
+      },
+      "revId": "79a9a990301671f7bc564110b48883b0a823c7f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82a00721_a6cf0144",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-08T13:29:51Z",
       "side": 1,
       "message": "fix the spacing",
+      "range": {
+        "startLine": 87,
+        "startChar": 24,
+        "endLine": 87,
+        "endChar": 28
+      },
+      "revId": "79a9a990301671f7bc564110b48883b0a823c7f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38cb79a7_f0f7b485",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82a00721_a6cf0144",
       "range": {
         "startLine": 87,
         "startChar": 24,
