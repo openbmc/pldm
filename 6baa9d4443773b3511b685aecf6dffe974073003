@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbd4a9e4_9c67123f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "d7dd2da9_051ec547",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 25
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd8a4f57_61e64540",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-08T13:15:12Z",
       "side": 1,
       "message": "restoring",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 7
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad89b914_860c5540",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "cd8a4f57_61e64540",
       "range": {
         "startLine": 10,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b998d3a1_2bdcf839",
+        "filename": "host-bmc/dbus/deserialize.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "38b838d4_66eae842",
+      "range": {
+        "startLine": 25,
+        "startChar": 42,
+        "endLine": 25,
+        "endChar": 56
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b084380_b896c3e7",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-08T13:15:12Z",
       "side": 1,
       "message": "could this type be added to utils?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 48
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "288ecfc9_e0f5517c",
+        "filename": "host-bmc/dbus/deserialize.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "it\u0027s used only single time in whole code so better to not define now, but if same type used elsewhere then definitely we should define in global space.",
+      "parentUuid": "9b084380_b896c3e7",
       "range": {
         "startLine": 27,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1c943a9_5f0ddbaf",
+        "filename": "host-bmc/dbus/deserialize.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "it can be done but only 41.42 can be moved to separate function to return jason object because rest of the data can be different from the different json.\nif we move 2 line to a function then won\u0027t make much impact.",
+      "parentUuid": "bf20f305_4ba9ca0b",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59f223e3_51058e0f",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-05-08T13:15:12Z",
       "side": 1,
       "message": "do we need to use std::ranges::transform here? isn\u0027t directly inserting elements using a loop more efficient?",
+      "range": {
+        "startLine": 52,
+        "startChar": 7,
+        "endLine": 52,
+        "endChar": 30
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93027197_18988e88",
+        "filename": "host-bmc/dbus/deserialize.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "if we use loop then json object value conversion needs to be handle and make sure all the data can be copied properly. instead if existing algorithm is there to take all the huddle and code looks nit, so better to use existing algorithm over for loop.",
+      "parentUuid": "59f223e3_51058e0f",
       "range": {
         "startLine": 52,
         "startChar": 7,
@@ -162,6 +306,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b651ffb6_fe70a181",
+        "filename": "host-bmc/dbus/deserialize.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "3fa7c8c0_c6631d84",
+      "range": {
+        "startLine": 94,
+        "startChar": 8,
+        "endLine": 94,
+        "endChar": 62
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7fa8c15_8e471554",
@@ -175,6 +343,30 @@
       "writtenOn": "2024-05-08T13:15:12Z",
       "side": 1,
       "message": "FMI, why are these values inside braces?",
+      "range": {
+        "startLine": 3,
+        "startChar": 23,
+        "endLine": 3,
+        "endChar": 30
+      },
+      "revId": "6baa9d4443773b3511b685aecf6dffe974073003",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "460250d5_3295ef8c",
+        "filename": "oem/ibm/configurations/dbus-config.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-10T20:16:29Z",
+      "side": 1,
+      "message": "it\u0027s a list of entity to be restored.",
+      "parentUuid": "a7fa8c15_8e471554",
       "range": {
         "startLine": 3,
         "startChar": 23,
