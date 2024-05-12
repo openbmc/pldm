@@ -18,8 +18,35 @@ static constexpr auto pciePath = "/var/lib/pldm/pcie-topology/";
 constexpr auto topologyFile = "topology";
 constexpr auto cableInfoFile = "cableinfo";
 
+// Slot location code structure contains multiple slot location code
+// suffix structures.
+// Each slot location code suffix structure is as follows
+// {Slot location code suffix size(uint8_t),
+//  Slot location code suffix(variable size)}
+constexpr auto sizeOfSuffixSizeDataMember = 1;
+
+// Each slot location structure contains
+// {
+//   Number of slot location codes (1byte),
+//   Slot location code Common part size (1byte)
+//   Slot location common part (Var)
+// }
+constexpr auto slotLocationDataMemberSize = 2;
+
 namespace fs = std::filesystem;
+
 std::unordered_map<uint16_t, bool> PCIeInfoHandler::receivedFiles;
+std::unordered_map<linkIdT,
+                   std::tuple<linkStatusT, linkTypeT, linkSpeedT, linkWidthT,
+                              pcieHostBridgeLocT, localPortT, remotePortT,
+                              ioSlotLocationT, linkIdT>>
+    PCIeInfoHandler::topologyInformation;
+std::unordered_map<
+    cableLinkNumT,
+    std::tuple<linkIdT, localPortLocCodeT, ioSlotLocationCodeT, cablePartNumT,
+               cableLengthT, cableTypeT, cableStatusT>>
+    PCIeInfoHandler::cableInformation;
+std::unordered_map<linkIdT, linkTypeT> PCIeInfoHandler::linkTypeInfo;
 
 PCIeInfoHandler::PCIeInfoHandler(uint32_t fileHandle, uint16_t fileType) :
     FileHandler(fileHandle), infoType(fileType)
@@ -103,6 +130,9 @@ int PCIeInfoHandler::fileAck(uint8_t /*fileStatus*/)
             receivedFiles.at(PLDM_FILE_TYPE_PCIE_TOPOLOGY))
         {
             receivedFiles.clear();
+            // parse the topology blob and cache the information
+            // for further processing
+            parseTopologyData();
         }
     }
     catch (const std::out_of_range& e)
@@ -110,6 +140,306 @@ int PCIeInfoHandler::fileAck(uint8_t /*fileStatus*/)
         info("Received only one of the topology file");
     }
     return PLDM_SUCCESS;
+}
+
+void PCIeInfoHandler::parseTopologyData()
+{
+    int fd = open((fs::path(pciePath) / topologyFile).string().c_str(),
+                  O_RDONLY, S_IRUSR | S_IWUSR);
+    if (fd == -1)
+    {
+        perror("Topology file not present");
+        return;
+    }
+    pldm::utils::CustomFD topologyFd(fd);
+    struct stat sb;
+    if (fstat(fd, &sb) == -1)
+    {
+        perror("Could not get topology file size");
+        return;
+    }
+
+    auto topologyCleanup = [sb](void* fileInMemory) {
+        munmap(fileInMemory, sb.st_size);
+    };
+
+    // memory map the topology file into pldm memory
+    void* fileInMemory = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE,
+                              topologyFd(), 0);
+    if (MAP_FAILED == fileInMemory)
+    {
+        int rc = -errno;
+        error("mmap on topology file failed, RC={RC}", "RC", rc);
+        return;
+    }
+
+    std::unique_ptr<void, decltype(topologyCleanup)> topologyPtr(
+        fileInMemory, topologyCleanup);
+
+    auto pciLinkList = reinterpret_cast<struct topologyBlob*>(fileInMemory);
+    uint16_t numOfLinks = 0;
+    if (pciLinkList != nullptr)
+    {
+        numOfLinks = htobe16(pciLinkList->numPcieLinkEntries);
+    }
+    else
+    {
+        error("Parsing of topology file failed : pciLinkList is null");
+        return;
+    }
+
+    struct pcieLinkEntry* singleEntryData =
+        (struct pcieLinkEntry*)(((uint8_t*)pciLinkList) + 8);
+
+    if (singleEntryData == nullptr)
+    {
+        error("Parsing of topology file failed : single_link is null");
+        return;
+    }
+
+    // iterate over every pcie link and get the link specific attributes
+    for ([[maybe_unused]] const auto& link :
+         std::views::iota(0) | std::views::take(numOfLinks))
+    {
+        // get the link id
+        auto linkId = htobe16(singleEntryData->linkId);
+
+        // get parent link id
+        auto parentLinkId = htobe16(singleEntryData->parentLinkId);
+
+        // get link status
+        auto linkStatus = singleEntryData->linkStatus;
+
+        // get link type
+        auto linkType = singleEntryData->linkType;
+        if (linkType != Unknown)
+        {
+            linkTypeInfo[linkId] = linkType;
+        }
+
+        // get link speed
+        auto linkSpeed = singleEntryData->linkSpeed;
+
+        // get link width
+        auto width = singleEntryData->linkWidth;
+
+        // get the PCIe Host Bridge Location
+        size_t pcieLocCodeSize = singleEntryData->pcieHostBridgeLocCodeSize;
+        std::vector<char> pcieHostBridgeLocation(
+            (char*)singleEntryData +
+                htobe16(singleEntryData->pcieHostBridgeLocCodeOff),
+            (char*)singleEntryData +
+                htobe16(singleEntryData->pcieHostBridgeLocCodeOff) +
+                (unsigned)pcieLocCodeSize);
+        std::string pcieHostBridgeLocationCode(pcieHostBridgeLocation.begin(),
+                                               pcieHostBridgeLocation.end());
+
+        // get the local port - top location
+        size_t localTopPortLocSize = singleEntryData->topLocalPortLocCodeSize;
+        std::vector<char> localTopPortLocation(
+            (char*)singleEntryData +
+                htobe16(singleEntryData->topLocalPortLocCodeOff),
+            (char*)singleEntryData +
+                htobe16(singleEntryData->topLocalPortLocCodeOff) +
+                (int)localTopPortLocSize);
+        std::string localTopPortLocationCode(localTopPortLocation.begin(),
+                                             localTopPortLocation.end());
+
+        // get the local port - bottom location
+        size_t localBottomPortLocSize =
+            singleEntryData->bottomLocalPortLocCodeSize;
+        std::vector<char> localBottomPortLocation(
+            (char*)singleEntryData +
+                htobe16(singleEntryData->bottomLocalPortLocCodeOff),
+            (char*)singleEntryData +
+                htobe16(singleEntryData->bottomLocalPortLocCodeOff) +
+                (int)localBottomPortLocSize);
+        std::string localBottomPortLocationCode(localBottomPortLocation.begin(),
+                                                localBottomPortLocation.end());
+
+        // get the remote port - top location
+        size_t remoteTopPortLocSize = singleEntryData->topRemotePortLocCodeSize;
+        std::vector<char> remoteTopPortLocation(
+            (char*)singleEntryData +
+                htobe16(singleEntryData->topRemotePortLocCodeOff),
+            (char*)singleEntryData +
+                htobe16(singleEntryData->topRemotePortLocCodeOff) +
+                (int)remoteTopPortLocSize);
+        std::string remoteTopPortLocationCode(remoteTopPortLocation.begin(),
+                                              remoteTopPortLocation.end());
+
+        // get the remote port - bottom location
+        size_t remoteBottomLocSize =
+            singleEntryData->bottomRemotePortLocCodeSize;
+        std::vector<char> remoteBottomPortLocation(
+            (char*)singleEntryData +
+                htobe16(singleEntryData->bottomRemotePortLocCodeOff),
+            (char*)singleEntryData +
+                htobe16(singleEntryData->bottomRemotePortLocCodeOff) +
+                (int)remoteBottomLocSize);
+        std::string remoteBottomPortLocationCode(
+            remoteBottomPortLocation.begin(), remoteBottomPortLocation.end());
+
+        struct slotLocCode* slotData =
+            (struct slotLocCode*)(((uint8_t*)singleEntryData) +
+                                  htobe16(singleEntryData->slotLocCodesOffset));
+        if (slotData == nullptr)
+        {
+            error("Parsing the topology file failed : slotData is null");
+            return;
+        }
+        // get the Slot location code common part
+        size_t numOfSlots = slotData->numSlotLocCodes;
+        size_t slotLocCodeCompartSize = slotData->slotLocCodesCmnPrtSize;
+        std::vector<char> slotLocation((char*)slotData->slotLocCodesCmnPrt,
+                                       (char*)slotData->slotLocCodesCmnPrt +
+                                           (int)slotLocCodeCompartSize);
+        std::string slotLocationCode(slotLocation.begin(), slotLocation.end());
+
+        uint8_t* suffixData = (uint8_t*)slotData + slotLocationDataMemberSize +
+                              slotData->slotLocCodesCmnPrtSize;
+        if (suffixData == nullptr)
+        {
+            error("slot location suffix data is nullptr");
+            return;
+        }
+
+        // create the full slot location code by combining common part and
+        // suffix part
+        std::string slotSuffixLocationCode;
+        std::vector<std::string> slotFinaLocationCode{};
+        for ([[maybe_unused]] const auto& slot :
+             std::views::iota(0) | std::views::take(numOfSlots))
+        {
+            struct slotLocCodeSuf* slotLocSufData =
+                (struct slotLocCodeSuf*)suffixData;
+            if (slotLocSufData == nullptr)
+            {
+                error("slot location suffix data is nullptr");
+                break;
+            }
+
+            size_t slotLocCodeSuffixSize = slotLocSufData->slotLocCodeSz;
+            if (slotLocCodeSuffixSize > 0)
+            {
+                std::vector<char> slotSuffixLocation(
+                    (char*)slotLocSufData + 1,
+                    (char*)slotLocSufData + 1 + (int)slotLocCodeSuffixSize);
+                std::string slotSuffLocationCode(slotSuffixLocation.begin(),
+                                                 slotSuffixLocation.end());
+
+                slotSuffixLocationCode = slotSuffLocationCode;
+            }
+            std::string slotFullLocationCode = slotLocationCode +
+                                               slotSuffixLocationCode;
+            slotFinaLocationCode.push_back(slotFullLocationCode);
+
+            // move the pointer to next slot
+            suffixData += sizeOfSuffixSizeDataMember + slotLocCodeSuffixSize;
+        }
+
+        // store the information into a map
+        topologyInformation[linkId] =
+            std::make_tuple(linkStateMap[linkStatus], linkType, linkSpeed,
+                            linkWidth[width], pcieHostBridgeLocationCode,
+                            std::make_pair(localTopPortLocationCode,
+                                           localBottomPortLocationCode),
+                            std::make_pair(remoteTopPortLocationCode,
+                                           remoteBottomPortLocationCode),
+                            slotFinaLocationCode, parentLinkId);
+
+        // move the pointer to next link
+        singleEntryData =
+            (struct pcieLinkEntry*)((uint8_t*)singleEntryData +
+                                    htons(singleEntryData->entryLength));
+    }
+    // Need to call cable info at the end , because we dont want to parse
+    // cable info without parsing the successfull topology successfully
+    // Having partial information is of no use.
+    parseCableInfo();
+}
+
+void PCIeInfoHandler::parseCableInfo()
+{
+    int fd = open((fs::path(pciePath) / cableInfoFile).string().c_str(),
+                  O_RDONLY, S_IRUSR | S_IWUSR);
+    if (fd == -1)
+    {
+        perror("CableInfo file not present");
+        return;
+    }
+    pldm::utils::CustomFD cableInfoFd(fd);
+    struct stat sb;
+
+    if (fstat(fd, &sb) == -1)
+    {
+        perror("Could not get cableinfo file size");
+        return;
+    }
+
+    auto cableInfoCleanup = [sb](void* fileInMemory) {
+        munmap(fileInMemory, sb.st_size);
+    };
+
+    void* fileInMemory = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE,
+                              cableInfoFd(), 0);
+
+    if (MAP_FAILED == fileInMemory)
+    {
+        int rc = -errno;
+        error("mmap on cable ifno file failed, RC={RC}", "RC", rc);
+        return;
+    }
+
+    std::unique_ptr<void, decltype(cableInfoCleanup)> cablePtr(
+        fileInMemory, cableInfoCleanup);
+
+    auto cableList =
+        reinterpret_cast<struct cableAttributesList*>(fileInMemory);
+
+    // get number of cable links
+    auto numOfCableLinks = htobe16(cableList->numOfCables);
+
+    struct pciLinkCableAttrT* cableData =
+        (struct pciLinkCableAttrT*)(((uint8_t*)cableList) + 8);
+
+    if (cableData == nullptr)
+    {
+        error("Cable info parsing failed , cableData = nullptr");
+        return;
+    }
+
+    // iterate over each pci cable link
+    for (const auto& cable :
+         std::views::iota(0) | std::views::take(numOfCableLinks))
+    {
+        // get the link id
+        auto linkId = htobe16(cableData->linkId);
+
+        std::string localPortLocCode(
+            (char*)cableData + htobe16(cableData->hostPortLocationCodeOffset),
+            cableData->hostPortLocationCodeSize);
+
+        std::string ioSlotLocationCode(
+            (char*)cableData +
+                htobe16(cableData->ioEnclosurePortLocationCodeOffset),
+            cableData->ioEnclosurePortLocationCodeSize);
+
+        std::string cablePartNum((char*)cableData +
+                                     htobe16(cableData->cablePartNumberOffset),
+                                 cableData->cablePartNumberSize);
+
+        // cache the data into a map
+        cableInformation[cable] = std::make_tuple(
+            linkId, localPortLocCode, ioSlotLocationCode, cablePartNum,
+            cableLengthMap[cableData->cableLength],
+            cableTypeMap[cableData->cableType],
+            cableStatusMap[cableData->cableStatus]);
+        // move the cable data pointer
+
+        cableData = (struct pciLinkCableAttrT*)(((uint8_t*)cableData) +
+                                                ntohs(cableData->entryLength));
+    }
 }
 
 } // namespace responder
