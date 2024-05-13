@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bacea57_71b28681",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-13T11:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cacec9d7_fa6e414b",
+      "range": {
+        "startLine": 160,
+        "startChar": 55,
+        "endLine": 160,
+        "endChar": 72
+      },
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f23ec5c1_45e81bf0",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-05-10T20:55:19Z",
       "side": 1,
       "message": "Failed to get state sensor PDR during softoff",
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "191302ce_f60ec5d3",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-13T11:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f23ec5c1_45e81bf0",
       "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aebedf0_c54789bb",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-13T11:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15114bea_f3aa6f04",
+      "range": {
+        "startLine": 335,
+        "startChar": 51,
+        "endLine": 335,
+        "endChar": 55
+      },
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "819761f5_38e9663c",
@@ -81,6 +147,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "414134c6_10944d0e",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-13T11:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "819761f5_38e9663c",
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dadb6c7e_31e4a020",
@@ -94,6 +178,24 @@
       "writtenOn": "2024-05-10T20:55:19Z",
       "side": 1,
       "message": "misleading trace.\nrephase like:\n\"Failed to process request while remote terminus soft off\"",
+      "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "961a0e1d_999a4b3e",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-13T11:51:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dadb6c7e_31e4a020",
       "revId": "0776ac0488e29d36841ff60f035717a75a9f750f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
