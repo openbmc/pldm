@@ -16,6 +16,24 @@
       "message": "why were these changes done? can you bring it back?",
       "revId": "4e69d2528c9483621151d52594e6fb6ec7853550",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01dcdab8_7cd4926e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T11:31:16Z",
+      "side": 0,
+      "message": "it\u0027s part of refactoring code, new line between each line looks not good",
+      "parentUuid": "cbc98c2c_aac1e059",
+      "revId": "4e69d2528c9483621151d52594e6fb6ec7853550",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
