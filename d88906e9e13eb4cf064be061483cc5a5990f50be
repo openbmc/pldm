@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e218873a_f368543c",
+        "filename": "meson.build",
+        "patchSetId": 21
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T05:23:22Z",
+      "side": 1,
+      "message": "do you want to change this to PLDM_STORE_FILE as well?",
+      "range": {
+        "startLine": 48,
+        "startChar": 22,
+        "endLine": 48,
+        "endChar": 37
+      },
+      "revId": "d88906e9e13eb4cf064be061483cc5a5990f50be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
