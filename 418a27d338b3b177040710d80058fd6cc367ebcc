@@ -16,6 +16,23 @@
       "message": "we need meta-phosphor commit which adds the same dependency , and this commit should be merged along with the meta-phosphor commit. otherwise openbmc build might be broken.",
       "revId": "418a27d338b3b177040710d80058fd6cc367ebcc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e867bed7_3a147e9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-13T16:37:45Z",
+      "side": 1,
+      "message": "I arrived here because of a change in openbmc/openbmc that enabled cereal and tracked down where it was coming from.  Do we really want to use cereal?  I thought as a project we were generally moving away from that and shifting to using nlohmann-json directly?",
+      "revId": "418a27d338b3b177040710d80058fd6cc367ebcc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
