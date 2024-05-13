@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b02a340_030dc87e",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T07:29:03Z",
+      "side": 1,
+      "message": "looks like confusing log to me.\nyou can rephase it like:\"Failed to setup Unix socket while write from memory for interface{}\"",
+      "revId": "ebe1610f4977aab0d87e34ae460ba4e9714c0ad8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b3cad4d_f5e2b3a5",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T07:29:03Z",
+      "side": 1,
+      "message": "can you print interface dumpIntf  here?",
+      "revId": "ebe1610f4977aab0d87e34ae460ba4e9714c0ad8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0746d53_9c0d018b",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T07:29:03Z",
+      "side": 1,
+      "message": "can you print what socketInterface path and addr.sun_path for comparison?",
+      "revId": "ebe1610f4977aab0d87e34ae460ba4e9714c0ad8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
