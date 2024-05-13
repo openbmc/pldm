@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68848ab9_f5d42998",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T08:59:40Z",
+      "side": 1,
+      "message": "nit comment",
+      "revId": "3c0f07baece505828d33b2d1d03122e77cf3c883",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "476f5f43_dfbc8656",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T08:59:40Z",
+      "side": 1,
+      "message": "why is this included?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 1
+      },
+      "revId": "3c0f07baece505828d33b2d1d03122e77cf3c883",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
