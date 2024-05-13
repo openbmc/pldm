@@ -39,6 +39,30 @@
       },
       "revId": "3c0f07baece505828d33b2d1d03122e77cf3c883",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eaeb4a5_c1eefa75",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T10:14:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "476f5f43_dfbc8656",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 1
+      },
+      "revId": "3c0f07baece505828d33b2d1d03122e77cf3c883",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
