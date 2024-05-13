@@ -39,6 +39,30 @@
       },
       "revId": "68be6a152ed9191beb2ac22c0597e5897850a14c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d191390_102da4da",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T07:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aed73d62_b99432ed",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 3
+      },
+      "revId": "68be6a152ed9191beb2ac22c0597e5897850a14c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
