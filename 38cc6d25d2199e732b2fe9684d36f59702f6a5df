@@ -1,0 +1,303 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ac1026b_080f461c",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "why are we naming all the variables with \"T\" ?",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "326a2982_941ad144",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "can we write a doxygen on what it does?",
+      "range": {
+        "startLine": 155,
+        "startChar": 3,
+        "endLine": 155,
+        "endChar": 19
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f701dfa3_8eedd3cd",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "redundant variable",
+      "range": {
+        "startLine": 171,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 24
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f5e0d6f_75560a7a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "if (pciLinkList)",
+      "range": {
+        "startLine": 181,
+        "startChar": 4,
+        "endLine": 181,
+        "endChar": 31
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85417764_f4f697b7",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 192,
+        "startChar": 56,
+        "endLine": 192,
+        "endChar": 61
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a814720_108c72e8",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "if(!singleEntryData)",
+      "range": {
+        "startLine": 194,
+        "startChar": 4,
+        "endLine": 194,
+        "endChar": 35
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c6b1ba6_dfde0480",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "why this?",
+      "range": {
+        "startLine": 205,
+        "startChar": 22,
+        "endLine": 205,
+        "endChar": 29
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2f27622_fb8b52fb",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "if(!slotData)",
+      "range": {
+        "startLine": 286,
+        "startChar": 8,
+        "endLine": 286,
+        "endChar": 32
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7467094d_a2131596",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "if(!suffixData)",
+      "range": {
+        "startLine": 301,
+        "startChar": 8,
+        "endLine": 301,
+        "endChar": 34
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a2a2f2b_be1cae5c",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "if(!slotLocSufData)",
+      "range": {
+        "startLine": 316,
+        "startChar": 11,
+        "endLine": 316,
+        "endChar": 42
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9e26e59_0d1a750a",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "better this",
+      "range": {
+        "startLine": 406,
+        "startChar": 4,
+        "endLine": 406,
+        "endChar": 29
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c274793e_803289af",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "can we add doxygen in every struct conversion? throughout the commit",
+      "range": {
+        "startLine": 419,
+        "startChar": 7,
+        "endLine": 431,
+        "endChar": 1
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e45eea7_c279cd40",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T11:03:52Z",
+      "side": 1,
+      "message": "format",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 48,
+        "endChar": 79
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
