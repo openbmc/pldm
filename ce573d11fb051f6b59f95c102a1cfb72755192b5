@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8048eb46_e10e4a29",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-13T10:51:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd4c9ec3_8f540563",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba8e44a6_455be1d5",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccf9de2a_a0d68cb8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-13T10:51:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba8e44a6_455be1d5",
+      "range": {
+        "startLine": 10,
+        "startChar": 12,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "269e117d_63df0299",
@@ -60,6 +108,24 @@
       "writtenOn": "2024-05-10T13:11:23Z",
       "side": 1,
       "message": "do want to mention how much time interval for Surveillance?",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "871a6e23_5af0e29c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-13T10:51:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "269e117d_63df0299",
       "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -104,6 +170,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfd56e5a_16616d65",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-13T10:51:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51aaec08_e34f5b13",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "193de24d_e8640d3b",
@@ -127,6 +211,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecac2d74_07dcab6c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-13T10:51:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "193de24d_e8640d3b",
+      "range": {
+        "startLine": 240,
+        "startChar": 9,
+        "endLine": 240,
+        "endChar": 23
+      },
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53e90f28_3bbe25d4",
@@ -140,6 +248,24 @@
       "writtenOn": "2024-05-10T13:11:23Z",
       "side": 1,
       "message": "can we have initialisation at constructor level both parameter?",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2306395d_d96147c6",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-13T10:51:03Z",
+      "side": 1,
+      "message": "any specific reason to initialise in the constructor?",
+      "parentUuid": "53e90f28_3bbe25d4",
       "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
