@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "162568a2_96332d77",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T12:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2cc2714_ef8de634",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 43
+      },
+      "revId": "2c144deeeb57e0ff6ff1ea2df1a1c63474a90b92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "160ed274_820defcc",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-13T11:47:58Z",
       "side": 1,
       "message": "this does not seem correct, there are other places where we still use pldm_entity_node, only while creating the dbus map ..we are using pldm_entity instead.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 28
+      },
+      "revId": "2c144deeeb57e0ff6ff1ea2df1a1c63474a90b92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd71ee3e_e09c0a03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T12:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "160ed274_820defcc",
       "range": {
         "startLine": 9,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f95aa846_4b96bd8a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T12:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d5158c8_bbd44139",
+      "range": {
+        "startLine": 12,
+        "startChar": 55,
+        "endLine": 12,
+        "endChar": 59
+      },
+      "revId": "2c144deeeb57e0ff6ff1ea2df1a1c63474a90b92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c36d435_492bc056",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-13T11:47:58Z",
       "side": 1,
       "message": "rephrase this entire commit message, this seems grammatically broken.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 37
+      },
+      "revId": "2c144deeeb57e0ff6ff1ea2df1a1c63474a90b92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71aa86a5_f75d2dc8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T12:39:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c36d435_492bc056",
       "range": {
         "startLine": 13,
         "startChar": 0,
