@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47632a51_5dfd978b",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-13T09:15:11Z",
+      "side": 1,
+      "message": "prefer strtol() instead of using atoi() which is not safe.\n\nfrom https://pubs.opengroup.org/onlinepubs/9699919799/functions/atoi.html \n\n```\nThe atoi() function is subsumed by strtol() but is retained because it is used extensively in existing code. If the number is not known to be in range, strtol() should be used because atoi() is not required to perform any error checking\n```",
+      "range": {
+        "startLine": 227,
+        "startChar": 11,
+        "endLine": 227,
+        "endChar": 52
+      },
+      "revId": "cde564b95b2dfa76adbdbef9c8a1be3c129929a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
