@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5032cf83_0b77e639",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T05:10:18Z",
+      "side": 1,
+      "message": "Changes looks good to me, small nit pick comment",
+      "revId": "68be6a152ed9191beb2ac22c0597e5897850a14c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aed73d62_b99432ed",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-13T05:10:18Z",
+      "side": 1,
+      "message": "format",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 3
+      },
+      "revId": "68be6a152ed9191beb2ac22c0597e5897850a14c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
