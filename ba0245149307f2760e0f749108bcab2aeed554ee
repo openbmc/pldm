@@ -16,6 +16,24 @@
       "message": "can you just update the commit message with a line stating the spec or the doc which tells how a casting is handled in the logs?",
       "revId": "ba0245149307f2760e0f749108bcab2aeed554ee",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec997c38_3dd30537",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-13T12:22:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12a32d10_56794755",
+      "revId": "ba0245149307f2760e0f749108bcab2aeed554ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
