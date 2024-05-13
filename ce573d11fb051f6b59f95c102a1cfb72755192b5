@@ -292,6 +292,24 @@
       "parentUuid": "53e90f28_3bbe25d4",
       "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c211ca01_186ae681",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T13:11:15Z",
+      "side": 1,
+      "message": "it would be good if we initialise at constructor level since readability is good and easy to identify initialisation of variable and nit code.",
+      "parentUuid": "2306395d_d96147c6",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

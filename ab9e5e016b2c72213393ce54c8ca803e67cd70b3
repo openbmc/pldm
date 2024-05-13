@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a466f7b_9af0d870",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T13:11:15Z",
+      "side": 1,
+      "message": "TID missing ?",
+      "range": {
+        "startLine": 656,
+        "startChar": 56,
+        "endLine": 656,
+        "endChar": 59
+      },
+      "revId": "ab9e5e016b2c72213393ce54c8ca803e67cd70b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f01653cf_cb2efdb0",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-13T13:11:15Z",
+      "side": 1,
+      "message": "doxygen format",
+      "revId": "ab9e5e016b2c72213393ce54c8ca803e67cd70b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
