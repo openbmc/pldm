@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e8d0b0_9fa5a876",
+        "filename": "host-bmc/dbus/deserialize.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-13T14:37:24Z",
+      "side": 1,
+      "message": "avoid names like i",
+      "range": {
+        "startLine": 55,
+        "startChar": 26,
+        "endLine": 55,
+        "endChar": 28
+      },
+      "revId": "617c4001fc84906954282a42990f707a340902ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "465b440c_6223be37",
+        "filename": "host-bmc/dbus/deserialize.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-13T14:37:24Z",
+      "side": 1,
+      "message": "!hostPDRHandler",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 33
+      },
+      "revId": "617c4001fc84906954282a42990f707a340902ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b565473_4802b72a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-13T14:37:24Z",
+      "side": 1,
+      "message": "can this be an inline function instead ?",
+      "range": {
+        "startLine": 1139,
+        "startChar": 21,
+        "endLine": 1139,
+        "endChar": 41
+      },
+      "revId": "617c4001fc84906954282a42990f707a340902ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44fe9ccb_c85e1828",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-13T14:37:24Z",
+      "side": 1,
+      "message": "change the variable name ..it is confusing.\n\nand also const reference ?",
+      "range": {
+        "startLine": 1140,
+        "startChar": 54,
+        "endLine": 1140,
+        "endChar": 58
+      },
+      "revId": "617c4001fc84906954282a42990f707a340902ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4551c00_e064ccbd",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-13T14:37:24Z",
+      "side": 1,
+      "message": "rephrase this.",
+      "range": {
+        "startLine": 174,
+        "startChar": 61,
+        "endLine": 174,
+        "endChar": 65
+      },
+      "revId": "617c4001fc84906954282a42990f707a340902ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
