@@ -310,6 +310,24 @@
       "parentUuid": "2306395d_d96147c6",
       "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7628ae4_be3449c4",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-14T05:52:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c211ca01_186ae681",
+      "revId": "ce573d11fb051f6b59f95c102a1cfb72755192b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
