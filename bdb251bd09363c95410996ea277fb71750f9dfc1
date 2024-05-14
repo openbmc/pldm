@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e22e860_41f51e09",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-14T07:08:07Z",
+      "side": 1,
+      "message": "could you mention max allowable limit?",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 28
+      },
+      "revId": "bdb251bd09363c95410996ea277fb71750f9dfc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79ed96e1_31a49f2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-14T07:08:07Z",
+      "side": 1,
+      "message": "how was this tested?",
+      "revId": "bdb251bd09363c95410996ea277fb71750f9dfc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
