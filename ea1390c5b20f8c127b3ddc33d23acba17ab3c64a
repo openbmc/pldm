@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a29173db_9cff73e6",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-15T19:16:43Z",
+      "side": 1,
+      "message": "Are we really going to discuss the merits of a per attribute-type file?  It was a lazy / sloppy choice.\n\n\u003e In the systems like IBM there are nearly 150 BIOS attributes, creating separate files make them easy to maintain.\n\nIf maintaining 1 file with 150 entries is difficult, maintaining 3 files with 50 entries is not \"easy\".  In fact, it is clearly *harder* to maintain because you now can\u0027t even organize these attributes based on usage patterns.  For example, you probably have 15+ attributes related to DIMM settings; these are now spread across 3 different files in random places in the files, rather than all of them in close proximity to each other.\n\nWhy not only allow only 1 attribute per file then?",
+      "parentUuid": "8fcbd4bf_ae91fc56",
+      "range": {
+        "startLine": 179,
+        "startChar": 40,
+        "endLine": 181,
+        "endChar": 37
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c2f1f94_99104bf1",
         "filename": "README.md",
         "patchSetId": 9
@@ -208,6 +232,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ec020ef_2b8d0585",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-15T19:16:43Z",
+      "side": 1,
+      "message": "My point was I have no idea how to connect that sentence (\"more info is documented\") with the information that immediately follows (after the \":\").",
+      "parentUuid": "b828d8bf_5f22ae8b",
+      "range": {
+        "startLine": 183,
+        "startChar": 60,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05a51685_b29415e6",
         "filename": "README.md",
         "patchSetId": 9
@@ -325,6 +373,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bb39a3b4_4494e8e0",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-15T19:16:43Z",
+      "side": 1,
+      "message": "Can you please document this part then?  How do we generate an AttributeRegistry from PLDM and share that with bmcweb?  I don\u0027t see any evidence that this actually happens.  Is this something you have in downstream commits?\n\nHow do you combine 3 different attribute files into a single AttributeRegistry?  What is the identifier for the AttributeRegistry?  How do we version it?\n\nHow do you handle a multi-host or heterogeneous configuration?  You can have a blade server with two different processor architectures.  There has to be something related to the exact attribute collection that ends up turning into AttributeRegistry identifiers so that external tooling can disambiguate.\n\nYour reference here to AtttributeRegistry makes me think even more is not documented...",
+      "parentUuid": "b12dad49_1e2f89d7",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91d697e4_54454cbe",
         "filename": "README.md",
         "patchSetId": 9
@@ -354,6 +420,24 @@
       "side": 1,
       "message": "The BMC GUI displays the BIOS Attribute Registry to the users. Redfish schema https://redfish.dmtf.org/schemas/v1/AttributeRegistry.v1_3_8.json talks about DisplayName - \"The user-readable display string for the attribute in the defined language.\"",
       "parentUuid": "91d697e4_54454cbe",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e44435cf_2c91991b",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-15T19:16:43Z",
+      "side": 1,
+      "message": "If these attributes are somehow related to the Redfish AttributeRegistry, let\u0027s be very clear about that (by changing the key name).  It seems like these attributes are likely specific to Redfish, so let\u0027s use Redfish in the name?  I assume these turn into some specific property in the AttributeRegistry entries, so ideally we use that same name.\n\nMaybe something like this?\n\n```\n{\n   ...\n   \"redfish\" : { \"display_name\": ..., \"help_text\": ... },\n   ...\n}\n```",
+      "parentUuid": "ac59b8b6_d0eddbf6",
       "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -407,6 +491,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b5c6990_68e3cb4c",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-15T19:16:43Z",
+      "side": 1,
+      "message": "Do we actually need to support all of these though?  I don\u0027t really care what the specification says; I care about what we\u0027re actually implementing.\n\nYou still haven\u0027t answered what the expected value of the data is after \"string_type\"...",
+      "parentUuid": "bcc6c441_75e03a0a",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 103
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f52bc21_0832a7b1",
         "filename": "README.md",
         "patchSetId": 9
@@ -442,6 +550,30 @@
       "side": 1,
       "message": "The PLDM BIOS Specification(https://www.dmtf.org/sites/default/files/standards/documents/DSP0247_1.0.0.pdf) Table7, provides BIOS Attribute table fields for String attribute.\n```DefaultStringLength:  The length of the default string in bytes. A value of 0 indicates that this attribute has no default\nstring.```\nTo handle the possibility of not having the default string value, default string length is used.",
       "parentUuid": "0f52bc21_0832a7b1",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 73
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa436e0_31ad618e",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-15T19:16:43Z",
+      "side": 1,
+      "message": "How do you have a default string length without a default string value?  I have no idea what you mean by this.\n\nFrom the spec:\n\n\u003e The length of the default string in bytes. A value of 0 indicates that this attribute has no default string.\n\nSince the spec doesn\u0027t use null-terminated strings, this is literally the \"string length\" of the string payload in the protocol.  I see no reason why this would be in JSON.",
+      "parentUuid": "031717e8_54905cb1",
       "range": {
         "startLine": 213,
         "startChar": 0,
