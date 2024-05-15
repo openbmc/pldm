@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8fcbd4bf_ae91fc56",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "In the systems like IBM there are nearly 150 BIOS attributes, creating separate files make them easy to maintain. Why do you think this is a poor decision? What advantage do we gain out of making them a single file?",
+      "parentUuid": "a43f47a7_cb933dca",
+      "range": {
+        "startLine": 179,
+        "startChar": 40,
+        "endLine": 181,
+        "endChar": 37
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c2f1f94_99104bf1",
         "filename": "README.md",
         "patchSetId": 9
@@ -110,6 +134,78 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5dddb73_cc6390d7",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22e4e852_f89d7a19",
+      "range": {
+        "startLine": 184,
+        "startChar": 14,
+        "endLine": 184,
+        "endChar": 31
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b828d8bf_5f22ae8b",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "Tables prvides in PLDM BIOS specifacations provides attribute fields based on the attribute type(String/integer/enum). We needed some way to feed the BIOS attributes data to OpenBmc Systems, json config files were added to provide BIOS attributes.",
+      "parentUuid": "30656267_7829079d",
+      "range": {
+        "startLine": 183,
+        "startChar": 60,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6547f90c_f6c39ed6",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "Yes, JSON array is used to provide multiple attributes. I have updated the same in the document.",
+      "parentUuid": "3c2f1f94_99104bf1",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05a51685_b29415e6",
@@ -123,6 +219,24 @@
       "writtenOn": "2024-05-06T14:05:53Z",
       "side": 1,
       "message": "nit: This isn\u0027t valid JSON because you\u0027ve added these fields.  It probably would be better to either do these sub-headings outside of the escapes or as json5-style comments (which might require changing ```json to ```json5.",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b767437_d329a48e",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05a51685_b29415e6",
       "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -169,6 +283,48 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "25f1575f_7172b1ad",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "ACK, we can make all of them in same case. This involves PLDM code changes, so can be taken as separate commit.",
+      "parentUuid": "1964a922_be7afe1d",
+      "range": {
+        "startLine": 194,
+        "startChar": 5,
+        "endLine": 194,
+        "endChar": 13
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b12dad49_1e2f89d7",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "The BMC GUI displays the BIOS Attribute Registry to the users. The Attribute details are populated based on redfish schema https://redfish.dmtf.org/schemas/v1/AttributeRegistry.v1_3_8.json.",
+      "parentUuid": "19ba0111_eaacb7e3",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91d697e4_54454cbe",
         "filename": "README.md",
         "patchSetId": 9
@@ -180,6 +336,24 @@
       "writtenOn": "2024-05-06T14:05:53Z",
       "side": 1,
       "message": "Display where?",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac59b8b6_d0eddbf6",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "The BMC GUI displays the BIOS Attribute Registry to the users. Redfish schema https://redfish.dmtf.org/schemas/v1/AttributeRegistry.v1_3_8.json talks about DisplayName - \"The user-readable display string for the attribute in the defined language.\"",
+      "parentUuid": "91d697e4_54454cbe",
       "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -209,6 +383,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcc6c441_75e03a0a",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "The PLDM BIOS Specification(https://www.dmtf.org/sites/default/files/standards/documents/DSP0247_1.0.0.pdf) Table7, provides BIOS Attribute table fields for String attribute.\nIt says\n```\nStringType\nThe type of the string. It identifies the character encoding used for this string.\nPossible values:\n{Unknown\u003d0x00, ASCII\u003d0x01, Hex\u003d0x02, UTF-8\u003d0x03, UTF-16LE\u003d0x04, UTF-16BE\u003d0x05,\nVendor Specific\u003d0xFF} ```\nWe can set String_type to ASCII for all the string attributes.",
+      "parentUuid": "5ab229e7_01bc9dde",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 103
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f52bc21_0832a7b1",
         "filename": "README.md",
         "patchSetId": 9
@@ -220,6 +418,30 @@
       "writtenOn": "2024-05-06T14:05:53Z",
       "side": 1,
       "message": "You can\u0027t do `string.length()` in code?  You need a human to tell you this?",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 73
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "031717e8_54905cb1",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-15T11:35:05Z",
+      "side": 1,
+      "message": "The PLDM BIOS Specification(https://www.dmtf.org/sites/default/files/standards/documents/DSP0247_1.0.0.pdf) Table7, provides BIOS Attribute table fields for String attribute.\n```DefaultStringLength:  The length of the default string in bytes. A value of 0 indicates that this attribute has no default\nstring.```\nTo handle the possibility of not having the default string value, default string length is used.",
+      "parentUuid": "0f52bc21_0832a7b1",
       "range": {
         "startLine": 213,
         "startChar": 0,
