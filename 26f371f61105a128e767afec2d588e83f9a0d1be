@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d2397e_81d90a9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-15T10:21:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16caee1c_e0749d1c",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 1
+      },
+      "revId": "26f371f61105a128e767afec2d588e83f9a0d1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e64e8533_bb813864",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-14T11:25:00Z",
       "side": 1,
       "message": "```\nif (hostOff || hostTransitioningToOff || tid !\u003d HYPERVISOR_TID) \u0026\u0026 timer.isEnabled())\n{\n   startStopTimer(false);\n   }\n```",
+      "range": {
+        "startLine": 639,
+        "startChar": 3,
+        "endLine": 643,
+        "endChar": 9
+      },
+      "revId": "26f371f61105a128e767afec2d588e83f9a0d1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ee7ad8c_40add48c",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-15T10:21:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e64e8533_bb813864",
       "range": {
         "startLine": 639,
         "startChar": 3,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f028c79e_d6546226",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-15T10:21:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a22365da_c0f5cddb",
+      "range": {
+        "startLine": 650,
+        "startChar": 23,
+        "endLine": 650,
+        "endChar": 27
+      },
+      "revId": "26f371f61105a128e767afec2d588e83f9a0d1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84fc0242_ef4dca61",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "370d5dae_1c0e927a",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-15T10:21:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84fc0242_ef4dca61",
+      "range": {
+        "startLine": 652,
+        "startChar": 13,
+        "endLine": 652,
+        "endChar": 20
+      },
+      "revId": "26f371f61105a128e767afec2d588e83f9a0d1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f833bc4_0f3ff150",
@@ -106,6 +202,30 @@
       "writtenOn": "2024-05-14T11:25:00Z",
       "side": 1,
       "message": "make this `value`",
+      "range": {
+        "startLine": 657,
+        "startChar": 23,
+        "endLine": 657,
+        "endChar": 28
+      },
+      "revId": "26f371f61105a128e767afec2d588e83f9a0d1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9c99505_1bf5bba9",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-15T10:21:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f833bc4_0f3ff150",
       "range": {
         "startLine": 657,
         "startChar": 23,
