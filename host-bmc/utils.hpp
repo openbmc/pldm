@@ -1,5 +1,6 @@
 #include "libpldm/pdr.h"
 
+#include "common/utils.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 
 #include <nlohmann/json.hpp>
@@ -12,17 +13,9 @@
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
+
 namespace pldm
 {
-using Json = nlohmann::json;
-namespace fs = std::filesystem;
-using ObjectPath = fs::path;
-using EntityName = std::string;
-using EntityType = uint16_t;
-using Entities = std::vector<pldm_entity_node*>;
-using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<ObjectPath, pldm_entity_node*>;
-using EntityMaps = std::map<EntityType, EntityName>;
 namespace hostbmc
 {
 namespace utils
@@ -36,9 +29,9 @@ namespace utils
  *  @return
  */
 void updateEntityAssociation(
-    const EntityAssociations& entityAssoc,
-    pldm_entity_association_tree* entityTree, ObjectPathMaps& objPathMap,
-    EntityMaps entityMaps,
+    const pldm::utils::EntityAssociations& entityAssoc,
+    pldm_entity_association_tree* entityTree,
+    pldm::utils::ObjectPathMaps& objPathMap, pldm::utils::EntityMaps entityMaps,
     pldm::responder::oem_platform::Handler* oemPlatformHandler);
 
 /** @brief Parsing entity to DBus string mapping from json file
@@ -47,7 +40,7 @@ void updateEntityAssociation(
  *
  *  @return returns the entity to DBus string mapping object
  */
-EntityMaps parseEntityMap(const fs::path& filePath);
+pldm::utils::EntityMaps parseEntityMap(const fs::path& filePath);
 
 } // namespace utils
 } // namespace hostbmc
