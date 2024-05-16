@@ -23,7 +23,7 @@ namespace oem_ibm_platform
 {
 int pldm::responder::oem_ibm_platform::Handler::
     getOemStateSensorReadingsHandler(
-        EntityType entityType, EntityInstance entityInstance,
+        pldm::pdr::EntityType entityType, EntityInstance entityInstance,
         StateSetId stateSetId, CompositeCount compSensorCnt,
         std::vector<get_sensor_state_field>& stateField)
 {

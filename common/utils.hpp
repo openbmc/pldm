@@ -157,7 +157,14 @@ using DBusInterfaceAdded = std::vector<
     std::pair<pldm::dbus::Interface,
               std::vector<std::pair<pldm::dbus::Property,
                                     std::variant<pldm::dbus::Property>>>>>;
+
 using ObjectPath = std::string;
+using EntityName = std::string;
+using Entities = std::vector<pldm_entity_node*>;
+using EntityAssociations = std::vector<Entities>;
+using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
+using EntityMaps = std::map<pldm::pdr::EntityType, EntityName>;
+
 using ServiceName = std::string;
 using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;

@@ -1,11 +1,11 @@
-#include "common/utils.hpp"
+#include "utils.hpp"
 
 #include "libpldm/entity.h"
 
-#include "utils.hpp"
-
 #include <cstdlib>
 #include <iostream>
+
+using namespace pldm::utils;
 
 namespace pldm
 {

@@ -15,6 +15,8 @@
 
 PHOSPHOR_LOG2_USING;
 
+using namespace pldm::utils;
+
 namespace pldm
 {
 namespace responder
