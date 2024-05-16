@@ -23,7 +23,6 @@
 
 namespace pldm
 {
-using EntityType = uint16_t;
 // vector which would hold the PDR record handle data returned by
 // pldmPDRRepositoryChgEvent event data
 using ChangeEntry = uint32_t;
@@ -324,11 +323,11 @@ class HostPDRHandler
     /** @brief maps an object path to pldm_entity from the BMC's entity
      *         association tree
      */
-    ObjectPathMaps objPathMap;
+    pldm::utils::ObjectPathMaps objPathMap;
 
     /** @brief maps an entity name to map, maps to entity name to pldm_entity
      */
-    EntityAssociations entityAssociations;
+    pldm::utils::EntityAssociations entityAssociations;
 
     /** @brief the vector of FRU Record Data Format
      */
@@ -339,7 +338,7 @@ class HostPDRHandler
 
     /** @brief entityID and entity name is only loaded once
      */
-    EntityMaps entityMaps;
+    pldm::utils::EntityMaps entityMaps;
 };
 
 } // namespace pldm
