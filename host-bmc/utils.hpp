@@ -1,5 +1,6 @@
 #include "libpldm/pdr.h"
 
+#include "common/utils.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 
 #include <nlohmann/json.hpp>
@@ -12,17 +13,10 @@
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
+
+using namespace pldm::utils;
 namespace pldm
 {
-using Json = nlohmann::json;
-namespace fs = std::filesystem;
-using ObjectPath = fs::path;
-using EntityName = std::string;
-using EntityType = uint16_t;
-using Entities = std::vector<pldm_entity_node*>;
-using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<ObjectPath, pldm_entity_node*>;
-using EntityMaps = std::map<EntityType, EntityName>;
 namespace hostbmc
 {
 namespace utils

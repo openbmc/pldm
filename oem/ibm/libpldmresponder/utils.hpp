@@ -1,8 +1,12 @@
 #pragma once
 
+#include "common/utils.hpp"
+
 #include <cstdint>
 #include <string>
 #include <vector>
+
+using namespace pldm::utils;
 
 namespace pldm
 {

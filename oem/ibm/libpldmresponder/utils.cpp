@@ -1,7 +1,5 @@
 #include "utils.hpp"
 
-#include "common/utils.hpp"
-
 #include <libpldm/base.h>
 #include <sys/socket.h>
 #include <sys/types.h>
