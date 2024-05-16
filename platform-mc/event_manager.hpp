@@ -137,6 +137,32 @@ class EventManager
                                   const uint8_t* sensorData,
                                   size_t sensorDataLength);
 
+    /** @brief Helper method to process the PLDM State sensor event class
+     *
+     *  @param[in] tid - tid where the event is from
+     *  @param[in] sensorId - Sensor ID which is the source of event
+     *  @param[in] sensorData - Numeric sensor event data
+     *  @param[in] sensorDataLength - event data length
+     *
+     *  @return PLDM completion code
+     */
+    int processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
+                                const uint8_t* sensorData,
+                                size_t sensorDataLength);
+
+    /** @brief Helper method to process the PLDM Sensor Op State event class
+     *
+     *  @param[in] tid - tid where the event is from
+     *  @param[in] sensorId - Sensor ID which is the source of event
+     *  @param[in] sensorData - Numeric sensor event data
+     *  @param[in] sensorDataLength - event data length
+     *
+     *  @return PLDM completion code
+     */
+    int processSensorOpStateEvent(pldm_tid_t tid, uint16_t sensorId,
+                                  const uint8_t* sensorData,
+                                  size_t sensorDataLength);
+
     /** @brief Helper method to process the PLDM CPER event class
      *
      *  @param[in] tid - tid where the event is from

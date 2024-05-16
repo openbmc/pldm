@@ -142,11 +142,47 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
         0x00  // Entity Name "S0"
     };
 
+    std::vector<uint8_t> pdr3{
+        0x1,
+        0x0,
+        0x0,
+        0x0,                   // record handle
+        0x1,                   // PDRHeaderVersion
+        PLDM_STATE_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                   // recordChangeNumber
+        21,
+        0,                     // dataLength
+        0,
+        0,                     // PLDMTerminusHandle
+        0x2,
+        0x0,                   // sensorID=2
+        PLDM_ENTITY_SYS_FIRMWARE,
+        0,                     // entityType=31
+        20,
+        0,                     // entityInstanceNumber=20
+        0x4,
+        0x0,                   // containerID=4
+        PLDM_NO_INIT,          // sensorInit
+        false,                 // sensorAuxiliaryNamesPDR
+        2,                     // composite_sensor_count
+        1,
+        0,                     // state_set_id=1
+        1,                     // possible_states_size=1
+        0x1e,                  // states[]=[1,2,3,4]
+        2,
+        0,                     // state_set_id=2
+        1,                     // possible_states_size=1
+        0x1e,                  // states[]=[1,2,3,4]
+    };
+
     // add dummy numeric sensor
     termini[tid]->pdrs.emplace_back(pdr1);
     termini[tid]->pdrs.emplace_back(pdr2);
+    termini[tid]->pdrs.emplace_back(pdr3);
     termini[tid]->parseTerminusPDRs();
     EXPECT_EQ(1, termini[tid]->numericSensors.size());
+    EXPECT_EQ(1, termini[tid]->stateSensors.size());
 
     uint8_t platformEventStatus = 0;
 
@@ -158,10 +194,57 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
         PLDM_SENSOR_NORMAL,
         PLDM_SENSOR_DATA_SIZE_UINT8,
         SENSOR_READING};
+
+    std::vector<uint8_t> eventData_sensorOpState{
+        0x2,
+        0x0,                   // sensor id
+        PLDM_SENSOR_OP_STATE,  // event class
+        PLDM_SENSOR_ENABLED,   // present op state
+        PLDM_SENSOR_DISABLED}; // previous op state
+
+    std::vector<uint8_t> eventData_stateSensor{
+        0x2,
+        0x0,                     // sensor id
+        PLDM_STATE_SENSOR_STATE, // event class
+        0,                       // sensor offset
+        2,                       // event state
+        1};                      // previous state
+
+    std::vector<uint8_t> eventData_stateSensor_1{
+        0x2,
+        0x0,                     // sensor id
+        PLDM_STATE_SENSOR_STATE, // event class
+        1,                       // sensor offset
+        2,                       // event state
+        1};                      // previous state
+
     auto rc = eventManager.handlePlatformEvent(
         tid, 0x00, PLDM_SENSOR_EVENT, eventData.data(), eventData.size());
+
     EXPECT_EQ(PLDM_SUCCESS, rc);
     EXPECT_EQ(PLDM_EVENT_NO_LOGGING, platformEventStatus);
+
+    // Handle sensor enabled op state event for sensorID 0x01
+    rc = eventManager.handlePlatformEvent(
+        tid, 0x00, PLDM_SENSOR_EVENT, eventData_sensorOpState.data(),
+        eventData_sensorOpState.size());
+    EXPECT_EQ(PLDM_SUCCESS, rc);
+
+    // Handle state sensor event for sensorID 0x01 sensorOffset 0x00
+    rc = eventManager.handlePlatformEvent(
+        tid, 0x00, PLDM_SENSOR_EVENT, eventData_stateSensor.data(),
+        eventData_stateSensor.size());
+    // all checks pass but D-Bus call is not available to test
+    // (returned by StateSensorHandler::eventAction)
+    EXPECT_EQ(PLDM_ERROR, rc);
+
+    // Handle state sensor event for sensorID 0x01 sensorOffset 0x01
+    rc = eventManager.handlePlatformEvent(
+        tid, 0x00, PLDM_SENSOR_EVENT, eventData_stateSensor_1.data(),
+        eventData_stateSensor_1.size());
+    // event for this sensor offset is not configured to be
+    // handled (returned by StateSensorHandler::eventAction)
+    EXPECT_EQ(PLDM_SUCCESS, rc);
 }
 
 TEST_F(EventManagerTest, SetEventReceiverTest)
