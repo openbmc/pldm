@@ -95,6 +95,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94507362_f9c397c6",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-16T06:40:29Z",
+      "side": 1,
+      "message": "dont see it done completely. please re-check.",
+      "parentUuid": "7ee7ad8c_40add48c",
+      "range": {
+        "startLine": 639,
+        "startChar": 3,
+        "endLine": 643,
+        "endChar": 9
+      },
+      "revId": "26f371f61105a128e767afec2d588e83f9a0d1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a22365da_c0f5cddb",
