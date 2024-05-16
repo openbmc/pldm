@@ -47,17 +47,26 @@ int EventManager::handlePlatformEvent(
                 "TID", tid, "CLASS", eventClass, "EVENTID", eventId, "RC", rc);
             return rc;
         }
+        const uint8_t* sensorData = eventData + eventClassDataOffset;
+        size_t sensorDataLength = eventDataSize - eventClassDataOffset;
+
         switch (sensorEventClassType)
         {
             case PLDM_NUMERIC_SENSOR_STATE:
             {
-                const uint8_t* sensorData = eventData + eventClassDataOffset;
-                size_t sensorDataLength = eventDataSize - eventClassDataOffset;
                 return processNumericSensorEvent(tid, sensorId, sensorData,
                                                  sensorDataLength);
             }
             case PLDM_STATE_SENSOR_STATE:
+            {
+                return processStateSensorEvent(tid, sensorId, sensorData,
+                                               sensorDataLength);
+            }
             case PLDM_SENSOR_OP_STATE:
+            {
+                return processSensorOpStateEvent(tid, sensorId, sensorData,
+                                                 sensorDataLength);
+            }
             default:
                 lg2::info(
                     "Unsupported class type {CLASSTYPE} for the sensor event from terminus ID {TID} sensorId {SID}",
@@ -345,6 +354,125 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
     }
 
     return PLDM_SUCCESS;
+}
+
+int EventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
+                                          const uint8_t* sensorData,
+                                          size_t sensorDataLength)
+{
+    uint8_t sensorOffset = 0;
+    uint8_t eventState = 0;
+    uint8_t previousEventState = 0;
+
+    auto rc =
+        decode_state_sensor_data(sensorData, sensorDataLength, &sensorOffset,
+                                 &eventState, &previousEventState);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode stateSensorState event for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        return rc;
+    }
+
+    lg2::info(
+        "processStateSensorEvent tid {TID}, sensorID {SID} sensorOffset {SOFF} previousState {PSTATE} eventState {ESTATE}",
+        "TID", tid, "SID", sensorId, "SOFF", sensorOffset, "PSTATE",
+        previousEventState, "ESTATE", eventState);
+
+    if (!termini.contains(tid) || !termini[tid])
+    {
+        lg2::error("Terminus ID {TID} is not in the managing list.", "TID",
+                   tid);
+        return PLDM_ERROR;
+    }
+
+    auto& terminus = termini[tid];
+
+    auto sensorIt = std::find_if(
+        terminus->stateSensors.begin(), terminus->stateSensors.end(),
+        [&sensorId](const auto& sensor) {
+            return (sensor->sensorId == sensorId);
+        });
+
+    if (sensorIt == terminus->stateSensors.end())
+    {
+        lg2::error(
+            "Terminus ID {TID} has no state sensor object with sensor ID {SID}.",
+            "TID", tid, "SID", sensorId);
+        return PLDM_ERROR;
+    }
+
+    auto& sensor = *sensorIt;
+    return sensor->processSensorState(eventState, sensorOffset);
+}
+
+int EventManager::processSensorOpStateEvent(pldm_tid_t tid, uint16_t sensorId,
+                                            const uint8_t* sensorData,
+                                            size_t sensorDataLength)
+{
+    uint8_t present_op_state = 0;
+    uint8_t previous_op_state = 0;
+
+    auto rc = decode_sensor_op_data(sensorData, sensorDataLength,
+                                    &present_op_state, &previous_op_state);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode stateSensorState event for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        return rc;
+    }
+
+    lg2::info(
+        "processSensorOpStateEvent tid {TID}, sensorID {SID} previousState {PSTATE} eventState {ESTATE}",
+        "TID", tid, "SID", sensorId, "PSTATE", previous_op_state, "ESTATE",
+        present_op_state);
+
+    if (!termini.contains(tid) || !termini[tid])
+    {
+        lg2::error("Terminus ID {TID} is not in the managing list.", "TID",
+                   tid);
+        return PLDM_ERROR;
+    }
+
+    auto& terminus = termini[tid];
+
+    auto numericSensorIt = std::find_if(
+        terminus->numericSensors.begin(), terminus->numericSensors.end(),
+        [&sensorId](const auto& sensor) {
+            return (sensor->sensorId == sensorId);
+        });
+
+    if (numericSensorIt != terminus->numericSensors.end())
+    {
+        // TODO Support Sensor Op State event for numeric sensor
+        return PLDM_SUCCESS;
+    }
+
+    auto stateSensorIt = std::find_if(
+        terminus->stateSensors.begin(), terminus->stateSensors.end(),
+        [&sensorId](const auto& sensor) {
+            return (sensor->sensorId == sensorId);
+        });
+
+    if (stateSensorIt == terminus->stateSensors.end())
+    {
+        lg2::error(
+            "Terminus ID {TID} has no state sensor object with sensor ID {SID}.",
+            "TID", tid, "SID", sensorId);
+        return PLDM_ERROR;
+    }
+
+    auto& sensor = *stateSensorIt;
+
+    for (uint8_t sensorOffset = 0; sensorOffset < sensor->compositeCount;
+         sensorOffset++)
+    {
+        rc = sensor->processOpState(present_op_state, sensorOffset);
+    }
+
+    return rc;
 }
 
 int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
