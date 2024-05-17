@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "869b8556_7efea31a",
+        "filename": "host-bmc/dbus/asset.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T14:00:44Z",
+      "side": 1,
+      "message": "DBus or D-Bus",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "ab90ade70b2030c289fc96835e95f5666052e11c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d8070cd_3bc016e7",
+        "filename": "host-bmc/dbus/cable.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T14:00:44Z",
+      "side": 1,
+      "message": "DBus or D-Bus",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 14
+      },
+      "revId": "ab90ade70b2030c289fc96835e95f5666052e11c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf3bcf2c_af983972",
+        "filename": "host-bmc/dbus/cable.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T14:00:44Z",
+      "side": 1,
+      "message": "constructor description doxygen.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 9
+      },
+      "revId": "ab90ade70b2030c289fc96835e95f5666052e11c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4990c8a0_8627bbe0",
+        "filename": "host-bmc/dbus/pcie_device.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T14:00:44Z",
+      "side": 1,
+      "message": "correct it",
+      "range": {
+        "startLine": 23,
+        "startChar": 21,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "ab90ade70b2030c289fc96835e95f5666052e11c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66f0afb0_bdc76535",
+        "filename": "host-bmc/dbus/pcie_device.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T14:00:44Z",
+      "side": 1,
+      "message": "constructor description doxygen.",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 14
+      },
+      "revId": "ab90ade70b2030c289fc96835e95f5666052e11c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
