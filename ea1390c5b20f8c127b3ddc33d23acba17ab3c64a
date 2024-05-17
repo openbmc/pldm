@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ebbb30e_05fce1ca",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-17T08:17:17Z",
+      "side": 1,
+      "message": "Hi Patrick , yes what you said also makes sense. Fact is that we don\u0027t know why it was architected the way we did long back. We sort of assumed that it was made into 3 different JSON\u0027s just for separating various types like interger, string, enum based attributes.\n\n@archana - lets merge all of them together per patrick\u0027s suggestion.",
+      "parentUuid": "a29173db_9cff73e6",
+      "range": {
+        "startLine": 179,
+        "startChar": 40,
+        "endLine": 181,
+        "endChar": 37
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c2f1f94_99104bf1",
         "filename": "README.md",
         "patchSetId": 9
@@ -391,6 +415,48 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65715add_f2f0bfa9",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-17T08:17:17Z",
+      "side": 1,
+      "message": "+1 , lets have a commit with this fixed below this commit \u0026 modify this documentation since its not a big change.",
+      "parentUuid": "25f1575f_7172b1ad",
+      "range": {
+        "startLine": 194,
+        "startChar": 5,
+        "endLine": 194,
+        "endChar": 13
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3358cf0_a164d8d0",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-17T08:17:17Z",
+      "side": 1,
+      "message": "\u003e Can you please document this part then?  How do we generate an AttributeRegistry from PLDM and share that with bmcweb?  I don\u0027t see any evidence that this actually happens.  Is this something you have in downstream commits?\n\u003e \n\nPLDM does not generate Attribute registry and share it to bmcweb, PLDM parses these JSON files and fill in the BIOSTable hosted by [bios-settings-mgr daemon](https://github.com/openbmc/bios-settings-mgr) per this [design](https://github.com/openbmc/docs/blob/master/designs/remote-bios-configuration.md#proposed-design) section `BIOS send the data in BIOS configuration PLDM via MCTP`.\n\nThe gist is that PLDM daemon parses these JSON files and creates the bios table and sets the [BaseBIOSTable dbus property](https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/BIOSConfig/Manager.interface.yaml#L62) hosted by bios-settings-mgr app. And the per the above design bmcweb is supposed to read data from that property to generate the AttributeRegistry in redfish.\n\n\u003e How do you combine 3 different attribute files into a single AttributeRegistry?  \u003e What is the identifier for the AttributeRegistry?\n\nThe `BaseBIOSTable` is a dictionary with variants in it , it can currently handle int64, string and enum values. PLDM post processing all the JSON files, collates all of the interger, string and enum attributes so that it can set the `BaseBIOSTable` property. \n\n\u003e How do we version it?\n\nI don\u0027t think we are supporting versioning as such , but PLDM code is written in such a way that it could handle new attributes being added/removed in the later version of openbmc code base, so it sort of smartly discards its in-memory cache and update them from the JSON file on per attribute basis when we upgrade/downgrade the firmware code levels.\n\n\u003e \n\u003e How do you handle a multi-host or heterogeneous configuration?  You can have a blade server with two different processor architectures.  There has to be something related to the exact attribute collection that ends up turning into AttributeRegistry identifiers so that external tooling can disambiguate.\n\u003e \nI don\u0027t think PLDM could handle multi-host as of moment. Not just PLDM i don\u0027t think we have the Back end bios-settings-mgr app handle multi host scenario(we could probably templatise the bios-settings-mgr) app so that it could host various instances of BaseBIOSTable per host. But I think we might need some infrastructure changes in the BIOS handler to be able to handle BIOS settings per host.\n\n\u003e Your reference here to AtttributeRegistry makes me think even more is not documented...\n\nAgree, we need to add more details.",
+      "parentUuid": "bb39a3b4_4494e8e0",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91d697e4_54454cbe",
         "filename": "README.md",
         "patchSetId": 9
@@ -438,6 +504,24 @@
       "side": 1,
       "message": "If these attributes are somehow related to the Redfish AttributeRegistry, let\u0027s be very clear about that (by changing the key name).  It seems like these attributes are likely specific to Redfish, so let\u0027s use Redfish in the name?  I assume these turn into some specific property in the AttributeRegistry entries, so ideally we use that same name.\n\nMaybe something like this?\n\n```\n{\n   ...\n   \"redfish\" : { \"display_name\": ..., \"help_text\": ... },\n   ...\n}\n```",
       "parentUuid": "ac59b8b6_d0eddbf6",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a0fdb34_dc456e75",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-17T08:17:17Z",
+      "side": 1,
+      "message": "But patrick , since we only talk to BIOS settings manager and not redfish/bmcweb directly, do you still think it makes sense to add `redfish` key in the JSON files ?",
+      "parentUuid": "e44435cf_2c91991b",
       "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -515,6 +599,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d10eb4e9_afd6e158",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-17T08:17:17Z",
+      "side": 1,
+      "message": "I dont think PLDM as of today support any other string encoding type apart from ASCII. But having this key here would help people to add support for other encoding types like HEX, UTF-8 in backend ? and use that in the JSON\u0027s ? \n\nor do you want us to remove this key completely and let people figure out and add suppport for this key if they really need any other encoding ?",
+      "parentUuid": "0b5c6990_68e3cb4c",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 103
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f52bc21_0832a7b1",
         "filename": "README.md",
         "patchSetId": 9
@@ -574,6 +682,30 @@
       "side": 1,
       "message": "How do you have a default string length without a default string value?  I have no idea what you mean by this.\n\nFrom the spec:\n\n\u003e The length of the default string in bytes. A value of 0 indicates that this attribute has no default string.\n\nSince the spec doesn\u0027t use null-terminated strings, this is literally the \"string length\" of the string payload in the protocol.  I see no reason why this would be in JSON.",
       "parentUuid": "031717e8_54905cb1",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 73
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07885e98_cd30403d",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-05-17T08:17:17Z",
+      "side": 1,
+      "message": "+1 agree with you on this.\n\n@archana - lets fix this as well and put the commit below this and fix the documentation as its not a big change.",
+      "parentUuid": "baa436e0_31ad618e",
       "range": {
         "startLine": 213,
         "startChar": 0,
