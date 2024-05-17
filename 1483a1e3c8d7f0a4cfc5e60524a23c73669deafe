@@ -1,0 +1,204 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e13892e_52c9e424",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "from path",
+      "range": {
+        "startLine": 190,
+        "startChar": 50,
+        "endLine": 190,
+        "endChar": 52
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed3af570_6bd3dc50",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 837,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "\"Invalid index \u0027{INDEX}\u0027 encountered for Enum type BIOS attribute\"\n\nhow does this sounds?",
+      "range": {
+        "startLine": 837,
+        "startChar": 23,
+        "endLine": 837,
+        "endChar": 27
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "884c8d5f_ee437c36",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "\"Out of range index \u0027{INDEX}\u0027 encountered for Integer type BIOS attribute\"",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "300ce99c_8d509827",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "can you print stringConf.minLength and stringConf.maxLength like line no 853?",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84d74327_5d90df02",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "\"Invalid length \u0027{LENGTH}\u0027 encountered for String type BIOS attribute\"",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b836f818_688ef41f",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "two time attribute, correct the sentence",
+      "range": {
+        "startLine": 1011,
+        "startChar": 28,
+        "endLine": 1011,
+        "endChar": 37
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc2a79f_e1d22f7e",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "not required PLDM_BIOS_ATTR_VAL_TABLE",
+      "range": {
+        "startLine": 1023,
+        "startChar": 52,
+        "endLine": 1023,
+        "endChar": 76
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afa7f748_d7e889cd",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "print objectPath, propertyName",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54dfb370_96138923",
+        "filename": "libpldmresponder/bios_string_attribute.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "print dbus propertyName, objectPath",
+      "range": {
+        "startLine": 92,
+        "startChar": 27,
+        "endLine": 92,
+        "endChar": 33
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adcbfde0_13e776e1",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-17T15:48:14Z",
+      "side": 1,
+      "message": "Invalid FRU length \u0027{LENGTH}\u0027 while parsing FRU record table",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
