@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da6e2528_c3387b30",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T13:44:47Z",
+      "side": 1,
+      "message": "why did we decide to host these interfaces in PLDM?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "b5ff622be9500c2642340aabbd7189bb5694e638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7aea1f_f1479a08",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T13:44:47Z",
+      "side": 1,
+      "message": "maintain the same doxygen format for all methods.",
+      "range": {
+        "startLine": 88,
+        "startChar": 4,
+        "endLine": 93,
+        "endChar": 7
+      },
+      "revId": "b5ff622be9500c2642340aabbd7189bb5694e638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8a27a9_eb8d0c2d",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T13:44:47Z",
+      "side": 1,
+      "message": "you want to add this as a type?",
+      "range": {
+        "startLine": 103,
+        "startChar": 10,
+        "endLine": 103,
+        "endChar": 72
+      },
+      "revId": "b5ff622be9500c2642340aabbd7189bb5694e638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "223fcc5a_5cff085f",
+        "filename": "host-bmc/test/meson.build",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-17T13:44:47Z",
+      "side": 1,
+      "message": "I don\u0027t see these files added as part of this commit?",
+      "range": {
+        "startLine": 10,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 25
+      },
+      "revId": "b5ff622be9500c2642340aabbd7189bb5694e638",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
