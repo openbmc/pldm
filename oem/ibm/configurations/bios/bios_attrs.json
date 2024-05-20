@@ -1,6 +1,7 @@
 {
     "entries": [
         {
+            "attribute_type": "enum",
             "attribute_name": "fw_boot_side",
             "possible_values": ["Perm", "Temp"],
             "value_names": ["Perm", "Temp"],
@@ -9,6 +10,7 @@
             "displayName": "Current Firmware Boot Side (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "fw_boot_side_current",
             "possible_values": ["Perm", "Temp"],
             "value_names": ["Perm", "Temp"],
@@ -17,6 +19,7 @@
             "displayName": "Current Firmware Boot Side (current)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_pcie_error_inject",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -25,6 +28,7 @@
             "displayName": "pvm_pcie_error_inject"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "vmi_if0_ipv4_method",
             "possible_values": ["IPv4Static", "IPv4DHCP"],
             "value_names": ["IPv4Static", "IPv4DHCP"],
@@ -33,6 +37,7 @@
             "displayName": "vmi_if0_ipv4_method"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "vmi_if1_ipv4_method",
             "possible_values": ["IPv4Static", "IPv4DHCP"],
             "value_names": ["IPv4Static", "IPv4DHCP"],
@@ -41,6 +46,7 @@
             "displayName": "vmi_if1_ipv4_method"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "vmi_if0_ipv6_method",
             "possible_values": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "value_names": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
@@ -49,6 +55,7 @@
             "displayName": "vmi_if0_ipv6_method"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "vmi_if1_ipv6_method",
             "possible_values": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "value_names": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
@@ -57,6 +64,7 @@
             "displayName": "vmi_if1_ipv6_method"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_hyp_switch",
             "possible_values": ["PowerVM", "OPAL"],
             "value_names": ["PowerVM", "OPAL"],
@@ -75,6 +83,7 @@
             }
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_hyp_switch_current",
             "possible_values": ["PowerVM", "OPAL"],
             "value_names": ["PowerVM", "OPAL"],
@@ -84,6 +93,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_predictive_mem_guard",
             "possible_values": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
@@ -91,6 +101,7 @@
             "displayName": "Predictive Memory Guard"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_predictive_mem_guard_current",
             "possible_values": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
@@ -99,6 +110,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_stop_at_standby",
             "possible_values": ["Disabled", "Enabled", "ManualOnly"],
             "value_names": ["Disabled", "Enabled", "ManualOnly"],
@@ -118,6 +130,7 @@
             }
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_stop_at_standby_current",
             "possible_values": ["Disabled", "Enabled", "ManualOnly"],
             "value_names": ["Disabled", "Enabled", "ManualOnly"],
@@ -127,6 +140,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_debug_console",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -135,6 +149,7 @@
             "displayName": "hb-debug-console"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_inhibit_bmc_reset",
             "possible_values": ["NoInhibit", "Inhibit"],
             "value_names": ["NoInhibit", "Inhibit"],
@@ -144,6 +159,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_system_power_off_policy",
             "possible_values": ["Power Off", "Stay On", "Automatic"],
             "value_names": ["Power Off", "Stay On", "Automatic"],
@@ -152,6 +168,7 @@
             "displayName": "System Automatic Power Off Policy"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_hmc_managed",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -160,6 +177,7 @@
             "displayName": "HMC managed System"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_vmi_support",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -169,6 +187,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rtad",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -177,6 +196,7 @@
             "displayName": "Remote Trusted Attestation Daemon State"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_default_os_type",
             "possible_values": [
                 "AIX",
@@ -191,6 +211,7 @@
             "displayName": "CEC Primary OS"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_default_os_type_current",
             "possible_values": [
                 "AIX",
@@ -206,6 +227,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_system_operating_mode",
             "possible_values": ["Normal", "Manual"],
             "value_names": ["Normal", "Manual"],
@@ -214,6 +236,7 @@
             "displayName": "Server Operating Mode"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rpa_boot_mode",
             "possible_values": [
                 "Normal",
@@ -234,6 +257,7 @@
             "displayName": "AIX/Linux Partition Boot Mode"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rpa_boot_mode_current",
             "possible_values": [
                 "Normal",
@@ -255,6 +279,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_os_boot_type",
             "possible_values": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "value_names": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
@@ -263,6 +288,7 @@
             "displayName": "IBM i Partition Boot Mode"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_os_boot_type_current",
             "possible_values": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "value_names": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
@@ -272,6 +298,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_vtpm",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -280,6 +307,7 @@
             "displayName": "Virtual Trusted Platform Module"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_vtpm_current",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -289,6 +317,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_sys_dump_active",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
@@ -297,6 +326,7 @@
             "displayName": "System Dump Active"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_memory_region_size",
             "possible_values": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
             "value_names": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
@@ -305,6 +335,7 @@
             "displayName": "Memory Region Size (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_memory_region_size_current",
             "possible_values": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
             "value_names": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
@@ -314,12 +345,13 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_power_limit_enable",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if the power limit is enabled, requires a reboot for a change to be applied.",
-            "displayName": "Power Limit Enable (pending)",
+            "helpText": "Specifies whether the power limit is enabled.",
+            "displayName": "Power Limit Enable",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/control/host0/power_cap",
                 "interface": "xyz.openbmc_project.Control.Power.Cap",
@@ -329,6 +361,7 @@
             }
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_power_limit_enable_current",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
@@ -338,6 +371,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_secure_ver_lockin_enabled",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
@@ -346,6 +380,7 @@
             "displayName": "Secure Version Lockin Enabled"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_memory_mirror_mode",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -354,6 +389,7 @@
             "displayName": "Memory Mirror Mode (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_memory_mirror_mode_current",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -363,6 +399,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_tpm_required",
             "possible_values": ["Required", "Not Required"],
             "value_names": ["Required", "Not Required"],
@@ -378,6 +415,7 @@
             }
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_tpm_required_current",
             "possible_values": ["Required", "Not Required"],
             "value_names": ["Required", "Not Required"],
@@ -387,6 +425,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_key_clear_request",
             "possible_values": [
                 "NONE",
@@ -409,6 +448,7 @@
             "displayName": "Key Clear Request (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_key_clear_request_current",
             "possible_values": [
                 "NONE",
@@ -432,6 +472,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_host_usb_enablement",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -440,6 +481,7 @@
             "displayName": "Host USB Enablement (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_host_usb_enablement_current",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -449,6 +491,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_auto_poweron_restart",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -461,12 +504,13 @@
                 "property_name": "PowerRestorePolicy",
                 "property_type": "string",
                 "property_values": [
-                    "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOff",
+                    "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.None",
                     "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOn"
                 ]
             }
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_lateral_cast_out_mode",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -475,6 +519,7 @@
             "displayName": "Lateral Cast Out mode (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_lateral_cast_out_mode_current",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -484,6 +529,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_proc_favor_aggressive_prefetch",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -492,6 +538,7 @@
             "displayName": "Proc Favor Aggressive Prefetch (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "hb_proc_favor_aggressive_prefetch_current",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -501,6 +548,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_create_default_lpar",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -509,6 +557,7 @@
             "displayName": "pvm_create_default_lpar (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_create_default_lpar_current",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -518,6 +567,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_keep_and_clear",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -526,6 +576,7 @@
             "displayName": "pvm_keep_and_clear"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_clear_nvram",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
@@ -534,6 +585,7 @@
             "displayName": "pvm_clear_nvram"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_boot_initiator",
             "possible_values": ["User", "HMC", "Host", "Auto"],
             "value_names": ["User", "HMC", "Host", "Auto"],
@@ -542,6 +594,7 @@
             "displayName": "IPL Initiator (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_boot_initiator_current",
             "possible_values": ["User", "HMC", "Host", "Auto"],
             "value_names": ["User", "HMC", "Host", "Auto"],
@@ -551,6 +604,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_boot_type",
             "possible_values": ["IPL", "ReIPL"],
             "value_names": ["IPL", "ReIPL"],
@@ -559,6 +613,7 @@
             "displayName": "Boot Type Indicator (pending)"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_boot_type_current",
             "possible_values": ["IPL", "ReIPL"],
             "value_names": ["IPL", "ReIPL"],
@@ -568,6 +623,7 @@
             "readOnly": true
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rpd_guard_policy",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
@@ -576,6 +632,7 @@
             "displayName": "Guard on error"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rpd_policy",
             "possible_values": ["Enabled", "Scheduled", "Disabled"],
             "value_names": ["Enabled", "Scheduled", "Disabled"],
@@ -584,14 +641,16 @@
             "displayName": "Runtime Processor Diagnostics Policy"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rpd_immediate_test",
             "possible_values": ["Enabled", "Disabled"],
-            "value_names": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled", "Automatic"],
             "default_values": ["Disabled"],
             "helpText": "Enabled (Override the pvm_rpd_policy and start a diagnostic test run immediately. RPD will set pvm_rpd_immediate_test to “Disabled” when an immediate test run completes), Disabled (The pvm_rpd_policy is used).",
             "displayName": "Immediate Test Requested"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rpd_feature",
             "possible_values": ["Enabled", "Disabled", "Automatic"],
             "value_names": ["Enabled", "Disabled", "Automatic"],
@@ -600,21 +659,22 @@
             "displayName": "Runtime Processor Diagnostics Feature"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_rpd_feature_current",
             "possible_values": ["Enabled", "Disabled", "Automatic"],
             "value_names": ["Enabled", "Disabled", "Automatic"],
             "default_values": ["Automatic"],
             "helpText": "Controls whether or not the Runtime Processor Diagnostics (RPD) Feature will be configured on the system. Enabled ( The RPD feature will be configured regardless of the amount of installed memory), Automatic (The RPD feature will be configured on systems with at least 128GB of installed memory and not configured on systems with less than 128GB), Disabled (The RPD feature will not be configured).",
-            "displayName": "Runtime Processor Diagnostics Feature",
-            "readOnly": true
+            "displayName": "Runtime Processor Diagnostics Feature"
         },
         {
-            "attribute_name": "hb_power_PS0_functional",
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS0_present",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
             "helpText": "Specifies if Power Supply 0 is present. (Enabled is Present)",
-            "displayName": "Power Supply 0 is present",
+            "displayName": "Power Supply 0 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -624,12 +684,13 @@
             }
         },
         {
-            "attribute_name": "hb_power_PS1_functional",
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS1_present",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if Power Supply 1 is present or not. (Enabled is present)",
-            "displayName": "Power Supply 1 is present",
+            "helpText": "Specifies if Power Supply 1 is present. (Enabled is Present)",
+            "displayName": "Power Supply 1 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply1",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -639,12 +700,13 @@
             }
         },
         {
-            "attribute_name": "hb_power_PS2_functional",
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS2_present",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
             "helpText": "Specifies if Power Supply 2 is Present. (Enabled is Present)",
-            "displayName": "Power Supply 2 is present",
+            "displayName": "Power Supply 2 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply2",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -654,12 +716,13 @@
             }
         },
         {
-            "attribute_name": "hb_power_PS3_functional",
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS3_present",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
             "helpText": "Specifies if Power Supply 3 is present. (Enabled is Present)",
-            "displayName": "Power Supply 3 is present",
+            "displayName": "Power Supply 3 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply3",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -669,6 +732,7 @@
             }
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_ibmi_network_install_type",
             "possible_values": ["Disabled", "NFS", "iSCSI"],
             "value_names": ["Disabled", "NFS", "iSCSI"],
@@ -677,6 +741,7 @@
             "displayName": "IBM i Network Install Type"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_ibmi_ipaddress_protocol",
             "possible_values": ["IPv4", "IPv6"],
             "value_names": ["IPv4", "IPv6"],
@@ -685,6 +750,7 @@
             "displayName": "IBM i IP Address Protocol"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_ibmi_max_frame_size",
             "possible_values": ["MTU1500", "MTU9000"],
             "value_names": ["MTU1500", "MTU9000"],
@@ -693,21 +759,685 @@
             "displayName": "Maximum Frame Size"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_linux_kvm_memory",
             "possible_values": ["Automatic", "Custom"],
             "value_names": ["Automatic", "Custom"],
             "default_values": ["Automatic"],
-            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests",
+            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests.",
             "displayName": "Memory setting for KVM Guest Management"
         },
         {
+            "attribute_type": "enum",
             "attribute_name": "pvm_linux_kvm_memory_current",
             "possible_values": ["Automatic", "Custom"],
             "value_names": ["Automatic", "Custom"],
             "default_values": ["Automatic"],
-            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests. This attribute is set by the BMC. Set pvm_linux_kvm_memory instead.",
+            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests.",
             "displayName": "Memory setting for KVM Guest Management (current)",
             "readOnly": true
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "vmi_if0_ipv4_prefix_length",
+            "lower_bound": 0,
+            "upper_bound": 32,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "vmi_if0_ipv4_prefix_length",
+            "displayName": "vmi_if0_ipv4_prefix_length"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "vmi_if1_ipv4_prefix_length",
+            "lower_bound": 0,
+            "upper_bound": 32,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "vmi_if1_ipv4_prefix_length",
+            "displayName": "vmi_if1_ipv4_prefix_length"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "vmi_if0_ipv6_prefix_length",
+            "lower_bound": 0,
+            "upper_bound": 128,
+            "scalar_increment": 1,
+            "default_value": 128,
+            "helpText": "vmi_if0_ipv6_prefix_length",
+            "displayName": "vmi_if0_ipv6_prefix_length"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "vmi_if1_ipv6_prefix_length",
+            "lower_bound": 0,
+            "upper_bound": 128,
+            "scalar_increment": 1,
+            "default_value": 128,
+            "helpText": "vmi_if1_ipv6_prefix_length",
+            "displayName": "vmi_if1_ipv6_prefix_length"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_number_huge_pages",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the number of huge pages available for memory management, requires a reboot for a change to be applied.",
+            "displayName": "Number Huge Pages (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_number_huge_pages_current",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the number of huge pages available for memory management for the current IPL. Do not set this attribute directly; set hb_number_huge_pages instead.",
+            "displayName": "Number Huge Pages (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_huge_page_size",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the size of huge pages, 0 = 16GB, requires a reboot for a change to be applied.",
+            "displayName": "Huge Page Size (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_huge_page_size_current",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the size of huge pages, 0 = 16GB, for the current IPL. Do not set this attribute directly; set hb_huge_page_size instead.",
+            "displayName": "Huge Page Size (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_field_core_override",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "The maximum number of cores to activate where 0 being to activate all available cores. Requires a reboot for a change to be applied.",
+            "displayName": "Field Core Override (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_field_core_override_current",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "The maximum number of cores to activate where 0 being to activate all available cores. Value applicable for the current IPL. Do not set this attribute directly; set hb_field_core_override instead.",
+            "displayName": "Field Core Override (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_power_limit_in_watts",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the power limit in watts.",
+            "displayName": "Power Limit In Watts",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/control/host0/power_cap",
+                "interface": "xyz.openbmc_project.Control.Power.Cap",
+                "property_type": "uint32_t",
+                "property_name": "PowerCap"
+            }
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_max_number_huge_pages",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the actual maximum number of huge pages available given the current system configuration.",
+            "displayName": "Max Number Huge Pages"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the enlarged IO capacity, requires a reboot for a change to be applied.",
+            "displayName": "Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_current",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity instead.",
+            "displayName": "Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_effective_secure_version",
+            "lower_bound": 0,
+            "upper_bound": 255,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the effective secure version of the host FW. In secure mode, the secure version value of a driver must be greater than or equal to this effective secure version to allow the system to boot.",
+            "displayName": "Effective Secure Version"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_cap_freq_mhz_min",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the lowest floor frequency across all chips in the system.",
+            "displayName": "Minimum Core Freq MHZ"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_cap_freq_mhz_max",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the highest ceiling frequency across all chips in the system.",
+            "displayName": "Maximum Core Freq MHZ"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_cap_freq_mhz_request",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the desired frequency across all chips in the system.  Requires a reboot for a change to be applied.",
+            "displayName": "Requested Core Freq MHZ (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_cap_freq_mhz_request_current",
+            "lower_bound": 0,
+            "upper_bound": 4294967295,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the desired frequency across all chips in the system.  Do not set this attribute directly; set hb_cap_freq_mhz_request instead.",
+            "displayName": "Requested Core Freq MHZ (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "pvm_rpd_scheduled_tod",
+            "lower_bound": 0,
+            "upper_bound": 86399,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the time of day in seconds at which to run the processor diagnostics.",
+            "displayName": "RPD Scheduled Run Time of Day in Seconds"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "pvm_rpd_scheduled_duration",
+            "lower_bound": 30,
+            "upper_bound": 1440,
+            "scalar_increment": 1,
+            "default_value": 1440,
+            "helpText": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the duration in minutes to run the processor diagnostics, starting at the Scheduled Time of Day. Note: If the RPD is unable to test every core within the specified Run Time Duration, the RPD will resume where it left off, at the next Schedule Run Time of Day.",
+            "displayName": "RPD Scheduled Run Time Duration in Minutes"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_power_PS0_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 0 input voltage(volts)",
+            "displayName": "Power Supply 0 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps0_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_power_PS1_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 1 input voltage(volts)",
+            "displayName": "Power Supply 1 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps1_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_power_PS2_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 2 input voltage(volts)",
+            "displayName": "Power Supply 2 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps2_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_power_PS3_input_voltage",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies power supply 3 input voltage(volts)",
+            "displayName": "Power Supply 3 input Voltage",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/sensors/voltage/ps3_input_voltage_rating",
+                "interface": "xyz.openbmc_project.Sensor.Value",
+                "property_type": "double",
+                "property_name": "Value"
+            }
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "pvm_ibmi_vlan_tag_id",
+            "lower_bound": 0,
+            "upper_bound": 4094,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the VLAN ID that is used when performing a network installation of an IBM i logical partition. Ethernet packets are tagged with the specified VLAN ID. If this option is not specified, Ethernet packets are untagged.",
+            "displayName": "VLAN Tag Identifier"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "pvm_ibmi_iscsi_target_port",
+            "lower_bound": 0,
+            "upper_bound": 65535,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the port that is used for the iSCSI connection.",
+            "displayName": "Target Port"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "pvm_linux_kvm_percentage",
+            "lower_bound": 0,
+            "upper_bound": 1000,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. The percentage is specified to the 10th of a percent.",
+            "displayName": "System Memory Reserved for KVM Guest Management"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "pvm_linux_kvm_percentage_current",
+            "lower_bound": 0,
+            "upper_bound": 1000,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "readOnly": true,
+            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. Do not set this attribute directly; set pvm_linux_kvm_percentage instead.",
+            "displayName": "System Memory Reserved for KVM Guest Management (current)"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_system_name",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 100,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "pvm_system_name",
+            "displayName": "pvm_system_name",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system",
+                "interface": "xyz.openbmc_project.Inventory.Decorator.AssetTag",
+                "property_name": "AssetTag",
+                "property_type": "string"
+            }
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_hostname",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 255,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "vmi_hostname",
+            "displayName": "vmi_hostname"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if0_ipv4_gateway",
+            "string_type": "ASCII",
+            "minimum_string_length": 7,
+            "maximum_string_length": 15,
+            "default_string_length": 7,
+            "default_string": "0.0.0.0",
+            "helpText": "vmi_if0_ipv4_gateway",
+            "displayName": "vmi_if0_ipv4_gateway"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if1_ipv4_gateway",
+            "string_type": "ASCII",
+            "minimum_string_length": 7,
+            "maximum_string_length": 15,
+            "default_string_length": 7,
+            "default_string": "0.0.0.0",
+            "helpText": "vmi_if1_ipv4_gateway",
+            "displayName": "vmi_if1_ipv4_gateway"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if0_ipv4_ipaddr",
+            "string_type": "ASCII",
+            "minimum_string_length": 7,
+            "maximum_string_length": 15,
+            "default_string_length": 7,
+            "default_string": "0.0.0.0",
+            "helpText": "vmi_if0_ipv4_ipaddr",
+            "displayName": "vmi_if0_ipv4_ipaddr"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if1_ipv4_ipaddr",
+            "string_type": "ASCII",
+            "minimum_string_length": 7,
+            "maximum_string_length": 15,
+            "default_string_length": 7,
+            "default_string": "0.0.0.0",
+            "helpText": "vmi_if1_ipv4_ipaddr",
+            "displayName": "vmi_if1_ipv4_ipaddr"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if0_ipv6_gateway",
+            "string_type": "ASCII",
+            "minimum_string_length": 2,
+            "maximum_string_length": 45,
+            "default_string_length": 2,
+            "default_string": "::",
+            "helpText": "vmi_if0_ipv6_gateway",
+            "displayName": "vmi_if0_ipv6_gateway"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if1_ipv6_gateway",
+            "string_type": "ASCII",
+            "minimum_string_length": 2,
+            "maximum_string_length": 45,
+            "default_string_length": 2,
+            "default_string": "::",
+            "helpText": "vmi_if1_ipv6_gateway",
+            "displayName": "vmi_if1_ipv6_gateway"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if0_ipv6_ipaddr",
+            "string_type": "ASCII",
+            "minimum_string_length": 2,
+            "maximum_string_length": 45,
+            "default_string_length": 2,
+            "default_string": "::",
+            "helpText": "vmi_if0_ipv6_ipaddr",
+            "displayName": "vmi_if0_ipv6_ipaddr"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "vmi_if1_ipv6_ipaddr",
+            "string_type": "ASCII",
+            "minimum_string_length": 2,
+            "maximum_string_length": 45,
+            "default_string_length": 2,
+            "default_string": "::",
+            "helpText": "vmi_if1_ipv6_ipaddr",
+            "displayName": "vmi_if1_ipv6_ipaddr"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_mfg_flags",
+            "string_type": "Hex",
+            "minimum_string_length": 32,
+            "maximum_string_length": 32,
+            "default_string_length": 32,
+            "default_string": "00000000000000000000000000000000",
+            "helpText": "Specifies the configuration flags used by manufacturing, requires a reboot for a change to be applied.",
+            "displayName": "Manufacturing Flags (pending)"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_mfg_flags_current",
+            "string_type": "Hex",
+            "minimum_string_length": 32,
+            "maximum_string_length": 32,
+            "default_string_length": 32,
+            "default_string": "00000000000000000000000000000000",
+            "helpText": "Specifies the configuration flags used by manufacturing for the current IPL. Do not set this attribute directly; set hb_mfg_flags instead.",
+            "displayName": "Manufacturing Flags (current)",
+            "readOnly": true
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_lid_ids",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 1024,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Provides the host a mapping of the lid IDs to human readable names.",
+            "displayName": "Hostboot Lid IDs"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_power_PS0_model",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 4,
+            "default_string_length": 4,
+            "default_string": "0000",
+            "helpText": "Specifies the power supply 0 model CCIN in hex.",
+            "displayName": "Power Supply 0 Model",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0",
+                "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
+                "property_type": "string",
+                "property_name": "Model"
+            }
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_power_PS1_model",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 4,
+            "default_string_length": 4,
+            "default_string": "0000",
+            "helpText": "Specifies the power supply 1 model CCIN in hex.",
+            "displayName": "Power Supply 1 Model",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply1",
+                "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
+                "property_type": "string",
+                "property_name": "Model"
+            }
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_power_PS2_model",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 4,
+            "default_string_length": 4,
+            "default_string": "0000",
+            "helpText": "Specifies the power supply 2 model CCIN in hex.",
+            "displayName": "Power Supply 2 Model",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply2",
+                "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
+                "property_type": "string",
+                "property_name": "Model"
+            }
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_power_PS3_model",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 4,
+            "default_string_length": 4,
+            "default_string": "0000",
+            "helpText": "Specifies the power supply 3 model CCIN in hex.",
+            "displayName": "Power Supply 3 Model",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply3",
+                "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
+                "property_type": "string",
+                "property_name": "Model"
+            }
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_load_source",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 42,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the load source the system will use to start the logical partition.",
+            "displayName": "Tagged IBM i Load Source"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_alt_load_source",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 42,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the device the system will use when a D-mode initial program load (IPL) is performed.",
+            "displayName": "Tagged IBM i Alternate Load Source"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_console",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 42,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the first workstation that the system will activate in the logical partition.",
+            "displayName": "Tagged IBM i Console"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_server_ipaddress",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 45,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the IP address of the boot server or the iSCSI target that contains the network installation image for the IBM i partition.",
+            "displayName": "Server IP Address"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_local_ipaddress",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 45,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the local IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
+            "displayName": "Local IP Address"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_subnet_mask",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 45,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the subnet mask for an IBM i network install when the IBM i IP Address Protocol is IPv4.",
+            "displayName": "Subnet Mask"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_gateway_ipaddress",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 45,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the Gateway IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
+            "displayName": "Gateway IP Address"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_nfs_image_directory",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 127,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the directory path on the boot server that contains the network installation image for the IBM i partition.",
+            "displayName": "Image Directory Path"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_iscsi_target_name",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 223,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the name of the iSCSI target that contains the network installation image for the IBM i partition.",
+            "displayName": "Target Name"
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "pvm_ibmi_iscsi_initiator_name",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 223,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Specifies the name of the iSCSI initiator associated with the iSCSI target. PHYP will generate an initial initiator name which the user can change. PHYP will restore the initial value if the value is changed.",
+            "displayName": "Initiator Name"
         }
     ]
 }

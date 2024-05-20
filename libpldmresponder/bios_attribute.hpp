@@ -90,6 +90,9 @@ class BIOSAttribute
     /** @brief Method to return the D-Bus map */
     std::optional<pldm::utils::DBusMapping> getDBusMap();
 
+    /** @brief Type of the attribute */
+    const std::string type;
+
     /** @brief Name of this attribute */
     const std::string name;
 
