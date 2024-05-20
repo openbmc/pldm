@@ -33,11 +33,7 @@ class TestBIOSConfig : public ::testing::Test
         char tmpdir[] = "/tmp/BIOSTables.XXXXXX";
         tableDir = fs::path(mkdtemp(tmpdir));
 
-        std::vector<fs::path> paths = {
-            "./bios_jsons/string_attrs.json",
-            "./bios_jsons/integer_attrs.json",
-            "./bios_jsons/enum_attrs.json",
-        };
+        std::vector<fs::path> paths = {"./bios_jsons/bios_attrs.json"};
 
         for (const auto& path : paths)
         {

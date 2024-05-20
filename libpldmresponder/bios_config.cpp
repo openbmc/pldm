@@ -31,9 +31,7 @@ namespace
 using BIOSConfigManager =
     sdbusplus::xyz::openbmc_project::BIOSConfig::server::Manager;
 
-constexpr auto enumJsonFile = "enum_attrs.json";
-constexpr auto stringJsonFile = "string_attrs.json";
-constexpr auto integerJsonFile = "integer_attrs.json";
+constexpr auto attributesJsonFile = "bios_attrs.json";
 
 constexpr auto stringTableFile = "stringTable";
 constexpr auto attrTableFile = "attributeTable";
@@ -535,15 +533,22 @@ void BIOSConfig::updateBaseBIOSTableProperty()
 
 void BIOSConfig::constructAttributes()
 {
-    info("Bios Attribute file path: {PATH}", "PATH", (jsonDir / sysType));
-    load(jsonDir / sysType / stringJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSStringAttribute>(entry);
-    });
-    load(jsonDir / sysType / integerJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSIntegerAttribute>(entry);
-    });
-    load(jsonDir / sysType / enumJsonFile, [this](const Json& entry) {
-        constructAttribute<BIOSEnumAttribute>(entry);
+    info("Bios Attribute file path: {PATH}", "PATH",
+         (jsonDir / sysType / attributesJsonFile));
+    load(jsonDir / sysType / attributesJsonFile, [this](const Json& entry) {
+        std::string attrType = entry.at("attribute_type");
+        if (attrType == "string")
+        {
+            constructAttribute<BIOSStringAttribute>(entry);
+        }
+        else if (attrType == "integer")
+        {
+            constructAttribute<BIOSIntegerAttribute>(entry);
+        }
+        else if (attrType == "enum")
+        {
+            constructAttribute<BIOSEnumAttribute>(entry);
+        }
     });
 }
 
@@ -618,18 +623,19 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
 std::optional<Table> BIOSConfig::buildAndStoreStringTable()
 {
     std::set<std::string> strings;
-    auto handler = [&strings](const Json& entry) {
-        strings.emplace(entry.at("attribute_name"));
-    };
-
-    load(jsonDir / sysType / stringJsonFile, handler);
-    load(jsonDir / sysType / integerJsonFile, handler);
-    load(jsonDir / sysType / enumJsonFile, [&strings](const Json& entry) {
-        strings.emplace(entry.at("attribute_name"));
-        auto possibleValues = entry.at("possible_values");
-        for (auto& pv : possibleValues)
+    load(jsonDir / sysType / attributesJsonFile, [&strings](const Json& entry) {
+        if (entry.at("attribute_type") == "enum")
         {
-            strings.emplace(pv);
+            strings.emplace(entry.at("attribute_name"));
+            auto possibleValues = entry.at("possible_values");
+            for (auto& pv : possibleValues)
+            {
+                strings.emplace(pv);
+            }
+        }
+        else
+        {
+            strings.emplace(entry.at("attribute_name"));
         }
     });
 
