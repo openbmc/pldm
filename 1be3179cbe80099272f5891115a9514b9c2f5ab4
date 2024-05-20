@@ -16,6 +16,23 @@
       "message": "I have verified this patch with `meta-arm-evb` system. And BMC can query PDRs and host sensor thru PLDM successfully. The coroutine functions works well.",
       "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7c7f49c_7e278314",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 74
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002036
+      },
+      "writtenOn": "2024-05-20T13:41:50Z",
+      "side": 1,
+      "message": "Tested on Arm side with meta-arm-evb system and it is working: BMC can query PDRs and host sensor thru PLDM successfully. The coroutine functions works well.",
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
