@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a81bb6d_25d133f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-20T14:25:42Z",
+      "side": 1,
+      "message": "it\u0027s exceeds 50 char, so removed \u0027issue\u0027 word",
+      "parentUuid": "7e1f63a8_b201018e",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "fe689101212d7546124a893445cd5374957b00a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ac70b7e_d1f87bce",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b90e646e_68d34ff4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-20T14:25:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ac70b7e_d1f87bce",
+      "range": {
+        "startLine": 14,
+        "startChar": 14,
+        "endLine": 14,
+        "endChar": 28
+      },
+      "revId": "fe689101212d7546124a893445cd5374957b00a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1ca2425_31bf2ae4",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-05-20T14:14:26Z",
       "side": 1,
       "message": "this is now just an in ?",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 39,
+        "endChar": 23
+      },
+      "revId": "fe689101212d7546124a893445cd5374957b00a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1a3dc19_ec003fc0",
+        "filename": "oem/ibm/libpldmresponder/file_io_by_type.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-20T14:25:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1ca2425_31bf2ae4",
       "range": {
         "startLine": 39,
         "startChar": 8,
