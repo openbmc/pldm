@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae3f221_dd6659ac",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-21T09:28:08Z",
+      "side": 1,
+      "message": "using unordered maps or switch case better in this case?",
+      "range": {
+        "startLine": 540,
+        "startChar": 8,
+        "endLine": 551,
+        "endChar": 9
+      },
+      "revId": "40f81205020f58fa67c5583d7b3d38bf55c7eb89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
