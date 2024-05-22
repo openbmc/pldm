@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "80346e6f_3ab46639",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2024-05-22T05:43:50Z",
+      "side": 1,
+      "message": "More detail please.  Generally PLDM wouldn\u0027t be hosting objects like this, so it\u0027s a little surprising that\u0027s what\u0027s happening in this commit.  Any design for this?",
+      "revId": "ab90ade70b2030c289fc96835e95f5666052e11c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "869b8556_7efea31a",
         "filename": "host-bmc/dbus/asset.hpp",
         "patchSetId": 3
