@@ -160,11 +160,10 @@ TEST_F(TestSystemSpecificBIOSConfig, buildTablesTest)
                 EXPECT_EQ(
                     stringField.maxLength,
                     jsonEntry->at("maximum_string_length").get<uint16_t>());
-                EXPECT_EQ(
-                    stringField.defLength,
-                    jsonEntry->at("default_string_length").get<uint16_t>());
                 EXPECT_EQ(stringField.defString,
                           jsonEntry->at("default_string").get<std::string>());
+                EXPECT_EQ(stringField.defLength,
+                          (stringField.defString).length());
                 break;
             }
             case PLDM_BIOS_INTEGER:
