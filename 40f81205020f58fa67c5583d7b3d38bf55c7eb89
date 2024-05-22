@@ -46,6 +46,30 @@
       },
       "revId": "40f81205020f58fa67c5583d7b3d38bf55c7eb89",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a09dcc4_6d219aad",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-22T06:45:34Z",
+      "side": 1,
+      "message": "PLDM is supporting only 3 types of BIOS attributes and the attributes are constructed only once. Do you think unordered maps are more beneficial in this case?",
+      "parentUuid": "9b06109a_03195848",
+      "range": {
+        "startLine": 540,
+        "startChar": 8,
+        "endLine": 551,
+        "endChar": 9
+      },
+      "revId": "40f81205020f58fa67c5583d7b3d38bf55c7eb89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
