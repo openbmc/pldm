@@ -33,7 +33,6 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
             "string_type" : "ASCII",
             "minimum_string_length" : 1,
             "maximum_string_length" : 100,
-            "default_string_length" : 2,
             "default_string" : "ef",
             "readOnly" : true,
             "helpText" : "HelpText",
@@ -51,25 +50,11 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
     EXPECT_EQ(stringInfo.defLength, 2);
     EXPECT_EQ(stringInfo.defString, "ef");
 
-    auto jsonStringReadOnlyError = R"(  {
-            "attribute_name" : "str_example3",
-            "string_type" : "ASCII",
-            "minimum_string_length" : 1,
-            "maximum_string_length" : 100,
-            "default_string" : "ef",
-            "helpText" : "HelpText",
-            "displayName" : "DisplayName"
-        })"_json; // missing default_string_length
-
-    EXPECT_THROW((BIOSStringAttribute{jsonStringReadOnlyError, nullptr}),
-                 Json::exception);
-
     auto jsonStringReadWrite = R"({
             "attribute_name" : "str_example1",
             "string_type" : "ASCII",
             "minimum_string_length" : 1,
             "maximum_string_length" : 100,
-            "default_string_length" : 3,
             "default_string" : "abc",
             "readOnly" : false,
             "helpText" : "HelpText",
@@ -97,7 +82,6 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
             "string_type" : "ASCII",
             "minimum_string_length" : 1,
             "maximum_string_length" : 100,
-            "default_string_length" : 3,
             "default_string" : "abc",
             "readOnly" : true,
             "helpText" : "HelpText",
@@ -134,7 +118,6 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
             "string_type" : "ASCII",
             "minimum_string_length" : 1,
             "maximum_string_length" : 100,
-            "default_string_length" : 3,
             "default_string" : "abc",
             "readOnly" : false,
             "helpText" : "HelpText",
@@ -185,7 +168,6 @@ TEST_F(TestBIOSStringAttribute, setAttrValueOnDbus)
             "string_type" : "ASCII",
             "minimum_string_length" : 1,
             "maximum_string_length" : 100,
-            "default_string_length" : 3,
             "default_string" : "abc",
             "readOnly" : false,
             "helpText" : "HelpText",
