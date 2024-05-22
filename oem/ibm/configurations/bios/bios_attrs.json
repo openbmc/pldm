@@ -1100,7 +1100,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 100,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "pvm_system_name",
             "displayName": "pvm_system_name",
@@ -1117,7 +1116,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 255,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "vmi_hostname",
             "displayName": "vmi_hostname"
@@ -1128,7 +1126,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 7,
             "maximum_string_length": 15,
-            "default_string_length": 7,
             "default_string": "0.0.0.0",
             "helpText": "vmi_if0_ipv4_gateway",
             "displayName": "vmi_if0_ipv4_gateway"
@@ -1139,7 +1136,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 7,
             "maximum_string_length": 15,
-            "default_string_length": 7,
             "default_string": "0.0.0.0",
             "helpText": "vmi_if1_ipv4_gateway",
             "displayName": "vmi_if1_ipv4_gateway"
@@ -1150,7 +1146,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 7,
             "maximum_string_length": 15,
-            "default_string_length": 7,
             "default_string": "0.0.0.0",
             "helpText": "vmi_if0_ipv4_ipaddr",
             "displayName": "vmi_if0_ipv4_ipaddr"
@@ -1161,7 +1156,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 7,
             "maximum_string_length": 15,
-            "default_string_length": 7,
             "default_string": "0.0.0.0",
             "helpText": "vmi_if1_ipv4_ipaddr",
             "displayName": "vmi_if1_ipv4_ipaddr"
@@ -1172,7 +1166,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 2,
             "maximum_string_length": 45,
-            "default_string_length": 2,
             "default_string": "::",
             "helpText": "vmi_if0_ipv6_gateway",
             "displayName": "vmi_if0_ipv6_gateway"
@@ -1183,7 +1176,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 2,
             "maximum_string_length": 45,
-            "default_string_length": 2,
             "default_string": "::",
             "helpText": "vmi_if1_ipv6_gateway",
             "displayName": "vmi_if1_ipv6_gateway"
@@ -1194,7 +1186,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 2,
             "maximum_string_length": 45,
-            "default_string_length": 2,
             "default_string": "::",
             "helpText": "vmi_if0_ipv6_ipaddr",
             "displayName": "vmi_if0_ipv6_ipaddr"
@@ -1205,7 +1196,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 2,
             "maximum_string_length": 45,
-            "default_string_length": 2,
             "default_string": "::",
             "helpText": "vmi_if1_ipv6_ipaddr",
             "displayName": "vmi_if1_ipv6_ipaddr"
@@ -1216,7 +1206,6 @@
             "string_type": "Hex",
             "minimum_string_length": 32,
             "maximum_string_length": 32,
-            "default_string_length": 32,
             "default_string": "00000000000000000000000000000000",
             "helpText": "Specifies the configuration flags used by manufacturing, requires a reboot for a change to be applied.",
             "displayName": "Manufacturing Flags (pending)"
@@ -1227,7 +1216,6 @@
             "string_type": "Hex",
             "minimum_string_length": 32,
             "maximum_string_length": 32,
-            "default_string_length": 32,
             "default_string": "00000000000000000000000000000000",
             "helpText": "Specifies the configuration flags used by manufacturing for the current IPL. Do not set this attribute directly; set hb_mfg_flags instead.",
             "displayName": "Manufacturing Flags (current)",
@@ -1239,7 +1227,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 1024,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Provides the host a mapping of the lid IDs to human readable names.",
             "displayName": "Hostboot Lid IDs"
@@ -1250,7 +1237,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 4,
-            "default_string_length": 4,
             "default_string": "0000",
             "helpText": "Specifies the power supply 0 model CCIN in hex.",
             "displayName": "Power Supply 0 Model",
@@ -1267,7 +1253,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 4,
-            "default_string_length": 4,
             "default_string": "0000",
             "helpText": "Specifies the power supply 1 model CCIN in hex.",
             "displayName": "Power Supply 1 Model",
@@ -1284,7 +1269,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 4,
-            "default_string_length": 4,
             "default_string": "0000",
             "helpText": "Specifies the power supply 2 model CCIN in hex.",
             "displayName": "Power Supply 2 Model",
@@ -1301,7 +1285,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 4,
-            "default_string_length": 4,
             "default_string": "0000",
             "helpText": "Specifies the power supply 3 model CCIN in hex.",
             "displayName": "Power Supply 3 Model",
@@ -1318,7 +1301,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 42,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the load source the system will use to start the logical partition.",
             "displayName": "Tagged IBM i Load Source"
@@ -1329,7 +1311,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 42,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the device the system will use when a D-mode initial program load (IPL) is performed.",
             "displayName": "Tagged IBM i Alternate Load Source"
@@ -1340,7 +1321,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 42,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the first workstation that the system will activate in the logical partition.",
             "displayName": "Tagged IBM i Console"
@@ -1351,7 +1331,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 45,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the IP address of the boot server or the iSCSI target that contains the network installation image for the IBM i partition.",
             "displayName": "Server IP Address"
@@ -1362,7 +1341,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 45,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the local IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
             "displayName": "Local IP Address"
@@ -1373,7 +1351,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 45,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the subnet mask for an IBM i network install when the IBM i IP Address Protocol is IPv4.",
             "displayName": "Subnet Mask"
@@ -1384,7 +1361,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 45,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the Gateway IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
             "displayName": "Gateway IP Address"
@@ -1395,7 +1371,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 127,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the directory path on the boot server that contains the network installation image for the IBM i partition.",
             "displayName": "Image Directory Path"
@@ -1406,7 +1381,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 223,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the name of the iSCSI target that contains the network installation image for the IBM i partition.",
             "displayName": "Target Name"
@@ -1417,7 +1391,6 @@
             "string_type": "ASCII",
             "minimum_string_length": 0,
             "maximum_string_length": 223,
-            "default_string_length": 0,
             "default_string": "",
             "helpText": "Specifies the name of the iSCSI initiator associated with the iSCSI target. PHYP will generate an initial initiator name which the user can change. PHYP will restore the initial value if the value is changed.",
             "displayName": "Initiator Name"
