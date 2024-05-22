@@ -34,8 +34,9 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
 
     stringInfo.minLength = entry.at("minimum_string_length");
     stringInfo.maxLength = entry.at("maximum_string_length");
-    stringInfo.defLength = entry.at("default_string_length");
     stringInfo.defString = entry.at("default_string");
+    stringInfo.defLength =
+        static_cast<uint16_t>((stringInfo.defString).length());
 
     pldm_bios_table_attr_entry_string_info info = {
         0,
