@@ -47,8 +47,8 @@ TEST(BIOSAttribute, CtorTest)
     auto jsonReadOnly = R"({
       "attribute_name" : "ReadOnly",
       "readOnly" : true,
-      "helpText" : "HelpText",
-      "displayName" : "DisplayName"
+      "help_text" : "HelpText",
+      "display_name" : "DisplayName"
     })"_json;
 
     TestAttribute readOnly{jsonReadOnly, nullptr};
@@ -65,8 +65,8 @@ TEST(BIOSAttribute, CtorTest)
     auto jsonReadWrite = R"({
       "attribute_name":"ReadWrite",
       "readOnly" : false,
-      "helpText" : "HelpText",
-      "displayName" : "DisplayName",
+      "help_text" : "HelpText",
+      "display_name" : "DisplayName",
       "dbus":
            {
                "object_path" : "/xyz/abc/def",

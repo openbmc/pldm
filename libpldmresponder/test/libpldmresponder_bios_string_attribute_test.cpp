@@ -35,8 +35,8 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
             "maximum_string_length" : 100,
             "default_string" : "ef",
             "readOnly" : true,
-            "helpText" : "HelpText",
-            "displayName" : "DisplayName"
+            "help_text" : "HelpText",
+            "display_name" : "DisplayName"
         })"_json;
     BIOSStringAttribute stringReadOnly{jsonStringReadOnly, nullptr};
     EXPECT_EQ(stringReadOnly.name, "str_example3");
@@ -57,8 +57,8 @@ TEST_F(TestBIOSStringAttribute, CtorTest)
             "maximum_string_length" : 100,
             "default_string" : "abc",
             "readOnly" : false,
-            "helpText" : "HelpText",
-            "displayName" : "DisplayName",
+            "help_text" : "HelpText",
+            "display_name" : "DisplayName",
             "dbus" : {
                 "object_path" : "/xyz/abc/def",
                 "interface" : "xyz.openbmc_project.str_example1.value",
@@ -84,8 +84,8 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
             "maximum_string_length" : 100,
             "default_string" : "abc",
             "readOnly" : true,
-            "helpText" : "HelpText",
-            "displayName" : "DisplayName"
+            "help_text" : "HelpText",
+            "display_name" : "DisplayName"
         })"_json;
 
     std::vector<uint8_t> expectedAttrEntry{
@@ -120,8 +120,8 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
             "maximum_string_length" : 100,
             "default_string" : "abc",
             "readOnly" : false,
-            "helpText" : "HelpText",
-            "displayName" : "DisplayName",
+            "help_text" : "HelpText",
+            "display_name" : "DisplayName",
             "dbus" : {
                 "object_path" : "/xyz/abc/def",
                 "interface" : "xyz.openbmc_project.str_example1.value",
@@ -170,8 +170,8 @@ TEST_F(TestBIOSStringAttribute, setAttrValueOnDbus)
             "maximum_string_length" : 100,
             "default_string" : "abc",
             "readOnly" : false,
-            "helpText" : "HelpText",
-            "displayName" : "DisplayName",
+            "help_text" : "HelpText",
+            "display_name" : "DisplayName",
             "dbus" : {
                 "object_path" : "/xyz/abc/def",
                 "interface" : "xyz.openbmc_project.str_example1.value",

@@ -36,8 +36,8 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "scalar_increment" : 1,
          "default_value" : 2,
          "readOnly" : true,
-         "helpText" : "HelpText",
-         "displayName" : "DisplayName"
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName"
       })"_json;
 
     BIOSIntegerAttribute integerReadOnly{jsonIntegerReadOnly, nullptr};
@@ -56,8 +56,8 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "scalar_increment" : 1,
          "default_valu" : 2,
          "readOnly" : true,
-         "helpText" : "HelpText",
-         "displayName" : "DisplayName"
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName"
       })"_json; // default_valu -> default_value
     EXPECT_THROW((BIOSIntegerAttribute{jsonIntegerReadOnlyError, nullptr}),
                  Json::exception);
@@ -69,8 +69,8 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "scalar_increment" : 1,
          "default_value" : 0,
          "readOnly" : false,
-         "helpText" : "HelpText",
-         "displayName" : "DisplayName",
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName",
          "dbus":{
             "object_path" : "/xyz/openbmc_project/avsbus",
             "interface" : "xyz.openbmc.AvsBus.Manager",
@@ -96,8 +96,8 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
          "scalar_increment" : 1,
          "default_value" : 2,
          "readOnly" : true,
-         "helpText" : "HelpText",
-         "displayName" : "DisplayName"
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName"
       })"_json;
 
     std::vector<uint8_t> expectedAttrEntry{
@@ -130,8 +130,8 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
          "scalar_increment" : 1,
          "default_value" : 2,
          "readOnly" : false,
-         "helpText" : "HelpText",
-         "displayName" : "DisplayName",
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName",
          "dbus":{
             "object_path" : "/xyz/openbmc_project/avsbus",
             "interface" : "xyz.openbmc.AvsBus.Manager",
@@ -182,8 +182,8 @@ TEST_F(TestBIOSIntegerAttribute, setAttrValueOnDbus)
          "scalar_increment" : 1,
          "default_value" : 2,
          "readOnly" : false,
-         "helpText" : "HelpText",
-         "displayName" : "DisplayName",
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName",
          "dbus":{
             "object_path" : "/xyz/openbmc_project/avsbus",
             "interface" : "xyz.openbmc.AvsBus.Manager",
