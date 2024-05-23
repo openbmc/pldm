@@ -6,8 +6,8 @@
             "possible_values": ["Perm", "Temp"],
             "value_names": ["Perm", "Temp"],
             "default_values": ["Temp"],
-            "helpText": "Specifies the next boot side to the host, i.e. Temp or Perm. Host can set/query this attribute at anytime to know which is the side the host would boot in the next reboot.",
-            "displayName": "Current Firmware Boot Side (pending)"
+            "help_text": "Specifies the next boot side to the host, i.e. Temp or Perm. Host can set/query this attribute at anytime to know which is the side the host would boot in the next reboot.",
+            "display_name": "Current Firmware Boot Side (pending)"
         },
         {
             "attribute_type": "enum",
@@ -15,8 +15,8 @@
             "possible_values": ["Perm", "Temp"],
             "value_names": ["Perm", "Temp"],
             "default_values": ["Temp"],
-            "helpText": "Specifies the current boot side to the host, i.e. Temp or Perm. Host can query this attribute at anytime to know which side it is running on. This attribute is set by the BMC. Set fw_boot_side instead.",
-            "displayName": "Current Firmware Boot Side (current)"
+            "help_text": "Specifies the current boot side to the host, i.e. Temp or Perm. Host can query this attribute at anytime to know which side it is running on. This attribute is set by the BMC. Set fw_boot_side instead.",
+            "display_name": "Current Firmware Boot Side (current)"
         },
         {
             "attribute_type": "enum",
@@ -24,8 +24,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Enabled"],
-            "helpText": "pvm_pcie_error_inject",
-            "displayName": "pvm_pcie_error_inject"
+            "help_text": "pvm_pcie_error_inject",
+            "display_name": "pvm_pcie_error_inject"
         },
         {
             "attribute_type": "enum",
@@ -33,8 +33,8 @@
             "possible_values": ["IPv4Static", "IPv4DHCP"],
             "value_names": ["IPv4Static", "IPv4DHCP"],
             "default_values": ["IPv4Static"],
-            "helpText": "vmi_if0_ipv4_method",
-            "displayName": "vmi_if0_ipv4_method"
+            "help_text": "vmi_if0_ipv4_method",
+            "display_name": "vmi_if0_ipv4_method"
         },
         {
             "attribute_type": "enum",
@@ -42,8 +42,8 @@
             "possible_values": ["IPv4Static", "IPv4DHCP"],
             "value_names": ["IPv4Static", "IPv4DHCP"],
             "default_values": ["IPv4Static"],
-            "helpText": "vmi_if1_ipv4_method",
-            "displayName": "vmi_if1_ipv4_method"
+            "help_text": "vmi_if1_ipv4_method",
+            "display_name": "vmi_if1_ipv4_method"
         },
         {
             "attribute_type": "enum",
@@ -51,8 +51,8 @@
             "possible_values": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "value_names": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "default_values": ["IPv6Static"],
-            "helpText": "vmi_if0_ipv6_method",
-            "displayName": "vmi_if0_ipv6_method"
+            "help_text": "vmi_if0_ipv6_method",
+            "display_name": "vmi_if0_ipv6_method"
         },
         {
             "attribute_type": "enum",
@@ -60,8 +60,8 @@
             "possible_values": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "value_names": ["IPv6Static", "IPv6DHCP", "IPv6SLAAC"],
             "default_values": ["IPv6Static"],
-            "helpText": "vmi_if1_ipv6_method",
-            "displayName": "vmi_if1_ipv6_method"
+            "help_text": "vmi_if1_ipv6_method",
+            "display_name": "vmi_if1_ipv6_method"
         },
         {
             "attribute_type": "enum",
@@ -69,8 +69,8 @@
             "possible_values": ["PowerVM", "OPAL"],
             "value_names": ["PowerVM", "OPAL"],
             "default_values": ["PowerVM"],
-            "helpText": "Tells the host boot fw which type of hypervisor will be loaded.",
-            "displayName": "hb_hyp_switch",
+            "help_text": "Tells the host boot fw which type of hypervisor will be loaded.",
+            "display_name": "hb_hyp_switch",
             "dbus": {
                 "object_path": "/com/ibm/host0/hypervisor",
                 "interface": "com.ibm.Host.Target",
@@ -88,9 +88,9 @@
             "possible_values": ["PowerVM", "OPAL"],
             "value_names": ["PowerVM", "OPAL"],
             "default_values": ["PowerVM"],
-            "helpText": "Do not set this attribute directly; set hb_hyp_switch instead.",
-            "displayName": "hb_hyp_switch (current)",
-            "readOnly": true
+            "help_text": "Do not set this attribute directly; set hb_hyp_switch instead.",
+            "display_name": "hb_hyp_switch (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -115,8 +115,8 @@
             "possible_values": ["Disabled", "Enabled", "ManualOnly"],
             "value_names": ["Disabled", "Enabled", "ManualOnly"],
             "default_values": ["Disabled"],
-            "helpText": "Select hypervisor boot policy, requires a reboot for a change to be applied. Disabled: Instructs server not to activate server firmware and partitions for either a user-initated power on or a recovery power on, Enabled: Instructs the server to automatically activate certain partitions for either a user-initated power on or a recovery power on, ManualOnly: Instructs the server to activate server firmware and partitions automatically only in case of a recovery power on after an abnormal termination.",
-            "displayName": "pvm_stop_at_standby",
+            "help_text": "Select hypervisor boot policy, requires a reboot for a change to be applied. Disabled: Instructs server not to activate server firmware and partitions for either a user-initated power on or a recovery power on, Enabled: Instructs the server to automatically activate certain partitions for either a user-initated power on or a recovery power on, ManualOnly: Instructs the server to activate server firmware and partitions automatically only in case of a recovery power on after an abnormal termination.",
+            "display_name": "pvm_stop_at_standby",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/control/host0/boot",
                 "interface": "xyz.openbmc_project.Control.Boot.Mode",
@@ -135,9 +135,9 @@
             "possible_values": ["Disabled", "Enabled", "ManualOnly"],
             "value_names": ["Disabled", "Enabled", "ManualOnly"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies the current hypervisor boot policy. Do not set this attribute directly; set pvm_stop_at_standby instead.",
-            "displayName": "pvm_stop_at_standby_current (current)",
-            "readOnly": true
+            "help_text": "Specifies the current hypervisor boot policy. Do not set this attribute directly; set pvm_stop_at_standby instead.",
+            "display_name": "pvm_stop_at_standby_current (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -145,8 +145,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "When set to Enabled Hostboot should emit debug trace information to the VUART2 device.",
-            "displayName": "hb-debug-console"
+            "help_text": "When set to Enabled Hostboot should emit debug trace information to the VUART2 device.",
+            "display_name": "hb-debug-console"
         },
         {
             "attribute_type": "enum",
@@ -154,9 +154,9 @@
             "possible_values": ["NoInhibit", "Inhibit"],
             "value_names": ["NoInhibit", "Inhibit"],
             "default_values": ["NoInhibit"],
-            "helpText": "When set to Inhibit, the hypervisor shall not reset/reload the BMC at runtime.",
-            "displayName": "hb-inhibit-bmc-reset",
-            "readOnly": true
+            "help_text": "When set to Inhibit, the hypervisor shall not reset/reload the BMC at runtime.",
+            "display_name": "hb-inhibit-bmc-reset",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -164,8 +164,8 @@
             "possible_values": ["Power Off", "Stay On", "Automatic"],
             "value_names": ["Power Off", "Stay On", "Automatic"],
             "default_values": ["Automatic"],
-            "helpText": "The system power off policy flag is a system parameter that controls the system's behavior when the last partition (or only partition in the case of a system that is not managed by an HMC) is powered off.",
-            "displayName": "System Automatic Power Off Policy"
+            "help_text": "The system power off policy flag is a system parameter that controls the system's behavior when the last partition (or only partition in the case of a system that is not managed by an HMC) is powered off.",
+            "display_name": "System Automatic Power Off Policy"
         },
         {
             "attribute_type": "enum",
@@ -173,8 +173,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "This option enables or disables the system is managed by HMC.",
-            "displayName": "HMC managed System"
+            "help_text": "This option enables or disables the system is managed by HMC.",
+            "display_name": "HMC managed System"
         },
         {
             "attribute_type": "enum",
@@ -182,9 +182,9 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "Indicates whether or not VMI support has been provisioned by Hypervisor. Enabled - VMI is available, Disabled - VMI is not available.",
-            "displayName": "VMI Support",
-            "readOnly": true
+            "help_text": "Indicates whether or not VMI support has been provisioned by Hypervisor. Enabled - VMI is available, Disabled - VMI is not available.",
+            "display_name": "VMI Support",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -192,8 +192,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "This option enables or disables the Remote Trusted Attestation Daemon for host firmware.",
-            "displayName": "Remote Trusted Attestation Daemon State"
+            "help_text": "This option enables or disables the Remote Trusted Attestation Daemon for host firmware.",
+            "display_name": "Remote Trusted Attestation Daemon State"
         },
         {
             "attribute_type": "enum",
@@ -207,8 +207,8 @@
             ],
             "value_names": ["AIX", "Linux", "IBM I", "Linux KVM", "Default"],
             "default_values": ["Default"],
-            "helpText": "CEC Primary OS",
-            "displayName": "CEC Primary OS"
+            "help_text": "CEC Primary OS",
+            "display_name": "CEC Primary OS"
         },
         {
             "attribute_type": "enum",
@@ -222,9 +222,9 @@
             ],
             "value_names": ["AIX", "Linux", "IBM I", "Linux KVM", "Default"],
             "default_values": ["Default"],
-            "helpText": "Specifies the current CEC Primary OS type. Do not set this attribute directly; set pvm_default_os_type instead.",
-            "displayName": "CEC Primary OS (current)",
-            "readOnly": true
+            "help_text": "Specifies the current CEC Primary OS type. Do not set this attribute directly; set pvm_default_os_type instead.",
+            "display_name": "CEC Primary OS (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -232,8 +232,8 @@
             "possible_values": ["Normal", "Manual"],
             "value_names": ["Normal", "Manual"],
             "default_values": ["Normal"],
-            "helpText": "Manual mode is used for service or maintenance purpose of the system hardware. When the system is in manual mode, various automatic functions such as recovery on error, system poweron on power loss and reboot of host on failure are disabled.",
-            "displayName": "Server Operating Mode"
+            "help_text": "Manual mode is used for service or maintenance purpose of the system hardware. When the system is in manual mode, various automatic functions such as recovery on error, system poweron on power loss and reboot of host on failure are disabled.",
+            "display_name": "Server Operating Mode"
         },
         {
             "attribute_type": "enum",
@@ -253,8 +253,8 @@
                 "DefaultList"
             ],
             "default_values": ["Normal"],
-            "helpText": "Select the boot type for an AIX/Linux partition. Normal: The partition boots directly to the operating system, SavedList: The system boots from the saved service mode boot list, SmsMenu: The partition stops at the System Management Services(SMS) menu, OkPrompt: The system stops at the open firmware prompt, DefaultList: The system boots from the default boot list.",
-            "displayName": "AIX/Linux Partition Boot Mode"
+            "help_text": "Select the boot type for an AIX/Linux partition. Normal: The partition boots directly to the operating system, SavedList: The system boots from the saved service mode boot list, SmsMenu: The partition stops at the System Management Services(SMS) menu, OkPrompt: The system stops at the open firmware prompt, DefaultList: The system boots from the default boot list.",
+            "display_name": "AIX/Linux Partition Boot Mode"
         },
         {
             "attribute_type": "enum",
@@ -274,9 +274,9 @@
                 "DefaultList"
             ],
             "default_values": ["Normal"],
-            "helpText": "Specifies the current boot type for an AIX/Linux partition. Do not set this attribute directly; set pvm_rpa_boot_mode instead.",
-            "displayName": "AIX/Linux Partition Boot Mode (current)",
-            "readOnly": true
+            "help_text": "Specifies the current boot type for an AIX/Linux partition. Do not set this attribute directly; set pvm_rpa_boot_mode instead.",
+            "display_name": "AIX/Linux Partition Boot Mode (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -284,8 +284,8 @@
             "possible_values": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "value_names": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "default_values": ["A_Mode"],
-            "helpText": "Select the IBM i partition boot mode for next system boot. A_Mode: Boot from disk using copy A, B_Mode: Boot from disk using copy B, C_Mode: Reserved for IBM lab use only, D_Mode: Boot from media/drives.",
-            "displayName": "IBM i Partition Boot Mode"
+            "help_text": "Select the IBM i partition boot mode for next system boot. A_Mode: Boot from disk using copy A, B_Mode: Boot from disk using copy B, C_Mode: Reserved for IBM lab use only, D_Mode: Boot from media/drives.",
+            "display_name": "IBM i Partition Boot Mode"
         },
         {
             "attribute_type": "enum",
@@ -293,9 +293,9 @@
             "possible_values": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "value_names": ["A_Mode", "B_Mode", "C_Mode", "D_Mode"],
             "default_values": ["A_Mode"],
-            "helpText": "Specifies the current IBM i partition boot mode for next system boot. Do not set this attribute directly; set pvm_os_boot_type instead.",
-            "displayName": "IBM i Partition Boot Mode (current)",
-            "readOnly": true
+            "help_text": "Specifies the current IBM i partition boot mode for next system boot. Do not set this attribute directly; set pvm_os_boot_type instead.",
+            "display_name": "IBM i Partition Boot Mode (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -303,8 +303,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Enabled"],
-            "helpText": "Enabling vTPM makes a TPM available to the guest operating system.",
-            "displayName": "Virtual Trusted Platform Module"
+            "help_text": "Enabling vTPM makes a TPM available to the guest operating system.",
+            "display_name": "Virtual Trusted Platform Module"
         },
         {
             "attribute_type": "enum",
@@ -312,9 +312,9 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Enabled"],
-            "helpText": "Specifies the current vTPM policy. Do not set this attribute directly; set pvm_vtpm instead.",
-            "displayName": "Virtual Trusted Platform Module (current)",
-            "readOnly": true
+            "help_text": "Specifies the current vTPM policy. Do not set this attribute directly; set pvm_vtpm instead.",
+            "display_name": "Virtual Trusted Platform Module (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -322,8 +322,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Enabled when a system dump is in progress or stored in hypervisor memory and ready for offload, Disabled otherwise.",
-            "displayName": "System Dump Active"
+            "help_text": "Enabled when a system dump is in progress or stored in hypervisor memory and ready for offload, Disabled otherwise.",
+            "display_name": "System Dump Active"
         },
         {
             "attribute_type": "enum",
@@ -331,8 +331,8 @@
             "possible_values": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
             "value_names": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
             "default_values": ["256MB"],
-            "helpText": "Specifies the size of the logical memory block the system uses to read memory, requires a reboot for a change to be applied.",
-            "displayName": "Memory Region Size (pending)"
+            "help_text": "Specifies the size of the logical memory block the system uses to read memory, requires a reboot for a change to be applied.",
+            "display_name": "Memory Region Size (pending)"
         },
         {
             "attribute_type": "enum",
@@ -340,9 +340,9 @@
             "possible_values": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
             "value_names": ["128MB", "256MB", "1024MB", "2048MB", "4096MB"],
             "default_values": ["256MB"],
-            "helpText": "Specifies the size of the logical memory block the system uses to read memory for the current IPL. Do not set this attribute directly; set hb_memory_region_size instead.",
-            "displayName": "Memory Region Size (current)",
-            "readOnly": true
+            "help_text": "Specifies the size of the logical memory block the system uses to read memory for the current IPL. Do not set this attribute directly; set hb_memory_region_size instead.",
+            "display_name": "Memory Region Size (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -350,8 +350,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies whether the power limit is enabled.",
-            "displayName": "Power Limit Enable",
+            "help_text": "Specifies whether the power limit is enabled.",
+            "display_name": "Power Limit Enable",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/control/host0/power_cap",
                 "interface": "xyz.openbmc_project.Control.Power.Cap",
@@ -366,9 +366,9 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if the power limit is enabled for the current IPL. Do not set this attribute directly; set hb_power_limit_enable instead.",
-            "displayName": "Power Limit Enable (current)",
-            "readOnly": true
+            "help_text": "Specifies if the power limit is enabled for the current IPL. Do not set this attribute directly; set hb_power_limit_enable instead.",
+            "display_name": "Power Limit Enable (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -376,8 +376,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies whether the secure version lockin functionality is enabled.",
-            "displayName": "Secure Version Lockin Enabled"
+            "help_text": "Specifies whether the secure version lockin functionality is enabled.",
+            "display_name": "Secure Version Lockin Enabled"
         },
         {
             "attribute_type": "enum",
@@ -385,8 +385,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if the memory mirroring is enabled, requires a reboot for a change to be applied.",
-            "displayName": "Memory Mirror Mode (pending)"
+            "help_text": "Specifies if the memory mirroring is enabled, requires a reboot for a change to be applied.",
+            "display_name": "Memory Mirror Mode (pending)"
         },
         {
             "attribute_type": "enum",
@@ -394,9 +394,9 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if the memory mirroring is enabled for the current IPL. Do not set this attribute directly; set hb_memory_mirror_mode instead.",
-            "displayName": "Memory Mirror Mode (current)",
-            "readOnly": true
+            "help_text": "Specifies if the memory mirroring is enabled for the current IPL. Do not set this attribute directly; set hb_memory_mirror_mode instead.",
+            "display_name": "Memory Mirror Mode (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -404,8 +404,8 @@
             "possible_values": ["Required", "Not Required"],
             "value_names": ["Required", "Not Required"],
             "default_values": ["Required"],
-            "helpText": "When the 'TPM Required Policy' is 'Required', a functional TPM is required to boot the system",
-            "displayName": "TPM Required Policy (pending)",
+            "help_text": "When the 'TPM Required Policy' is 'Required', a functional TPM is required to boot the system",
+            "display_name": "TPM Required Policy (pending)",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/control/host0/TPMEnable",
                 "interface": "xyz.openbmc_project.Control.TPM.Policy",
@@ -420,9 +420,9 @@
             "possible_values": ["Required", "Not Required"],
             "value_names": ["Required", "Not Required"],
             "default_values": ["Required"],
-            "helpText": "When the 'TPM Required Policy' is 'Required', a functional TPM is required to boot the system. Do not set this attribute directly; set hb_tpm_required instead.",
-            "displayName": "TPM Required Policy (current)",
-            "readOnly": true
+            "help_text": "When the 'TPM Required Policy' is 'Required', a functional TPM is required to boot the system. Do not set this attribute directly; set hb_tpm_required instead.",
+            "display_name": "TPM Required Policy (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -444,8 +444,8 @@
                 "MFG"
             ],
             "default_values": ["NONE"],
-            "helpText": "Specifies the requested level of security keys to be cleared from the system, requires a reboot to take effect",
-            "displayName": "Key Clear Request (pending)"
+            "help_text": "Specifies the requested level of security keys to be cleared from the system, requires a reboot to take effect",
+            "display_name": "Key Clear Request (pending)"
         },
         {
             "attribute_type": "enum",
@@ -467,9 +467,9 @@
                 "MFG"
             ],
             "default_values": ["NONE"],
-            "helpText": "Specifies the requested level of security keys to be cleared from the system for the current IPL. Do not set this attribute directly; set hb_key_clear_request instead.",
-            "displayName": "Key Clear Request (current)",
-            "readOnly": true
+            "help_text": "Specifies the requested level of security keys to be cleared from the system for the current IPL. Do not set this attribute directly; set hb_key_clear_request instead.",
+            "display_name": "Key Clear Request (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -477,8 +477,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Enabled"],
-            "helpText": "Specifies if Host USB is disabled or enabled for security reasons, requires a reboot for a change to be applied.",
-            "displayName": "Host USB Enablement (pending)"
+            "help_text": "Specifies if Host USB is disabled or enabled for security reasons, requires a reboot for a change to be applied.",
+            "display_name": "Host USB Enablement (pending)"
         },
         {
             "attribute_type": "enum",
@@ -486,9 +486,9 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Enabled"],
-            "helpText": "Specifies if Host USB is disabled or enabled for security reasons. Do not set this attribute directly; set hb_host_usb_enablement instead.",
-            "displayName": "Host USB Enablement (current)",
-            "readOnly": true
+            "help_text": "Specifies if Host USB is disabled or enabled for security reasons. Do not set this attribute directly; set hb_host_usb_enablement instead.",
+            "display_name": "Host USB Enablement (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -496,8 +496,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "Select auto poweron policy. Disabled: Instructs server not to activate any auto poweron logic, Enabled: The system will boot automatically once power is restored after a power disturbance.",
-            "displayName": "pvm_auto_poweron_restart",
+            "help_text": "Select auto poweron policy. Disabled: Instructs server not to activate any auto poweron logic, Enabled: The system will boot automatically once power is restored after a power disturbance.",
+            "display_name": "pvm_auto_poweron_restart",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/control/host0/power_restore_policy",
                 "interface": "xyz.openbmc_project.Control.Power.RestorePolicy",
@@ -515,8 +515,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Enabled"],
-            "helpText": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Lateral Cast Out mode is disabled or enabled, requires a reboot for a change to be applied.",
-            "displayName": "Lateral Cast Out mode (pending)"
+            "help_text": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Lateral Cast Out mode is disabled or enabled, requires a reboot for a change to be applied.",
+            "display_name": "Lateral Cast Out mode (pending)"
         },
         {
             "attribute_type": "enum",
@@ -524,9 +524,9 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Enabled"],
-            "helpText": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Lateral Cast Out mode is disabled or enabled. Do not set this attribute directly; set hb_lateral_cast_out_mode instead.",
-            "displayName": "Lateral Cast Out mode (current)",
-            "readOnly": true
+            "help_text": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Lateral Cast Out mode is disabled or enabled. Do not set this attribute directly; set hb_lateral_cast_out_mode instead.",
+            "display_name": "Lateral Cast Out mode (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -534,8 +534,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Proc Favor Aggressive Prefetch is disabled or enabled, requires a reboot for a change to be applied.",
-            "displayName": "Proc Favor Aggressive Prefetch (pending)"
+            "help_text": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Proc Favor Aggressive Prefetch is disabled or enabled, requires a reboot for a change to be applied.",
+            "display_name": "Proc Favor Aggressive Prefetch (pending)"
         },
         {
             "attribute_type": "enum",
@@ -543,9 +543,9 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Proc Favor Aggressive Prefetch is disabled or enabled. Do not set this attribute directly; set hb_proc_favor_aggressive_prefetch instead.",
-            "displayName": "Proc Favor Aggressive Prefetch (current)",
-            "readOnly": true
+            "help_text": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Proc Favor Aggressive Prefetch is disabled or enabled. Do not set this attribute directly; set hb_proc_favor_aggressive_prefetch instead.",
+            "display_name": "Proc Favor Aggressive Prefetch (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -553,8 +553,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "When enabled creates a new default partition after NVRAM is cleared. This is primarily for machines that are managed by hardware management console.",
-            "displayName": "pvm_create_default_lpar (pending)"
+            "help_text": "When enabled creates a new default partition after NVRAM is cleared. This is primarily for machines that are managed by hardware management console.",
+            "display_name": "pvm_create_default_lpar (pending)"
         },
         {
             "attribute_type": "enum",
@@ -562,9 +562,9 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "When enabled creates a new default partition after NVRAM is cleared. This is primarily for machines that are managed by hardware management console.Do not set this attribute directly; set pvm_create_default_lpar instead.",
-            "displayName": "pvm_create_default_lpar (current)",
-            "readOnly": true
+            "help_text": "When enabled creates a new default partition after NVRAM is cleared. This is primarily for machines that are managed by hardware management console.Do not set this attribute directly; set pvm_create_default_lpar instead.",
+            "display_name": "pvm_create_default_lpar (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -572,8 +572,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "The hypervisor needs to clear most of PHYP NVRAM, but preserve the NVRAM for the manufacturing default partition",
-            "displayName": "pvm_keep_and_clear"
+            "help_text": "The hypervisor needs to clear most of PHYP NVRAM, but preserve the NVRAM for the manufacturing default partition",
+            "display_name": "pvm_keep_and_clear"
         },
         {
             "attribute_type": "enum",
@@ -581,8 +581,8 @@
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if the hypervisor needs to clear PHYP NVRAM",
-            "displayName": "pvm_clear_nvram"
+            "help_text": "Specifies if the hypervisor needs to clear PHYP NVRAM",
+            "display_name": "pvm_clear_nvram"
         },
         {
             "attribute_type": "enum",
@@ -590,8 +590,8 @@
             "possible_values": ["User", "HMC", "Host", "Auto"],
             "value_names": ["User", "HMC", "Host", "Auto"],
             "default_values": ["User"],
-            "helpText": "Specifies who initiated the IPL.",
-            "displayName": "IPL Initiator (pending)"
+            "help_text": "Specifies who initiated the IPL.",
+            "display_name": "IPL Initiator (pending)"
         },
         {
             "attribute_type": "enum",
@@ -599,9 +599,9 @@
             "possible_values": ["User", "HMC", "Host", "Auto"],
             "value_names": ["User", "HMC", "Host", "Auto"],
             "default_values": ["User"],
-            "helpText": "Specifies who initiated the IPL. Set pvm_boot_initiator instead.",
-            "displayName": "IPL Initiator (current)",
-            "readOnly": true
+            "help_text": "Specifies who initiated the IPL. Set pvm_boot_initiator instead.",
+            "display_name": "IPL Initiator (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -609,8 +609,8 @@
             "possible_values": ["IPL", "ReIPL"],
             "value_names": ["IPL", "ReIPL"],
             "default_values": ["IPL"],
-            "helpText": "Specifies if the boot type is an IPL or a ReIPL",
-            "displayName": "Boot Type Indicator (pending)"
+            "help_text": "Specifies if the boot type is an IPL or a ReIPL",
+            "display_name": "Boot Type Indicator (pending)"
         },
         {
             "attribute_type": "enum",
@@ -618,9 +618,9 @@
             "possible_values": ["IPL", "ReIPL"],
             "value_names": ["IPL", "ReIPL"],
             "default_values": ["IPL"],
-            "helpText": "Specifies if the boot type is an IPL or a ReIPL. Set pvm_boot_type instead",
-            "displayName": "Boot Type Indicator (current)",
-            "readOnly": true
+            "help_text": "Specifies if the boot type is an IPL or a ReIPL. Set pvm_boot_type instead",
+            "display_name": "Boot Type Indicator (current)",
+            "read_only": true
         },
         {
             "attribute_type": "enum",
@@ -628,8 +628,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
-            "helpText": "Controls whether or not a processor core will be de-configured on error.",
-            "displayName": "Guard on error"
+            "help_text": "Controls whether or not a processor core will be de-configured on error.",
+            "display_name": "Guard on error"
         },
         {
             "attribute_type": "enum",
@@ -637,8 +637,8 @@
             "possible_values": ["Enabled", "Scheduled", "Disabled"],
             "value_names": ["Enabled", "Scheduled", "Disabled"],
             "default_values": ["Enabled"],
-            "helpText": "Enabled (Run on each core once daily, at an equally spaced interval, to test each core every 24 hours. For example, on a 48-core system, the RPD would test one core every 30 minutes), Run Now (Run sequentially on each core starting immediately), Scheduled (Run sequentially on each core at the scheduled time each day), Disabled (No diagnostics or exercisers will be run).",
-            "displayName": "Runtime Processor Diagnostics Policy"
+            "help_text": "Enabled (Run on each core once daily, at an equally spaced interval, to test each core every 24 hours. For example, on a 48-core system, the RPD would test one core every 30 minutes), Run Now (Run sequentially on each core starting immediately), Scheduled (Run sequentially on each core at the scheduled time each day), Disabled (No diagnostics or exercisers will be run).",
+            "display_name": "Runtime Processor Diagnostics Policy"
         },
         {
             "attribute_type": "enum",
@@ -646,8 +646,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled", "Automatic"],
             "default_values": ["Disabled"],
-            "helpText": "Enabled (Override the pvm_rpd_policy and start a diagnostic test run immediately. RPD will set pvm_rpd_immediate_test to “Disabled” when an immediate test run completes), Disabled (The pvm_rpd_policy is used).",
-            "displayName": "Immediate Test Requested"
+            "help_text": "Enabled (Override the pvm_rpd_policy and start a diagnostic test run immediately. RPD will set pvm_rpd_immediate_test to “Disabled” when an immediate test run completes), Disabled (The pvm_rpd_policy is used).",
+            "display_name": "Immediate Test Requested"
         },
         {
             "attribute_type": "enum",
@@ -655,8 +655,8 @@
             "possible_values": ["Enabled", "Disabled", "Automatic"],
             "value_names": ["Enabled", "Disabled", "Automatic"],
             "default_values": ["Automatic"],
-            "helpText": "Controls whether or not the Runtime Processor Diagnostics (RPD) Feature will be configured on the system. Enabled ( The RPD feature will be configured regardless of the amount of installed memory), Automatic (The RPD feature will be configured on systems with at least 128GB of installed memory and not configured on systems with less than 128GB), Disabled (The RPD feature will not be configured).",
-            "displayName": "Runtime Processor Diagnostics Feature"
+            "help_text": "Controls whether or not the Runtime Processor Diagnostics (RPD) Feature will be configured on the system. Enabled ( The RPD feature will be configured regardless of the amount of installed memory), Automatic (The RPD feature will be configured on systems with at least 128GB of installed memory and not configured on systems with less than 128GB), Disabled (The RPD feature will not be configured).",
+            "display_name": "Runtime Processor Diagnostics Feature"
         },
         {
             "attribute_type": "enum",
@@ -664,8 +664,8 @@
             "possible_values": ["Enabled", "Disabled", "Automatic"],
             "value_names": ["Enabled", "Disabled", "Automatic"],
             "default_values": ["Automatic"],
-            "helpText": "Controls whether or not the Runtime Processor Diagnostics (RPD) Feature will be configured on the system. Enabled ( The RPD feature will be configured regardless of the amount of installed memory), Automatic (The RPD feature will be configured on systems with at least 128GB of installed memory and not configured on systems with less than 128GB), Disabled (The RPD feature will not be configured).",
-            "displayName": "Runtime Processor Diagnostics Feature"
+            "help_text": "Controls whether or not the Runtime Processor Diagnostics (RPD) Feature will be configured on the system. Enabled ( The RPD feature will be configured regardless of the amount of installed memory), Automatic (The RPD feature will be configured on systems with at least 128GB of installed memory and not configured on systems with less than 128GB), Disabled (The RPD feature will not be configured).",
+            "display_name": "Runtime Processor Diagnostics Feature"
         },
         {
             "attribute_type": "enum",
@@ -673,8 +673,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if Power Supply 0 is present. (Enabled is Present)",
-            "displayName": "Power Supply 0 is functional",
+            "help_text": "Specifies if Power Supply 0 is present. (Enabled is Present)",
+            "display_name": "Power Supply 0 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -689,8 +689,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if Power Supply 1 is present. (Enabled is Present)",
-            "displayName": "Power Supply 1 is functional",
+            "help_text": "Specifies if Power Supply 1 is present. (Enabled is Present)",
+            "display_name": "Power Supply 1 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply1",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -705,8 +705,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if Power Supply 2 is Present. (Enabled is Present)",
-            "displayName": "Power Supply 2 is functional",
+            "help_text": "Specifies if Power Supply 2 is Present. (Enabled is Present)",
+            "display_name": "Power Supply 2 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply2",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -721,8 +721,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies if Power Supply 3 is present. (Enabled is Present)",
-            "displayName": "Power Supply 3 is functional",
+            "help_text": "Specifies if Power Supply 3 is present. (Enabled is Present)",
+            "display_name": "Power Supply 3 is functional",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply3",
                 "interface": "xyz.openbmc_project.Inventory.Item",
@@ -737,8 +737,8 @@
             "possible_values": ["Disabled", "NFS", "iSCSI"],
             "value_names": ["Disabled", "NFS", "iSCSI"],
             "default_values": ["Disabled"],
-            "helpText": "Specifies whether the IBM i network install type is NFS Optical or iSCSI Tape. Disabled: indicates the IBM i Network Install BIOS attributes should not be used.",
-            "displayName": "IBM i Network Install Type"
+            "help_text": "Specifies whether the IBM i network install type is NFS Optical or iSCSI Tape. Disabled: indicates the IBM i Network Install BIOS attributes should not be used.",
+            "display_name": "IBM i Network Install Type"
         },
         {
             "attribute_type": "enum",
@@ -746,8 +746,8 @@
             "possible_values": ["IPv4", "IPv6"],
             "value_names": ["IPv4", "IPv6"],
             "default_values": ["IPv4"],
-            "helpText": "Specifies whether the IP address protocol for IBM i network install is IPv4 or IPv6.",
-            "displayName": "IBM i IP Address Protocol"
+            "help_text": "Specifies whether the IP address protocol for IBM i network install is IPv4 or IPv6.",
+            "display_name": "IBM i IP Address Protocol"
         },
         {
             "attribute_type": "enum",
@@ -755,8 +755,8 @@
             "possible_values": ["MTU1500", "MTU9000"],
             "value_names": ["MTU1500", "MTU9000"],
             "default_values": ["MTU1500"],
-            "helpText": "Specifies the maximum frame size (maximum transmission unit, MTU). The value is in terms of bytes per packet size.",
-            "displayName": "Maximum Frame Size"
+            "help_text": "Specifies the maximum frame size (maximum transmission unit, MTU). The value is in terms of bytes per packet size.",
+            "display_name": "Maximum Frame Size"
         },
         {
             "attribute_type": "enum",
@@ -764,8 +764,8 @@
             "possible_values": ["Automatic", "Custom"],
             "value_names": ["Automatic", "Custom"],
             "default_values": ["Automatic"],
-            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests.",
-            "displayName": "Memory setting for KVM Guest Management"
+            "help_text": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests.",
+            "display_name": "Memory setting for KVM Guest Management"
         },
         {
             "attribute_type": "enum",
@@ -773,9 +773,9 @@
             "possible_values": ["Automatic", "Custom"],
             "value_names": ["Automatic", "Custom"],
             "default_values": ["Automatic"],
-            "helpText": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests.",
-            "displayName": "Memory setting for KVM Guest Management (current)",
-            "readOnly": true
+            "help_text": "Controls whether the system or user specified percentage of available system memory will be reserved for the management of KVM guests. Automatic (default) – The system will determine the percentage of available system memory to be reserved for the management of KVM guests. Custom – The user specified percentage of available system memory will be reserved for the management of KVM guests.",
+            "display_name": "Memory setting for KVM Guest Management (current)",
+            "read_only": true
         },
         {
             "attribute_type": "integer",
@@ -784,8 +784,8 @@
             "upper_bound": 32,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "vmi_if0_ipv4_prefix_length",
-            "displayName": "vmi_if0_ipv4_prefix_length"
+            "help_text": "vmi_if0_ipv4_prefix_length",
+            "display_name": "vmi_if0_ipv4_prefix_length"
         },
         {
             "attribute_type": "integer",
@@ -794,8 +794,8 @@
             "upper_bound": 32,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "vmi_if1_ipv4_prefix_length",
-            "displayName": "vmi_if1_ipv4_prefix_length"
+            "help_text": "vmi_if1_ipv4_prefix_length",
+            "display_name": "vmi_if1_ipv4_prefix_length"
         },
         {
             "attribute_type": "integer",
@@ -804,8 +804,8 @@
             "upper_bound": 128,
             "scalar_increment": 1,
             "default_value": 128,
-            "helpText": "vmi_if0_ipv6_prefix_length",
-            "displayName": "vmi_if0_ipv6_prefix_length"
+            "help_text": "vmi_if0_ipv6_prefix_length",
+            "display_name": "vmi_if0_ipv6_prefix_length"
         },
         {
             "attribute_type": "integer",
@@ -814,8 +814,8 @@
             "upper_bound": 128,
             "scalar_increment": 1,
             "default_value": 128,
-            "helpText": "vmi_if1_ipv6_prefix_length",
-            "displayName": "vmi_if1_ipv6_prefix_length"
+            "help_text": "vmi_if1_ipv6_prefix_length",
+            "display_name": "vmi_if1_ipv6_prefix_length"
         },
         {
             "attribute_type": "integer",
@@ -824,8 +824,8 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the number of huge pages available for memory management, requires a reboot for a change to be applied.",
-            "displayName": "Number Huge Pages (pending)"
+            "help_text": "Specifies the number of huge pages available for memory management, requires a reboot for a change to be applied.",
+            "display_name": "Number Huge Pages (pending)"
         },
         {
             "attribute_type": "integer",
@@ -834,9 +834,9 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the number of huge pages available for memory management for the current IPL. Do not set this attribute directly; set hb_number_huge_pages instead.",
-            "displayName": "Number Huge Pages (current)"
+            "read_only": true,
+            "help_text": "Specifies the number of huge pages available for memory management for the current IPL. Do not set this attribute directly; set hb_number_huge_pages instead.",
+            "display_name": "Number Huge Pages (current)"
         },
         {
             "attribute_type": "integer",
@@ -845,8 +845,8 @@
             "upper_bound": 255,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the size of huge pages, 0 = 16GB, requires a reboot for a change to be applied.",
-            "displayName": "Huge Page Size (pending)"
+            "help_text": "Specifies the size of huge pages, 0 = 16GB, requires a reboot for a change to be applied.",
+            "display_name": "Huge Page Size (pending)"
         },
         {
             "attribute_type": "integer",
@@ -855,9 +855,9 @@
             "upper_bound": 255,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the size of huge pages, 0 = 16GB, for the current IPL. Do not set this attribute directly; set hb_huge_page_size instead.",
-            "displayName": "Huge Page Size (current)"
+            "read_only": true,
+            "help_text": "Specifies the size of huge pages, 0 = 16GB, for the current IPL. Do not set this attribute directly; set hb_huge_page_size instead.",
+            "display_name": "Huge Page Size (current)"
         },
         {
             "attribute_type": "integer",
@@ -866,8 +866,8 @@
             "upper_bound": 255,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "The maximum number of cores to activate where 0 being to activate all available cores. Requires a reboot for a change to be applied.",
-            "displayName": "Field Core Override (pending)"
+            "help_text": "The maximum number of cores to activate where 0 being to activate all available cores. Requires a reboot for a change to be applied.",
+            "display_name": "Field Core Override (pending)"
         },
         {
             "attribute_type": "integer",
@@ -876,9 +876,9 @@
             "upper_bound": 255,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "The maximum number of cores to activate where 0 being to activate all available cores. Value applicable for the current IPL. Do not set this attribute directly; set hb_field_core_override instead.",
-            "displayName": "Field Core Override (current)"
+            "read_only": true,
+            "help_text": "The maximum number of cores to activate where 0 being to activate all available cores. Value applicable for the current IPL. Do not set this attribute directly; set hb_field_core_override instead.",
+            "display_name": "Field Core Override (current)"
         },
         {
             "attribute_type": "integer",
@@ -887,8 +887,8 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the power limit in watts.",
-            "displayName": "Power Limit In Watts",
+            "help_text": "Specifies the power limit in watts.",
+            "display_name": "Power Limit In Watts",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/control/host0/power_cap",
                 "interface": "xyz.openbmc_project.Control.Power.Cap",
@@ -903,9 +903,9 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the actual maximum number of huge pages available given the current system configuration.",
-            "displayName": "Max Number Huge Pages"
+            "read_only": true,
+            "help_text": "Specifies the actual maximum number of huge pages available given the current system configuration.",
+            "display_name": "Max Number Huge Pages"
         },
         {
             "attribute_type": "integer",
@@ -914,8 +914,8 @@
             "upper_bound": 255,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the enlarged IO capacity, requires a reboot for a change to be applied.",
-            "displayName": "Enlarged IO Capacity (pending)"
+            "help_text": "Specifies the enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Enlarged IO Capacity (pending)"
         },
         {
             "attribute_type": "integer",
@@ -924,9 +924,9 @@
             "upper_bound": 255,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity instead.",
-            "displayName": "Enlarged IO Capacity (current)"
+            "read_only": true,
+            "help_text": "Specifies the enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity instead.",
+            "display_name": "Enlarged IO Capacity (current)"
         },
         {
             "attribute_type": "integer",
@@ -935,9 +935,9 @@
             "upper_bound": 255,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the effective secure version of the host FW. In secure mode, the secure version value of a driver must be greater than or equal to this effective secure version to allow the system to boot.",
-            "displayName": "Effective Secure Version"
+            "read_only": true,
+            "help_text": "Specifies the effective secure version of the host FW. In secure mode, the secure version value of a driver must be greater than or equal to this effective secure version to allow the system to boot.",
+            "display_name": "Effective Secure Version"
         },
         {
             "attribute_type": "integer",
@@ -946,9 +946,9 @@
             "upper_bound": 4294967295,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the lowest floor frequency across all chips in the system.",
-            "displayName": "Minimum Core Freq MHZ"
+            "read_only": true,
+            "help_text": "Specifies the lowest floor frequency across all chips in the system.",
+            "display_name": "Minimum Core Freq MHZ"
         },
         {
             "attribute_type": "integer",
@@ -957,9 +957,9 @@
             "upper_bound": 4294967295,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the highest ceiling frequency across all chips in the system.",
-            "displayName": "Maximum Core Freq MHZ"
+            "read_only": true,
+            "help_text": "Specifies the highest ceiling frequency across all chips in the system.",
+            "display_name": "Maximum Core Freq MHZ"
         },
         {
             "attribute_type": "integer",
@@ -968,8 +968,8 @@
             "upper_bound": 4294967295,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the desired frequency across all chips in the system.  Requires a reboot for a change to be applied.",
-            "displayName": "Requested Core Freq MHZ (pending)"
+            "help_text": "Specifies the desired frequency across all chips in the system.  Requires a reboot for a change to be applied.",
+            "display_name": "Requested Core Freq MHZ (pending)"
         },
         {
             "attribute_type": "integer",
@@ -978,9 +978,9 @@
             "upper_bound": 4294967295,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the desired frequency across all chips in the system.  Do not set this attribute directly; set hb_cap_freq_mhz_request instead.",
-            "displayName": "Requested Core Freq MHZ (current)"
+            "read_only": true,
+            "help_text": "Specifies the desired frequency across all chips in the system.  Do not set this attribute directly; set hb_cap_freq_mhz_request instead.",
+            "display_name": "Requested Core Freq MHZ (current)"
         },
         {
             "attribute_type": "integer",
@@ -989,8 +989,8 @@
             "upper_bound": 86399,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the time of day in seconds at which to run the processor diagnostics.",
-            "displayName": "RPD Scheduled Run Time of Day in Seconds"
+            "help_text": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the time of day in seconds at which to run the processor diagnostics.",
+            "display_name": "RPD Scheduled Run Time of Day in Seconds"
         },
         {
             "attribute_type": "integer",
@@ -999,8 +999,8 @@
             "upper_bound": 1440,
             "scalar_increment": 1,
             "default_value": 1440,
-            "helpText": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the duration in minutes to run the processor diagnostics, starting at the Scheduled Time of Day. Note: If the RPD is unable to test every core within the specified Run Time Duration, the RPD will resume where it left off, at the next Schedule Run Time of Day.",
-            "displayName": "RPD Scheduled Run Time Duration in Minutes"
+            "help_text": "Only used when pvm_rpd_policy is set to “Scheduled”. This value represents the duration in minutes to run the processor diagnostics, starting at the Scheduled Time of Day. Note: If the RPD is unable to test every core within the specified Run Time Duration, the RPD will resume where it left off, at the next Schedule Run Time of Day.",
+            "display_name": "RPD Scheduled Run Time Duration in Minutes"
         },
         {
             "attribute_type": "integer",
@@ -1009,9 +1009,9 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies power supply 0 input voltage(volts)",
-            "displayName": "Power Supply 0 input Voltage",
+            "read_only": true,
+            "help_text": "Specifies power supply 0 input voltage(volts)",
+            "display_name": "Power Supply 0 input Voltage",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/sensors/voltage/ps0_input_voltage_rating",
                 "interface": "xyz.openbmc_project.Sensor.Value",
@@ -1026,9 +1026,9 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies power supply 1 input voltage(volts)",
-            "displayName": "Power Supply 1 input Voltage",
+            "read_only": true,
+            "help_text": "Specifies power supply 1 input voltage(volts)",
+            "display_name": "Power Supply 1 input Voltage",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/sensors/voltage/ps1_input_voltage_rating",
                 "interface": "xyz.openbmc_project.Sensor.Value",
@@ -1043,9 +1043,9 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies power supply 2 input voltage(volts)",
-            "displayName": "Power Supply 2 input Voltage",
+            "read_only": true,
+            "help_text": "Specifies power supply 2 input voltage(volts)",
+            "display_name": "Power Supply 2 input Voltage",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/sensors/voltage/ps2_input_voltage_rating",
                 "interface": "xyz.openbmc_project.Sensor.Value",
@@ -1060,9 +1060,9 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies power supply 3 input voltage(volts)",
-            "displayName": "Power Supply 3 input Voltage",
+            "read_only": true,
+            "help_text": "Specifies power supply 3 input voltage(volts)",
+            "display_name": "Power Supply 3 input Voltage",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/sensors/voltage/ps3_input_voltage_rating",
                 "interface": "xyz.openbmc_project.Sensor.Value",
@@ -1077,8 +1077,8 @@
             "upper_bound": 4094,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the VLAN ID that is used when performing a network installation of an IBM i logical partition. Ethernet packets are tagged with the specified VLAN ID. If this option is not specified, Ethernet packets are untagged.",
-            "displayName": "VLAN Tag Identifier"
+            "help_text": "Specifies the VLAN ID that is used when performing a network installation of an IBM i logical partition. Ethernet packets are tagged with the specified VLAN ID. If this option is not specified, Ethernet packets are untagged.",
+            "display_name": "VLAN Tag Identifier"
         },
         {
             "attribute_type": "integer",
@@ -1087,8 +1087,8 @@
             "upper_bound": 65535,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the port that is used for the iSCSI connection.",
-            "displayName": "Target Port"
+            "help_text": "Specifies the port that is used for the iSCSI connection.",
+            "display_name": "Target Port"
         },
         {
             "attribute_type": "integer",
@@ -1097,8 +1097,8 @@
             "upper_bound": 1000,
             "scalar_increment": 1,
             "default_value": 0,
-            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. The percentage is specified to the 10th of a percent.",
-            "displayName": "System Memory Reserved for KVM Guest Management"
+            "help_text": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. The percentage is specified to the 10th of a percent.",
+            "display_name": "System Memory Reserved for KVM Guest Management"
         },
         {
             "attribute_type": "integer",
@@ -1107,9 +1107,9 @@
             "upper_bound": 1000,
             "scalar_increment": 1,
             "default_value": 0,
-            "readOnly": true,
-            "helpText": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. Do not set this attribute directly; set pvm_linux_kvm_percentage instead.",
-            "displayName": "System Memory Reserved for KVM Guest Management (current)"
+            "read_only": true,
+            "help_text": "Specifies the percentage of available system memory that will be reserved for the management of KVM guests. Do not set this attribute directly; set pvm_linux_kvm_percentage instead.",
+            "display_name": "System Memory Reserved for KVM Guest Management (current)"
         },
         {
             "attribute_type": "string",
@@ -1118,8 +1118,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 100,
             "default_string": "",
-            "helpText": "pvm_system_name",
-            "displayName": "pvm_system_name",
+            "help_text": "pvm_system_name",
+            "display_name": "pvm_system_name",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system",
                 "interface": "xyz.openbmc_project.Inventory.Decorator.AssetTag",
@@ -1134,8 +1134,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 255,
             "default_string": "",
-            "helpText": "vmi_hostname",
-            "displayName": "vmi_hostname"
+            "help_text": "vmi_hostname",
+            "display_name": "vmi_hostname"
         },
         {
             "attribute_type": "string",
@@ -1144,8 +1144,8 @@
             "minimum_string_length": 7,
             "maximum_string_length": 15,
             "default_string": "0.0.0.0",
-            "helpText": "vmi_if0_ipv4_gateway",
-            "displayName": "vmi_if0_ipv4_gateway"
+            "help_text": "vmi_if0_ipv4_gateway",
+            "display_name": "vmi_if0_ipv4_gateway"
         },
         {
             "attribute_type": "string",
@@ -1154,8 +1154,8 @@
             "minimum_string_length": 7,
             "maximum_string_length": 15,
             "default_string": "0.0.0.0",
-            "helpText": "vmi_if1_ipv4_gateway",
-            "displayName": "vmi_if1_ipv4_gateway"
+            "help_text": "vmi_if1_ipv4_gateway",
+            "display_name": "vmi_if1_ipv4_gateway"
         },
         {
             "attribute_type": "string",
@@ -1164,8 +1164,8 @@
             "minimum_string_length": 7,
             "maximum_string_length": 15,
             "default_string": "0.0.0.0",
-            "helpText": "vmi_if0_ipv4_ipaddr",
-            "displayName": "vmi_if0_ipv4_ipaddr"
+            "help_text": "vmi_if0_ipv4_ipaddr",
+            "display_name": "vmi_if0_ipv4_ipaddr"
         },
         {
             "attribute_type": "string",
@@ -1174,8 +1174,8 @@
             "minimum_string_length": 7,
             "maximum_string_length": 15,
             "default_string": "0.0.0.0",
-            "helpText": "vmi_if1_ipv4_ipaddr",
-            "displayName": "vmi_if1_ipv4_ipaddr"
+            "help_text": "vmi_if1_ipv4_ipaddr",
+            "display_name": "vmi_if1_ipv4_ipaddr"
         },
         {
             "attribute_type": "string",
@@ -1184,8 +1184,8 @@
             "minimum_string_length": 2,
             "maximum_string_length": 45,
             "default_string": "::",
-            "helpText": "vmi_if0_ipv6_gateway",
-            "displayName": "vmi_if0_ipv6_gateway"
+            "help_text": "vmi_if0_ipv6_gateway",
+            "display_name": "vmi_if0_ipv6_gateway"
         },
         {
             "attribute_type": "string",
@@ -1194,8 +1194,8 @@
             "minimum_string_length": 2,
             "maximum_string_length": 45,
             "default_string": "::",
-            "helpText": "vmi_if1_ipv6_gateway",
-            "displayName": "vmi_if1_ipv6_gateway"
+            "help_text": "vmi_if1_ipv6_gateway",
+            "display_name": "vmi_if1_ipv6_gateway"
         },
         {
             "attribute_type": "string",
@@ -1204,8 +1204,8 @@
             "minimum_string_length": 2,
             "maximum_string_length": 45,
             "default_string": "::",
-            "helpText": "vmi_if0_ipv6_ipaddr",
-            "displayName": "vmi_if0_ipv6_ipaddr"
+            "help_text": "vmi_if0_ipv6_ipaddr",
+            "display_name": "vmi_if0_ipv6_ipaddr"
         },
         {
             "attribute_type": "string",
@@ -1214,8 +1214,8 @@
             "minimum_string_length": 2,
             "maximum_string_length": 45,
             "default_string": "::",
-            "helpText": "vmi_if1_ipv6_ipaddr",
-            "displayName": "vmi_if1_ipv6_ipaddr"
+            "help_text": "vmi_if1_ipv6_ipaddr",
+            "display_name": "vmi_if1_ipv6_ipaddr"
         },
         {
             "attribute_type": "string",
@@ -1224,8 +1224,8 @@
             "minimum_string_length": 32,
             "maximum_string_length": 32,
             "default_string": "00000000000000000000000000000000",
-            "helpText": "Specifies the configuration flags used by manufacturing, requires a reboot for a change to be applied.",
-            "displayName": "Manufacturing Flags (pending)"
+            "help_text": "Specifies the configuration flags used by manufacturing, requires a reboot for a change to be applied.",
+            "display_name": "Manufacturing Flags (pending)"
         },
         {
             "attribute_type": "string",
@@ -1234,9 +1234,9 @@
             "minimum_string_length": 32,
             "maximum_string_length": 32,
             "default_string": "00000000000000000000000000000000",
-            "helpText": "Specifies the configuration flags used by manufacturing for the current IPL. Do not set this attribute directly; set hb_mfg_flags instead.",
-            "displayName": "Manufacturing Flags (current)",
-            "readOnly": true
+            "help_text": "Specifies the configuration flags used by manufacturing for the current IPL. Do not set this attribute directly; set hb_mfg_flags instead.",
+            "display_name": "Manufacturing Flags (current)",
+            "read_only": true
         },
         {
             "attribute_type": "string",
@@ -1245,8 +1245,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 1024,
             "default_string": "",
-            "helpText": "Provides the host a mapping of the lid IDs to human readable names.",
-            "displayName": "Hostboot Lid IDs"
+            "help_text": "Provides the host a mapping of the lid IDs to human readable names.",
+            "display_name": "Hostboot Lid IDs"
         },
         {
             "attribute_type": "string",
@@ -1255,8 +1255,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 4,
             "default_string": "0000",
-            "helpText": "Specifies the power supply 0 model CCIN in hex.",
-            "displayName": "Power Supply 0 Model",
+            "help_text": "Specifies the power supply 0 model CCIN in hex.",
+            "display_name": "Power Supply 0 Model",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0",
                 "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
@@ -1271,8 +1271,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 4,
             "default_string": "0000",
-            "helpText": "Specifies the power supply 1 model CCIN in hex.",
-            "displayName": "Power Supply 1 Model",
+            "help_text": "Specifies the power supply 1 model CCIN in hex.",
+            "display_name": "Power Supply 1 Model",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply1",
                 "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
@@ -1287,8 +1287,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 4,
             "default_string": "0000",
-            "helpText": "Specifies the power supply 2 model CCIN in hex.",
-            "displayName": "Power Supply 2 Model",
+            "help_text": "Specifies the power supply 2 model CCIN in hex.",
+            "display_name": "Power Supply 2 Model",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply2",
                 "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
@@ -1303,8 +1303,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 4,
             "default_string": "0000",
-            "helpText": "Specifies the power supply 3 model CCIN in hex.",
-            "displayName": "Power Supply 3 Model",
+            "help_text": "Specifies the power supply 3 model CCIN in hex.",
+            "display_name": "Power Supply 3 Model",
             "dbus": {
                 "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply3",
                 "interface": "xyz.openbmc_project.Inventory.Decorator.Asset",
@@ -1319,8 +1319,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 42,
             "default_string": "",
-            "helpText": "Specifies the load source the system will use to start the logical partition.",
-            "displayName": "Tagged IBM i Load Source"
+            "help_text": "Specifies the load source the system will use to start the logical partition.",
+            "display_name": "Tagged IBM i Load Source"
         },
         {
             "attribute_type": "string",
@@ -1329,8 +1329,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 42,
             "default_string": "",
-            "helpText": "Specifies the device the system will use when a D-mode initial program load (IPL) is performed.",
-            "displayName": "Tagged IBM i Alternate Load Source"
+            "help_text": "Specifies the device the system will use when a D-mode initial program load (IPL) is performed.",
+            "display_name": "Tagged IBM i Alternate Load Source"
         },
         {
             "attribute_type": "string",
@@ -1339,8 +1339,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 42,
             "default_string": "",
-            "helpText": "Specifies the first workstation that the system will activate in the logical partition.",
-            "displayName": "Tagged IBM i Console"
+            "help_text": "Specifies the first workstation that the system will activate in the logical partition.",
+            "display_name": "Tagged IBM i Console"
         },
         {
             "attribute_type": "string",
@@ -1349,8 +1349,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 45,
             "default_string": "",
-            "helpText": "Specifies the IP address of the boot server or the iSCSI target that contains the network installation image for the IBM i partition.",
-            "displayName": "Server IP Address"
+            "help_text": "Specifies the IP address of the boot server or the iSCSI target that contains the network installation image for the IBM i partition.",
+            "display_name": "Server IP Address"
         },
         {
             "attribute_type": "string",
@@ -1359,8 +1359,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 45,
             "default_string": "",
-            "helpText": "Specifies the local IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
-            "displayName": "Local IP Address"
+            "help_text": "Specifies the local IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
+            "display_name": "Local IP Address"
         },
         {
             "attribute_type": "string",
@@ -1369,8 +1369,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 45,
             "default_string": "",
-            "helpText": "Specifies the subnet mask for an IBM i network install when the IBM i IP Address Protocol is IPv4.",
-            "displayName": "Subnet Mask"
+            "help_text": "Specifies the subnet mask for an IBM i network install when the IBM i IP Address Protocol is IPv4.",
+            "display_name": "Subnet Mask"
         },
         {
             "attribute_type": "string",
@@ -1379,8 +1379,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 45,
             "default_string": "",
-            "helpText": "Specifies the Gateway IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
-            "displayName": "Gateway IP Address"
+            "help_text": "Specifies the Gateway IP address for an IBM i network install in the protocol specified by IBM i IP Address Protocol.",
+            "display_name": "Gateway IP Address"
         },
         {
             "attribute_type": "string",
@@ -1389,8 +1389,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 127,
             "default_string": "",
-            "helpText": "Specifies the directory path on the boot server that contains the network installation image for the IBM i partition.",
-            "displayName": "Image Directory Path"
+            "help_text": "Specifies the directory path on the boot server that contains the network installation image for the IBM i partition.",
+            "display_name": "Image Directory Path"
         },
         {
             "attribute_type": "string",
@@ -1399,8 +1399,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 223,
             "default_string": "",
-            "helpText": "Specifies the name of the iSCSI target that contains the network installation image for the IBM i partition.",
-            "displayName": "Target Name"
+            "help_text": "Specifies the name of the iSCSI target that contains the network installation image for the IBM i partition.",
+            "display_name": "Target Name"
         },
         {
             "attribute_type": "string",
@@ -1409,8 +1409,8 @@
             "minimum_string_length": 0,
             "maximum_string_length": 223,
             "default_string": "",
-            "helpText": "Specifies the name of the iSCSI initiator associated with the iSCSI target. PHYP will generate an initial initiator name which the user can change. PHYP will restore the initial value if the value is changed.",
-            "displayName": "Initiator Name"
+            "help_text": "Specifies the name of the iSCSI initiator associated with the iSCSI target. PHYP will generate an initial initiator name which the user can change. PHYP will restore the initial value if the value is changed.",
+            "display_name": "Initiator Name"
         }
     ]
 }
