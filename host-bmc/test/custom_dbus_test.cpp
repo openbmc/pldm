@@ -1,4 +1,4 @@
-#include "../custom_dbus.hpp"
+#include "../dbus/custom_dbus.hpp"
 
 #include <gtest/gtest.h>
 
@@ -13,4 +13,16 @@ TEST(CustomDBus, LocationCode)
 
     EXPECT_NE(retLocationCode, std::nullopt);
     EXPECT_EQ(locationCode, retLocationCode);
+}
+
+TEST(CustomDBus, MicroCode)
+{
+    std::string tmpPath = "/abc/def";
+    uint32_t value = 32;
+
+    CustomDBus::getCustomDBus().setMicroCode(tmpPath, value);
+    auto retMicroCode = CustomDBus::getCustomDBus().getMicroCode(tmpPath);
+
+    EXPECT_NE(retMicroCode, std::nullopt);
+    EXPECT_EQ(value, retMicroCode);
 }
