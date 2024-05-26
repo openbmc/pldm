@@ -70,6 +70,30 @@
       },
       "revId": "40f81205020f58fa67c5583d7b3d38bf55c7eb89",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f48cb89_6cbc3bb3",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000929
+      },
+      "writtenOn": "2024-05-26T05:15:29Z",
+      "side": 1,
+      "message": "For a small number of items, the difference in lookup performance between an unordered_map and a series of if-else statements is negligible. The overhead of hashing and bucket management in unordered_map might not offer a clear advantage over the straightforward conditional checks for just three types",
+      "parentUuid": "2a09dcc4_6d219aad",
+      "range": {
+        "startLine": 540,
+        "startChar": 8,
+        "endLine": 551,
+        "endChar": 9
+      },
+      "revId": "40f81205020f58fa67c5583d7b3d38bf55c7eb89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
