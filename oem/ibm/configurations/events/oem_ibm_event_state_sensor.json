@@ -1,7 +1,6 @@
 {
     "entries": [
         {
-            "containerID": 0,
             "entityType": 57346,
             "entityInstance": 0,
             "sensorOffset": 1,
@@ -16,7 +15,6 @@
             }
         },
         {
-            "containerID": 0,
             "entityType": 57346,
             "entityInstance": 1,
             "sensorOffset": 1,
@@ -31,7 +29,6 @@
             }
         },
         {
-            "containerID": 0,
             "entityType": 57347,
             "entityInstance": 0,
             "sensorOffset": 1,
@@ -46,7 +43,6 @@
             }
         },
         {
-            "containerID": 0,
             "entityType": 57347,
             "entityInstance": 1,
             "sensorOffset": 1,
