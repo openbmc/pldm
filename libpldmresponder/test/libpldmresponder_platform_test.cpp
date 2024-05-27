@@ -602,7 +602,7 @@ TEST(StateSensorHandler, allScenarios)
 
     // Event Entry 1
     {
-        StateSensorEntry entry{1, 64, 1, 0, 1};
+        StateSensorEntry entry{1, 64, 1, 0, 1, false};
         const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
         DBusMapping mapping{"/xyz/abc/def",
                             "xyz.openbmc_project.example1.value", "value1",
@@ -625,7 +625,7 @@ TEST(StateSensorHandler, allScenarios)
 
     // Event Entry 2
     {
-        StateSensorEntry entry{1, 64, 1, 1, 1};
+        StateSensorEntry entry{1, 64, 1, 1, 1, false};
         const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
         DBusMapping mapping{"/xyz/abc/def",
                             "xyz.openbmc_project.example2.value", "value2",
@@ -642,7 +642,7 @@ TEST(StateSensorHandler, allScenarios)
 
     // Event Entry 3
     {
-        StateSensorEntry entry{2, 67, 2, 0, 1};
+        StateSensorEntry entry{2, 67, 2, 0, 1, false};
         const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
         DBusMapping mapping{"/xyz/abc/ghi",
                             "xyz.openbmc_project.example3.value", "value3",
@@ -659,8 +659,9 @@ TEST(StateSensorHandler, allScenarios)
 
     // Event Entry 4
     {
-        StateSensorEntry entry{2, 67, 2, 0, 2};
+        StateSensorEntry entry{2, 67, 2, 0, 2, false};
         const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
+        std::cerr << dbusMapping.objectPath << std::endl;
         DBusMapping mapping{"/xyz/abc/jkl",
                             "xyz.openbmc_project.example4.value", "value4",
                             "string"};
@@ -677,9 +678,29 @@ TEST(StateSensorHandler, allScenarios)
         ASSERT_EQ(value2 == propValue2, true);
     }
 
+    // Event Entry 5
+    {
+        StateSensorEntry entry{0xFFFF, 120, 2, 0, 2, true};
+        const auto& [dbusMapping, eventStateMap] = handler.getEventInfo(entry);
+        std::cerr << dbusMapping.objectPath << std::endl;
+        DBusMapping mapping{"/xyz/abc/mno",
+                            "xyz.openbmc_project.example5.value", "value5",
+                            "string"};
+        ASSERT_EQ(mapping == dbusMapping, true);
+
+        const auto& propValue0 = eventStateMap.at(eventState0);
+        const auto& propValue1 = eventStateMap.at(eventState1);
+        const auto& propValue2 = eventStateMap.at(eventState2);
+        PropertyValue value0{std::in_place_type<std::string>, "Enabled"};
+        PropertyValue value1{std::in_place_type<std::string>, "Disabled"};
+        PropertyValue value2{std::in_place_type<std::string>, "Auto"};
+        ASSERT_EQ(value0 == propValue0, true);
+        ASSERT_EQ(value1 == propValue1, true);
+        ASSERT_EQ(value2 == propValue2, true);
+    }
     // Invalid Entry
     {
-        StateSensorEntry entry{0, 0, 0, 0, 1};
+        StateSensorEntry entry{0, 0, 0, 0, 1, false};
         ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
     }
 }
