@@ -54,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df2aca66_971a96a0",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-27T09:25:47Z",
+      "side": 1,
+      "message": "when we unregister a request, do we need to remove that request from the endpoint queue?",
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38ccfa04_06465d97",
         "filename": "requester/handler.hpp",
         "patchSetId": 74
@@ -110,6 +127,53 @@
         "startChar": 4,
         "endLine": 426,
         "endChar": 79
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71e299e0_3781ad4d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-27T09:25:47Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a4065912_af9b32fa",
+      "range": {
+        "startLine": 426,
+        "startChar": 4,
+        "endLine": 426,
+        "endChar": 79
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cc63b62_6b45d91c",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-27T09:25:47Z",
+      "side": 1,
+      "message": "can we name it better, say stopToken?",
+      "range": {
+        "startLine": 428,
+        "startChar": 13,
+        "endLine": 428,
+        "endChar": 15
       },
       "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -186,6 +250,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6dc5ab21_21c08dd5",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-27T09:25:47Z",
+      "side": 1,
+      "message": "do we need any error message here?",
+      "range": {
+        "startLine": 463,
+        "startChar": 8,
+        "endLine": 463,
+        "endChar": 44
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c705bd28_fbc1e448",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-27T09:25:47Z",
+      "side": 1,
+      "message": "c++ style of casting",
+      "range": {
+        "startLine": 466,
+        "startChar": 59,
+        "endLine": 466,
+        "endChar": 76
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67126a49_db443d61",
         "filename": "requester/handler.hpp",
         "patchSetId": 74
@@ -202,6 +312,29 @@
         "startChar": 4,
         "endLine": 484,
         "endChar": 36
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf125b50_cdaeb37d",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-27T09:25:47Z",
+      "side": 1,
+      "message": "doxygen on what does this template do?",
+      "range": {
+        "startLine": 519,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 1
       },
       "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
