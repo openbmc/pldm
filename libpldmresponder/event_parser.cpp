@@ -49,7 +49,7 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
         {
             StateSensorEntry stateSensorEntry{};
             stateSensorEntry.containerId =
-                static_cast<uint16_t>(entry.value("containerID", 0));
+                static_cast<uint16_t>(entry.value("containerID", 0xFFFF));
             stateSensorEntry.entityType =
                 static_cast<uint16_t>(entry.value("entityType", 0));
             stateSensorEntry.entityInstance =
@@ -58,6 +58,10 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
                 static_cast<uint8_t>(entry.value("sensorOffset", 0));
             stateSensorEntry.stateSetid =
                 static_cast<uint16_t>(entry.value("stateSetId", 0));
+
+            // container id is not found in the json
+            stateSensorEntry.skipContainerId =
+                (stateSensorEntry.containerId == 0xFFFF) ? true : false;
 
             pldm::utils::DBusMapping dbusInfo{};
 
