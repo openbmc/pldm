@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c095e013_5d06ad4f",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T17:03:47Z",
+      "side": 1,
+      "message": "Updated code to remove the request from endpointMessageQueues when it is still in the queue.\nWhen the message is in handlers, the request handler will be stopped.",
+      "parentUuid": "df2aca66_971a96a0",
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38ccfa04_06465d97",
         "filename": "requester/handler.hpp",
         "patchSetId": 74
@@ -245,6 +263,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6a23f55_2e4300ca",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T17:03:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cc63b62_6b45d91c",
+      "range": {
+        "startLine": 428,
+        "startChar": 13,
+        "endLine": 428,
+        "endChar": 15
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1549a6f_73989f7c",
@@ -409,6 +451,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7184b27_15d03ab6",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T17:03:47Z",
+      "side": 1,
+      "message": "No we don\u0027t. `pldmd` can communicate with many endpoints.",
+      "parentUuid": "6dc5ab21_21c08dd5",
+      "range": {
+        "startLine": 463,
+        "startChar": 8,
+        "endLine": 463,
+        "endChar": 44
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c705bd28_fbc1e448",
@@ -422,6 +488,30 @@
       "writtenOn": "2024-05-27T09:25:47Z",
       "side": 1,
       "message": "c++ style of casting",
+      "range": {
+        "startLine": 466,
+        "startChar": 59,
+        "endLine": 466,
+        "endChar": 76
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a84cc7e7_e0aa6911",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T17:03:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c705bd28_fbc1e448",
       "range": {
         "startLine": 466,
         "startChar": 59,
@@ -492,6 +582,30 @@
       "writtenOn": "2024-05-27T09:25:47Z",
       "side": 1,
       "message": "doxygen on what does this template do?",
+      "range": {
+        "startLine": 519,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 1
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed5d596f_367cfbd8",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T17:03:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf125b50_cdaeb37d",
       "range": {
         "startLine": 519,
         "startChar": 0,
