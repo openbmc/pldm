@@ -92,6 +92,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a0488a0_6c7f8ea8",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38ccfa04_06465d97",
+      "range": {
+        "startLine": 406,
+        "startChar": 6,
+        "endLine": 406,
+        "endChar": 27
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4299ac40_15357346",
@@ -105,6 +129,24 @@
       "writtenOn": "2024-05-27T02:03:42Z",
       "side": 1,
       "message": "also probably wanna initialize the response \u0026 len to sane defaults here ? or when the variables are defined ?",
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6018921_76e0d9dc",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4299ac40_15357346",
       "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -145,6 +187,30 @@
       "writtenOn": "2024-05-27T09:25:47Z",
       "side": 1,
       "message": "+1",
+      "parentUuid": "a4065912_af9b32fa",
+      "range": {
+        "startLine": 426,
+        "startChar": 4,
+        "endLine": 426,
+        "endChar": 79
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe5025b_6087275f",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "a4065912_af9b32fa",
       "range": {
         "startLine": 426,
@@ -202,6 +268,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe565dd4_ae15e920",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1549a6f_73989f7c",
+      "range": {
+        "startLine": 453,
+        "startChar": 4,
+        "endLine": 453,
+        "endChar": 17
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e170c15_ffd521b5",
@@ -243,6 +333,54 @@
         "startChar": 3,
         "endLine": 460,
         "endChar": 73
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab5d9376_967ba7e5",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf8fe9b2_9c43582a",
+      "range": {
+        "startLine": 460,
+        "startChar": 3,
+        "endLine": 460,
+        "endChar": 73
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51f2b6db_20a706cb",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "Change variable name to `respMsgLen`.",
+      "parentUuid": "8e170c15_ffd521b5",
+      "range": {
+        "startLine": 460,
+        "startChar": 62,
+        "endLine": 460,
+        "endChar": 72
       },
       "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -307,6 +445,30 @@
       "writtenOn": "2024-05-27T02:03:42Z",
       "side": 1,
       "message": "a little more doxygen here would definitely help, something like  ?\n\n```\nhandler: Reference to a Handler object that manages the request/response logic.\nrequestKey: Stores information about the request such as eid, instanceId, type, and command.\nrequest: The request message to be sent.\nreceiver: The receiver to be notified with the result of the operation.\nstopCallback: An optional callback that handles stopping the operation if requested.\n```",
+      "range": {
+        "startLine": 475,
+        "startChar": 4,
+        "endLine": 484,
+        "endChar": 36
+      },
+      "revId": "1be3179cbe80099272f5891115a9514b9c2f5ab4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08ba2822_ebc40c82",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67126a49_db443d61",
       "range": {
         "startLine": 475,
         "startChar": 4,

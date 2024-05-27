@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f420ed4e_9ca10a9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 75
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-27T09:26:27Z",
+      "side": 1,
+      "message": "I saw the unit-test error but I think is is not code error\n```\n2 files left unchanged.\n    Running clang_format\n    Running eslint\n\nOops! Something went wrong! :(\n\nESLint: 8.56.0\n\nError: ESLint configuration in --config » plugin:json/recommended-with-comments is invalid:\n\t- Unexpected top-level property \"files\".\n\nReferenced from: /data0/jenkins/workspace/ci-repository/openbmc/openbmc-build-scripts/config/eslint-global-config.json\n    at ConfigValidator.validateConfigSchema (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:2177:19)\n    at ConfigArrayFactory._normalizeConfigData (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3019:19)\n    at ConfigArrayFactory._loadExtendedPluginConfig (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3239:25)\n    at ConfigArrayFactory._loadExtends (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3154:29)\n    at ConfigArrayFactory._normalizeObjectConfigDataBody (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3095:25)\n    at _normalizeObjectConfigDataBody.next (\u003canonymous\u003e)\n    at ConfigArrayFactory._normalizeObjectConfigData (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3040:20)\n    at _normalizeObjectConfigData.next (\u003canonymous\u003e)\n    at ConfigArrayFactory.loadFile (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:2850:16)\n    at createCLIConfigArray (/usr/local/lib/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3660:35)\n    Running flake8\n    Running isort\n    Running markdownlint\npldmtool/README.md:1 MD041/first-line-heading/first-line-h1 First line in a file should be a top-level heading [Context: \"## Overview of pldmtool\"]\npldmtool/README.md:17:1 MD034/no-bare-urls Bare URL used [Context: \"https://www.dmtf.org/\"]\n```",
+      "revId": "642a4fab3596aa7c04413032788c4af3307418e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
