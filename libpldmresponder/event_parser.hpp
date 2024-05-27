@@ -28,28 +28,43 @@ struct StateSensorEntry
     pdr::EntityInstance entityInstance;
     pdr::SensorOffset sensorOffset;
     pdr::StateSetId stateSetid;
+    bool skipContainerId;
 
     bool operator==(const StateSensorEntry& e) const
     {
-        return (
-            (containerId == e.containerId) && (entityType == e.entityType) &&
-            (entityInstance == e.entityInstance) &&
-            (sensorOffset == e.sensorOffset) && (stateSetid == e.stateSetid));
+        if (!skipContainerId)
+        {
+            return ((containerId == e.containerId) &&
+                    (entityType == e.entityType) &&
+                    (entityInstance == e.entityInstance) &&
+                    (sensorOffset == e.sensorOffset) &&
+                    (stateSetid == e.stateSetid));
+        }
+        else
+        {
+            return ((entityType == e.entityType) &&
+                    (entityInstance == e.entityInstance) &&
+                    (sensorOffset == e.sensorOffset) &&
+                    (stateSetid == e.stateSetid));
+        }
     }
 
     bool operator<(const StateSensorEntry& e) const
     {
-        return (
-            (containerId < e.containerId) ||
-            ((containerId == e.containerId) && (entityType < e.entityType)) ||
-            ((containerId == e.containerId) && (entityType == e.entityType) &&
-             (entityInstance < e.entityInstance)) ||
-            ((containerId == e.containerId) && (entityType == e.entityType) &&
-             (entityInstance == e.entityInstance) &&
-             (sensorOffset < e.sensorOffset)) ||
-            ((containerId == e.containerId) && (entityType == e.entityType) &&
-             (entityInstance == e.entityInstance) &&
-             (sensorOffset == e.sensorOffset) && (stateSetid < e.stateSetid)));
+        if (!skipContainerId)
+        {
+            return std::tie(entityType, entityInstance, containerId,
+                            sensorOffset, stateSetid) <
+                   std::tie(e.entityType, e.entityInstance, e.containerId,
+                            e.sensorOffset, e.stateSetid);
+        }
+        else
+        {
+            return std::tie(entityType, entityInstance, sensorOffset,
+                            stateSetid) <
+                   std::tie(e.entityType, e.entityInstance, e.sensorOffset,
+                            e.stateSetid);
+        }
     }
 };
 
