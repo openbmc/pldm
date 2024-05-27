@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7451ef13_f66e0092",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "Updated the commit msg and more details are in infrsatructure commit https://github.com/openbmc/pldm/tree/d6b00561db5cdab7dbcec94ee123da6b6f77a07a",
+      "parentUuid": "fd7458dc_ed235607",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 0
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe2a21be_b111cb45",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-17T13:32:26Z",
       "side": 1,
       "message": "what are we trying to poweron? BMC? remote terminus?",
+      "range": {
+        "startLine": 12,
+        "startChar": 8,
+        "endLine": 12,
+        "endChar": 31
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee5d733_b28c9407",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "Powering on whole system which includes BMC as well as remote terminus.",
+      "parentUuid": "fe2a21be_b111cb45",
       "range": {
         "startLine": 12,
         "startChar": 8,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec1a920d_f8f3dc5f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16cffe15_3f1cabec",
+      "range": {
+        "startLine": 133,
+        "startChar": 34,
+        "endLine": 133,
+        "endChar": 38
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1a16b2f_41db8aca",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-05-17T13:32:26Z",
       "side": 1,
       "message": "is it an empty struct?",
+      "range": {
+        "startLine": 155,
+        "startChar": 16,
+        "endLine": 155,
+        "endChar": 18
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e719ca35_07824cbf",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "this is the out parameter provided to fstat function, to get the file statistics",
+      "parentUuid": "d1a16b2f_41db8aca",
       "range": {
         "startLine": 155,
         "startChar": 16,
@@ -133,6 +229,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "275d9c03_a72b0642",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62f3dba3_47c3e53a",
+      "range": {
+        "startLine": 404,
+        "startChar": 60,
+        "endLine": 404,
+        "endChar": 61
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7631259_6f12b938",
@@ -146,6 +266,30 @@
       "writtenOn": "2024-05-17T13:32:26Z",
       "side": 1,
       "message": "The default value is changed to maxint, so should we change it here?",
+      "range": {
+        "startLine": 51,
+        "startChar": 74,
+        "endLine": 51,
+        "endChar": 76
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e483d7de_72886dfb",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7631259_6f12b938",
       "range": {
         "startLine": 51,
         "startChar": 74,
@@ -179,6 +323,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "905b5e48_bc2df74e",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c9df0ca_310d3e8e",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 33
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7551482_73bc6421",
@@ -192,6 +360,30 @@
       "writtenOn": "2024-05-17T13:32:26Z",
       "side": 1,
       "message": "could you align the doxygen comment?",
+      "range": {
+        "startLine": 240,
+        "startChar": 22,
+        "endLine": 254,
+        "endChar": 26
+      },
+      "revId": "dabea720f7de9372e55e5d50f41c714c7acff96c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b8245c3_9414f500",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-27T08:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7551482_73bc6421",
       "range": {
         "startLine": 240,
         "startChar": 22,
