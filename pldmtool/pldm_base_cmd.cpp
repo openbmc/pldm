@@ -49,6 +49,7 @@ const std::map<const char*, pldm_bios_commands> pldmBiosCmds{
 const std::map<const char*, pldm_platform_commands> pldmPlatformCmds{
     {"SetNumericEffecterValue", PLDM_SET_NUMERIC_EFFECTER_VALUE},
     {"SetStateEffecterStates", PLDM_SET_STATE_EFFECTER_STATES},
+    {"GetStateEffecterStates", PLDM_GET_STATE_EFFECTER_STATES},
     {"GetPDR", PLDM_GET_PDR},
     {"GetNumericEffecterValue", PLDM_GET_NUMERIC_EFFECTER_VALUE},
     {"SetEventReceiver", PLDM_SET_EVENT_RECEIVER},
