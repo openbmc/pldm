@@ -7,7 +7,9 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <format>
 #include <map>
+#include <memory>
 #include <ranges>
 
 #ifdef OEM_IBM
@@ -46,6 +48,25 @@ static const std::map<uint8_t, std::string> sensorOpState{
     {PLDM_SENSOR_INITIALIZING, "Sensor Sensor Initializing"},
     {PLDM_SENSOR_SHUTTINGDOWN, "Sensor Shutting down"},
     {PLDM_SENSOR_INTEST, "Sensor Intest"}};
+
+const std::map<uint8_t, std::string> effecterOpState{
+    {EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING,
+     "Effecter Enabled Update Pending"},
+    {EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+     "Effecter Enabled No Update Pending"},
+    {EFFECTER_OPER_STATE_DISABLED, "Effecter Disabled"},
+    {EFFECTER_OPER_STATE_UNAVAILABLE, "Effecter Unavailable"},
+    {EFFECTER_OPER_STATE_STATUSUNKNOWN, "Effecter Status Unknown"},
+    {EFFECTER_OPER_STATE_FAILED, "Effecter Failed"},
+    {EFFECTER_OPER_STATE_INITIALIZING, "Effecter Initializing"},
+    {EFFECTER_OPER_STATE_SHUTTINGDOWN, "Effecter Shutting Down"},
+    {EFFECTER_OPER_STATE_INTEST, "Effecter In Test"}};
+
+std::string getEffecterOpState(uint8_t state)
+{
+    return effecterOpState.contains(state) ? effecterOpState.at(state)
+                                           : std::to_string(state);
+}
 
 std::vector<std::unique_ptr<CommandInterface>> commands;
 
@@ -2007,6 +2028,76 @@ class GetSensorReading : public CommandInterface
     }
 };
 
+class GetStateEffecterStates : public CommandInterface
+{
+  public:
+    ~GetStateEffecterStates() = default;
+    GetStateEffecterStates() = delete;
+    GetStateEffecterStates(const GetStateEffecterStates&) = delete;
+    GetStateEffecterStates(GetStateEffecterStates&&) = default;
+    GetStateEffecterStates& operator=(const GetStateEffecterStates&) = delete;
+    GetStateEffecterStates& operator=(GetStateEffecterStates&&) = delete;
+
+    explicit GetStateEffecterStates(const char* type, const char* name,
+                                    CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-i, --effecter_id", effecter_id,
+               "Effecter ID that is used to identify and access the effecter")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_GET_STATE_EFFECTER_STATES_REQ_BYTES);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        auto rc = encode_get_state_effecter_states_req(
+            instanceId, effecter_id, request,
+            PLDM_GET_STATE_EFFECTER_STATES_REQ_BYTES);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        struct pldm_get_state_effecter_states_resp resp;
+        auto rc = decode_get_state_effecter_states_resp(responsePtr,
+                                                        payloadLength, &resp);
+
+        if (rc || resp.completion_code != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc
+                      << ",cc=" << static_cast<int>(resp.completion_code)
+                      << std::endl;
+            return;
+        }
+        ordered_json output;
+        auto comp_effecter_count = static_cast<int>(resp.comp_effecter_count);
+        output["compositeEffecterCount"] = comp_effecter_count;
+
+        for (auto i : std::views::iota(comp_effecter_count))
+        {
+            output[std::format("effecterOpState[{}])", i)] =
+                getEffecterOpState(resp.field[i].effecter_op_state);
+
+            output[std::format("pendingState[{}]", i)] =
+                resp.field[i].pending_state;
+
+            output[std::format("presentState[{}]", i)] =
+                resp.field[i].present_state;
+        }
+
+        pldmtool::helper::DisplayInJson(output);
+    }
+
+  private:
+    uint16_t effecter_id;
+};
+
 class GetNumericEffecterValue : public CommandInterface
 {
   public:
@@ -2068,7 +2159,7 @@ class GetNumericEffecterValue : public CommandInterface
         ordered_json output;
         output["effecterDataSize"] = static_cast<int>(effecterDataSize);
         output["effecterOperationalState"] =
-            getOpState(effecterOperationalState);
+            getEffecterOpState(effecterOperationalState);
 
         switch (effecterDataSize)
         {
@@ -2133,32 +2224,6 @@ class GetNumericEffecterValue : public CommandInterface
 
   private:
     uint16_t effecterId;
-
-    static inline const std::map<uint8_t, std::string> numericEffecterOpState{
-        {EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING,
-         "Effecter Enabled Update Pending"},
-        {EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
-         "Effecter Enabled No Update Pending"},
-        {EFFECTER_OPER_STATE_DISABLED, "Effecter Disabled"},
-        {EFFECTER_OPER_STATE_UNAVAILABLE, "Effecter Unavailable"},
-        {EFFECTER_OPER_STATE_STATUSUNKNOWN, "Effecter Status Unknown"},
-        {EFFECTER_OPER_STATE_FAILED, "Effecter Failed"},
-        {EFFECTER_OPER_STATE_INITIALIZING, "Effecter Initializing"},
-        {EFFECTER_OPER_STATE_SHUTTINGDOWN, "Effecter Shutting Down"},
-        {EFFECTER_OPER_STATE_INTEST, "Effecter In Test"}};
-
-    std::string getOpState(uint8_t state)
-    {
-        auto typeString = std::to_string(state);
-        try
-        {
-            return numericEffecterOpState.at(state);
-        }
-        catch (const std::out_of_range& e)
-        {
-            return typeString;
-        }
-    }
 };
 
 void registerCommand(CLI::App& app)
@@ -2194,6 +2259,11 @@ void registerCommand(CLI::App& app)
         "GetSensorReading", "get the numeric sensor reading");
     commands.push_back(std::make_unique<GetSensorReading>(
         "platform", "getSensorReading", getSensorReading));
+
+    auto getStateEffecterStates = platform->add_subcommand(
+        "GetStateEffecterStates", "get the state effecter states");
+    commands.push_back(std::make_unique<GetStateEffecterStates>(
+        "platform", "getStateEffecterStates", getStateEffecterStates));
 }
 
 void parseGetPDROption()
