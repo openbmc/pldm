@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1de6b79_57b37abc",
+        "filename": "libpldmresponder/bios.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e13892e_52c9e424",
+      "range": {
+        "startLine": 190,
+        "startChar": 50,
+        "endLine": 190,
+        "endChar": 52
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed3af570_6bd3dc50",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5cccbb7_756b3dff",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 837,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed3af570_6bd3dc50",
+      "range": {
+        "startLine": 837,
+        "startChar": 23,
+        "endLine": 837,
+        "endChar": 27
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "884c8d5f_ee437c36",
@@ -60,6 +108,24 @@
       "writtenOn": "2024-05-17T15:48:14Z",
       "side": 1,
       "message": "\"Out of range index \u0027{INDEX}\u0027 encountered for Integer type BIOS attribute\"",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80b17501_b484f0c0",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "884c8d5f_ee437c36",
       "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +164,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "452fc5ab_ab6a9613",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "300ce99c_8d509827",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8ca524_a270e8e4",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84d74327_5d90df02",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b836f818_688ef41f",
@@ -111,6 +213,30 @@
       "writtenOn": "2024-05-17T15:48:14Z",
       "side": 1,
       "message": "two time attribute, correct the sentence",
+      "range": {
+        "startLine": 1011,
+        "startChar": 28,
+        "endLine": 1011,
+        "endChar": 37
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ecae8e9_7175cb51",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b836f818_688ef41f",
       "range": {
         "startLine": 1011,
         "startChar": 28,
@@ -144,6 +270,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "011c5d25_32fb92ee",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cc2a79f_e1d22f7e",
+      "range": {
+        "startLine": 1023,
+        "startChar": 52,
+        "endLine": 1023,
+        "endChar": 76
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afa7f748_d7e889cd",
@@ -157,6 +307,24 @@
       "writtenOn": "2024-05-17T15:48:14Z",
       "side": 1,
       "message": "print objectPath, propertyName",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110eb322_c8f8a329",
+        "filename": "libpldmresponder/bios_integer_attribute.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afa7f748_d7e889cd",
       "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -184,6 +352,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "890c2500_fba66c79",
+        "filename": "libpldmresponder/bios_string_attribute.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54dfb370_96138923",
+      "range": {
+        "startLine": 92,
+        "startChar": 27,
+        "endLine": 92,
+        "endChar": 33
+      },
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adcbfde0_13e776e1",
@@ -197,6 +389,24 @@
       "writtenOn": "2024-05-17T15:48:14Z",
       "side": 1,
       "message": "Invalid FRU length \u0027{LENGTH}\u0027 while parsing FRU record table",
+      "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef3c8952_d666b484",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-28T08:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adcbfde0_13e776e1",
       "revId": "1483a1e3c8d7f0a4cfc5e60524a23c73669deafe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
