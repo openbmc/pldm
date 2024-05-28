@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccf4e541_959f6462",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-28T08:29:48Z",
+      "side": 1,
+      "message": "Thanks @ManojKiran. That\u0027s good point. I updated the code.",
+      "parentUuid": "8c109b5b_31fce646",
+      "range": {
+        "startLine": 330,
+        "startChar": 12,
+        "endLine": 341,
+        "endChar": 13
+      },
+      "revId": "8926a4ded781fde731effd45f1f2241c49cac899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae3aba37_caed5f94",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-28T08:29:48Z",
+      "side": 1,
+      "message": "I updated code.",
+      "parentUuid": "5e66c76c_664faab3",
+      "range": {
+        "startLine": 331,
+        "startChar": 11,
+        "endLine": 341,
+        "endChar": 13
+      },
+      "revId": "8926a4ded781fde731effd45f1f2241c49cac899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e06739b1_cd61e8d2",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-05-28T05:42:09Z",
       "side": 1,
       "message": "not a c++style of casting",
+      "range": {
+        "startLine": 539,
+        "startChar": 59,
+        "endLine": 539,
+        "endChar": 76
+      },
+      "revId": "8926a4ded781fde731effd45f1f2241c49cac899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "616ebf12_b3b2ea3e",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-28T08:29:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e06739b1_cd61e8d2",
       "range": {
         "startLine": 539,
         "startChar": 59,
