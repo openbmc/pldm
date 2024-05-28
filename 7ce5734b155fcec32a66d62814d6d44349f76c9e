@@ -16,6 +16,24 @@
       "message": "why is this moved out of libpldmresponder ?",
       "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5fd5bd0_6bfe599d",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-28T13:57:54Z",
+      "side": 1,
+      "message": "As my opinion, HostEffecterParser will send the PLDM request from BMC to the terminus so it should not be inside of `#ifdef LIBPLDMRESPONDER`",
+      "parentUuid": "bfcbe38f_21b24266",
+      "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []

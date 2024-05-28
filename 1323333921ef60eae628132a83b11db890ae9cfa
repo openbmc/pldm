@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb221c08_a469df60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-28T13:57:54Z",
+      "side": 1,
+      "message": "Added Unit test.",
+      "parentUuid": "b9ae671e_b0ffe72a",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 29
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ebe46d9_ffc5fbbc",
         "filename": "host-bmc/dbus_to_host_effecters.cpp",
         "patchSetId": 2
@@ -357,6 +381,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b245da48_98edfccc",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-28T13:57:54Z",
+      "side": 1,
+      "message": "The checking is required when the D-Bus is created by other services but not pldmd. Because in those service, the D-Bus still can exist event the host is off.",
+      "parentUuid": "746436f9_6a302f9c",
+      "range": {
+        "startLine": 371,
+        "startChar": 5,
+        "endLine": 375,
+        "endChar": 9
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1230314_f9b4561b",
         "filename": "host-bmc/dbus_to_host_effecters.cpp",
         "patchSetId": 2
@@ -510,6 +558,30 @@
       "side": 1,
       "message": "I think, its better to have a const value defined for this 1 and 3 to easily find out what it is ?",
       "parentUuid": "a6272396_b058832e",
+      "range": {
+        "startLine": 447,
+        "startChar": 73,
+        "endLine": 447,
+        "endChar": 76
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59e19cd9_dd26453f",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-28T13:57:54Z",
+      "side": 1,
+      "message": "The code will be updated after adding new Constant in libpldm is approved.\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/71660\nThe same comment for the similar comment.",
+      "parentUuid": "8971136c_06f27a41",
       "range": {
         "startLine": 447,
         "startChar": 73,
