@@ -16,6 +16,24 @@
       "message": "Generally it isn\u0027t safe to pass references into co-routines because it is likely that the reference is invalidated before the co-routine even executes.  Are you sure this `\u0026rcOpt` is safe?  I guess it is being stored in a ... map?  So it is probably safe, unless there is a possibility of the `stopPolling` being called prior to the co-routine completing.",
       "revId": "3b6e49dadc395dcc44a958423a9eee79eb67ec30",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48beaaa2_78d59043",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2024-05-29T16:57:17Z",
+      "side": 1,
+      "message": "Yes, `std::map` should store entries at stable address as part of its balanced tree implementation, so I\u0027m pretty sure there is no problem.\n\n`stopPolling` also makes sure to cancel `scope` before destroy the map entry. Given how `pldmd` runs single-threaded, I think cancellation will always happen first.\n\n(Also, to destroy the map entry, according to `pair` layout, the map will need destroy the `scope` first, before destroying `rcOpt` and then destroying the entry. I have not check, but if `scope` RAII has already stopped the task, then `stopPolling` may not even need the `.request_stop()` part.)",
+      "parentUuid": "8e734187_21298568",
+      "revId": "3b6e49dadc395dcc44a958423a9eee79eb67ec30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
