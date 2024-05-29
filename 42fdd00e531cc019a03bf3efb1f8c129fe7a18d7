@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39444b7f_3ce401a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-29T04:34:54Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "42fdd00e531cc019a03bf3efb1f8c129fe7a18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "001b94b6_718fcc36",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-29T04:34:54Z",
+      "side": 1,
+      "message": "If the data type declared in common/utils.hpp are getting used in  \noem/ibm/libpldmresponder/utils.cpp, can we include the file only in cpp file?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 27
+      },
+      "revId": "42fdd00e531cc019a03bf3efb1f8c129fe7a18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
