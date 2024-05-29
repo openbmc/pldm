@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52da48a4_04ea4551",
+        "filename": "common/utils.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-29T06:42:53Z",
+      "side": 1,
+      "message": "why this change is needed?",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 62
+      },
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ffa0ed3_84a3a51a",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-29T06:42:53Z",
+      "side": 1,
+      "message": "camel case??",
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b43f09b_956d09df",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-29T06:42:53Z",
+      "side": 1,
+      "message": "nit: use contains",
+      "range": {
+        "startLine": 229,
+        "startChar": 16,
+        "endLine": 229,
+        "endChar": 67
+      },
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21a2e3a4_640cdac3",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-29T06:42:53Z",
+      "side": 1,
+      "message": "Can we add `cpu interface` to the error msg ??",
+      "range": {
+        "startLine": 242,
+        "startChar": 23,
+        "endLine": 242,
+        "endChar": 79
+      },
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29680b67_35268e8a",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-05-29T06:42:53Z",
+      "side": 1,
+      "message": "Could you add more details about how do you get the core count and how do you match the CPU interface to populate core count??",
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
