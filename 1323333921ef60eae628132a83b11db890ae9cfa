@@ -592,6 +592,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b3af3fb_a6998850",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T02:53:21Z",
+      "side": 1,
+      "message": "As the discussion in the comment https://gerrit.openbmc.org/c/openbmc/libpldm/+/71660/comment/51cfdf7a_17df45d0/\nAdding the constant to remove the magic number is incomplete solution. The API to response the request/response message size should be added as completely solution.\nThese magic number in this patch set will be removed at when that API is added.",
+      "parentUuid": "59e19cd9_dd26453f",
+      "range": {
+        "startLine": 447,
+        "startChar": 73,
+        "endLine": 447,
+        "endChar": 76
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "722816ba_f7829182",
@@ -639,6 +663,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee28719_82871949",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T02:53:21Z",
+      "side": 1,
+      "message": "As the discussion in the comment https://gerrit.openbmc.org/c/openbmc/libpldm/+/71660/comment/51cfdf7a_17df45d0/\nAdding the constant to remove the magic number is incomplete solution. The API to response the request/response message size should be added as completely solution.\nThese magic number in this patch set will be removed at when that API is added.",
+      "parentUuid": "94d091f9_73014a91",
+      "range": {
+        "startLine": 453,
+        "startChar": 58,
+        "endLine": 453,
+        "endChar": 61
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45bcc5ac_8f5a341f",
@@ -676,6 +724,30 @@
       "side": 1,
       "message": "As above.",
       "parentUuid": "45bcc5ac_8f5a341f",
+      "range": {
+        "startLine": 475,
+        "startChar": 58,
+        "endLine": 475,
+        "endChar": 61
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b885a37_6ebb636d",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T02:53:21Z",
+      "side": 1,
+      "message": "As the discussion in the comment https://gerrit.openbmc.org/c/openbmc/libpldm/+/71660/comment/51cfdf7a_17df45d0/\nAdding the constant to remove the magic number is incomplete solution. The API to response the request/response message size should be added as completely solution.\nThese magic number in this patch set will be removed at when that API is added.",
+      "parentUuid": "083131a6_8f8de08d",
       "range": {
         "startLine": 475,
         "startChar": 58,
