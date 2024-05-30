@@ -1,5 +1,6 @@
 #include "file_io_type_dump.hpp"
 
+#include "com/ibm/Dump/Notify/server.hpp"
 #include "common/utils.hpp"
 #include "utils.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
@@ -11,7 +12,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/server.hpp>
-#include <xyz/openbmc_project/Dump/NewDump/server.hpp>
 
 #include <cstdint>
 #include <exception>
@@ -110,24 +110,28 @@ std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
 
 int DumpHandler::newFileAvailable(uint64_t length)
 {
-    static constexpr auto dumpInterface = "xyz.openbmc_project.Dump.NewDump";
+    static constexpr auto dumpInterface = "com.ibm.Dump.Notify";
     auto& bus = pldm::utils::DBusHandler::getBus();
 
     auto notifyObjPath = dumpObjPath;
+    auto notifyDumpType =
+        sdbusplus::common::com::ibm::dump::Notify::DumpType::System;
+
     if (dumpType == PLDM_FILE_TYPE_RESOURCE_DUMP)
     {
         // Setting the Notify path for resource dump
         notifyObjPath = resDumpObjPath;
+        notifyDumpType =
+            sdbusplus::common::com::ibm::dump::Notify::DumpType::Resource;
     }
 
     try
     {
         auto service =
             pldm::utils::DBusHandler().getService(notifyObjPath, dumpInterface);
-        using namespace sdbusplus::xyz::openbmc_project::Dump::server;
         auto method = bus.new_method_call(service.c_str(), notifyObjPath,
-                                          dumpInterface, "Notify");
-        method.append(fileHandle, length);
+                                          dumpInterface, "NotifyDump");
+        method.append(fileHandle, length, notifyDumpType, 0);
         bus.call_noreply(method, dbusTimeout);
     }
     catch (const std::exception& e)
