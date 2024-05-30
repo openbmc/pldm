@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aff296d_7e9c20f9",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-30T13:11:10Z",
+      "side": 1,
+      "message": "this could be inline function",
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29739401_c0b546f2",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-30T13:11:10Z",
+      "side": 1,
+      "message": "why virtual destructor since it\u0027s not inherited from anywhere?",
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9542b0b1_6d1fe60b",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-05-30T13:11:10Z",
+      "side": 1,
+      "message": "since many unique pointer has cyclic dependency how would it be free the memory when PLDM goes down? even with current design also the same problem might be exist.",
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
