@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8be026_c8a47211",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "why is this needed? we could have the handler only when we have host as this is `dbus-to-host-effecter` ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80454cbf_405f92a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "reason for having this check? as the code piece is dbus-to-host-effecter",
+      "range": {
+        "startLine": 44,
+        "startChar": 2,
+        "endLine": 44,
+        "endChar": 67
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1755e6e5_16d35997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "Hey @Thu, The code structure looks good but can we brief why do we need this host On check and why was it not needed for the state effecter? What\u0027s the reasoning behind it?",
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28db88b9_78bff246",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "lg2 way",
+      "range": {
+        "startLine": 78,
+        "startChar": 9,
+        "endLine": 80,
+        "endChar": 70
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5edf034_5d35415f",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "lg2 way",
+      "range": {
+        "startLine": 346,
+        "startChar": 8,
+        "endLine": 347,
+        "endChar": 64
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5238b198_1e328713",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "lg2",
+      "range": {
+        "startLine": 367,
+        "startChar": 8,
+        "endLine": 368,
+        "endChar": 31
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b06d2cc_b77cebfd",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "lg2",
+      "range": {
+        "startLine": 373,
+        "startChar": 8,
+        "endLine": 374,
+        "endChar": 48
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78cf46e4_bcbbecd2",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "how did we come up with only these fields? We could also have `baseUnit` field right which is unique for effecters",
+      "range": {
+        "startLine": 52,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 2
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad5b1287_c9f9ffa8",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "why do we call it terminusNumericEffecter and not NumericEffecter alone?",
+      "range": {
+        "startLine": 189,
+        "startChar": 16,
+        "endLine": 189,
+        "endChar": 42
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2630d8b1_0e9cb83a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-30T09:03:13Z",
+      "side": 1,
+      "message": "will this not be redundant? if hostEid is present ` hostEffecterParser` will get initialized twice?",
+      "range": {
+        "startLine": 267,
+        "startChar": 8,
+        "endLine": 273,
+        "endChar": 5
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
