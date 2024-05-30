@@ -34,6 +34,24 @@
       "parentUuid": "bfcbe38f_21b24266",
       "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03a0ab45_fb8633af",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "Moreover, the dbus_to_host_effecter can be applied for all PLDM terminus but not only host. In other comment, I suggest to change the file name to `dbus_to_terminus_effecter`.",
+      "parentUuid": "d5fd5bd0_6bfe599d",
+      "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []

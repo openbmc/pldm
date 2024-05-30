@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0a14fd0_77734cb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "As the original design of `dbus_to_host_effecter`, the code is only applied for host. But I don\u0027t see any reason to limit the code for only host. The host effecter and other PLDM terminus effecter are the same.\n\nI think we can change the file name to `dbus_to_terminus_effecter` or something like that.\n\n@ManojKiran Eda, Can you give give your comment on this idea?",
+      "parentUuid": "2a8be026_c8a47211",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80454cbf_405f92a0",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-30T09:03:13Z",
       "side": 1,
       "message": "reason for having this check? as the code piece is dbus-to-host-effecter",
+      "range": {
+        "startLine": 44,
+        "startChar": 2,
+        "endLine": 44,
+        "endChar": 67
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c8b4b1b_13f870f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "As above comment.",
+      "parentUuid": "80454cbf_405f92a0",
       "range": {
         "startLine": 44,
         "startChar": 2,
@@ -66,6 +114,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73820173_4d5db272",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "\u003e Hey @Thu, The code structure looks good but can we brief why do we need this host On check. and why was it not needed for the state effecter? What\u0027s the reasoning behind it?\n\nActually, we have the `host On check` in the current code for state effecter.\nhttps://github.com/openbmc/pldm/blob/master/host-bmc/dbus_to_host_effecters.cpp#L166\n\nThat why, in this patch set, I also include `host On Check`. But to apply the code for other PLDM terminus (none-host terminus), I add the `checkHostState` option.\nWhen this option is set, the `host On Check` will be applied as the current `state effecter`.",
+      "parentUuid": "1755e6e5_16d35997",
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "28db88b9_78bff246",
         "filename": "host-bmc/dbus_to_host_effecters.cpp",
         "patchSetId": 5
@@ -77,6 +143,30 @@
       "writtenOn": "2024-05-30T09:03:13Z",
       "side": 1,
       "message": "lg2 way",
+      "range": {
+        "startLine": 78,
+        "startChar": 9,
+        "endLine": 80,
+        "endChar": 70
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccc6e4cf_abb6f141",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28db88b9_78bff246",
       "range": {
         "startLine": 78,
         "startChar": 9,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7ba5d7_5d6ce40c",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5edf034_5d35415f",
+      "range": {
+        "startLine": 346,
+        "startChar": 8,
+        "endLine": 347,
+        "endChar": 64
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5238b198_1e328713",
@@ -133,6 +247,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "446dbd5a_3d95450a",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5238b198_1e328713",
+      "range": {
+        "startLine": 367,
+        "startChar": 8,
+        "endLine": 368,
+        "endChar": 31
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b06d2cc_b77cebfd",
@@ -146,6 +284,30 @@
       "writtenOn": "2024-05-30T09:03:13Z",
       "side": 1,
       "message": "lg2",
+      "range": {
+        "startLine": 373,
+        "startChar": 8,
+        "endLine": 374,
+        "endChar": 48
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec9ddb41_d9b679a2",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b06d2cc_b77cebfd",
       "range": {
         "startLine": 373,
         "startChar": 8,
@@ -181,6 +343,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf8a2422_0f7fe3d6",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "As table `Table 47 – SetNumericEffecterValue command format` in DSP0248_V1.2.2, the `SetNumericEffecterValue` only need the effecterValue and fffecterDataSize.\nSo I don\u0027t think we need baseUnit.\nThese fields are added to allow we convert the value on D-Bus to the effecter raw value.",
+      "parentUuid": "78cf46e4_bcbbecd2",
+      "range": {
+        "startLine": 52,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 2
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ad5b1287_c9f9ffa8",
         "filename": "host-bmc/dbus_to_host_effecters.hpp",
         "patchSetId": 5
@@ -204,6 +390,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c1e17d7_6d4eaba1",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "Just because I saw that we are using `setHostStateEffecter` name.\nhttps://github.com/openbmc/pldm/blob/master/host-bmc/dbus_to_host_effecters.cpp#L262C25-L262C45",
+      "parentUuid": "ad5b1287_c9f9ffa8",
+      "range": {
+        "startLine": 189,
+        "startChar": 16,
+        "endLine": 189,
+        "endChar": 42
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2630d8b1_0e9cb83a",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 5
@@ -215,6 +425,30 @@
       "writtenOn": "2024-05-30T09:03:13Z",
       "side": 1,
       "message": "will this not be redundant? if hostEid is present ` hostEffecterParser` will get initialized twice?",
+      "range": {
+        "startLine": 267,
+        "startChar": 8,
+        "endLine": 273,
+        "endChar": 5
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4ea49ef_a45ce12b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-05-30T12:35:30Z",
+      "side": 1,
+      "message": "Remove this initial, use the code in line https://gerrit.openbmc.org/c/openbmc/pldm/+/52514/6/pldmd/pldmd.cpp#210",
+      "parentUuid": "2630d8b1_0e9cb83a",
       "range": {
         "startLine": 267,
         "startChar": 8,
