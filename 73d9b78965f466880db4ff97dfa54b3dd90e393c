@@ -111,6 +111,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72aca1ad_13daeb8e",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-30T12:31:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32a12b8c_eb37db44",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5de80632_5c3d075a",
@@ -124,6 +142,24 @@
       "writtenOn": "2024-04-29T05:00:33Z",
       "side": 1,
       "message": "can you add doxygen about all variables?",
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c90f7b29_d36f5016",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-30T12:31:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5de80632_5c3d075a",
       "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -182,6 +218,30 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "b738a80e_ee0f8d05",
+      "range": {
+        "startLine": 242,
+        "startChar": 12,
+        "endLine": 242,
+        "endChar": 39
+      },
+      "revId": "73d9b78965f466880db4ff97dfa54b3dd90e393c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52052059_d11381cb",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-05-30T12:31:05Z",
+      "side": 1,
+      "message": "I have now removed oemPlatformHandler from all base handlers and moved the creation of oemPlatformHandler inside the oem_ibm class. So that if OEM_IBM then the oemPlatformHandler will get assigned at a later point of time. I have adjusted the test cases as well accordingly.",
+      "parentUuid": "1f440893_3da629c5",
       "range": {
         "startLine": 242,
         "startChar": 12,
