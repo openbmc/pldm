@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5ce2aae_f09002d7",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-05-31T00:19:31Z",
+      "side": 1,
+      "message": "static?",
+      "revId": "86138cfad456e4ae8624d78095f5390ea103be11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86c5dab1_199d17ed",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-05-31T00:19:31Z",
+      "side": 1,
+      "message": "Ah, so before we stabilise e.g. `decode_get_state_effecter_states_resp()`, do you mind changing the affected functions to return 0 or negative errno values? I want to get away from the library API relying on PLDM protocol completion codes (... but obviously the completion code in the decode message needs to remain a PLDM completion code).",
+      "range": {
+        "startLine": 2036,
+        "startChar": 12,
+        "endLine": 2036,
+        "endChar": 30
+      },
+      "revId": "86138cfad456e4ae8624d78095f5390ea103be11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc2f0f04_a2504836",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2049,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-05-31T00:19:31Z",
+      "side": 1,
+      "message": "Mildly surprised that this is how the data should be represented (and not embedding a list in the json?), but I\u0027m not a maintainer of the PLDM repo 😊",
+      "range": {
+        "startLine": 2049,
+        "startChar": 31,
+        "endLine": 2049,
+        "endChar": 53
+      },
+      "revId": "86138cfad456e4ae8624d78095f5390ea103be11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
