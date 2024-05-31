@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57892b07_e00142d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-31T05:17:40Z",
+      "side": 1,
+      "message": "nit:we are parsing?",
+      "range": {
+        "startLine": 10,
+        "startChar": 33,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "f56b22e8b353e7fb00bdd18c6ce331550197aef8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d52d6da8_173abb3c",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-31T05:17:40Z",
+      "side": 1,
+      "message": "pcieLinkList",
+      "range": {
+        "startLine": 178,
+        "startChar": 9,
+        "endLine": 178,
+        "endChar": 20
+      },
+      "revId": "f56b22e8b353e7fb00bdd18c6ce331550197aef8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a66152f1_d4049230",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-31T05:17:40Z",
+      "side": 1,
+      "message": "can we remove the c style casting and change it to c++ style of casting?\nplease apply this to everywhere below",
+      "range": {
+        "startLine": 230,
+        "startChar": 12,
+        "endLine": 230,
+        "endChar": 36
+      },
+      "revId": "f56b22e8b353e7fb00bdd18c6ce331550197aef8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "891b87f8_a0655f5b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-31T05:17:40Z",
+      "side": 1,
+      "message": "can we keep it small everywhere - 0xff ?",
+      "range": {
+        "startLine": 25,
+        "startChar": 5,
+        "endLine": 25,
+        "endChar": 10
+      },
+      "revId": "f56b22e8b353e7fb00bdd18c6ce331550197aef8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2c6e97a_5f3042a3",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-31T05:17:40Z",
+      "side": 1,
+      "message": "what does this mean?",
+      "range": {
+        "startLine": 42,
+        "startChar": 3,
+        "endLine": 42,
+        "endChar": 35
+      },
+      "revId": "f56b22e8b353e7fb00bdd18c6ce331550197aef8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33fae70e_24bd530b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-05-31T05:17:40Z",
+      "side": 1,
+      "message": "can we better this name? :) pcieLinkCableAttr ?",
+      "range": {
+        "startLine": 134,
+        "startChar": 7,
+        "endLine": 134,
+        "endChar": 24
+      },
+      "revId": "f56b22e8b353e7fb00bdd18c6ce331550197aef8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
