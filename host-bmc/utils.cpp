@@ -70,9 +70,9 @@ void addObjectPathEntityAssociations(
     pldm_entity node_entity = pldm_entity_extract(entity);
     if (!entityMaps.contains(node_entity.entity_type))
     {
-        lg2::info(
-            "{ENTITY_TYPE} Entity fetched from remote PLDM terminal does not exist.",
-            "ENTITY_TYPE", (int)node_entity.entity_type);
+        // entityMaps doesn't contain entity type which are not required to
+        // build entity object path, so returning from here because this is a
+        // expected behaviour
         return;
     }
 
