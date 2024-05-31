@@ -16,6 +16,24 @@
       "message": "Please add tested section too in the commit msg.",
       "revId": "2cc4b8ee28d6973de0b54112654cf0a33e4ed434",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb18b7f5_ddc9eed6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001614
+      },
+      "writtenOn": "2024-05-31T11:25:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89a557f1_aede1b67",
+      "revId": "2cc4b8ee28d6973de0b54112654cf0a33e4ed434",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
