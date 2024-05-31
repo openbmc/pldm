@@ -93,6 +93,54 @@ class Handler : public oem_platform::Handler
                 }
             }
         });
+
+        powerStateOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+            pldm::utils::DBusHandler::getBus(),
+            propertiesChanged("/xyz/openbmc_project/state/chassis0",
+                              "xyz.openbmc_project.State.Chassis"),
+            [this](sdbusplus::message_t& msg) {
+            pldm::utils::DbusChangedProps props{};
+            std::string intf;
+            msg.read(intf, props);
+            const auto itr = props.find("CurrentPowerState");
+            if (itr != props.end())
+            {
+                pldm::utils::PropertyValue value = itr->second;
+                auto propVal = std::get<std::string>(value);
+                if (propVal ==
+                    "xyz.openbmc_project.State.Chassis.PowerState.Off")
+                {
+                    static constexpr auto searchpath =
+                        "/xyz/openbmc_project/inventory/system/chassis/motherboard";
+                    int depth = 0;
+                    std::vector<std::string> powerInterface = {
+                        "xyz.openbmc_project.State.Decorator.PowerState"};
+                    pldm::utils::GetSubTreeResponse response =
+                        pldm::utils::DBusHandler().getSubtree(searchpath, depth,
+                                                              powerInterface);
+                    for (const auto& [objPath, serviceMap] : response)
+                    {
+                        pldm::utils::DBusMapping dbusMapping{
+                            objPath,
+                            "xyz.openbmc_project.State.Decorator.PowerState",
+                            "PowerState", "string"};
+                        value =
+                            "xyz.openbmc_project.State.Decorator.PowerState.State.Off";
+                        try
+                        {
+                            pldm::utils::DBusHandler().setDbusProperty(
+                                dbusMapping, value);
+                        }
+                        catch (const std::exception& e)
+                        {
+                            error(
+                                "Unable to set the slot power state to Off error - {ERROR}",
+                                "ERROR", e);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     int getOemStateSensorReadingsHandler(
@@ -287,6 +335,9 @@ class Handler : public oem_platform::Handler
 
     /** @brief D-Bus property changed signal match */
     std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
+
+    /** @brief D-Bus property changed signal match */
+    std::unique_ptr<sdbusplus::bus::match_t> powerStateOffMatch;
 
     /** @brief Timer used for monitoring surveillance pings from host */
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> timer;
