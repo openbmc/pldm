@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd4fccb8_9ddff4a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 98
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002036
+      },
+      "writtenOn": "2024-06-03T12:41:50Z",
+      "side": 1,
+      "message": "This patch is tested with meta-arm-evb system. And BMC can query PDRs and host sensor thru PLDM successfully.",
+      "revId": "a71acfd7259588a7d583aa1e7969e5572a513607",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
