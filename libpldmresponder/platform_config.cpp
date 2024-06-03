@@ -39,11 +39,9 @@ void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
     auto names =
         std::get<pldm::utils::Interfaces>(properties.at(namesProperty));
 
-    std::string systemType;
     if (!names.empty())
     {
-        // get only the first system type
-        systemType = names.front();
+        systemType = getSysSpecificJsonDir(sysDirPath, names);
         if (sysTypeCallback)
         {
             sysTypeCallback(systemType, true);
@@ -103,7 +101,8 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
 
                     if (!systemList.empty())
                     {
-                        systemType = systemList.at(0);
+                        systemType = getSysSpecificJsonDir(sysDirPath,
+                                                           systemList);
                         // once systemtype received,then resetting a callback
                         systemCompatibleMatchCallBack.reset();
                         return fs::path{systemType};
@@ -126,6 +125,37 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
             "ERROR", e);
     }
     return std::nullopt;
+}
+
+std::string
+    Handler::getSysSpecificJsonDir(const fs::path& dirPath,
+                                   const std::vector<std::string>& dirNames)
+{
+    // This code is written in the assumption of the paths for both the PDR and
+    // BIOS JSON directories are currently identical. However, if there are any
+    // future changes to JSON Files then we'll simply create separate
+    // directories and adjust the function call accordingly based on the
+    // specific use case.
+
+    if (dirPath.empty())
+    {
+        return "";
+    }
+
+    for (const auto& dir_entry : std::filesystem::directory_iterator{dirPath})
+    {
+        if (!dir_entry.is_directory())
+        {
+            continue;
+        }
+
+        auto name = dir_entry.path().filename().string();
+        if (std::find(dirNames.begin(), dirNames.end(), name) != dirNames.end())
+        {
+            return name;
+        }
+    }
+    return "";
 }
 
 void Handler::registerSystemTypeCallback(SystemTypeCallback callback)

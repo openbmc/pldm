@@ -234,7 +234,8 @@ int main(int argc, char** argv)
     DBusHandler dbusHandler;
     std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
     std::unique_ptr<platform_config::Handler> platformConfigHandler{};
-    platformConfigHandler = std::make_unique<platform_config::Handler>();
+    platformConfigHandler =
+        std::make_unique<platform_config::Handler>(PDR_JSONS_DIR);
     std::unique_ptr<oem_fru::Handler> oemFruHandler{};
 
 #ifdef OEM_IBM
