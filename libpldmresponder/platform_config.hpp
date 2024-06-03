@@ -20,7 +20,7 @@ using SystemTypeCallback = std::function<void(const std::string&, bool)>;
 class Handler : public CmdHandler
 {
   public:
-    Handler()
+    Handler(const std::string pdrPath = "") : pdrDirPath(pdrPath)
     {
         systemCompatibleMatchCallBack =
             std::make_unique<sdbusplus::bus::match_t>(
@@ -46,6 +46,14 @@ class Handler : public CmdHandler
     void registerSystemTypeCallback(SystemTypeCallback callback);
 
   private:
+    /** @brief Interface to get the first available directory
+     *         availble from the received list
+     *
+     *  @param[in] dirNames - Getting system names from Entity manager
+     *  @return - The system type information
+     */
+    std::string getPDRJsonDir(const std::vector<std::string> dirNames);
+
     /** @brief system type/model */
     std::string systemType;
 
@@ -54,6 +62,9 @@ class Handler : public CmdHandler
 
     /** @brief Registered Callback */
     SystemTypeCallback sysTypeCallback;
+
+    /** @brief PDR json file directory path */
+    std::string pdrDirPath;
 };
 
 } // namespace platform_config
