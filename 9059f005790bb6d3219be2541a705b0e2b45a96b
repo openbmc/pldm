@@ -16,6 +16,40 @@
       "message": "Add the description for variable method in patch set.\nChange to use lg2.error().",
       "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d80d80a_e4e42586",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-03T13:51:55Z",
+      "side": 1,
+      "message": "Many similar calls in this file might throw `sdbusplus::exception_t`, maybe consider some try-catch blocks here",
+      "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d685027a_37e19426",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-03T13:51:55Z",
+      "side": 1,
+      "message": "This can throw `sdbusplus::exception_t` so maybe consider a try-catch here",
+      "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
