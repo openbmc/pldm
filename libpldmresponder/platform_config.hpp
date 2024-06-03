@@ -20,7 +20,7 @@ using SystemTypeCallback = std::function<void(const std::string&, bool)>;
 class Handler : public CmdHandler
 {
   public:
-    Handler()
+    Handler(const fs::path sysDirPath = {}) : sysDirPath(sysDirPath)
     {
         systemCompatibleMatchCallBack =
             std::make_unique<sdbusplus::bus::match_t>(
@@ -46,6 +46,17 @@ class Handler : public CmdHandler
     void registerSystemTypeCallback(SystemTypeCallback callback);
 
   private:
+    /** @brief Interface to get the first available directory
+     *         from the received list
+     *
+     *  @param[in] dirPath  - Directory path to search system specific directory
+     *  @param[in] dirNames - System names retrieved from remote application
+     *  @return - The system type information
+     */
+    std::optional<std::string>
+        getSysSpecificJsonDir(const fs::path& dirPath,
+                              const std::vector<std::string>& dirNames);
+
     /** @brief system type/model */
     std::string systemType;
 
@@ -54,6 +65,9 @@ class Handler : public CmdHandler
 
     /** @brief Registered Callback */
     SystemTypeCallback sysTypeCallback;
+
+    /** @brief system specific json file directory path */
+    fs::path sysDirPath;
 };
 
 } // namespace platform_config
