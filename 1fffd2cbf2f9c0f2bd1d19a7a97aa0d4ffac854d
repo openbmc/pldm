@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "928bf86c_c6360e3e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-03T14:35:55Z",
+      "side": 1,
+      "message": "const handler ?",
+      "range": {
+        "startLine": 330,
+        "startChar": 4,
+        "endLine": 330,
+        "endChar": 43
+      },
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be6c33ce_b4cbdf38",
+        "filename": "libpldmresponder/base.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-03T14:35:55Z",
+      "side": 1,
+      "message": "we can put this back in the same place \u0026 this needs a sane default, since its not been initialized as part of the constructor. This comment applies everywhere",
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9aff296d_7e9c20f9",
         "filename": "libpldmresponder/fru.cpp",
         "patchSetId": 11
@@ -20,6 +60,64 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82b15c73_6d04206d",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-03T14:35:55Z",
+      "side": 1,
+      "message": "+1 here and everywhere.",
+      "parentUuid": "9aff296d_7e9c20f9",
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b1651b_14ff8f69",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-03T14:35:55Z",
+      "side": 1,
+      "message": "new line ?",
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "287a5841_40621f7e",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-03T14:35:55Z",
+      "side": 1,
+      "message": "wrapping",
+      "range": {
+        "startLine": 27,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 15
+      },
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29739401_c0b546f2",
         "filename": "pldmd/oem_ibm.hpp",
         "patchSetId": 11
@@ -31,6 +129,24 @@
       "writtenOn": "2024-05-30T13:11:10Z",
       "side": 1,
       "message": "why virtual destructor since it\u0027s not inherited from anywhere?",
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28edb1ab_f7809bd4",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-03T14:35:55Z",
+      "side": 1,
+      "message": "+1\n\nScott Meyers book actually says this as one of its item\n```\nThe bottom line is that gratuitously declaring all destructors virtual is\njust as wrong as never declaring them virtual. In fact, many people\nsummarize the situation this way: declare a virtual destructor in a\nclass if and only if that class contains at least one virtual function.\n```",
+      "parentUuid": "29739401_c0b546f2",
       "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -65,6 +181,30 @@
       "writtenOn": "2024-06-03T13:44:27Z",
       "side": 1,
       "message": "Can we avoid creating above pointers and use them as we receive them in constructor?",
+      "range": {
+        "startLine": 161,
+        "startChar": 2,
+        "endLine": 181,
+        "endChar": 0
+      },
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6830580_44044f84",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-03T14:35:55Z",
+      "side": 1,
+      "message": "Can you elaborate what you mean ?",
+      "parentUuid": "7f026b48_caa6ce93",
       "range": {
         "startLine": 161,
         "startChar": 2,
