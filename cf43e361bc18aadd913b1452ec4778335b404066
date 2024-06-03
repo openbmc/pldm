@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e3aaaa_ef407836",
+        "filename": "common/utils.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:58Z",
+      "side": 1,
+      "message": "this change is done as part of commit: https://gerrit.openbmc.org/c/openbmc/pldm/+/71651\n\nto avoid duplicate datatype between oem and non-oem path code.",
+      "parentUuid": "52da48a4_04ea4551",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 62
+      },
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ffa0ed3_84a3a51a",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0c1054d_c9dd93ea",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ffa0ed3_84a3a51a",
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b43f09b_956d09df",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-05-29T06:42:53Z",
       "side": 1,
       "message": "nit: use contains",
+      "range": {
+        "startLine": 229,
+        "startChar": 16,
+        "endLine": 229,
+        "endChar": 67
+      },
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6493958b_a75f1e7b",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b43f09b_956d09df",
       "range": {
         "startLine": 229,
         "startChar": 16,
@@ -87,6 +153,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6486fa5_9baba756",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21a2e3a4_640cdac3",
+      "range": {
+        "startLine": 242,
+        "startChar": 23,
+        "endLine": 242,
+        "endChar": 79
+      },
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29680b67_35268e8a",
@@ -100,6 +190,24 @@
       "writtenOn": "2024-05-29T06:42:53Z",
       "side": 1,
       "message": "Could you add more details about how do you get the core count and how do you match the CPU interface to populate core count??",
+      "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93d0163b_78a7b0e7",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:58Z",
+      "side": 1,
+      "message": "doxygen comment is not right place to explain functionality in details, as similar to other functions, only explaining function work,function argument and return type.",
+      "parentUuid": "29680b67_35268e8a",
       "revId": "cf43e361bc18aadd913b1452ec4778335b404066",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
