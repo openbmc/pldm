@@ -16,6 +16,24 @@
       "message": "can you add a comment there , saying that this is not an error scenario , and its expected to come here, because so and so reason.",
       "revId": "8fff1d95f0e58d23c9d2847a36b87497d0b10225",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8944c92_347496e3",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T09:05:59Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "e703ddf9_a81ce3ff",
+      "revId": "8fff1d95f0e58d23c9d2847a36b87497d0b10225",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
