@@ -231,7 +231,8 @@ int main(int argc, char** argv)
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
     DBusHandler dbusHandler;
     std::unique_ptr<platform_config::Handler> platformConfigHandler{};
-    platformConfigHandler = std::make_unique<platform_config::Handler>();
+    platformConfigHandler =
+        std::make_unique<platform_config::Handler>(PDR_JSONS_DIR);
 
     if (hostEID)
     {
