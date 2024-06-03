@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eabff9f0_1963ba40",
+        "filename": "libpldmresponder/event_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-03T14:21:56Z",
+      "side": 1,
+      "message": "Can we use containerId value instead of adding new variable `skipContainerId`?\nThe usecase where we want to skip container id, we can change the container id to 0xFFFF.",
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32b1214e_cdceb7d2",
         "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
         "patchSetId": 2
@@ -49,6 +66,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "607e0e3a_d878661e",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-03T14:21:56Z",
+      "side": 1,
+      "message": "Do you think, usecase with container id is needed?\n StateSensorEntry entry{10, 120, 2, 0, 2, true};",
+      "range": {
+        "startLine": 683,
+        "startChar": 7,
+        "endLine": 683,
+        "endChar": 59
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc241fd8_30419346",
         "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
         "patchSetId": 2
@@ -65,6 +105,29 @@
         "startChar": 8,
         "endLine": 685,
         "endChar": 57
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7ef2af6_516dbac6",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-03T14:21:56Z",
+      "side": 1,
+      "message": "r u considering container id 0 and skip container false as invalid case?",
+      "range": {
+        "startLine": 703,
+        "startChar": 2,
+        "endLine": 703,
+        "endChar": 53
       },
       "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
