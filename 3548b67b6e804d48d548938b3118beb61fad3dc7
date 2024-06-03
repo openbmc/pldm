@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76ba0b0d_dbd89056",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 83
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-03T13:15:05Z",
+      "side": 1,
+      "message": "Add the description for variable method in patch set.\nChange to use lg2.error()",
+      "revId": "3548b67b6e804d48d548938b3118beb61fad3dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
