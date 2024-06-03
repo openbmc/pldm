@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43562cf3_ba608ced",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-06-03T02:37:05Z",
+      "side": 1,
+      "message": "Ah, good point. Guess the static on line 40 should be dropped (that\u0027s not your concern though).",
+      "parentUuid": "d0cfb8f4_dc4a08ea",
+      "revId": "86138cfad456e4ae8624d78095f5390ea103be11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "86c5dab1_199d17ed",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 11
