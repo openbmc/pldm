@@ -39,11 +39,14 @@ void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
     auto names =
         std::get<pldm::utils::Interfaces>(properties.at(namesProperty));
 
-    std::string systemType;
     if (!names.empty())
     {
-        // get only the first system type
-        systemType = names.front();
+        std::optional<std::string> sysType = getSysSpecificJsonDir(sysDirPath,
+                                                                   names);
+        if (sysType.has_value())
+        {
+            systemType = sysType.value();
+        }
         if (sysTypeCallback)
         {
             sysTypeCallback(systemType, true);
@@ -103,9 +106,14 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
 
                     if (!systemList.empty())
                     {
-                        systemType = systemList.at(0);
+                        std::optional<std::string> sysType =
+                            getSysSpecificJsonDir(sysDirPath, systemList);
                         // once systemtype received,then resetting a callback
                         systemCompatibleMatchCallBack.reset();
+                        if (sysType.has_value())
+                        {
+                            systemType = sysType.value();
+                        }
                         return fs::path{systemType};
                     }
                 }
@@ -125,6 +133,37 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
             "Failed to make a d-bus call to get platform name, error - {ERROR}",
             "ERROR", e);
     }
+    return std::nullopt;
+}
+
+std::optional<std::string>
+    Handler::getSysSpecificJsonDir(const fs::path& dirPath,
+                                   const std::vector<std::string>& dirNames)
+{
+    // The current setup assumes that the BIOS and PDR configurations always
+    // come from the same system type. If, in the future, we need to use BIOS
+    // and PDR configurations from different system types, we should create
+    // separate system type folders for each and update the logic to support
+    // this.
+
+    if (dirPath.empty())
+    {
+        return std::nullopt;
+    }
+
+    for (const auto& dirEntry : std::filesystem::directory_iterator{dirPath})
+    {
+        if (dirEntry.is_directory())
+        {
+            const auto sysDir = dirEntry.path().filename().string();
+            if (std::find(dirNames.begin(), dirNames.end(), sysDir) !=
+                dirNames.end())
+            {
+                return sysDir;
+            }
+        }
+    }
+
     return std::nullopt;
 }
 
