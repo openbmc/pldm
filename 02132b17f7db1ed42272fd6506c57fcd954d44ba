@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3818e3b_b3b62d14",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:42:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce7a4764_4276e203",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "02132b17f7db1ed42272fd6506c57fcd954d44ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "036c64b2_a7864cbb",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-05-13T15:17:00Z",
       "side": 1,
       "message": "doxygen in this commit.",
+      "revId": "02132b17f7db1ed42272fd6506c57fcd954d44ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c5db938_185f4b1f",
+        "filename": "host-bmc/dbus/motherboard.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:42:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "036c64b2_a7864cbb",
       "revId": "02132b17f7db1ed42272fd6506c57fcd954d44ba",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
