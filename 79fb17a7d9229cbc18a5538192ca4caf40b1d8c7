@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66fc555c_625c298a",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-03T09:32:50Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 74,
+        "startChar": 57,
+        "endLine": 74,
+        "endChar": 64
+      },
+      "revId": "79fb17a7d9229cbc18a5538192ca4caf40b1d8c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a6f178b_cace85f9",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-03T09:32:50Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 74,
+        "startChar": 37,
+        "endLine": 74,
+        "endChar": 46
+      },
+      "revId": "79fb17a7d9229cbc18a5538192ca4caf40b1d8c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
