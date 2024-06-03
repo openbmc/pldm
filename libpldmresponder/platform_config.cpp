@@ -42,8 +42,7 @@ void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
     std::string systemType;
     if (!names.empty())
     {
-        // get only the first system type
-        systemType = names.front();
+        systemType = getPDRJsonDir(names);
         if (sysTypeCallback)
         {
             sysTypeCallback(systemType, true);
@@ -126,6 +125,36 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
             "ERROR", e);
     }
     return std::nullopt;
+}
+
+std::string Handler::getPDRJsonDir(const std::vector<std::string> dirNames)
+{
+    std::string pdrPath;
+
+    for (auto& dir_entry : std::filesystem::directory_iterator{pdrDirPath})
+    {
+        for (auto& name : dirNames)
+        {
+            auto entry = fs::directory_entry(dir_entry);
+            auto path = fs::absolute(dir_entry.path()).string();
+            auto pos = path.find_last_of('/');
+            if (entry.is_directory() && path.contains(name) &&
+                pos != std::string::npos)
+            {
+                auto type = path.substr(pos + 1);
+                if (type == name)
+                {
+                    pdrPath = type;
+                    break;
+                }
+            }
+        }
+        if (!pdrPath.empty())
+        {
+            break;
+        }
+    }
+    return pdrPath;
 }
 
 void Handler::registerSystemTypeCallback(SystemTypeCallback callback)
