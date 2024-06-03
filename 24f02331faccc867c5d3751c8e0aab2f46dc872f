@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5871998_f1073e7a",
+        "filename": "host-bmc/dbus/cpu_core.hpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f183aa56_e4cd9213",
+      "range": {
+        "startLine": 21,
+        "startChar": 2,
+        "endLine": 21,
+        "endChar": 13
+      },
+      "revId": "24f02331faccc867c5d3751c8e0aab2f46dc872f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8cf6e56_9468ca17",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-13T15:11:47Z",
       "side": 1,
       "message": "contains()",
+      "range": {
+        "startLine": 32,
+        "startChar": 7,
+        "endLine": 32,
+        "endChar": 44
+      },
+      "revId": "24f02331faccc867c5d3751c8e0aab2f46dc872f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5517353_3e5345f6",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8cf6e56_9468ca17",
       "range": {
         "startLine": 32,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "879a3b79_2cf65397",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e21e7ce_51a60d45",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 42
+      },
+      "revId": "24f02331faccc867c5d3751c8e0aab2f46dc872f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d3b2240_5f55326c",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-13T15:11:47Z",
       "side": 1,
       "message": "alignment issue",
+      "range": {
+        "startLine": 66,
+        "startChar": 5,
+        "endLine": 69,
+        "endChar": 14
+      },
+      "revId": "24f02331faccc867c5d3751c8e0aab2f46dc872f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d84e3d48_992f583d",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d3b2240_5f55326c",
       "range": {
         "startLine": 66,
         "startChar": 5,

@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb2979b4_0f8937b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72d4d963_fc30c4a8",
+      "range": {
+        "startLine": 10,
+        "startChar": 23,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "e0706439bb4f15be61ff1831b970c61483b08295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c21b903_90f3d276",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-29T04:34:29Z",
       "side": 1,
       "message": "Could you point me to the code where we are hosting  xyz.openbmc_project.Object.Enable interface.",
+      "range": {
+        "startLine": 68,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 68
+      },
+      "revId": "e0706439bb4f15be61ff1831b970c61483b08295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac6df2d_2dfc5414",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "removed since not relevant to it.",
+      "parentUuid": "8c21b903_90f3d276",
       "range": {
         "startLine": 68,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5242c8b4_cd7310c8",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55641661_d964d0d3",
+      "range": {
+        "startLine": 81,
+        "startChar": 9,
+        "endLine": 81,
+        "endChar": 21
+      },
+      "revId": "e0706439bb4f15be61ff1831b970c61483b08295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4965f41_8f78f5cd",
@@ -83,6 +155,24 @@
       "writtenOn": "2024-05-29T04:34:29Z",
       "side": 1,
       "message": "Can we add testcase for setting MicroCode ??",
+      "revId": "e0706439bb4f15be61ff1831b970c61483b08295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "061cb363_0e047d81",
+        "filename": "host-bmc/test/custom_dbus_test.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-03T16:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4965f41_8f78f5cd",
       "revId": "e0706439bb4f15be61ff1831b970c61483b08295",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
