@@ -16,6 +16,29 @@
       "message": "Add the description for variables and methods in patch set.\nChange to use lg2.error()",
       "revId": "d799c1edec823deabbd9f94b0e89a2742fb1e3e0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9651834_8605b063",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 99
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-06-04T02:08:38Z",
+      "side": 1,
+      "message": "Feels a bit like it hits on this anti-pattern: [Ill-defined data structuring in lg2 message strings](https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings)",
+      "range": {
+        "startLine": 87,
+        "startChar": 81,
+        "endLine": 87,
+        "endChar": 103
+      },
+      "revId": "d799c1edec823deabbd9f94b0e89a2742fb1e3e0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
