@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "628f6256_d2e41b78",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-04T00:26:06Z",
+      "side": 1,
+      "message": "Look that the current code in OpenBMC repo, I don\u0027t see any code try to catch exception when create the D-Bus interface. Can you detail about the exception error can be thrown?",
+      "parentUuid": "2d80d80a_e4e42586",
+      "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d685027a_37e19426",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 102
@@ -48,6 +66,24 @@
       "writtenOn": "2024-06-03T13:51:55Z",
       "side": 1,
       "message": "This can throw `sdbusplus::exception_t` so maybe consider a try-catch here",
+      "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f2ff05c_5b37dc93",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-04T00:26:06Z",
+      "side": 1,
+      "message": "Response above.",
+      "parentUuid": "d685027a_37e19426",
       "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
