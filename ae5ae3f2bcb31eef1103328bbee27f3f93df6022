@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c39acd91_8bb9aa5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 60
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-04T05:47:50Z",
+      "side": 1,
+      "message": "Updated the format of error/log message to remove anti-pattern.",
+      "revId": "ae5ae3f2bcb31eef1103328bbee27f3f93df6022",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
