@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa21e7bb_3c44bcac",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-04T07:55:27Z",
+      "side": 1,
+      "message": "It usually throws if you try to create a dbus interface that already exists.\nWhile it\u0027s a rare case here, it can, for example, guard against pldm devices that mistakenly configured 2 sensors with the same name.",
+      "parentUuid": "628f6256_d2e41b78",
+      "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d685027a_37e19426",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 102
