@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e19e7fd_e75d175c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-04T14:35:14Z",
+      "side": 1,
+      "message": "Same try-catch block twice?",
+      "revId": "079c2b67b65fd70523d1ebc4b4dbbe4473ea8724",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

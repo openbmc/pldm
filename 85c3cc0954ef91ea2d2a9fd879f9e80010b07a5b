@@ -159,6 +159,24 @@
       "parentUuid": "8bcb7262_e60e6986",
       "revId": "85c3cc0954ef91ea2d2a9fd879f9e80010b07a5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b64f69a_cc8a1bfb",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-04T14:35:14Z",
+      "side": 1,
+      "message": "Looks good, I do have an additional comment.",
+      "parentUuid": "245c2be3_6ee6db4f",
+      "revId": "85c3cc0954ef91ea2d2a9fd879f9e80010b07a5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
