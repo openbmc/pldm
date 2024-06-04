@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d23de886_4c10ab7d",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-04T09:39:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa21e7bb_3c44bcac",
+      "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d685027a_37e19426",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Response above.",
       "parentUuid": "d685027a_37e19426",
+      "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7744281e_3afac6ea",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-04T09:39:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f2ff05c_5b37dc93",
       "revId": "9059f005790bb6d3219be2541a705b0e2b45a96b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
