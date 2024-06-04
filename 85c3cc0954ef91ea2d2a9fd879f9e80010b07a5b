@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c86f6d43_e8c8635d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 105
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-04T09:51:11Z",
+      "side": 1,
+      "message": "Thanks for adding the try-catch blocks, but I do have a follow up on that.",
+      "revId": "85c3cc0954ef91ea2d2a9fd879f9e80010b07a5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6ee9887_8c405d1e",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-04T09:51:11Z",
+      "side": 1,
+      "message": "It\u0027s probably better to move all interface dereferences to inside the try-catch blocks, because in case a creation throws, we will have a `nullptr` and these kind of calls will lead to a crash.",
+      "revId": "85c3cc0954ef91ea2d2a9fd879f9e80010b07a5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
