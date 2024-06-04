@@ -39,6 +39,30 @@
       },
       "revId": "d799c1edec823deabbd9f94b0e89a2742fb1e3e0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14af8eb4_0a264549",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 99
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-04T05:43:13Z",
+      "side": 1,
+      "message": "Updated code.\nI also update the format of message in the other patch set to remove `anti-pattern`.",
+      "parentUuid": "b9651834_8605b063",
+      "range": {
+        "startLine": 87,
+        "startChar": 81,
+        "endLine": 87,
+        "endChar": 103
+      },
+      "revId": "d799c1edec823deabbd9f94b0e89a2742fb1e3e0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
