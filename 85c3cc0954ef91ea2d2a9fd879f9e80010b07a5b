@@ -123,6 +123,24 @@
       "parentUuid": "ddeb6c77_2e8aed06",
       "revId": "85c3cc0954ef91ea2d2a9fd879f9e80010b07a5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bcb7262_e60e6986",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-06-04T12:35:04Z",
+      "side": 1,
+      "message": "I saw you already added a try-catch block on the numeric sensor creation so I don\u0027t see why the daemon should crash.",
+      "parentUuid": "2a131ea9_49fa2ffd",
+      "revId": "85c3cc0954ef91ea2d2a9fd879f9e80010b07a5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
