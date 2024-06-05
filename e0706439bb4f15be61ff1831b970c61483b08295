@@ -50,6 +50,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7088e893_bfb363ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-05T04:52:39Z",
+      "side": 1,
+      "message": "This commit does not update CPU Core count, so it is better to remove it.",
+      "range": {
+        "startLine": 12,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 57
+      },
+      "revId": "e0706439bb4f15be61ff1831b970c61483b08295",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c21b903_90f3d276",
         "filename": "host-bmc/dbus/custom_dbus.hpp",
         "patchSetId": 24
