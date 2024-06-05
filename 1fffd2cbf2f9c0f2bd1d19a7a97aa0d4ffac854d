@@ -213,6 +213,30 @@
       },
       "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54985c7d_e6bec166",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-05T06:13:38Z",
+      "side": 1,
+      "message": "platformHandler, fruHandler and base handlers are created in pldmd.cpp at line 265, 255, and 271 and passed to the constructor of OemIBM class. We do not need to save those pointer inside OemHandler rather we can use them inside constructor.\nIn the current implementation we have two pointer created for each of the above, one in pldm.cpp one as member variable of OemIBM.",
+      "parentUuid": "b6830580_44044f84",
+      "range": {
+        "startLine": 161,
+        "startChar": 2,
+        "endLine": 181,
+        "endChar": 0
+      },
+      "revId": "1fffd2cbf2f9c0f2bd1d19a7a97aa0d4ffac854d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
