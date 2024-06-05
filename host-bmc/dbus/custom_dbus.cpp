@@ -55,5 +55,25 @@ std::optional<uint32_t> CustomDBus::getMicroCode(const std::string& path) const
 
     return std::nullopt;
 }
+
+void CustomDBus::implementPCIeSlotInterface(const std::string& path)
+{
+    if (!pcieSlot.contains(path))
+    {
+        pcieSlot.emplace(path, std::make_unique<PCIeSlot>(
+                                   pldm::utils::DBusHandler::getBus(), path));
+    }
+}
+
+void CustomDBus::setSlotType(const std::string& path,
+                             const std::string& slotType)
+{
+    auto typeOfSlot =
+        pldm::dbus::PCIeSlot::convertSlotTypesFromString(slotType);
+    if (pcieSlot.contains(path))
+    {
+        pcieSlot.at(path)->slotType(typeOfSlot);
+    }
+}
 } // namespace dbus
 } // namespace pldm
