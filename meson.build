@@ -248,6 +248,7 @@ executable(
     'fw-update/device_updater.cpp',
     'fw-update/watch.cpp',
     'fw-update/update_manager.cpp',
+    'platform-mc/dbus_impl_fru.cpp',
     'platform-mc/terminus_manager.cpp',
     'platform-mc/terminus.cpp',
     'platform-mc/platform_manager.cpp',
