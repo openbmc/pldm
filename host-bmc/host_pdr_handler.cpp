@@ -1134,6 +1134,10 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
                 CustomDBus::getCustomDBus().implementMotherboardInterface(
                     entity.first);
                 break;
+            case PLDM_ENTITY_SLOT:
+                CustomDBus::getCustomDBus().implementPCIeSlotInterface(
+                    entity.first);
+                break;
         }
     }
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
