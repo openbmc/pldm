@@ -569,5 +569,25 @@ bool dbusPropValuesToDouble(const std::string_view& type,
                             const pldm::utils::PropertyValue& value,
                             double* doubleValue);
 
+/** @brief Convert the Fru String bytes from PLDM Fru to std::string
+ *
+ *  @param[in] value - the Fru String bytes
+ *  @param[in] length - Number of bytes
+ *
+ *  @return Fru string or nullopt.
+ */
+std::optional<std::string>
+    fruFieldValuestring(const uint8_t* value, const uint8_t& length);
+
+/** @brief Convert the Fru Uint32 raw data from PLDM Fru to uint32_t
+ *
+ *  @param[in] value - the Fru uint32 raw data
+ *  @param[in] length - Number of bytes
+ *
+ *  @return Fru uint32_t or nullopt.
+ */
+std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
+                                          const uint8_t& length);
+
 } // namespace utils
 } // namespace pldm

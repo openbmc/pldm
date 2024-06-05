@@ -1156,3 +1156,37 @@ TEST(dbusPropValuesToDouble, badTest)
                                  nullptr);
     EXPECT_EQ(false, ret);
 }
+
+TEST(FruFieldValuestring, goodTest)
+{
+    std::vector<uint8_t> data = {0x41, 0x6d, 0x70, 0x65, 0x72, 0x65};
+    std::string expectedString = "Ampere";
+    auto result = fruFieldValuestring(data.data(), data.size());
+    EXPECT_EQ(expectedString, result);
+}
+
+TEST(FruFieldValuestring, BadTest)
+{
+    std::vector<uint8_t> data = {0x41, 0x6d, 0x70, 0x65, 0x72, 0x65};
+    auto result = fruFieldValuestring(data.data(), 0);
+    EXPECT_EQ(std::nullopt, result);
+    result = fruFieldValuestring(nullptr, data.size());
+    EXPECT_EQ(std::nullopt, result);
+}
+
+TEST(fruFieldParserU32, goodTest)
+{
+    std::vector<uint8_t> data = {0x10, 0x12, 0x14, 0x25};
+    uint32_t expectedU32 = 0x25141210;
+    auto result = fruFieldParserU32(data.data(), data.size());
+    EXPECT_EQ(expectedU32, result.value());
+}
+
+TEST(fruFieldParserU32, BadTest)
+{
+    std::vector<uint8_t> data = {0x10, 0x12, 0x14, 0x25};
+    auto result = fruFieldParserU32(data.data(), data.size() - 1);
+    EXPECT_EQ(std::nullopt, result);
+    result = fruFieldParserU32(nullptr, data.size());
+    EXPECT_EQ(std::nullopt, result);
+}
