@@ -2,6 +2,7 @@
 
 #include "libpldm/platform.h"
 
+#include "dbus_impl_fru.hpp"
 #include "terminus_manager.hpp"
 
 #include <common/utils.hpp>
@@ -92,11 +93,18 @@ bool Terminus::createInventoryPath(std::string tName)
         return false;
     }
 
+    /* inventory object is created */
+    if (inventoryItemBoardInft)
+    {
+        return false;
+    }
+
     inventoryPath = "/xyz/openbmc_project/inventory/system/board/" + tName;
     try
     {
-        inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
-            utils::DBusHandler::getBus(), inventoryPath.c_str());
+        inventoryItemBoardInft =
+            std::make_unique<pldm::dbus_api::PldmEntityReq>(
+                utils::DBusHandler::getBus(), inventoryPath.c_str());
         return true;
     }
     catch (const sdbusplus::exception_t& e)
@@ -216,7 +224,8 @@ void Terminus::parseTerminusPDRs()
 
     if (createInventoryPath(terminusName))
     {
-        lg2::error("Terminus ID {TID}: Created Inventory path.", "TID", tid);
+        lg2::error("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
+                   tid, "PATH", inventoryPath);
     }
 
     for (auto pdr : numericSensorPdrs)
@@ -569,5 +578,134 @@ std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorId id)
 
     return nullptr;
 }
+
+/** @brief Check if a pointer is go through end of table
+ *  @param[in] table - pointer to FRU record table
+ *  @param[in] p - pointer to each record of FRU record table
+ *  @param[in] tableSize - FRU table size
+ */
+static bool isTableEnd(const uint8_t* table, const uint8_t* p,
+                       const size_t tableSize)
+{
+    auto offset = p - table;
+    return (tableSize - offset) < sizeof(struct pldm_fru_record_data_format);
+}
+
+void Terminus::updateInventoryWithFru(const uint8_t* fruData,
+                                      const size_t fruLen)
+{
+    auto tmp = getTerminusName();
+    if (!tmp || tmp.value().empty())
+    {
+        lg2::error(
+            "Terminus ID {TID}: Failed to update Inventory with Fru Data - error : Terminus name is empty.",
+            "TID", tid);
+        return;
+    }
+
+    if (createInventoryPath(static_cast<std::string>(tmp.value())))
+    {
+        lg2::info("Terminus ID {TID}: Created Inventory path.", "TID", tid);
+    }
+
+    auto ptr = fruData;
+    while (!isTableEnd(fruData, ptr, fruLen))
+    {
+        auto record = reinterpret_cast<const pldm_fru_record_data_format*>(ptr);
+        ptr += sizeof(pldm_fru_record_data_format) -
+               sizeof(pldm_fru_record_tlv);
+
+        if (!record->num_fru_fields)
+        {
+            lg2::error(
+                "Invalid number of fields {NUM} of Record ID Type {TYPE} of terminus {TID}",
+                "NUM", record->num_fru_fields, "TYPE", record->record_type,
+                "TID", tid);
+            return;
+        }
+
+        if (record->record_type != PLDM_FRU_RECORD_TYPE_GENERAL)
+        {
+            lg2::error(
+                "Does not support Fru Record ID Type {TYPE} of terminus {TID}",
+                "TYPE", record->record_type, "TID", tid);
+
+            for ([[maybe_unused]] const auto& idx :
+                 std::views::iota(0, static_cast<int>(record->num_fru_fields)))
+            {
+                auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+                ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+            }
+            continue;
+        }
+        /* FRU General record type */
+        for ([[maybe_unused]] const auto& idx :
+             std::views::iota(0, static_cast<int>(record->num_fru_fields)))
+        {
+            auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+            std::string fruField{};
+            if (tlv->type != PLDM_FRU_FIELD_TYPE_IANA)
+            {
+                auto strOptional =
+                    pldm::utils::fruFieldValuestring(tlv->value, tlv->length);
+                if (!strOptional)
+                {
+                    ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                    continue;
+                }
+                fruField = strOptional.value();
+
+                if (fruField.empty())
+                {
+                    ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                    continue;
+                }
+            }
+
+            switch (tlv->type)
+            {
+                case PLDM_FRU_FIELD_TYPE_MODEL:
+                    inventoryItemBoardInft->model(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_PN:
+                    inventoryItemBoardInft->partNumber(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_SN:
+                    inventoryItemBoardInft->serialNumber(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_MANUFAC:
+                    inventoryItemBoardInft->manufacturer(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_NAME:
+                    inventoryItemBoardInft->names({fruField});
+                    break;
+                case PLDM_FRU_FIELD_TYPE_VERSION:
+                    inventoryItemBoardInft->version(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
+                    inventoryItemBoardInft->assetTag(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_VENDOR:
+                case PLDM_FRU_FIELD_TYPE_CHASSIS:
+                case PLDM_FRU_FIELD_TYPE_SKU:
+                case PLDM_FRU_FIELD_TYPE_DESC:
+                case PLDM_FRU_FIELD_TYPE_EC_LVL:
+                case PLDM_FRU_FIELD_TYPE_OTHER:
+                    break;
+                case PLDM_FRU_FIELD_TYPE_IANA:
+                    auto iana =
+                        pldm::utils::fruFieldParserU32(tlv->value, tlv->length);
+                    if (!iana)
+                    {
+                        ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                        continue;
+                    }
+                    break;
+            }
+            ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+        }
+    }
+}
+
 } // namespace platform_mc
 } // namespace pldm

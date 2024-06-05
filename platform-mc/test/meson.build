@@ -4,6 +4,7 @@ test_src = declare_dependency(
         '../terminus.cpp',
         '../platform_manager.cpp',
         '../manager.cpp',
+        '../dbus_impl_fru.cpp',
         '../sensor_manager.cpp',
         '../numeric_sensor.cpp',
         '../event_manager.cpp',
