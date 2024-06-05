@@ -67,5 +67,27 @@ void CustomDBus::implementMotherboardInterface(const std::string& path)
                       pldm::utils::DBusHandler::getBus(), path.c_str()));
     }
 }
+
+void CustomDBus::implementPCIeSlotInterface(const std::string& path)
+{
+    if (pcieSlot.find(path) == pcieSlot.end())
+    {
+        pcieSlot.emplace(
+            path, std::make_unique<PCIeSlot>(pldm::utils::DBusHandler::getBus(),
+                                             path));
+    }
+}
+
+void CustomDBus::setSlotType(const std::string& path,
+                             const std::string& slotType)
+{
+    auto typeOfSlot =
+        pldm::dbus::PCIeSlot::convertSlotTypesFromString(slotType);
+    if (pcieSlot.contains(path))
+    {
+        pcieSlot.at(path)->slotType(typeOfSlot);
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
