@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a74791f9_30894954",
+        "filename": "common/utils.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-05T06:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55cff928_0c28e786",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 0
+      },
+      "revId": "ca781d642ffd981296c66c447ca80698c27c4b24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fa35897_57ed391b",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ca51d52_e531f786",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-05T06:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fa35897_57ed391b",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 62
+      },
+      "revId": "ca781d642ffd981296c66c447ca80698c27c4b24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2bf00d0_41326c35",
@@ -60,6 +108,24 @@
       "writtenOn": "2024-06-05T06:02:22Z",
       "side": 1,
       "message": "In case of non IBM systems, passing the oemUtilsHandler abstract class pointer will lead to failure. Avoid creating this",
+      "revId": "ca781d642ffd981296c66c447ca80698c27c4b24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "158dfeb0_8e286437",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-05T06:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2bf00d0_41326c35",
       "revId": "ca781d642ffd981296c66c447ca80698c27c4b24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

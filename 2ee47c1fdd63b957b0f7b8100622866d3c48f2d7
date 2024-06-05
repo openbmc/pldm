@@ -22,6 +22,30 @@
       },
       "revId": "2ee47c1fdd63b957b0f7b8100622866d3c48f2d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a604c6b3_a5040c94",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-05T06:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f6efe7a_c5885b19",
+      "range": {
+        "startLine": 258,
+        "startChar": 4,
+        "endLine": 307,
+        "endChar": 13
+      },
+      "revId": "2ee47c1fdd63b957b0f7b8100622866d3c48f2d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
