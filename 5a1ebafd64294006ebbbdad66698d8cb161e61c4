@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fa4ea1c_e0981d18",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 25
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-05T07:59:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81060ec5_e01a2435",
+      "revId": "5a1ebafd64294006ebbbdad66698d8cb161e61c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c9933c4_267a94ea",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-06-05T04:52:39Z",
       "side": 1,
       "message": "Are you using path variable anywhere?",
+      "range": {
+        "startLine": 38,
+        "startChar": 3,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "5a1ebafd64294006ebbbdad66698d8cb161e61c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa24f274_4e3f6373",
+        "filename": "host-bmc/dbus/cpu_core.hpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-05T07:59:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c9933c4_267a94ea",
       "range": {
         "startLine": 38,
         "startChar": 3,
