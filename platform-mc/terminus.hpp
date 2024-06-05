@@ -1,15 +1,16 @@
 #pragma once
 
+#include "libpldm/fru.h"
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
+#include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 #include "terminus.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
-#include <xyz/openbmc_project/Inventory/Item/Board/server.hpp>
 
 #include <algorithm>
 #include <bitset>
@@ -34,8 +35,6 @@ using SensorName = std::string;
 using SensorAuxiliaryNames = std::tuple<
     SensorId, SensorCnt,
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
-using InventoryItemBoardIntf = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
 
 /** @struct EntityKey
  *
@@ -148,6 +147,13 @@ class Terminus
         }
         return terminusName;
     }
+
+    /** @brief Parse record data from FRU table
+     *
+     *  @param[in] fruData - pointer to FRU record table
+     *  @param[in] fruLen - FRU table length
+     */
+    void updateInventoryWithFru(const uint8_t* fruData, const size_t fruLen);
 
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
@@ -298,8 +304,9 @@ class Terminus
 
     /** @brief Terminus name */
     EntityName terminusName{};
-    /* @brief The pointer of iventory D-Bus interface for the terminus */
-    std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
+    /* @brief The pointer of inventory D-Bus interface for the terminus */
+    std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
+        nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
