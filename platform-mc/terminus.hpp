@@ -1,11 +1,14 @@
 #pragma once
 
+#include "libpldm/fru.h"
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
+#include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 #include "terminus.hpp"
+#include "xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
@@ -36,6 +39,9 @@ using SensorAuxiliaryNames = std::tuple<
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
 using InventoryItemBoardIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
+using assetserver =
+    sdbusplus::server::xyz::openbmc_project::inventory::decorator::Asset;
+using DecoratorAssetIntf = sdbusplus::server::object::object<assetserver>;
 
 /** @struct EntityKey
  *
@@ -148,6 +154,13 @@ class Terminus
         }
         return terminusName;
     }
+
+    /** @brief Parse record data from FRU table
+     *
+     *  @param[in] fruData - pointer to FRU record table
+     *  @param[in] fruLen - FRU table length
+     */
+    void createGernalFruDbus(const uint8_t* fruData, const size_t fruLen);
 
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
@@ -298,11 +311,16 @@ class Terminus
 
     /** @brief Terminus name */
     EntityName terminusName{};
-    /* @brief The pointer of iventory D-Bus interface for the terminus */
+    /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
+    /* @brief The pointer of decorator asset D-Bus interface for the terminus */
+    std::unique_ptr<DecoratorAssetIntf> decoratorAssetInft = nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
+
+    /** @brief The object FRU of terminus */
+    std::shared_ptr<pldm::dbus_api::FruReq> fruObj;
 };
 } // namespace platform_mc
 } // namespace pldm

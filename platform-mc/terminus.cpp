@@ -2,6 +2,7 @@
 
 #include "libpldm/platform.h"
 
+#include "dbus_impl_fru.hpp"
 #include "terminus_manager.hpp"
 
 #include <common/utils.hpp>
@@ -92,21 +93,39 @@ bool Terminus::createInventoryPath(std::string tName)
         return false;
     }
 
+    /* Inventory Path is created */
+    if (decoratorAssetInft)
+    {
+        return false;
+    }
+
     inventoryPath = "/xyz/openbmc_project/inventory/system/board/" + tName;
     try
     {
         inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
             utils::DBusHandler::getBus(), inventoryPath.c_str());
-        return true;
     }
     catch (const sdbusplus::exception_t& e)
     {
         lg2::error(
             "Failed to create Inventory Board interface for device {PATH}",
             "PATH", inventoryPath);
+        return false;
+    }
+    try
+    {
+        decoratorAssetInft = std::make_unique<DecoratorAssetIntf>(
+            utils::DBusHandler::getBus(), inventoryPath.c_str());
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Inventory Decorator Asset interface for device {PATH}",
+            "PATH", inventoryPath);
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 void Terminus::parseTerminusPDRs()
@@ -216,7 +235,8 @@ void Terminus::parseTerminusPDRs()
 
     if (createInventoryPath(terminusName))
     {
-        lg2::error("Terminus ID {TID}: Created Inventory path.", "TID", tid);
+        lg2::error("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
+                   tid, "PATH", inventoryPath);
     }
 
     for (auto pdr : numericSensorPdrs)
@@ -569,5 +589,181 @@ std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorId id)
 
     return nullptr;
 }
+
+/** @brief Check if a pointer is go through end of table
+ *  @param[in] table - pointer to FRU record table
+ *  @param[in] p - pointer to each record of FRU record table
+ *  @param[in] tableSize - FRU table size
+ */
+static bool isTableEnd(const uint8_t* table, const uint8_t* p,
+                       const size_t tableSize)
+{
+    auto offset = p - table;
+    return (tableSize - offset) < sizeof(struct pldm_fru_record_data_format);
+}
+
+void Terminus::createGernalFruDbus(const uint8_t* fruData, const size_t fruLen)
+{
+    std::string tidFRUObjPath{};
+    std::filesystem::path fruPath{"/xyz/openbmc_project/FruPldm"};
+    std::string tidDecoratorAssetObjPath{};
+
+    auto tmp = getTerminusName();
+    if (tmp && !tmp.value().empty())
+    {
+        tidFRUObjPath = fruPath.string() + "/" +
+                        static_cast<std::string>(tmp.value());
+    }
+
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    try
+    {
+        fruObj = std::make_shared<pldm::dbus_api::FruReq>(bus, tidFRUObjPath);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Fru D-Bus object for Terminus {TID} at path {PATH}",
+            "TID", tid, "PATH", tidFRUObjPath);
+        return;
+    }
+
+    if (createInventoryPath(static_cast<std::string>(tmp.value())))
+    {
+        lg2::error("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
+                   tid, "PATH", inventoryPath);
+    }
+
+    auto ptr = fruData;
+    while (!isTableEnd(fruData, ptr, fruLen))
+    {
+        auto record = reinterpret_cast<const pldm_fru_record_data_format*>(ptr);
+        ptr += sizeof(pldm_fru_record_data_format) -
+               sizeof(pldm_fru_record_tlv);
+
+        if (record->num_fru_fields == 0)
+        {
+            lg2::error(
+                "Invalid number of fields {NUM} of Record ID Type {TYPE} of terminus {TID}",
+                "NUM", record->num_fru_fields, "TYPE", record->record_type,
+                "TID", tid);
+            return;
+        }
+
+        if (record->record_type != PLDM_FRU_RECORD_TYPE_GENERAL)
+        {
+            lg2::error(
+                "Does not support Fru Record ID Type {TYPE} of terminus {TID}",
+                "TYPE", record->record_type, "TID", tid);
+
+            for ([[maybe_unused]] const auto& idx :
+                 std::views::iota(0, static_cast<int>(record->num_fru_fields)))
+            {
+                auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+                ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+            }
+            continue;
+        }
+        /* FRU General record type */
+        for ([[maybe_unused]] const auto& idx :
+             std::views::iota(0, static_cast<int>(record->num_fru_fields)))
+        {
+            auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+            std::string fruField{};
+            if (tlv->type != PLDM_FRU_FIELD_TYPE_IANA)
+            {
+                auto strOptional =
+                    pldm::utils::fruFieldValuestring(tlv->value, tlv->length);
+                if (!strOptional)
+                {
+                    ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                    continue;
+                }
+                fruField = strOptional.value();
+
+                if (fruField.empty())
+                {
+                    ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                    continue;
+                }
+            }
+
+            switch (tlv->type)
+            {
+                case PLDM_FRU_FIELD_TYPE_CHASSIS:
+                    fruObj->chassisType(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_MODEL:
+                    fruObj->model(fruField);
+                    if (decoratorAssetInft)
+                    {
+                        decoratorAssetInft->setPropertyByName("Model",
+                                                              fruField);
+                    }
+                    break;
+                case PLDM_FRU_FIELD_TYPE_PN:
+                    fruObj->pn(fruField);
+                    if (decoratorAssetInft)
+                    {
+                        decoratorAssetInft->setPropertyByName("PartNumber",
+                                                              fruField);
+                    }
+                    break;
+                case PLDM_FRU_FIELD_TYPE_SN:
+                    fruObj->sn(fruField);
+                    if (decoratorAssetInft)
+                    {
+                        decoratorAssetInft->setPropertyByName("SerialNumber",
+                                                              fruField);
+                    }
+                    break;
+                case PLDM_FRU_FIELD_TYPE_MANUFAC:
+                    fruObj->manufacturer(fruField);
+                    if (decoratorAssetInft)
+                    {
+                        decoratorAssetInft->setPropertyByName("Manufacturer",
+                                                              fruField);
+                    }
+                    break;
+                case PLDM_FRU_FIELD_TYPE_VENDOR:
+                    fruObj->vendor(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_NAME:
+                    fruObj->name(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_SKU:
+                    fruObj->sku(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_VERSION:
+                    fruObj->version(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
+                    fruObj->assetTag(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_DESC:
+                    fruObj->description(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_EC_LVL:
+                    fruObj->ecLevel(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_OTHER:
+                    fruObj->other(fruField);
+                    break;
+                case PLDM_FRU_FIELD_TYPE_IANA:
+                    auto iana =
+                        pldm::utils::fruFieldParserU32(tlv->value, tlv->length);
+                    if (!iana)
+                    {
+                        ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                        continue;
+                    }
+                    fruObj->iana(iana.value());
+                    break;
+            }
+            ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+        }
+    }
+}
+
 } // namespace platform_mc
 } // namespace pldm
