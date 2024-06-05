@@ -1,0 +1,1025 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02e7b9fd_53343d68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 102
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "Hey Thu - i have good number of comments on this comment. Please make sure all the comments are addressed in this commit \u0026 other commits in the chain as well.",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7887c759_c4813086",
+        "filename": "platform-mc/manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "may be add a little bit more documentation here , some thing like ?\n\n```\n    // Add any setup or checks needed before discovering a terminus \n    // If any setup/check fails, return the appropriate error code\n    // For now, we assume everything is successful\n    co_return PLDM_SUCCESS;\n```",
+      "range": {
+        "startLine": 13,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 27
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "785a790f_a26f5c72",
+        "filename": "platform-mc/manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "no error checking needed here ? \n\n```\nif (rc !\u003d PLDM_SUCCESS)\n{\n        lg2::error(\"Failed to initialize platform manager, rc: {RC}\", \"RC\", rc);\n}\nelse\n{\n        lg2::info(\"Successfully initialized platform manager\");\n}\n\n```",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 54
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87f628ed_fff0c53d",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "The using namespace directive can lead to naming conflicts. It is better to use fully qualified names or to be more selective with using declaration.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 26
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d52560bc_613123c8",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "`discovering terminus`\n\nalso add ` @return` Execution task that returns an integer status code ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 56,
+        "endLine": 41,
+        "endChar": 74
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a03f3c8c_8a0c57d7",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "typo\n\nuse `discovering terminus` instead ? and also add @return ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 65,
+        "endLine": 45,
+        "endChar": 72
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7df01d6d_70883265",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 32
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "305d04c7_54db0d7b",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "we need to make sure we check for errors coming out of getPDRs ? \n\n```\nif (terminus-\u003edoesSupport(PLDM_PLATFORM))\n{\n     auto pdrResult \u003d co_await getPDRs(terminus);\n     if (pdrResult !\u003d PLDM_SUCCESS)\n     {\n     lg2::error(\"Failed to fetch PDRs for terminus with TID: {TID}, error: {ERROR}\", \"TID\", tid, \"ERROR\", pdrResult);\n         co_return pdrResult; // Return the error code from getPDRs\n      }\n}\n```",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 9
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52b00143_9bc65a91",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "extra new line.",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "480bea84_7d1fc62f",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "add a log here ? \n\n```\n        lg2::error(\"Failed to get PDR repository info for TID {TID}, setting default values\", \"TID\", static_cast\u003cint\u003e(tid));\n```",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08968650_1cb1409b",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "may be use std::min instead ? so that recordCount and largestRecordSize do not exceed std::numeric_limits\u003cuint32_t\u003e::max().\n\n```\nrecordCount \u003d std::min(recordCount + 1, std::numeric_limits\u003cuint32_t\u003e::max());\nlargestRecordSize \u003d std::min(largestRecordSize + 1, std::numeric_limits\u003cuint32_t\u003e::max());\n        \n```",
+      "range": {
+        "startLine": 50,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 9
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43ab2b1b_fdaabcf0",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "where is this value coming from ? pldm spec ?",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 42
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddaf0515_ecd64ef9",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "redundant and not human redable, defeats the purpose of having lg2. Make all the traces in this file human redable, dont use function names.",
+      "range": {
+        "startLine": 87,
+        "startChar": 17,
+        "endLine": 87,
+        "endChar": 27
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16117bc3_52525644",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "`std::move(receivePdr)` move them instead of plain emplace ?",
+      "range": {
+        "startLine": 132,
+        "startChar": 59,
+        "endLine": 132,
+        "endChar": 60
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927cf5c9_417d43d2",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "nullptr",
+      "range": {
+        "startLine": 162,
+        "startChar": 34,
+        "endLine": 162,
+        "endChar": 38
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c101863_ca5817af",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "in this file in all the similar places here and below, isn\u0027t necessary to put an error trace out ? to atleast tell that decode/encode failed ?",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee4070f3_7bbdf4d1",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "nullptr",
+      "range": {
+        "startLine": 196,
+        "startChar": 34,
+        "endLine": 196,
+        "endChar": 38
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba6f288a_6e1d00b3",
+        "filename": "platform-mc/platform_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "this can actually do much more in future as Platform spec talks about lot of things like effecters/ sensors/ PDR\u0027s, eventlogs.  So instead of being specific , please write this a little more general , that platform manager class manages the actions outlined in the platform spec.",
+      "range": {
+        "startLine": 18,
+        "startChar": 3,
+        "endLine": 19,
+        "endChar": 11
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f453362_34e99bf2",
+        "filename": "platform-mc/platform_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "can we assign a type definition for this ?",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 33,
+        "endChar": 55
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47313095_45bc4781",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "move the contruction part to hpp.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a8640c1_76f666a2",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "include bitset \u0026 vector headers as well ? since you seem to be using them ?",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff5f352d_c71f957b",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "avoid using namespace in header files to avoid potential conflicts",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92013792_ade50ef3",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 45,
+        "startChar": 9,
+        "endLine": 45,
+        "endChar": 19
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24af8f52_42cbcc4a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "make sure `tid` exists before accessing it.",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 32
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a6e8144_aee1c166",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "meaningful name `mctpInfoIt` may be ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 9,
+        "endLine": 21,
+        "endChar": 12
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c9e093_864b308a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "would be good if the values 0 and 0xff are a constexpr",
+      "range": {
+        "startLine": 61,
+        "startChar": 33,
+        "endLine": 61,
+        "endChar": 67
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9412ca1b_dd8487d9",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "same comment as above.",
+      "range": {
+        "startLine": 88,
+        "startChar": 14,
+        "endLine": 88,
+        "endChar": 17
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf6b5e5a_ee0814da",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "make sure the value is present before erasing as `find` will return end() iterator if the tid is not present.\n\n```\nif (transportLayerTableIterator !\u003d transportLayerTable.end())\n    {\n        transportLayerTable.erase(transportLayerTableIterator);\n    }\n``` \n\nor use contains() instead ?\n\n```\nif (transportLayerTable.contains(tid)) {\n    transportLayerTable.erase(tid);\n}\n```",
+      "range": {
+        "startLine": 95,
+        "startChar": 2,
+        "endLine": 95,
+        "endChar": 59
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1791326e_ce81e716",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "same issue as above",
+      "range": {
+        "startLine": 97,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 47
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4f741da_457f13fb",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "using std::find_if looks a little more elegant solution ?\n\n```\n    auto foundIter \u003d std::find_if(termini.begin(), termini.end(), [\u0026](const auto\u0026 terminusPair) {\n        auto terminusMctpInfo \u003d toMctpInfo(terminusPair.first);\n        return (terminusMctpInfo \u0026\u0026\n                (std::get\u003c0\u003e(terminusMctpInfo.value()) \u003d\u003d std::get\u003c0\u003e(mctpInfo)) \u0026\u0026\n                (std::get\u003c3\u003e(terminusMctpInfo.value()) \u003d\u003d std::get\u003c3\u003e(mctpInfo)));\n    });\n\n    if (foundIter !\u003d termini.end()) {\n        return foundIter;\n    }\n    return termini.end();\n}\n```",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 1
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "689f15ec_feeb71df",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 157,
+        "startChar": 13,
+        "endLine": 157,
+        "endChar": 18
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b707cba_c620001e",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 180,
+        "startChar": 9,
+        "endLine": 180,
+        "endChar": 13
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25843823_db416d02",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "use contains() instead ? here and everywhere else.",
+      "range": {
+        "startLine": 261,
+        "startChar": 8,
+        "endLine": 262,
+        "endChar": 32
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b48655_28637aa8",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "nullptr",
+      "range": {
+        "startLine": 324,
+        "startChar": 34,
+        "endLine": 324,
+        "endChar": 38
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cadab92_7117233a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "nullptr",
+      "range": {
+        "startLine": 357,
+        "startChar": 34,
+        "endLine": 357,
+        "endChar": 38
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d94d25e_4b422d5c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "any trace needed.",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5a29106_4bbe2e9d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "nullptr",
+      "range": {
+        "startLine": 387,
+        "startChar": 34,
+        "endLine": 387,
+        "endChar": 38
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "314ff1ea_e7690f0f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "any error() trace here ?",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61922daa_ddd48c4f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "ensure tid exits in both tidPool and transportLayerTable before accessing them.",
+      "range": {
+        "startLine": 414,
+        "startChar": 8,
+        "endLine": 415,
+        "endChar": 32
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f294d57d_da6d9cb7",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "trace here ?",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aab85ba9_fd550cec",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "missing includes ? \n```\n#include \u003climits\u003e\n#include \u003cmap\u003e\n#include \u003cmemory\u003e\n#include \u003coptional\u003e\n```",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "514c457e_461d401f",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "prefer `enum class` over `enum`.\n\nmore info at https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-class",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 28
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "165a5c4d_92696a95",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 25,
+        "startChar": 11,
+        "endLine": 25,
+        "endChar": 16
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4fe8d7c_23aa7916",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "RequesterHandler",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 46
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6d1112d_a7784bbe",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "use consistent casing , don\u0027t mismatch camelcasing with pascal casing.",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "393b301d_e2666632",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "make these const member functions, which ensures that they do not modify the state of object ? \n\n```\nstd::optional\u003cMctpInfo\u003e toMctpInfo(pldm_tid_t tid) const;\nstd::optional\u003cpldm_tid_t\u003e toTid(const MctpInfo\u0026 mctpInfo) const;\n```",
+      "range": {
+        "startLine": 101,
+        "startChar": 1,
+        "endLine": 111,
+        "endChar": 62
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fea91c0_9bc28868",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-05T14:49:32Z",
+      "side": 1,
+      "message": "make this `auto` instead ?",
+      "range": {
+        "startLine": 170,
+        "startChar": 4,
+        "endLine": 170,
+        "endChar": 61
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
