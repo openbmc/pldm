@@ -3,6 +3,7 @@
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
 #include "motherboard.hpp"
+#include "pcie_slot.hpp"
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
@@ -90,10 +91,22 @@ class CustomDBus
      */
     void implementMotherboardInterface(const std::string& path);
 
+    /** @brief Implement Slot Interface
+     *  @param[in] path - the object path
+     */
+    void implementPCIeSlotInterface(const std::string& path);
+
+    /** @brief Set the slot type
+     *  @param[in] path - the object path
+     *  @param[in] slot type - Slot type
+     */
+    void setSlotType(const std::string& path, const std::string& slotType);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
     std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
+    std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
 };
 
 } // namespace dbus
