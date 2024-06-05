@@ -1,8 +1,10 @@
 #pragma once
 
+#include "libpldm/fru.h"
 #include "libpldm/platform.h"
 #include "libpldm/pldm.h"
 
+#include "dbus_impl_fru.hpp"
 #include "terminus.hpp"
 #include "terminus_manager.hpp"
 
@@ -85,6 +87,47 @@ class PlatformManager
     exec::task<int> getPDRRepositoryInfo(
         const pldm_tid_t tid, uint8_t& repositoryState, uint32_t& recordCount,
         uint32_t& repositorySize, uint32_t& largestRecordSize);
+
+    /** @brief Get FRU Record Tables from remote MCTP Endpoint
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] total - Total number of record in table
+     */
+    exec::task<int> getFRURecordTables(pldm_tid_t tid, const uint16_t& total);
+
+    /** @brief Fetch FRU Record Data from terminus
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] dataTransferHndl - Data transfer handle
+     *  @param[in] transferOpFlag - Transfer Operation Flag
+     *  @param[out] nextDataTransferHndl - Next data transfer handle
+     *  @param[out] transferFlag - Transfer flag
+     *  @param[out] responseCnt - Response count of record data
+     *  @param[out] recordData - Returned record data
+     *
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getFRURecordTable(
+        pldm_tid_t tid, const uint32_t dataTransferHndl,
+        const uint8_t transferOpFlag, uint32_t* nextDataTransferHndl,
+        uint8_t* transferFlag, size_t* responseCnt,
+        std::vector<uint8_t>& recordData);
+
+    /** @brief Get FRU Record Table Metadata from remote MCTP Endpoint
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[out] total - Total number of record in table
+     */
+    exec::task<int> getFRURecordTableMetadata(pldm_tid_t tid, uint16_t* total);
+
+    /** @brief Parse record data from FRU table
+     *
+     * @param[in] tid - Destination TID
+     *  @param[in] fruData - pointer to FRU record table
+     *  @param[in] fruLen - FRU table length
+     */
+    void createGernalFruDbus(pldm_tid_t tid, const uint8_t* fruData,
+                             size_t& fruLen);
 
     /** reference of TerminusManager for sending PLDM request to terminus*/
     TerminusManager& terminusManager;

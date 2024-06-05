@@ -3,6 +3,7 @@
 #include "libpldm/platform.h"
 
 #include "common/types.hpp"
+#include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 #include "terminus.hpp"
@@ -127,6 +128,16 @@ class Terminus
         return terminusName;
     }
 
+    /** @brief The setter to set terminus's fru object class */
+    void setFruObject(std::shared_ptr<pldm::dbus_api::FruReq> fru)
+    {
+        if (!fru)
+        {
+            return;
+        }
+        fruObj = fru;
+    }
+
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
 
@@ -247,6 +258,9 @@ class Terminus
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
+
+    /** @brief The object FRU of terminus */
+    std::shared_ptr<pldm::dbus_api::FruReq> fruObj;
 };
 } // namespace platform_mc
 } // namespace pldm
