@@ -541,6 +541,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25eb867f_2d52068f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-06T05:22:25Z",
+      "side": 1,
+      "message": "Based on the structure parameters, we are just parsing data and adding them to local cache.",
+      "parentUuid": "c274793e_803289af",
+      "range": {
+        "startLine": 419,
+        "startChar": 7,
+        "endLine": 431,
+        "endChar": 1
+      },
+      "revId": "38cc6d25d2199e732b2fe9684d36f59702f6a5df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e45eea7_c279cd40",
