@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "cable.hpp"
 #include "cpu_core.hpp"
 #include "motherboard.hpp"
 #include "pcie_device.hpp"
@@ -120,12 +121,28 @@ class CustomDBus
     void setPCIeDeviceProps(const std::string& path, size_t lanesInUse,
                             const std::string& value);
 
+    /** @brief Implement PCIe Cable Interface
+     *
+     *  @param[in] path - the object path
+     */
+    void implementCableInterface(const std::string& path);
+
+    /** @brief set cable attributes 
+     *
+     *  @param[in] path - the object path
+     *  @param[in] length - length of the wire 
+     *  @param[in] cableDescription - cable details 
+     */
+    void setCableAttributes(const std::string& path, double length,
+                            const std::string& cableDescription);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
     std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
+    std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;
 };
 
 } // namespace dbus
