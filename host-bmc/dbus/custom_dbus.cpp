@@ -108,5 +108,24 @@ void CustomDBus::setPCIeDeviceProps(const std::string& path, size_t lanesInUse,
     }
 }
 
+void CustomDBus::implementCableInterface(const std::string& path)
+{
+    if (!cable.contains(path))
+    {
+        cable.emplace(path, std::make_unique<Cable>(
+                                pldm::utils::DBusHandler::getBus(), path));
+    }
+}
+
+void CustomDBus::setCableAttributes(const std::string& path, double length,
+                                    const std::string& cableDescription)
+{
+    if (cable.contains(path))
+    {
+        cable.at(path)->length(length);
+        cable.at(path)->cableTypeDescription(cableDescription);
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
