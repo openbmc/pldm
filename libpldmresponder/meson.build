@@ -29,6 +29,7 @@ sources = [
   '../host-bmc/dbus_to_host_effecters.cpp',
   '../host-bmc/host_condition.cpp',
   '../host-bmc/dbus/custom_dbus.cpp',
+  '../host-bmc/dbus/cable.cpp',
   '../host-bmc/dbus/cpu_core.cpp',
   '../host-bmc/utils.cpp',
   '../host-bmc/dbus/pcie_device.cpp',
