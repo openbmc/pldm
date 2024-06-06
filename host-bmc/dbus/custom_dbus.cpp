@@ -75,5 +75,28 @@ void CustomDBus::setSlotType(const std::string& path,
         pcieSlot.at(path)->slotType(typeOfSlot);
     }
 }
+
+void CustomDBus::implementPCIeDeviceInterface(const std::string& path)
+{
+    if (!pcieDevice.contains(path))
+    {
+        pcieDevice.emplace(path, std::make_unique<PCIeDevice>(
+                                     pldm::utils::DBusHandler::getBus(), path));
+    }
+}
+
+void CustomDBus::setPCIeDeviceProps(const std::string& path, size_t lanesInUse,
+                                    const std::string& value)
+{
+    Generations generationsInUse =
+        pldm::dbus::PCIeSlot::convertGenerationsFromString(value);
+
+    if (pcieDevice.contains(path))
+    {
+        pcieDevice.at(path)->lanesInUse(lanesInUse);
+        pcieDevice.at(path)->generationInUse(generationsInUse);
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
