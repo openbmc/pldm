@@ -6,6 +6,7 @@ test_sources = [
   '../../common/utils.cpp',
   '../utils.cpp',
   '../dbus/custom_dbus.cpp',
+  '../dbus/cable.cpp',
   '../dbus/cpu_core.cpp',
   '../dbus/pcie_slot.cpp',
   '../dbus/pcie_device.cpp',
