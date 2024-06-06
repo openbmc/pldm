@@ -31,6 +31,7 @@ sources = [
   '../host-bmc/dbus/custom_dbus.cpp',
   '../host-bmc/dbus/cpu_core.cpp',
   '../host-bmc/utils.cpp',
+  '../host-bmc/dbus/pcie_device.cpp',
   'event_parser.cpp'
 ]
 

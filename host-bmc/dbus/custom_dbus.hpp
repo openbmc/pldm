@@ -2,6 +2,7 @@
 
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
+#include "pcie_device.hpp"
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
@@ -82,9 +83,25 @@ class CustomDBus
      */
     std::optional<uint32_t> getMicroCode(const std::string& path) const;
 
+    /** @brief Implement PCIe Device Interface
+     *
+     *  @param[in] path - the object path
+     */
+    void implementPCIeDeviceInterface(const std::string& path);
+
+    /** @brief Set PCIe Device Lanes in use property
+     *
+     *  @param[in] path - the object path
+     *  @param[in] lanesInUse - Lanes in use
+     *  @param[in] value - Generation in use
+     */
+    void setPCIeDeviceProps(const std::string& path, size_t lanesInUse,
+                            const std::string& value);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
+    std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
 };
 
 } // namespace dbus
