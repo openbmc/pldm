@@ -4,6 +4,7 @@
 #include "cpu_core.hpp"
 #include "motherboard.hpp"
 #include "pcie_slot.hpp"
+#include "pcie_device.hpp"
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
@@ -91,22 +92,40 @@ class CustomDBus
      */
     void implementMotherboardInterface(const std::string& path);
 
-    /** @brief Implement Slot Interface
+    /** @brief Implement PCIeSlot Interface
+     *
      *  @param[in] path - the object path
      */
     void implementPCIeSlotInterface(const std::string& path);
 
     /** @brief Set the slot type
+     *
      *  @param[in] path - the object path
      *  @param[in] slot type - Slot type
      */
     void setSlotType(const std::string& path, const std::string& slotType);
+
+    /** @brief Implement PCIe Device Interface
+     *
+     *  @param[in] path - the object path
+     */
+    void implementPCIeDeviceInterface(const std::string& path);
+
+    /** @brief Set PCIe Device Lanes in use property
+     *
+     *  @param[in] path - the object path
+     *  @param[in] lanesInUse - Lanes in use
+     *  @param[in] value - Generation in use
+     */
+    void setPCIeDeviceProps(const std::string& path, size_t lanesInUse,
+                            const std::string& value);
 
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
     std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
+    std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
 };
 
 } // namespace dbus
