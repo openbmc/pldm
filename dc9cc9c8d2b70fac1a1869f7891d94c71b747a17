@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7aabe724_f0b2b676",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "+1, community does not care about blueridge/fuji it will be confusing names for them.\n\nThe changes here are basically to make sure that we pick a compatible configuration even if we dont have the very first entry from compatible property",
+      "parentUuid": "470ddb53_2c9e3f92",
+      "range": {
+        "startLine": 9,
+        "startChar": 33,
+        "endLine": 9,
+        "endChar": 47
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf209bda_fb62c424",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-05T13:20:47Z",
       "side": 1,
       "message": "Entity manager sends the system names and PLDM checks the presence of the directory type and continues the further operations like .....\nCan we write something like this?",
+      "range": {
+        "startLine": 10,
+        "startChar": 26,
+        "endLine": 11,
+        "endChar": 10
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a0382fd_a4e86856",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "bf209bda_fb62c424",
       "range": {
         "startLine": 10,
         "startChar": 26,
@@ -83,6 +131,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "115ed50a_318e07c3",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "make sure similar thing works for BIOS as well , and add a necessary comment about it.",
+      "range": {
+        "startLine": 134,
+        "startChar": 64,
+        "endLine": 134,
+        "endChar": 75
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f405b78_c693b8f3",
         "filename": "libpldmresponder/platform_config.cpp",
         "patchSetId": 2
@@ -106,6 +177,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6466db51_d011033d",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "this seems a bit better ? as it avoids find_last_of and substr logic.\n\n```\n\nstd::string Handler::getPDRJsonDir(const std::vector\u003cstd::string\u003e\u0026 dirNames)\n{\n    for (const auto\u0026 dir_entry : std::filesystem::directory_iterator{pdrDirPath})\n    {\n        if (!dir_entry.is_directory())\n        {\n            continue;\n        }\n\n        auto path \u003d dir_entry.path().filename().string();\n        if (std::find(dirNames.begin(), dirNames.end(), path) !\u003d dirNames.end())\n        {\n            return path;\n        }\n    }\n    return \"\";\n}\n```",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 1
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4b04fd2_27a32119",
         "filename": "libpldmresponder/platform_config.hpp",
         "patchSetId": 2
@@ -117,6 +211,29 @@
       "writtenOn": "2024-06-06T04:45:06Z",
       "side": 1,
       "message": "Do we expect same system type folders to be present in BIOS configuration and PDRs?",
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a14ecaf9_84ce30ba",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "can we use fs::path instead of std::string ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 42
+      },
       "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -157,6 +274,76 @@
       "writtenOn": "2024-06-06T04:45:06Z",
       "side": 1,
       "message": "typo",
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9cf11fb_e0b2a3c6",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "57491b67_35e46807",
+      "range": {
+        "startLine": 50,
+        "startChar": 15,
+        "endLine": 50,
+        "endChar": 23
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1cb5076_4ad4dd70",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "compatible system names (please dont mention entity manager), compatible interface can be hosted by any application.",
+      "range": {
+        "startLine": 52,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7474f620_06f9f02c",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T04:56:43Z",
+      "side": 1,
+      "message": "const reference missing.",
+      "range": {
+        "startLine": 55,
+        "startChar": 30,
+        "endLine": 55,
+        "endChar": 60
+      },
       "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
