@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a0a52be_38c57811",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T05:22:06Z",
+      "side": 1,
+      "message": "ack",
+      "parentUuid": "e2c3fccd_047727f2",
+      "range": {
+        "startLine": 891,
+        "startChar": 27,
+        "endLine": 893,
+        "endChar": 68
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eabff9f0_1963ba40",
         "filename": "libpldmresponder/event_parser.hpp",
         "patchSetId": 2
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe3b4a8f_dae28a24",
+        "filename": "libpldmresponder/event_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T05:22:06Z",
+      "side": 1,
+      "message": "we can , but it does not sound any better than having `containerId \u003d\u003d 0xFFFF`,instead of checking a boo, i need to derive a bool condition out of containerId \u003d\u003d 0xFFFF. checking for a bool is a little more intuitive to understand that we are skipping any checks for containerId right ?",
+      "parentUuid": "eabff9f0_1963ba40",
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32b1214e_cdceb7d2",
         "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
         "patchSetId": 2
@@ -54,6 +96,30 @@
       "writtenOn": "2024-06-03T05:45:55Z",
       "side": 1,
       "message": "not needed?",
+      "range": {
+        "startLine": 664,
+        "startChar": 8,
+        "endLine": 664,
+        "endChar": 57
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0940a90d_ad874f8c",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T05:22:06Z",
+      "side": 1,
+      "message": "yeah , not needed .. will remove.",
+      "parentUuid": "32b1214e_cdceb7d2",
       "range": {
         "startLine": 664,
         "startChar": 8,
@@ -89,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "989db3dd_6df678b9",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T05:22:06Z",
+      "side": 1,
+      "message": "the assumption is, inorder to use the skip container id support, we should use it only when we have unique combinations on entity type \u0026 instance id. having same instance id and type with out a container id will confuse the code. so having a test case to confuse the code would probably be not helpful ?",
+      "parentUuid": "607e0e3a_d878661e",
+      "range": {
+        "startLine": 683,
+        "startChar": 7,
+        "endLine": 683,
+        "endChar": 59
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc241fd8_30419346",
         "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
         "patchSetId": 2
@@ -112,6 +202,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8c348fc_f7836e1e",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T05:22:06Z",
+      "side": 1,
+      "message": "ack, not needed.",
+      "parentUuid": "fc241fd8_30419346",
+      "range": {
+        "startLine": 685,
+        "startChar": 8,
+        "endLine": 685,
+        "endChar": 57
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c7ef2af6_516dbac6",
         "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
         "patchSetId": 2
@@ -123,6 +237,30 @@
       "writtenOn": "2024-06-03T14:21:56Z",
       "side": 1,
       "message": "r u considering container id 0 and skip container false as invalid case?",
+      "range": {
+        "startLine": 703,
+        "startChar": 2,
+        "endLine": 703,
+        "endChar": 53
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "958f071a_37858344",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-06T05:22:06Z",
+      "side": 1,
+      "message": "{0,0,0} - for container,entity type \u0026 instance itself is an invalid case right ? does not matter if skip container id is enabled or disabled.",
+      "parentUuid": "c7ef2af6_516dbac6",
       "range": {
         "startLine": 703,
         "startChar": 2,
