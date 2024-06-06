@@ -55,5 +55,25 @@ std::optional<uint32_t> CustomDBus::getMicroCode(const std::string& path) const
 
     return std::nullopt;
 }
+
+void CustomDBus::implementCableInterface(const std::string& path)
+{
+    if (!cable.contains(path))
+    {
+        cable.emplace(path, std::make_unique<Cable>(
+                                pldm::utils::DBusHandler::getBus(), path));
+    }
+}
+
+void CustomDBus::setCableAttributes(const std::string& path, double length,
+                                    const std::string& cableDescription)
+{
+    if (cable.contains(path))
+    {
+        cable.at(path)->length(length);
+        cable.at(path)->cableTypeDescription(cableDescription);
+    }
+}
+
 } // namespace dbus
 } // namespace pldm

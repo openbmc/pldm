@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cable.hpp"
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
 
@@ -82,9 +83,25 @@ class CustomDBus
      */
     std::optional<uint32_t> getMicroCode(const std::string& path) const;
 
+    /** @brief Implement PCIe Cable Interface
+     *
+     *  @param[in] path - the object path
+     */
+    void implementCableInterface(const std::string& path);
+
+    /** @brief set cable attributes
+     *
+     *  @param[in] path - the object path
+     *  @param[in] length - length of the wire
+     *  @param[in] cableDescription - cable details
+     */
+    void setCableAttributes(const std::string& path, double length,
+                            const std::string& cableDescription);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
+    std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;
 };
 
 } // namespace dbus
