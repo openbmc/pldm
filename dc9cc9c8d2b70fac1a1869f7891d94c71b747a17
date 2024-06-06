@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3bce9f7_a3766deb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7aabe724_f0b2b676",
+      "range": {
+        "startLine": 9,
+        "startChar": 33,
+        "endLine": 9,
+        "endChar": 47
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf209bda_fb62c424",
@@ -97,6 +121,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "475d80e0_86c165db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a0382fd_a4e86856",
+      "range": {
+        "startLine": 10,
+        "startChar": 26,
+        "endLine": 11,
+        "endChar": 10
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8318e5f1_e07333d3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -129,6 +177,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c926b87e_9a0fa26b",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "not required since already checking for empty string.",
+      "parentUuid": "15f5195d_55989c87",
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "115ed50a_318e07c3",
@@ -142,6 +208,30 @@
       "writtenOn": "2024-06-06T04:56:43Z",
       "side": 1,
       "message": "make sure similar thing works for BIOS as well , and add a necessary comment about it.",
+      "range": {
+        "startLine": 134,
+        "startChar": 64,
+        "endLine": 134,
+        "endChar": 75
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bff84247_0aa8df84",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "as per our discussion pdr and bios both considered shared common system directory and added assumption in code also.",
+      "parentUuid": "115ed50a_318e07c3",
       "range": {
         "startLine": 134,
         "startChar": 64,
@@ -175,6 +265,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "638a069b_c1629a35",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "improved logic as per comment.",
+      "parentUuid": "0f405b78_c693b8f3",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 56
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6466db51_d011033d",
@@ -188,6 +302,30 @@
       "writtenOn": "2024-06-06T04:56:43Z",
       "side": 1,
       "message": "this seems a bit better ? as it avoids find_last_of and substr logic.\n\n```\n\nstd::string Handler::getPDRJsonDir(const std::vector\u003cstd::string\u003e\u0026 dirNames)\n{\n    for (const auto\u0026 dir_entry : std::filesystem::directory_iterator{pdrDirPath})\n    {\n        if (!dir_entry.is_directory())\n        {\n            continue;\n        }\n\n        auto path \u003d dir_entry.path().filename().string();\n        if (std::find(dirNames.begin(), dirNames.end(), path) !\u003d dirNames.end())\n        {\n            return path;\n        }\n    }\n    return \"\";\n}\n```",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 1
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f690472d_fc53af4b",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "improved function logic  as per requirement.",
+      "parentUuid": "6466db51_d011033d",
       "range": {
         "startLine": 130,
         "startChar": 0,
@@ -228,6 +366,48 @@
       "writtenOn": "2024-06-06T04:56:43Z",
       "side": 1,
       "message": "can we use fs::path instead of std::string ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 42
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8443f2cb_6e823c77",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "currently assumption is that pdr and bios both has same system name but in future if any difference found then will create separately",
+      "parentUuid": "b4b04fd2_27a32119",
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b9e62a5_77d6153d",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a14ecaf9_84ce30ba",
       "range": {
         "startLine": 23,
         "startChar": 12,
@@ -302,6 +482,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23334f3c_2cdef938",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "441653bd_80ebcc52",
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9d3923_405e518f",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9cf11fb_e0b2a3c6",
+      "range": {
+        "startLine": 50,
+        "startChar": 15,
+        "endLine": 50,
+        "endChar": 23
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1cb5076_4ad4dd70",
@@ -325,6 +547,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6e458b5_35475a60",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1cb5076_4ad4dd70",
+      "range": {
+        "startLine": 52,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 70
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7474f620_06f9f02c",
@@ -338,6 +584,30 @@
       "writtenOn": "2024-06-06T04:56:43Z",
       "side": 1,
       "message": "const reference missing.",
+      "range": {
+        "startLine": 55,
+        "startChar": 30,
+        "endLine": 55,
+        "endChar": 60
+      },
+      "revId": "dc9cc9c8d2b70fac1a1869f7891d94c71b747a17",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e224f454_08605055",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-06T09:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7474f620_06f9f02c",
       "range": {
         "startLine": 55,
         "startChar": 30,
