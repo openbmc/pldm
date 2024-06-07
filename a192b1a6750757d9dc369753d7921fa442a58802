@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4c75776_88982256",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-07T14:14:36Z",
+      "side": 1,
+      "message": "can you write commit message as paragraph?",
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5141d586_05236ca4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-07T14:14:36Z",
+      "side": 1,
+      "message": "how did you test this can you add here?",
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "493ee4f7_45186fee",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-07T14:14:36Z",
+      "side": 1,
+      "message": "please use .contain",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 21
+      },
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77567611_1dfbeabc",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-07T14:14:36Z",
+      "side": 1,
+      "message": "c_str not required.",
+      "range": {
+        "startLine": 77,
+        "startChar": 45,
+        "endLine": 77,
+        "endChar": 55
+      },
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
