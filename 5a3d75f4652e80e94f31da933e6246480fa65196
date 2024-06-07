@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4794223_c06e5210",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-07T06:24:23Z",
+      "side": 1,
+      "message": "for some reason , clang-format seems to add this space for me. its not something that was added manually.",
+      "parentUuid": "1a0a52be_38c57811",
+      "range": {
+        "startLine": 891,
+        "startChar": 27,
+        "endLine": 893,
+        "endChar": 68
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eabff9f0_1963ba40",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "we can , but it does not sound any better than having `containerId \u003d\u003d 0xFFFF`,instead of checking a boo, i need to derive a bool condition out of containerId \u003d\u003d 0xFFFF. checking for a bool is a little more intuitive to understand that we are skipping any checks for containerId right ?",
       "parentUuid": "eabff9f0_1963ba40",
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a6a543d_9780690f",
+        "filename": "libpldmresponder/event_parser.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-07T06:24:23Z",
+      "side": 1,
+      "message": "I have not changed this logic, since skipContainerId is a little more intuitive.",
+      "parentUuid": "fe3b4a8f_dae28a24",
       "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -177,6 +219,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44d483bc_a97bfdab",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-07T06:24:23Z",
+      "side": 1,
+      "message": "I have added the new tests to cover cases where skipcontainerid is enabled and also disabled.",
+      "parentUuid": "989db3dd_6df678b9",
+      "range": {
+        "startLine": 683,
+        "startChar": 7,
+        "endLine": 683,
+        "endChar": 59
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc241fd8_30419346",
@@ -261,6 +327,30 @@
       "side": 1,
       "message": "{0,0,0} - for container,entity type \u0026 instance itself is an invalid case right ? does not matter if skip container id is enabled or disabled.",
       "parentUuid": "c7ef2af6_516dbac6",
+      "range": {
+        "startLine": 703,
+        "startChar": 2,
+        "endLine": 703,
+        "endChar": 53
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "000938d5_9829401a",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-07T06:24:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "958f071a_37858344",
       "range": {
         "startLine": 703,
         "startChar": 2,
