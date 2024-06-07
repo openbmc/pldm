@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b902c9b7_bb22453d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-07T04:31:55Z",
+      "side": 1,
+      "message": "counting",
+      "range": {
+        "startLine": 9,
+        "startChar": 35,
+        "endLine": 9,
+        "endChar": 41
+      },
+      "revId": "ad2235ab2ae91c94c07339930ac489225c5efc65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fbab455_7c07a031",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-07T04:31:55Z",
+      "side": 1,
+      "message": "which system ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 36,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "ad2235ab2ae91c94c07339930ac489225c5efc65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c215eb39_9aae2bfb",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-07T04:31:55Z",
+      "side": 1,
+      "message": "this can be changed to std::format instead ?",
+      "range": {
+        "startLine": 225,
+        "startChar": 5,
+        "endLine": 229,
+        "endChar": 59
+      },
+      "revId": "ad2235ab2ae91c94c07339930ac489225c5efc65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
