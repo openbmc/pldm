@@ -16,6 +16,23 @@
       "message": "In the path set #102, I moved the code get and parse PDRs to `platform-mc: PDR Handling` path set.\n\nI also add the code to get the supported PLDM command in the `InitTerminus` steps. After this change the `doesSupportCommand` method is added to support checking if the terminus support on PLDM command type or not.",
       "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb83f60_e32d6a56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 103
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-10T12:58:14Z",
+      "side": 1,
+      "message": "The trace format and trace log position is also standardized for all of patch set in the chain and also my future patch sets.",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
