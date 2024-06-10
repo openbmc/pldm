@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4a3bf3_d9a08d86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 87
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-10T12:59:35Z",
+      "side": 1,
+      "message": "GetPDRs and ParsePDRs is moved from https://gerrit.openbmc.org/c/openbmc/pldm/+/51443/103 to this patch set. in #87 patch set.",
+      "revId": "e06073806c094855a0ac59c678cd1545efa92d5d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
