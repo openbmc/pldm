@@ -20,6 +20,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "87d07b29_98700d15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T07:19:46Z",
+      "side": 1,
+      "message": "Could you please elaborate more?",
+      "parentUuid": "e4c75776_88982256",
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8090d559_5f20997f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T07:19:46Z",
+      "side": 1,
+      "message": "could you please explain more?",
+      "parentUuid": "e4c75776_88982256",
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5141d586_05236ca4",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -31,6 +67,42 @@
       "writtenOn": "2024-06-07T14:14:36Z",
       "side": 1,
       "message": "how did you test this can you add here?",
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30b2b39c_82163f84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T07:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5141d586_05236ca4",
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bb0bfc6_9ca8a058",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T07:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5141d586_05236ca4",
       "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -82,6 +154,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3a27ffa_eaf325d4",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T07:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "493ee4f7_45186fee",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 21
+      },
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "397e89de_ae22b6c1",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T07:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "493ee4f7_45186fee",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 21
+      },
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77567611_1dfbeabc",
@@ -95,6 +215,30 @@
       "writtenOn": "2024-06-07T14:14:36Z",
       "side": 1,
       "message": "c_str not required.",
+      "range": {
+        "startLine": 77,
+        "startChar": 45,
+        "endLine": 77,
+        "endChar": 55
+      },
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edf99f86_d50221c1",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T07:19:46Z",
+      "side": 1,
+      "message": "I have already removed c_str() from the committed file. Please review the changes",
+      "parentUuid": "77567611_1dfbeabc",
       "range": {
         "startLine": 77,
         "startChar": 45,
