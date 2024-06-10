@@ -22,6 +22,30 @@
       },
       "revId": "caa71140f814e7a2bb39bafdcdcfa875d93f38b8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a8c1afa_46621107",
+        "filename": "host-bmc/dbus/cpu_core.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-10T09:32:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30fe789e_15cd6f01",
+      "range": {
+        "startLine": 27,
+        "startChar": 12,
+        "endLine": 27,
+        "endChar": 32
+      },
+      "revId": "caa71140f814e7a2bb39bafdcdcfa875d93f38b8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
