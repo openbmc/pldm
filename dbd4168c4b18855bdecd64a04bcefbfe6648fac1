@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05238126_3b98ce90",
+        "filename": "host-bmc/dbus/motherboard.hpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-10T08:34:48Z",
+      "side": 1,
+      "message": "use shorter type aliases. Example - https://gerrit.openbmc.org/c/openbmc/openpower-debug-collector/+/71908",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 40
+      },
+      "revId": "dbd4168c4b18855bdecd64a04bcefbfe6648fac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85852010_702d3f35",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-10T08:34:48Z",
+      "side": 1,
+      "message": "we can remove this line",
+      "range": {
+        "startLine": 1126,
+        "startChar": 7,
+        "endLine": 1126,
+        "endChar": 11
+      },
+      "revId": "dbd4168c4b18855bdecd64a04bcefbfe6648fac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
