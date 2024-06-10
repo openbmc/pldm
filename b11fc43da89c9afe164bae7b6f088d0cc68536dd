@@ -513,6 +513,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f110525b_0aa4a5a9",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-10T12:56:01Z",
+      "side": 1,
+      "message": "I moved the code get and parse PDRs to path set \nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/53961\nAt\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/53961/87/platform-mc/platform_manager.cpp#26 \n\nThat should be corrected place for them.",
+      "parentUuid": "158014bd_b18c5c4d",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 42
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ddaf0515_ecd64ef9",
         "filename": "platform-mc/platform_manager.cpp",
         "patchSetId": 102
