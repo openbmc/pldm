@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19573bf1_e07ec4ab",
+        "filename": "host-bmc/dbus/cpu_core.hpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-10T10:02:48Z",
+      "side": 1,
+      "message": "shorter aliases object_t",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 50
+      },
+      "revId": "3d45e1a0ec83f8045c3e382bcc16ab94e0a56b37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
