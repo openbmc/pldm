@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62965ba2_c5a764e2",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-10T15:11:05Z",
+      "side": 1,
+      "message": "done as per suggestion.",
+      "parentUuid": "53b986cc_2822f529",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 1
+      },
+      "revId": "585be7f70fda047f9b5aad0484046b9c125054b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28b6fa36_5d9ff9a4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-10T13:59:34Z",
       "side": 1,
       "message": "nit : `const fs::path\u0026 sysDirPath \u003d {}`",
+      "range": {
+        "startLine": 23,
+        "startChar": 38,
+        "endLine": 23,
+        "endChar": 42
+      },
+      "revId": "585be7f70fda047f9b5aad0484046b9c125054b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5197f05f_0f055f38",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-10T15:11:05Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "28b6fa36_5d9ff9a4",
       "range": {
         "startLine": 23,
         "startChar": 38,
