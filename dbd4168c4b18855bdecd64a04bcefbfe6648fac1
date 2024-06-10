@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "047194c0_8b17b3ed",
+        "filename": "host-bmc/dbus/motherboard.hpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-10T09:47:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05238126_3b98ce90",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 40
+      },
+      "revId": "dbd4168c4b18855bdecd64a04bcefbfe6648fac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85852010_702d3f35",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-10T08:34:48Z",
       "side": 1,
       "message": "we can remove this line",
+      "range": {
+        "startLine": 1126,
+        "startChar": 7,
+        "endLine": 1126,
+        "endChar": 11
+      },
+      "revId": "dbd4168c4b18855bdecd64a04bcefbfe6648fac1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d0e76be_fd614ebc",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-10T09:47:37Z",
+      "side": 1,
+      "message": "will remove as part of another commit, not part of this commit",
+      "parentUuid": "85852010_702d3f35",
       "range": {
         "startLine": 1126,
         "startChar": 7,
