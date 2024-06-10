@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74ea4b17_f6142d04",
+        "filename": "host-bmc/dbus/pcie_slot.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-10T08:36:45Z",
+      "side": 1,
+      "message": "Use shorter type aliases. Example: https://gerrit.openbmc.org/c/openbmc/pldm/+/71300",
+      "range": {
+        "startLine": 31,
+        "startChar": 13,
+        "endLine": 31,
+        "endChar": 37
+      },
+      "revId": "43b6c0f60a3fc475dd382c294b1b3f6051f60652",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
