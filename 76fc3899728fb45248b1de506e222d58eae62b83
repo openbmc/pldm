@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f3cb022_8e6871c0",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "375d9677_8f9eff17",
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb3a7aac_9c96e760",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "this can be changed to :\n\n```\nif (!pcieLinkList)\n    {\n        error(\"Parsing of topology file failed : pcieLinkList is null\");\n        return;\n    }\n    \n    uint16_t numOfLinks \u003d htobe16(pcieLinkList-\u003enumPcieLinkEntries);\n```",
+      "range": {
+        "startLine": 180,
+        "startChar": 3,
+        "endLine": 188,
+        "endChar": 5
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a867f98_53b2daad",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb3a7aac_9c96e760",
       "range": {
         "startLine": 180,
         "startChar": 3,
@@ -81,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad144b4_9f2c38d9",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73eecacd_96668554",
+      "range": {
+        "startLine": 192,
+        "startChar": 3,
+        "endLine": 193,
+        "endChar": 62
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae2604df_dfaa7cf1",
@@ -94,6 +160,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "mention a comment on why we need endian conversion API\u0027s are needed here. this comment applies through out the file.",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 67
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24907725_bc81ab64",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae2604df_dfaa7cf1",
       "range": {
         "startLine": 207,
         "startChar": 0,
@@ -127,6 +217,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25fe7ab0_e0dbcbd1",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fd05025_c20266fa",
+      "range": {
+        "startLine": 236,
+        "startChar": 16,
+        "endLine": 236,
+        "endChar": 26
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90f98710_93eb823d",
@@ -140,6 +254,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "same comment here.",
+      "range": {
+        "startLine": 247,
+        "startChar": 16,
+        "endLine": 247,
+        "endChar": 21
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9a9f52c_e0ad2a8c",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90f98710_93eb823d",
       "range": {
         "startLine": 247,
         "startChar": 16,
@@ -173,6 +311,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56225fa8_c966804f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13eaa9af_4b2b70eb",
+      "range": {
+        "startLine": 259,
+        "startChar": 16,
+        "endLine": 259,
+        "endChar": 22
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6667ca4_7f7500e9",
@@ -186,6 +348,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "here as well.",
+      "range": {
+        "startLine": 270,
+        "startChar": 16,
+        "endLine": 270,
+        "endChar": 21
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42fd20d9_d6621e6b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6667ca4_7f7500e9",
       "range": {
         "startLine": 270,
         "startChar": 16,
@@ -219,6 +405,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f0152b5_62693fea",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f8c4aba_163a1fa5",
+      "range": {
+        "startLine": 282,
+        "startChar": 16,
+        "endLine": 282,
+        "endChar": 22
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f13441a_5a0fe219",
@@ -232,6 +442,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "c++ style",
+      "range": {
+        "startLine": 287,
+        "startChar": 35,
+        "endLine": 288,
+        "endChar": 61
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab0e197c_9ec81d7b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f13441a_5a0fe219",
       "range": {
         "startLine": 287,
         "startChar": 35,
@@ -265,6 +499,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac006de6_4900ce5b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42851b01_d40fb078",
+      "range": {
+        "startLine": 297,
+        "startChar": 39,
+        "endLine": 298,
+        "endChar": 48
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a8859e5_f5ab617a",
@@ -278,6 +536,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "c++ style.",
+      "range": {
+        "startLine": 299,
+        "startChar": 43,
+        "endLine": 299,
+        "endChar": 48
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfb40e99_960bdb1d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a8859e5_f5ab617a",
       "range": {
         "startLine": 299,
         "startChar": 43,
@@ -311,6 +593,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8570a878_17105843",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7423f8e8_d1fbbd5b",
+      "range": {
+        "startLine": 302,
+        "startChar": 30,
+        "endLine": 302,
+        "endChar": 40
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03b8a5a9_1f69853d",
@@ -324,6 +630,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "c++ style",
+      "range": {
+        "startLine": 356,
+        "startChar": 36,
+        "endLine": 356,
+        "endChar": 46
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f12dc372_1c537f4b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03b8a5a9_1f69853d",
       "range": {
         "startLine": 356,
         "startChar": 36,
@@ -351,6 +681,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba9a602f_6a64557f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0eee9a7_0325127e",
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5be1819_d02c9460",
@@ -374,6 +722,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd637d7b_0a91ec6f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5be1819_d02c9460",
+      "range": {
+        "startLine": 407,
+        "startChar": 38,
+        "endLine": 407,
+        "endChar": 47
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1baf54d5_6aec46d1",
@@ -387,6 +759,30 @@
       "writtenOn": "2024-06-10T02:10:32Z",
       "side": 1,
       "message": "c++ style",
+      "range": {
+        "startLine": 444,
+        "startChar": 49,
+        "endLine": 444,
+        "endChar": 60
+      },
+      "revId": "76fc3899728fb45248b1de506e222d58eae62b83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46e4d0da_e4055297",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T13:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1baf54d5_6aec46d1",
       "range": {
         "startLine": 444,
         "startChar": 49,
