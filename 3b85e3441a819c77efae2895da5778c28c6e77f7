@@ -22,6 +22,30 @@
       },
       "revId": "3b85e3441a819c77efae2895da5778c28c6e77f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e567ec00_f4b3dd11",
+        "filename": "host-bmc/dbus/pcie_device.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T09:41:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c90390f_2bf14175",
+      "range": {
+        "startLine": 35,
+        "startChar": 15,
+        "endLine": 35,
+        "endChar": 39
+      },
+      "revId": "3b85e3441a819c77efae2895da5778c28c6e77f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

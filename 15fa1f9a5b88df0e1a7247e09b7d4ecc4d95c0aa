@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e848ff_cf88d78b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T09:41:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26ea0554_7f54eb84",
+      "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b95bad5d_c4648fa4",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-06-07T14:14:30Z",
       "side": 1,
       "message": "can you add unittest case for this?",
+      "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99d27384_1729aa39",
+        "filename": "host-bmc/dbus/pcie_device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-10T09:41:13Z",
+      "side": 1,
+      "message": "Currently we not have any set/get functions implemented to test this. Do you want me to create those and add testcase.",
+      "parentUuid": "b95bad5d_c4648fa4",
       "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
