@@ -61,6 +61,15 @@ class ProgressCodeHandler : public FileHandler
     virtual int setRawBootProperty(
         const std::tuple<uint64_t, std::vector<uint8_t>>& progressCodeBuffer);
 
+    virtual int fileAckWithMetaData(uint8_t /*fileStatus*/,
+                                    uint32_t /*metaDataValue1*/,
+                                    uint32_t /*metaDataValue2*/,
+                                    uint32_t /*metaDataValue3*/,
+                                    uint32_t /*metaDataValue4*/)
+    {
+        return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+    }
+
     /** @brief ProgressCodeHandler destructor
      */
 
