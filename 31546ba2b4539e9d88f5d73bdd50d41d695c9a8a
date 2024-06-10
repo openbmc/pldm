@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8545d0cb_573a7f7b",
+        "filename": "host-bmc/dbus/pcie_slot.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-10T10:08:02Z",
+      "side": 1,
+      "message": "use shorter type aliases here as well.",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 50
+      },
+      "revId": "31546ba2b4539e9d88f5d73bdd50d41d695c9a8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
