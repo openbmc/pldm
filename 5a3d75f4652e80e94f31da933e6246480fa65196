@@ -172,6 +172,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdac4d33_c104e08b",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-10T01:32:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0940a90d_ad874f8c",
+      "range": {
+        "startLine": 664,
+        "startChar": 8,
+        "endLine": 664,
+        "endChar": 57
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "607e0e3a_d878661e",
@@ -280,6 +304,30 @@
       "side": 1,
       "message": "ack, not needed.",
       "parentUuid": "fc241fd8_30419346",
+      "range": {
+        "startLine": 685,
+        "startChar": 8,
+        "endLine": 685,
+        "endChar": 57
+      },
+      "revId": "5a3d75f4652e80e94f31da933e6246480fa65196",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f28a97_5995e004",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-10T01:32:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8c348fc_f7836e1e",
       "range": {
         "startLine": 685,
         "startChar": 8,
