@@ -118,6 +118,30 @@
       },
       "revId": "40f81205020f58fa67c5583d7b3d38bf55c7eb89",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8fe3b70_163de554",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-10T11:48:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65bbe963_366b2769",
+      "range": {
+        "startLine": 540,
+        "startChar": 8,
+        "endLine": 551,
+        "endChar": 9
+      },
+      "revId": "40f81205020f58fa67c5583d7b3d38bf55c7eb89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
