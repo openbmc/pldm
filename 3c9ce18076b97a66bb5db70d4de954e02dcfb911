@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d571ce31_d0261a3a",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-10T09:47:42Z",
+      "side": 1,
+      "message": "will decide once above commit will merge",
+      "parentUuid": "b1c7a97f_2f9d793e",
+      "range": {
+        "startLine": 100,
+        "startChar": 7,
+        "endLine": 101,
+        "endChar": 62
+      },
+      "revId": "3c9ce18076b97a66bb5db70d4de954e02dcfb911",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a10dad6f_735bcb4f",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-06-10T08:32:11Z",
       "side": 1,
       "message": "redundant",
+      "revId": "3c9ce18076b97a66bb5db70d4de954e02dcfb911",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e509e049_58a43621",
+        "filename": "oem/ibm/libpldmresponder/utils.hpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-10T09:47:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a10dad6f_735bcb4f",
       "revId": "3c9ce18076b97a66bb5db70d4de954e02dcfb911",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
