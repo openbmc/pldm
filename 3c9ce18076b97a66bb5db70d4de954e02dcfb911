@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9eccec60_58d12ec4",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-10T10:05:43Z",
+      "side": 1,
+      "message": "Keeping it unresolved, until the commit is about to get merged.",
+      "parentUuid": "d571ce31_d0261a3a",
+      "range": {
+        "startLine": 100,
+        "startChar": 7,
+        "endLine": 101,
+        "endChar": 62
+      },
+      "revId": "3c9ce18076b97a66bb5db70d4de954e02dcfb911",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a10dad6f_735bcb4f",
         "filename": "oem/ibm/libpldmresponder/utils.hpp",
         "patchSetId": 33
