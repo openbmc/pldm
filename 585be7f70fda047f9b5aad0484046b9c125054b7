@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53b986cc_2822f529",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-10T13:59:34Z",
+      "side": 1,
+      "message": "i dont really prefer returning empty strings - they are error prone. Instead please use std::optional\u003cstd::string\u003e instead ?\n\nand also if you can negative the logic, the code will be even more simpler , something like this ?\n\n```\nstd::optional\u003cstd::string\u003e Handler::getSysSpecificJsonDir(const fs::path\u0026 dirPath, const std::vector\u003cstd::string\u003e\u0026 dirNames)\n{\n    if (dirPath.empty())\n    {\n        return std::nullopt;\n    }\n\n    for (const auto\u0026 dirEntry : std::filesystem::directory_iterator{dirPath})\n    {\n        if (dirEntry.is_directory())\n        {\n            const auto sysDir \u003d dirEntry.path().filename().string();\n            if (std::find(dirNames.begin(), dirNames.end(), sysDir) !\u003d dirNames.end())\n            {\n                return sysDir;\n            }\n        }\n    }\n\n    return std::nullopt;\n}\n```",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 1
+      },
+      "revId": "585be7f70fda047f9b5aad0484046b9c125054b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28b6fa36_5d9ff9a4",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-10T13:59:34Z",
+      "side": 1,
+      "message": "nit : `const fs::path\u0026 sysDirPath \u003d {}`",
+      "range": {
+        "startLine": 23,
+        "startChar": 38,
+        "endLine": 23,
+        "endChar": 42
+      },
+      "revId": "585be7f70fda047f9b5aad0484046b9c125054b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
