@@ -294,6 +294,12 @@ class Handler : public oem_platform::Handler
      */
     void setSurvTimer(uint8_t tid, bool value);
 
+    /** @brief Method to get PCIE slot paths from the system inventory path.
+     *
+     * @return vector of PCIE slot path strings.
+     */
+    std::vector<std::string> getslotPaths();
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
