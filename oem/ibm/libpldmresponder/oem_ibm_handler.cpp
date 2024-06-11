@@ -689,6 +689,26 @@ void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(uint8_t tid,
     }
 }
 
+std::vector<std::string>
+    pldm::responder::oem_ibm_platform::Handler::getslotPaths()
+{
+    const std::string slotObjectSearchPath =
+        "/xyz/openbmc_project/inventory/system";
+    std::vector<std::string> slotPaths;
+    try
+    {
+        slotPaths = pldm::utils::DBusHandler().getSubTreePaths(
+            slotObjectSearchPath, 0,
+            {"xyz.openbmc_project.Inventory.Item.PCIeSlot"});
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("No PCIE slots found under '{SLOT_OBJ_PATH}' - {ERROR}.",
+              "SLOT_OBJ_PATH", slotObjectSearchPath, "ERROR", e);
+    }
+    return slotPaths;
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm
