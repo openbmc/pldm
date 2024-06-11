@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e53b64e1_ad551623",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-11T00:00:11Z",
+      "side": 1,
+      "message": "Rebased on top of PLDM Sensor patch sets.",
+      "revId": "d62062111c3248cabda36f3650460c4b3bf34c4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
