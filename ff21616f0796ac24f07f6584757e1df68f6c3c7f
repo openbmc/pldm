@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db38d5f8_6ca492c7",
+        "filename": "common/types.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-11T05:17:20Z",
+      "side": 1,
+      "message": "can we have a doxygen on what does this mean? why is it special?",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c8cfc57_6f6a84b4",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 103
@@ -117,6 +134,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64bc9f43_c62d29db",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-11T05:17:20Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "e7c109d2_923fdc8d",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1db1160a_607547f2",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-11T05:17:20Z",
+      "side": 1,
+      "message": "can we use range based foe loop?",
+      "range": {
+        "startLine": 57,
+        "startChar": 7,
+        "endLine": 57,
+        "endChar": 48
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d39dcd51_757bba27",
         "filename": "platform-mc/terminus.hpp",
         "patchSetId": 103
@@ -156,6 +214,29 @@
         "startChar": 0,
         "endLine": 63,
         "endChar": 6
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8af49694_c20c6c8f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-11T05:17:20Z",
+      "side": 1,
+      "message": "can we make use of `.contains()` instead of `find()`?",
+      "range": {
+        "startLine": 21,
+        "startChar": 3,
+        "endLine": 25,
+        "endChar": 5
       },
       "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
