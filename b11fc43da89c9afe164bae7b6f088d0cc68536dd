@@ -936,6 +936,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "459b5ac6_ce926cbc",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "its a good coding practice to `include what you use`. This is what google\u0027s c++ style guide says :\n\n`\nIf a source or header file refers to a symbol defined elsewhere, the file should directly include a header file which properly intends to provide a declaration or definition of that symbol. It should not include header files for any other reason.\n\nDo not rely on transitive inclusions. This allows people to remove no-longer-needed #include statements from their headers without breaking clients. This also applies to related headers - foo.cc should include bar.h if it uses a symbol from it even if foo.h includes bar.h.\n`\n\nhttps://google.github.io/styleguide/cppguide.html#Include_What_You_Use",
+      "parentUuid": "123d4b53_55e79727",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff5f352d_c71f957b",
         "filename": "platform-mc/terminus.hpp",
         "patchSetId": 102
@@ -1077,6 +1095,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63278a62_c2fdc5d6",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "I dont see this change for some reason ?",
+      "parentUuid": "5430ae8c_fe6ad725",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 32
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4a6e8144_aee1c166",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 102
@@ -1124,6 +1166,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a2bed8d_9a4879a8",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "even this change ? i dont see it.",
+      "parentUuid": "0f8ac3bb_fa4b45e3",
+      "range": {
+        "startLine": 21,
+        "startChar": 9,
+        "endLine": 21,
+        "endChar": 12
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7c9e093_864b308a",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 102
@@ -1159,6 +1225,30 @@
       "side": 1,
       "message": "Use `PLDM_TID_RESERVED` from libpldm for 0xff.\nAbout `0` there is no constexpr in libpldm. I temporary add \n`#define PLDM_TID_SPECIAL\t 0x00` in `common/types.hpp` in pldm repo.",
       "parentUuid": "f7c9e093_864b308a",
+      "range": {
+        "startLine": 61,
+        "startChar": 33,
+        "endLine": 61,
+        "endChar": 67
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "243da107_f8a89001",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "seems like the right place for PLDM_TID_SPECIAL is also in libpldm ? can you put up a commit in libpldm to add this define there ?",
+      "parentUuid": "3c037432_84e75c93",
       "range": {
         "startLine": 61,
         "startChar": 33,
@@ -1323,6 +1413,30 @@
       "writtenOn": "2024-06-05T14:49:32Z",
       "side": 1,
       "message": "using std::find_if looks a little more elegant solution ?\n\n```\n    auto foundIter \u003d std::find_if(termini.begin(), termini.end(), [\u0026](const auto\u0026 terminusPair) {\n        auto terminusMctpInfo \u003d toMctpInfo(terminusPair.first);\n        return (terminusMctpInfo \u0026\u0026\n                (std::get\u003c0\u003e(terminusMctpInfo.value()) \u003d\u003d std::get\u003c0\u003e(mctpInfo)) \u0026\u0026\n                (std::get\u003c3\u003e(terminusMctpInfo.value()) \u003d\u003d std::get\u003c3\u003e(mctpInfo)));\n    });\n\n    if (foundIter !\u003d termini.end()) {\n        return foundIter;\n    }\n    return termini.end();\n}\n```",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 1
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d51dd983_4f26733d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "how about this comment ?",
+      "parentUuid": "c4f741da_457f13fb",
       "range": {
         "startLine": 121,
         "startChar": 0,
@@ -1767,6 +1881,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea28ffc_7ec72141",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "78576de2_74216eb0",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aab85ba9_fd550cec",
@@ -1798,6 +1930,24 @@
       "side": 1,
       "message": "Do we really need them because there are no build errors. The header is included in the other header file which this file included.",
       "parentUuid": "aab85ba9_fd550cec",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97d8ce48_f3567980",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "similar answer here as well . Always `include what you use` , dont rely on other headers to provide you the necessary definitions, when those headers are removed, this code breaks. and its okay to define it multiple times and #pragma once will make sure it only includes it once.",
+      "parentUuid": "0dc66baa_50cae589",
       "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -2032,6 +2182,30 @@
       "side": 1,
       "message": "\u003e make these const member functions, which ensures that they do not modify the state of object ? \n\u003e \n\u003e std::optional\u003cMctpInfo\u003e toMctpInfo(pldm_tid_t tid) const;\n\n-\u003e I got the error when change the function to const.\n```\nerror: passing ‘const std::map\u003cunsigned char, pldm::SupportedTransportLayer\u003e’ as ‘this’ argument discards qualifiers [-fpermissive]\n```\nI\u0027m trying to understand the error.\n\n\u003e std::optional\u003cpldm_tid_t\u003e toTid(const MctpInfo\u0026 mctpInfo) const;\n\n-\u003e Done",
       "parentUuid": "393b301d_e2666632",
+      "range": {
+        "startLine": 101,
+        "startChar": 1,
+        "endLine": 111,
+        "endChar": 62
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fefcd0c_29efe2fe",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-11T02:11:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "319291e8_805fd5ba",
       "range": {
         "startLine": 101,
         "startChar": 1,
