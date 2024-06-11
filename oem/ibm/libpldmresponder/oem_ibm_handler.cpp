@@ -689,6 +689,21 @@ void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(uint8_t tid,
     }
 }
 
+std::vector<std::string>
+    pldm::responder::oem_ibm_platform::Handler::getslotPaths()
+{
+    static constexpr auto searchpath = "/xyz/openbmc_project/inventory/system";
+    int depth = 0;
+    pldm::utils::GetSubTreeResponse response =
+        pldm::utils::DBusHandler().getSubtree(
+            searchpath, depth, {"xyz.openbmc_project.Inventory.Item.PCIeSlot"});
+    std::vector<std::string> slotPaths;
+    std::transform(response.begin(), response.end(),
+                   std::back_inserter(slotPaths),
+                   [](const auto& kv) { return kv.first; });
+    return slotPaths;
+}
+
 } // namespace oem_ibm_platform
 } // namespace responder
 } // namespace pldm

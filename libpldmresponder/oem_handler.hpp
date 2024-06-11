@@ -121,6 +121,12 @@ class Handler : public CmdHandler
      * */
     virtual void setSurvTimer(uint8_t tid, bool value) = 0;
 
+    /** @brief Method to get PCIE slot paths from the system inventory path.
+     *
+     * @return vector of PCIE slot path strings.
+     */
+    virtual std::vector<std::string> getslotPaths() = 0;
+
     virtual ~Handler() = default;
 
   protected:
