@@ -112,6 +112,23 @@ class FileHandler
     virtual int transferFileDataToSocket(int fd, uint32_t& length,
                                          uint64_t address);
 
+    /** @brief method to process a new file available metadata notification from
+     *  the host
+     *
+     *  @param[in] length - size of the file content to be transferred
+     *  @param[in] metaDataValue1 - value of meta data sent by host
+     *  @param[in] metaDataValue2 - value of meta data sent by host
+     *  @param[in] metaDataValue3 - value of meta data sent by host
+     *  @param[in] metaDataValue4 - value of meta data sent by host
+     *
+     *  @return PLDM status code
+     */
+    virtual int newFileAvailableWithMetaData(uint64_t length,
+                                             uint32_t metaDataValue1,
+                                             uint32_t metaDataValue2,
+                                             uint32_t metaDataValue3,
+                                             uint32_t metaDataValue4) = 0;
+
     /** @brief Constructor to create a FileHandler object
      */
     FileHandler(uint32_t fileHandle) : fileHandle(fileHandle) {}
