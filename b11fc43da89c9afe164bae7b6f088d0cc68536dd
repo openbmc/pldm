@@ -347,6 +347,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "614f46d5_6be57883",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "The code is updated here.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/53961/87/platform-mc/platform_manager.cpp#29",
+      "parentUuid": "e4e9fb4a_6ee00430",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 9
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52b00143_9bc65a91",
@@ -525,6 +549,30 @@
       "side": 1,
       "message": "I moved the code get and parse PDRs to path set \nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/53961\nAt\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/53961/87/platform-mc/platform_manager.cpp#26 \n\nThat should be corrected place for them.",
       "parentUuid": "158014bd_b18c5c4d",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 42
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87fa7758_99ded628",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f110525b_0aa4a5a9",
       "range": {
         "startLine": 70,
         "startChar": 4,
@@ -899,6 +947,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c53ef2f_dfc8ed79",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f88be7d5_84803e6f",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a8640c1_76f666a2",
@@ -948,6 +1020,24 @@
       "side": 1,
       "message": "its a good coding practice to `include what you use`. This is what google\u0027s c++ style guide says :\n\n`\nIf a source or header file refers to a symbol defined elsewhere, the file should directly include a header file which properly intends to provide a declaration or definition of that symbol. It should not include header files for any other reason.\n\nDo not rely on transitive inclusions. This allows people to remove no-longer-needed #include statements from their headers without breaking clients. This also applies to related headers - foo.cc should include bar.h if it uses a symbol from it even if foo.h includes bar.h.\n`\n\nhttps://google.github.io/styleguide/cppguide.html#Include_What_You_Use",
       "parentUuid": "123d4b53_55e79727",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee0efe4_0d77b72d",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "459b5ac6_ce926cbc",
       "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -1117,6 +1207,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e0c2eba_21a161c5",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Code is somehow lost when I verify changing `toMctpInfo` function to `const`.\nAdded \n```\n    if (!this-\u003etransportLayerTable.contains(tid))\n    {\n        return std::nullopt;\n    }\n```",
+      "parentUuid": "63278a62_c2fdc5d6",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 32
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a6e8144_aee1c166",
@@ -1188,6 +1302,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "158ef1f4_7f2805d0",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "It was changed in wrong patch set 😞\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/70713/25..26/platform-mc/terminus_manager.cpp#21\nI move the change to this patch set",
+      "parentUuid": "4a2bed8d_9a4879a8",
+      "range": {
+        "startLine": 21,
+        "startChar": 9,
+        "endLine": 21,
+        "endChar": 12
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7c9e093_864b308a",
@@ -1249,6 +1387,30 @@
       "side": 1,
       "message": "seems like the right place for PLDM_TID_SPECIAL is also in libpldm ? can you put up a commit in libpldm to add this define there ?",
       "parentUuid": "3c037432_84e75c93",
+      "range": {
+        "startLine": 61,
+        "startChar": 33,
+        "endLine": 61,
+        "endChar": 67
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcc9ab9b_c819303a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Yeah, I know. I thought it is so small to add the patch set in libpldm 😄. Anyway, I added it in libpldm and make some move in libpldm.\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/71964\nDefinition in this patch set will be removed when that patch set is merged to avoid build error.",
+      "parentUuid": "243da107_f8a89001",
       "range": {
         "startLine": 61,
         "startChar": 33,
@@ -1437,6 +1599,30 @@
       "side": 1,
       "message": "how about this comment ?",
       "parentUuid": "c4f741da_457f13fb",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 1
+      },
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a970f9e_cd0fa896",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d51dd983_4f26733d",
       "range": {
         "startLine": 121,
         "startChar": 0,
@@ -1948,6 +2134,24 @@
       "side": 1,
       "message": "similar answer here as well . Always `include what you use` , dont rely on other headers to provide you the necessary definitions, when those headers are removed, this code breaks. and its okay to define it multiple times and #pragma once will make sure it only includes it once.",
       "parentUuid": "0dc66baa_50cae589",
+      "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe44e25_072ac509",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97d8ce48_f3567980",
       "revId": "b11fc43da89c9afe164bae7b6f088d0cc68536dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c592a131_3f975d48",
+        "filename": "common/types.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "This Const will be removed after the patch set https://gerrit.openbmc.org/c/openbmc/libpldm/+/71964 is merged.\nSo let ignore this variable.\nAbout why it is special. It just because the section `SetTID command` in DSP0240 said that. Maybe DMTF don\u0027t want this value to be assigned for any TID.",
+      "parentUuid": "db38d5f8_6ca492c7",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c8cfc57_6f6a84b4",
@@ -65,6 +83,24 @@
       "writtenOn": "2024-06-11T02:11:04Z",
       "side": 1,
       "message": "check if idx \u003e\u003d supportedCmds.size() first and log an error ?",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83e2bb8c_1c8dfea0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c8cfc57_6f6a84b4",
       "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -92,6 +128,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bbdd992_f999d876",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "738f06a9_ebd731dc",
+      "range": {
+        "startLine": 34,
+        "startChar": 17,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e5133f5_ae53d331",
@@ -105,6 +165,30 @@
       "writtenOn": "2024-06-11T02:11:04Z",
       "side": 1,
       "message": "const reference here ?",
+      "range": {
+        "startLine": 48,
+        "startChar": 30,
+        "endLine": 48,
+        "endChar": 57
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55e20693_216557d7",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "In latest commit, I change definition of  `supportedCmds` from\n`std::bitset\u003c8\u003e supportedCmds[PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8)];`\nto\n`std::vector\u003cuint8_t\u003e supportedCmds;`\nTo save memory.\nSize of std::bitset\u003c8\u003e is 8 bytes. While uint8_t size is 1 byte.",
+      "parentUuid": "0e5133f5_ae53d331",
       "range": {
         "startLine": 48,
         "startChar": 30,
@@ -150,6 +234,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bc23df9_73feed43",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64bc9f43_c62d29db",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1db1160a_607547f2",
@@ -163,6 +265,30 @@
       "writtenOn": "2024-06-11T05:17:20Z",
       "side": 1,
       "message": "can we use range based foe loop?",
+      "range": {
+        "startLine": 57,
+        "startChar": 7,
+        "endLine": 57,
+        "endChar": 48
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33ec7e6a_ca76719c",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1db1160a_607547f2",
       "range": {
         "startLine": 57,
         "startChar": 7,
@@ -196,6 +322,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23986d37_7067e42f",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "After I change definition of supportedCmds to `std::vector\u003cuint8_t\u003e supportedCmds`.\nI changed the code to\n```\n        supportedCmds.resize(cmds.size());\n        std::copy(cmds.begin(), cmds.begin() + cmds.size(),\n                  supportedCmds.begin());\n```\nthe size of vector supportedCmds is always equal size of input vector.",
+      "parentUuid": "d39dcd51_757bba27",
+      "range": {
+        "startLine": 59,
+        "startChar": 11,
+        "endLine": 59,
+        "endChar": 39
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75641d4b_420754e0",
@@ -219,6 +369,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04550ddb_4fd6974e",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75641d4b_420754e0",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 6
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8af49694_c20c6c8f",
@@ -232,6 +406,30 @@
       "writtenOn": "2024-06-11T05:17:20Z",
       "side": 1,
       "message": "can we make use of `.contains()` instead of `find()`?",
+      "range": {
+        "startLine": 21,
+        "startChar": 3,
+        "endLine": 25,
+        "endChar": 5
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9921bc78_78d7e98e",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "`it` is used in line #27. So we should use find so we can reuse `it` at that line.",
+      "parentUuid": "8af49694_c20c6c8f",
       "range": {
         "startLine": 21,
         "startChar": 3,
@@ -267,6 +465,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c81b196c_a33e19c9",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Because `transportLayerTableIterator` is used inside of condition.\nIf we use contains() then inside condition we have to update code as:\n```\n    if (transportLayerTable.contains(tid))\n    {\n        auto transportLayerTableIterator \u003d transportLayerTable.find(tid);\n        transportLayerTable.erase(transportLayerTableIterator);\n    }\n```\nI want to avoid using both `find` and `contains`. With the current code we only need to use find().",
+      "parentUuid": "664d754a_63feb038",
+      "range": {
+        "startLine": 95,
+        "startChar": 2,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6380de1e_bef667ad",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 103
@@ -278,6 +500,24 @@
       "writtenOn": "2024-06-11T02:11:04Z",
       "side": 1,
       "message": "same here as well.",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bef0b5a5_a20027c1",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Check above.",
+      "parentUuid": "6380de1e_bef667ad",
       "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -301,6 +541,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fa843cf_547684fa",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "As my opinion, failure in checking the supported commands of one PLDM type is not critical, if the checking is failed at BIOS or FRU type, it does not mean others commands of BASE, PLATFORM do not work. So just log the error and continue.\nThe developer can base on the journal log to see why some BIOS update features or FRU features do not work base on the journal log.",
+      "parentUuid": "385f0883_53ddc7a9",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ee20784c_5cb90557",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 103
@@ -312,6 +570,30 @@
       "writtenOn": "2024-06-11T02:11:04Z",
       "side": 1,
       "message": "```\nif (idx \u003e\u003d pldmCmds.size())\n{\n            lg2::error(\n                \"Calculated index {IDX} out of bounds for pldmCmds, type {TYPE}, command index {CMD_IDX}\",\n                \"IDX\", idx, \"TYPE\", type, \"CMD_IDX\", i);\n            continue;\n}\n```",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 338,
+        "endChar": 41
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a27c1e35_9074e421",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Will update in next version of patch set.",
+      "parentUuid": "ee20784c_5cb90557",
       "range": {
         "startLine": 338,
         "startChar": 0,
@@ -347,6 +629,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30e37086_91b2dbd6",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "I updated the code to check `.has_value()`.\nAbout adding log, the caller of `sendRecvPldmMsg` already checks the response Error from `sendRecvPldmMsg` so as my opinion, we should not add log in the core function as `sendRecvPldmMsg`.",
+      "parentUuid": "427f0c66_2b916105",
+      "range": {
+        "startLine": 580,
+        "startChar": 0,
+        "endLine": 584,
+        "endChar": 5
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "42d5106b_0c9533ee",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 103
@@ -358,6 +664,24 @@
       "writtenOn": "2024-06-11T02:11:04Z",
       "side": 1,
       "message": "ensure responseMsg and responseLen are not nullptr ? before ?\n ```\n    if (!responseMsg || !responseLen)\n    {\n        co_return PLDM_ERROR_INVALID_DATA;\n    }\n    ```",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0652d8d7_3a576b04",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42d5106b_0c9533ee",
       "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -375,6 +699,24 @@
       "writtenOn": "2024-06-11T02:11:04Z",
       "side": 1,
       "message": "why is this moved to public in the refactoring ?",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd6a280f_f6c74bcc",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-12T16:37:19Z",
+      "side": 1,
+      "message": "It is my mistake in refactor. I saw some future patch sets move this function to public, so I decide to move it to public. But after checking, no need to do that.\nI moved it back to private.",
+      "parentUuid": "01d219ee_0cb27914",
       "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
