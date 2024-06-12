@@ -94,6 +94,30 @@
       },
       "revId": "e14b07a26b7e4301b3e47f2111364aefdef9d310",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98d074f1_44ebfc80",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:49:52Z",
+      "side": 1,
+      "message": "+1 agree with george here.",
+      "parentUuid": "9abc0b2e_8e573b4e",
+      "range": {
+        "startLine": 697,
+        "startChar": 35,
+        "endLine": 697,
+        "endChar": 45
+      },
+      "revId": "e14b07a26b7e4301b3e47f2111364aefdef9d310",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
