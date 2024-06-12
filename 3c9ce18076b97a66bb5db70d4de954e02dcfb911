@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a315f320_cdf3eb3a",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-12T16:18:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9eccec60_58d12ec4",
+      "range": {
+        "startLine": 100,
+        "startChar": 7,
+        "endLine": 101,
+        "endChar": 62
+      },
+      "revId": "3c9ce18076b97a66bb5db70d4de954e02dcfb911",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a10dad6f_735bcb4f",
