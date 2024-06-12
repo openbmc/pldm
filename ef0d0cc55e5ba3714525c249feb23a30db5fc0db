@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27fa504b_ae17090d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:54:12Z",
+      "side": 1,
+      "message": "ideally this should be done in the xdma device driver , is it doing the byte swap ? pldm should ideally not worry about the endianness at all.",
+      "range": {
+        "startLine": 192,
+        "startChar": 1,
+        "endLine": 194,
+        "endChar": 65
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "700e3a25_b019c0df",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:54:12Z",
+      "side": 1,
+      "message": "c++ casting ?",
+      "range": {
+        "startLine": 451,
+        "startChar": 32,
+        "endLine": 451,
+        "endChar": 41
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac43ea33_00fbfd0d",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:54:12Z",
+      "side": 1,
+      "message": "why ntohs here when others are all htobe16 ?",
+      "range": {
+        "startLine": 465,
+        "startChar": 12,
+        "endLine": 465,
+        "endChar": 17
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "208138a6_47349f0b",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:54:12Z",
+      "side": 1,
+      "message": "is this required ?",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 22
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa0c97b0_0f7aa913",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:54:12Z",
+      "side": 1,
+      "message": "multiple missing includes ? please `include-what-you-use`\n\n```\n#include \u003cstring\u003e\n#include \u003cvector\u003e\n#include \u003climits\u003e\n#include \u003cclimits\u003e\n```\n\nany more needed ? add those as well",
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cdd428c_cd6c0c87",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:54:12Z",
+      "side": 1,
+      "message": "prefer enum class over plain enum : https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-class",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "245c76ff_bff740ad",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-12T04:54:12Z",
+      "side": 1,
+      "message": "its usually a good practice to move static variables into cpp , by moving the definitions of static variables to the source file and keeping only declarations in the header file, you avoid the risk of multiple definitions and ensure that the header files remain self-sufficient and clean.\n\nmake this `extern` declaration here \u0026 move the maps to cpp instead ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 6
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
