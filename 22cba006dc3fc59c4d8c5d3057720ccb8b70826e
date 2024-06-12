@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccbd254a_45acb6db",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-06-12T10:09:39Z",
+      "side": 1,
+      "message": "exception_t?",
+      "range": {
+        "startLine": 704,
+        "startChar": 22,
+        "endLine": 704,
+        "endChar": 31
+      },
+      "revId": "22cba006dc3fc59c4d8c5d3057720ccb8b70826e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30156e01_6fbd57af",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-06-12T10:09:39Z",
+      "side": 1,
+      "message": "Nit: remove?",
+      "range": {
+        "startLine": 707,
+        "startChar": 52,
+        "endLine": 707,
+        "endChar": 59
+      },
+      "revId": "22cba006dc3fc59c4d8c5d3057720ccb8b70826e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
