@@ -70,6 +70,30 @@
       },
       "revId": "e14b07a26b7e4301b3e47f2111364aefdef9d310",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9abc0b2e_8e573b4e",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-06-12T00:21:01Z",
+      "side": 1,
+      "message": "\u003e This API requires getSubTree API because we expect response to be returned\n\nI don\u0027t understand what you mean, I mean why is getSubTreePaths not called here?",
+      "parentUuid": "e2827d5e_4c1f980e",
+      "range": {
+        "startLine": 697,
+        "startChar": 35,
+        "endLine": 697,
+        "endChar": 45
+      },
+      "revId": "e14b07a26b7e4301b3e47f2111364aefdef9d310",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
