@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4f82b6a_350dedf8",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-12T11:20:11Z",
+      "side": 1,
+      "message": "The endianness handling needs to occur at the layer that can first interpret the data. The DMA engine has no idea of the structure of the data its copying its up to the user of the data to deal with the endianness once it has been copied the essential bit is that the definition of the structure must define the endianness of the values and then the implementations on either side must treat the data in accordance with the definition of the structure.\nIn this case PLDM is taking care of endianness.",
+      "parentUuid": "27fa504b_ae17090d",
+      "range": {
+        "startLine": 192,
+        "startChar": 1,
+        "endLine": 194,
+        "endChar": 65
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "700e3a25_b019c0df",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-12T04:54:12Z",
       "side": 1,
       "message": "c++ casting ?",
+      "range": {
+        "startLine": 451,
+        "startChar": 32,
+        "endLine": 451,
+        "endChar": 41
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37233efc_891c4d8f",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-12T11:20:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "700e3a25_b019c0df",
       "range": {
         "startLine": 451,
         "startChar": 32,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "253ce9d6_cc2b501e",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-12T11:20:11Z",
+      "side": 1,
+      "message": "changed it to use htobe",
+      "parentUuid": "ac43ea33_00fbfd0d",
+      "range": {
+        "startLine": 465,
+        "startChar": 12,
+        "endLine": 465,
+        "endChar": 17
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "208138a6_47349f0b",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-06-12T04:54:12Z",
       "side": 1,
       "message": "is this required ?",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 22
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9fb4732_c10795bb",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-12T11:20:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "208138a6_47349f0b",
       "range": {
         "startLine": 5,
         "startChar": 9,
@@ -110,6 +206,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9903d15_a2a85ade",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-12T11:20:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa0c97b0_0f7aa913",
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cdd428c_cd6c0c87",
@@ -133,6 +247,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0b2072b_f53ab4c2",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-12T11:20:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cdd428c_cd6c0c87",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "245c76ff_bff740ad",
@@ -146,6 +284,30 @@
       "writtenOn": "2024-06-12T04:54:12Z",
       "side": 1,
       "message": "its usually a good practice to move static variables into cpp , by moving the definitions of static variables to the source file and keeping only declarations in the header file, you avoid the risk of multiple definitions and ensure that the header files remain self-sufficient and clean.\n\nmake this `extern` declaration here \u0026 move the maps to cpp instead ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 6
+      },
+      "revId": "ef0d0cc55e5ba3714525c249feb23a30db5fc0db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "042b552b_e8340a8c",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-12T11:20:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "245c76ff_bff740ad",
       "range": {
         "startLine": 35,
         "startChar": 0,
