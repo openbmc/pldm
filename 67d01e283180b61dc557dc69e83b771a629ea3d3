@@ -70,6 +70,24 @@
       "parentUuid": "8ff49081_2dd597a3",
       "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08ea545a_25a78224",
+        "filename": "host-bmc/custom_dbus.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-12T16:18:32Z",
+      "side": 0,
+      "message": "the file was deleted and added to new path , nothing else",
+      "parentUuid": "9f57c35e_16257db9",
+      "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
