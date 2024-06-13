@@ -97,6 +97,7 @@ class CommandInterface
                                   size_t payloadLength) = 0;
 
     virtual void exec();
+    virtual void exec(uint8_t fixInstanceId);
 
     int pldmSendRecv(std::vector<uint8_t>& requestMsg,
                      std::vector<uint8_t>& responseMsg);

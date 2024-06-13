@@ -48,6 +48,30 @@ void CommandInterface::exec()
     instanceIdDb.free(mctp_eid, instanceId);
 }
 
+void CommandInterface::exec(uint8_t fixInstanceId)
+{
+    instanceId = fixInstanceId;
+    auto [rc, requestMsg] = createRequestMsg();
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "Failed to encode request message for " << pldmType << ":"
+                  << commandName << " rc = " << rc << "\n";
+        return;
+    }
+
+    std::vector<uint8_t> responseMsg;
+    rc = pldmSendRecv(requestMsg, responseMsg);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
+        return;
+    }
+
+    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
+}
+
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
