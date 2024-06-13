@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee2ae01_7e3c0561",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-13T09:10:27Z",
+      "side": 1,
+      "message": "@archana - almost there, just a minor comment,I think we are good to merge this after that.",
+      "revId": "c3ebcebd2b5b268e20da3df169bb0e54c79e11c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14ccd17_47c14b21",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-13T09:10:27Z",
+      "side": 1,
+      "message": "can you wrap this properly? also can you please rephrase it this way ? \n\n```txt\n\nThe elements in the structure that were being parsed from the obtained files via\nwrite() and writeFromMemory() were written by IBM enterprise host firmware which\nruns on big-endian format. The DMA engine in BMC (aspeed-xdma device driver) which\nis responsible for exposing the data shared by the host in the shared VGA memory\nhas no idea of the structure of the data it\u0027s copying from host. So it\u0027s up to the\nconsumers of the data to deal with the endianness once it has been copied to user\nspace \u0026 and as pldm is the first application layer that interprets the data\nprovided by host reading from the sysfs interface of xdma-engine \u0026 also since pldm \napplication runs on BMC which could be little/big endian, its essential to swap the\nendianness to agreed big-endian format (htobe) before using the data.\n\n```",
+      "range": {
+        "startLine": 229,
+        "startChar": 3,
+        "endLine": 234,
+        "endChar": 74
+      },
+      "revId": "c3ebcebd2b5b268e20da3df169bb0e54c79e11c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
