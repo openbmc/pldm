@@ -27,6 +27,12 @@ class FileIOHandler : public CmdHandler
                                 size_t payloadLength) {
             return this->writeFileIO(tid, request, payloadLength);
         });
+
+        handlers.emplace(PLDM_OEM_META_FILEIO_CMD_READ_FILE,
+                         [this](pldm_tid_t tid, const pldm_msg* request,
+                                size_t payloadLength) {
+            return this->readFileIO(tid, request, payloadLength);
+        });
     }
 
   private:
@@ -40,6 +46,9 @@ class FileIOHandler : public CmdHandler
      */
     Response writeFileIO(pldm_tid_t tid, const pldm_msg* request,
                          size_t payloadLength);
+
+    Response readFileIO(pldm_tid_t tid, const pldm_msg* request,
+                        size_t payloadLength);
 
     std::unique_ptr<FileHandler> getHandlerByType(pldm_tid_t tid,
                                                   uint8_t fileIOType);
