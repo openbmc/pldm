@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4c4ba5b_3420c254",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 40
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-06-13T09:14:31Z",
+      "side": 1,
+      "message": "Can we add a unit test on this. Define a mock class and a mock method",
+      "revId": "6038ed98735474fece5d024adc08b6a500d9e9af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
