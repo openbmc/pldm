@@ -39,6 +39,30 @@
       },
       "revId": "c3ebcebd2b5b268e20da3df169bb0e54c79e11c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "905ca44e_c73dd759",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_pcie.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-13T09:37:58Z",
+      "side": 1,
+      "message": "Thank you Manoj for this detailed explanation. I have added them.",
+      "parentUuid": "e14ccd17_47c14b21",
+      "range": {
+        "startLine": 229,
+        "startChar": 3,
+        "endLine": 234,
+        "endChar": 74
+      },
+      "revId": "c3ebcebd2b5b268e20da3df169bb0e54c79e11c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
