@@ -16,6 +16,29 @@
       "message": "Simple unit tests for this would be good to test the core count",
       "revId": "7e72f38e9614129b631a34f63d8b99569b86f54a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1aae0dbe_82a56368",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-06-13T09:27:17Z",
+      "side": 1,
+      "message": "check if we can obtain this from PDI?",
+      "range": {
+        "startLine": 210,
+        "startChar": 5,
+        "endLine": 212,
+        "endChar": 50
+      },
+      "revId": "7e72f38e9614129b631a34f63d8b99569b86f54a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
