@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f0fa31d_58fb3b44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-13T06:49:58Z",
+      "side": 1,
+      "message": "this is good, but we also need to make sure if your API is returning the `pcie slot paths` - can u also do functional test to make sure the new API is doing what it\u0027s supposed to do.",
+      "range": {
+        "startLine": 14,
+        "startChar": 11,
+        "endLine": 14,
+        "endChar": 47
+      },
+      "revId": "cd64c6568dfb6f677e95fb903257ae72f98c269d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49e102f8_4e4f383e",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-13T06:49:58Z",
+      "side": 1,
+      "message": "getSubTreePaths() could actually return an empty list - which indicates that there are no bus objects that implements the pice interface \u0026 this is not an exception or an error. so `slotPaths` can be empty vector as well.\n\nSo I suggest to change the return type to `std::optional\u003cstd::vector\u003cstd::string\u003e\u003e` so that the client code using this functions output does not have to check for empty vector, rather check if the value is `std::nullopt`.",
+      "range": {
+        "startLine": 692,
+        "startChar": 0,
+        "endLine": 692,
+        "endChar": 24
+      },
+      "revId": "cd64c6568dfb6f677e95fb903257ae72f98c269d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "082e9243_b1fe4da8",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-13T06:49:58Z",
+      "side": 1,
+      "message": "we could change this to something like this :\n```\nstd::optional\u003cstd::vector\u003cstd::string\u003e\u003e\n    pldm::responder::oem_ibm_platform::Handler::getslotPaths()\n{\n    const std::string slotObjectSearchPath \u003d\n        \"/xyz/openbmc_project/inventory/system\";\n    std::vector\u003cstd::string\u003e slotPaths;\n    try\n    {\n        slotPaths \u003d pldm::utils::DBusHandler().getSubTreePaths(\n            slotObjectSearchPath, 0,\n            {\"xyz.openbmc_project.Inventory.Item.PCIeSlot\"});\n    }\n    catch (const sdbusplus::exception_t\u0026 e)\n    {\n        error(\"Failed to call getSubTreePath on \u0027{SLOT_OBJ_PATH}\u0027 with error {ERROR}.\",\n              \"SLOT_OBJ_PATH\", slotObjectSearchPath, \"ERROR\", e);\n        return std::nullopt;\n    }\n    \n    if (slotPaths.empty())\n    {\n        return std::nullopt;\n    }\n\n    return slotPaths;\n}\n```",
+      "range": {
+        "startLine": 693,
+        "startChar": 0,
+        "endLine": 710,
+        "endChar": 1
+      },
+      "revId": "cd64c6568dfb6f677e95fb903257ae72f98c269d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
