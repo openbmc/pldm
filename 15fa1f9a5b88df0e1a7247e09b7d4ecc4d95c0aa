@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36f16049_f1660a69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-13T06:59:32Z",
+      "side": 1,
+      "message": "same as this comments: https://gerrit.openbmc.org/c/openbmc/pldm/+/71842/comment/e4c75776_88982256/",
+      "parentUuid": "cc08f5bd_4f4b77a1",
+      "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26ea0554_7f54eb84",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "Currently we not have any set/get functions implemented to test this. Do you want me to create those and add testcase.",
       "parentUuid": "b95bad5d_c4648fa4",
+      "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379a8384_26581549",
+        "filename": "host-bmc/dbus/pcie_device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-13T06:59:32Z",
+      "side": 1,
+      "message": "it would be good if we have unit test for each property, which reduce testing effort if functionality change.",
+      "parentUuid": "99d27384_1729aa39",
       "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
