@@ -511,6 +511,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ec9f55e_7144ebdb",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-13T09:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59e8855c_8b3f8573",
+      "range": {
+        "startLine": 95,
+        "startChar": 2,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6380de1e_bef667ad",
@@ -560,6 +584,24 @@
       "side": 1,
       "message": "same as above.",
       "parentUuid": "bef0b5a5_a20027c1",
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "689c9311_1a00548c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-13T09:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6686c0a_1909c509",
       "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -678,6 +720,30 @@
       "side": 1,
       "message": "i did not get you.",
       "parentUuid": "a27c1e35_9074e421",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 338,
+        "endChar": 41
+      },
+      "revId": "ff21616f0796ac24f07f6584757e1df68f6c3c7f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92bfc1ae_1e7de323",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 103
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-13T09:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5625a797_d50fbe31",
       "range": {
         "startLine": 338,
         "startChar": 0,

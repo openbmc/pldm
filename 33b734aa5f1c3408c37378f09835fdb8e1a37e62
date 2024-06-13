@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b4f3b1e_8f0f147a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-13T09:45:24Z",
+      "side": 1,
+      "message": "I updated code to:\n```\n    if ((!this-\u003etransportLayerTable.contains(tid)) ||\n        (this-\u003etransportLayerTable[tid] !\u003d SupportedTransportLayer::MCTP))\n    {\n        return std::nullopt;\n    }\n```",
+      "parentUuid": "c7e7d0e1_1ba73457",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 1
+      },
+      "revId": "33b734aa5f1c3408c37378f09835fdb8e1a37e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d57075a2_26aae011",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-06-13T06:15:51Z",
       "side": 1,
       "message": "not sure why we need this ?\n\nfind_if will return an iterator if the value matches the criteria, if the criteria is not met, it returns termini.end().\n\nso why not just return `foundIter`",
+      "range": {
+        "startLine": 144,
+        "startChar": 3,
+        "endLine": 148,
+        "endChar": 25
+      },
+      "revId": "33b734aa5f1c3408c37378f09835fdb8e1a37e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09594bdc_80fb6f56",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-13T09:45:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d57075a2_26aae011",
       "range": {
         "startLine": 144,
         "startChar": 3,
