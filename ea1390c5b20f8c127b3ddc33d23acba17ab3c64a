@@ -113,6 +113,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8502d12_e737b876",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-13T04:31:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ebbb30e_05fce1ca",
+      "range": {
+        "startLine": 179,
+        "startChar": 40,
+        "endLine": 181,
+        "endChar": 37
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c2f1f94_99104bf1",
@@ -268,6 +292,30 @@
       "side": 1,
       "message": "My point was I have no idea how to connect that sentence (\"more info is documented\") with the information that immediately follows (after the \":\").",
       "parentUuid": "b828d8bf_5f22ae8b",
+      "range": {
+        "startLine": 183,
+        "startChar": 60,
+        "endLine": 184,
+        "endChar": 58
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91da9f05_d71f13e3",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-13T04:31:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ec020ef_2b8d0585",
       "range": {
         "startLine": 183,
         "startChar": 60,
@@ -451,6 +499,24 @@
       "side": 1,
       "message": "\u003e Can you please document this part then?  How do we generate an AttributeRegistry from PLDM and share that with bmcweb?  I don\u0027t see any evidence that this actually happens.  Is this something you have in downstream commits?\n\u003e \n\nPLDM does not generate Attribute registry and share it to bmcweb, PLDM parses these JSON files and fill in the BIOSTable hosted by [bios-settings-mgr daemon](https://github.com/openbmc/bios-settings-mgr) per this [design](https://github.com/openbmc/docs/blob/master/designs/remote-bios-configuration.md#proposed-design) section `BIOS send the data in BIOS configuration PLDM via MCTP`.\n\nThe gist is that PLDM daemon parses these JSON files and creates the bios table and sets the [BaseBIOSTable dbus property](https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/BIOSConfig/Manager.interface.yaml#L62) hosted by bios-settings-mgr app. And the per the above design bmcweb is supposed to read data from that property to generate the AttributeRegistry in redfish.\n\n\u003e How do you combine 3 different attribute files into a single AttributeRegistry?  \u003e What is the identifier for the AttributeRegistry?\n\nThe `BaseBIOSTable` is a dictionary with variants in it , it can currently handle int64, string and enum values. PLDM post processing all the JSON files, collates all of the interger, string and enum attributes so that it can set the `BaseBIOSTable` property. \n\n\u003e How do we version it?\n\nI don\u0027t think we are supporting versioning as such , but PLDM code is written in such a way that it could handle new attributes being added/removed in the later version of openbmc code base, so it sort of smartly discards its in-memory cache and update them from the JSON file on per attribute basis when we upgrade/downgrade the firmware code levels.\n\n\u003e \n\u003e How do you handle a multi-host or heterogeneous configuration?  You can have a blade server with two different processor architectures.  There has to be something related to the exact attribute collection that ends up turning into AttributeRegistry identifiers so that external tooling can disambiguate.\n\u003e \nI don\u0027t think PLDM could handle multi-host as of moment. Not just PLDM i don\u0027t think we have the Back end bios-settings-mgr app handle multi host scenario(we could probably templatise the bios-settings-mgr) app so that it could host various instances of BaseBIOSTable per host. But I think we might need some infrastructure changes in the BIOS handler to be able to handle BIOS settings per host.\n\n\u003e Your reference here to AtttributeRegistry makes me think even more is not documented...\n\nAgree, we need to add more details.",
       "parentUuid": "bb39a3b4_4494e8e0",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8621dd1f_5c687c2f",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-13T04:31:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3358cf0_a164d8d0",
       "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -706,6 +772,30 @@
       "side": 1,
       "message": "+1 agree with you on this.\n\n@archana - lets fix this as well and put the commit below this and fix the documentation as its not a big change.",
       "parentUuid": "baa436e0_31ad618e",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 73
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b445f87_874b182e",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-13T04:31:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07885e98_cd30403d",
       "range": {
         "startLine": 213,
         "startChar": 0,
