@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7e7d0e1_1ba73457",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-13T06:15:51Z",
+      "side": 1,
+      "message": "merge both of the  if statements ?\n\n```c++\nif(this-\u003etransportLayerTable.contains(tid) \u0026\u0026 this-\u003etransportLayerTable[tid]!\u003d SupportedTransportLayer::MCTP)\n{\n  return std::nullopt;\n  \n}\n```",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 1
+      },
+      "revId": "33b734aa5f1c3408c37378f09835fdb8e1a37e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d57075a2_26aae011",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-13T06:15:51Z",
+      "side": 1,
+      "message": "not sure why we need this ?\n\nfind_if will return an iterator if the value matches the criteria, if the criteria is not met, it returns termini.end().\n\nso why not just return `foundIter`",
+      "range": {
+        "startLine": 144,
+        "startChar": 3,
+        "endLine": 148,
+        "endChar": 25
+      },
+      "revId": "33b734aa5f1c3408c37378f09835fdb8e1a37e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
