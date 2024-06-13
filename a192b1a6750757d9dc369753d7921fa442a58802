@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6f872b9_4a489e76",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-13T06:57:04Z",
+      "side": 1,
+      "message": "please do below 2 changes.\n1.why this extra empty line is required?\n2. replace \u0027remote terminus\u0027 instead \u0027remote PLDM terminus\u0027\n\nAs paragraph:\n\nThis commits adds support to host PCIeSlot interface over DBus\nwhen PLDM receives the PDR information from \u0027Remote terminus\u0027.\nPLDM hosts the PCIeSlot interface based on the entity type.\nThe Slot interface is defined at [1] :",
+      "parentUuid": "87d07b29_98700d15",
+      "revId": "a192b1a6750757d9dc369753d7921fa442a58802",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5141d586_05236ca4",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
