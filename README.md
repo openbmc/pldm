@@ -2,7 +2,7 @@
 
 Need `meson` and `ninja`. Alternatively, source an OpenBMC ARM/x86 SDK.
 
-```
+```bash
 meson setup build && ninja -C build
 ```
 
