@@ -2,6 +2,7 @@
 
 #include "oem_meta_file_io_type_bios_version.hpp"
 #include "oem_meta_file_io_type_post_code.hpp"
+#include "oem_meta_file_io_type_power_control.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/oem/meta/file_io.h>
@@ -25,6 +26,10 @@ std::unique_ptr<FileHandler>
                 messageTid, configurationDiscovery->getConfigurations());
         case BIOS_VERSION:
             return std::make_unique<BIOSVersionHandler>(
+                messageTid, configurationDiscovery->getConfigurations(),
+                dBusIntf);
+        case POWER_CONTROL:
+            return std::make_unique<PowerControlHandler>(
                 messageTid, configurationDiscovery->getConfigurations(),
                 dBusIntf);
         default:
@@ -51,6 +56,7 @@ Response FileIOHandler::writeFileIO(pldm_tid_t tid, const pldm_msg* request,
 
     if (rc != 0)
     {
+        error("Failed to decode OEM Meta file IO request, rc={RC}", "RC", rc);
         return ccOnlyResponse(request, rc);
     }
 
