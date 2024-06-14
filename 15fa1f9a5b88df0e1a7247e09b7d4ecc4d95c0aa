@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0af0abb9_3d570787",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-14T04:26:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36f16049_f1660a69",
+      "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26ea0554_7f54eb84",
@@ -120,6 +138,24 @@
       "side": 1,
       "message": "it would be good if we have unit test for each property, which reduce testing effort if functionality change.",
       "parentUuid": "99d27384_1729aa39",
+      "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80ef58fc_f50491c2",
+        "filename": "host-bmc/dbus/pcie_device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-14T04:26:15Z",
+      "side": 1,
+      "message": "I agree with you, it is always good to have unit tests. But implementing a function to run the unit test may not be a good idea. I have done the functionality test. Let me know if you have any suggestion here",
+      "parentUuid": "379a8384_26581549",
       "revId": "15fa1f9a5b88df0e1a7247e09b7d4ecc4d95c0aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
