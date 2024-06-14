@@ -39,6 +39,30 @@
       },
       "revId": "ea532a6d89e5f3f37aae79da936db9d7cc781070",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34bd15fc_31ffd3ae",
+        "filename": "host-bmc/dbus/cable.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-14T06:25:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5407a83a_26bfd77f",
+      "range": {
+        "startLine": 32,
+        "startChar": 10,
+        "endLine": 32,
+        "endChar": 34
+      },
+      "revId": "ea532a6d89e5f3f37aae79da936db9d7cc781070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

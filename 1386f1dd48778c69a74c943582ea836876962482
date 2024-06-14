@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "141d71c0_b856e846",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-14T06:25:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b847dc86_b0f3033f",
+      "revId": "1386f1dd48778c69a74c943582ea836876962482",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4893c6ec_f6624bdd",
@@ -53,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3900898_e3c2abc6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-14T06:25:48Z",
+      "side": 1,
+      "message": "`remote PLDM terminus` is used to mention that specifically we are talking to remote terminus which supports PLDM.",
+      "parentUuid": "84bb8565_a8533be0",
+      "revId": "1386f1dd48778c69a74c943582ea836876962482",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f414e6a4_3f5be3eb",
@@ -70,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fa03246_a88d025a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-14T06:25:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f414e6a4_3f5be3eb",
+      "revId": "1386f1dd48778c69a74c943582ea836876962482",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c971722_9aeef135",
@@ -83,6 +137,30 @@
       "writtenOn": "2024-06-07T14:14:40Z",
       "side": 1,
       "message": "can you add unit test case for this?",
+      "range": {
+        "startLine": 114,
+        "startChar": 17,
+        "endLine": 114,
+        "endChar": 35
+      },
+      "revId": "1386f1dd48778c69a74c943582ea836876962482",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "792dd577_1a52797a",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-14T06:25:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c971722_9aeef135",
       "range": {
         "startLine": 114,
         "startChar": 17,
