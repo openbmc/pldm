@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44523195_d069bbb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 106
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-14T03:38:26Z",
+      "side": 1,
+      "message": "Looks good to me. @pavithra - you have any more comments ?",
+      "revId": "e59779e345c9cff4ce049d6ff564758074a9aa5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
