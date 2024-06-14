@@ -16,6 +16,24 @@
       "message": "```\n    if (std::get\u003c0\u003e(mctpInfo) \u003d\u003d PLDM_TID_SPECIAL ||\n        std::get\u003c0\u003e(mctpInfo) \u003d\u003d PLDM_TID_RESERVED)\n    {\n        return std::nullopt;\n    }\n```\nThe above code is removed from `mapTid` because the first field of mctpInfo is `eid` but not TID.",
       "revId": "41791c5ae2e00ef7250fe28b224d514469ea45c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f549b53f_ec2d8627",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 107
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-14T11:24:37Z",
+      "side": 1,
+      "message": "\u003e ```\n\u003e     if (std::get\u003c0\u003e(mctpInfo) \u003d\u003d PLDM_TID_SPECIAL ||\n\u003e         std::get\u003c0\u003e(mctpInfo) \u003d\u003d PLDM_TID_RESERVED)\n\u003e     {\n\u003e         return std::nullopt;\n\u003e     }\n\u003e ```\nI checked code and the test cases again. These code are used to check the valid of EID in mctpInfo. As `table 2 Special endpoint IDs` the valid EID is from 8 to 254. So I updated those code as below\n```\n    if (std::get\u003c0\u003e(mctpInfo) \u003d\u003d MCTP_NULL_EID ||\n        std::get\u003c0\u003e(mctpInfo) \u003c MCTP_START_VALID_EID ||\n        std::get\u003c0\u003e(mctpInfo) \u003d\u003d MCTP_BROADCAST_EID)\n    {\n        return std::nullopt;\n    }\n```\nCurrently `MCTP_NULL_EID`, `MCTP_START_VALID_EID` and `MCTP_BROADCAST_EID` are added in common/type.hpp to avoid build error.\nwhile wait for the patch set https://gerrit.openbmc.org/c/openbmc/libpldm/+/72034",
+      "parentUuid": "ed30e1d8_928c1092",
+      "revId": "41791c5ae2e00ef7250fe28b224d514469ea45c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
