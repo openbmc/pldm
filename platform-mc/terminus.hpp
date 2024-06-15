@@ -127,6 +127,12 @@ class Terminus
         return terminusName;
     }
 
+    /** @brief The setter to set terminus's mctp medium */
+    void setTerminusName(std::string name)
+    {
+        terminusName = name;
+    }
+
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
 

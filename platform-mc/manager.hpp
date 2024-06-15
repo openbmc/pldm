@@ -9,6 +9,9 @@
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "terminus_manager.hpp"
 
+#include <filesystem>
+#include <string>
+
 namespace pldm
 {
 namespace platform_mc
@@ -34,7 +37,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      pldm::InstanceIdDb& instanceIdDb) :
         terminusManager(event, handler, instanceIdDb, termini, this),
         platformManager(terminusManager, termini)
-    {}
+    {
+        loadEidToMCTPMediumConfigs();
+    }
 
     /** @brief Helper function to do the actions before discovering terminus
      *
@@ -69,6 +74,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     }
 
   private:
+    /** @brief Loading the static Eid to MCTP Medium string.
+     *
+     */
+    void loadEidToMCTPMediumConfigs();
+
     /** @brief List of discovered termini */
     TerminiMapper termini{};
 
@@ -77,6 +87,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     /** @brief Platform interface for calling the hook functions */
     PlatformManager platformManager;
+
+    /*
+     * Mapping from MCTP EID to termini names
+     */
+    std::map<pldm_tid_t, std::string> eidToTerminiNames;
 };
 } // namespace platform_mc
 } // namespace pldm

@@ -2,6 +2,8 @@
 
 #include "terminus_manager.hpp"
 
+#include <linux/mctp.h>
+
 #include <phosphor-logging/lg2.hpp>
 
 #include <ranges>
@@ -37,6 +39,41 @@ exec::task<int> PlatformManager::initTerminus()
             terminus->parseTerminusPDRs();
         }
     }
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> PlatformManager::setTerminiNames(
+    std::map<pldm_tid_t, std::string> terminiNames)
+{
+    for (auto& [tid, terminus] : termini)
+    {
+        if (!terminus)
+        {
+            continue;
+        }
+        try
+        {
+            std::string name = "";
+            auto eid = MCTP_ADDR_NULL;
+            auto mctpInfo = terminusManager.toMctpInfo(tid);
+            if (mctpInfo)
+            {
+                eid = std::get<0>(mctpInfo.value());
+            }
+
+            if (pldm::utils::isValidEID(eid) && terminiNames.contains(eid))
+            {
+                name = terminiNames[eid];
+            }
+            terminus->setTerminusName(name);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("Failed to set Terminus Name TID: {TID}, error: {ERROR}",
+                       "TID", tid, "ERROR", e);
+        }
+    }
+
     co_return PLDM_SUCCESS;
 }
 

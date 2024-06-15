@@ -41,6 +41,14 @@ class PlatformManager
      */
     exec::task<int> initTerminus();
 
+    /** @brief Set the names for the terminus.
+     *
+     *  @param[in] terminiNames - List of termini names
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int>
+        setTerminiNames(std::map<pldm_tid_t, std::string> terminiNames);
+
   private:
     /** @brief Fetch all PDRs from terminus.
      *
