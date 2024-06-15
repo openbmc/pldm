@@ -1094,3 +1094,15 @@ TEST(ValidEID, allTestCases)
     rc = isValidEID(254);
     EXPECT_EQ(rc, true);
 }
+
+TEST(TrimNameForDbus, goodTest)
+{
+    std::string name = "Name with  space";
+    std::string expectedName = "Name_with__space";
+    std::string result = trimNameForDbus(name);
+    EXPECT_EQ(expectedName, result);
+    name = "Name 1\0";
+    expectedName = "Name_1";
+    result = trimNameForDbus(name);
+    EXPECT_EQ(expectedName, result);
+}
