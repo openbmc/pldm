@@ -671,5 +671,15 @@ void setFruPresence(const std::string& fruObjPath, bool present)
     }
 }
 
+std::string_view trimNameForDbus(std::string& name)
+{
+    std::replace(name.begin(), name.end(), ' ', '_');
+    auto nullTerminatorPos = name.find('\0');
+    if (nullTerminatorPos != std::string::npos)
+    {
+        name.erase(nullTerminatorPos);
+    }
+    return name;
+}
 } // namespace utils
 } // namespace pldm
