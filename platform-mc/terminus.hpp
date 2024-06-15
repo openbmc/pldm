@@ -21,6 +21,10 @@ namespace pldm
 namespace platform_mc
 {
 
+using ContainerID = uint16_t;
+using EntityInstanceNumber = uint16_t;
+using EntityName = std::string;
+using EntityType = uint16_t;
 using SensorId = uint16_t;
 using SensorCnt = uint8_t;
 using NameLanguageTag = std::string;
@@ -28,6 +32,29 @@ using SensorName = std::string;
 using SensorAuxiliaryNames = std::tuple<
     SensorId, SensorCnt,
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
+
+/** @struct EntityKey
+ *
+ *  EntityKey uniquely identifies the PLDM entity and a combination of Entity
+ *  Type, Entity Instance Number, Entity Container ID
+ *
+ */
+struct EntityKey
+{
+    EntityType type;                  //!< Entity type
+    EntityInstanceNumber instanceIdx; //!< Entity instance number
+    ContainerID containerId;          //!< Entity container ID
+
+    bool operator==(const EntityKey& e) const
+    {
+        return ((type == e.type) && (instanceIdx == e.instanceIdx) &&
+                (containerId == e.containerId));
+    }
+};
+
+using AuxiliaryNames = std::vector<std::pair<NameLanguageTag, std::string>>;
+using EntityKey = struct EntityKey;
+using EntityAuxiliaryNames = std::tuple<EntityKey, AuxiliaryNames>;
 
 /**
  * @brief Terminus
@@ -90,6 +117,12 @@ class Terminus
         return tid;
     }
 
+    /** @brief The getter to get terminus's mctp medium */
+    std::string_view getTerminusName()
+    {
+        return terminusName;
+    }
+
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
 
@@ -104,6 +137,12 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorId id);
 
   private:
+    /** @brief Find the Terminus Name from the Entity Auxiliary name list
+     *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
+     *  @return terminus name in string option
+     */
+    std::optional<std::string_view> findTerminusName();
+
     /** @brief Parse the numeric sensor PDRs
      *
      *  @param[in] pdrData - the response PDRs from GetPDR command
@@ -119,6 +158,14 @@ class Terminus
      */
     std::shared_ptr<SensorAuxiliaryNames>
         parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
+
+    /** @brief Parse the Entity Auxiliary name PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to Entity Auxiliary name info struct
+     */
+    std::shared_ptr<EntityAuxiliaryNames>
+        parseEntityAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
 
     /** @brief Parse the compact numeric sensor PDRs
      *
@@ -155,6 +202,13 @@ class Terminus
     /* @brief Sensor Auxiliary Name list */
     std::vector<std::shared_ptr<SensorAuxiliaryNames>>
         sensorAuxiliaryNamesTbl{};
+
+    /* @brief Entity Auxiliary Name list */
+    std::vector<std::shared_ptr<EntityAuxiliaryNames>>
+        entityAuxiliaryNamesTbl{};
+
+    /** @brief Terminus name */
+    EntityName terminusName{};
 };
 } // namespace platform_mc
 } // namespace pldm

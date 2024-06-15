@@ -526,5 +526,15 @@ bool checkIfLogicalBitSet(const uint16_t& containerId);
  *  @param[in] present - status to set either true/false
  */
 void setFruPresence(const std::string& fruObjPath, bool present);
+
+/** @brief Trim `\0` in string and replace ` ` by `_` to use name in D-Bus
+ *         object path
+ *
+ *  @param[in] name - the input string
+ *
+ *  @return the result string
+ */
+std::string_view trimNameForDbus(std::string& name);
+
 } // namespace utils
 } // namespace pldm
