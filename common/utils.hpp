@@ -526,5 +526,13 @@ bool checkIfLogicalBitSet(const uint16_t& containerId);
  *  @param[in] present - status to set either true/false
  */
 void setFruPresence(const std::string& fruObjPath, bool present);
+
+/** @brief Check string length of char16 pointer
+ *
+ *  @param[in] startptr - char16 pointer
+ *
+ *  @return length of char16 string
+ */
+size_t str16len(char16_t* startptr);
 } // namespace utils
 } // namespace pldm
