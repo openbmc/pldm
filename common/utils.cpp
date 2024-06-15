@@ -671,5 +671,15 @@ void setFruPresence(const std::string& fruObjPath, bool present)
     }
 }
 
+size_t str16len(char16_t* startptr)
+{
+    char16_t* endptr = startptr;
+    while (*endptr)
+    {
+        endptr++;
+    }
+    return endptr - startptr;
+}
+
 } // namespace utils
 } // namespace pldm
