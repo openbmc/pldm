@@ -4,6 +4,8 @@
 
 #include "terminus_manager.hpp"
 
+#include <common/utils.hpp>
+
 #include <ranges>
 
 namespace pldm
@@ -49,6 +51,30 @@ bool Terminus::doesSupportCommand(uint8_t type, uint8_t command)
     }
 
     return false;
+}
+
+std::optional<std::string_view> Terminus::findTerminusName()
+{
+    auto it = std::find_if(
+        entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
+        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+        const auto& [key, entityNames] = *entityAuxiliaryNames;
+        return (entityAuxiliaryNames &&
+                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
+                key.instanceIdx == 1 && entityNames.size());
+    });
+
+    if (it != entityAuxiliaryNamesTbl.end())
+    {
+        const auto& [key, entityNames] = **it;
+        if (!entityNames.size())
+        {
+            return std::nullopt;
+        }
+        return entityNames[0].second;
+    }
+
+    return std::nullopt;
 }
 
 void Terminus::parseTerminusPDRs()
@@ -115,6 +141,20 @@ void Terminus::parseTerminusPDRs()
                 sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));
                 break;
             }
+            case PLDM_ENTITY_AUXILIARY_NAMES_PDR:
+            {
+                auto entityNames = parseEntityAuxiliaryNamesPDR(pdr);
+                if (!entityNames)
+                {
+                    lg2::error(
+                        "Failed to parse sensor name PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                entityAuxiliaryNamesTbl.emplace_back(std::move(entityNames));
+                break;
+            }
             default:
             {
                 lg2::error("Unsupported PDR with type {TYPE} handle {HANDLE}",
@@ -123,6 +163,14 @@ void Terminus::parseTerminusPDRs()
                 break;
             }
         }
+    }
+
+    auto tName = findTerminusName();
+    if (tName && !tName.value().empty())
+    {
+        lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
+                  "NAME", tName.value());
+        setTerminusName(static_cast<std::string>(tName.value()));
     }
 }
 
@@ -151,15 +199,14 @@ std::shared_ptr<SensorAuxiliaryNames>
     auto pdr = reinterpret_cast<const struct pldm_sensor_auxiliary_names_pdr*>(
         pdrData.data());
     const uint8_t* ptr = pdr->names;
-    std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>
-        sensorAuxNames{};
+    std::vector<AuxiliaryNames> sensorAuxNames{};
     char16_t alignedBuffer[PLDM_STR_UTF_16_MAX_LEN];
     for ([[maybe_unused]] const auto& sensor :
          std::views::iota(0, static_cast<int>(pdr->sensor_count)))
     {
         const uint8_t nameStringCount = static_cast<uint8_t>(*ptr);
         ptr += sizeof(uint8_t);
-        std::vector<std::pair<NameLanguageTag, SensorName>> nameStrings{};
+        AuxiliaryNames nameStrings{};
         for ([[maybe_unused]] const auto& count :
              std::views::iota(0, static_cast<int>(nameStringCount)))
         {
@@ -192,12 +239,7 @@ std::shared_ptr<SensorAuxiliaryNames>
                 std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
                                      char16_t>{}
                     .to_bytes(u16NameString);
-            std::replace(nameString.begin(), nameString.end(), ' ', '_');
-            auto nullTerminatorPos = nameString.find('\0');
-            if (nullTerminatorPos != std::string::npos)
-            {
-                nameString.erase(nullTerminatorPos);
-            }
+            nameString = pldm::utils::trimNameForDbus(nameString);
             nameStrings.emplace_back(
                 std::make_pair(nameLanguageTag, nameString));
         }
@@ -205,6 +247,69 @@ std::shared_ptr<SensorAuxiliaryNames>
     }
     return std::make_shared<SensorAuxiliaryNames>(
         pdr->sensor_id, pdr->sensor_count, std::move(sensorAuxNames));
+}
+
+std::shared_ptr<EntityAuxiliaryNames>
+    Terminus::parseEntityAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData)
+{
+    auto names_offset = sizeof(struct pldm_pdr_hdr) +
+                        PLDM_PDR_ENTITY_AUXILIARY_NAME_PDR_MIN_LENGTH;
+    auto names_size = pdrData.size() - names_offset;
+
+    size_t decodedPdrSize = sizeof(struct pldm_entity_auxiliary_names_pdr) +
+                            names_size;
+    auto vPdr = std::vector<char>(decodedPdrSize);
+    auto decodedPdr =
+        reinterpret_cast<struct pldm_entity_auxiliary_names_pdr*>(vPdr.data());
+
+    auto rc = decode_entity_auxiliary_names_pdr(pdrData.data(), pdrData.size(),
+                                                decodedPdr, decodedPdrSize);
+
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode Entity Auxiliary Name PDR data, error {RC}.",
+            "RC", rc);
+        return nullptr;
+    }
+
+    auto vNames =
+        std::vector<pldm_entity_auxiliary_name>(decodedPdr->name_string_count);
+    decodedPdr->names = vNames.data();
+
+    rc = decode_pldm_entity_auxiliary_names_pdr_index(decodedPdr);
+    if (rc)
+    {
+        lg2::error("Failed to decode Entity Auxiliary Name, error {RC}.", "RC",
+                   rc);
+        return nullptr;
+    }
+
+    AuxiliaryNames nameStrings{};
+    for (const auto& count :
+         std::views::iota(0, static_cast<int>(decodedPdr->name_string_count)))
+    {
+        std::string_view nameLanguageTag =
+            static_cast<std::string_view>(decodedPdr->names[count].tag);
+        const size_t u16NameStringLen =
+            std::char_traits<char16_t>::length(decodedPdr->names[count].name);
+        std::u16string u16NameString(decodedPdr->names[count].name,
+                                     u16NameStringLen);
+        std::transform(u16NameString.cbegin(), u16NameString.cend(),
+                       u16NameString.begin(),
+                       [](uint16_t utf16) { return be16toh(utf16); });
+        std::string nameString =
+            std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}
+                .to_bytes(u16NameString);
+        nameString = pldm::utils::trimNameForDbus(nameString);
+        nameStrings.emplace_back(std::make_pair(nameLanguageTag, nameString));
+    }
+
+    EntityKey key{decodedPdr->container.entity_type,
+                  decodedPdr->container.entity_instance_num,
+                  decodedPdr->container.entity_container_id};
+
+    return std::make_shared<EntityAuxiliaryNames>(key, nameStrings);
 }
 
 std::shared_ptr<pldm_numeric_sensor_value_pdr>
@@ -225,7 +330,7 @@ std::shared_ptr<SensorAuxiliaryNames>
 {
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>
         sensorAuxNames{};
-    std::vector<std::pair<NameLanguageTag, SensorName>> nameStrings{};
+    AuxiliaryNames nameStrings{};
     auto pdr =
         reinterpret_cast<const pldm_compact_numeric_sensor_pdr*>(sPdr.data());
 
@@ -244,12 +349,7 @@ std::shared_ptr<SensorAuxiliaryNames>
 
     std::string nameString(reinterpret_cast<const char*>(pdr->sensor_name),
                            pdr->sensor_name_length);
-    std::replace(nameString.begin(), nameString.end(), ' ', '_');
-    auto nullTerminatorPos = nameString.find('\0');
-    if (nullTerminatorPos != std::string::npos)
-    {
-        nameString.erase(nullTerminatorPos);
-    }
+    nameString = pldm::utils::trimNameForDbus(nameString);
     nameStrings.emplace_back(std::make_pair("en", nameString));
     sensorAuxNames.emplace_back(std::move(nameStrings));
 
