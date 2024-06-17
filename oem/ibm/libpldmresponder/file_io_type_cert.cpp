@@ -198,7 +198,7 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
             catch (const std::exception& e)
             {
                 error(
-                    "Failed to write the set status property for certficate entry, error - {ERROR}",
+                    "Failed to write the set status property for certificate entry, error - {ERROR}",
                     "ERROR", e);
                 return PLDM_ERROR;
             }

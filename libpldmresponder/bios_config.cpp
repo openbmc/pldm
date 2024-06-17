@@ -1079,7 +1079,7 @@ uint16_t BIOSConfig::findAttrHandle(const std::string& attrName)
         }
     }
 
-    throw std::invalid_argument("Unknow attribute Name");
+    throw std::invalid_argument("Unknown attribute Name");
 }
 
 void BIOSConfig::constructPendingAttribute(

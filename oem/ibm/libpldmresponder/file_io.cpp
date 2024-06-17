@@ -100,7 +100,7 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
     {
         rc = -errno;
         error(
-            "Failed to execute the DMA operation for transfering remote terminus data to socket at address '{ADDRESS}' and length '{LENGTH}' with response code '{RC}'",
+            "Failed to execute the DMA operation for transferring remote terminus data to socket at address '{ADDRESS}' and length '{LENGTH}' with response code '{RC}'",
             "RC", rc, "ADDRESS", address, "LENGTH", length);
         return rc;
     }
@@ -112,7 +112,7 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
         rc = -errno;
         close(fd);
         error(
-            "Failed to write to Unix socket, closing socket for transfering remote terminus data to socket with response code '{RC}'",
+            "Failed to write to Unix socket, closing socket for transferring remote terminus data to socket with response code '{RC}'",
             "RC", rc);
         return rc;
     }

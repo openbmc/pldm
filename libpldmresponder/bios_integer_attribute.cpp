@@ -37,7 +37,7 @@ BIOSIntegerAttribute::BIOSIntegerAttribute(const Json& entry,
     if (rc != PLDM_SUCCESS)
     {
         error(
-            "Wrong field for integer attribute '{ATTRIBUTE}', error '{ERROR}', lower bound '{LOW_BOUND}', upper bound '{UPPER_BOUND}', default value '{DEFAULT_VALUE}' and scalar increament '{SCALAR_INCREMENT}'",
+            "Wrong field for integer attribute '{ATTRIBUTE}', error '{ERROR}', lower bound '{LOW_BOUND}', upper bound '{UPPER_BOUND}', default value '{DEFAULT_VALUE}' and scalar increment '{SCALAR_INCREMENT}'",
             "ATTRIBUTE", attr, "ERROR", errmsg, "LOW_BOUND",
             integerInfo.lowerBound, "UPPER_BOUND", integerInfo.upperBound,
             "DEFAULT_VALUE", integerInfo.defaultValue, "SCALAR_INCREMENT",

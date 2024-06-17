@@ -75,7 +75,7 @@ uint8_t getStateSensorEventState(
  *  @param[out] stateField - The state field data for each of the states,
  *              equal to composite sensor count in number
  *  @return - Success or failure in setting the states. Returns failure in
- * terms of PLDM completion codes if atleast one state fails to be set
+ * terms of PLDM completion codes if at least one state fails to be set
  */
 template <class DBusInterface, class Handler>
 int getStateSensorReadingsHandler(

@@ -60,11 +60,11 @@ static inline void DisplayInJson(const ordered_json& data)
     std::cout << data.dump(4) << std::endl;
 }
 
-/** @brief MCTP socket read/recieve
+/** @brief MCTP socket read/receive
  *
  *  @param[in]  requestMsg - Request message to compare against loopback
- *              message recieved from mctp socket
- *  @param[out] responseMsg - Response buffer recieved from mctp socket
+ *              message received from mctp socket
+ *  @param[out] responseMsg - Response buffer received from mctp socket
  *  @param[in]  pldmVerbose - verbosity flag - true/false
  *
  *  @return -   0 on success.

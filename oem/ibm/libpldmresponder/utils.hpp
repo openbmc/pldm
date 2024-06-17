@@ -30,7 +30,7 @@ int setupUnixSocket(const std::string& socketInterface);
  *  @param[in] sock - unix socket
  *  @param[in] buf -  data buffer
  *  @param[in] blockSize - size of data to write
- *  @return   on success retruns  0
+ *  @return   on success returns  0
  *            on failure returns -1
 
  */

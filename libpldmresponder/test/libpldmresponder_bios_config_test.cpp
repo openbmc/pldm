@@ -27,7 +27,7 @@ using ::testing::Throw;
 class TestBIOSConfig : public ::testing::Test
 {
   public:
-    static void SetUpTestCase() // will execute once at the begining of all
+    static void SetUpTestCase() // will execute once at the beginning of all
                                 // TestBIOSConfig objects
     {
         char tmpdir[] = "/tmp/BIOSTables.XXXXXX";
@@ -305,7 +305,7 @@ TEST_F(TestBIOSConfig, setAttrValueFailure)
         0,   0,             /* attr handle */
         1,                  /* attr type string read-write */
         4,   0,             /* current string length */
-        'a', 'b', 'c', 'd', /* defaut value string handle index */
+        'a', 'b', 'c', 'd', /* default value string handle index */
     };
 
     uint16_t attrHandle{10};
@@ -351,7 +351,7 @@ TEST_F(TestBIOSConfig, setAttrValue)
         0,   0,             /* attr handle */
         1,                  /* attr type string read-write */
         4,   0,             /* current string length */
-        'a', 'b', 'c', 'd', /* defaut value string handle index */
+        'a', 'b', 'c', 'd', /* default value string handle index */
     };
 
     attrValueEntry[0] = attrHandle & 0xff;

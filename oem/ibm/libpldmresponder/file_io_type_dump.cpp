@@ -265,7 +265,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
             catch (const std::exception& e)
             {
                 error(
-                    "Failed to make a D-bus call to DUMP manager for reseting source dump file '{PATH}' on interface '{INTERFACE}', error - {ERROR}",
+                    "Failed to make a D-bus call to DUMP manager for resetting source dump file '{PATH}' on interface '{INTERFACE}', error - {ERROR}",
                     "PATH", path, "INTERFACE", dumpIntf, "ERROR", e);
                 pldm::utils::reportError(
                     "xyz.openbmc_project.bmc.PLDM.fileAck.SourceDumpIdResetFail");
