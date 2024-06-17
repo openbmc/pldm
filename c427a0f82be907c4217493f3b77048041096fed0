@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee38f7a_1329bea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-17T08:21:26Z",
+      "side": 1,
+      "message": "I verified the patch set with multiple parts PDRs in Ampere system. The pldmtool can get all parts.\nGreat patch set.",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5398eb6d_6712ff06",
@@ -31,6 +48,23 @@
       "writtenOn": "2024-06-17T06:53:10Z",
       "side": 1,
       "message": "Should use `transfer_resp_flag` definition in libpldm.\nAbout `start` flag, DSP0248 section GetPDRs, transferFlag field (Start \u003d 0x00). But in DSP0240, table `MultipartSend command format` transferFlag field , START \u003d 1 as definition in transfer_resp_flag.\nSo I suggest to use the definition in DSP0240.",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20eb0643_4758ef2f",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-17T08:21:26Z",
+      "side": 1,
+      "message": "Can we use c++ type casting?",
       "revId": "c427a0f82be907c4217493f3b77048041096fed0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
