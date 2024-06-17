@@ -109,7 +109,7 @@ TEST_F(TestBIOSEnumAttribute, ConstructEntry)
         2,    0, /* possible value handle */
         3,    0, /* possible value handle */
         1,       /* number of default value */
-        1        /* defaut value string handle index */
+        1        /* default value string handle index */
     };
 
     std::vector<uint8_t> expectedAttrValueEntry{
@@ -214,7 +214,7 @@ TEST_F(TestBIOSEnumAttribute, setAttrValueOnDbus)
         2, 0, /* possible value handle */
         3, 0, /* possible value handle */
         1,    /* number of default value */
-        1     /* defaut value string handle index */
+        1     /* default value string handle index */
     };
 
     ON_CALL(biosStringTable, findString(2))

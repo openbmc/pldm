@@ -698,7 +698,7 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
 
         if (!stringTable || !attrTable)
         {
-            std::cout << "StringTable/AttrTable Unavaliable" << std::endl;
+            std::cout << "StringTable/AttrTable Unavailable" << std::endl;
             return;
         }
 
@@ -792,7 +792,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
 
         if (!stringTable || !attrTable)
         {
-            std::cout << "StringTable/AttrTable Unavaliable" << std::endl;
+            std::cout << "StringTable/AttrTable Unavailable" << std::endl;
             return;
         }
 

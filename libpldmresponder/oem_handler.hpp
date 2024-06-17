@@ -28,7 +28,7 @@ class Handler : public CmdHandler
      *                           equal to composite sensor count in number
      *
      *  @return - Success or failure in getting the states. Returns failure in
-     *            terms of PLDM completion codes if fetching atleast one state
+     *            terms of PLDM completion codes if fetching at least one state
      *            fails
      */
     virtual int getOemStateSensorReadingsHandler(
@@ -51,7 +51,7 @@ class Handler : public CmdHandler
      *  @param[in] effecterId - Effecter id
      *
      *  @return - Success or failure in setting the states.Returns failure in
-     *            terms of PLDM completion codes if atleast one state fails to
+     *            terms of PLDM completion codes if at least one state fails to
      *            be set
      */
     virtual int oemSetStateEffecterStatesHandler(

@@ -107,7 +107,7 @@ TEST_F(TestBIOSIntegerAttribute, ConstructEntry)
         1,    0, 0, 0, 0, 0, 0, 0, /* lower bound */
         15,   0, 0, 0, 0, 0, 0, 0, /* upper bound */
         1,    0, 0, 0,             /* scalar increment */
-        2,    0, 0, 0, 0, 0, 0, 0, /* defaut value */
+        2,    0, 0, 0, 0, 0, 0, 0, /* default value */
     };
     std::vector<uint8_t> expectedAttrValueEntry{
         0,    0,                   /* attr handle */

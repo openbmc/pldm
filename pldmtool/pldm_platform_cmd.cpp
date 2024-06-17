@@ -43,7 +43,7 @@ static const std::map<uint8_t, std::string> sensorOpState{
     {PLDM_SENSOR_UNAVAILABLE, "Sensor Unavailable"},
     {PLDM_SENSOR_STATUSUNKOWN, "Sensor Status Unknown"},
     {PLDM_SENSOR_FAILED, "Sensor Failed"},
-    {PLDM_SENSOR_INITIALIZING, "Sensor Sensor Intializing"},
+    {PLDM_SENSOR_INITIALIZING, "Sensor Sensor Initializing"},
     {PLDM_SENSOR_SHUTTINGDOWN, "Sensor Shutting down"},
     {PLDM_SENSOR_INTEST, "Sensor Intest"}};
 

@@ -86,7 +86,7 @@ class StateSensorHandler
     StateSensorHandler() = delete;
 
     /** @brief Parse the event state sensor configuration JSON file and build
-     *         the lookup data stucture.
+     *         the lookup data structure.
      *
      *  @param[in] dirPath - directory path which has the config JSONs
      */

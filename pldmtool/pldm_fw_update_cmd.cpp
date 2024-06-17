@@ -41,7 +41,7 @@ const std::map<uint8_t, const char*> fdAuxStateStatus{
     {PLDM_FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS,
      "AuxState is In Progress or Success"},
     {PLDM_FD_TIMEOUT, "Timeout occurred while performing action"},
-    {PLDM_FD_GENERIC_ERROR, "Generic Error has occured"}};
+    {PLDM_FD_GENERIC_ERROR, "Generic Error has occurred"}};
 
 const std::map<uint8_t, const char*> fdReasonCode{
     {PLDM_FD_INITIALIZATION, "Initialization of firmware device has occurred"},

@@ -320,7 +320,7 @@ class Handler : public CmdHandler
      *  @param[in] stateField - The state field data for each of the states,
      * equal to composite effecter count in number
      *  @return - Success or failure in setting the states. Returns failure in
-     * terms of PLDM completion codes if atleast one state fails to be set
+     * terms of PLDM completion codes if at least one state fails to be set
      */
     template <class DBusInterface>
     int setStateEffecterStatesHandler(

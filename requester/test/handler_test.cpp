@@ -16,7 +16,7 @@
 using namespace pldm::requester;
 using namespace std::chrono;
 
-using ::testing::AtLeast;
+using ::testing::Atleast;
 using ::testing::Between;
 using ::testing::Exactly;
 using ::testing::NiceMock;

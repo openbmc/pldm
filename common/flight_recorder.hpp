@@ -61,7 +61,7 @@ class FlightRecorder
 
     /** @brief Add records to the flightRecorder
      *
-     *  @param[in] buffer  - The request/respose byte buffer
+     *  @param[in] buffer  - The request/response byte buffer
      *  @param[in] isRequest - bool that captures if it is a request message or
      *                         a response message
      *

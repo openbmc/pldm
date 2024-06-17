@@ -66,7 +66,7 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
         std::string s = tmpObj.top();
         tmpObj.pop();
     }
-    // Update pldm entity to assocition tree
+    // Update pldm entity to association tree
     std::string prePath = tmpObjPaths.top();
     while (!tmpObjPaths.empty())
     {
@@ -245,7 +245,7 @@ std::string FruImpl::populatefwVersion()
     }
     catch (const std::exception& e)
     {
-        error("Failed to make a d-bus call Asociation, error - {ERROR}",
+        error("Failed to make a d-bus call Association, error - {ERROR}",
               "ERROR", e);
         return {};
     }

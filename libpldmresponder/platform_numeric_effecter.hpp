@@ -242,7 +242,7 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>>
  *  @param[in] effecterValueLength - The setting value length of numeric
  *              effecter being requested.
  *  @return - Success or failure in setting the states. Returns failure in
- * terms of PLDM completion codes if atleast one state fails to be set
+ * terms of PLDM completion codes if at least one state fails to be set
  */
 template <class DBusInterface, class Handler>
 int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
@@ -344,7 +344,7 @@ int setNumericEffecterValueHandler(const DBusInterface& dBusIntf,
  *  @param[in] PropertyValue - D-Bus Value
  *  @param[in] effecterDataSize - effecter value size.
  *  @param[in,out] responsePtr - Response of getNumericEffecterValue.
- *  @param[in] responsePayloadLength - reponse length.
+ *  @param[in] responsePayloadLength - response length.
  *  @param[in] instanceId - instance id for response
  *
  *  @return PLDM_SUCCESS/PLDM_ERROR
@@ -427,7 +427,7 @@ int getEffecterValue(T propertyValue, uint8_t effecterDataSize,
  *  @param[in] PropertyValue - Variant contains the D-Bus Value
  *  @param[in] effecterDataSize - effecter value size.
  *  @param[in,out] responsePtr - Response of getNumericEffecterValue.
- *  @param[in] responsePayloadLength - reponse length.
+ *  @param[in] responsePayloadLength - response length.
  *  @param[in] instanceId - instance id for response
  *
  *  @return PLDM_SUCCESS/PLDM_ERROR

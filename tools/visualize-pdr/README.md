@@ -17,8 +17,8 @@ system at any given point in time.
   - Graphviz is open source graph visualization software. Graph visualization is
     a way of representing structural information as diagrams of abstract graphs
     and networks.
-  - There are standard package availabe for graphviz for both rpm based as well
-    as the debian based sytems, it can be installed using :
+  - There are standard package available for graphviz for both rpm based as well
+    as the debian based systems, it can be installed using :
 
 ```bash
    RPM Distro : sudo dnf install graphviz

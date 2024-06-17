@@ -103,7 +103,7 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
         0,    0,        /* attr handle */
         0x81,           /* attr type string read-only */
         3,    0,        /* current string length */
-        'a',  'b', 'c', /* defaut value string handle index */
+        'a',  'b', 'c', /* default value string handle index */
     };
 
     ON_CALL(biosStringTable, findHandle(StrEq("str_example1")))
@@ -154,7 +154,7 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
         0,   0,             /* attr handle */
         1,                  /* attr type string read-write */
         4,   0,             /* current string length */
-        'a', 'b', 'c', 'd', /* defaut value string handle index */
+        'a', 'b', 'c', 'd', /* default value string handle index */
     };
 
     checkConstructEntry(stringReadWrite, biosStringTable, expectedAttrEntry,
@@ -191,7 +191,7 @@ TEST_F(TestBIOSStringAttribute, setAttrValueOnDbus)
         0,   0,             /* attr handle */
         1,                  /* attr type string read-write */
         4,   0,             /* current string length */
-        'a', 'b', 'c', 'd', /* defaut value string handle index */
+        'a', 'b', 'c', 'd', /* default value string handle index */
     };
     auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
         attrValueEntry.data());

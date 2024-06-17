@@ -40,7 +40,7 @@ BIOSAttribute::BIOSAttribute(const Json& entry,
     }
     catch (const std::exception&)
     {
-        // No action required, dBusMap whill have no value
+        // No action required, dBusMap will have no value
     }
 }
 

@@ -637,7 +637,7 @@ struct SendRecvMsgSender
  *  @param[in] eid - endpoint ID of the remote MCTP endpoint
  *  @param[in] request - PLDM request message
  *
- *  @return The reponse message and response message length.
+ *  @return The response message and response message length.
  */
 template <class RequestInterface>
 stdexec::sender auto

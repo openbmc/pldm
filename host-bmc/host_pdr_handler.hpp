@@ -117,7 +117,7 @@ class HostPDRHandler
      *
      *  @param[in] entry - TerminusID and SensorID
      *
-     *  @return SensorInfo corresponding to the input paramter SensorEntry
+     *  @return SensorInfo corresponding to the input parameter SensorEntry
      *          throw std::out_of_range exception if not found
      */
     const pdr::SensorInfo& lookupSensorInfo(const SensorEntry& entry) const

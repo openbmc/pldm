@@ -415,7 +415,7 @@ void PCIeInfoHandler::parseTopologyData()
             htobe16(singleEntryData->entryLength));
     }
     // Need to call cable info at the end , because we dont want to parse
-    // cable info without parsing the successfull topology successfully
+    // cable info without parsing the successful topology successfully
     // Having partial information is of no use.
     parseCableInfo();
 }

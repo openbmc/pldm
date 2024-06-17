@@ -32,7 +32,7 @@ class InventoryManager
      *
      *  @param[in] handler - PLDM request handler
      *  @param[in] instanceIdDb - Managing instance ID for PLDM requests
-     *  @param[out] descriptorMap - Populate the firmware identifers for the
+     *  @param[out] descriptorMap - Populate the firmware identifiers for the
      *                              FDs managed by the BMC.
      *  @param[out] componentInfoMap - Populate the component info for the FDs
      *                                 managed by the BMC.

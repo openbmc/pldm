@@ -292,7 +292,7 @@ void HostPDRHandler::mergeEntityAssociations(
         pldm_find_entity_ref_in_tree(entityTree, entities[0], &node);
         if (node == nullptr)
         {
-            error("Failed to find referrence of the entity in the tree");
+            error("Failed to find reference of the entity in the tree");
         }
         else
         {
@@ -1043,7 +1043,7 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
         {
             fruRecordData.clear();
 
-            error("Failed to parse fru recrod data format.");
+            error("Failed to parse fru record data format.");
             return;
         }
 

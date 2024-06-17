@@ -446,7 +446,7 @@ void pldm::responder::oem_ibm_platform::Handler::updateOemDbusPaths(
     while (pos1 != std::string::npos)
     {
         size_t pos2 = dbusPath.substr(pos1 + 1).find('/') + 1;
-        // Replacing starting from substring to next occurence of char '/'
+        // Replacing starting from substring to next occurrence of char '/'
         dbusPath.replace(pos1, pos2 + 1, "");
         pos1 = dbusPath.find(toFind);
     }

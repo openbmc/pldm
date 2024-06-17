@@ -93,7 +93,7 @@ uint8_t getNumPadBytes(uint32_t data);
  *  @param[out] hour - number of hours in dec
  *  @param[out] min - number of minutes in dec
  *  @param[out] sec - number of seconds in dec
- *  @return true if decode success, false if decode faild
+ *  @return true if decode success, false if decode failed
  */
 bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
                 uint8_t* hour, uint8_t* min, uint8_t* sec);

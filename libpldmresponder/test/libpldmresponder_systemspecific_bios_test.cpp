@@ -27,7 +27,7 @@ using ::testing::Throw;
 class TestSystemSpecificBIOSConfig : public ::testing::Test
 {
   public:
-    static void SetUpTestCase() // will execute once at the begining of all
+    static void SetUpTestCase() // will execute once at the beginning of all
                                 // TestSystemSpecificBIOSConfig objects
     {
         char tmpdir[] = "/tmp/BIOSTables.XXXXXX";
@@ -386,7 +386,7 @@ TEST_F(TestSystemSpecificBIOSConfig, setAttrValueFailure)
         0,   0,             /* attr handle */
         1,                  /* attr type string read-write */
         4,   0,             /* current string length */
-        'a', 'b', 'c', 'd', /* defaut value string handle index */
+        'a', 'b', 'c', 'd', /* default value string handle index */
     };
 
     uint16_t attrHandle{10};
@@ -395,7 +395,7 @@ TEST_F(TestSystemSpecificBIOSConfig, setAttrValueFailure)
 
     auto rc = biosConfig.setAttrValue(attrValueEntry.data(),
                                       attrValueEntry.size(), false);
-    std::cout << "Error in settig Attribute " << rc << std::endl;
+    std::cout << "Error in setting Attribute " << rc << std::endl;
     EXPECT_EQ(rc, PLDM_BIOS_TABLE_UNAVAILABLE);
 }
 
@@ -436,7 +436,7 @@ TEST_F(TestSystemSpecificBIOSConfig, setAttrValue)
         0,   0,             /* attr handle */
         1,                  /* attr type string read-write */
         4,   0,             /* current string length */
-        'a', 'b', 'c', 'd', /* defaut value string handle index */
+        'a', 'b', 'c', 'd', /* default value string handle index */
     };
 
     attrValueEntry[0] = attrHandle & 0xff;
