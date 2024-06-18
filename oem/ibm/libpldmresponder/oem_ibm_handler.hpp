@@ -94,7 +94,7 @@ class Handler : public oem_platform::Handler
             }
         });
 
-        powerStateOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+        powerStateOffMatch = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/chassis0",
                               "xyz.openbmc_project.State.Chassis"),
