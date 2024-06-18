@@ -47,10 +47,9 @@ class Handler : public oem_platform::Handler
             uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
             sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
-        oem_platform::Handler(dBusIntf),
-        codeUpdate(codeUpdate), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), instanceIdDb(instanceIdDb), event(event),
-        handler(handler),
+        oem_platform::Handler(dBusIntf), codeUpdate(codeUpdate),
+        platformHandler(nullptr), mctp_fd(mctp_fd), mctp_eid(mctp_eid),
+        instanceIdDb(instanceIdDb), event(event), handler(handler),
         timer(event, std::bind(std::mem_fn(&Handler::setSurvTimer), this,
                                HYPERVISOR_TID, false)),
         hostTransitioningToOff(true)
@@ -94,7 +93,7 @@ class Handler : public oem_platform::Handler
             }
         });
 
-        powerStateOffMatch = std::make_unique<sdbusplus::bus::match::match>(
+        powerStateOffMatch = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/chassis0",
                               "xyz.openbmc_project.State.Chassis"),
