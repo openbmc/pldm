@@ -5,7 +5,7 @@ host_bmc_test_src = declare_dependency(
 test_sources = [
   '../../common/utils.cpp',
   '../utils.cpp',
-  '../custom_dbus.cpp',
+  '../dbus/custom_dbus.cpp',
 ]
 
 tests = [
