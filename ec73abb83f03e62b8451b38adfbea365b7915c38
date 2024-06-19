@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fa6120d_f70d7a99",
+        "filename": "common/types.hpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-19T09:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bed12a87_476fa027",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 23
+      },
+      "revId": "ec73abb83f03e62b8451b38adfbea365b7915c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9db8db08_a3d91945",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-06-19T05:25:45Z",
       "side": 1,
       "message": "move this to common/util function and name it as `bool isValidEID()` which checks the range and returns true or false ?  and also add a unit test for it ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 5
+      },
+      "revId": "ec73abb83f03e62b8451b38adfbea365b7915c38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bc98090_0f1c29df",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 110
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-06-19T09:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9db8db08_a3d91945",
       "range": {
         "startLine": 38,
         "startChar": 4,
