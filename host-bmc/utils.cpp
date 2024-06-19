@@ -1,8 +1,8 @@
 #include "common/utils.hpp"
 
-#include "libpldm/entity.h"
-
 #include "utils.hpp"
+
+#include <libpldm/entity.h>
 
 #include <cstdlib>
 #include <iostream>

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "libpldm/pdr.h"
-
 #include "../oem/ibm/libpldmresponder/file_io.hpp"
 #include "../oem/ibm/libpldmresponder/fru_oem_ibm.hpp"
 #include "../oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
@@ -11,6 +9,8 @@
 #include "invoker.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "requester/request.hpp"
+
+#include <libpldm/pdr.h>
 
 namespace pldm
 {
