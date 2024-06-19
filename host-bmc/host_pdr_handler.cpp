@@ -4,7 +4,7 @@
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>
 #endif
-#include "custom_dbus.hpp"
+#include "dbus/custom_dbus.hpp"
 
 #include <assert.h>
 
