@@ -106,6 +106,24 @@
       "parentUuid": "08ea545a_25a78224",
       "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc4efe3_0b9ca39f",
+        "filename": "host-bmc/custom_dbus.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-19T13:15:11Z",
+      "side": 0,
+      "message": "I have tried multiple ways to move/delete or clone new repo and make changes again,\nusing cherry-pick, but non of them working wasted 3hrs, do you really want this change? is it really have that much impact/requirement? please try and provide proper solution if it\u0027s really matters.",
+      "parentUuid": "4032f63a_81690d88",
+      "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
