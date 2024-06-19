@@ -28,7 +28,7 @@ sources = [
   '../host-bmc/dbus_to_event_handler.cpp',
   '../host-bmc/dbus_to_host_effecters.cpp',
   '../host-bmc/host_condition.cpp',
-  '../host-bmc/custom_dbus.cpp',
+  '../host-bmc/dbus/custom_dbus.cpp',
   '../host-bmc/utils.cpp',
   'event_parser.cpp'
 ]
