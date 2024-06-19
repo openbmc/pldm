@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-#include "libpldm/entity.h"
+#include <libpldm/entity.h>
 
 #include <cstdlib>
 #include <iostream>
