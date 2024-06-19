@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "28e040eb_71ea7aaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 40
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-19T14:02:45Z",
+      "side": 1,
+      "message": "this is not marked as resolved,\nand for unit test setcorecount is to set the CoreCount property which will be query by the redfish later but there is no scope of the function for further utilisation in pldm repo and there is no getCoreCount function which can query the corecount, even though if we are add that function that would be of no use, do you thing only for unit test shall i add getcorecount function? which is not used anywhere.\nplease add you inputs if you have alternative way to adds?",
+      "parentUuid": "d1e91f57_f5b5b3fd",
+      "revId": "7e72f38e9614129b631a34f63d8b99569b86f54a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1aae0dbe_82a56368",
         "filename": "oem/ibm/libpldmresponder/utils.cpp",
         "patchSetId": 40
@@ -49,6 +67,30 @@
       "writtenOn": "2024-06-13T09:27:17Z",
       "side": 1,
       "message": "check if we can obtain this from PDI?",
+      "range": {
+        "startLine": 210,
+        "startChar": 5,
+        "endLine": 212,
+        "endChar": 50
+      },
+      "revId": "7e72f38e9614129b631a34f63d8b99569b86f54a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db65c09c_44776917",
+        "filename": "oem/ibm/libpldmresponder/utils.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-19T14:02:45Z",
+      "side": 1,
+      "message": "getsubtree is already using PDI internally, just passing interface name here.\nhttps://github.com/openbmc/pldm/blob/2576aecdd50220c858a791d3764e198907086e81/common/utils.cpp#L247",
+      "parentUuid": "1aae0dbe_82a56368",
       "range": {
         "startLine": 210,
         "startChar": 5,
