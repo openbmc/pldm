@@ -4,7 +4,7 @@
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>
 #endif
-#include "custom_dbus.hpp"
+#include "dbus/custom_dbus.hpp"
 
 #include <assert.h>
 
@@ -1118,7 +1118,17 @@ void HostPDRHandler::setFRUDataOnDBus(
 void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
     // TODO: Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
-
+    for (const auto& entity : objPathMap)
+    {
+        pldm_entity node = pldm_entity_extract(entity.second);
+        switch (node.entity_type)
+        {
+            case PLDM_ENTITY_PROC | 0x8000:
+                CustomDBus::getCustomDBus().implementCpuCoreInterface(
+                    entity.first);
+                break;
+        }
+    }
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
 }
 
