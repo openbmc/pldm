@@ -124,6 +124,24 @@
       "parentUuid": "4032f63a_81690d88",
       "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4345bf6e_1d85797f",
+        "filename": "host-bmc/custom_dbus.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-19T16:29:17Z",
+      "side": 0,
+      "message": "created separate commit for it, both were not possible to tag as expected.",
+      "parentUuid": "6fc4efe3_0b9ca39f",
+      "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
