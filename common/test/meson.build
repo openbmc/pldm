@@ -11,6 +11,7 @@ foreach t : tests
                      implicit_include_directories: false,
                      dependencies: [
                          common_test_src,
+                         gmock,
                          gtest,
                          libpldm_dep,
                          nlohmann_json_dep,
