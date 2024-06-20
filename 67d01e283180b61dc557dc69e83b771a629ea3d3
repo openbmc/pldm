@@ -142,6 +142,24 @@
       "parentUuid": "6fc4efe3_0b9ca39f",
       "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9f81b37_0c62f8d0",
+        "filename": "host-bmc/custom_dbus.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-20T04:33:32Z",
+      "side": 0,
+      "message": "\u003e wasted 3hrs, do you really want this change? is it really have that much impact/requirement? \n\nHey kamal , from a community perspective , words like wasted 3hrs e.t.c are not really worth to be mentioned. You can take even days/ months for a commit, It hardly matters to the community. Pavithra gave a -1 which means that she want it to be changed. You can ask for an opinion on why this is really needed in better words respectfully \u0026 sort that out also on discord (if things are not moving fast on gerrit). That\u0027s a healthy way to solve issues between reviewers \u0026 developers.",
+      "parentUuid": "4345bf6e_1d85797f",
+      "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
