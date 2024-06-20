@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d160914a_25638b78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 40
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-06-20T13:10:18Z",
+      "side": 1,
+      "message": "ok no issue we can add the uint test for getcorecount. see if it is not too time consuming u can set up the unit test for this class like this -\n\nClass MockHandler : public oem_utils:Handler\n{\nPublic:\n\tMockHandler() {}\nMOCK_METHOD(void, setCoreCount, (const EntityAssociations\u0026), (const EntityMaps));\n}\n\nThat way you can use the same mock class and just add a mock method for getcorecount and use that mock method in your unit test.",
+      "parentUuid": "28e040eb_71ea7aaa",
+      "revId": "7e72f38e9614129b631a34f63d8b99569b86f54a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1aae0dbe_82a56368",
         "filename": "oem/ibm/libpldmresponder/utils.cpp",
         "patchSetId": 40
