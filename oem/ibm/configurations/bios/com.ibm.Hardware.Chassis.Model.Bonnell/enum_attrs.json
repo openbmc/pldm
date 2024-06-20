@@ -70,6 +70,7 @@
         {
             "attribute_name": "hb_predictive_mem_guard",
             "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
             "helpText": "Enable or Disable Predictive Guard for Memory Errors.",
             "displayName": "Predictive Memory Guard"
@@ -77,6 +78,7 @@
         {
             "attribute_name": "hb_predictive_mem_guard_current",
             "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
             "helpText": "Enable or Disable Predictive Guard for Memory Errors.",
             "displayName": "Predictive Memory Guard",
