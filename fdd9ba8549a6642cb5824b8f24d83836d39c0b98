@@ -16,6 +16,23 @@
       "message": "@thu - thanks for the rework, looks good to me.",
       "revId": "fdd9ba8549a6642cb5824b8f24d83836d39c0b98",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "669b7899_dd2878fb",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 111
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-20T10:03:15Z",
+      "side": 1,
+      "message": "could you please share the documentation of sequence/ class diagram for the work flow?\nI am working on this commit: https://gerrit.openbmc.org/c/openbmc/pldm/+/63950 \nso it would be easy to implement as per your approach",
+      "revId": "fdd9ba8549a6642cb5824b8f24d83836d39c0b98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
