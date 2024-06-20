@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18079621_baa1470a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 74
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002038
+      },
+      "writtenOn": "2024-06-20T11:27:41Z",
+      "side": 1,
+      "message": "I think spec can define different enumeration and we should not mix them up. Otherwise, it might be confused while reading the code against spec.\nWe should use the enum in Table 16 for DSP0248 (i.e., `PollForPlatformEventMessage` / `GetPdr`) and use the enum in Table 17 for DSP0240 (i.e., `GetPLDMVersion`).",
+      "parentUuid": "b15922da_e1d6243f",
+      "revId": "3fd687d0818a43c166a7177b34a0cc07805f718c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e79ae1d_29915794",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 74
