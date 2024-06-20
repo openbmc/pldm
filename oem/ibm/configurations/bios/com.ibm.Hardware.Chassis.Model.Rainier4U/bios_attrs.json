@@ -96,6 +96,7 @@
             "attribute_type": "enum",
             "attribute_name": "hb_predictive_mem_guard",
             "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
             "help_text": "Enable or Disable Predictive Guard for Memory Errors.",
             "display_name": "Predictive Memory Guard"
@@ -104,6 +105,7 @@
             "attribute_type": "enum",
             "attribute_name": "hb_predictive_mem_guard_current",
             "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
             "help_text": "Enable or Disable Predictive Guard for Memory Errors.",
             "display_name": "Predictive Memory Guard",
