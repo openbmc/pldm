@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7af9a0b4_5b8877be",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-20T04:05:45Z",
+      "side": 1,
+      "message": "Cannot understand what this really means, can you please change it to:\n\n```\nThe current setup assumes that the BIOS and PDR configurations always come from\nthe same system type. If, in the future, we need to use BIOS and PDR configurations\nfrom different system types, we should create separate system type folders for each\nand update the logic to support this.\n```",
+      "range": {
+        "startLine": 143,
+        "startChar": 4,
+        "endLine": 147,
+        "endChar": 25
+      },
+      "revId": "4b1e5f103efa34cbb9959dec897a9f0e641eec92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
