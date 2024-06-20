@@ -160,6 +160,24 @@
       "parentUuid": "4345bf6e_1d85797f",
       "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86fcfa63_a6337363",
+        "filename": "host-bmc/custom_dbus.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-06-20T05:44:05Z",
+      "side": 0,
+      "message": "sure, will take care next time.\nbtw to resolve that issue i have created separate commit, thanks for explanation.",
+      "parentUuid": "b9f81b37_0c62f8d0",
+      "revId": "67d01e283180b61dc557dc69e83b771a629ea3d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
