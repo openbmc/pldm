@@ -22,7 +22,7 @@ using Response = std::vector<uint8_t>;
 using Command = uint8_t;
 
 /** @brief MCTP Endpoint Medium type in string
- *         Reseverd for future puspose
+ *         Reserved for future purpose
  */
 
 using MctpMedium = std::string;
@@ -32,14 +32,15 @@ using MctpMedium = std::string;
 using NetworkId = uint32_t;
 
 /** @brief Type definition of MCTP interface information between two endpoints.
- *         eid : Endpoint EID in byte. Defind to match with MCTP D-Bus Interface
+ *         eid : Endpoint EID in byte. Defined to match with MCTP D-Bus
+ *               interface
  *         UUID : Endpoint UUID which is used to different the endpoints
  *         MctpMedium: Endpoint MCTP Medium info (Resersed)
  *         NetworkId: MCTP network index
  */
 using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
 
-/** @brief Type defind of list of MCTP interface information
+/** @brief Type defined for list of MCTP interface information
  */
 using MctpInfos = std::vector<MctpInfo>;
 
