@@ -10,7 +10,7 @@ view.
 from the BMC and can parse them to display a full view of available PDR's on
 system at any given point in time.
 
-# Requirements
+## Requirements
 
 - Python 3.6+
 - graphviz
@@ -21,9 +21,14 @@ system at any given point in time.
     as the debian based systems, it can be installed using :
 
 ```bash
-   RPM Distro : sudo dnf install graphviz
-   Debian Distro : sudo apt install graphviz
-   Mac Distro : brew install graphviz
+# RPM based distro
+sudo dnf install graphviz
+
+# Debian based distro
+sudo apt install graphviz
+
+# mac distro
+brew install graphviz
 ```
 
 - The `requirements.txt` file should list all Python libraries that the tool
@@ -35,10 +40,10 @@ system at any given point in time.
     pip3 install -r requirements.txt --user
 ```
 
-# Usage
+## Usage
 
-```ascii
-usage: pldm_visualise_pdrs.py [-h] --bmc BMC --user USER --password PASSWORD [--port PORT]
+```bash
+$ pldm_visualise_pdrs.py [-h] --bmc BMC --user USER --password PASSWORD [--port PORT]
 
 optional arguments:
   -h, --help           show this help message and exit

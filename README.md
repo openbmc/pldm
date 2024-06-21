@@ -1,16 +1,54 @@
-# To Build
+# PLDM - Platform Level Data Model
 
-Need `meson` and `ninja`. Alternatively, source an OpenBMC ARM/x86 SDK.
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-```
+## Overview
+
+PLDM (Platform Level Data Model) is a key component of the OpenBMC project,
+providing a standardized data model and message formats for various platform
+management functionalities. It defines a method to manage, monitor, and control
+the firmware and hardware of a system.
+
+The OpenBMC PLDM project aims to implement the specifications defined by the
+Distributed Management Task Force (DMTF), allowing for interoperable management
+interfaces across different hardware and firmware components.
+
+## Features
+
+- **Standardized Messaging:** Adheres to the DMTF's PLDM specifications,
+  enabling consistent and interoperable communication between different
+  components.
+- **Modularity:** Supports multiple PLDM types, including Firmware Update,
+  Platform Monitoring and Control, and BIOS Control and Configuration.
+- **Extensibility:** Easily extendable to support new PLDM types and custom OEM
+  commands.
+- **Integration:** Seamlessly integrates with other OpenBMC components for
+  comprehensive system management.
+
+## Getting Started
+
+### Prerequisites
+
+To build and run PLDM, you need the following dependencies:
+
+- `Meson`
+- `Ninja`
+
+Alternatively, source an OpenBMC ARM/x86 SDK.
+
+### Building
+
+To build the PLDM project, follow these steps:
+
+```bash
 meson setup build && ninja -C build
 ```
 
-## To run unit tests
+### To run unit tests
 
 The simplest way of running the tests is as described by the meson man page:
 
-```
+```bash
 meson setup builddir && meson setup test -C builddir
 ```
 
@@ -18,30 +56,30 @@ Alternatively, tests can be run in the OpenBMC CI docker container using
 [these](https://github.com/openbmc/docs/blob/master/testing/local-ci-build.md)
 steps.
 
-## To enable pldm verbosity
+### To enable pldm verbosity
 
 pldm daemon accepts a command line argument `--verbose` or `--v` or `-v` to
 enable the daemon to run in verbose mode. It can be done via adding this option
 to the environment file that pldm service consumes.
 
-```
+```bash
 echo 'PLDMD_ARGS="--verbose"' > /etc/default/pldmd
 systemctl restart pldmd
 ```
 
-## To disable pldm verbosity
+### To disable pldm verbosity
 
-```
+```bash
 rm /etc/default/pldmd
 systemctl restart pldmd
 ```
 
-# Code Organization
+### Code Organization
 
 At a high-level, code in this repository belongs to one of the following three
 components.
 
-## libpldmresponder
+#### libpldmresponder
 
 This library provides handlers for incoming PLDM request messages. It provides
 for a registration as well as a plug-in mechanism. The library is implemented in
@@ -49,19 +87,19 @@ modern C++, and handles OpenBMC's platform specifics.
 
 The handlers are of the form
 
-```
+```c
 Response handler(Request payload, size_t payloadLen)
 ```
 
 Source files are named according to the PLDM Type, for eg base.[hpp/cpp],
 fru.[hpp/cpp], etc.
 
-## OEM/vendor-specific functions
+#### OEM/vendor-specific functions
 
 This will support OEM or vendor-specific functions and semantic information.
 Following directory structure has to be used:
 
-```
+```txt
     pldm repo
      |---- oem
             |----<oem_name>
@@ -88,21 +126,21 @@ The `pldm/meson.build` and the corresponding source file(s) will need to
 incorporate the logic of adding its mapped compiler flag to allow conditional
 compilation of the code.
 
-## libpldm
+##### libpldm
 
 pldm daemon links against the libpldm library during compilation, For more
 information on libpldm please refer to
 [libpldm](https://github.com/openbmc/libpldm)
 
-## pldmtool
+##### pldmtool
 
 For more information on pldmtool please refer to plmdtool/README.md.
 
-# Flows
+##### Flows
 
 This section documents important code flow paths.
 
-## BMC as PLDM responder
+###### BMC as PLDM responder
 
 a) PLDM daemon receives PLDM request message from underlying transport (MCTP).
 
@@ -122,7 +160,7 @@ response field(s) by itself.
 f) The PLDM daemon sends the response message prepared at step e) to the remote
 PLDM device.
 
-## BMC as PLDM requester
+##### BMC as PLDM requester
 
 a) A BMC PLDM requester app prepares a PLDM request message. There would be
 several requester apps (based on functionality/PLDM remote device). Each of them
@@ -138,7 +176,7 @@ the requester app.
 d) The requester app has to work with the response field(s). It can make use of
 a decode_foo_resp() API to deserialize the response message.
 
-# PDR Implementation
+###### PDR Implementation
 
 While PLDM Platform Descriptor Records (PDRs) are mostly static information,
 they can vary across platforms and systems. For this reason, platform specific
