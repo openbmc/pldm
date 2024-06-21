@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32c6f7da_df3f4bc4",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-06-21T06:58:23Z",
+      "side": 1,
+      "message": "Base, FRU configurations?",
+      "revId": "42a961268ce1a6dbaa5244f4055b2f073576cfa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
