@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f16e9b27_ba0ceeb2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-06-21T07:05:24Z",
+      "side": 1,
+      "message": "Add pldm:",
+      "revId": "d9d015de6eb825c4ce81ed20c1103f8254cf2fbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d9ae826_1b0a836b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-06-21T07:05:24Z",
+      "side": 1,
+      "message": "once --\u003e Once",
+      "revId": "d9d015de6eb825c4ce81ed20c1103f8254cf2fbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e89252d6_0bea8590",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-06-21T07:05:24Z",
+      "side": 1,
+      "message": "This \"available\" is redundant here and you could remove it",
+      "revId": "d9d015de6eb825c4ce81ed20c1103f8254cf2fbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d235d5af_586e51f3",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-06-21T07:05:24Z",
+      "side": 1,
+      "message": "Change the order of params to dirPath and dirNames according to function signature",
+      "revId": "d9d015de6eb825c4ce81ed20c1103f8254cf2fbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c27c0e_3415ecd2",
+        "filename": "libpldmresponder/platform_config.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-06-21T07:05:24Z",
+      "side": 1,
+      "message": "Pls change \"Getting system names from remote application\" --\u003e \"System names retrieved from remote application\"",
+      "revId": "d9d015de6eb825c4ce81ed20c1103f8254cf2fbc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
