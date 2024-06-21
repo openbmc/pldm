@@ -474,6 +474,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
     if (response == nullptr || !respMsgLen)
     {
         error("Failed to receive response for the GetPDR command");
+        pldm::utils::reportError(
+            "xyz.openbmc_project.PLDM.Error.GetPDR.PDRExchangeFailure");
         return;
     }
 
