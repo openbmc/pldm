@@ -352,8 +352,18 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
             type++;
             continue;
         }
+
+        ver32_t version{0xFF, 0xFF, 0xFF, 0xFF};
+        auto rc = co_await getPLDMVersion(tid, type, &version);
+        if (rc)
+        {
+            lg2::error(
+                "Failed to Get PLDM Version for terminus {TID}, PLDM Type {TYPE}, error {ERROR}",
+                "TID", tid, "TYPE", type, "ERROR", rc);
+        }
+        termini[tid]->setSupportedTypeVersions(type, version);
         std::vector<bitfield8_t> cmds(PLDM_MAX_CMDS_PER_TYPE / 8);
-        auto rc = co_await getPLDMCommands(tid, type, cmds.data());
+        rc = co_await getPLDMCommands(tid, type, version, cmds.data());
         if (rc)
         {
             lg2::error(
@@ -538,12 +548,11 @@ exec::task<int>
     co_return completionCode;
 }
 
-exec::task<int> TerminusManager::getPLDMCommands(pldm_tid_t tid, uint8_t type,
-                                                 bitfield8_t* supportedCmds)
+exec::task<int> TerminusManager::getPLDMCommands(
+    pldm_tid_t tid, uint8_t type, ver32_t version, bitfield8_t* supportedCmds)
 {
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES);
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
-    ver32_t version{0xFF, 0xFF, 0xFF, 0xFF};
 
     auto rc = encode_get_commands_req(0, type, version, requestMsg);
     if (rc)
@@ -625,6 +634,59 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
                                                responseLen);
 
     co_return rc;
+}
+
+exec::task<int> TerminusManager::getPLDMVersion(pldm_tid_t tid, uint8_t type,
+                                                ver32_t* version)
+{
+    Request request(sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+
+    auto rc =
+        encode_get_version_req(0, 0, PLDM_GET_FIRSTPART, type, requestMsg);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request getPLDMVersion for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+
+    rc = co_await sendRecvPldmMsg(tid, request, &responseMsg, &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send getPLDMVersion message for terminus {TID}, error {RC}",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    /* Process response */
+    uint8_t completionCode = 0;
+    uint8_t transferFlag = 0;
+    uint32_t transferHandle = 0;
+    rc = decode_get_version_resp(responseMsg, responseLen, &completionCode,
+                                 &transferHandle, &transferFlag, version);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response getPLDMVersion for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : getPLDMVersion for terminus ID {TID}, complete code {CC}.",
+            "TID", tid, "CC", completionCode);
+        co_return completionCode;
+    }
+
+    co_return completionCode;
 }
 
 } // namespace platform_mc
