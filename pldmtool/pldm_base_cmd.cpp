@@ -258,6 +258,10 @@ class GetPLDMCommands : public CommandInterface
         app->add_option("-t,--type", pldmType, "pldm supported type")
             ->required()
             ->transform(CLI::CheckedTransformer(pldmTypes, CLI::ignore_case));
+        app->add_option(
+            "-d,--data", inputVersion,
+            "Set PLDM type version. Which is got from GetPLDMVersion\n"
+            "eg: version 1.1.0 then data will be `0xf1 0xf1 0xf0 0x00`");
     }
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
@@ -266,6 +270,21 @@ class GetPLDMCommands : public CommandInterface
                                         PLDM_GET_COMMANDS_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
         ver32_t version{0xFF, 0xFF, 0xFF, 0xFF};
+        if (inputVersion.size() != 0)
+        {
+            if (inputVersion.size() != 4)
+            {
+                std::cerr << "Invalid version format. "
+                          << "\n";
+            }
+            else
+            {
+                version.major = inputVersion[3];
+                version.minor = inputVersion[2];
+                version.update = inputVersion[1];
+                version.alpha = inputVersion[0];
+            }
+        }
         auto rc = encode_get_commands_req(instanceId, pldmType, version,
                                           request);
         return {rc, requestMsg};
@@ -288,6 +307,7 @@ class GetPLDMCommands : public CommandInterface
 
   private:
     pldm_supported_types pldmType;
+    std::vector<uint8_t> inputVersion;
 
     template <typename CommandMap>
     void printCommand(CommandMap& commandMap, int i, ordered_json& jarray)
