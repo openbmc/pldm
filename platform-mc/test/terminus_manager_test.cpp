@@ -302,6 +302,9 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
     const size_t setTidRespLen = PLDM_SET_TID_RESP_BYTES;
     const size_t getPldmTypesRespLen = PLDM_GET_TYPES_RESP_BYTES;
     const size_t getPldmCommandRespLen = PLDM_GET_COMMANDS_RESP_BYTES;
+    /* PLDM_GET_VERSION_RESP_BYTES does not include 4 bytes check sum */
+    const size_t getPldmVersionRespLen =
+        PLDM_GET_VERSION_RESP_BYTES + sizeof(uint32_t);
 
     // 0.discover a mctp list
     auto rc = mockTerminusManager.clearQueuedResponses();
@@ -329,6 +332,17 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
         sizeof(getPldmTypesResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    /* Response GetPLDMVersion BASE, CC=0 */
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + getPldmVersionRespLen>
+        getPldmVersionBaseResp0{0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x05, 0x00, 0xf0, 0xf1,
+                                0xf1, 0xba, 0xbe, 0x9d, 0x53};
+
+    rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)getPldmVersionBaseResp0.data(),
+        sizeof(getPldmVersionBaseResp0));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
     /* Response GetPLDMCommand BASE, CC=0,
      * SetTID/GetTID/GetPLDMTypes/GetPLDMCommands */
     byte0 = (1 << (PLDM_SET_TID % 8)) + (1 << (PLDM_GET_TID % 8)) +
@@ -345,6 +359,16 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
         sizeof(getPldmCommandBaseResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    /* Response GetPLDMVersion PLATFORM, CC=0 */
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + getPldmVersionRespLen>
+        getPldmVersionPlatformResp0{0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x05, 0x00, 0xf1, 0xf2,
+                                    0xf1, 0x4e, 0x87, 0x72, 0x79};
+
+    rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)getPldmVersionPlatformResp0.data(),
+        sizeof(getPldmVersionPlatformResp0));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     /* Response GetPLDMCommand PLATFORM, CC=0,
      * SetEventReceiver/PlatformEventMessage/GetSensorReading/SetNumericEffecterValue/GetNumericEffecterValue/GetPDR
      */
@@ -383,6 +407,16 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
         sizeof(getPldmCommandPlatResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    /* Response GetPLDMVersion BIOS, CC=0 */
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + getPldmVersionRespLen>
+        getPldmVersionBiosResp0{0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x05, 0x00, 0xf0, 0xf0,
+                                0xf1, 0xfb, 0x8f, 0x86, 0x4a};
+
+    rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)getPldmVersionBiosResp0.data(),
+        sizeof(getPldmVersionBiosResp0));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     /* Response GetPLDMCommand BIOS, CC=0, GetDateTime/SetDateTime */
     /* byte0 command from 1 to 7 */
     byte0 = (0 << (PLDM_GET_BIOS_TABLE % 8)) +
@@ -402,6 +436,16 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
         sizeof(getPldmCommandBiosResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    /* Response GetPLDMVersion FRU, CC=0 */
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + getPldmVersionRespLen>
+        getPldmVersionFruResp0{0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+                               0x00, 0x00, 0x05, 0x00, 0xf1, 0xf0,
+                               0xf1, 0xcc, 0xe5, 0x44, 0x4b};
+
+    rc = mockTerminusManager.enqueueResponse(
+        (pldm_msg*)getPldmVersionFruResp0.data(),
+        sizeof(getPldmVersionFruResp0));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
     /* Response GetPLDMCommand FRU, CC=0,
      * GetFRURecordTableMetadata/GetFRURecordTable */
     /* byte0 command from 1 to 7 */

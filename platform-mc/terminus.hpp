@@ -111,6 +111,24 @@ class Terminus
         return true;
     }
 
+    /** @brief Set the PLDM supported type version for terminus
+     *
+     *  @param[in] type - PLDM supported types
+     *  @param[in] version - PLDM supported type version
+     *  @return success state - True if success, otherwise False
+     */
+    inline bool setSupportedTypeVersions(const uint8_t type,
+                                         const ver32_t version)
+    {
+        if (type > PLDM_MAX_TYPES || type >= supportedTypeVersions.size())
+        {
+            return false;
+        }
+        supportedTypeVersions[type] = version;
+
+        return true;
+    }
+
     /** @brief Parse the PDRs stored in the member variable, pdrs.
      */
     void parseTerminusPDRs();
@@ -266,6 +284,9 @@ class Terminus
      *         PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8).
      */
     std::vector<uint8_t> supportedCmds;
+
+    /* @brief The PLDM supported type version */
+    std::map<uint8_t, ver32_t> supportedTypeVersions;
 
     /* @brief Sensor Auxiliary Name list */
     std::vector<std::shared_ptr<SensorAuxiliaryNames>>
