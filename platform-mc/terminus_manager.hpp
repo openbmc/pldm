@@ -201,16 +201,29 @@ class TerminusManager
      */
     exec::task<int> getPLDMTypes(pldm_tid_t tid, uint64_t& supportedTypes);
 
+    /** @brief Send getPLDMVersion command to destination TID and then return
+     *         the version of the PLDM supported type.
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] type - PLDM Type
+     *  @param[out] version - PLDM Type version
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getPLDMVersion(pldm_tid_t tid, uint8_t type,
+                                   ver32_t* version);
+
     /** @brief Send getPLDMCommands command to destination TID and then return
      *         the value of supportedCommands in reference parameter.
      *
      *  @param[in] tid - Destination TID
      *  @param[in] type - PLDM Type
+     *  @param[in] version - PLDM Type version
      *  @param[in] supportedCmds - Supported commands returned from terminus
      *                             for specific type
      *  @return coroutine return_value - PLDM completion code
      */
     exec::task<int> getPLDMCommands(pldm_tid_t tid, uint8_t type,
+                                    ver32_t version,
                                     bitfield8_t* supportedCmds);
 
     /** @brief Reference to a Handler object that manages the request/response
