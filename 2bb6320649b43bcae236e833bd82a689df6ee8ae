@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1098ee47_d69022e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-06-25T08:17:00Z",
+      "side": 1,
+      "message": "This commit needs to be based on the provious entity manager config settings, but the design of entity manager config was reverted, it needs to be redesigned and tested to reslove the conflict.",
+      "revId": "2bb6320649b43bcae236e833bd82a689df6ee8ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
