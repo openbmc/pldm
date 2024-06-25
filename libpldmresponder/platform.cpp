@@ -523,6 +523,7 @@ int Handler::pldmPDRRepositoryChgEvent(
     const pldm_msg* request, size_t payloadLength, uint8_t /*formatVersion*/,
     uint8_t tid, size_t eventDataOffset)
 {
+    info("Got a repo change event from TID: {TID}", "TID", tid);
     uint8_t eventDataFormat{};
     uint8_t numberOfChangeRecords{};
     size_t dataOffset{};
@@ -565,6 +566,9 @@ int Handler::pldmPDRRepositoryChgEvent(
                 return rc;
             }
 
+            info("pldmPDRRepositoryChgEvent eventDataOperation : {EVENT_OP}",
+                 "EVENT_OP", (unsigned)eventDataOperation);
+
             if (eventDataOperation == PLDM_RECORDS_MODIFIED)
             {
                 hostPDRHandler->isHostPdrModified = true;
@@ -603,6 +607,7 @@ int Handler::pldmPDRRepositoryChgEvent(
             {
                 if (std::get<0>(it->second) == tid)
                 {
+                    info("Removing PDRs of terminusId {ID}", "ID", it->first);
                     pldm_pdr_remove_pdrs_by_terminus_handle(pdrRepo.getPdr(),
                                                             it->first);
                     hostPDRHandler->tlPDRInfo.erase(it++);
@@ -630,6 +635,11 @@ int Handler::getPDRRecordHandles(
     for (size_t i = 0; i < numberOfChangeEntries; i++)
     {
         pdrRecordHandles.push_back(changeEntryData[i]);
+    }
+    for (const auto& i : pdrRecordHandles)
+    {
+        info("Record handles sent down to BMC: {PDR_REC_HNDL}", "PDR_REC_HNDL",
+             static_cast<unsigned>(i));
     }
     return PLDM_SUCCESS;
 }

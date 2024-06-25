@@ -170,6 +170,12 @@ void updateEntityAssociation(
         pldm_entity node_entity = pldm_entity_extract(entity);
         auto node = pldm_entity_association_tree_find_with_locality(
             entityTree, &node_entity, false);
+        info(
+            "Update Entity Association , type = {ENTITY_TYP}, num = {ENTITY_NUM}, container = {CONT}",
+            "ENTITY_TYP", static_cast<int>(node_entity.entity_type),
+            "ENTITY_NUM", static_cast<int>(node_entity.entity_instance_num),
+            "CONT", static_cast<int>(node_entity.entity_container_id));
+
         if (!node)
         {
             continue;

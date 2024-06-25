@@ -340,6 +340,9 @@ void HostPDRHandler::mergeEntityAssociations(
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                                                uint8_t eventDataFormat)
 {
+    error(
+        "Sending the repo change event after merging the PDRs, MCTP_ID: {MCTP_ID}",
+        "MCTP_ID", mctp_eid);
     assert(eventDataFormat == FORMAT_IS_PDR_HANDLES);
 
     // Extract from the PDR repo record handles of PDRs we want the host
@@ -555,6 +558,10 @@ void HostPDRHandler::processHostPDRs(
 
                     terminusHandle = tlpdr->terminus_handle;
                     tid = tlpdr->tid;
+                    info(
+                        "Got a terminus Locator PDR with TID: {TID} and Terminus handle: {TERMINUS_HNDL} with Valid bit as: {VALID_BIT}",
+                        "TID", tid, "TERMINUS_HNDL", terminusHandle,
+                        "VALID_BIT", (unsigned)tlpdr->validity);
                     auto terminus_locator_type = tlpdr->terminus_locator_type;
                     if (terminus_locator_type ==
                         PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID)
@@ -576,6 +583,9 @@ void HostPDRHandler::processHostPDRs(
                         {
                             // TL PDR already present with same validity don't
                             // add the PDR to the repo just return
+                            info(
+                                "Terminus Locator PDR {ID} is already  present",
+                                "ID", tlEid);
                             return;
                         }
                     }
@@ -640,6 +650,15 @@ void HostPDRHandler::processHostPDRs(
     }
     if (!nextRecordHandle)
     {
+        auto firstRecord = pldm_pdr_get_record_handle(
+            repo, pldm_pdr_find_last_in_range(repo, 1, 1));
+        auto lastRecord = pldm_pdr_get_record_handle(
+            repo, pldm_pdr_find_last_in_range(repo, 1, 0x02FFFFFF));
+        info("First Record in the repo after PDR exchange is: {FIRST_REC_HNDL}",
+             "FIRST_REC_HNDL", firstRecord);
+        info("Last Record in the repo after PDR exchange is: {LAST_REC_HNDL}",
+             "LAST_REC_HNDL", lastRecord);
+
         updateEntityAssociation(entityAssociations, entityTree, objPathMap,
                                 entityMaps, oemPlatformHandler);
         if (oemUtilsHandler)
@@ -1149,7 +1168,7 @@ void HostPDRHandler::setAvailabilityState(const std::string& path)
 void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
     // Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
-
+    info("Refreshing Dbus objects");
     for (const auto& entity : objPathMap)
     {
         // update the Present Property
@@ -1210,6 +1229,7 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
         }
     }
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
+    info("Refreshing Dbus objects completed");
 }
 
 } // namespace pldm
