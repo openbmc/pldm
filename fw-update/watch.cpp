@@ -23,7 +23,7 @@ Watch::Watch(sd_event* loop, std::function<int(std::string&)> imageCallback) :
     imageCallback(imageCallback)
 {
     // Check if IMAGE DIR exists.
-    fs::path imgDirPath("/tmp/images");
+    fs::path imgDirPath("/tmp/pldm_images");
     if (!fs::is_directory(imgDirPath))
     {
         fs::create_directories(imgDirPath);
@@ -39,7 +39,7 @@ Watch::Watch(sd_event* loop, std::function<int(std::string&)> imageCallback) :
                                  std::strerror(error));
     }
 
-    wd = inotify_add_watch(fd, "/tmp/images", IN_CLOSE_WRITE);
+    wd = inotify_add_watch(fd, "/tmp/pldm_images", IN_CLOSE_WRITE);
     if (-1 == wd)
     {
         auto error = errno;
@@ -92,7 +92,8 @@ int Watch::callback(sd_event_source* /* s */, int fd, uint32_t revents,
         auto event = reinterpret_cast<inotify_event*>(&buffer[offset]);
         if ((event->mask & IN_CLOSE_WRITE) && !(event->mask & IN_ISDIR))
         {
-            auto tarballPath = std::string{"/tmp/images"} + '/' + event->name;
+            auto tarballPath = std::string{"/tmp/pldm_images"} + '/' +
+                               event->name;
             auto rc = static_cast<Watch*>(userdata)->imageCallback(tarballPath);
             if (rc < 0)
             {
