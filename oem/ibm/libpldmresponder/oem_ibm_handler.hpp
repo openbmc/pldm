@@ -7,8 +7,8 @@
 #include "requester/handler.hpp"
 
 #include <libpldm/entity.h>
+#include <libpldm/oem/ibm/state_set.h>
 #include <libpldm/platform.h>
-#include <libpldm/state_set_oem_ibm.h>
 
 typedef ibm_oem_pldm_state_set_firmware_update_state_values CodeUpdateState;
 

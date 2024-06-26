@@ -3,7 +3,7 @@
 #include "common/utils.hpp"
 
 #include <libpldm/base.h>
-#include <libpldm/file_io.h>
+#include <libpldm/oem/ibm/file_io.h>
 #include <stdint.h>
 
 #include <phosphor-logging/lg2.hpp>
