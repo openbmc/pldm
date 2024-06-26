@@ -20,6 +20,7 @@ enum pldm_oem_meta_file_io_type : uint8_t
     BIOS_VERSION = 0x01,
     POWER_CONTROL = 0x02,
     HTTP_BOOT = 0x03,
+    EVENT_LOG = 0x05,
 };
 
 enum pldm_oem_meta_decode_file_io_minisize : size_t

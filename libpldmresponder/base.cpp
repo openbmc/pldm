@@ -18,8 +18,8 @@
 #include <vector>
 
 #ifdef OEM_IBM
-#include <libpldm/file_io.h>
-#include <libpldm/host.h>
+#include <libpldm/oem/ibm/file_io.h>
+#include <libpldm/oem/ibm/host.h>
 #endif
 
 PHOSPHOR_LOG2_USING;
