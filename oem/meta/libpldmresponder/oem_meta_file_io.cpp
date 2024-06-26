@@ -4,6 +4,7 @@
 #include "oem_meta_file_io_type_http_boot.hpp"
 #include "oem_meta_file_io_type_post_code.hpp"
 #include "oem_meta_file_io_type_power_control.hpp"
+#include "oem_meta_file_io_type_event_log.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/oem/meta/file_io.h>
@@ -35,6 +36,8 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(uint8_t messageTid,
                 dBusIntf);
         case HTTP_BOOT:
             return std::make_unique<HttpBootHandler>(
+        case EVENT_LOG:
+            return std::make_unique<EventLogHandler>(
                 messageTid, configurationDiscovery->getConfigurations());
         default:
             error("Get invalid file io type, FILEIOTYPE={FILEIOTYPE}",
