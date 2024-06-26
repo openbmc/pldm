@@ -26,6 +26,7 @@ enum pldm_oem_meta_decode_file_io_minisize : size_t
 {
     WRITE_FILE_IO_MINISIZE = 0x06,
     READ_FILE_IO_MINISIZE = 0x01,
+    EVENT_LOG = 0x03,
 };
 
 class FileHandler
