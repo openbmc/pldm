@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2acffd6e_1786a6a1",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2024-06-27T12:16:48Z",
+      "side": 1,
+      "message": "I add some changes to keep same `instanceId` if GetNextPart needed.\nI tested get all PDRs with the system I have, but it doesn\u0027t have multi-part PDR.\n\n@Thu, would you mind helping me test this patch on your system?",
+      "parentUuid": "5398eb6d_6712ff06",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49e7968b_0a77a5fa",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2024-06-17T06:53:10Z",
       "side": 1,
       "message": "Should use `transfer_resp_flag` definition in libpldm.\nAbout `start` flag, DSP0248 section GetPDRs, transferFlag field (Start \u003d 0x00). But in DSP0240, table `MultipartSend command format` transferFlag field , START \u003d 1 as definition in transfer_resp_flag.\nSo I suggest to use the definition in DSP0240.",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56e6ec7b_bbed2a20",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2024-06-27T12:16:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49e7968b_0a77a5fa",
       "revId": "c427a0f82be907c4217493f3b77048041096fed0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "387fea03_4553ecf1",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2024-06-27T12:16:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20eb0643_4758ef2f",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e849a0d5_7e940e69",
@@ -82,6 +136,24 @@
       "writtenOn": "2024-06-17T06:53:10Z",
       "side": 1,
       "message": "Magic numbers, use definition in `transfer_resp_flag` of libpldm.",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdbfadc0_af8c579d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2024-06-27T12:16:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e849a0d5_7e940e69",
       "revId": "c427a0f82be907c4217493f3b77048041096fed0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
