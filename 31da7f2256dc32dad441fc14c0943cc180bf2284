@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7bf492_cde53382",
+        "filename": "README.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-06-27T13:19:51Z",
+      "side": 1,
+      "message": "Seems like you\u0027re deriving the type from some of these fields.  Is that the direction you want to go or would you like an explicit \"type\" field?",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 94
+      },
+      "revId": "31da7f2256dc32dad441fc14c0943cc180bf2284",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48ab1564_f5526f97",
+        "filename": "README.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-06-27T13:19:51Z",
+      "side": 1,
+      "message": "We should probably document acceptable values here?",
+      "revId": "31da7f2256dc32dad441fc14c0943cc180bf2284",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
