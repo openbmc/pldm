@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a113f609_bf78adbb",
+        "filename": "README.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-28T08:42:40Z",
+      "side": 1,
+      "message": "I have updated the document by adding \"attribute_type\". The Attribute type field is already added in json files in commit https://github.com/openbmc/pldm/commit/ac713eec8b97954133fc500056fa394a6d7a7384",
+      "parentUuid": "db7bf492_cde53382",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 94
+      },
+      "revId": "31da7f2256dc32dad441fc14c0943cc180bf2284",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48ab1564_f5526f97",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-06-27T13:19:51Z",
       "side": 1,
       "message": "We should probably document acceptable values here?",
+      "revId": "31da7f2256dc32dad441fc14c0943cc180bf2284",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddd711d1_a5afac7a",
+        "filename": "README.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-06-28T08:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48ab1564_f5526f97",
       "revId": "31da7f2256dc32dad441fc14c0943cc180bf2284",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
