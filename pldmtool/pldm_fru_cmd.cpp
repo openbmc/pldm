@@ -3,7 +3,7 @@
 #include "pldm_cmd_helper.hpp"
 
 #ifdef OEM_IBM
-#include <libpldm/fru_oem_ibm.h>
+#include <libpldm/oem/ibm/fru.h>
 #endif
 
 #include <endian.h>
