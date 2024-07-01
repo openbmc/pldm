@@ -16,6 +16,24 @@
       "message": "Do we need type casting here ? Are you facing any error without it and similarly can you check in other logs also? Please use only where casting is necessary. \nYou can use this document for referring to acceptable LG2 data-types:\nhttps://github.com/openbmc/phosphor-logging/blob/master/docs/structured-logging.md#lg2",
       "revId": "d76c3dea92ac458add6a87f3563b8a10ae9a2803",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb04b47_070211dc",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-07-01T08:39:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "675288bf_2ddf9de4",
+      "revId": "d76c3dea92ac458add6a87f3563b8a10ae9a2803",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
