@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a192e6cf_eee0b8e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 96
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-02T09:51:29Z",
+      "side": 1,
+      "message": "@Thu, I had a question, so using this support you were able to request the getPDRs and wait for the repo change event from the host? How was it tested? Tested in your systems? If yes, can we have something pasted as output here in the commit message?\nFew minor comments, but overall it looks good :)",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04ca5cd9_7c69529c",
@@ -14,6 +31,144 @@
       "writtenOn": "2024-06-21T07:05:09Z",
       "side": 1,
       "message": "Need create the define constant for this value. This is max BMC receive buffer size for on PLDM message.",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3659fb18_dbb64f68",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-02T09:51:29Z",
+      "side": 1,
+      "message": "(!parsedPdr)",
+      "range": {
+        "startLine": 72,
+        "startChar": 11,
+        "endLine": 72,
+        "endChar": 37
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1228cda1_a2f9be3d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-02T09:51:29Z",
+      "side": 1,
+      "message": "!parsedPdr",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 37
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c084bd_0e98fca9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-02T09:51:29Z",
+      "side": 1,
+      "message": "!sensorAuxiliarynames",
+      "range": {
+        "startLine": 84,
+        "startChar": 16,
+        "endLine": 84,
+        "endChar": 52
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b737d5_6275b79a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-02T09:51:29Z",
+      "side": 1,
+      "message": "range based?",
+      "range": {
+        "startLine": 125,
+        "startChar": 4,
+        "endLine": 125,
+        "endChar": 47
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6598b0b_943638e6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-02T09:51:29Z",
+      "side": 1,
+      "message": "range based?",
+      "range": {
+        "startLine": 130,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 49
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2e23a6_19f8011d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-02T09:51:29Z",
+      "side": 1,
+      "message": "if (!pdr-\u003esensor_name_length)",
+      "range": {
+        "startLine": 193,
+        "startChar": 4,
+        "endLine": 193,
+        "endChar": 37
+      },
       "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
