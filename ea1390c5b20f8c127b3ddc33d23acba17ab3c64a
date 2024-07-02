@@ -616,6 +616,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30592cb7_7281e411",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-02T07:00:16Z",
+      "side": 1,
+      "message": "Assuming that we don\u0027t need this anymore.",
+      "parentUuid": "2a0fdb34_dc456e75",
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ab229e7_01bc9dde",
@@ -701,6 +719,30 @@
       "side": 1,
       "message": "I dont think PLDM as of today support any other string encoding type apart from ASCII. But having this key here would help people to add support for other encoding types like HEX, UTF-8 in backend ? and use that in the JSON\u0027s ? \n\nor do you want us to remove this key completely and let people figure out and add suppport for this key if they really need any other encoding ?",
       "parentUuid": "0b5c6990_68e3cb4c",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 210,
+        "endChar": 103
+      },
+      "revId": "ea1390c5b20f8c127b3ddc33d23acba17ab3c64a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49ff0950_8b33196f",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-02T07:00:16Z",
+      "side": 1,
+      "message": "Lets have the field as is.and people can add support for other types if needed.",
+      "parentUuid": "d10eb4e9_afd6e158",
       "range": {
         "startLine": 210,
         "startChar": 0,
