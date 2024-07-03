@@ -162,15 +162,12 @@ void Handler::generate(const pldm::utils::DBusHandler& dBusIntf,
 
 Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
 {
-    if (hostPDRHandler)
+    if (oemPlatformHandler)
     {
-        if (hostPDRHandler->isHostUp() && oemPlatformHandler != nullptr)
+        auto rc = oemPlatformHandler->checkBMCState();
+        if (rc != PLDM_SUCCESS)
         {
-            auto rc = oemPlatformHandler->checkBMCState();
-            if (rc != PLDM_SUCCESS)
-            {
-                return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
-            }
+            return ccOnlyResponse(request, PLDM_ERROR_NOT_READY);
         }
     }
 
