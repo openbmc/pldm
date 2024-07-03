@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a4fdb79_dabaf51a",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-03T15:19:29Z",
+      "side": 1,
+      "message": "In the patch set #5, I removed your change to support `Fix instanceId`.",
+      "parentUuid": "a73d6fd8_15fb5922",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49e7968b_0a77a5fa",
@@ -120,6 +138,24 @@
       "side": 1,
       "message": "Sorry for the confusing. After this comment in other patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/63028/comments/a8258e1a_a573386e I thought we should not mix the values of transferFlag in DSP0240 and DSP0248. Because GetPDRs is belong to DSP0248 so we should apply the values in DSP0248.\nThe value in transfer_resp_flag is from DSP0240, so I think we should add pldm_platform_transfer_resp_flag in platform.h of libpldm. Then apply those constant in this patch set.",
       "parentUuid": "56e6ec7b_bbed2a20",
+      "revId": "c427a0f82be907c4217493f3b77048041096fed0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba404e70_f39f84ef",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-03T15:19:29Z",
+      "side": 1,
+      "message": "I simply the checking condition in patch set #5.\nIn that patch set, we only use `End` and `StartAndEnd` flag which are the same in both DSP0240 and DSP248.",
+      "parentUuid": "9208f5bc_d9324ec6",
       "revId": "c427a0f82be907c4217493f3b77048041096fed0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
