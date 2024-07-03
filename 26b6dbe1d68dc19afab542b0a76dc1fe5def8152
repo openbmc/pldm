@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "315ebc07_69c9b2c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-03T05:09:10Z",
+      "side": 1,
+      "message": "ack, it was an oversight.",
+      "parentUuid": "6febf471_8ee18f10",
+      "revId": "26b6dbe1d68dc19afab542b0a76dc1fe5def8152",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02e1c4dd_1ca99ac2",
