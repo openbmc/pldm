@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6febf471_8ee18f10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-07-03T04:56:58Z",
+      "side": 1,
+      "message": "We have not implemented any get function for the properties under the interface.\nSo in the test we will not be able to verify.",
+      "parentUuid": "64dd0e16_6eab28f5",
+      "revId": "26b6dbe1d68dc19afab542b0a76dc1fe5def8152",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02e1c4dd_1ca99ac2",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-07-02T07:11:59Z",
       "side": 1,
       "message": "these two can be deleted.",
+      "range": {
+        "startLine": 28,
+        "startChar": 2,
+        "endLine": 29,
+        "endChar": 46
+      },
+      "revId": "26b6dbe1d68dc19afab542b0a76dc1fe5def8152",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d19c9fb_a562e841",
+        "filename": "host-bmc/dbus/pcie_slot.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-07-03T04:56:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02e1c4dd_1ca99ac2",
       "range": {
         "startLine": 28,
         "startChar": 2,
