@@ -726,7 +726,6 @@ void HostPDRHandler::setHostFirmwareCondition()
         info("Getting the response code '{RC}'", "RC", lg2::hex,
              response->payload[0]);
         this->responseReceived = true;
-        getHostPDR();
     };
     rc = handler->registerRequest(mctp_eid, instanceId, PLDM_BASE,
                                   PLDM_GET_PLDM_VERSION, std::move(requestMsg),
