@@ -34,6 +34,24 @@
       "parentUuid": "f610dd60_5a0f66c3",
       "revId": "8cbb3961430308e0f19aa8b310bff4790ea4fd93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c5d64fd_b56c2282",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 118
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-05T06:38:36Z",
+      "side": 1,
+      "message": "@Delphine, Do you have any changing on top of these patch set? Can you detail more about what `pldmd` did in your system?\n\nBecause we are running sensor monitoring, event handling on top of these code, and we don\u0027t see the crash you mention.",
+      "parentUuid": "2066bf9c_1f9e85f3",
+      "revId": "8cbb3961430308e0f19aa8b310bff4790ea4fd93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
