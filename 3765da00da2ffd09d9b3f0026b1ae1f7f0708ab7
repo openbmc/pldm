@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0da7eb93_334b3500",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-07T01:35:29Z",
+      "side": 1,
+      "message": "New transferFlags for Platform and Controls PLDM commands.\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/72593\nThis patch set should use those macros.",
+      "revId": "3765da00da2ffd09d9b3f0026b1ae1f7f0708ab7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
