@@ -20,6 +20,92 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "70dc8015_078687ef",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 34,
+        "startChar": 38,
+        "endLine": 34,
+        "endChar": 43
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5e9fc49_3f1a8b05",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "// Continue to next steps even if parsing PDR fails for some records",
+      "range": {
+        "startLine": 34,
+        "startChar": 12,
+        "endLine": 35,
+        "endChar": 22
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e37d9703_600d9a7d",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "this seems wrong ? it print the rc of the getPDRs not parsePDRs()",
+      "range": {
+        "startLine": 40,
+        "startChar": 40,
+        "endLine": 40,
+        "endChar": 44
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47d47ed5_0f0b936e",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "add a comment here that says `setting default values when getPDRRepositoryInfo fails`",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04ca5cd9_7c69529c",
         "filename": "platform-mc/platform_manager.cpp",
         "patchSetId": 96
@@ -31,6 +117,162 @@
       "writtenOn": "2024-06-21T07:05:09Z",
       "side": 1,
       "message": "Need create the define constant for this value. This is max BMC receive buffer size for on PLDM message.",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74eef6b4_5962de90",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "04ca5cd9_7c69529c",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "650f3f18_faef3008",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "dont see `recordChngNum` being used anywhere in the code.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 71
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d4bc310_0f65906e",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "std::array\u003cuint8_t, PLDM_TIMESTAMP104_SIZE\u003e updateTime \u003d {};\n std::array\u003cuint8_t, PLDM_TIMESTAMP104_SIZE\u003e oemUpdateTime \u003d {};",
+      "range": {
+        "startLine": 241,
+        "startChar": 3,
+        "endLine": 242,
+        "endChar": 56
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "695479f8_32be3185",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "remove this temp variable, directly return `true` or `false` instead.",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "594c3597_4f87352b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 60,
+        "startChar": 9,
+        "endLine": 60,
+        "endChar": 19
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deb88b2f_7ace10ba",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "make this a `case` instead ?",
+      "range": {
+        "startLine": 63,
+        "startChar": 8,
+        "endLine": 63,
+        "endChar": 60
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed687d26_c641319e",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "null check missing.",
+      "range": {
+        "startLine": 65,
+        "startChar": 17,
+        "endLine": 65,
+        "endChar": 38
+      },
       "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -51,6 +293,29 @@
       "range": {
         "startLine": 72,
         "startChar": 11,
+        "endLine": 72,
+        "endChar": 37
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cea2dc65_ff4b1de4",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "if(parsedPdr)",
+      "range": {
+        "startLine": 72,
+        "startChar": 12,
         "endLine": 72,
         "endChar": 37
       },
@@ -106,6 +371,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2366340a_a7f79eed",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "`if(sensorAuxiliaryNames)`",
+      "range": {
+        "startLine": 84,
+        "startChar": 16,
+        "endLine": 84,
+        "endChar": 52
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "595d15e8_52ab292e",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 104,
+        "startChar": 9,
+        "endLine": 104,
+        "endChar": 35
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9eec52_e4364efc",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "nit: may be using std algorithms could yield an optimized code here ? \n\n```c++\nauto getSensorAuxiliaryNames \u003d [](SensorId id) -\u003e std::shared_ptr\u003cSensorAuxiliaryNames\u003e {\n    auto it \u003d std::find_if(sensorAuxiliaryNamesTbl.begin(), sensorAuxiliaryNamesTbl.end(),\n        [id](const std::shared_ptr\u003cstd::tuple\u003cSensorId, int, std::vector\u003cstd::string\u003e\u003e\u003e\u0026 sensorAuxiliaryNames) {\n            const auto\u0026 [sensorId, sensorCnt, sensorNames] \u003d *sensorAuxiliaryNames;\n            return sensorId \u003d\u003d id;\n        });\n    \n    if (it !\u003d sensorAuxiliaryNamesTbl.end()) {\n        return *it;\n    }\n    return nullptr;\n};\n\n```",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 1
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84b737d5_6275b79a",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 96
@@ -120,6 +454,29 @@
       "range": {
         "startLine": 125,
         "startChar": 4,
+        "endLine": 125,
+        "endChar": 47
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1159d1_d87bd557",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "``` \n  for (const auto\u0026 sensor :\n         std::views::iota(0) | std::views::take(pdr-\u003esensor_count)\n         ```",
+      "range": {
+        "startLine": 125,
+        "startChar": 3,
         "endLine": 125,
         "endChar": 47
       },
@@ -152,6 +509,144 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa7aa8bd_744c1587",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "range based forloop even here as well. like above.",
+      "range": {
+        "startLine": 130,
+        "startChar": 7,
+        "endLine": 130,
+        "endChar": 49
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "389f854a_649364dc",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "this can be changed to `std::string_view`",
+      "range": {
+        "startLine": 132,
+        "startChar": 12,
+        "endLine": 132,
+        "endChar": 23
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efc9e232_47de11ad",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "`std::fill(std::begin(alignedBuffer), std::end(alignedBuffer), 0);`",
+      "range": {
+        "startLine": 141,
+        "startChar": 11,
+        "endLine": 142,
+        "endChar": 63
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce54b59_a822d3c2",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "`std::u16string u16NameString(alignedBuffer, u16NameStringLen);` can we not do this like a regular string ? whats the significance of 0 here ?",
+      "range": {
+        "startLine": 144,
+        "startChar": 12,
+        "endLine": 145,
+        "endChar": 66
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22deae5a_fe694e82",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "`std::move(nameStrings)` instead ?",
+      "range": {
+        "startLine": 158,
+        "startChar": 36,
+        "endLine": 158,
+        "endChar": 48
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d98f51ac_d3b55dff",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "std::move instead ?",
+      "range": {
+        "startLine": 161,
+        "startChar": 43,
+        "endLine": 161,
+        "endChar": 57
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2d2e23a6_19f8011d",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 96
@@ -168,6 +663,230 @@
         "startChar": 4,
         "endLine": 193,
         "endChar": 37
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "767bb8ef_bb3cbbea",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "merge both of them together ?\n\n```\n if (pdr-\u003esensor_name_length \u003d\u003d 0 || sPdr.size() \u003c (sizeof(pldm_compact_numeric_sensor_pdr) - sizeof(uint8_t) + pdr-\u003esensor_name_length)) {\n        return nullptr;\n    }\n```",
+      "range": {
+        "startLine": 193,
+        "startChar": 3,
+        "endLine": 203,
+        "endChar": 1
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "063a548c_3b93a50f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "meaning full name instead.",
+      "range": {
+        "startLine": 204,
+        "startChar": 16,
+        "endLine": 204,
+        "endChar": 22
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b33ad41_bec0956c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "use std::replace instead ?\n\n```\n    std::replace(sTemp.begin(), sTemp.end(), \u0027 \u0027, \u0027_\u0027);\n```\n\nwhy do we need to replace spaces with _ ? it is mentioned in the spec anywhere ?",
+      "range": {
+        "startLine": 206,
+        "startChar": 3,
+        "endLine": 210,
+        "endChar": 5
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b19c54_1da8a6d7",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "we need to be sure that it even has a \\0. before attempting an erase.\n\n```\nauto nullTerminatorPos \u003d sTemp.find(\u0027\\0\u0027);\n    if (nullTerminatorPos !\u003d std::string::npos) {\n        sTemp.erase(nullTerminatorPos);\n    }\n```",
+      "range": {
+        "startLine": 211,
+        "startChar": 3,
+        "endLine": 213,
+        "endChar": 44
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fa60668_fdad7590",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "std::move",
+      "range": {
+        "startLine": 215,
+        "startChar": 32,
+        "endLine": 215,
+        "endChar": 43
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "899151a5_80de894b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "std::move instead.",
+      "range": {
+        "startLine": 218,
+        "startChar": 50,
+        "endLine": 218,
+        "endChar": 64
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6c79fa5_1db6c4f3",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "not used anywhere as well.",
+      "range": {
+        "startLine": 223,
+        "startChar": 1,
+        "endLine": 224,
+        "endChar": 27
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd85b8f7_3fc64791",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "```\nif (sPdr.size() \u003c sizeof(pldm_compact_numeric_sensor_pdr)) {\n        // Handle error: input data too small to contain valid pdr\n        return nullptr;\n    }\n```",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c26068a_2ed3c945",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "not used anywhere.",
+      "range": {
+        "startLine": 225,
+        "startChar": 2,
+        "endLine": 225,
+        "endChar": 70
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b37e0a42_43075f9f",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-07T05:13:13Z",
+      "side": 1,
+      "message": "`parseTerminusPDRs()` since this is per terminus.",
+      "range": {
+        "startLine": 87,
+        "startChar": 9,
+        "endLine": 87,
+        "endChar": 21
       },
       "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
