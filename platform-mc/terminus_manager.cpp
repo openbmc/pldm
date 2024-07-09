@@ -376,6 +376,13 @@ exec::task<int>
             "ERROR", e);
         co_return PLDM_ERROR;
     }
+    catch (int rc)
+    {
+        lg2::error(
+             "sendRecvPldmMsgOverMctp failed. rc={RC}",
+	     "RC", rc);
+        co_return PLDM_ERROR;
+    }
 }
 
 exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
