@@ -267,6 +267,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "06e9ea6a_7dbc13c0",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-09T05:50:50Z",
+      "side": 1,
+      "message": "The patch set will be updated to use `transfer_platform_resp_flag` in the patch set https://gerrit.openbmc.org/c/openbmc/libpldm/+/72593/4/include/libpldm/platform.h#20.\nInstead of using PLDM_START_AND_END in `transfer_resp_flag` which was defined for PLDM base commands.",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "650f3f18_faef3008",
         "filename": "platform-mc/platform_manager.cpp",
         "patchSetId": 96
