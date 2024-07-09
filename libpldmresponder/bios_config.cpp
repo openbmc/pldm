@@ -92,6 +92,7 @@ void BIOSConfig::initBIOSAttributes(const std::string& systemType,
     {
         error("System specific bios attribute directory {DIR} does not exit",
               "DIR", dir);
+        requestPLDMServiceName();
         return;
     }
     constructAttributes();
