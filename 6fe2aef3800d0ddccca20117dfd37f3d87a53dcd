@@ -16,6 +16,24 @@
       "message": "@Thu I still see that the endpoint objects host xyz.openbmc_project.MCTP.Endpoint interface - https://github.com/CodeConstruct/mctp/commit/f9a5618e16377ba107ec09d7673c6af2694ba8af#diff-f79e886dcf1e5f00e6b612376fe0e84216ba70eed8468febef3da9ba712f47c6R146\nWhy is this change made? \n\nShould we remove this interface - https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/MCTP/Endpoint.interface.yaml to avoid confusion?",
       "revId": "6fe2aef3800d0ddccca20117dfd37f3d87a53dcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64af2472_30fd643c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-10T08:18:53Z",
+      "side": 1,
+      "message": "\u003e @Thu I still see that the endpoint objects host xyz.openbmc_project.MCTP.Endpoint interface - https://github.com/CodeConstruct/mctp/commit/f9a5618e16377ba107ec09d7673c6af2694ba8af#diff-f79e886dcf1e5f00e6b612376fe0e84216ba70eed8468febef3da9ba712f47c6R146\n\u003e Why is this change made? \n\nYou are correct, the `MCTPInterface` should be keeps as it as.\nFor the others, they should be changed:\nThe service name and root object path are changed:\nhttps://github.com/CodeConstruct/mctp/blob/main/docs/mctpd.md#d-bus\n\n\u003e \n\u003e Should we remove this interface - https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/MCTP/Endpoint.interface.yaml to avoid confusion?\n\nNo. As your comment, `xyz.openbmc_project.MCTP.Endpoint` is still using.",
+      "parentUuid": "72f005f1_e48ed554",
+      "revId": "6fe2aef3800d0ddccca20117dfd37f3d87a53dcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
