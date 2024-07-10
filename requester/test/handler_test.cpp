@@ -167,13 +167,14 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
         pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
         const pldm_msg* responseMsg;
         size_t responseLen;
+        int rc = PLDM_SUCCESS;
 
         auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
         requestPtr->hdr.instance_id = instanceId;
 
         try
         {
-            std::tie(responseMsg, responseLen) =
+            std::tie(rc, responseMsg, responseLen) =
                 co_await reqHandler.sendRecvMsg(eid, std::move(request));
         }
         catch (...)
@@ -245,7 +246,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
             auto rc = encode_get_tid_req(instanceId, requestMsg);
             EXPECT_EQ(rc, PLDM_SUCCESS);
 
-            std::tie(responseMsg, responseLen) =
+            std::tie(rc, responseMsg, responseLen) =
                 co_await handler.sendRecvMsg(eid, std::move(request));
             EXPECT_NE(responseLen, 0);
 
