@@ -393,11 +393,13 @@ class Handler
 
     /** @brief Wrap registerRequest with coroutine API.
      *
-     *  @return A tuple of [return_code, pldm::Response].
-     *          pldm::Response is empty on non-zero return_code.
-     *          Otherwise, filled with pldm_msg* content.
+     *  @return Return [PLDM_ERROR, _, _] if registerRequest fails.
+     *          Return [PLDM_ERROR_NOT_READY, nullptr, 0] if timed out.
+     *          Return [PLDM_SUCCESS, resp, len] if succeeded
      */
-    stdexec::sender auto sendRecvMsg(mctp_eid_t eid, pldm::Request&& request);
+    stdexec::sender_of<
+        stdexec::set_value_t(std::tuple<int, const pldm_msg*, size_t>)> auto
+        sendRecvMsg(mctp_eid_t eid, pldm::Request&& request);
 
   private:
     PldmTransport* pldmTransport; //!< PLDM transport object
@@ -504,7 +506,9 @@ struct SendRecvMsgOperation
             std::bind(&SendRecvMsgOperation::onComplete, &op, _1, _2, _3));
         if (rc)
         {
-            return stdexec::set_error(std::move(op.receiver), rc);
+            return stdexec::set_value(std::move(op.receiver), rc,
+                                      static_cast<const pldm_msg*>(nullptr),
+                                      static_cast<size_t>(0));
         }
 
         if (stopToken.stop_possible())
@@ -538,16 +542,13 @@ struct SendRecvMsgOperation
     {
         stopCallback.reset();
         assert(eid == this->requestKey.eid);
-        if (!response || !respMsgLen)
+        auto rc = PLDM_SUCCESS;
+        if (!response && !respMsgLen)
         {
-            return stdexec::set_error(std::move(receiver),
-                                      static_cast<int>(PLDM_ERROR));
+            rc = PLDM_ERROR_NOT_READY;
         }
-        else
-        {
-            return stdexec::set_value(std::move(receiver), response,
-                                      respMsgLen);
-        }
+        return stdexec::set_value(std::move(receiver), static_cast<int>(rc),
+                                  response, respMsgLen);
     }
 
   private:
@@ -607,8 +608,8 @@ struct SendRecvMsgSender
     friend auto tag_invoke(stdexec::get_completion_signatures_t,
                            const SendRecvMsgSender&, auto)
         -> stdexec::completion_signatures<
-            stdexec::set_value_t(const pldm_msg*, size_t),
-            stdexec::set_error_t(int), stdexec::set_stopped_t()>;
+            stdexec::set_value_t(int, const pldm_msg*, size_t),
+            stdexec::set_stopped_t()>;
 
     /** @brief Execute the sending the request message */
     template <stdexec::receiver R>
@@ -631,22 +632,24 @@ struct SendRecvMsgSender
     pldm::Request request;
 };
 
-/** @brief This function handles sending the request message and responses the
- *         response message for the caller.
+/** @brief Wrap registerRequest with coroutine API.
  *
  *  @param[in] eid - endpoint ID of the remote MCTP endpoint
  *  @param[in] request - PLDM request message
  *
- *  @return The response message and response message length.
+ *  @return Return [PLDM_ERROR, _, _] if registerRequest fails.
+ *          Return [PLDM_ERROR_NOT_READY, nullptr, 0] if timed out.
+ *          Return [PLDM_SUCCESS, resp, len] if succeeded
  */
 template <class RequestInterface>
-stdexec::sender auto
+stdexec::sender_of<
+    stdexec::set_value_t(std::tuple<int, const pldm_msg*, size_t>)> auto
     Handler<RequestInterface>::sendRecvMsg(mctp_eid_t eid,
                                            pldm::Request&& request)
 {
     return SendRecvMsgSender(*this, eid, std::move(request)) |
-           stdexec::then([](const pldm_msg* responseMsg, size_t respMsgLen) {
-        return std::make_tuple(responseMsg, respMsgLen);
+           stdexec::then([](int rc, const pldm_msg* resp, size_t respLen) {
+        return std::make_tuple(rc, resp, respLen);
     });
 }
 
