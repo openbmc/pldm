@@ -363,24 +363,28 @@ exec::task<int>
                                              const pldm_msg** responseMsg,
                                              size_t* responseLen)
 {
+    int rc = 0;
     try
     {
-        std::tie(*responseMsg, *responseLen) =
+        std::tie(rc, *responseMsg, *responseLen) =
             co_await handler.sendRecvMsg(eid, std::move(request));
-        co_return PLDM_SUCCESS;
     }
     catch (const sdbusplus::exception_t& e)
     {
         lg2::error(
-            "Send and Receive PLDM message over MCTP failed with error - {ERROR}.",
+            "Send and Receive PLDM message over MCTP throw error - {ERROR}.",
             "ERROR", e);
         co_return PLDM_ERROR;
     }
-    catch (const int& rc)
+    catch (const int& e)
     {
-        lg2::error("sendRecvPldmMsgOverMctp failed. rc={RC}", "RC", rc);
+        lg2::error(
+            "Send and Receive PLDM message over MCTP throw int error - {ERROR}.",
+            "ERROR", e);
         co_return PLDM_ERROR;
     }
+
+    co_return rc;
 }
 
 exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
@@ -599,11 +603,6 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(pldm_tid_t tid,
     requestMsg->hdr.instance_id = instanceIdDb.next(eid);
     auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
                                                responseLen);
-
-    if (responseMsg == nullptr || !responseLen)
-    {
-        co_return PLDM_ERROR_INVALID_DATA;
-    }
 
     co_return rc;
 }
