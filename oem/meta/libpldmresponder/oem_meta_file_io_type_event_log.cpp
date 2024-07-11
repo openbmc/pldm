@@ -8,6 +8,8 @@ PHOSPHOR_LOG2_USING;
 namespace pldm::responder::oem_meta
 {
 
+uint8_t MAX_EVENT_LEN = 5;
+
 void EventLogHandler::parseObjectPathToGetSlot(uint64_t& slotNum)
 {
     static constexpr auto slotInterface =
@@ -98,8 +100,65 @@ int EventLogHandler::write(const message& eventData)
         " APML_ALERT Assertion",
     });
 
+    static constexpr auto pmic_event_type = std::to_array({
+        " SWAout OV",
+        " SWBout OV",
+        " SWCout OV",
+        " SWDout OV",
+        " Vin Bulk OV",
+        " Vin Mgmt OV",
+        " SWAout UV",
+        " SWBout UV",
+        " SWCout UV",
+        " SWDout UV",
+        " Vin Bulk UV",
+        " Vin Mgmt To Vin Buck Switchover",
+        " High Temp Warning",
+        " Vout 1v8 PG",
+        " High Current Warning",
+        " Current Limit Warning",
+        " Critical Temp Shutdown",
+    });
+
+    static constexpr auto dimm_id = std::to_array({
+        " DIMM A",
+        " DIMM B",
+        " DIMM C",
+        " DIMM D",
+        " DIMM E",
+        " DIMM F",
+        " DIMM G",
+        " DIMM H",
+        " DIMM I",
+        " DIMM J",
+        " DIMM K",
+        " DIMM L",
+    });
+
+    static constexpr auto vr_source = std::to_array({
+        " PVDDCR_CPU0",
+        " PVDDCR_SOC",
+        " PVDDCR_CPU1",
+        " PVDDIO",
+        " PVDD11_S3",
+    });
+
     /* 1. Get host slot number */
     uint64_t slot;
+
+    if (eventData.size() != MAX_EVENT_LEN)
+    {
+        error("{FUNC}: Invalid incoming data for event log, data size={SIZE}",
+              "FUNC", std::string(__func__), "SIZE", eventData.size());
+        return PLDM_ERROR;
+    }
+
+    if (eventData[0] >= eventList.size())
+    {
+        error("{FUNC}: Invalid event type for event log, event type={TYPE}",
+              "FUNC", std::string(__func__), "TYPE", eventData[0]);
+        return PLDM_ERROR;
+    }
 
     try
     {
@@ -114,17 +173,52 @@ int EventLogHandler::write(const message& eventData)
 
     /* 2. Map event from list */
     std::string errorLog;
+    std::string event_name;
     uint8_t eventType = eventData[0];
     uint8_t eventStatus = eventData[1];
 
+    if (strcmp(eventList[eventType], " DIMM PMIC Error") == 0)
+    {
+        if ((eventData[2] >= dimm_id.size()) ||
+            (eventData[3] >= pmic_event_type.size()))
+        {
+            error("{FUNC}: Invalid dimm id={ID}, pmic event type={TYPE}",
+                  "FUNC", std::string(__func__), "ID", eventData[2], "TYPE",
+                  eventData[3]);
+            return PLDM_ERROR;
+        }
+
+        event_name = eventList[eventType] + std::string(" :") +
+                     dimm_id[eventData[2]] + pmic_event_type[eventData[3]];
+    }
+    else if ((strcmp(eventList[eventType], " PMALERT Assertion") == 0) ||
+             (strcmp(eventList[eventType], " VR Fault") == 0))
+    {
+        if (eventData[2] >= vr_source.size())
+        {
+            error("{FUNC}: Invalid vr source={VR_SOURCE}", "FUNC",
+                  std::string(__func__), "VR_SOURCE", eventData[2]);
+            return PLDM_ERROR;
+        }
+
+        event_name = eventList[eventType] + std::string(" :") +
+                     vr_source[eventData[2]] + " status: 0x" +
+                     std::format("{:02x}", eventData[3]) +
+                     std::format("{:02x}", eventData[4]);
+    }
+    else
+    {
+        event_name = eventList[eventType];
+    }
+
     if (eventStatus == EVENT_ASSERTED)
     {
-        errorLog = "Event: Host" + std::to_string(slot) + eventList[eventType] +
+        errorLog = "Event: Host" + std::to_string(slot) + event_name +
                    ", ASSERTED";
     }
     else if (eventStatus == EVENT_DEASSERTED)
     {
-        errorLog = "Event: Host" + std::to_string(slot) + eventList[eventType] +
+        errorLog = "Event: Host" + std::to_string(slot) + event_name +
                    ", DEASSERTED";
     }
 
