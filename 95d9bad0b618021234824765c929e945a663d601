@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f8653bc_509ad5c8",
+        "filename": "meson.options",
+        "patchSetId": 97
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-11T10:10:56Z",
+      "side": 1,
+      "message": "they are just my proposed value. For min the minimum value maybe 64 equal `The baseline transmission unit (minimum transmission unit) size for MCTP is 64 bytes.` DSP0240.\nAbout max, 4k buffer size is reasonable for BMC.\nDo you have any idea in these values?",
+      "parentUuid": "4c14c785_8599f683",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 16
+      },
+      "revId": "95d9bad0b618021234824765c929e945a663d601",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "994bc802_56c85815",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 97
