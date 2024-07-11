@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edecad35_854519ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 46
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:14:50Z",
+      "side": 1,
+      "message": "Looks good expect a small comment",
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca403221_931f7f62",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:14:50Z",
+      "side": 1,
+      "message": "redundant , please remove.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 24
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
