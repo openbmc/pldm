@@ -83,6 +83,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e33aa08_a8d8c19b",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-11T09:19:56Z",
+      "side": 1,
+      "message": "should we not explicitly include the lg2 header file?",
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1036a322_8ab11510",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 46
