@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29da7248_9007b62c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-11T09:53:18Z",
+      "side": 1,
+      "message": "This patch set will completely fix the throw exception int in coroutine when there is time out in access the terminus.",
+      "revId": "8a79d3b58fc6ddaa06af0ba2b9c96485bddaa086",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
