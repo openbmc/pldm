@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "834f30ae_5a6fd840",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -20,10 +21,10 @@
         "endChar": 68
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d81ae608_7bd425c7",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -44,10 +45,34 @@
         "endChar": 68
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e79d2f4_75888db4",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d81ae608_7bd425c7",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 68
+      },
+      "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "51c409e7_4dd38959",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -67,10 +92,10 @@
         "endChar": 32
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "ec083b6c_298c9c16",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -91,10 +116,10 @@
         "endChar": 32
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d121f8e9_62f67805",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -114,10 +139,10 @@
         "endChar": 46
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "c4957d2e_013151ac",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -138,10 +163,10 @@
         "endChar": 46
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "5d7d4974_510c8ee2",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -161,10 +186,10 @@
         "endChar": 29
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "c39602dc_368d66f7",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -185,8 +210,7 @@
         "endChar": 29
       },
       "revId": "ef18f88fd71d4a9dace72a2f980a497b2e42aeb4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

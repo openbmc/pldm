@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "7e69ab30_5ab24e56",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "On what conditions do we see effecterID() as ZERO ?.",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "84ecc927_4dbd0a4b",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -32,10 +33,10 @@
       "message": "see L: 61",
       "parentUuid": "7e69ab30_5ab24e56",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "88723af3_4f779a48",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -50,10 +51,28 @@
       "message": "hmm. This is what makes GTEST totally depend on internals of these logic. and we need to decouple.. Also, if pdrRepo is NULL in the beginning, what will set the pdrRepo to not null for the second test ? but I guess, I am not hung up on that and will leave it on Manoj and maintainers to chime in.",
       "parentUuid": "84ecc927_4dbd0a4b",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0b11b6f_922e2415",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88723af3_4f779a48",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "bd20da79_a7c073c8",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -67,10 +86,10 @@
       "side": 1,
       "message": "Just to create these MOCK\u0027s we don\u0027t need another class \"TestInterace\" right ?.. Guess, I am not following why the abstract class HostLampTestInterface was needed.",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d40005dd_17ca8abf",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -85,10 +104,10 @@
       "message": "\u003e Just to create these MOCK\u0027s we don\u0027t need another class \"TestInterace\" right ?\n\nYes.\nAccording to my understanding: when we want to mock any method, the method must be a virtual method defined in the abstract interface.",
       "parentUuid": "bd20da79_a7c073c8",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "c9b88a1b_16d477cd",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -103,10 +122,10 @@
       "message": "ah yes.. While it\u0027s still possible to MOCK Non virtual functions, but it\u0027s more complicated.. ( Just for ref: https://chromium.googlesource.com/external/github.com/google/googletest/+/HEAD/docs/gmock_cook_book.md#MockingNonVirtualMethods )\n\nI am fine with virtual what you have here.",
       "parentUuid": "d40005dd_17ca8abf",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "088463bd_92784391",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -121,10 +140,10 @@
       "message": "Ack",
       "parentUuid": "c9b88a1b_16d477cd",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3a0d1d2d_3fc08d1e",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -138,10 +157,10 @@
       "side": 1,
       "message": "hmm.. how is this satisfied ?.. I see getEffectorID gets called only if asserted\u003d\u003dtrue. However, the test case below sets asserted\u003dtrue just once.",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "069ce00b_0481127d",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -156,10 +175,10 @@
       "message": "We set asserted\u003d\u003dtrue twice, Right?\n\nThe first time I expected the getEffecterID method to return 0.\nsee: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/40373/14/oem/ibm/host-bmc/host_lamp_test.cpp#42\nSo it did not make any changes, the Asserted property is still `false`, Right?\n\nThe second time I expected the getEffecterID method to return 1(Non-zero)，\nat this time, the Asserted property will be changed to true, Right?",
       "parentUuid": "3a0d1d2d_3fc08d1e",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "221efcd5_cb7b0821",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -174,10 +193,10 @@
       "message": "oops. I overlooked line 43 down below since line 44 influenced me.. thanks..\nbut how is line: 44 passing ?. it should EXPECT_EQ, true right ?",
       "parentUuid": "069ce00b_0481127d",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3f197b91_337bf5c5",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -192,10 +211,10 @@
       "message": "\u003e but how is line: 44 passing ?. it should EXPECT_EQ, true right ?\n\nNo, as i said: When we set the Asserted property to true for the first time, I expect the getEffecterID method to return 0, so Asserted property will not be updated.\nsee: https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/40373/14/oem/ibm/host-bmc/host_lamp_test.cpp#44",
       "parentUuid": "221efcd5_cb7b0821",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "85a3bd28_655304de",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -210,10 +229,10 @@
       "message": "hmm.. I am still not following.. so : \n\n1/. You set asserted(true)\n2/. That goes inside if(value)\n3/. Checks if(effector \u003d\u003d 0)\n4/. If [0]. return. \n\nI thought effectorID of ZERO would be an error scenario.. Is it not ?.\n\nEven if the EffectorID() is zero, that does not take out the \u0027asserted` state of the group. So, irrespective of EffectorID, the asserted state must be equal to what has been set unless there is an exception in the middle.",
       "parentUuid": "3f197b91_337bf5c5",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "1da3826c_f088a7ef",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -228,10 +247,10 @@
       "message": "You meant that whether the getEffecterID method returns 0 or the setHostStateEffecter method returns an PLDM_ERROR, we need to force the update of the Asserted property?",
       "parentUuid": "85a3bd28_655304de",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3e50b931_73580ff1",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -246,8 +265,25 @@
       "message": "yeah.. but I guess it does not really matter, since setting the value to \u0027true\u0027 would not mean anything to anyone outside of PLDM on BMC.",
       "parentUuid": "1da3826c_f088a7ef",
       "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da1d87e2_58147a80",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e50b931_73580ff1",
+      "revId": "cb55e4f95f9b773d1557b2da5edd6ea7bb1840c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

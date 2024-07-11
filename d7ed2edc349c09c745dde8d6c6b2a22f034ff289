@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "9754955d_06f31ad9",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -20,10 +21,10 @@
         "endChar": 29
       },
       "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "441ba9c0_9097811a",
         "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
@@ -44,10 +45,10 @@
         "endChar": 29
       },
       "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "850634f8_bd3bc0fe",
         "filename": "pldmd/service_files/pldmd.service",
@@ -67,10 +68,10 @@
         "endChar": 50
       },
       "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "6a519b68_d40f6611",
         "filename": "pldmd/service_files/pldmd.service",
@@ -91,10 +92,10 @@
         "endChar": 50
       },
       "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "601ee85e_204ad302",
         "filename": "pldmd/service_files/pldmd.service",
@@ -115,8 +116,31 @@
         "endChar": 50
       },
       "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b1fad5_b1c558c6",
+        "filename": "pldmd/service_files/pldmd.service",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "601ee85e_204ad302",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "d7ed2edc349c09c745dde8d6c6b2a22f034ff289",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

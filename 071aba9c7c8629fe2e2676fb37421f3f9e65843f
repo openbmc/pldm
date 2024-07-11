@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "53afc85e_a79f9b6f",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,10 @@
         "endChar": 49
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "10b6b3f2_0488feb3",
         "filename": "/COMMIT_MSG",
@@ -44,10 +45,10 @@
         "endChar": 49
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "2a9d4822_348f335a",
         "filename": "/COMMIT_MSG",
@@ -68,10 +69,10 @@
         "endChar": 49
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "85f87700_c26cc173",
         "filename": "/COMMIT_MSG",
@@ -92,10 +93,10 @@
         "endChar": 49
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3a029fad_ce788229",
         "filename": "/COMMIT_MSG",
@@ -115,10 +116,10 @@
         "endChar": 31
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "75402e64_aec87fe8",
         "filename": "/COMMIT_MSG",
@@ -139,10 +140,10 @@
         "endChar": 31
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "1e90122f_d1f480d1",
         "filename": "/COMMIT_MSG",
@@ -163,10 +164,34 @@
         "endChar": 31
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da6e609_0c29ea7f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e90122f_d1f480d1",
+      "range": {
+        "startLine": 14,
+        "startChar": 26,
+        "endLine": 14,
+        "endChar": 31
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "4f8505fc_867bf92d",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -180,10 +205,10 @@
       "side": 1,
       "message": "there is no override happening here",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "b819c47a_480309cb",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -198,10 +223,28 @@
       "message": "Right, renamed getAsserted",
       "parentUuid": "4f8505fc_867bf92d",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0abd3fb4_2b878ad5",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b819c47a_480309cb",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "fca84385_10121ee4",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -221,10 +264,10 @@
         "endChar": 18
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "70fe8e3c_61ea79c3",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -245,10 +288,10 @@
         "endChar": 18
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "edb32e1c_6c0ec155",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -269,10 +312,34 @@
         "endChar": 18
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e69c67fb_89f9ebc7",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edb32e1c_6c0ec155",
+      "range": {
+        "startLine": 29,
+        "startChar": 11,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "fb7288b9_028474d9",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -286,10 +353,10 @@
       "side": 1,
       "message": "Is there a need to fetch this each time?",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "b899a18b_929aedc1",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -304,10 +371,28 @@
       "message": "need to fetch when effecterID \u003d\u003d 0\nupdated",
       "parentUuid": "fb7288b9_028474d9",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be97624f_2bed6270",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b899a18b_929aedc1",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "9be305ba_fbf77fc3",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -321,10 +406,10 @@
       "side": 1,
       "message": "I think you should throw a d-bus exception here (if you cant find the effecter) to let the caller handle it.",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "26fcf480_ee845393",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -339,10 +424,28 @@
       "message": "Ack.",
       "parentUuid": "9be305ba_fbf77fc3",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "040a8468_23e38716",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26fcf480_ee845393",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "4ec10511_0faf3afb",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -356,10 +459,10 @@
       "side": 1,
       "message": "What if BMC has the PDR but PHYP is not up or is rebooting?",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "67461e05_482621ee",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -374,10 +477,28 @@
       "message": "Ack.\nCatch the return value and log the error",
       "parentUuid": "4ec10511_0faf3afb",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4697cb0_649aca57",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67461e05_482621ee",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "50aa7899_1b90d400",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -391,10 +512,10 @@
       "side": 1,
       "message": "When value\u003dtrue, you\u0027re not checking the error returned from setHostStateEffecter and always setting this to true.\n\nThis probably also means a unit test did not catch this.",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "9d834003_5bc25b77",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -409,10 +530,28 @@
       "message": "Yes, we should not update D-Bus object when the setHostStateEffecter method return error.\nUpdated.",
       "parentUuid": "50aa7899_1b90d400",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44ad8dd6_9738946b",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d834003_5bc25b77",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "3672b643_bd21110f",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -432,10 +571,10 @@
         "endChar": 39
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "a81190b0_a9e4f976",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -456,10 +595,10 @@
         "endChar": 39
       },
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "64114dcd_adfa9d0a",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -473,10 +612,10 @@
       "side": 1,
       "message": "Do you need to make a blocking call here?",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "38aa0adc_dbe41eee",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -491,10 +630,10 @@
       "message": "Yes, I think so.\nWe should not update the Asserted property when we get an error value",
       "parentUuid": "64114dcd_adfa9d0a",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "8176b168_c0e3d302",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -509,10 +648,10 @@
       "message": "For this you should do a pldm_sen() and then a timer based pldm_recv(). The problem with current approach is - if the host doesn\u0027t respond due to whatever reason, pldmd will block forever.",
       "parentUuid": "38aa0adc_dbe41eee",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "26dee036_9d93f9b5",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -527,10 +666,10 @@
       "message": "Sure, \nI saw Sampa push a new patch related to handle response asynchronously.\nhttps://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/41407\n\nI will push a new patch after the above commit merge.",
       "parentUuid": "8176b168_c0e3d302",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "41a1849e_2bf03efe",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -545,10 +684,28 @@
       "message": "@Deepak, I have changed this logic to async",
       "parentUuid": "26dee036_9d93f9b5",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26d3b9bc_ed55056a",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41a1849e_2bf03efe",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "0e60033f_40994cc8",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -562,10 +719,10 @@
       "side": 1,
       "message": "All these errors should result in a d-bus exception back to the caller.",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "17cdb744_4ce8dc10",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -580,10 +737,28 @@
       "message": "Ack",
       "parentUuid": "0e60033f_40994cc8",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a70aeff_20593cb1",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17cdb744_4ce8dc10",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "c5e25e2b_4cc2bb4e",
         "filename": "pldmd/pldmd.cpp",
@@ -597,10 +772,10 @@
       "side": 1,
       "message": "This sections with #ifdefs keeps growing. I\u0027ve discussed this with Sampa in the past and we agreed on having a single entry point for OEM-IBM instead of several sections throughout this file.",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "91112145_e61c85ed",
         "filename": "pldmd/pldmd.cpp",
@@ -615,10 +790,10 @@
       "message": "Yes, Sampa told me, I can refactor these codes later, do you agree?",
       "parentUuid": "c5e25e2b_4cc2bb4e",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a9ccdcf5_5c4c8840",
         "filename": "pldmd/pldmd.cpp",
@@ -633,10 +808,10 @@
       "message": "Sorry to hold you on this commit, but we\u0027ve been pushing this out again and again. Please handle it with this commit (or a new commit that is made the parent of this commit).",
       "parentUuid": "91112145_e61c85ed",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d1d6e9d2_02d8ed7e",
         "filename": "pldmd/pldmd.cpp",
@@ -651,10 +826,28 @@
       "message": "\u003e  but we\u0027ve been pushing this out again and again.\n\nBTW, which commit?\n\n\u003e or a new commit that is made the parent of this commit\n\nI will push a new commit base on this commit",
       "parentUuid": "a9ccdcf5_5c4c8840",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7451ee32_8c8fb1aa",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1d6e9d2_02d8ed7e",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "54798321_d3e58b13",
         "filename": "pldmd/pldmd.cpp",
@@ -668,10 +861,10 @@
       "side": 1,
       "message": "It looks like this d-bus object path forms part of the lamp test API, so it needs to be documented in a d-bus interface file?",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "6ef94b96_e5431c62",
         "filename": "pldmd/pldmd.cpp",
@@ -686,10 +879,10 @@
       "message": "Yes, Vishwa will update it",
       "parentUuid": "54798321_d3e58b13",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "cc922ba6_f0a3c149",
         "filename": "pldmd/pldmd.cpp",
@@ -704,10 +897,10 @@
       "message": "hmm.. which D-Bus interface file Deepak ?.",
       "parentUuid": "6ef94b96_e5431c62",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "c8dfd60e_e58f6560",
         "filename": "pldmd/pldmd.cpp",
@@ -722,10 +915,10 @@
       "message": "I\u0027m not sure. How do IBM consumer apps know about this object path?",
       "parentUuid": "cc922ba6_f0a3c149",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "4bba28f1_018827bc",
         "filename": "pldmd/pldmd.cpp",
@@ -740,8 +933,25 @@
       "message": "Host Lamp Test is internally called by LED manager when LED manager gets a Lamp Test request.\n\nLED object is `/xyz/openbmc_project/led/groups/lamp_test`\n\nRedfish PATCH targets `/xyz/openbmc_project/led/groups/lamp_test`",
       "parentUuid": "c8dfd60e_e58f6560",
       "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c59dad6f_62df43b0",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bba28f1_018827bc",
+      "revId": "071aba9c7c8629fe2e2676fb37421f3f9e65843f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

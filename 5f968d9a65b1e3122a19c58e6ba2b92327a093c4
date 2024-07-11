@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "73c11f0a_06fb441f",
         "filename": "/COMMIT_MSG",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "nit: tab",
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "a757f2d2_79a67a56",
         "filename": "/COMMIT_MSG",
@@ -32,10 +33,10 @@
       "message": "Done",
       "parentUuid": "73c11f0a_06fb441f",
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "88fb6a27_0dd6e902",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -49,10 +50,10 @@
       "side": 1,
       "message": "You dont need this wrapper really.",
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "977fb61b_1d3928b5",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -67,10 +68,10 @@
       "message": "But how do I get the Asserted Property in UTest?\n\nrefer: https://github.com/openbmc/phosphor-led-sysfs/blob/master/physical.cpp#L60",
       "parentUuid": "88fb6a27_0dd6e902",
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "0464c331_396409f2",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -85,10 +86,10 @@
       "message": "Cant we override asserted() instead of a wrapper ?",
       "parentUuid": "977fb61b_1d3928b5",
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "749fccdc_3ebde22e",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -103,10 +104,28 @@
       "message": "@Deepak @Vishwa\nI have removed this method",
       "parentUuid": "0464c331_396409f2",
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08808ab0_d7b637b6",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "749fccdc_3ebde22e",
+      "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "7a5432b0_f1da53f4",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -126,10 +145,10 @@
         "endChar": 43
       },
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "6c8fcdfc_e7298aea",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -150,8 +169,7 @@
         "endChar": 43
       },
       "revId": "5f968d9a65b1e3122a19c58e6ba2b92327a093c4",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

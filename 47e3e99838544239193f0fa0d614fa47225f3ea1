@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "81b4a35b_28ceabdc",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "typo : mthod --\u003e method",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "e0e7f51e_360acc49",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -32,10 +33,10 @@
       "message": "Done",
       "parentUuid": "81b4a35b_28ceabdc",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "fa63e562_391e7b6d",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -49,10 +50,10 @@
       "side": 1,
       "message": "why is it a not supported error ?.. It is any generic failure right ?",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a57b765a_7cd24bb5",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -67,10 +68,28 @@
       "message": "hmmm... I changed `std::errc::invalid_argument`",
       "parentUuid": "fa63e562_391e7b6d",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f56e91a_e6b92f2d",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a57b765a_7cd24bb5",
+      "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "c039d43f_d026eb69",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -84,10 +103,10 @@
       "side": 1,
       "message": "why is it not_supported ?.. May be it\u0027s a PLDM thing.. but just curious.",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "c699f3c9_8c344720",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
@@ -102,10 +121,28 @@
       "message": "changed `std::errc::invalid_argument`",
       "parentUuid": "c039d43f_d026eb69",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78a72c32_d53d305c",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c699f3c9_8c344720",
+      "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "e92c48d9_2a5db591",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -119,8 +156,25 @@
       "side": 1,
       "message": "why would it throw in this case ?",
       "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ede24f58_464c7cea",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e92c48d9_2a5db591",
+      "revId": "47e3e99838544239193f0fa0d614fa47225f3ea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

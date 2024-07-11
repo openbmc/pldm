@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "e9f71725_cb5a0e70",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "so a NULL D-Bus object ?",
       "revId": "6b360aee8f6f4ef6ad28124a2d0badb0e087e45d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "56fbb98e_c7cd762d",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -32,10 +33,10 @@
       "message": "Yes, Since here is Unit Test and we do not need this parameter, Right?",
       "parentUuid": "e9f71725_cb5a0e70",
       "revId": "6b360aee8f6f4ef6ad28124a2d0badb0e087e45d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "b5d4dd51_a2f61601",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -50,10 +51,10 @@
       "message": "hmm yeah.. So, is this behaving as expected ?",
       "parentUuid": "56fbb98e_c7cd762d",
       "revId": "6b360aee8f6f4ef6ad28124a2d0badb0e087e45d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "4e822ef6_1e1f4d88",
         "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
@@ -68,8 +69,25 @@
       "message": "Yes",
       "parentUuid": "b5d4dd51_a2f61601",
       "revId": "6b360aee8f6f4ef6ad28124a2d0badb0e087e45d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f13cad0e_f8316e4f",
+        "filename": "oem/ibm/test/host_bmc_lamp_test.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T06:16:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e822ef6_1e1f4d88",
+      "revId": "6b360aee8f6f4ef6ad28124a2d0badb0e087e45d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
