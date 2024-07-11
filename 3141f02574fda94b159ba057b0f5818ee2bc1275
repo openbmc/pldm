@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4850438a_7aa312c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:17:38Z",
+      "side": 1,
+      "message": "@Thu - is this tested ? is there some sort of co-req between both ? is the mctp change already in ?",
+      "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
