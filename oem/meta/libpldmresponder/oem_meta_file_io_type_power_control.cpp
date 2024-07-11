@@ -16,6 +16,10 @@ enum class POWER_CONTROL_OPTION
     SLED_CYCLE = 0x00,
     SLOT_12V_CYCLE = 0x01,
     SLOT_DC_CYCLE = 0x02,
+    NIC0_POWER_CYCLE = 0x03,
+    NIC1_POWER_CYCLE = 0x04,
+    NIC2_POWER_CYCLE = 0x05,
+    NIC3_POWER_CYCLE = 0x06,
 };
 
 int PowerControlHandler::write(const message& data)
@@ -59,6 +63,37 @@ int PowerControlHandler::write(const message& data)
             dbusMapping.propertyName = "RequestedHostTransition";
             property = "xyz.openbmc_project.State.Host.Transition.Reboot";
             break;
+        case static_cast<uint8_t>(POWER_CONTROL_OPTION::NIC0_POWER_CYCLE):
+        case static_cast<uint8_t>(POWER_CONTROL_OPTION::NIC1_POWER_CYCLE):
+        case static_cast<uint8_t>(POWER_CONTROL_OPTION::NIC2_POWER_CYCLE):
+        case static_cast<uint8_t>(POWER_CONTROL_OPTION::NIC3_POWER_CYCLE):
+        {
+            static constexpr auto systemd_busname = "org.freedesktop.systemd1";
+            static constexpr auto systemd_path = "/org/freedesktop/systemd1";
+            static constexpr auto systemd_interface =
+                "org.freedesktop.systemd1.Manager";
+            uint8_t nic_index =
+                option -
+                static_cast<uint8_t>(POWER_CONTROL_OPTION::NIC0_POWER_CYCLE);
+            try
+            {
+                auto& bus = pldm::utils::DBusHandler::getBus();
+                auto method = bus.new_method_call(systemd_busname, systemd_path,
+                                                  systemd_interface,
+                                                  "StartUnit");
+                method.append("pldm_nic_power_cycle@" +
+                                  std::to_string(nic_index) + ".service",
+                              "replace");
+                bus.call_noreply(method);
+            }
+            catch (const std::exception& e)
+            {
+                error("Control NIC{NUM} power fail. ERROR={ERROR}", "NUM",
+                      nic_index, "ERROR", e);
+                return PLDM_ERROR;
+            }
+            return PLDM_SUCCESS;
+        }
         default:
             error("Get invalid power control option, option={OPTION}", "OPTION",
                   option);
