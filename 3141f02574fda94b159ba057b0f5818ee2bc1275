@@ -16,6 +16,24 @@
       "message": "@Thu - is this tested ? is there some sort of co-req between both ? is the mctp change already in ?",
       "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed8c9b24_3b76054c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-11T09:49:10Z",
+      "side": 1,
+      "message": "Yes, it is tested in Ampere.\n\n@Manoj, the code in `main` branch of `https://github.com/CodeConstruct/mctp` is updated. I\u0027m not sure when will it be applied for OpenBMC.\nSo I\u0027m not sure when will we should merge this patch.",
+      "parentUuid": "4850438a_7aa312c7",
+      "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
