@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c14c785_8599f683",
+        "filename": "meson.options",
+        "patchSetId": 97
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:11:21Z",
+      "side": 1,
+      "message": "how are the min, max and default values decided ?",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 16
+      },
+      "revId": "95d9bad0b618021234824765c929e945a663d601",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "994bc802_56c85815",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 97
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:11:21Z",
+      "side": 1,
+      "message": "please remove the function names from the logs, the aim of lg2 based logs is to have the message human readable, having function names there defeats the purpose.",
+      "range": {
+        "startLine": 126,
+        "startChar": 22,
+        "endLine": 126,
+        "endChar": 40
+      },
+      "revId": "95d9bad0b618021234824765c929e945a663d601",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38077b45_b3515ba9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 97
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:11:21Z",
+      "side": 1,
+      "message": "count",
+      "range": {
+        "startLine": 171,
+        "startChar": 42,
+        "endLine": 171,
+        "endChar": 46
+      },
+      "revId": "95d9bad0b618021234824765c929e945a663d601",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

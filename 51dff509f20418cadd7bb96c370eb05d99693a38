@@ -265,6 +265,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff0000a8_c17a39c2",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:11:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0678f653_72851908",
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06e9ea6a_7dbc13c0",
@@ -319,6 +337,30 @@
       "side": 1,
       "message": "It will be used in\n```\n                rc \u003d co_await getPDR(tid, recordHndl, nextDataTransferHndl,\n                                     PLDM_GET_NEXTPART, recvBufSize,\n                                     recordChgNum, nextRecordHndl,\n                                     nextDataTransferHndl, transferFlag,\n                                     responseCnt, recvBuf, transferCrc);\n```",
       "parentUuid": "650f3f18_faef3008",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 71
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a38ce649_344f1ecd",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:11:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6b5b5b15_80273a9f",
       "range": {
         "startLine": 118,
         "startChar": 0,
@@ -413,6 +455,30 @@
       "side": 1,
       "message": "The `rc` will be set to `false` when one of PDRs is unsupported. But we still want to continue with others PDRs.",
       "parentUuid": "695479f8_32be3185",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79c6bbba_8a085276",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:11:21Z",
+      "side": 1,
+      "message": "if we need to keep continuing anyway , why do we need to return anything ? can\u0027t it be a void function ?",
+      "parentUuid": "73c22432_3c999b85",
       "range": {
         "startLine": 54,
         "startChar": 4,
@@ -883,6 +949,30 @@
       "side": 1,
       "message": "I updated code to \n```\nstd::shared_ptr\u003cSensorAuxiliaryNames\u003e\n    Terminus::getSensorAuxiliaryNames(SensorId id)\n{\n    auto it \u003d std::find_if(\n        sensorAuxiliaryNamesTbl.begin(), sensorAuxiliaryNamesTbl.end(),\n        [id](\n            const std::shared_ptr\u003cSensorAuxiliaryNames\u003e\u0026 sensorAuxiliaryNames) {\n        const auto\u0026 [sensorId, sensorCnt, sensorNames] \u003d *sensorAuxiliaryNames;\n        return sensorId \u003d\u003d id;\n    });\n\n    if (it !\u003d sensorAuxiliaryNamesTbl.end())\n    {\n        return *it;\n    }\n    return nullptr;\n};\n\n```",
       "parentUuid": "6b9eec52_e4364efc",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 1
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5deff425_68e7bd99",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:11:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13804e33_7a3536c6",
       "range": {
         "startLine": 101,
         "startChar": 0,
