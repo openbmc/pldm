@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46998cbf_c5c3c82a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-11T09:12:42Z",
+      "side": 1,
+      "message": "@Delphine - do you plan to update these commits with the comments fixed ?",
+      "revId": "c759386e7a0bc04d4bed596638176e9e5fff592b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
