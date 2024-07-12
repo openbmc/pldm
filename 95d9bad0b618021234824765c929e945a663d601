@@ -71,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba0dae29_fb6b8dee",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 97
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-12T00:05:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "994bc802_56c85815",
+      "range": {
+        "startLine": 126,
+        "startChar": 22,
+        "endLine": 126,
+        "endChar": 40
+      },
+      "revId": "95d9bad0b618021234824765c929e945a663d601",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38077b45_b3515ba9",
@@ -84,6 +108,30 @@
       "writtenOn": "2024-07-11T09:11:21Z",
       "side": 1,
       "message": "count",
+      "range": {
+        "startLine": 171,
+        "startChar": 42,
+        "endLine": 171,
+        "endChar": 46
+      },
+      "revId": "95d9bad0b618021234824765c929e945a663d601",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4e54abc_3b21f8b6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 97
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-12T00:05:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38077b45_b3515ba9",
       "range": {
         "startLine": 171,
         "startChar": 42,

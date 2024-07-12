@@ -489,6 +489,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6c3574b_0ae69a00",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-12T00:05:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79c6bbba_8a085276",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "594c3597_4f87352b",
@@ -1584,6 +1608,30 @@
       "side": 1,
       "message": "The sensor name will be used to create sensor D-Bus interface. So ` ` has to be replace by `_` to meet with D-Bus object path requirement.",
       "parentUuid": "2b33ad41_bec0956c",
+      "range": {
+        "startLine": 206,
+        "startChar": 3,
+        "endLine": 210,
+        "endChar": 5
+      },
+      "revId": "51dff509f20418cadd7bb96c370eb05d99693a38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbe3c486_226fa27e",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 96
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-12T00:05:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88a69f7f_b15b004b",
       "range": {
         "startLine": 206,
         "startChar": 3,
