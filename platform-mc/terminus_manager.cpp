@@ -144,7 +144,7 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
                 exec::default_task_context<void>());
 }
 
-auto TerminusManager::findTeminusPtr(const MctpInfo& mctpInfo)
+auto TerminusManager::findTerminusPtr(const MctpInfo& mctpInfo)
 {
     auto foundIter = std::find_if(termini.begin(), termini.end(),
                                   [&](const auto& terminusPair) {
@@ -170,7 +170,7 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
         const MctpInfos& mctpInfos = queuedMctpInfos.front();
         for (const auto& mctpInfo : mctpInfos)
         {
-            auto it = findTeminusPtr(mctpInfo);
+            auto it = findTerminusPtr(mctpInfo);
             if (it == termini.end())
             {
                 co_await initMctpTerminus(mctpInfo);
@@ -193,7 +193,7 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
     // remove terminus
     for (const auto& mctpInfo : mctpInfos)
     {
-        auto it = findTeminusPtr(mctpInfo);
+        auto it = findTerminusPtr(mctpInfo);
         if (it == termini.end())
         {
             continue;
