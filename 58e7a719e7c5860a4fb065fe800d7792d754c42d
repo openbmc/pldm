@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d73a49_879ffd84",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-15T13:48:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5a05f86_65e4174d",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 27
+      },
+      "revId": "58e7a719e7c5860a4fb065fe800d7792d754c42d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2debf93_9e686341",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "same as above comment",
       "parentUuid": "a2debf93_9e686341",
+      "range": {
+        "startLine": 46,
+        "startChar": 7,
+        "endLine": 46,
+        "endChar": 10
+      },
+      "revId": "58e7a719e7c5860a4fb065fe800d7792d754c42d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5548f3d4_9e23410c",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-15T13:48:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f458611b_2b0638ff",
       "range": {
         "startLine": 46,
         "startChar": 7,
