@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5780922d_f3beaead",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 46
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9ea5bd7_8d4ecd0a",
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "edecad35_854519ee",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 46
@@ -58,6 +76,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95d14f68_4b8ccfa8",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a35be9b_ef4c0721",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 25
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44a457c8_cdb0ed5d",
@@ -71,6 +113,30 @@
       "writtenOn": "2024-07-11T08:59:18Z",
       "side": 1,
       "message": "do we need this?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d82b0c3c_59416339",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44a457c8_cdb0ed5d",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -98,6 +164,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0641f06e_d53c146a",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e33aa08_a8d8c19b",
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1036a322_8ab11510",
@@ -111,6 +195,30 @@
       "writtenOn": "2024-07-11T08:59:18Z",
       "side": 1,
       "message": "shouldn\u0027t we set the value and update the asserted property when returning?\n\nsomething like this - \n`return sdbusplus::xyz::openbmc_project::Led::server::Group::asserted(value)`",
+      "range": {
+        "startLine": 73,
+        "startChar": 3,
+        "endLine": 73,
+        "endChar": 17
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f1bfe35_5080e964",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1036a322_8ab11510",
       "range": {
         "startLine": 73,
         "startChar": 3,
@@ -144,6 +252,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7e2f9a8_9b2696b4",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33558b7d_87fbf925",
+      "range": {
+        "startLine": 100,
+        "startChar": 6,
+        "endLine": 100,
+        "endChar": 39
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f2c99ef_d78cefba",
@@ -157,6 +289,30 @@
       "writtenOn": "2024-07-11T08:59:18Z",
       "side": 1,
       "message": "can we delete this constructors rather than defaulting it?",
+      "range": {
+        "startLine": 41,
+        "startChar": 3,
+        "endLine": 42,
+        "endChar": 54
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "076829c2_d1a2142f",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "right",
+      "parentUuid": "3f2c99ef_d78cefba",
       "range": {
         "startLine": 41,
         "startChar": 3,
@@ -190,6 +346,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc5cfb37_1a9aae2e",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33f47268_6e4d07d7",
+      "range": {
+        "startLine": 54,
+        "startChar": 17,
+        "endLine": 54,
+        "endChar": 41
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70543361_2ed950e9",
@@ -203,6 +383,30 @@
       "writtenOn": "2024-07-11T08:59:18Z",
       "side": 1,
       "message": "can we pass by reference rather than a pointer?",
+      "range": {
+        "startLine": 56,
+        "startChar": 16,
+        "endLine": 56,
+        "endChar": 51
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c80d6bd1_9a264f33",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70543361_2ed950e9",
       "range": {
         "startLine": 56,
         "startChar": 16,
@@ -238,6 +442,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b8154a4_ea4282b9",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "the LEDGroupObj accepts const std::string\u0026\n\nsdbusplus::server::object::object\u003csdbusplus::server::xyz::openbmc_project::led::Group\u003e::object(sdbusplus::bus_t\u0026, const std::string\u0026)",
+      "parentUuid": "6527d74f_115f701f",
+      "range": {
+        "startLine": 58,
+        "startChar": 32,
+        "endLine": 58,
+        "endChar": 40
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca403221_931f7f62",
         "filename": "pldmd/oem_ibm.hpp",
         "patchSetId": 46
@@ -249,6 +477,30 @@
       "writtenOn": "2024-07-11T06:14:50Z",
       "side": 1,
       "message": "redundant , please remove.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 24
+      },
+      "revId": "680446a2ce18dbd3332639c11e348383c449e82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b619b45_d19b2d92",
+        "filename": "pldmd/oem_ibm.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T11:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca403221_931f7f62",
       "range": {
         "startLine": 3,
         "startChar": 0,
