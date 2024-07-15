@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5a05f86_65e4174d",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T13:42:12Z",
+      "side": 1,
+      "message": "we need to be throwing SdBusError at line 66, even after we fail to get effecterID from line 43.",
+      "parentUuid": "4b384f21_db67b7bc",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 27
+      },
+      "revId": "58e7a719e7c5860a4fb065fe800d7792d754c42d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2debf93_9e686341",
         "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
         "patchSetId": 52
@@ -37,6 +61,30 @@
       "writtenOn": "2024-07-15T13:04:06Z",
       "side": 1,
       "message": "else with no condition ?",
+      "range": {
+        "startLine": 46,
+        "startChar": 7,
+        "endLine": 46,
+        "endChar": 10
+      },
+      "revId": "58e7a719e7c5860a4fb065fe800d7792d754c42d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f458611b_2b0638ff",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T13:42:12Z",
+      "side": 1,
+      "message": "same as above comment",
+      "parentUuid": "a2debf93_9e686341",
       "range": {
         "startLine": 46,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc755de0_3784653a",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T13:42:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2633641_3f3c4896",
+      "range": {
+        "startLine": 132,
+        "startChar": 12,
+        "endLine": 132,
+        "endChar": 32
+      },
+      "revId": "58e7a719e7c5860a4fb065fe800d7792d754c42d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "315b7ebd_c164908c",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-07-15T13:04:06Z",
       "side": 1,
       "message": "not used anywhere ? not needed ?",
+      "range": {
+        "startLine": 94,
+        "startChar": 3,
+        "endLine": 95,
+        "endChar": 16
+      },
+      "revId": "58e7a719e7c5860a4fb065fe800d7792d754c42d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be83763a_4fcc3002",
+        "filename": "oem/ibm/host-bmc/host_lamp_test.hpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-07-15T13:42:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "315b7ebd_c164908c",
       "range": {
         "startLine": 94,
         "startChar": 3,
