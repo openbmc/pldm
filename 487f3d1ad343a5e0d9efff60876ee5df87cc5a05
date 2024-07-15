@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcdc0c37_7bc67176",
+        "filename": "host-bmc/dbus/motherboard.hpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-15T12:59:03Z",
+      "side": 1,
+      "message": "we can delete the constructor since its not used anywhere?",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 52
+      },
+      "revId": "487f3d1ad343a5e0d9efff60876ee5df87cc5a05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
