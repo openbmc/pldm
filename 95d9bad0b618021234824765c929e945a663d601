@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab38fbb4_160641e8",
+        "filename": "meson.options",
+        "patchSetId": 97
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-07-16T07:32:50Z",
+      "side": 1,
+      "message": "As per the spec, the reponseCount is `uint16_t` which can be a max of UINT16_MAX ?",
+      "parentUuid": "306a1e3c_0e44ae73",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 16
+      },
+      "revId": "95d9bad0b618021234824765c929e945a663d601",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "994bc802_56c85815",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 97
