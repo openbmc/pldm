@@ -39,6 +39,7 @@ owners:
 reviewers:
 - liuxiwei@ieisystem.com
 - pavithrabarithaya07@gmail.com
+- thu@os.amperecomputing.com
 
 matchers:
 - partial_regex: ibm
@@ -70,3 +71,6 @@ openbmc:
 - name: Pavithra Barithaya
   email: pavithrabarithaya07@gmail.com
   discord: Pavithra B
+- name: Thu Nguyen
+  email: thu@os.amperecomputing.com
+  discord: Thu Nguyen
