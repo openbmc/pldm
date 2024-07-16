@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6516d5d_1932b718",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-16T11:36:59Z",
+      "side": 1,
+      "message": "The code look good. I just have some minor comment.",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aecc3925_425af8ec",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-16T11:36:59Z",
+      "side": 1,
+      "message": "`PLDM_SUCCESS` is 0 . So how about `if (rc || resp.completion_code)`?",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "225db2a9_a51e08ac",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2039,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-16T11:36:59Z",
+      "side": 1,
+      "message": "This is not lg2::error. But can we avoid to use anti-pattern? https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings\n\n```\nstd::cerr \u003c\u003c \"Response Message Error: \"\n          \u003c\u003c \"return code \" \u003c\u003c rc\n          \u003c\u003c \",completion code \" \u003c\u003c static_cast\u003cint\u003e(resp.completion_code)\n          \u003c\u003c std::ends;\n```",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd309643_1df98d03",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2045,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-16T11:36:59Z",
+      "side": 1,
+      "message": "Use c++ type cast.",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d0c6e33_6e7d9ce2",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2047,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-16T11:36:59Z",
+      "side": 1,
+      "message": "Use `Range_based`.\n```\nfor (const auto\u0026 i :\n         std::views::iota(0, static_cast\u003cint\u003e(resp.comp_effecter_count)))\n```",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
