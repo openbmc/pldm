@@ -22,6 +22,30 @@
       },
       "revId": "487f3d1ad343a5e0d9efff60876ee5df87cc5a05",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb538eb2_71d42254",
+        "filename": "host-bmc/dbus/motherboard.hpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001539
+      },
+      "writtenOn": "2024-07-16T06:10:48Z",
+      "side": 1,
+      "message": "constructor is already deleted, this two are move constructor and move operator which is mentioning as default.",
+      "parentUuid": "fcdc0c37_7bc67176",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 52
+      },
+      "revId": "487f3d1ad343a5e0d9efff60876ee5df87cc5a05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
