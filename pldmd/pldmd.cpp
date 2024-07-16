@@ -65,6 +65,7 @@ PHOSPHOR_LOG2_USING;
 #endif
 
 constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
+constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
 using namespace pldm;
 using namespace sdeventplus;
@@ -84,8 +85,16 @@ void interruptFlightRecorderCallBack(Signal& /*signal*/,
 
 void requestPLDMServiceName()
 {
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    bus.request_name("xyz.openbmc_project.PLDM");
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        bus.request_name(PLDMService);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to request D-Bus name {NAME} with error {ERROR}.", "NAME",
+              PLDMService, "ERROR", e);
+    }
 }
 
 static std::optional<Response>
@@ -371,7 +380,15 @@ int main(int argc, char** argv)
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 #ifndef SYSTEM_SPECIFIC_BIOS_JSON
-    bus.request_name("xyz.openbmc_project.PLDM");
+    try
+    {
+        bus.request_name(PLDMService);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to request D-Bus name {NAME} with error {ERROR}.", "NAME",
+              PLDMService, "ERROR", e);
+    }
 #endif
     IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
