@@ -15,7 +15,7 @@ using ::testing::SetArgPointee;
 class MockLampTest : public HostLampTest
 {
   public:
-    MockLampTest(sdbusplus::bus::bus& bus, const std::string& objPath,
+    MockLampTest(sdbusplus::bus_t& bus, const std::string& objPath,
                  uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
                  pldm_pdr* repo,
                  pldm::requester::Handler<pldm::requester::Request>* handler) :
@@ -29,7 +29,7 @@ class MockLampTest : public HostLampTest
 
 TEST(TestLamp, Asserted)
 {
-    sdbusplus::bus::bus bus = sdbusplus::bus::new_default();
+    sdbusplus::bus_t bus = sdbusplus::bus::new_default();
     TestInstanceIdDb instanceIdDb;
 
     MockLampTest lampTest(bus, "/xyz/openbmc_project/led/groups/host_lamp_test",
