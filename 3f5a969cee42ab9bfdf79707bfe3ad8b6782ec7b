@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "303814d7_0b52479a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-17T06:59:42Z",
+      "side": 1,
+      "message": "can we use list_names_acquired() https://github.com/openbmc/sdbusplus/blob/03b2c26c8d0b97e943a0418378abbe4828184423/include/sdbusplus/bus.hpp#L493 , and if it returns `null` then we could call request_name ?\n\n\nmay be something like:\n\n```\nauto\u0026 bus \u003d pldm::utils::DBusHandler::getBus();\nif(!bus.list_names_acquired())\n{\n  bus.request_name();\n  \n}\n\n```",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 1
+      },
+      "revId": "3f5a969cee42ab9bfdf79707bfe3ad8b6782ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
