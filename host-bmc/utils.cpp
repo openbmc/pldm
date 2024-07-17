@@ -101,25 +101,23 @@ void addObjectPathEntityAssociations(
             {
                 oemPlatformHandler->updateOemDbusPaths(entity_path);
             }
-            // If the entity obtained from the remote PLDM terminal is not in
-            // the MAP, or there is no auxiliary name PDR, add it directly.
-            // Otherwise, check whether the DBus service of entity_path exists,
-            // and overwrite the entity if it does not exist.
-            if (!objPathMap.contains(entity_path))
+            try
             {
-                objPathMap[entity_path] = entity;
-            }
-            else
-            {
-                try
-                {
-                    pldm::utils::DBusHandler().getService(entity_path.c_str(),
-                                                          nullptr);
-                }
-                catch (const std::exception& e)
+                pldm::utils::DBusHandler().getService(entity_path.c_str(),
+                                                      nullptr);
+                // If the entity obtained from the remote PLDM terminal is not
+                // in the MAP, or there is no auxiliary name PDR, add it
+                // directly. Otherwise, check whether the DBus service of
+                // entity_path exists, and overwrite the entity if it does not
+                // exist.
+                if (objPathMap.contains(entity_path))
                 {
                     objPathMap[entity_path] = entity;
                 }
+            }
+            catch (const std::exception&)
+            {
+                objPathMap[entity_path] = entity;
             }
 
             for (size_t i = 1; i < ev.size(); i++)
@@ -144,8 +142,12 @@ void addObjectPathEntityAssociations(
         try
         {
             pldm::utils::DBusHandler().getService(dbusPath.c_str(), nullptr);
+            if (objPathMap.contains(dbusPath))
+            {
+                objPathMap[dbusPath] = entity;
+            }
         }
-        catch (const std::exception& e)
+        catch (const std::exception&)
         {
             objPathMap[dbusPath] = entity;
         }
