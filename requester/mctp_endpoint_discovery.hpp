@@ -17,6 +17,7 @@ namespace pldm
 const std::string emptyUUID = "00000000-0000-0000-0000-000000000000";
 constexpr const char* MCTPService = "xyz.openbmc_project.MCTP";
 constexpr const char* MCTPInterface = "xyz.openbmc_project.MCTP.Endpoint";
+constexpr const char* EndpointUUID = "xyz.openbmc_project.Common.UUID";
 constexpr const char* MCTPPath = "/xyz/openbmc_project/mctp";
 
 /** @class MctpDiscoveryHandlerIntf
@@ -124,6 +125,28 @@ class MctpDiscovery
                                      MctpInfos& removedInfos);
 
   private:
+    /** @brief Get MCTP Endpoint D-Bus Properties in the
+     *         `xyz.openbmc_project.MCTP.Endpoint` D-Bus interface
+     *
+     *  @param[in] service - the MCTP service name
+     *  @param[in] path - the MCTP endpoints object path
+     *
+     *  @return tuple of Network Index, Endpoint ID and MCTP message types
+     */
+    MctpEndpointProps getMctpEndpointProps(const std::string& service,
+                                           const std::string& path);
+
+    /** @brief Get Endpoint UUID from `UUID` D-Bus property in the
+     *         `xyz.openbmc_project.Common.UUID` D-Bus interface.
+     *
+     *  @param[in] service - the MCTP service name
+     *  @param[in] path - the MCTP endpoints object path
+     *
+     *  @return Endpoint UUID
+     */
+    UUID getEndpointUUIDProp(const std::string& service,
+                             const std::string& path);
+
     static constexpr uint8_t mctpTypePLDM = 1;
 };
 
