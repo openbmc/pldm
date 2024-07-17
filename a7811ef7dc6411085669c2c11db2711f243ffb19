@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19436c8c_724511b5",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-07-17T03:31:25Z",
+      "side": 1,
+      "message": "Perhaps we could provide an API in libpldm that calculates this value to avoid this mess at the call-site?",
+      "range": {
+        "startLine": 252,
+        "startChar": 1,
+        "endLine": 257,
+        "endChar": 39
+      },
+      "revId": "a7811ef7dc6411085669c2c11db2711f243ffb19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4661045a_6c9c3038",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-07-17T03:31:25Z",
+      "side": 1,
+      "message": "Is there a more appropriate way to do this in C++ (possibly `std::vector\u003cchar\u003e(decodedPdrSize)` if that handles alignment as we need?)",
+      "revId": "a7811ef7dc6411085669c2c11db2711f243ffb19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91ac8108_1e626b39",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-07-17T03:31:25Z",
+      "side": 1,
+      "message": "Is there a more appropriate way to do this in C++? `std::vector\u003cpldm_entity_auxiliary_name\u003e(decodedPdr-\u003ename_string_count)`?",
+      "range": {
+        "startLine": 272,
+        "startChar": 24,
+        "endLine": 274,
+        "endChar": 51
+      },
+      "revId": "a7811ef7dc6411085669c2c11db2711f243ffb19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c621594b_47297cb0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-07-17T03:31:25Z",
+      "side": 1,
+      "message": "Why is this necessary?",
+      "range": {
+        "startLine": 285,
+        "startChar": 9,
+        "endLine": 285,
+        "endChar": 24
+      },
+      "revId": "a7811ef7dc6411085669c2c11db2711f243ffb19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
