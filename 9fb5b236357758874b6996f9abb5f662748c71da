@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a212875_448b6757",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-07-17T07:48:13Z",
+      "side": 1,
+      "message": "I actually wanted to explicitly state PLDM_SUCCESS for readability because it\u0027s not obvious that it\u0027s 0.\n\nIf you think otherwise I don\u0027t mind changing it.",
+      "parentUuid": "aecc3925_425af8ec",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "225db2a9_a51e08ac",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 13
@@ -48,6 +66,24 @@
       "writtenOn": "2024-07-16T11:36:59Z",
       "side": 1,
       "message": "This is not lg2::error. But can we avoid to use anti-pattern? https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings\n\n```\nstd::cerr \u003c\u003c \"Response Message Error: \"\n          \u003c\u003c \"return code \" \u003c\u003c rc\n          \u003c\u003c \",completion code \" \u003c\u003c static_cast\u003cint\u003e(resp.completion_code)\n          \u003c\u003c std::ends;\n```",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be21a86_5c4f9132",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2039,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-07-17T07:48:13Z",
+      "side": 1,
+      "message": "From what I understand from this doc, the reason this is an anti-pattern in lg2 is because the journal keeps some metadata about the log message.\n \nThis is not the case in stderr so I think it\u0027s not an anti-pattern here.",
+      "parentUuid": "225db2a9_a51e08ac",
       "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "553baf44_5f7625e9",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2045,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-07-17T07:48:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd309643_1df98d03",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d0c6e33_6e7d9ce2",
@@ -82,6 +136,24 @@
       "writtenOn": "2024-07-16T11:36:59Z",
       "side": 1,
       "message": "Use `Range_based`.\n```\nfor (const auto\u0026 i :\n         std::views::iota(0, static_cast\u003cint\u003e(resp.comp_effecter_count)))\n```",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a63d6060_fa1fd61f",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2047,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-07-17T07:48:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d0c6e33_6e7d9ce2",
       "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
