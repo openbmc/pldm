@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2255e69e_1d0828d0",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-07-17T08:14:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43562cf3_ba608ced",
+      "revId": "86138cfad456e4ae8624d78095f5390ea103be11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86c5dab1_199d17ed",
@@ -138,6 +156,30 @@
       "side": 1,
       "message": "I was kind of surprised by that too to be honest.",
       "parentUuid": "bc2f0f04_a2504836",
+      "range": {
+        "startLine": 2049,
+        "startChar": 31,
+        "endLine": 2049,
+        "endChar": 53
+      },
+      "revId": "86138cfad456e4ae8624d78095f5390ea103be11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d96deef2_0aaabe1d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2049,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-07-17T08:14:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b408253_21fb4d3e",
       "range": {
         "startLine": 2049,
         "startChar": 31,
