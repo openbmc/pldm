@@ -5,6 +5,8 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
+#include <linux/mctp.h>
+
 #include <phosphor-logging/lg2.hpp>
 
 #include <algorithm>
@@ -58,41 +60,72 @@ void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
         for (const auto& serviceIter : services)
         {
             const std::string& service = serviceIter.first;
-            try
+            const MctpEndpointProps& epProps =
+                getMctpEndpointProps(service, path);
+            const UUID& uuid = getEndpointUUIDProp(service, path);
+            auto types = std::get<MCTPMsgTypes>(epProps);
+            if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
+                types.end())
             {
-                auto properties =
-                    pldm::utils::DBusHandler().getDbusPropertiesVariant(
-                        service.c_str(), path.c_str(), MCTPInterface);
-
-                if (properties.contains("NetworkId") &&
-                    properties.contains("EID") &&
-                    properties.contains("SupportedMessageTypes"))
-                {
-                    auto networkId =
-                        std::get<NetworkId>(properties.at("NetworkId"));
-                    auto eid = std::get<mctp_eid_t>(properties.at("EID"));
-                    auto types = std::get<std::vector<uint8_t>>(
-                        properties.at("SupportedMessageTypes"));
-                    if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
-                        types.end())
-                    {
-                        info(
-                            "Adding Endpoint networkId '{NETWORK}' and EID '{EID}'",
-                            "NETWORK", networkId, "EID", eid);
-                        mctpInfos.emplace_back(
-                            MctpInfo(eid, emptyUUID, "", networkId));
-                    }
-                }
-            }
-            catch (const sdbusplus::exception_t& e)
-            {
-                error(
-                    "Error reading MCTP Endpoint property at path '{PATH}' and service '{SERVICE}', error - {ERROR}",
-                    "ERROR", e, "SERVICE", service, "PATH", path);
-                return;
+                mctpInfos.emplace_back(
+                    MctpInfo(std::get<eid>(epProps), uuid, "",
+                             std::get<NetworkId>(epProps)));
             }
         }
     }
+}
+
+MctpEndpointProps MctpDiscovery::getMctpEndpointProps(
+    const std::string& service, const std::string& path)
+{
+    try
+    {
+        auto properties = pldm::utils::DBusHandler().getDbusPropertiesVariant(
+            service.c_str(), path.c_str(), MCTPInterface);
+
+        if (properties.contains("NetworkId") && properties.contains("EID") &&
+            properties.contains("SupportedMessageTypes"))
+        {
+            auto networkId = std::get<NetworkId>(properties.at("NetworkId"));
+            auto eid = std::get<mctp_eid_t>(properties.at("EID"));
+            auto types = std::get<std::vector<uint8_t>>(
+                properties.at("SupportedMessageTypes"));
+            return MctpEndpointProps(networkId, eid, types);
+        }
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error(
+            "Error reading MCTP Endpoint property at path '{PATH}' and service '{SERVICE}', error - {ERROR}",
+            "SERVICE", service, "PATH", path, "ERROR", e);
+        return MctpEndpointProps(0, MCTP_ADDR_ANY, {});
+    }
+
+    return MctpEndpointProps(0, MCTP_ADDR_ANY, {});
+}
+
+UUID MctpDiscovery::getEndpointUUIDProp(const std::string& service,
+                                        const std::string& path)
+{
+    try
+    {
+        auto properties = pldm::utils::DBusHandler().getDbusPropertiesVariant(
+            service.c_str(), path.c_str(), EndpointUUID);
+
+        if (properties.contains("UUID"))
+        {
+            return std::get<UUID>(properties.at("UUID"));
+        }
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error(
+            "Error reading Endpoint UUID property at path '{PATH}' and service '{SERVICE}', error - {ERROR}",
+            "SERVICE", service, "PATH", path, "ERROR", e);
+        return static_cast<UUID>(emptyUUID);
+    }
+
+    return static_cast<UUID>(emptyUUID);
 }
 
 void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
@@ -103,6 +136,7 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
     using Property = std::string;
     using PropertyMap = std::map<Property, dbus::Value>;
     std::map<std::string, PropertyMap> interfaces;
+    std::string uuid = emptyUUID;
 
     try
     {
@@ -114,6 +148,19 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
             "Error reading MCTP Endpoint added interface message, error - {ERROR}",
             "ERROR", e);
         return;
+    }
+
+    /* Get UUID */
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(
+            objPath.str.c_str(), EndpointUUID);
+        uuid = getEndpointUUIDProp(service, objPath.str);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error getting Endpoint UUID D-Bus interface, error - {ERROR}",
+              "ERROR", e);
     }
 
     for (const auto& [intfName, properties] : interfaces)
@@ -133,10 +180,9 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                     types.end())
                 {
                     info(
-                        "Adding Endpoint networkId '{NETWORK}' and EID '{EID}'",
-                        "NETWORK", networkId, "EID", eid);
-                    mctpInfos.emplace_back(
-                        MctpInfo(eid, emptyUUID, "", networkId));
+                        "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
+                        "NETWORK", networkId, "EID", eid, "UUID", uuid);
+                    mctpInfos.emplace_back(MctpInfo(eid, uuid, "", networkId));
                 }
             }
         }
