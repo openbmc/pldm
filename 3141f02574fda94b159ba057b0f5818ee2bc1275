@@ -34,6 +34,41 @@
       "parentUuid": "4850438a_7aa312c7",
       "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eca76ad_d1db0309",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-17T08:08:51Z",
+      "side": 1,
+      "message": "openbmc still points to the older mctp https://github.com/openbmc/openbmc/blob/8e7b46e2350c3689938f309eaca929aada20b5a0/meta-openembedded/meta-networking/recipes-support/mctp/mctp_1.1.bb#L8C11-L8C51, merging this change will break other systems. is ampere directly using the latest and not using the meta-openembedded flow ?",
+      "parentUuid": "ed8c9b24_3b76054c",
+      "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "238836c7_bdccc86d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-17T08:08:51Z",
+      "side": 1,
+      "message": "Thu - please put a comment here once the recipe is bumped in the recipe which is being used by the openbmc.",
+      "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
