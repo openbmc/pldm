@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c576cce5_49787b00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-18T13:09:09Z",
+      "side": 1,
+      "message": "Acknowledged, I think this makes sense. From my point of view :\n\nIf the PLDM spec does not speak anything - then its allowed to send that value.",
+      "parentUuid": "bd334f5f_a6d3cf41",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 65
+      },
+      "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e566b3be_c54a2c0a",
