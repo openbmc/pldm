@@ -63,6 +63,23 @@
       "message": "Hi Thu - the changes looks good, but i have a small question on why the default value is not accepted, if it is not allowed from the spec point of view , we would want that to be documented in the commit message as well.",
       "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a85c618a_d1794163",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-18T10:06:06Z",
+      "side": 1,
+      "message": "I updated commit message for more details.",
+      "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
