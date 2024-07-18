@@ -52,6 +52,24 @@
       "parentUuid": "2066bf9c_1f9e85f3",
       "revId": "8cbb3961430308e0f19aa8b310bff4790ea4fd93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c7373f_2fde7868",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 118
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-18T08:58:20Z",
+      "side": 1,
+      "message": "Fixed in the commits\nhttps://github.com/openbmc/pldm/commit/6b901e4a78338605c27c477f2a254dd3c3c38c72\nhttps://github.com/openbmc/pldm/commit/2da113f57b224545eb2d2e1d7df3f750f0211e2b",
+      "parentUuid": "4c5d64fd_b56c2282",
+      "revId": "8cbb3961430308e0f19aa8b310bff4790ea4fd93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
