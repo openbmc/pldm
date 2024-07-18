@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e194caa_19497640",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2036,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-18T08:51:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a212875_448b6757",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "225db2a9_a51e08ac",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "From what I understand from this doc, the reason this is an anti-pattern in lg2 is because the journal keeps some metadata about the log message.\n \nThis is not the case in stderr so I think it\u0027s not an anti-pattern here.",
       "parentUuid": "225db2a9_a51e08ac",
+      "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "807c1e7e_117c084f",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2039,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-18T08:51:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7be21a86_5c4f9132",
       "revId": "9fb5b236357758874b6996f9abb5f662748c71da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
