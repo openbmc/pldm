@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d66fe786_2f18532f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-18T09:22:48Z",
+      "side": 1,
+      "message": "can you explain a little more on this ? certainly adding a field to send custom data makes sense. I cannot seem to understand why certain termi wont accept the default value..is it against the spec ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 65
+      },
+      "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e566b3be_c54a2c0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-18T09:22:48Z",
+      "side": 1,
+      "message": "Hi Thu - the changes looks good, but i have a small question on why the default value is not accepted, if it is not allowed from the spec point of view , we would want that to be documented in the commit message as well.",
+      "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
