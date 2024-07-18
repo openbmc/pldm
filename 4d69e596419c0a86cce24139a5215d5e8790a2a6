@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd334f5f_a6d3cf41",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-18T09:56:14Z",
+      "side": 1,
+      "message": "The section `8.2 GetPLDMVersion` in DSP0240 PLDM base spec, does not define any things about the version value fields in the command.\n\nSo terminus does or does not accept `0xff 0xff 0xff 0xff` is just the choice of terminus implementation because it does not violate the PLDM Base spec.\n\nWhy the values are `0xff`?\n\nSection `12.6.1 Version field encoding` in MCTP Base spec DSP0236 detail about value of `major`, `minor`... and the meaning of them.\n```\nA value of 0xFF in the “update” field indicates that the field to be ignored. Software or utilities that display\nthe version number should not display any characters for the field. 0xFF is not allowed as a value for the “major” or “minor” fields.\n```\n\nSo:\nIn the current implementation of `pldmtool` and `pldmd`, we always send `0xff 0xff 0xff 0xff` version to GetPLDMCommand  with the assumption that the terminus will response for the request with any version of PLDM type.\n\nIf we follow the MCTP spec ( for GetPLDMVersion PLDM command) the current implementation is uncorrected because `0xFF is not allowed as a value for the “major” or “minor” fields.`\nBut again, the is MCTP spec but not PLDM spec.",
+      "parentUuid": "d66fe786_2f18532f",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 65
+      },
+      "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e566b3be_c54a2c0a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
