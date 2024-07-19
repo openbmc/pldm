@@ -104,6 +104,24 @@
       "message": "I updated commit message for more details.",
       "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ff451d6_c481e40e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-19T01:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e566b3be_c54a2c0a",
+      "revId": "4d69e596419c0a86cce24139a5215d5e8790a2a6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
