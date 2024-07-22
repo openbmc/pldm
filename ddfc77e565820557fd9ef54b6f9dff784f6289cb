@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c70d6d2_fc20830b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-22T09:15:13Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "3ef16673_8a09d49b",
+      "revId": "ddfc77e565820557fd9ef54b6f9dff784f6289cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19808742_e6bde665",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-07-22T07:24:35Z",
       "side": 1,
       "message": "I guess we have standard C++ template libraries for this - std::char_traits Can we leverage it?",
+      "range": {
+        "startLine": 674,
+        "startChar": 1,
+        "endLine": 683,
+        "endChar": 1
+      },
+      "revId": "ddfc77e565820557fd9ef54b6f9dff784f6289cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4737d34a_2cab959d",
+        "filename": "common/utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-22T09:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19808742_e6bde665",
       "range": {
         "startLine": 674,
         "startChar": 1,
@@ -81,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3e1920b_593e7fb7",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-22T09:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ac0b744_1503deba",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 14
+      },
+      "revId": "ddfc77e565820557fd9ef54b6f9dff784f6289cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11cb3f3e_cfdcd779",
@@ -94,6 +160,30 @@
       "writtenOn": "2024-07-22T07:24:35Z",
       "side": 1,
       "message": "if(!tName.empty())",
+      "range": {
+        "startLine": 162,
+        "startChar": 2,
+        "endLine": 162,
+        "endChar": 20
+      },
+      "revId": "ddfc77e565820557fd9ef54b6f9dff784f6289cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6053ad41_50e3993a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-22T09:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11cb3f3e_cfdcd779",
       "range": {
         "startLine": 162,
         "startChar": 2,
@@ -127,6 +217,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25795f2e_8a4e04dd",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-22T09:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4085b670_9932e3d8",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 1
+      },
+      "revId": "ddfc77e565820557fd9ef54b6f9dff784f6289cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "600c9a76_e05c57a7",
@@ -150,6 +264,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00b2ebd9_afffab13",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-22T09:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "600c9a76_e05c57a7",
+      "range": {
+        "startLine": 146,
+        "startChar": 41,
+        "endLine": 146,
+        "endChar": 44
+      },
+      "revId": "ddfc77e565820557fd9ef54b6f9dff784f6289cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "699c3652_2f422f34",
@@ -163,6 +301,30 @@
       "writtenOn": "2024-07-22T07:24:35Z",
       "side": 1,
       "message": "EntityName terminusName{}; ?",
+      "range": {
+        "startLine": 216,
+        "startChar": 4,
+        "endLine": 216,
+        "endChar": 33
+      },
+      "revId": "ddfc77e565820557fd9ef54b6f9dff784f6289cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28bc5eec_4d215c1e",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-22T09:15:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "699c3652_2f422f34",
       "range": {
         "startLine": 216,
         "startChar": 4,
