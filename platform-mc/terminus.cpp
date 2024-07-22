@@ -51,7 +51,7 @@ bool Terminus::doesSupportCommand(uint8_t type, uint8_t command)
     return false;
 }
 
-std::string Terminus::findTerminusName()
+std::optional<std::string> Terminus::findTerminusName()
 {
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
@@ -67,7 +67,7 @@ std::string Terminus::findTerminusName()
         return entityNames[0].second;
     }
 
-    return "";
+    return std::nullopt;
 }
 
 void Terminus::parseTerminusPDRs()
@@ -159,9 +159,9 @@ void Terminus::parseTerminusPDRs()
     }
 
     auto tName = findTerminusName();
-    if (tName != "")
+    if (tName && !tName.value().empty())
     {
-        terminusName = tName;
+        terminusName = tName.value();
     }
 }
 

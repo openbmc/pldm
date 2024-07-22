@@ -118,7 +118,7 @@ class Terminus
     }
 
     /** @brief The setter to set terminus's mctp medium */
-    void setTerminusName(std::string name)
+    inline void setTerminusName(std::string name)
     {
         terminusName = name;
     }
@@ -143,10 +143,10 @@ class Terminus
 
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
-     *         The Entity Auxiliary name lis is entityAuxiliaryNamesTbl.
-     *  @return terminus name in string
+     *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
+     *  @return terminus name in string option
      */
-    std::string findTerminusName();
+    std::optional<std::string> findTerminusName();
 
     /** @brief Parse the numeric sensor PDRs
      *
@@ -213,7 +213,7 @@ class Terminus
         entityAuxiliaryNamesTbl{};
 
     /** @brief Terminus name */
-    EntityName terminusName = "";
+    EntityName terminusName{};
 };
 } // namespace platform_mc
 } // namespace pldm
