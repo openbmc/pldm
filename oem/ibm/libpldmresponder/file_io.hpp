@@ -169,9 +169,7 @@ class Handler : public CmdHandler
     Handler(oem_platform::Handler* oemPlatformHandler, int hostSockFd,
             uint8_t hostEid, pldm::InstanceIdDb* instanceIdDb,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
-        oemPlatformHandler(oemPlatformHandler),
-        hostSockFd(hostSockFd), hostEid(hostEid), instanceIdDb(instanceIdDb),
-        handler(handler)
+        oemPlatformHandler(oemPlatformHandler)
     {
         handlers.emplace(
             PLDM_READ_FILE_INTO_MEMORY,
@@ -415,9 +413,6 @@ class Handler : public CmdHandler
 
   private:
     oem_platform::Handler* oemPlatformHandler;
-    int hostSockFd;
-    uint8_t hostEid;
-    pldm::InstanceIdDb* instanceIdDb;
     using DBusInterfaceAdded = std::vector<std::pair<
         std::string,
         std::vector<std::pair<std::string, std::variant<std::string>>>>>;
@@ -430,7 +425,6 @@ class Handler : public CmdHandler
         vmiCertMatcher;    //!< Pointer to capture the interface added signal
                            //!< for new csr string
     /** @brief PLDM request handler */
-    pldm::requester::Handler<pldm::requester::Request>* handler;
     std::vector<std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>>
         dbusToFileHandlers;
 };
