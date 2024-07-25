@@ -98,7 +98,7 @@ class Handler : public oem_platform::Handler
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/chassis0",
                               "xyz.openbmc_project.State.Chassis"),
-            [this](sdbusplus::message_t& msg) {
+            [](sdbusplus::message_t& msg) {
             pldm::utils::DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
