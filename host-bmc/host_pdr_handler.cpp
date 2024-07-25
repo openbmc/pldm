@@ -32,7 +32,6 @@ namespace fs = std::filesystem;
 using namespace pldm::dbus;
 constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
-const std::vector<Json> emptyJsonList{};
 
 template <typename T>
 uint16_t extractTerminusHandle(std::vector<uint8_t>& pdr)
