@@ -30,7 +30,6 @@ using namespace pldm::hostbmc::utils;
 using Json = nlohmann::json;
 namespace fs = std::filesystem;
 using namespace pldm::dbus;
-constexpr auto fruJson = "host_frus.json";
 const Json emptyJson{};
 
 template <typename T>
