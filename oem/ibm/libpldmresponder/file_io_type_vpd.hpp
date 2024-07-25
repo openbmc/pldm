@@ -17,8 +17,8 @@ class keywordHandler : public FileHandler
   public:
     /** @brief Handler constructor
      */
-    keywordHandler(uint32_t fileHandle, uint16_t fileType) :
-        FileHandler(fileHandle), vpdFileType(fileType)
+    keywordHandler(uint32_t fileHandle, uint16_t /* fileType */) :
+        FileHandler(fileHandle)
     {}
     virtual int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
                                 uint64_t /*address*/,
@@ -67,9 +67,6 @@ class keywordHandler : public FileHandler
     /** @brief keywordHandler destructor
      */
     ~keywordHandler() {}
-
-  private:
-    uint16_t vpdFileType; //!< type of the VPD file
 };
 } // namespace responder
 } // namespace pldm
