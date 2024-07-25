@@ -1,5 +1,6 @@
 fw_update_test_src = declare_dependency(
           sources: [
+            '../activation.cpp',
             '../inventory_manager.cpp',
             '../package_parser.cpp',
             '../device_updater.cpp',
