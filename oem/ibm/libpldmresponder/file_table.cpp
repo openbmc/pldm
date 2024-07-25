@@ -134,7 +134,7 @@ FileTable& buildFileTable(const std::string& fileTablePath)
     static FileTable table;
     if (table.isEmpty())
     {
-        table = std::move(FileTable(fileTablePath));
+        table = FileTable(fileTablePath);
     }
     return table;
 }

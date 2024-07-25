@@ -194,7 +194,7 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     rc = handler->registerRequest(
         mctp_eid, instanceId, PLDM_PLATFORM, PLDM_GET_PDR,
         std::move(requestMsg),
-        std::move(std::bind_front(&HostPDRHandler::processHostPDRs, this)));
+        std::bind_front(&HostPDRHandler::processHostPDRs, this));
     if (rc)
     {
         error(
@@ -679,7 +679,7 @@ void HostPDRHandler::_processPDRRepoChgEvent(
 {
     deferredPDRRepoChgEvent.reset();
     this->sendPDRRepositoryChgEvent(
-        std::move(std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION)),
+        std::vector<uint8_t>(1, PLDM_PDR_ENTITY_ASSOCIATION),
         FORMAT_IS_PDR_HANDLES);
 }
 
