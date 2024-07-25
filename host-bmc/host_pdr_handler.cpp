@@ -84,15 +84,15 @@ void updateContainerId(pldm_entity_association_tree* entityTree,
 }
 
 HostPDRHandler::HostPDRHandler(
-    int mctp_fd, uint8_t mctp_eid, sdeventplus::Event& event, pldm_pdr* repo,
-    const std::string& eventsJsonsDir, pldm_entity_association_tree* entityTree,
+    int /* mctp_fd */, uint8_t mctp_eid, sdeventplus::Event& event,
+    pldm_pdr* repo, const std::string& eventsJsonsDir,
+    pldm_entity_association_tree* entityTree,
     pldm_entity_association_tree* bmcEntityTree,
     pldm::InstanceIdDb& instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler) :
-    mctp_fd(mctp_fd),
-    mctp_eid(mctp_eid), event(event), repo(repo),
-    stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    bmcEntityTree(bmcEntityTree), instanceIdDb(instanceIdDb), handler(handler),
+    mctp_eid(mctp_eid),
+    event(event), repo(repo), stateSensorHandler(eventsJsonsDir),
+    entityTree(entityTree), instanceIdDb(instanceIdDb), handler(handler),
     entityMaps(parseEntityMap(ENTITY_MAP_JSON)), oemUtilsHandler(nullptr)
 {
     mergedHostParents = false;

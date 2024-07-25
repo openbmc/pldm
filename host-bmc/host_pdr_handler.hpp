@@ -273,8 +273,6 @@ class HostPDRHandler
     std::optional<uint16_t> getRSI(const PDRList& fruRecordSetPDRs,
                                    const pldm_entity& entity);
 
-    /** @brief fd of MCTP communications socket */
-    int mctp_fd;
     /** @brief MCTP EID of host firmware */
     uint8_t mctp_eid;
     /** @brief reference of main event loop of pldmd, primarily used to schedule
@@ -287,9 +285,6 @@ class HostPDRHandler
     pldm::responder::events::StateSensorHandler stateSensorHandler;
     /** @brief Pointer to BMC's and Host's entity association tree */
     pldm_entity_association_tree* entityTree;
-
-    /** @brief Pointer to BMC's entity association tree */
-    pldm_entity_association_tree* bmcEntityTree;
 
     /** @brief reference to Instance ID database object, used to obtain PLDM
      * instance IDs
