@@ -64,7 +64,6 @@ PHOSPHOR_LOG2_USING;
 #include "oem_ibm.hpp"
 #endif
 
-constexpr uint8_t MCTP_MSG_TYPE_PLDM = 1;
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
 using namespace pldm;
