@@ -16,6 +16,236 @@
       "message": "Verified with meta-arm-evb system and works well.",
       "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95839ccb_6458551f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "null check missing, this could crash if entityAuxiliaryNames is null.",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 62
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcfb75df_9807cfaf",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "this does not seem right ? instance numbers in pldm are always relative - one can have an instance number 0 as well for the system right ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 16,
+        "endLine": 61,
+        "endChar": 36
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50ef4644_7a968262",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "ensure that entityNames is not empty before accessing the 0th element. this could result in crash as well.",
+      "range": {
+        "startLine": 67,
+        "startChar": 15,
+        "endLine": 67,
+        "endChar": 29
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08f6228d_b0429ad3",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "started to see this pattern in couple of places now, do you think its worth to move this logic to a util function ? rather than repeating it everywhere ?",
+      "range": {
+        "startLine": 301,
+        "startChar": 8,
+        "endLine": 306,
+        "endChar": 9
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d73587b1_863ff78e",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "inline void setTerminusName(std::string name) `noexcept` ?",
+      "range": {
+        "startLine": 121,
+        "startChar": 3,
+        "endLine": 121,
+        "endChar": 49
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4ab3e80_d92d0a23",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "std::move(name) could reduce one copy here.",
+      "range": {
+        "startLine": 123,
+        "startChar": 22,
+        "endLine": 123,
+        "endChar": 28
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe637457_469cce55",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "do we really want to store this in a class variable ? i dont see any necessity for it in this commit (dont see any code using it as such).. whats the purpose of filling it without using it ?",
+      "range": {
+        "startLine": 123,
+        "startChar": 7,
+        "endLine": 123,
+        "endChar": 28
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517903a3_da878651",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "you could use string_view here , that could avoid another copy while returning the string.",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 15
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24f13e25_c6bb1530",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "doxygen missing",
+      "range": {
+        "startLine": 126,
+        "startChar": 17,
+        "endLine": 126,
+        "endChar": 31
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1613849b_5810300a",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-25T17:46:58Z",
+      "side": 1,
+      "message": "can we use std::string_view instead ?",
+      "range": {
+        "startLine": 149,
+        "startChar": 18,
+        "endLine": 149,
+        "endChar": 29
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
