@@ -85,9 +85,6 @@ class DbusToPLDMEvent
     void sendEventMsg(uint8_t eventType,
                       const std::vector<uint8_t>& eventDataVec);
 
-    /** @brief fd of MCTP communications socket */
-    int mctp_fd;
-
     /** @brief MCTP EID of host firmware */
     uint8_t mctp_eid;
 
