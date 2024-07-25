@@ -144,7 +144,8 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
                 exec::default_task_context<void>());
 }
 
-auto TerminusManager::findTerminusPtr(const MctpInfo& mctpInfo)
+TerminiMapper::iterator
+    TerminusManager::findTerminusPtr(const MctpInfo& mctpInfo)
 {
     auto foundIter = std::find_if(termini.begin(), termini.end(),
                                   [&](const auto& terminusPair) {

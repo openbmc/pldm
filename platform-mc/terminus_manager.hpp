@@ -152,7 +152,7 @@ class TerminusManager
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
      */
-    auto findTerminusPtr(const MctpInfo& mctpInfo);
+    TerminiMapper::iterator findTerminusPtr(const MctpInfo& mctpInfo);
 
     /** @brief The coroutine task execute by discoverMctpTerminus()
      *
