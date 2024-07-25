@@ -21,8 +21,8 @@ class CPUCore : public CoreIntf
     ~CPUCore() = default;
     CPUCore(const CPUCore&) = delete;
     CPUCore& operator=(const CPUCore&) = delete;
-    CPUCore(CPUCore&&) = default;
-    CPUCore& operator=(CPUCore&&) = default;
+    CPUCore(CPUCore&&) = delete;
+    CPUCore& operator=(CPUCore&&) = delete;
 
     CPUCore(sdbusplus::bus_t& bus, const std::string& objPath) :
         CoreIntf(bus, objPath.c_str())
