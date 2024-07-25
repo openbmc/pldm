@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2736902a_747b51cd",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-25T12:47:29Z",
+      "side": 1,
+      "message": "It is better to keep `lg2::` so we know `error` method is implemented in `lg2`. `error` method can be implemented by many other libs.\n\nWhen using only `error` we assuming that we include `Using namespace lg2` in the code.\n\nI will update code after get your feedback on this comment.",
+      "parentUuid": "d2e148ff_178b5ef8",
+      "range": {
+        "startLine": 77,
+        "startChar": 8,
+        "endLine": 77,
+        "endChar": 13
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05b166f5_c59ba198",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 124
