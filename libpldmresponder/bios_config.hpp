@@ -160,9 +160,6 @@ class BIOSConfig
     pldm::utils::DBusHandler* const dbusHandler;
     BaseBIOSTable baseBIOSTableMaps;
 
-    /** @brief socket descriptor to communicate to host */
-    int fd;
-
     /** @brief MCTP EID of host firmware */
     uint8_t eid;
 
