@@ -26,8 +26,8 @@ class Motherboard : public ItemMotherboard
     ~Motherboard() = default;
     Motherboard(const Motherboard&) = delete;
     Motherboard& operator=(const Motherboard&) = delete;
-    Motherboard(Motherboard&&) = default;
-    Motherboard& operator=(Motherboard&&) = default;
+    Motherboard(Motherboard&&) = delete;
+    Motherboard& operator=(Motherboard&&) = delete;
 
     Motherboard(sdbusplus::bus_t& bus, const std::string& objPath) :
         ItemMotherboard(bus, objPath.c_str())
