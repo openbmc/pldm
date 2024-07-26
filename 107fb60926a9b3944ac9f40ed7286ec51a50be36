@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43372569_b4823ea1",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95839ccb_6458551f",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 62
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcfb75df_9807cfaf",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-07-25T17:46:58Z",
       "side": 1,
       "message": "this does not seem right ? instance numbers in pldm are always relative - one can have an instance number 0 as well for the system right ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 16,
+        "endLine": 61,
+        "endChar": 36
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba0ff246_f3ca102b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Look that the example in the DSP0248 V1.2.2, the `entityInstanceNumber` always start at `1`. In Ampere, we are also using `1` as start number of entityInstance.\nAt lines, the same DSP0248,\n```\n974 container entity. For example, referring to Figure 8, containerID 123 represents physical Chassis 1 (where\n975 instance number 1 is defined relative to SYSTEM).\n```\nSo As my opinion, the instance number of `SYSTEM` should be 1.\n\nThe other solution can be \"removing `key.instanceIdx \u003d\u003d 1` condition\" because there is only one `overall system container` in one terminus.",
+      "parentUuid": "dcfb75df_9807cfaf",
       "range": {
         "startLine": 61,
         "startChar": 16,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aeafa20_ff3d231d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50ef4644_7a968262",
+      "range": {
+        "startLine": 67,
+        "startChar": 15,
+        "endLine": 67,
+        "endChar": 29
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08f6228d_b0429ad3",
@@ -110,6 +182,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "deb97a8b_eba9dc94",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08f6228d_b0429ad3",
+      "range": {
+        "startLine": 301,
+        "startChar": 8,
+        "endLine": 306,
+        "endChar": 9
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d73587b1_863ff78e",
@@ -123,6 +219,30 @@
       "writtenOn": "2024-07-25T17:46:58Z",
       "side": 1,
       "message": "inline void setTerminusName(std::string name) `noexcept` ?",
+      "range": {
+        "startLine": 121,
+        "startChar": 3,
+        "endLine": 121,
+        "endChar": 49
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0df85699_db256508",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d73587b1_863ff78e",
       "range": {
         "startLine": 121,
         "startChar": 3,
@@ -179,6 +299,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88915768_23e9cef0",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4ab3e80_d92d0a23",
+      "range": {
+        "startLine": 123,
+        "startChar": 22,
+        "endLine": 123,
+        "endChar": 28
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "385705e6_d740a19b",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "I updated code in line \nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/72610/11/platform-mc/terminus.cpp#164\nto use `setTerminusName()`.\n\nAbout variable `terminusName`, As my opinion, the terminus name from `Entity Aux Name PDRs` should be store for future using as the commit message.\n\nThis is also why the API `set/getTerminusName` is added.",
+      "parentUuid": "fe637457_469cce55",
+      "range": {
+        "startLine": 123,
+        "startChar": 7,
+        "endLine": 123,
+        "endChar": 28
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "517903a3_da878651",
@@ -225,6 +393,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a95d4025_3008ed9d",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "517903a3_da878651",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 15
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "731269c4_16b1b0be",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24f13e25_c6bb1530",
+      "range": {
+        "startLine": 126,
+        "startChar": 17,
+        "endLine": 126,
+        "endChar": 31
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1613849b_5810300a",
@@ -238,6 +454,30 @@
       "writtenOn": "2024-07-25T17:46:58Z",
       "side": 1,
       "message": "can we use std::string_view instead ?",
+      "range": {
+        "startLine": 149,
+        "startChar": 18,
+        "endLine": 149,
+        "endChar": 29
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df924832_c8b11596",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T05:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1613849b_5810300a",
       "range": {
         "startLine": 149,
         "startChar": 18,
