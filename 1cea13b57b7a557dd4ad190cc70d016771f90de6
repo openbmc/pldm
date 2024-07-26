@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b31afb2e_ca66da92",
+        "filename": "meson.build",
+        "patchSetId": 124
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "It is `priority sensor types` configuration file.\nI updated the name to `priority_sensor_types.json`.\nThe supported types is list in https://github.com/openbmc/phosphor-dbus-interfaces/blob/85bc3395196a9348a6e3530102c18326e02f37f6/yaml/xyz/openbmc_project/Sensor/Value.interface.yaml\nIn the sensor polling, the sensor with the priority types will be read before the other sensor types.\nExample the configuration in `priority_sensor_types.json`\n```\n    \"PrioritySensorNameSpaces\": [\n        \"temperature\",\n        \"power\",\n        \"voltage\",\n        \"current\"\n    ]\n```\nwill cause the `temperature`, `power`, `voltage`, `current` will be read before others types such `fan_tach`, `energy`...",
+      "parentUuid": "09e2c91f_ca6edef0",
+      "range": {
+        "startLine": 78,
+        "startChar": 21,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2e148ff_178b5ef8",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 124
@@ -135,6 +159,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4df3ab03_c29892c1",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05b166f5_c59ba198",
+      "range": {
+        "startLine": 84,
+        "startChar": 52,
+        "endLine": 84,
+        "endChar": 60
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bc1c536_5897de0f",
@@ -148,6 +196,30 @@
       "writtenOn": "2024-07-25T09:46:45Z",
       "side": 1,
       "message": "magic number? or can we have a doxygen on why this conversion is done?",
+      "range": {
+        "startLine": 251,
+        "startChar": 72,
+        "endLine": 251,
+        "endChar": 77
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cce2053_b6ad8f2a",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "The unit of `DEFAULT_SENSOR_UPDATER_INTERVAL` is milliseconds, the `updateTime` is in microSeconds. That why we need multiply with `1000`.\nI added the a comment.",
+      "parentUuid": "7bc1c536_5897de0f",
       "range": {
         "startLine": 251,
         "startChar": 72,
@@ -181,6 +253,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "933e97ed_3b8cae7e",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "17107d37_3be4c77b",
+      "range": {
+        "startLine": 263,
+        "startChar": 8,
+        "endLine": 263,
+        "endChar": 11
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9729dfee_87f318ae",
@@ -194,6 +290,30 @@
       "writtenOn": "2024-07-25T09:46:45Z",
       "side": 1,
       "message": "redundant",
+      "range": {
+        "startLine": 280,
+        "startChar": 8,
+        "endLine": 280,
+        "endChar": 11
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c193287_a6ef11a6",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9729dfee_87f318ae",
       "range": {
         "startLine": 280,
         "startChar": 8,
@@ -227,6 +347,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8518117c_31648f1e",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "661e2e0a_c380d321",
+      "range": {
+        "startLine": 310,
+        "startChar": 12,
+        "endLine": 310,
+        "endChar": 15
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ead71c9_cf5d44a0",
@@ -240,6 +384,30 @@
       "writtenOn": "2024-07-25T09:46:45Z",
       "side": 1,
       "message": "redundant",
+      "range": {
+        "startLine": 329,
+        "startChar": 12,
+        "endLine": 329,
+        "endChar": 15
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f41734f_8468113d",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9ead71c9_cf5d44a0",
       "range": {
         "startLine": 329,
         "startChar": 12,
@@ -273,6 +441,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d1d2827_8fbe3a8b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82a17912_79559f3d",
+      "range": {
+        "startLine": 444,
+        "startChar": 4,
+        "endLine": 444,
+        "endChar": 79
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6618ef1_b12ba5ac",
@@ -286,6 +478,30 @@
       "writtenOn": "2024-07-25T09:46:45Z",
       "side": 1,
       "message": "redundant",
+      "range": {
+        "startLine": 468,
+        "startChar": 8,
+        "endLine": 468,
+        "endChar": 11
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5abab14e_10dbeeb4",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c6618ef1_b12ba5ac",
       "range": {
         "startLine": 468,
         "startChar": 8,
@@ -319,6 +535,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7f5c1c5_5d40f687",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "003530a3_2db3bb09",
+      "range": {
+        "startLine": 482,
+        "startChar": 8,
+        "endLine": 482,
+        "endChar": 11
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c4507d5_fb8f2aa8",
@@ -342,6 +582,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61e95794_f6882278",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5c4507d5_fb8f2aa8",
+      "range": {
+        "startLine": 498,
+        "startChar": 12,
+        "endLine": 498,
+        "endChar": 15
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cd77d5e_6cbec2bf",
@@ -355,6 +619,30 @@
       "writtenOn": "2024-07-25T09:46:45Z",
       "side": 1,
       "message": "it\u0027s a array of string right, c_str is redundant?",
+      "range": {
+        "startLine": 101,
+        "startChar": 44,
+        "endLine": 101,
+        "endChar": 63
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a413bdc_0f2fe825",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cd77d5e_6cbec2bf",
       "range": {
         "startLine": 101,
         "startChar": 44,
@@ -390,6 +678,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90179c9a_71c5594e",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "As https://cplusplus.com/reference/memory/unique_ptr/unique_ptr/\nthere are some below ways to construct `unique_ptr`.\nMaybe we can chose\n```\nstd::unique_ptr\u003cint\u003e u1;\nOr\nstd::unique_ptr\u003cint\u003e u2 (nullptr);\n```\nI\u0027m using the second one.\n\nDo we have any reason to change to use `std::unique_ptr\u003cValueIntf\u003e valueIntf \u003d {};`?",
+      "parentUuid": "d1270d78_913ab064",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 16
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3bd27f6e_6a67387e",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 124
@@ -401,6 +713,30 @@
       "writtenOn": "2024-07-25T09:46:45Z",
       "side": 1,
       "message": "if (tName.empty()) {\n    return false;\n}",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 1
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d6a6d8f_991a0ac9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bd27f6e_6a67387e",
       "range": {
         "startLine": 75,
         "startChar": 4,
@@ -434,6 +770,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de007f9a_b83139bf",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb2da202_07f2b40b",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 192,
+        "endChar": 70
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f33c4f47_808e781a",
@@ -457,6 +817,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46af8025_898542c0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f33c4f47_808e781a",
+      "range": {
+        "startLine": 382,
+        "startChar": 3,
+        "endLine": 382,
+        "endChar": 27
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "125a9b7e_48d947be",
@@ -470,6 +854,30 @@
       "writtenOn": "2024-07-25T09:46:45Z",
       "side": 1,
       "message": "std::unique_ptr\u003cInventoryItemBoardIntf\u003e inventoryItemBoardInft{};",
+      "range": {
+        "startLine": 251,
+        "startChar": 3,
+        "endLine": 251,
+        "endChar": 77
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38da2d8b_8c9fbf70",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-26T10:49:00Z",
+      "side": 1,
+      "message": "Check https://gerrit.openbmc.org/c/openbmc/pldm/+/51489/comment/d1270d78_913ab064/",
+      "parentUuid": "125a9b7e_48d947be",
       "range": {
         "startLine": 251,
         "startChar": 3,
