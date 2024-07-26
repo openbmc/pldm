@@ -33,6 +33,24 @@
       "message": "The patch set look good to me.\nI will not use `auto` return in the future functions.",
       "revId": "b84a1d77c849b8e3e3d19ea0f68b6c314dc2e34a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9967aad_082a9d52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-26T03:56:29Z",
+      "side": 1,
+      "message": "Thanks thu - it was probably a comment from me that drove us to move towards auto..but now we both understand what could happen with that.",
+      "parentUuid": "4cd93078_9b0fa2e7",
+      "revId": "b84a1d77c849b8e3e3d19ea0f68b6c314dc2e34a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
