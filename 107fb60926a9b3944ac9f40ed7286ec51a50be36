@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe61e95a_f7585d05",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-27T15:44:52Z",
+      "side": 1,
+      "message": "Yeah the spec does not clearly say about it that it has to always start from 1.\n\nper spec:\n\n```\nThe Entity Instance Number is a value that could be used when instantiating CIM \nobjects or presenting PLDM data as part of the \"name\" of the managed object. For\nexample, if a processor entity has an EntityInstance Number of \"1\", the expectation\nis that the entity would be presented as “Processor 1”.The assignment of Entity\nInstance Number values under a given Container ID is left up to the implementation.\nHowever, it is typical that Entity Instance Number values are allocated\nsequentially starting from 0 or 1 for a given Entity Type under the Container ID.\n```\n\nAlthough i dont disagree that it can start with 1, spec also vaguely says that it can be 0 as well (depends on implementation). So i would probably think removing the check `key.instanceIdx \u003d\u003d 1` would be a better option.Probably add a comment mentioning that There is only \"one system container\".",
+      "parentUuid": "ba0ff246_f3ca102b",
+      "range": {
+        "startLine": 61,
+        "startChar": 16,
+        "endLine": 61,
+        "endChar": 36
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50ef4644_7a968262",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 11
@@ -337,6 +361,30 @@
       "side": 1,
       "message": "I updated code in line \nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/72610/11/platform-mc/terminus.cpp#164\nto use `setTerminusName()`.\n\nAbout variable `terminusName`, As my opinion, the terminus name from `Entity Aux Name PDRs` should be store for future using as the commit message.\n\nThis is also why the API `set/getTerminusName` is added.",
       "parentUuid": "fe637457_469cce55",
+      "range": {
+        "startLine": 123,
+        "startChar": 7,
+        "endLine": 123,
+        "endChar": 28
+      },
+      "revId": "107fb60926a9b3944ac9f40ed7286ec51a50be36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7775e7dd_fb420c39",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-07-27T15:44:52Z",
+      "side": 1,
+      "message": "Got it, but can we check in this part of the code only when we are using it. Check ing in this code without actually using it makes it a dead code.\n\nThe ideal practice is that we dont check in code for future purpose, we directly put the code when we are using it.",
+      "parentUuid": "385705e6_d740a19b",
       "range": {
         "startLine": 123,
         "startChar": 7,
