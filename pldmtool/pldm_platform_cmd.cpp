@@ -2079,7 +2079,7 @@ class GetStateEffecterStates : public CommandInterface
         auto comp_effecter_count = static_cast<int>(resp.comp_effecter_count);
         output["compositeEffecterCount"] = comp_effecter_count;
 
-        for (auto i : std::views::iota(comp_effecter_count))
+        for (auto i : std::views::iota(0, comp_effecter_count))
         {
             output[std::format("effecterOpState[{}])", i)] =
                 getEffecterOpState(resp.field[i].effecter_op_state);
