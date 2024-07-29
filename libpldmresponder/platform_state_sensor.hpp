@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "host-bmc/dbus_to_event_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "pdr_utils.hpp"
 #include "pldmd/handler.hpp"
