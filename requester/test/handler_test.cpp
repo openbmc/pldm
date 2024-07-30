@@ -188,7 +188,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
 
         EXPECT_EQ(validResponse, true);
     }),
-                exec::default_task_context<void>());
+                exec::default_task_context<void>(exec::inline_scheduler{}));
 
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
     auto mockResponsePtr =
@@ -221,7 +221,7 @@ TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
 
         EXPECT_TRUE(false); // unreachable
     }) | stdexec::upon_stopped([&] { stopped = true; }),
-                exec::default_task_context<void>());
+                exec::default_task_context<void>(exec::inline_scheduler{}));
 
     scope.request_stop();
 
@@ -274,7 +274,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 
         EXPECT_EQ(expectedTid, respTid);
     }),
-                exec::default_task_context<void>());
+                exec::default_task_context<void>(exec::inline_scheduler{}));
 
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES,
                                 0);
