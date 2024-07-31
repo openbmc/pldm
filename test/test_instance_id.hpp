@@ -2,6 +2,11 @@
 
 #include "common/instance_id.hpp"
 
+#include <string.h>
+#include <unistd.h>
+
+#include <filesystem>
+
 static constexpr uintmax_t pldmMaxInstanceIds = 32;
 
 class TestInstanceIdDb : public pldm::InstanceIdDb
