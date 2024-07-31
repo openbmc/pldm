@@ -9,6 +9,7 @@
 #include "dbus_impl_requester.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "invoker.hpp"
+#include "libpldmresponder/base.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "requester/request.hpp"
 
@@ -57,9 +58,11 @@ class OemIBM
     explicit OemIBM(
         const pldm::utils::DBusHandler* dBusIntf, int mctp_fd, uint8_t mctp_eid,
         pldm_pdr* repo, pldm::InstanceIdDb& instanceIdDb,
-        sdeventplus::Event& event, Invoker& invoker,
-        HostPDRHandler* hostPDRHandler, platform::Handler* platformHandler,
-        fru::Handler* fruHandler, base::Handler* baseHandler,
+        sdeventplus::Event& event, responder::Invoker& invoker,
+        HostPDRHandler* hostPDRHandler,
+        responder::platform::platform::Handler* platformHandler,
+        responder::fru::Handler* fruHandler,
+        responder::base::Handler* baseHandler,
         pldm::requester::Handler<pldm::requester::Request>* reqHandler) :
         dBusIntf(dBusIntf),
         mctp_fd(mctp_fd), mctp_eid(mctp_eid), repo(repo),
@@ -104,9 +107,10 @@ class OemIBM
      */
     void createOemPlatformHandler()
     {
-        oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-            dBusIntf, codeUpdate.get(), mctp_fd, mctp_eid, instanceIdDb, event,
-            reqHandler);
+        oemPlatformHandler =
+            std::make_unique<responder::oem_ibm_platform::Handler>(
+                dBusIntf, codeUpdate.get(), mctp_fd, mctp_eid, instanceIdDb,
+                event, reqHandler);
     }
 
     /** @brief Method for creating oemIbmPlatformHandler */
@@ -120,13 +124,14 @@ class OemIBM
     /** @brief Method for creating oemFruHandler */
     void createOemFruHandler()
     {
-        oemFruHandler = std::make_unique<oem_ibm_fru::Handler>(repo);
+        oemFruHandler = std::make_unique<responder::oem_ibm_fru::Handler>(repo);
     }
 
     /** @brief Method for creating oemIbmUtilsHandler */
     void createOemIbmUtilsHandler()
     {
-        oemUtilsHandler = std::make_unique<oem_ibm_utils::Handler>(dBusIntf);
+        oemUtilsHandler =
+            std::make_unique<responder::oem_ibm_utils::Handler>(dBusIntf);
     }
 
     /** @brief Method for creating oemIbmFruHandler */
@@ -177,16 +182,16 @@ class OemIBM
     sdeventplus::Event& event;
 
     /** @brief Object to the invoker class*/
-    Invoker& invoker;
+    responder::Invoker& invoker;
 
     /** @brief pointer to the requester class*/
     requester::Handler<requester::Request>* reqHandler;
 
     /** @brief pointer to the oem_ibm_handler class*/
-    std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+    std::unique_ptr<responder::oem_platform::Handler> oemPlatformHandler{};
 
     /** @brief pointer to the oem_ibm_fru class*/
-    std::unique_ptr<oem_fru::Handler> oemFruHandler{};
+    std::unique_ptr<responder::oem_fru::Handler> oemFruHandler{};
 
     /** @brief pointer to the CodeUpdate class*/
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate{};
@@ -200,7 +205,7 @@ class OemIBM
     std::unique_ptr<pldm::led::HostLampTest> hostLampTest;
 
     /** @brief oem IBM Utils handler*/
-    std::unique_ptr<oem_utils::Handler> oemUtilsHandler;
+    std::unique_ptr<responder::oem_utils::Handler> oemUtilsHandler;
 };
 
 } // namespace oem_ibm
