@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2c884cd_1bac3303",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-07-31T00:04:03Z",
+      "side": 1,
+      "message": "Can you add the link to the commit in the sdbusplus cause this changing in the commit message?\n[1] https://github.com/openbmc/sdbusplus/commit/5cee91570368554a7fcbbd9418f65efda449fa70",
+      "revId": "ad1929a439f7a42d05a8dd9ca90f27b9711b5ddc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
