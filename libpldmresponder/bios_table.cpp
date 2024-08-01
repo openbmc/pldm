@@ -173,8 +173,8 @@ const pldm_bios_attr_table_entry*
     auto entryLength = pldm_bios_table_attr_entry_integer_encode_length();
     auto tableSize = table.size();
     table.resize(tableSize + entryLength, 0);
-    int rc = pldm_bios_table_attr_entry_integer_encode_check(
-        table.data() + tableSize, entryLength, info);
+    int rc = pldm_bios_table_attr_entry_integer_encode(table.data() + tableSize,
+                                                       entryLength, info);
     if (rc != PLDM_SUCCESS)
     {
         error(
