@@ -174,3 +174,15 @@ option(
     value: 8384512,
     description: 'OEM-IBM: max DMA size'
 )
+
+## Default Sensor Update Interval Options
+option(
+    'default-sensor-update-interval',
+    type: 'integer',
+    min: 1,
+    max: 4294967295,
+    description: '''The default interval time of sensor updating in
+                    milliseconds.''',
+
+    value: 999
+)
