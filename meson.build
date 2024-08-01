@@ -157,34 +157,48 @@ add_project_arguments(
 
 filesystem = import('fs')
 
-phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
-sdbusplus = dependency('sdbusplus')
-sdeventplus = dependency('sdeventplus')
-stdplus = dependency('stdplus')
-phosphor_logging_dep = dependency('phosphor-logging')
+phosphor_dbus_interfaces = dependency(
+    'phosphor-dbus-interfaces',
+    include_type: 'system',
+)
+sdbusplus = dependency('sdbusplus', include_type: 'system')
+sdeventplus = dependency('sdeventplus', include_type: 'system')
+stdplus = dependency('stdplus', include_type: 'system')
+phosphor_logging_dep = dependency('phosphor-logging', include_type: 'system')
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 
 if cpp.has_header('CLI/CLI.hpp')
     CLI11_dep = declare_dependency()
 else
-    CLI11_dep = dependency('CLI11')
+    CLI11_dep = dependency('CLI11', include_type: 'system')
 endif
 
 if get_option('tests').allowed()
-    gtest = dependency('gtest', main: true, disabler: true, required: false)
-    gmock = dependency('gmock', disabler: true, required: false)
+    gtest = dependency(
+        'gtest',
+        main: true,
+        disabler: true,
+        required: false,
+        include_type: 'system',
+    )
+    gmock = dependency(
+        'gmock',
+        disabler: true,
+        required: false,
+        include_type: 'system',
+    )
     if not gtest.found() or not gmock.found()
         gtest_proj = import('cmake').subproject('googletest', required: false)
         if gtest_proj.found()
             gtest = declare_dependency(
                 dependencies: [
                     dependency('threads'),
-                    gtest_proj.dependency('gtest'),
-                    gtest_proj.dependency('gtest_main'),
+                    gtest_proj.dependency('gtest', include_type: 'system'),
+                    gtest_proj.dependency('gtest_main', include_type: 'system'),
                 ],
             )
-            gmock = gtest_proj.dependency('gmock')
+            gmock = gtest_proj.dependency('gmock', include_type: 'system')
         else
             assert(
                 not get_option('tests').allowed(),
