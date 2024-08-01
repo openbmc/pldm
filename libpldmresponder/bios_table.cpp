@@ -230,8 +230,8 @@ const pldm_bios_attr_table_entry*
     auto tableSize = table.size();
     table.resize(tableSize + entryLength, 0);
     // Preconditions are upheld therefore no error check necessary
-    pldm_bios_table_attr_entry_enum_encode_check(table.data() + tableSize,
-                                                 entryLength, info);
+    pldm_bios_table_attr_entry_enum_encode(table.data() + tableSize,
+                                           entryLength, info);
 
     return reinterpret_cast<pldm_bios_attr_table_entry*>(table.data() +
                                                          tableSize);
