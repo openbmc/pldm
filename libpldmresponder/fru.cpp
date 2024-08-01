@@ -207,8 +207,8 @@ void FruImpl::buildFRUTable()
         }
     }
 
-    int rc = pldm_entity_association_pdr_add_check(entityTree, pdrRepo, false,
-                                                   TERMINUS_HANDLE);
+    int rc = pldm_entity_association_pdr_add(entityTree, pdrRepo, false,
+                                             TERMINUS_HANDLE);
     if (rc < 0)
     {
         // pldm_entity_assocation_pdr_add() assert()ed on failure
