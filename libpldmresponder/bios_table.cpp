@@ -86,8 +86,8 @@ void appendPadAndChecksum(Table& table)
     size_t payloadSize = table.size();
     table.resize(payloadSize + pldm_bios_table_pad_checksum_size(payloadSize));
     // No validation of return value as preconditions are satisfied
-    pldm_bios_table_append_pad_checksum_check(table.data(), table.size(),
-                                              &payloadSize);
+    pldm_bios_table_append_pad_checksum(table.data(), table.size(),
+                                        &payloadSize);
 }
 
 namespace string
