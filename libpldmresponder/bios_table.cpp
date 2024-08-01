@@ -240,7 +240,7 @@ const pldm_bios_attr_table_entry*
 EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
 {
     uint8_t pvNum;
-    int rc = pldm_bios_table_attr_entry_enum_decode_pv_num_check(entry, &pvNum);
+    int rc = pldm_bios_table_attr_entry_enum_decode_pv_num(entry, &pvNum);
     if (rc != PLDM_SUCCESS)
     {
         error(

@@ -222,8 +222,7 @@ int BIOSConfig::checkAttributeTable(const Table& table)
             {
                 uint8_t pvNum;
                 // Preconditions are upheld therefore no error check necessary
-                pldm_bios_table_attr_entry_enum_decode_pv_num_check(entry,
-                                                                    &pvNum);
+                pldm_bios_table_attr_entry_enum_decode_pv_num(entry, &pvNum);
                 std::vector<uint16_t> pvHandls(pvNum);
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
@@ -375,8 +374,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
 
                 uint8_t pvNum;
                 // Preconditions are upheld therefore no error check necessary
-                pldm_bios_table_attr_entry_enum_decode_pv_num_check(attrEntry,
-                                                                    &pvNum);
+                pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry,
+                                                              &pvNum);
                 std::vector<uint16_t> pvHandls(pvNum);
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
@@ -732,8 +731,7 @@ std::string
     auto attrEntry = pldm_bios_table_attr_find_by_handle(
         attrTable->data(), attrTable->size(), handle);
     uint8_t pvNum;
-    int rc = pldm_bios_table_attr_entry_enum_decode_pv_num_check(attrEntry,
-                                                                 &pvNum);
+    int rc = pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry, &pvNum);
     if (rc != PLDM_SUCCESS)
     {
         error(
