@@ -465,7 +465,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     attrEntry);
                 uint16_t def;
                 // Preconditions are upheld therefore no error check necessary
-                pldm_bios_table_attr_entry_string_decode_def_string_length_check(
+                pldm_bios_table_attr_entry_string_decode_def_string_length(
                     attrEntry, &def);
                 std::vector<char> defString(def + 1);
                 pldm_bios_table_attr_entry_string_decode_def_string(

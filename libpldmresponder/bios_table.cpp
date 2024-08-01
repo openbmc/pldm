@@ -193,7 +193,7 @@ StringField decodeStringEntry(const pldm_bios_attr_table_entry* entry)
     auto minLength = pldm_bios_table_attr_entry_string_decode_min_length(entry);
     auto maxLength = pldm_bios_table_attr_entry_string_decode_max_length(entry);
     uint16_t defLength;
-    int rc = pldm_bios_table_attr_entry_string_decode_def_string_length_check(
+    int rc = pldm_bios_table_attr_entry_string_decode_def_string_length(
         entry, &defLength);
     if (rc != PLDM_SUCCESS)
     {
