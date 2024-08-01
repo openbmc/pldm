@@ -73,8 +73,9 @@ class DbusToFileHandler
                                     const uint16_t type);
 
     /** @brief report failure that a resource dump has failed
+     *  @param[in] str - Resource dump failure type
      */
-    void reportResourceDumpFailure();
+    void reportResourceDumpFailure(std::string str);
 
     /** @brief method to get the acf file contents */
     std::string getAcfFileContent();

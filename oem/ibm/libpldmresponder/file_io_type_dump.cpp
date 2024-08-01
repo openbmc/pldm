@@ -218,7 +218,7 @@ int DumpHandler::fileAck(uint8_t fileStatus)
         {
             error("Failure in resource dump file ack");
             pldm::utils::reportError(
-                "xyz.openbmc_project.bmc.pldm.InternalFailure");
+                "xyz.openbmc_project.PLDM.Error.fileAck.ResourceDumpFileAckFail");
 
             PropertyValue value{
                 "xyz.openbmc_project.Common.Progress.OperationStatus.Failed"};
