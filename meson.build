@@ -157,11 +157,14 @@ add_project_arguments(
 
 filesystem = import('fs')
 
-phosphor_dbus_interfaces = dependency('phosphor-dbus-interfaces')
-sdbusplus = dependency('sdbusplus')
-sdeventplus = dependency('sdeventplus')
-stdplus = dependency('stdplus')
-phosphor_logging_dep = dependency('phosphor-logging')
+phosphor_dbus_interfaces = dependency(
+    'phosphor-dbus-interfaces',
+    include_type: 'system',
+)
+sdbusplus = dependency('sdbusplus', include_type: 'system')
+sdeventplus = dependency('sdeventplus', include_type: 'system')
+stdplus = dependency('stdplus', include_type: 'system')
+phosphor_logging_dep = dependency('phosphor-logging', include_type: 'system')
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 
