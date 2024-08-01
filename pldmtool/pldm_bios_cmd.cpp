@@ -895,7 +895,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                 entryLength =
                     pldm_bios_table_attr_value_entry_encode_integer_length();
                 attrValueEntry.resize(entryLength);
-                int rc = pldm_bios_table_attr_value_entry_encode_integer_check(
+                int rc = pldm_bios_table_attr_value_entry_encode_integer(
                     attrValueEntry.data(), entryLength, attrEntry->attr_handle,
                     attrType, value);
                 if (rc != PLDM_SUCCESS)

@@ -330,7 +330,7 @@ const pldm_bios_attr_val_table_entry* constructIntegerEntry(Table& table,
 
     auto tableSize = table.size();
     table.resize(tableSize + entryLength);
-    int rc = pldm_bios_table_attr_value_entry_encode_integer_check(
+    int rc = pldm_bios_table_attr_value_entry_encode_integer(
         table.data() + tableSize, entryLength, attrHandle, attrType, value);
     if (rc != PLDM_SUCCESS)
     {
