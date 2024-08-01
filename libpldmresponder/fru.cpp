@@ -322,7 +322,7 @@ void FruImpl::populateRecords(
             {
                 recordSetIdentifier = nextRSI();
                 bmc_record_handle = nextRecordHandle();
-                int rc = pldm_pdr_add_fru_record_set_check(
+                int rc = pldm_pdr_add_fru_record_set(
                     pdrRepo, TERMINUS_HANDLE, recordSetIdentifier,
                     entity.entity_type, entity.entity_instance_num,
                     entity.entity_container_id, &bmc_record_handle);
