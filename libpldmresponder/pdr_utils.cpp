@@ -34,8 +34,8 @@ pldm_pdr* Repo::getPdr() const
 RecordHandle Repo::addRecord(const PdrEntry& pdrEntry)
 {
     uint32_t handle = pdrEntry.handle.recordHandle;
-    int rc = pldm_pdr_add_check(repo, pdrEntry.data, pdrEntry.size, false,
-                                TERMINUS_HANDLE, &handle);
+    int rc = pldm_pdr_add(repo, pdrEntry.data, pdrEntry.size, false,
+                          TERMINUS_HANDLE, &handle);
     if (rc)
     {
         // pldm_pdr_add() assert()ed on failure to add PDR

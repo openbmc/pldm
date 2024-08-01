@@ -231,7 +231,7 @@ void HostPDRHandler::mergeEntityAssociations(
     {
         // Adding the remote range PDRs to the repo before merging it
         uint32_t handle = record_handle;
-        pldm_pdr_add_check(repo, pdr.data(), size, true, 0xFFFF, &handle);
+        pldm_pdr_add(repo, pdr.data(), size, true, 0xFFFF, &handle);
     }
 
     pldm_entity_association_pdr_extract(pdr.data(), pdr.size(), &numEntities,
@@ -615,8 +615,8 @@ void HostPDRHandler::processHostPDRs(mctp_eid_t /*eid*/,
                 }
                 else
                 {
-                    rc = pldm_pdr_add_check(repo, pdr.data(), respCount, true,
-                                            pdrTerminusHandle, &rh);
+                    rc = pldm_pdr_add(repo, pdr.data(), respCount, true,
+                                      pdrTerminusHandle, &rh);
                     if (rc)
                     {
                         // pldm_pdr_add() assert()ed on failure to add a PDR.

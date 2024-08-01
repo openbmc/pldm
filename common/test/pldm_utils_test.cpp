@@ -161,8 +161,7 @@ TEST(FindStateEffecterPDR, testOneMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
 
@@ -196,8 +195,7 @@ TEST(FindStateEffecterPDR, testNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
 
@@ -247,8 +245,7 @@ TEST(FindStateEffecterPDR, testMoreMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
@@ -269,8 +266,8 @@ TEST(FindStateEffecterPDR, testMoreMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     uint16_t entityID_ = 31;
@@ -309,8 +306,7 @@ TEST(FindStateEffecterPDR, testManyNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
@@ -331,8 +327,8 @@ TEST(FindStateEffecterPDR, testManyNoMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
@@ -367,8 +363,7 @@ TEST(FindStateEffecterPDR, testOneMatchOneNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
@@ -389,8 +384,8 @@ TEST(FindStateEffecterPDR, testOneMatchOneNoMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
@@ -426,8 +421,7 @@ TEST(FindStateEffecterPDR, testOneMatchManyNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
@@ -448,8 +442,8 @@ TEST(FindStateEffecterPDR, testOneMatchManyNoMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     std::vector<uint8_t> pdr_third(
@@ -515,8 +509,7 @@ TEST(FindStateEffecterPDR, testCompositeEffecter)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
 
@@ -562,8 +555,7 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
 
@@ -597,8 +589,7 @@ TEST(FindStateSensorPDR, testOneMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
 
@@ -632,8 +623,7 @@ TEST(FindStateSensorPDR, testNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
 
@@ -683,8 +673,7 @@ TEST(FindStateSensorPDR, testMoreMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
@@ -705,8 +694,8 @@ TEST(FindStateSensorPDR, testMoreMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     uint16_t entityID_ = 5;
@@ -745,8 +734,7 @@ TEST(FindStateSensorPDR, testManyNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
@@ -767,8 +755,8 @@ TEST(FindStateSensorPDR, testManyNoMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
@@ -803,8 +791,7 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
@@ -825,8 +812,8 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
@@ -862,8 +849,7 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     std::vector<uint8_t> pdr_second(
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
@@ -884,8 +870,8 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
     state_second->possible_states_size = 1;
 
     handle = 0;
-    ASSERT_EQ(pldm_pdr_add_check(repo, pdr_second.data(), pdr_second.size(),
-                                 false, 1, &handle),
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
               0);
 
     std::vector<uint8_t> pdr_third(sizeof(struct pldm_state_sensor_pdr) -
@@ -952,8 +938,7 @@ TEST(FindStateSensorPDR, testCompositeSensor)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
 
@@ -999,8 +984,7 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
     state->possible_states_size = 1;
 
     uint32_t handle = 0;
-    ASSERT_EQ(
-        pldm_pdr_add_check(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
     auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
 
