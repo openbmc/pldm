@@ -174,3 +174,18 @@ option(
     value: 8384512,
     description: 'OEM-IBM: max DMA size'
 )
+
+## Default Sensor Update Interval Options
+option(
+    'default-sensor-update-interval',
+    type: 'integer',
+    min: 1,
+    max: 4294967295,
+    description: '''The default sensor polling interval in milliseconds.
+                    The value will be used when the internal is not configured
+                    in the PLDM sensor PDRs use `updateInterval` field. `pldmd`
+                    will send `GetSensorReading` to get the PLDM sensor values
+                    of the monitoring terminus after each configured
+                    interval.''',
+    value: 999
+)
