@@ -855,7 +855,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
 
                 attrValueEntry.resize(entryLength);
                 std::vector<uint8_t> handles = {i};
-                int rc = pldm_bios_table_attr_value_entry_encode_enum_check(
+                int rc = pldm_bios_table_attr_value_entry_encode_enum(
                     attrValueEntry.data(), attrValueEntry.size(),
                     attrEntry->attr_handle, attrType, 1, handles.data());
                 if (rc != PLDM_SUCCESS)

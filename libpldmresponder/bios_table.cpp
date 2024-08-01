@@ -352,7 +352,7 @@ const pldm_bios_attr_val_table_entry*
         handleIndices.size());
     auto tableSize = table.size();
     table.resize(tableSize + entryLength);
-    int rc = pldm_bios_table_attr_value_entry_encode_enum_check(
+    int rc = pldm_bios_table_attr_value_entry_encode_enum(
         table.data() + tableSize, entryLength, attrHandle, attrType,
         handleIndices.size(), handleIndices.data());
     if (rc != PLDM_SUCCESS)
