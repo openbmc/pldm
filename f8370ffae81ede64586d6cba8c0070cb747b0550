@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "155f1a4f_c8d0517d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 132
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-01T09:27:16Z",
+      "side": 1,
+      "message": "Moved code create Sensor D-Bus object paths to https://gerrit.openbmc.org/c/openbmc/pldm/+/73250 to reduce the new code lines in patch set.",
+      "revId": "f8370ffae81ede64586d6cba8c0070cb747b0550",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
