@@ -102,8 +102,8 @@ std::string decodeString(const pldm_bios_string_table_entry* entry)
     auto strLength = pldm_bios_table_string_entry_decode_string_length(entry);
     std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
     // Preconditions are upheld therefore no error check necessary
-    pldm_bios_table_string_entry_decode_string_check(entry, buffer.data(),
-                                                     buffer.size());
+    pldm_bios_table_string_entry_decode_string(entry, buffer.data(),
+                                               buffer.size());
     return std::string(buffer.data(), buffer.data() + strLength);
 }
 const pldm_bios_string_table_entry* constructEntry(Table& table,

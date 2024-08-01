@@ -286,8 +286,8 @@ class GetBIOSTableHandler : public CommandInterface
             pldm_bios_table_string_entry_decode_string_length(stringEntry);
         std::vector<char> buffer(strLength + 1 /* sizeof '\0' */);
         // Preconditions are upheld therefore no error check necessary
-        pldm_bios_table_string_entry_decode_string_check(
-            stringEntry, buffer.data(), buffer.size());
+        pldm_bios_table_string_entry_decode_string(stringEntry, buffer.data(),
+                                                   buffer.size());
 
         return std::string(buffer.data(), buffer.data() + strLength);
     }
