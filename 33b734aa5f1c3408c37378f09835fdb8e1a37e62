@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55a7242e_997916a6",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 105
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-01T13:32:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9c8334a_5ea1b100",
+      "range": {
+        "startLine": 88,
+        "startChar": 18,
+        "endLine": 88,
+        "endChar": 19
+      },
+      "revId": "33b734aa5f1c3408c37378f09835fdb8e1a37e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7e7d0e1_1ba73457",
