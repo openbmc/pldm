@@ -309,7 +309,7 @@ void HostPDRHandler::mergeEntityAssociations(
             }
             else
             {
-                rc = pldm_entity_association_pdr_add_from_node_check(
+                rc = pldm_entity_association_pdr_add_from_node(
                     node, repo, &entities, numEntities, true, TERMINUS_HANDLE);
             }
 
