@@ -251,8 +251,7 @@ EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
     }
     std::vector<uint16_t> pvHdls(pvNum, 0);
     // Preconditions are upheld therefore no error check necessary
-    pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(entry, pvHdls.data(),
-                                                         pvNum);
+    pldm_bios_table_attr_entry_enum_decode_pv_hdls(entry, pvHdls.data(), pvNum);
     // Preconditions are upheld therefore no error check necessary
     uint8_t defNum;
     pldm_bios_table_attr_entry_enum_decode_def_num(entry, &defNum);

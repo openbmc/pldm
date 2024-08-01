@@ -225,7 +225,7 @@ int BIOSConfig::checkAttributeTable(const Table& table)
                 pldm_bios_table_attr_entry_enum_decode_pv_num(entry, &pvNum);
                 std::vector<uint16_t> pvHandls(pvNum);
                 // Preconditions are upheld therefore no error check necessary
-                pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
+                pldm_bios_table_attr_entry_enum_decode_pv_hdls(
                     entry, pvHandls.data(), pvHandls.size());
                 uint8_t defNum;
                 pldm_bios_table_attr_entry_enum_decode_def_num(entry, &defNum);
@@ -377,7 +377,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                                                               &pvNum);
                 std::vector<uint16_t> pvHandls(pvNum);
                 // Preconditions are upheld therefore no error check necessary
-                pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
+                pldm_bios_table_attr_entry_enum_decode_pv_hdls(
                     attrEntry, pvHandls.data(), pvHandls.size());
 
                 // get possible_value
@@ -742,8 +742,8 @@ std::string
 
     std::vector<uint16_t> pvHandls(pvNum);
     // Preconditions are upheld therefore no error check necessary
-    pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
-        attrEntry, pvHandls.data(), pvHandls.size());
+    pldm_bios_table_attr_entry_enum_decode_pv_hdls(attrEntry, pvHandls.data(),
+                                                   pvHandls.size());
 
     std::string displayString = std::to_string(pvHandls[index]);
 

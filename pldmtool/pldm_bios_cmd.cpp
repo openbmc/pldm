@@ -342,7 +342,7 @@ class GetBIOSTableHandler : public CommandInterface
         }
         std::vector<uint16_t> pvHandls(pvNum);
         // Preconditions are upheld therefore no error check necessary
-        pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
+        pldm_bios_table_attr_entry_enum_decode_pv_hdls(
             attrEntry, pvHandls.data(), pvHandls.size());
         return displayStringHandle(pvHandls[index], stringTable, false);
     }
@@ -563,7 +563,7 @@ class GetBIOSTable : public GetBIOSTableHandler
                     std::vector<uint16_t> pvHandls(pvNum);
                     // Preconditions are upheld therefore no error check
                     // necessary
-                    pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
+                    pldm_bios_table_attr_entry_enum_decode_pv_hdls(
                         entry, pvHandls.data(), pvHandls.size());
                     uint8_t defNum;
                     // Preconditions are upheld therefore no error check
@@ -824,7 +824,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                                                               &pvNum);
                 std::vector<uint16_t> pvHdls(pvNum, 0);
                 // Preconditions are upheld therefore no error check necessary
-                pldm_bios_table_attr_entry_enum_decode_pv_hdls_check(
+                pldm_bios_table_attr_entry_enum_decode_pv_hdls(
                     attrEntry, pvHdls.data(), pvNum);
                 auto stringEntry = pldm_bios_table_string_find_by_string(
                     stringTable->data(), stringTable->size(),
