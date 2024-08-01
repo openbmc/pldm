@@ -568,8 +568,8 @@ class GetBIOSTable : public GetBIOSTableHandler
                     uint8_t defNum;
                     // Preconditions are upheld therefore no error check
                     // necessary
-                    pldm_bios_table_attr_entry_enum_decode_def_num_check(
-                        entry, &defNum);
+                    pldm_bios_table_attr_entry_enum_decode_def_num(entry,
+                                                                   &defNum);
                     std::vector<uint8_t> defIndices(defNum);
                     pldm_bios_table_attr_entry_enum_decode_def_indices(
                         entry, defIndices.data(), defIndices.size());

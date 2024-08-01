@@ -255,7 +255,7 @@ EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
                                                          pvNum);
     // Preconditions are upheld therefore no error check necessary
     uint8_t defNum;
-    pldm_bios_table_attr_entry_enum_decode_def_num_check(entry, &defNum);
+    pldm_bios_table_attr_entry_enum_decode_def_num(entry, &defNum);
     std::vector<uint8_t> defIndices(defNum, 0);
     pldm_bios_table_attr_entry_enum_decode_def_indices(entry, defIndices.data(),
                                                        defIndices.size());
