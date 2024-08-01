@@ -306,7 +306,7 @@ const pldm_bios_attr_val_table_entry*
         pldm_bios_table_attr_value_entry_encode_string_length(strLen);
     auto tableSize = table.size();
     table.resize(tableSize + entryLength);
-    int rc = pldm_bios_table_attr_value_entry_encode_string_check(
+    int rc = pldm_bios_table_attr_value_entry_encode_string(
         table.data() + tableSize, entryLength, attrHandle, attrType, strLen,
         str.c_str());
     if (rc != PLDM_SUCCESS)
