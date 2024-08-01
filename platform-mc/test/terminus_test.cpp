@@ -1,5 +1,6 @@
 #include "libpldm/entity.h"
 
+#include "platform-mc/numeric_sensor.hpp"
 #include "platform-mc/terminus.hpp"
 
 #include <gtest/gtest.h>
@@ -62,7 +63,32 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
         0x0 // sensorName
     };
 
+    std::vector<uint8_t> pdr2{
+        0x1, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number =1
+        0,
+        0,    // Overal system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+
     t1.pdrs.emplace_back(pdr1);
+    t1.pdrs.emplace_back(pdr2);
     t1.parseTerminusPDRs();
 
     auto sensorAuxNames = t1.getSensorAuxiliaryNames(0);
@@ -78,4 +104,41 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
     EXPECT_EQ(1, names[0].size());
     EXPECT_EQ("en", names[0][0].first);
     EXPECT_EQ("TEMP1", names[0][0].second);
+    EXPECT_EQ(2, t1.pdrs.size());
+    EXPECT_EQ("S0", t1.getTerminusName());
+}
+
+TEST(TerminusTest, parsePDRTestNoSensorPDR)
+{
+    auto t1 = pldm::platform_mc::Terminus(1,
+                                          1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    std::vector<uint8_t> pdr1{
+        0x1, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number =1
+        0,
+        0,    // Overal system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+
+    t1.pdrs.emplace_back(pdr1);
+    t1.parseTerminusPDRs();
+
+    auto sensorAuxNames = t1.getSensorAuxiliaryNames(1);
+    EXPECT_EQ(nullptr, sensorAuxNames);
 }
