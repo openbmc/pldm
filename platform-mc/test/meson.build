@@ -4,6 +4,7 @@ test_src = declare_dependency(
             '../terminus.cpp',
             '../platform_manager.cpp',
             '../manager.cpp',
+            '../numeric_sensor.cpp',
             '../../requester/mctp_endpoint_discovery.cpp'],
             include_directories: ['../../requester', '../../pldmd'])
 
