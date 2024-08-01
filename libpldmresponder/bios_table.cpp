@@ -154,8 +154,8 @@ const pldm_bios_attr_table_entry*
 
     auto tableSize = table.size();
     table.resize(tableSize + entryLength, 0);
-    int rc = pldm_bios_table_attr_entry_string_encode_check(
-        table.data() + tableSize, entryLength, info);
+    int rc = pldm_bios_table_attr_entry_string_encode(table.data() + tableSize,
+                                                      entryLength, info);
     if (rc != PLDM_SUCCESS)
     {
         error("Failed to encode BIOS table string entry, response code '{RC}'",
