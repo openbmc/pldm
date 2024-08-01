@@ -113,8 +113,8 @@ const pldm_bios_string_table_entry* constructEntry(Table& table,
     auto entryLength = pldm_bios_table_string_entry_encode_length(str.length());
     table.resize(tableSize + entryLength);
     // Preconditions are upheld therefore no error check necessary
-    pldm_bios_table_string_entry_encode_check(
-        table.data() + tableSize, entryLength, str.c_str(), str.length());
+    pldm_bios_table_string_entry_encode(table.data() + tableSize, entryLength,
+                                        str.c_str(), str.length());
     return reinterpret_cast<pldm_bios_string_table_entry*>(table.data() +
                                                            tableSize);
 }
