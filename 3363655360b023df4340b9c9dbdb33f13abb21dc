@@ -893,6 +893,30 @@
       },
       "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd31ede_df900d6b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-08-05T10:50:55Z",
+      "side": 1,
+      "message": "\u003e how are we sure that the remove end point is just a board ? and no something like a motherboard ?\n\nI think the correct inventory paths for items under the overall system should all be /xyz/openbmc_project/ivventory/system/\u003citem_type\u003e/\u003citem_name\u003e (like most inventory paths on OpenBMC do). \u003citem_type\u003e should depend on EntityType of the PDR, which can be somehow mapped 1:1 with PDI\u0027s Item list https://github.com/openbmc/phosphor-dbus-interfaces/tree/master/yaml/xyz/openbmc_project/Inventory/Item.\n\nEx: for Board (EntityID 60), the object path should be /xyz/openbmc_project/inventory/system/board/\u003citem_name\u003e, and interface should be Inventory.Item.Board.\n\nRight now, I think we should hardcode it first to /xyz/openbmc_project/inventory/system/board/\u003citem_name\u003e, and interface Inventory.Item.Board so that one terminus can be reported as one chassis instance in Redfish chassis collection (/redfish/v1/Chassis/) and have sensors reported on Redfish. Then have a mapping to deal with each entity type later.",
+      "parentUuid": "8aff7afd_d518b168",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
