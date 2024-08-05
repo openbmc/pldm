@@ -166,6 +166,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8747d314_18497859",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T09:02:39Z",
+      "side": 1,
+      "message": "this sounds much better.",
+      "parentUuid": "e3163b3c_596ed98f",
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ecdedde_407f2c4c",
@@ -475,6 +493,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "444c0ec9_452b9cd1",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T09:02:39Z",
+      "side": 1,
+      "message": "yeah i think bmcweb is not really equipped to handle multiple objects hosting the same object. I think atleast as a first pass - we can stop creating the dbus object if there is already a dbus object from some one else.",
+      "parentUuid": "ebb03628_d105c70b",
+      "range": {
+        "startLine": 279,
+        "startChar": 7,
+        "endLine": 280,
+        "endChar": 76
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6e8d663_d8563dac",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -558,6 +600,30 @@
       "side": 1,
       "message": "When the remote PLDM terminus go down, the code handle the request time out will be trigger to recovery the connection to MCTP endpoint. If the endpoint still not response the `mctpd` service will remove mctp endpoint D-Bus object path. The `pldmd` will remove all sensors of terminus from monitoring list.\nSo we just need to concern about the case which the connection to terminus still good, but the GetSensorReading response `sensorOperationalState` as unavailable. Those code will be handle in sensor manager patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/51489/133/platform-mc/sensor_manager.cpp#429\nIn this part when construct the sensors, we just set available state as `true`.",
       "parentUuid": "c4df4ce5_70481725",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 38
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca8e467b_37a581c7",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T09:02:39Z",
+      "side": 1,
+      "message": "we seemed to be covering all the cases, then we are good. Thanks for explaining.",
+      "parentUuid": "41ac89c0_a525fccc",
       "range": {
         "startLine": 289,
         "startChar": 0,
@@ -795,6 +861,30 @@
       "side": 1,
       "message": "Yes, But it will only be applied when the top most container have container ID as 0x0000 (overall system) or the top most container have the entityType as system type in DSP0249 V1.0.0.\nUsing the `META` solution is also an option.",
       "parentUuid": "26165960_af26b82d",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aff7afd_d518b168",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T09:02:39Z",
+      "side": 1,
+      "message": "for now we can just host the `System` and then can change based on the approach ?",
+      "parentUuid": "edc8920c_6cb9ac3b",
       "range": {
         "startLine": 95,
         "startChar": 8,
