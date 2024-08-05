@@ -917,6 +917,30 @@
       },
       "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efd0b2f6_1eaa22ff",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T13:11:39Z",
+      "side": 1,
+      "message": "yes , this seems like an ideal solution.\n\nI am okay with adding that support later, but to keep track of the problem @Thu - can you open an issue in pldm repo stating the issue \u0026 then mark the comment as resolved.",
+      "parentUuid": "6fd31ede_df900d6b",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
