@@ -551,6 +551,30 @@
       },
       "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9165ad46_674c4fd6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:34:56Z",
+      "side": 1,
+      "message": "Or we can use the inventory path from entity-manager as this patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/68348",
+      "parentUuid": "7e2bff37_b983c3b3",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
