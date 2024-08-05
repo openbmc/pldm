@@ -132,6 +132,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a6e8a37_e1600a93",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T06:38:20Z",
+      "side": 1,
+      "message": "Hey thu - no , i am not asking that. Say there are 100 sensors, but i would only want to create dbus objects for 50 of them ? do you think thats a reasonable ask ?",
+      "parentUuid": "a229bbeb_f67c7ac1",
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ecdedde_407f2c4c",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -367,6 +385,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2417c198_af9eadd3",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T06:38:20Z",
+      "side": 1,
+      "message": "no , i dont understand how try-catch with cover that.\n\nThe use case i was asking is:\n\npldm created a path xyz/openbmc_project/sensor/temp/XY and before hosting this object what if there is another service may be the dbus-sensor daemon hosting the same patch xyz/openbmc_project/sensor/temp/XY ? \n\ndont we need to query mapper for it first before we create an object ?",
+      "parentUuid": "46692352_3acdf4aa",
+      "range": {
+        "startLine": 279,
+        "startChar": 7,
+        "endLine": 280,
+        "endChar": 76
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6e8d663_d8563dac",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -402,6 +444,30 @@
       "side": 1,
       "message": "The default availability state of PLDM sensors will always be `true`.\nThis value will be changed base on the return of `GetSensorReading` or no response from terminus. I don\u0027t think we need persisting this default value.",
       "parentUuid": "c6e8d663_d8563dac",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 38
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4df4ce5_70481725",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T06:38:20Z",
+      "side": 1,
+      "message": "Thats not accurate right ? the remote PLDM terminus can go down at anypoint right ? even at time we will show it as unavailable ?",
+      "parentUuid": "69394612_6d9a28d0",
       "range": {
         "startLine": 289,
         "startChar": 0,
@@ -506,6 +572,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e9e2619_4632a5a9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T06:38:20Z",
+      "side": 1,
+      "message": "okay sure, i dont have much preference as such , reason for my ask is that appending strings is much easier if modelled as fs::path object. I am okay either way",
+      "parentUuid": "3e8d9d5c_252a6607",
+      "range": {
+        "startLine": 85,
+        "startChar": 35,
+        "endLine": 85,
+        "endChar": 46
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4c1d025_c2637f93",
@@ -567,6 +657,30 @@
       "side": 1,
       "message": "Or we can use the inventory path from entity-manager as this patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/68348",
       "parentUuid": "7e2bff37_b983c3b3",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26165960_af26b82d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-05T06:38:20Z",
+      "side": 1,
+      "message": "you mean we host Inventory.Item.System ? https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Inventory/Item/System.interface.yaml ? \n\nwith the path `/xyz/openbmc_project/inventory/Item/System` ?",
+      "parentUuid": "9165ad46_674c4fd6",
       "range": {
         "startLine": 95,
         "startChar": 8,
