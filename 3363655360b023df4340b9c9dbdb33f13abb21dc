@@ -150,6 +150,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3163b3c_596ed98f",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T08:12:50Z",
+      "side": 1,
+      "message": "Oh, I see.\nI think it is so platform specific for the generic pldm code like platform-mc. To support that we need those info:\n1. How `pldmd` know which sensors will created which will not? We will need list of SensorsID\n2. When we have list of SensorsID, then which terminus will apply that list? Will we base on EID or TID. Please not that those EID or TID are settable.\n\nI and Patric had some discussion about that at\nhttps://discord.com/channels/775381525260664832/778790638563885086/1209428940976951348\nhttps://discord.com/channels/775381525260664832/778790638563885086/1209473237549846528\nand some dm after that.\nSo when we have some sensors which we don\u0027t want to show in the PLDMs it is better to define the sensors list in entity-manager instead of use pldmd to create D-Bus sensors. The EM will probe the EM configuration base on Fru data ( EEPROM Fru or PLDM Fru). The `pldmd` can create the sensors base on the probed EM.\n\nAnd we also have a part in design spec mention about that event it is not directly talk about that \nhttps://gerrit.openbmc.org/c/openbmc/docs/+/47252/34/designs/pldm-stack.md#511\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/47252/34/designs/pldm-stack.md#500",
+      "parentUuid": "5a6e8a37_e1600a93",
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ecdedde_407f2c4c",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -289,6 +307,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d50f8a3_b4ab0776",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T08:12:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dccb329_cb20a08d",
+      "range": {
+        "startLine": 73,
+        "startChar": 67,
+        "endLine": 73,
+        "endChar": 72
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5654392_17fe77e0",
@@ -409,6 +451,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebb03628_d105c70b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T08:12:50Z",
+      "side": 1,
+      "message": "I understood your question. Yeah, we can add the query mapper. The next question will be what will `pldmd` do when that sensors object path already created by others service but not `pldmd`?\nPlease note that there is the case which the duplicate sensors object path of two termini which have the same PDRs set and be configured the same terminus name. The `pldmd` need index the `terminus name` for them. But indexing the terminus name should be implemented in other patch set, I think.",
+      "parentUuid": "2417c198_af9eadd3",
+      "range": {
+        "startLine": 279,
+        "startChar": 7,
+        "endLine": 280,
+        "endChar": 76
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6e8d663_d8563dac",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -468,6 +534,30 @@
       "side": 1,
       "message": "Thats not accurate right ? the remote PLDM terminus can go down at anypoint right ? even at time we will show it as unavailable ?",
       "parentUuid": "69394612_6d9a28d0",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 38
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41ac89c0_a525fccc",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T08:12:50Z",
+      "side": 1,
+      "message": "When the remote PLDM terminus go down, the code handle the request time out will be trigger to recovery the connection to MCTP endpoint. If the endpoint still not response the `mctpd` service will remove mctp endpoint D-Bus object path. The `pldmd` will remove all sensors of terminus from monitoring list.\nSo we just need to concern about the case which the connection to terminus still good, but the GetSensorReading response `sensorOperationalState` as unavailable. Those code will be handle in sensor manager patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/51489/133/platform-mc/sensor_manager.cpp#429\nIn this part when construct the sensors, we just set available state as `true`.",
+      "parentUuid": "c4df4ce5_70481725",
       "range": {
         "startLine": 289,
         "startChar": 0,
@@ -681,6 +771,30 @@
       "side": 1,
       "message": "you mean we host Inventory.Item.System ? https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Inventory/Item/System.interface.yaml ? \n\nwith the path `/xyz/openbmc_project/inventory/Item/System` ?",
       "parentUuid": "9165ad46_674c4fd6",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc8920c_6cb9ac3b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T08:12:50Z",
+      "side": 1,
+      "message": "Yes, But it will only be applied when the top most container have container ID as 0x0000 (overall system) or the top most container have the entityType as system type in DSP0249 V1.0.0.\nUsing the `META` solution is also an option.",
+      "parentUuid": "26165960_af26b82d",
       "range": {
         "startLine": 95,
         "startChar": 8,
