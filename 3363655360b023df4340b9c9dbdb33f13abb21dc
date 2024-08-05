@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c395834a_31f22b9f",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca42bf54_75d2c7c5",
+      "range": {
+        "startLine": 184,
+        "startChar": 4,
+        "endLine": 185,
+        "endChar": 37
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "def99621_993fbc43",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-05T02:04:29Z",
       "side": 1,
       "message": "end of the line was removed, please add it back.",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 1
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd990ee1_9772af7f",
+        "filename": "meson.options",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "def99621_993fbc43",
       "range": {
         "startLine": 188,
         "startChar": 0,
@@ -66,6 +114,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a229bbeb_f67c7ac1",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "Maybe we can create build option to enable/disable create the sensor D-Bus interface with the default is enabled.",
+      "parentUuid": "462be5b1_8e8213dc",
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2ecdedde_407f2c4c",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -77,6 +143,30 @@
       "writtenOn": "2024-08-05T02:04:29Z",
       "side": 1,
       "message": "are we sure that pdr is not a null pointer when we enter here ? if not we need to check for nullptr.",
+      "range": {
+        "startLine": 23,
+        "startChar": 13,
+        "endLine": 23,
+        "endChar": 27
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fa709bf_c172cce2",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ecdedde_407f2c4c",
       "range": {
         "startLine": 23,
         "startChar": 13,
@@ -100,6 +190,30 @@
       "writtenOn": "2024-08-05T02:04:29Z",
       "side": 1,
       "message": "std::regex functions are slower, please use any other alternate means to achieve this.",
+      "range": {
+        "startLine": 67,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 72
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "757a2425_cdc33dcd",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "Actually, we don\u0027t need this line. The try catch will cover the failure in create the sensor D-Bus object.",
+      "parentUuid": "adc98788_2ae9fc4b",
       "range": {
         "startLine": 67,
         "startChar": 1,
@@ -135,6 +249,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2dccb329_cb20a08d",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "The sdbusplus requires `const char*` as input for `path`. So `c_str` is required.",
+      "parentUuid": "b75c08b1_9cbda294",
+      "range": {
+        "startLine": 73,
+        "startChar": 67,
+        "endLine": 73,
+        "endChar": 72
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d5654392_17fe77e0",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -146,6 +284,30 @@
       "writtenOn": "2024-08-05T02:04:29Z",
       "side": 1,
       "message": "dead variable ?",
+      "range": {
+        "startLine": 250,
+        "startChar": 4,
+        "endLine": 250,
+        "endChar": 18
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d82f6ce9_1dfa8f7f",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "Yeah, this variable is required for next patch set `sensor manager` but let me move it to next patch set.",
+      "parentUuid": "d5654392_17fe77e0",
       "range": {
         "startLine": 250,
         "startChar": 4,
@@ -181,6 +343,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46692352_3acdf4aa",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "The try catch will cover that.",
+      "parentUuid": "163bcc2a_83829c34",
+      "range": {
+        "startLine": 279,
+        "startChar": 7,
+        "endLine": 280,
+        "endChar": 76
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6e8d663_d8563dac",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -204,6 +390,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69394612_6d9a28d0",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "The default availability state of PLDM sensors will always be `true`.\nThis value will be changed base on the return of `GetSensorReading` or no response from terminus. I don\u0027t think we need persisting this default value.",
+      "parentUuid": "c6e8d663_d8563dac",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 38
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74bb2c35_b8c0ff5c",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 1
@@ -215,6 +425,30 @@
       "writtenOn": "2024-08-05T02:04:29Z",
       "side": 1,
       "message": "not using it anywhere ?",
+      "range": {
+        "startLine": 447,
+        "startChar": 4,
+        "endLine": 447,
+        "endChar": 18
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43814ec8_091434ba",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74bb2c35_b8c0ff5c",
       "range": {
         "startLine": 447,
         "startChar": 4,
@@ -250,6 +484,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e8d9d5c_252a6607",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "The constructer of `InventoryItemBoardIntf` required `const char *` so I think using `std::string` as input of `createInventoryPath` is reason able. Moreover with the input as `tName` we can call `createInventoryPath` directly in https://gerrit.openbmc.org/c/openbmc/pldm/+/73250/1/platform-mc/terminus.cpp#214",
+      "parentUuid": "58c51863_141ba6dd",
+      "range": {
+        "startLine": 85,
+        "startChar": 35,
+        "endLine": 85,
+        "endChar": 46
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4c1d025_c2637f93",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 1
@@ -261,6 +519,30 @@
       "writtenOn": "2024-08-05T02:04:29Z",
       "side": 1,
       "message": "how are we sure that the remove end point is just a board ? and no something like a motherboard ?",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 65
+      },
+      "revId": "3363655360b023df4340b9c9dbdb33f13abb21dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e2bff37_b983c3b3",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-05T04:12:13Z",
+      "side": 1,
+      "message": "This is terminus inventory,\n1. maybe we can use the top most entity type in association PDRs or Top most locator PDRs to identity the terminus type.\n\n2. For the terminus which includes the terminus name, the containerID of the top most terminus should be 0x0000 `system overall`, maybe we can use `system` inventory for it.\n\nThen we can map to the item type in https://github.com/openbmc/phosphor-dbus-interfaces/tree/master/yaml/xyz/openbmc_project/Inventory/Item\n\nAt this moment, those info are not available. Do you have any idea on this?",
+      "parentUuid": "b4c1d025_c2637f93",
       "range": {
         "startLine": 95,
         "startChar": 8,
