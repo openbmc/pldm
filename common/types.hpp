@@ -50,6 +50,7 @@ using MctpInfos = std::vector<MctpInfo>;
  * EID from 1 to 7 is reserved EID. So the start valid EID is 8
  */
 #define MCTP_START_VALID_EID 8
+constexpr uint8_t BmcMctpEid = 8;
 
 #define PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES 1024
 

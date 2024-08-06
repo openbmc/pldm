@@ -14,8 +14,6 @@ namespace responder
 namespace pdr
 {
 
-constexpr uint8_t BmcMctpEid = 8;
-
 /** @brief Build (if not built already) and retrieve PDR by the PDR types
  *
  *  @param[in] dir - directory housing platform specific PDR JSON files

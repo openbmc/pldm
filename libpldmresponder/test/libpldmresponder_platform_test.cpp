@@ -1,4 +1,5 @@
 #include "common/test/mocked_utils.hpp"
+#include "common/types.hpp"
 #include "common/utils.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "libpldmresponder/event_parser.hpp"
@@ -774,7 +775,7 @@ TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
     auto locatorValue =
         reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
             pdr->terminus_locator_value);
-    EXPECT_EQ(locatorValue->eid, BmcMctpEid);
+    EXPECT_EQ(locatorValue->eid, pldm::BmcMctpEid);
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }
