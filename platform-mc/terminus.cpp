@@ -14,7 +14,8 @@ namespace platform_mc
 {
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
-    initialized(false), tid(tid), supportedTypes(supportedTypes)
+    initialized(false), synchronyConfigurationSupported(0), tid(tid),
+    supportedTypes(supportedTypes)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)

@@ -75,6 +75,7 @@ endif
 conf_data.set('DEFAULT_SENSOR_UPDATER_INTERVAL', get_option('default-sensor-update-interval'))
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 conf_data.set_quoted('PRIORITY_SENSOR_TYPE_JSON', join_paths(package_datadir, 'priority_sensor_types.json'))
+conf_data.set('LOCAL_EID', get_option('local-eid'))
 
 configure_file(output: 'config.h',
   configuration: conf_data

@@ -208,3 +208,12 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249
 )
+
+## BMC endpoint Options
+option(
+    'local-eid',
+    type: 'integer',
+    min: 1,
+    max: 255,
+    description: 'The local MCTP EID. Will be used in `SetEventReceiver`.',
+    value: 8)
