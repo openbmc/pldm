@@ -1,5 +1,6 @@
 #include "sensor_manager.hpp"
 
+#include "manager.hpp"
 #include "terminus_manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -13,9 +14,9 @@ namespace platform_mc
 
 SensorManager::SensorManager(sdeventplus::Event& event,
                              TerminusManager& terminusManager,
-                             TerminiMapper& termini) :
+                             TerminiMapper& termini, Manager* manager) :
     event(event), terminusManager(terminusManager), termini(termini),
-    pollingTime(SENSOR_POLLING_TIME)
+    pollingTime(SENSOR_POLLING_TIME), manager(manager)
 {}
 
 void SensorManager::startPolling(pldm_tid_t tid)

@@ -14,8 +14,8 @@ namespace platform_mc
 {
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
-    initialized(false), synchronyConfigurationSupported(0), tid(tid),
-    supportedTypes(supportedTypes)
+    initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
+    synchronyConfigurationSupported(0), tid(tid), supportedTypes(supportedTypes)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)
@@ -537,5 +537,36 @@ void Terminus::addCompactNumericSensor(
     }
 }
 
+std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorId id)
+{
+    if (terminusName.empty())
+    {
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have terminus name. No numeric sensor object.",
+            "TID", tid);
+        return nullptr;
+    }
+    if (!numericSensors.size())
+    {
+        lg2::error("Terminus ID {TID} name {NAME}: DOES NOT have sensor.",
+                   "TID", tid, "NAME", terminusName);
+        return nullptr;
+    }
+
+    for (auto& sensor : numericSensors)
+    {
+        if (!sensor)
+        {
+            continue;
+        }
+
+        if (sensor->sensorId == id)
+        {
+            return sensor;
+        }
+    }
+
+    return nullptr;
+}
 } // namespace platform_mc
 } // namespace pldm

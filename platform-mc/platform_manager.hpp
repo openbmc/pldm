@@ -111,6 +111,16 @@ class PlatformManager
         pldm_event_message_global_enable eventMessageGlobalEnable,
         pldm_transport_protocol_type protocolType, uint16_t heartbeatTimer);
 
+    /** @brief  send eventMessageBufferSize
+     *  @param[in] tid - Destination TID
+     *  @param[in] receiverMaxBufferSize
+     *  @param[out] terminusBufferSize
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> eventMessageBufferSize(pldm_tid_t tid,
+                                           uint16_t receiverMaxBufferSize,
+                                           uint16_t& terminusBufferSize);
+
     /** @brief  send eventMessageSupported
      *  @param[in] tid - Destination TID
      *  @param[in] formatVersion - version of the event format

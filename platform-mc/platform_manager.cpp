@@ -37,6 +37,29 @@ exec::task<int> PlatformManager::initTerminus()
             terminus->parseTerminusPDRs();
         }
 
+        uint16_t terminusMaxBufferSize = terminus->maxBufferSize;
+        if (!terminus->doesSupportCommand(PLDM_PLATFORM,
+                                          PLDM_EVENT_MESSAGE_BUFFER_SIZE))
+        {
+            terminusMaxBufferSize = PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE;
+        }
+        else
+        {
+            /* Get maxBufferSize use PLDM command eventMessageBufferSize */
+            auto rc = co_await eventMessageBufferSize(
+                tid, terminus->maxBufferSize, terminusMaxBufferSize);
+            if (rc != PLDM_SUCCESS)
+            {
+                lg2::error(
+                    "Failed to get message buffer size for terminus with TID: {TID}, error: {ERROR}",
+                    "TID", tid, "ERROR", rc);
+                terminusMaxBufferSize =
+                    PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE;
+            }
+        }
+        terminus->maxBufferSize =
+            std::min(terminus->maxBufferSize, terminusMaxBufferSize);
+
         auto rc = co_await configEventReceiver(tid);
         if (rc)
         {
@@ -364,6 +387,57 @@ exec::task<int> PlatformManager::getPDRRepositoryInfo(
             "Error : GetPDRRepositoryInfo for terminus ID {TID}, complete code {CC}.",
             "TID", tid, "CC", completionCode);
         co_return rc;
+    }
+
+    co_return completionCode;
+}
+
+exec::task<int> PlatformManager::eventMessageBufferSize(
+    pldm_tid_t tid, uint16_t receiverMaxBufferSize,
+    uint16_t& terminusBufferSize)
+{
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_EVENT_MESSAGE_BUFFER_SIZE_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_event_message_buffer_size_req(0, receiverMaxBufferSize,
+                                                   requestMsg);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request GetPDRRepositoryInfo for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send EventMessageBufferSize message for terminus {TID}, error {RC}",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    uint8_t completionCode;
+    rc = decode_event_message_buffer_size_resp(
+        responseMsg, responseLen, &completionCode, &terminusBufferSize);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response EventMessageBufferSize for terminus ID {TID}, error {RC} ",
+            "TID", tid, "RC", rc);
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : EventMessageBufferSize for terminus ID {TID}, complete code {CC}.",
+            "TID", tid, "CC", completionCode);
+        co_return completionCode;
     }
 
     co_return completionCode;

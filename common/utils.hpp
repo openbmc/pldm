@@ -37,6 +37,22 @@ namespace pldm
 namespace utils
 {
 
+enum class Level
+{
+    WARNING,
+    CRITICAL,
+    PERFORMANCELOSS,
+    SOFTSHUTDOWN,
+    HARDSHUTDOWN,
+    ERROR
+};
+enum class Direction
+{
+    HIGH,
+    LOW,
+    ERROR
+};
+
 const std::set<std::string_view> dbusValueTypeNames = {
     "bool",    "uint8_t",  "int16_t",         "uint16_t",
     "int32_t", "uint32_t", "int64_t",         "uint64_t",
