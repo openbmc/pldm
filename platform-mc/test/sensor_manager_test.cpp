@@ -17,7 +17,8 @@ class SensorManagerTest : public testing::Test
         bus(pldm::utils::DBusHandler::getBus()),
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false),
-        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
+        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
+                        LOCAL_EID),
         sensorManager(event, terminusManager, termini)
     {}
 
