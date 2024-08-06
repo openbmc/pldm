@@ -52,6 +52,12 @@ using MctpInfos = std::vector<MctpInfo>;
 constexpr uint8_t BmcMctpEid = 8;
 
 #define PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES 1024
+/* default the max event message buffer size BMC supported to 4K bytes */
+#define PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE 4096
+/* DSP0248 section16.9 EventMessageBufferSize Command, the default message
+ * buffer size is 256 bytes
+ */
+#define PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE 256
 
 namespace dbus
 {

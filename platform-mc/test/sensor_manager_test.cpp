@@ -19,7 +19,7 @@ class SensorManagerTest : public testing::Test
         reqHandler(pldmTransport, event, instanceIdDb, false),
         terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
                         pldm::BmcMctpEid),
-        sensorManager(event, terminusManager, termini)
+        sensorManager(event, terminusManager, termini, nullptr)
     {}
 
     void runEventLoopForSeconds(uint64_t sec)

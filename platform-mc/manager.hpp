@@ -4,6 +4,7 @@
 
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
+#include "event_manager.hpp"
 #include "platform_manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
@@ -36,7 +37,8 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         terminusManager(event, handler, instanceIdDb, termini, this,
                         pldm::BmcMctpEid),
         platformManager(terminusManager, termini),
-        sensorManager(event, terminusManager, termini)
+        sensorManager(event, terminusManager, termini, this),
+        eventManager(terminusManager, termini)
     {}
 
     /** @brief Helper function to do the actions before discovering terminus
@@ -88,6 +90,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         if (termini.contains(tid))
         {
             sensorManager.updateAvailableState(tid, state);
+            eventManager.updateAvailableState(tid, state);
         }
     }
 
@@ -96,6 +99,28 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     void stopSensorPolling(pldm_tid_t tid)
     {
         sensorManager.stopPolling(tid);
+    }
+
+    /** @brief Sensor event handler funtion
+     *
+     *  @param[in] request - Event message
+     *  @param[in] payloadLength - Event message payload size
+     *  @param[in] tid - Terminus ID
+     *  @param[in] eventDataOffset - Event data offset
+     *
+     *  @return PLDM error code: PLDM_SUCCESS when there is no error in handling
+     *          the event
+     */
+    int handleSensorEvent(const pldm_msg* request, size_t payloadLength,
+                          uint8_t /* formatVersion */, uint8_t tid,
+                          size_t eventDataOffset)
+    {
+        auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
+                         eventDataOffset;
+        auto eventDataSize = payloadLength - eventDataOffset;
+        eventManager.handlePlatformEvent(tid, 0x00, PLDM_SENSOR_EVENT,
+                                         eventData, eventDataSize);
+        return PLDM_SUCCESS;
     }
 
   private:
@@ -110,6 +135,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     /** @brief Store platform manager handler */
     SensorManager sensorManager;
+
+    /** @brief Store event manager handler */
+    EventManager eventManager;
 };
 } // namespace platform_mc
 } // namespace pldm
