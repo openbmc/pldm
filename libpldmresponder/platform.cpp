@@ -746,7 +746,7 @@ void Handler::generateTerminusLocatorPDR(Repo& repo)
         sizeof(pldm_terminus_locator_type_mctp_eid);
     auto locatorValue = reinterpret_cast<pldm_terminus_locator_type_mctp_eid*>(
         pdr->terminus_locator_value);
-    locatorValue->eid = BmcMctpEid;
+    locatorValue->eid = pldm::BmcMctpEid;
 
     PdrEntry pdrEntry{};
     pdrEntry.data = pdrBuffer.data();
@@ -980,7 +980,7 @@ void Handler::setEventReceiver()
     uint8_t eventMessageGlobalEnable =
         PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
     uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
-    uint8_t eventReceiverAddressInfo = pldm::responder::pdr::BmcMctpEid;
+    uint8_t eventReceiverAddressInfo = pldm::BmcMctpEid;
     uint16_t heartbeatTimer = HEARTBEAT_TIMEOUT;
 
     auto rc = encode_set_event_receiver_req(
