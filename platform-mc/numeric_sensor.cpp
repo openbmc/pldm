@@ -750,5 +750,127 @@ void NumericSensor::updateThresholds()
         }
     }
 }
+
+int NumericSensor::triggerThresholdEvent(
+    pldm::utils::Level eventType, pldm::utils::Direction direction,
+    double rawValue, bool newAlarm, bool assert)
+{
+    if (!valueIntf)
+    {
+        lg2::error(
+            "Failed to update thresholds sensor {NAME} D-Bus interfaces don't exist.",
+            "NAME", sensorName);
+        return PLDM_ERROR;
+    }
+
+    auto value = unitModifier(conversionFormula(rawValue));
+    lg2::error(
+        "triggerThresholdEvent eventType {TID}, direction {SID} value {VAL} newAlarm {PSTATE} assert {ESTATE}",
+        "TID", eventType, "SID", direction, "VAL", value, "PSTATE", newAlarm,
+        "ESTATE", assert);
+
+    switch (eventType)
+    {
+        case pldm::utils::Level::WARNING:
+        {
+            if (!thresholdWarningIntf)
+            {
+                lg2::error(
+                    "Error:Trigger sensor warning event for non warning threshold sensors {NAME}",
+                    "NAME", sensorName);
+                return PLDM_ERROR;
+            }
+            if (direction == pldm::utils::Direction::HIGH &&
+                !std::isnan(thresholdWarningIntf->warningHigh()))
+            {
+                auto alarm = thresholdWarningIntf->warningAlarmHigh();
+                if (alarm == newAlarm)
+                {
+                    return PLDM_SUCCESS;
+                }
+                thresholdWarningIntf->warningAlarmHigh(newAlarm);
+                if (assert)
+                {
+                    thresholdWarningIntf->warningHighAlarmAsserted(value);
+                }
+                else
+                {
+                    thresholdWarningIntf->warningHighAlarmDeasserted(value);
+                }
+            }
+            else if (direction == pldm::utils::Direction::LOW &&
+                     !std::isnan(thresholdWarningIntf->warningLow()))
+            {
+                auto alarm = thresholdWarningIntf->warningAlarmLow();
+                if (alarm == newAlarm)
+                {
+                    return PLDM_SUCCESS;
+                }
+                thresholdWarningIntf->warningAlarmLow(newAlarm);
+                if (assert)
+                {
+                    thresholdWarningIntf->warningLowAlarmAsserted(value);
+                }
+                else
+                {
+                    thresholdWarningIntf->warningLowAlarmDeasserted(value);
+                }
+            }
+            break;
+        }
+        case pldm::utils::Level::CRITICAL:
+        {
+            if (!thresholdCriticalIntf)
+            {
+                lg2::error(
+                    "Error:Trigger sensor Critical event for non warning threshold sensors {NAME}",
+                    "NAME", sensorName);
+                return PLDM_ERROR;
+            }
+            if (direction == pldm::utils::Direction::HIGH &&
+                !std::isnan(thresholdCriticalIntf->criticalHigh()))
+            {
+                auto alarm = thresholdCriticalIntf->criticalAlarmHigh();
+                if (alarm == newAlarm)
+                {
+                    return PLDM_SUCCESS;
+                }
+                thresholdCriticalIntf->criticalAlarmHigh(newAlarm);
+                if (assert)
+                {
+                    thresholdCriticalIntf->criticalHighAlarmAsserted(value);
+                }
+                else
+                {
+                    thresholdCriticalIntf->criticalHighAlarmDeasserted(value);
+                }
+            }
+            else if (direction == pldm::utils::Direction::LOW &&
+                     !std::isnan(thresholdCriticalIntf->criticalLow()))
+            {
+                auto alarm = thresholdCriticalIntf->criticalAlarmLow();
+                if (alarm == newAlarm)
+                {
+                    return PLDM_SUCCESS;
+                }
+                thresholdCriticalIntf->criticalAlarmLow(newAlarm);
+                if (assert)
+                {
+                    thresholdCriticalIntf->criticalLowAlarmAsserted(value);
+                }
+                else
+                {
+                    thresholdCriticalIntf->criticalLowAlarmDeasserted(value);
+                }
+            }
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    return PLDM_SUCCESS;
+}
 } // namespace platform_mc
 } // namespace pldm

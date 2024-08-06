@@ -377,14 +377,19 @@ Response Handler::platformEventMessage(const pldm_msg* request,
         try
         {
             const auto& handlers = eventHandlers.at(eventClass);
+            bool oneFailedHandler = false;
             for (const auto& handler : handlers)
             {
                 auto rc =
                     handler(request, payloadLength, formatVersion, tid, offset);
                 if (rc != PLDM_SUCCESS)
                 {
-                    return CmdHandler::ccOnlyResponse(request, rc);
+                    oneFailedHandler = true;
                 }
+            }
+            if (oneFailedHandler)
+            {
+                return CmdHandler::ccOnlyResponse(request, rc);
             }
         }
         catch (const std::out_of_range& e)

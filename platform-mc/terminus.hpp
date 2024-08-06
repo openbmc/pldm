@@ -133,6 +133,9 @@ class Terminus
     /** @brief A flag to indicate if terminus has been initialized */
     bool initialized = false;
 
+    /** @brief maximum message buffer size the terminus can send and receive */
+    uint16_t maxBufferSize;
+
     /** @brief This value indicates the event messaging styles supported by the
      *         terminus
      */
@@ -147,6 +150,14 @@ class Terminus
      *  @return sensor auxiliary names
      */
     std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorId id);
+
+    /** @brief Get Numeric Sensor Object by sensorID
+     *
+     *  @param[in] id - sensor ID
+     *
+     *  @return sensor object
+     */
+    std::shared_ptr<NumericSensor> getSensorObject(SensorId id);
 
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list

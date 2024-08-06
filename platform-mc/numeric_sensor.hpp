@@ -4,6 +4,7 @@
 #include "libpldm/pldm.h"
 
 #include "common/types.hpp"
+#include "common/utils.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
@@ -165,6 +166,20 @@ class NumericSensor
             return std::numeric_limits<double>::quiet_NaN();
         }
     };
+
+    /** @brief Check if value is over threshold.
+     *
+     *  @param[in] eventType - event level in pldm::utils::Level
+     *  @param[in] direction - direction type in pldm::utils::Direction
+     *  @param[in] rawValue - sensor raw value
+     *  @param[in] newAlarm - trigger alarm true/false
+     *  @param[in] assert - event type asserted/deasserted
+     *
+     *  @return PLDM completion code
+     */
+    int triggerThresholdEvent(pldm::utils::Level eventType,
+                              pldm::utils::Direction direction, double rawValue,
+                              bool newAlarm, bool assert);
 
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
