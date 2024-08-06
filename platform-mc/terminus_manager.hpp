@@ -51,12 +51,12 @@ class TerminusManager
     TerminusManager& operator=(TerminusManager&&) = delete;
     virtual ~TerminusManager() = default;
 
-    explicit TerminusManager(sdeventplus::Event& /* event */,
-                             RequesterHandler& handler,
-                             pldm::InstanceIdDb& instanceIdDb,
-                             TerminiMapper& termini, Manager* manager) :
+    explicit TerminusManager(
+        sdeventplus::Event& /* event */, RequesterHandler& handler,
+        pldm::InstanceIdDb& instanceIdDb, TerminiMapper& termini,
+        Manager* manager, mctp_eid_t localEid) :
         handler(handler), instanceIdDb(instanceIdDb), termini(termini),
-        tidPool(tidPoolSize, false), manager(manager)
+        tidPool(tidPoolSize, false), manager(manager), localEid(localEid)
     {
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
         tidPool[0] = true;
@@ -144,6 +144,15 @@ class TerminusManager
      *  @return true/false - True when tid in the table otherwise return false
      */
     bool unmapTid(const pldm_tid_t& tid);
+
+    /** @brief getter of local EID
+     *
+     *  @return uint8_t - local EID
+     */
+    mctp_eid_t getLocalEid()
+    {
+        return localEid;
+    }
 
   private:
     /** @brief Find the terminus object pointer in termini list.
@@ -233,6 +242,9 @@ class TerminusManager
 
     /** @brief A Manager interface for calling the hook functions **/
     Manager* manager;
+
+    /** @brief local EID */
+    mctp_eid_t localEid;
 };
 } // namespace platform_mc
 } // namespace pldm
