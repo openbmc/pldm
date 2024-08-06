@@ -133,6 +133,11 @@ class Terminus
     /** @brief A flag to indicate if terminus has been initialized */
     bool initialized = false;
 
+    /** @brief This value indicates the event messaging styles supported by the
+     *         terminus
+     */
+    bitfield8_t synchronyConfigurationSupported;
+
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 

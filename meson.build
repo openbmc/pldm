@@ -137,6 +137,7 @@ conf_data.set(
     get_option('default-sensor-update-interval'),
 )
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
+conf_data.set('LOCAL_EID', get_option('local-eid'))
 
 configure_file(output: 'config.h', configuration: conf_data)
 
