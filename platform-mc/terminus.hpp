@@ -133,6 +133,9 @@ class Terminus
     /** @brief A flag to indicate if terminus has been initialized */
     bool initialized = false;
 
+    /** @brief maximum message buffer size the terminus can send and receive */
+    uint16_t maxBufferSize;
+
     /** @brief This value indicates the event messaging styles supported by the
      *         terminus
      */
