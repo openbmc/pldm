@@ -20,7 +20,7 @@ class SensorManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false),
         terminusManager(event, reqHandler, instanceIdDb, termini, 0x0, nullptr),
-        sensorManager(event, terminusManager, termini)
+        sensorManager(event, terminusManager, termini, nullptr)
     {}
 
     void runEventLoopForSeconds(uint64_t sec)
