@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68e14f23_db4cf19c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-08T09:26:00Z",
+      "side": 1,
+      "message": "Can we support checking whether the endpoint support PLDM Firmware Update type and Fru commands before call?\nIn the current implementation, the `discoverFDs` is always called regardless the terminus support Firmware Update type or not.",
+      "revId": "568820f7e1fbe0f3880a52cbdbc91b2b02172364",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
