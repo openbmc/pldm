@@ -772,6 +772,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "613fc4b6_e59b1497",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-09T08:12:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63229315_c6e7397c",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 16
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bd27f6e_6a67387e",
