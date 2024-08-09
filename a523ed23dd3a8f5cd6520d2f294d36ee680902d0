@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "116887b8_2ed0cac9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-09T07:08:00Z",
+      "side": 1,
+      "message": "Can we add the PEL- Manager message registry commit link here in commit message and improve the commit message?",
+      "revId": "a523ed23dd3a8f5cd6520d2f294d36ee680902d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
