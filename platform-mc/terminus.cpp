@@ -272,15 +272,15 @@ std::shared_ptr<SensorAuxiliaryNames>
             {
                 u16NameStringLen++;
             }
-            /* include terminator */
-            u16NameStringLen++;
 
-            std::fill(std::begin(alignedBuffer), std::end(alignedBuffer), 0);
-            if (u16NameStringLen > PLDM_STR_UTF_16_MAX_LEN)
+            // PLDM max len includes null terminator
+            if (u16NameStringLen + 1 > PLDM_STR_UTF_16_MAX_LEN)
             {
-                lg2::error("Sensor name to long.");
+                lg2::error("Sensor name too long.");
                 return nullptr;
             }
+
+            std::fill(std::begin(alignedBuffer), std::end(alignedBuffer), 0);
             memcpy(alignedBuffer, ptr, u16NameStringLen * sizeof(uint16_t));
             std::u16string u16NameString(alignedBuffer, u16NameStringLen);
             ptr += (u16NameString.size() + sizeof(nullTerminator)) *
@@ -292,8 +292,8 @@ std::shared_ptr<SensorAuxiliaryNames>
                 std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
                                      char16_t>{}
                     .to_bytes(u16NameString);
-            nameStrings.emplace_back(std::make_pair(
-                nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
+            nameStrings.emplace_back(
+                std::make_pair(nameLanguageTag, nameString));
         }
         sensorAuxNames.emplace_back(std::move(nameStrings));
     }
