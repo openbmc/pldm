@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5169af6a_3c5d8ef8",
+        "filename": "meson.build",
+        "patchSetId": 124
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "but why ? why do we need priority ? what happens if we dont reed those in the priority list.",
+      "parentUuid": "0866bd64_85455af2",
+      "range": {
+        "startLine": 78,
+        "startChar": 21,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2e148ff_178b5ef8",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 124

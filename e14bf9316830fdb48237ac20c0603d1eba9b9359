@@ -1,6 +1,281 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eb5e013_730d68be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 138
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "Hey Thu - still have not completed the full review , but leaving some early feedback.",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cca9676c_e29b4567",
+        "filename": "meson.build",
+        "patchSetId": 138
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "i have some questions around why this JSON is needed ? what happens if priority is not there ?",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79e51015_ecd26a32",
+        "filename": "meson.options",
+        "patchSetId": 138
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "do we really need this in milliseconds ? can we have a sensible value in seconds ? and how is the max value decided ?",
+      "range": {
+        "startLine": 200,
+        "startChar": 9,
+        "endLine": 200,
+        "endChar": 19
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c901624_6c7c0f2c",
+        "filename": "meson.options",
+        "patchSetId": 138
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 204,
+        "startChar": 20,
+        "endLine": 204,
+        "endChar": 29
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8775ec36_1e0694c3",
+        "filename": "meson.options",
+        "patchSetId": 138
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 204,
+        "startChar": 55,
+        "endLine": 204,
+        "endChar": 57
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de9ebfe9_e3e149e7",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "dont you wanna return after this error ?",
+      "range": {
+        "startLine": 591,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 32
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d629b7ab_3ef3af5d",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "reuse the `newValue` instead ?",
+      "range": {
+        "startLine": 605,
+        "startChar": 29,
+        "endLine": 605,
+        "endChar": 66
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94b30860_b71f02c8",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "return here ?",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d51986_c4211658",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "else is redundant here right ?",
+      "range": {
+        "startLine": 640,
+        "startChar": 7,
+        "endLine": 640,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36910116_39278ed9",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "same here ?",
+      "range": {
+        "startLine": 651,
+        "startChar": 8,
+        "endLine": 651,
+        "endChar": 12
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1035f128_0e62ed60",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "return missing ?",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64764c41_b5c3c514",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "The code for handling high and low thresholds for both warning and critical levels is repeated four times. This can be refactored into a helper function to reduce duplication.",
+      "range": {
+        "startLine": 700,
+        "startChar": 12,
+        "endLine": 707,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7b64eed_09434a85",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T08:41:19Z",
+      "side": 1,
+      "message": "we don\u0027t reach here if we succeed at 79, so this if is a redundant check , please remove.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 40
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c2ff39f_3b18b045",
