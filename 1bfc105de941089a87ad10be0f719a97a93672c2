@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6810f114_8bbe7807",
+        "filename": "oem/ibm/requester/dbus_to_file_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-12T06:44:53Z",
+      "side": 1,
+      "message": "this can be const std::string_view reference ?",
+      "range": {
+        "startLine": 92,
+        "startChar": 50,
+        "endLine": 92,
+        "endChar": 62
+      },
+      "revId": "1bfc105de941089a87ad10be0f719a97a93672c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
