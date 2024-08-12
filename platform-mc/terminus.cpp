@@ -283,8 +283,7 @@ std::shared_ptr<SensorAuxiliaryNames>
             }
             memcpy(alignedBuffer, ptr, u16NameStringLen * sizeof(uint16_t));
             std::u16string u16NameString(alignedBuffer, u16NameStringLen);
-            ptr += (u16NameString.size() + sizeof(nullTerminator)) *
-                   sizeof(uint16_t);
+            ptr += u16NameString.size() * sizeof(uint16_t);
             std::transform(u16NameString.cbegin(), u16NameString.cend(),
                            u16NameString.begin(),
                            [](uint16_t utf16) { return be16toh(utf16); });
