@@ -34,6 +34,24 @@
       "parentUuid": "59a8bdbc_5c763e28",
       "revId": "585bb94072288b0e2f14dbfca0e332788f1904df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fbafe08_2e432473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T12:24:40Z",
+      "side": 1,
+      "message": "`TrimNameForDBus` also trim `spaces` so it is required.",
+      "parentUuid": "7c493f34_f645dbb0",
+      "revId": "585bb94072288b0e2f14dbfca0e332788f1904df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
