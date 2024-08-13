@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa5c6173_b109a21a",
+        "filename": "meson.build",
+        "patchSetId": 124
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T05:52:39Z",
+      "side": 1,
+      "message": "This priority is implemented by Gilbert and I don\u0027t change these codes.\nActually, in Ampere we don\u0027t use the priority.\nThe purpose of these code are allow the configured priority sensors such as temperature are read before the others sensors types such as voltage/power sensors. But there is not much different when the priority is read 10 to 250 ms seconds before other sensors types.\nSo as my opinion, we can remove the priority sensor reading.",
+      "parentUuid": "5169af6a_3c5d8ef8",
+      "range": {
+        "startLine": 78,
+        "startChar": 21,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2e148ff_178b5ef8",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 124

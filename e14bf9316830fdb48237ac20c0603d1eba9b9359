@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db22f521_7fb19036",
+        "filename": "meson.build",
+        "patchSetId": 138
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T05:52:39Z",
+      "side": 1,
+      "message": "This json allows configuring the sensors name spaces will be read before the others in the same `doSensorPollingTask`. The default `priority_sensor_types.json` file is empty.\nThere is no problem when the file is not there. No priority name space will be applied.",
+      "parentUuid": "cca9676c_e29b4567",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "79e51015_ecd26a32",
         "filename": "meson.options",
         "patchSetId": 138
@@ -48,6 +66,30 @@
       "writtenOn": "2024-08-12T08:41:19Z",
       "side": 1,
       "message": "do we really need this in milliseconds ? can we have a sensible value in seconds ? and how is the max value decided ?",
+      "range": {
+        "startLine": 200,
+        "startChar": 9,
+        "endLine": 200,
+        "endChar": 19
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db727c50_10264746",
+        "filename": "meson.options",
+        "patchSetId": 138
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T05:52:39Z",
+      "side": 1,
+      "message": "It is max unsigned int. I think.\nThere is no specific reason to choose this value. Do you have any suggestion?\n\nWe need it in milliseconds. I detail about this value in the comments. this configure `how often` the sensor polling task will be called to check if the sensors in the list need to be updated base on it last `updatedTimestamp` and its\u0027 `update-interval`.\nEx: if we configure this value is 10 ms if the `update-interval` of sensors is 1.25 seconds (1250ms) and the latest updatedTimestamp is 0 then the sensors will be read at time 1250 to 1260.If we configure that value as 500 ms. Then the above sensors will be read at time from 1500 to 2000.",
+      "parentUuid": "79e51015_ecd26a32",
       "range": {
         "startLine": 200,
         "startChar": 9,
@@ -117,6 +159,30 @@
       "writtenOn": "2024-08-12T08:41:19Z",
       "side": 1,
       "message": "dont you wanna return after this error ?",
+      "range": {
+        "startLine": 591,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 32
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b16930d_50738626",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T05:52:39Z",
+      "side": 1,
+      "message": "I will update the code to return the value inn this section and other section as well.",
+      "parentUuid": "de9ebfe9_e3e149e7",
       "range": {
         "startLine": 591,
         "startChar": 0,
