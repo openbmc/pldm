@@ -39,6 +39,8 @@ class InventoryItemManager
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
   private:
+    std::string getVersionId(const std::string& version);
+
     void createVersion(const std::string& path, std::string version,
                        VersionPurpose purpose);
 
