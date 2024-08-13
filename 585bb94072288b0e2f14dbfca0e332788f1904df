@@ -70,6 +70,41 @@
       "parentUuid": "9fbafe08_2e432473",
       "revId": "585bb94072288b0e2f14dbfca0e332788f1904df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b7c963_4bc91e20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T23:05:23Z",
+      "side": 1,
+      "message": "I just want to minimize the changing as less as possible.\nIf the patch set #2 work then I think we are good now.",
+      "parentUuid": "8bc6ab42_3f8e7024",
+      "revId": "585bb94072288b0e2f14dbfca0e332788f1904df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daad9bb1_6a4dea92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T23:05:23Z",
+      "side": 1,
+      "message": "LGTM.",
+      "revId": "585bb94072288b0e2f14dbfca0e332788f1904df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
