@@ -139,6 +139,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "415b2d0b_015b1755",
+        "filename": "meson.build",
+        "patchSetId": 124
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-13T06:00:31Z",
+      "side": 1,
+      "message": "Hey Thu - Since gilbert and nvidia are not currently contributing and i dont really see any real justification on why we need the priority json, can we drop it ? if gilbert or any one from nvidia are interested to contribute , then can add it back with a proper justification and a design document.",
+      "parentUuid": "fa5c6173_b109a21a",
+      "range": {
+        "startLine": 78,
+        "startChar": 21,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2e148ff_178b5ef8",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 124
