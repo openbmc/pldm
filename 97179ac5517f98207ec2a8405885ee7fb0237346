@@ -33,6 +33,24 @@
       "message": "`trimNameForDbus` will trim the `space` in name to match with D-Bus so it should be included.",
       "revId": "97179ac5517f98207ec2a8405885ee7fb0237346",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a0e46f_6cca72ec",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T04:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7550109_32cdcc2c",
+      "revId": "97179ac5517f98207ec2a8405885ee7fb0237346",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
