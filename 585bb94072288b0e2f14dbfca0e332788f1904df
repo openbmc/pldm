@@ -16,6 +16,24 @@
       "message": "Update code to fix the failure which mentioned in the commit message.\nAdd the test case. `parseSensorAuxiliaryMultiNamesPDRTest` and `parseSensorAuxiliaryNamesMultiSensorsPDRTest`\n@tyacobi please help verify your failure case:",
       "revId": "585bb94072288b0e2f14dbfca0e332788f1904df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c493f34_f645dbb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002058
+      },
+      "writtenOn": "2024-08-13T07:31:23Z",
+      "side": 1,
+      "message": "Yes, that\u0027s also a possible solution, I wanted to remove the null from the string length parsing because then we don\u0027t need to trim it from the string itself.",
+      "parentUuid": "59a8bdbc_5c763e28",
+      "revId": "585bb94072288b0e2f14dbfca0e332788f1904df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
