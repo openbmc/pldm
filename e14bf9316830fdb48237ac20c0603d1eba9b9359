@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81d8d222_636d2683",
+        "filename": "meson.build",
+        "patchSetId": 138
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d739991d_e0e09888",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79e51015_ecd26a32",
@@ -142,6 +160,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8984b56_1b70aa74",
+        "filename": "meson.options",
+        "patchSetId": 138
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "I will set the max to 10 seconds.",
+      "parentUuid": "e77f6995_2c61883f",
+      "range": {
+        "startLine": 200,
+        "startChar": 9,
+        "endLine": 200,
+        "endChar": 19
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c901624_6c7c0f2c",
@@ -183,6 +225,54 @@
         "startChar": 55,
         "endLine": 204,
         "endChar": 57
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13fe5996_50b96bfa",
+        "filename": "meson.options",
+        "patchSetId": 138
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8775ec36_1e0694c3",
+      "range": {
+        "startLine": 204,
+        "startChar": 55,
+        "endLine": 204,
+        "endChar": 57
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ae639ce_0b4a81ba",
+        "filename": "meson.options",
+        "patchSetId": 138
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c901624_6c7c0f2c",
+      "range": {
+        "startLine": 204,
+        "startChar": 20,
+        "endLine": 204,
+        "endChar": 29
       },
       "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -235,6 +325,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "088f6f58_c85d48bf",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b16930d_50738626",
+      "range": {
+        "startLine": 591,
+        "startChar": 0,
+        "endLine": 593,
+        "endChar": 32
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d629b7ab_3ef3af5d",
@@ -248,6 +362,30 @@
       "writtenOn": "2024-08-12T08:41:19Z",
       "side": 1,
       "message": "reuse the `newValue` instead ?",
+      "range": {
+        "startLine": 605,
+        "startChar": 29,
+        "endLine": 605,
+        "endChar": 66
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d2dcbd3_779e5ba4",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d629b7ab_3ef3af5d",
       "range": {
         "startLine": 605,
         "startChar": 29,
@@ -275,6 +413,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25174ead_3ba9b0cf",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94b30860_b71f02c8",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60d51986_c4211658",
@@ -288,6 +444,30 @@
       "writtenOn": "2024-08-12T08:41:19Z",
       "side": 1,
       "message": "else is redundant here right ?",
+      "range": {
+        "startLine": 640,
+        "startChar": 7,
+        "endLine": 640,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7436caaa_06042dc9",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "I think it is not, Because the if check `value \u003e\u003d threshold` while the else check `value \u003c (threshold - hyst)`.",
+      "parentUuid": "60d51986_c4211658",
       "range": {
         "startLine": 640,
         "startChar": 7,
@@ -323,6 +503,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "449a00a7_60e4414f",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "I think it is not, Because the if check `value \u003c threshold` while the else check `value \u003e (threshold + hyst)`.",
+      "parentUuid": "36910116_39278ed9",
+      "range": {
+        "startLine": 651,
+        "startChar": 8,
+        "endLine": 651,
+        "endChar": 12
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1035f128_0e62ed60",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 138
@@ -334,6 +538,24 @@
       "writtenOn": "2024-08-12T08:41:19Z",
       "side": 1,
       "message": "return missing ?",
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b870a8b6_16ab639b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1035f128_0e62ed60",
       "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -363,6 +585,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df379cc6_b62e1df9",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "The code format is similar but they are not repeated. The function name is different, the parameters to `checkThreshold` also different.",
+      "parentUuid": "64764c41_b5c3c514",
+      "range": {
+        "startLine": 700,
+        "startChar": 12,
+        "endLine": 707,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7b64eed_09434a85",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 138
@@ -374,6 +620,30 @@
       "writtenOn": "2024-08-12T08:41:19Z",
       "side": 1,
       "message": "we don\u0027t reach here if we succeed at 79, so this if is a redundant check , please remove.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 40
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79ecb76c_cdbc9b16",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7b64eed_09434a85",
       "range": {
         "startLine": 109,
         "startChar": 0,

@@ -161,6 +161,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c3c0627_ae91e7e2",
+        "filename": "meson.build",
+        "patchSetId": 124
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Sure I will drop the priority feature, we will add it back if need.",
+      "parentUuid": "415b2d0b_015b1755",
+      "range": {
+        "startLine": 78,
+        "startChar": 21,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2e148ff_178b5ef8",
@@ -1046,6 +1070,30 @@
       "side": 1,
       "message": "Check https://gerrit.openbmc.org/c/openbmc/pldm/+/51489/comment/d1270d78_913ab064/",
       "parentUuid": "125a9b7e_48d947be",
+      "range": {
+        "startLine": 251,
+        "startChar": 3,
+        "endLine": 251,
+        "endChar": 77
+      },
+      "revId": "1cea13b57b7a557dd4ad190cc70d016771f90de6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "897a2369_576311d9",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 124
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-13T09:09:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38da2d8b_8c9fbf70",
       "range": {
         "startLine": 251,
         "startChar": 3,
