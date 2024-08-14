@@ -33,6 +33,59 @@
       "message": "About this commit, `QueryDownstreamDevices` is optional command as table `Table 16 – PLDM for Firmware Update Command Codes` in DSP0267 1.3.0. It is better to check the supported status of terminus for this type of command before calling.",
       "revId": "568820f7e1fbe0f3880a52cbdbc91b2b02172364",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ea0c29_d158d775",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002150
+      },
+      "writtenOn": "2024-08-14T02:28:09Z",
+      "side": 1,
+      "message": "In my knowledge, the only way to check if the terminus supports the command is sending the command to it and check the CC it returned (please let me know if I was wrong). So I directly return the response if the CC was `PLDM_ERROR_UNSUPPORTED_PLDM_CMD`.\n\nPlease see the highlight comment I left with word \"Here\".",
+      "parentUuid": "1fe07f2f_95656e80",
+      "revId": "568820f7e1fbe0f3880a52cbdbc91b2b02172364",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2ca0304_38a328d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002150
+      },
+      "writtenOn": "2024-08-14T02:28:09Z",
+      "side": 1,
+      "message": "Hi, thanks for the review first.\n\nDo you mean it should check the supportness for the two types by send command `GetPLDMTypes` in PLDM base spec?\n\nAlso, it seems that the inventory_manager would not send any commands in PLDM for Fru spec (DSP0257), could you please let me know why we should check the supportness of Fru commands in here?",
+      "parentUuid": "68e14f23_db4cf19c",
+      "revId": "568820f7e1fbe0f3880a52cbdbc91b2b02172364",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b21c086_886bf639",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1002150
+      },
+      "writtenOn": "2024-08-14T02:28:09Z",
+      "side": 1,
+      "message": "Here",
+      "revId": "568820f7e1fbe0f3880a52cbdbc91b2b02172364",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
