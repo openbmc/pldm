@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f7a6a69_ff7b89aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-14T01:40:14Z",
+      "side": 1,
+      "message": "The patch set looks good to me. Just add some comments about message log.",
+      "revId": "1382da99188ffed9063d27d2d2d979b4b9ce44de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a85de6fb_31a01daa",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-14T01:40:14Z",
+      "side": 1,
+      "message": "The error log meets anti-pattern: Ill-defined data structuring in lg2 message strings. Can you update the error logs in the patch sets?",
+      "revId": "1382da99188ffed9063d27d2d2d979b4b9ce44de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0e34049_170ad5b9",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-14T01:40:14Z",
+      "side": 1,
+      "message": "Please don\u0027t use the function name in the log or error log.",
+      "revId": "1382da99188ffed9063d27d2d2d979b4b9ce44de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c749abdb_2556762c",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-14T01:40:14Z",
+      "side": 1,
+      "message": "how about `if (!response || !respMsgLen)`",
+      "revId": "1382da99188ffed9063d27d2d2d979b4b9ce44de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8fe188c_f75479ce",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-14T01:40:14Z",
+      "side": 1,
+      "message": "no need to add `unsigned()` in `lg2::error` to print uint8_t or int8_t.\nPlease apply the same for others places.",
+      "revId": "1382da99188ffed9063d27d2d2d979b4b9ce44de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d36e9273_4a3ad7f3",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-14T01:40:14Z",
+      "side": 1,
+      "message": "Can we add the const definition for this value?",
+      "revId": "1382da99188ffed9063d27d2d2d979b4b9ce44de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
