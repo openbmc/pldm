@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19773e72_61b76f2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-15T12:53:44Z",
+      "side": 1,
+      "message": "As the design spec[1] and the discussion in the `pmci` discord (search keyword `terminus name`) the terminus name is mandatory. It can be configured in `Terminus Entity Aux name PDRs` or Entity-manager configuration.\n[1] https://gerrit.openbmc.org/c/openbmc/docs/+/47252/34/designs/pldm-stack.md#433\nUsing `PLDM_Device_#TID` is rejected in the discussion that why I have to remove the default name `PLDM_Device_#TID` in the code,",
+      "revId": "427ed8bcb5d27871bc4c3cbde19c3cb1a1f16b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
