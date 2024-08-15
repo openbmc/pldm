@@ -1,0 +1,75 @@
+From 06cadba71406006a4922ef7464f064782f883d7c Mon Sep 17 00:00:00 2001
+From: SeanChuangWiwynn <Sean_Chuang@wiwynn.com>
+Date: Thu, 15 Aug 2024 14:04:28 +0800
+Subject: [PATCH] pldm image path tmp
+
+---
+ fw-update/watch.cpp | 6 +++---
+ meson.build         | 1 +
+ meson.options       | 7 +++++++
+ 3 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/fw-update/watch.cpp b/fw-update/watch.cpp
+index 8c3ff6cc..42ed5d35 100644
+--- a/fw-update/watch.cpp
++++ b/fw-update/watch.cpp
+@@ -23,7 +23,7 @@ Watch::Watch(sd_event* loop, std::function<int(std::string&)> imageCallback) :
+     imageCallback(imageCallback)
+ {
+     // Check if IMAGE DIR exists.
+-    fs::path imgDirPath("/tmp/pldm_images");
++    fs::path imgDirPath(IMAGE_DIR);
+     if (!fs::is_directory(imgDirPath))
+     {
+         fs::create_directories(imgDirPath);
+@@ -39,7 +39,7 @@ Watch::Watch(sd_event* loop, std::function<int(std::string&)> imageCallback) :
+                                  std::strerror(error));
+     }
+ 
+-    wd = inotify_add_watch(fd, "/tmp/pldm_images", IN_CLOSE_WRITE);
++    wd = inotify_add_watch(fd, IMAGE_DIR, IN_CLOSE_WRITE);
+     if (-1 == wd)
+     {
+         auto error = errno;
+@@ -92,7 +92,7 @@ int Watch::callback(sd_event_source* /* s */, int fd, uint32_t revents,
+         auto event = reinterpret_cast<inotify_event*>(&buffer[offset]);
+         if ((event->mask & IN_CLOSE_WRITE) && !(event->mask & IN_ISDIR))
+         {
+-            auto tarballPath = std::string{"/tmp/pldm_images"} + '/' +
++            auto tarballPath = std::string{IMAGE_DIR} + '/' +
+                                event->name;
+             auto rc = static_cast<Watch*>(userdata)->imageCallback(tarballPath);
+             if (rc < 0)
+diff --git a/meson.build b/meson.build
+index 100c0f9a..0ab37e5e 100644
+--- a/meson.build
++++ b/meson.build
+@@ -67,6 +67,7 @@ conf_data.set('RESPONSE_TIME_OUT',get_option('response-time-out'))
+ conf_data.set('FLIGHT_RECORDER_MAX_ENTRIES',get_option('flightrecorder-max-entries'))
+ conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
+ conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
++conf_data.set_quoted('IMAGE_DIR', get_option('image-directory'))
+ if get_option('transport-implementation') == 'mctp-demux'
+   conf_data.set('PLDM_TRANSPORT_WITH_MCTP_DEMUX', 1)
+ elif get_option('transport-implementation') == 'af-mctp'
+diff --git a/meson.options b/meson.options
+index d52506e7..af37d807 100644
+--- a/meson.options
++++ b/meson.options
+@@ -133,6 +133,13 @@ option(
+                     requested by the FD, via RequestFirmwareData command'''
+ )
+ 
++option(
++    'image-directory',
++    type: 'string',
++    value: '/tmp/images',
++    description: 'Directory of image to put to trigger firmware update'
++)
++
+ # Bios Attributes option
+ option(
+     'system-specific-bios-json',
+-- 
+2.25.1
+
