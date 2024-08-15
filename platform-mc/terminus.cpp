@@ -210,6 +210,11 @@ void Terminus::parseTerminusPDRs()
             "TID", tid);
         return;
     }
+    else
+    {
+        // Provide a defualt terminusName
+        terminusName = "PLDM_Device_" + std::to_string(tid);
+    }
 
     if (createInventoryPath(terminusName))
     {
