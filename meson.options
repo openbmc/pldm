@@ -133,6 +133,13 @@ option(
                     requested by the FD, via RequestFirmwareData command'''
 )
 
+option(
+    'image-directory',
+    type: 'string',
+    value: '/tmp/images',
+    description: 'Directory of image to put to trigger firmware update'
+)
+
 # Bios Attributes option
 option(
     'system-specific-bios-json',
