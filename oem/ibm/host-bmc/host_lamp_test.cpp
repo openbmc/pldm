@@ -111,9 +111,9 @@ uint8_t HostLampTest::setHostStateEffecter(uint16_t effecterID)
     constexpr uint8_t effecterCount = 1;
     auto instanceId = instanceIdDb.next(mctp_eid);
 
-    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + sizeof(effecterID) +
-                                    sizeof(effecterCount) +
-                                    sizeof(set_effecter_state_field));
+    std::vector<uint8_t> requestMsg(
+        sizeof(pldm_msg_hdr) + sizeof(effecterID) + sizeof(effecterCount) +
+        sizeof(set_effecter_state_field));
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     set_effecter_state_field stateField{PLDM_REQUEST_SET,
                                         PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED};
@@ -127,8 +127,9 @@ uint8_t HostLampTest::setHostStateEffecter(uint16_t effecterID)
         return rc;
     }
 
-    auto setStateEffecterStatesResponseHandler =
-        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
+    auto setStateEffecterStatesResponseHandler = [](mctp_eid_t /*eid*/,
+                                                    const pldm_msg* response,
+                                                    size_t respMsgLen) {
         if (!response || !respMsgLen)
         {
             error(

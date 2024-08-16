@@ -73,9 +73,9 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         void* responseMessage = nullptr;
         size_t responseMessageSize{};
 
-        rc = pldmTransport.sendRecvMsg(tid, requestMsg.data(),
-                                       requestMsg.size(), responseMessage,
-                                       responseMessageSize);
+        rc =
+            pldmTransport.sendRecvMsg(tid, requestMsg.data(), requestMsg.size(),
+                                      responseMessage, responseMessageSize);
         if (rc)
         {
             std::cerr << "[" << unsigned(retry) << "] pldm_send_recv error rc "

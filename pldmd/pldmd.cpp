@@ -120,9 +120,9 @@ static std::optional<Response>
         {
             if (hdrFields.pldm_type != PLDM_FWUP)
             {
-                response = invoker.handle(tid, hdrFields.pldm_type,
-                                          hdrFields.command, request,
-                                          requestLen);
+                response =
+                    invoker.handle(tid, hdrFields.pldm_type, hdrFields.command,
+                                   request, requestLen);
             }
             else
             {
@@ -281,11 +281,11 @@ int main(int argc, char** argv)
     auto baseHandler = std::make_unique<base::Handler>(event);
 
 #ifdef OEM_IBM
-    pldm::oem_ibm::OemIBM oemIBM(&dbusHandler, pldmTransport.getEventSource(),
-                                 hostEID, pdrRepo.get(), instanceIdDb, event,
-                                 invoker, hostPDRHandler.get(),
-                                 platformHandler.get(), fruHandler.get(),
-                                 baseHandler.get(), &reqHandler);
+    pldm::oem_ibm::OemIBM oemIBM(
+        &dbusHandler, pldmTransport.getEventSource(), hostEID, pdrRepo.get(),
+        instanceIdDb, event, invoker, hostPDRHandler.get(),
+        platformHandler.get(), fruHandler.get(), baseHandler.get(),
+        &reqHandler);
 #endif
 
     invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));

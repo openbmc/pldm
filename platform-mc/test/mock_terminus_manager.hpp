@@ -20,10 +20,9 @@ class MockTerminusManager : public TerminusManager
         TerminusManager(event, handler, instanceIdDb, termini, manager)
     {}
 
-    exec::task<int> sendRecvPldmMsgOverMctp(mctp_eid_t /*eid*/,
-                                            Request& /*request*/,
-                                            const pldm_msg** responseMsg,
-                                            size_t* responseLen) override
+    exec::task<int> sendRecvPldmMsgOverMctp(
+        mctp_eid_t /*eid*/, Request& /*request*/, const pldm_msg** responseMsg,
+        size_t* responseLen) override
     {
         if (responseMsgs.empty() || responseMsg == nullptr ||
             responseLen == nullptr)

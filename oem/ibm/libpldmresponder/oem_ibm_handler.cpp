@@ -312,8 +312,9 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
         }
         std::cout << tempStream.str() << std::endl;
     }
-    auto oemPlatformEventMessageResponseHandler =
-        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
+    auto oemPlatformEventMessageResponseHandler = [](mctp_eid_t /*eid*/,
+                                                     const pldm_msg* response,
+                                                     size_t respMsgLen) {
         uint8_t completionCode{};
         uint8_t status{};
         auto rc = decode_platform_event_message_resp(response, respMsgLen,
@@ -369,9 +370,9 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
     eventClass->event_state = eventState;
     eventClass->previous_event_state = prevEventState;
     auto instanceId = instanceIdDb.next(mctp_eid);
-    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
-                                    sensorEventDataVec.size());
+    std::vector<uint8_t> requestMsg(
+        sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+        sensorEventDataVec.size());
     auto rc = encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg,
                              instanceId);
     if (rc != PLDM_SUCCESS)
@@ -477,51 +478,52 @@ void pldm::responder::oem_ibm_platform::Handler::_processSystemReboot(
         propertiesChanged("/xyz/openbmc_project/state/chassis0",
                           "xyz.openbmc_project.State.Chassis"),
         [this](sdbusplus::message_t& msg) {
-        DbusChangedProps props{};
-        std::string intf;
-        msg.read(intf, props);
-        const auto itr = props.find("CurrentPowerState");
-        if (itr != props.end())
-        {
-            PropertyValue value = itr->second;
-            auto propVal = std::get<std::string>(value);
-            if (propVal == "xyz.openbmc_project.State.Chassis.PowerState.Off")
+            DbusChangedProps props{};
+            std::string intf;
+            msg.read(intf, props);
+            const auto itr = props.find("CurrentPowerState");
+            if (itr != props.end())
             {
-                pldm::utils::DBusMapping dbusMapping{
-                    "/xyz/openbmc_project/control/host0/"
-                    "power_restore_policy/one_time",
-                    "xyz.openbmc_project.Control.Power.RestorePolicy",
-                    "PowerRestorePolicy", "string"};
-                value = "xyz.openbmc_project.Control.Power.RestorePolicy."
-                        "Policy.AlwaysOn";
-                try
+                PropertyValue value = itr->second;
+                auto propVal = std::get<std::string>(value);
+                if (propVal ==
+                    "xyz.openbmc_project.State.Chassis.PowerState.Off")
                 {
-                    dBusIntf->setDbusProperty(dbusMapping, value);
-                }
-                catch (const std::exception& e)
-                {
-                    error(
-                        "Failure in setting one-time restore policy, unable to set property PowerRestorePolicy, error - {ERROR}",
-                        "ERROR", e);
-                }
-                dbusMapping = pldm::utils::DBusMapping{
-                    "/xyz/openbmc_project/state/bmc0",
-                    "xyz.openbmc_project.State.BMC", "RequestedBMCTransition",
-                    "string"};
-                value = "xyz.openbmc_project.State.BMC.Transition.Reboot";
-                try
-                {
-                    dBusIntf->setDbusProperty(dbusMapping, value);
-                }
-                catch (const std::exception& e)
-                {
-                    error(
-                        "Failure in BMC state transition to reboot, unable to set property RequestedBMCTransition , error - {ERROR}",
-                        "ERROR", e);
+                    pldm::utils::DBusMapping dbusMapping{
+                        "/xyz/openbmc_project/control/host0/"
+                        "power_restore_policy/one_time",
+                        "xyz.openbmc_project.Control.Power.RestorePolicy",
+                        "PowerRestorePolicy", "string"};
+                    value = "xyz.openbmc_project.Control.Power.RestorePolicy."
+                            "Policy.AlwaysOn";
+                    try
+                    {
+                        dBusIntf->setDbusProperty(dbusMapping, value);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        error(
+                            "Failure in setting one-time restore policy, unable to set property PowerRestorePolicy, error - {ERROR}",
+                            "ERROR", e);
+                    }
+                    dbusMapping = pldm::utils::DBusMapping{
+                        "/xyz/openbmc_project/state/bmc0",
+                        "xyz.openbmc_project.State.BMC",
+                        "RequestedBMCTransition", "string"};
+                    value = "xyz.openbmc_project.State.BMC.Transition.Reboot";
+                    try
+                    {
+                        dBusIntf->setDbusProperty(dbusMapping, value);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        error(
+                            "Failure in BMC state transition to reboot, unable to set property RequestedBMCTransition , error - {ERROR}",
+                            "ERROR", e);
+                    }
                 }
             }
-        }
-    });
+        });
 }
 
 void pldm::responder::oem_ibm_platform::Handler::checkAndDisableWatchDog()
@@ -587,9 +589,9 @@ void pldm::responder::oem_ibm_platform::Handler::resetWatchDogTimer()
 void pldm::responder::oem_ibm_platform::Handler::disableWatchDogTimer()
 {
     setEventReceiverCnt = 0;
-    pldm::utils::DBusMapping dbusMapping{"/xyz/openbmc_project/watchdog/host0",
-                                         "xyz.openbmc_project.State.Watchdog",
-                                         "Enabled", "bool"};
+    pldm::utils::DBusMapping dbusMapping{
+        "/xyz/openbmc_project/watchdog/host0",
+        "xyz.openbmc_project.State.Watchdog", "Enabled", "bool"};
     bool wdStatus = watchDogRunning();
 
     if (!wdStatus)

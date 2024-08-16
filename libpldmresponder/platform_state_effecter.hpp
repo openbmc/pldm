@@ -97,8 +97,8 @@ int setStateEffecterStatesHandler(
     int rc = PLDM_SUCCESS;
     try
     {
-        const auto& [dbusMappings,
-                     dbusValMaps] = handler.getDbusObjMaps(effecterId);
+        const auto& [dbusMappings, dbusValMaps] =
+            handler.getDbusObjMaps(effecterId);
         if (dbusMappings.empty() || dbusValMaps.empty())
         {
             error("DbusMappings for effecter ID '{EFFECTER_ID}' is missing",

@@ -174,63 +174,63 @@ class Handler : public CmdHandler
         handlers.emplace(
             PLDM_READ_FILE_INTO_MEMORY,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->readFileIntoMemory(request, payloadLength);
-        });
+                return this->readFileIntoMemory(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_WRITE_FILE_FROM_MEMORY,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->writeFileFromMemory(request, payloadLength);
-        });
+                return this->writeFileFromMemory(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_WRITE_FILE_BY_TYPE_FROM_MEMORY,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->writeFileByTypeFromMemory(request, payloadLength);
-        });
+                return this->writeFileByTypeFromMemory(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_READ_FILE_BY_TYPE_INTO_MEMORY,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->readFileByTypeIntoMemory(request, payloadLength);
-        });
+                return this->readFileByTypeIntoMemory(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_READ_FILE_BY_TYPE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->readFileByType(request, payloadLength);
-        });
+                return this->readFileByType(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_WRITE_FILE_BY_TYPE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->writeFileByType(request, payloadLength);
-        });
+                return this->writeFileByType(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_GET_FILE_TABLE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getFileTable(request, payloadLength);
-        });
+                return this->getFileTable(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_READ_FILE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->readFile(request, payloadLength);
-        });
+                return this->readFile(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_WRITE_FILE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->writeFile(request, payloadLength);
-        });
+                return this->writeFile(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_FILE_ACK,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->fileAck(request, payloadLength);
-        });
+                return this->fileAck(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_HOST_GET_ALERT_STATUS,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getAlertStatus(request, payloadLength);
-        });
+                return this->getAlertStatus(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_NEW_FILE_AVAILABLE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->newFileAvailable(request, payloadLength);
-        });
+                return this->newFileAvailable(request, payloadLength);
+            });
 
         resDumpMatcher = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
@@ -238,80 +238,84 @@ class Handler : public CmdHandler
                 sdbusplus::bus::match::rules::argNpath(0, dumpObjPath),
             [this, hostSockFd, hostEid, instanceIdDb,
              handler](sdbusplus::message_t& msg) {
-            std::map<std::string,
-                     std::map<std::string, std::variant<std::string, uint32_t>>>
-                interfaces;
-            sdbusplus::message::object_path path;
-            msg.read(path, interfaces);
-            std::string vspstring;
-            std::string password;
+                std::map<
+                    std::string,
+                    std::map<std::string, std::variant<std::string, uint32_t>>>
+                    interfaces;
+                sdbusplus::message::object_path path;
+                msg.read(path, interfaces);
+                std::string vspstring;
+                std::string password;
 
-            for (const auto& interface : interfaces)
-            {
-                if (interface.first == resDumpEntry)
+                for (const auto& interface : interfaces)
                 {
-                    for (const auto& property : interface.second)
+                    if (interface.first == resDumpEntry)
                     {
-                        if (property.first == "VSPString")
+                        for (const auto& property : interface.second)
                         {
-                            vspstring = std::get<std::string>(property.second);
+                            if (property.first == "VSPString")
+                            {
+                                vspstring =
+                                    std::get<std::string>(property.second);
+                            }
+                            else if (property.first == "Password")
+                            {
+                                password =
+                                    std::get<std::string>(property.second);
+                            }
                         }
-                        else if (property.first == "Password")
-                        {
-                            password = std::get<std::string>(property.second);
-                        }
+                        dbusToFileHandlers
+                            .emplace_back(
+                                std::make_unique<pldm::requester::oem_ibm::
+                                                     DbusToFileHandler>(
+                                    hostSockFd, hostEid, instanceIdDb, path,
+                                    handler))
+                            ->processNewResourceDump(vspstring, password);
+                        break;
                     }
-                    dbusToFileHandlers
-                        .emplace_back(
-                            std::make_unique<
-                                pldm::requester::oem_ibm::DbusToFileHandler>(
-                                hostSockFd, hostEid, instanceIdDb, path,
-                                handler))
-                        ->processNewResourceDump(vspstring, password);
-                    break;
                 }
-            }
-        });
+            });
         vmiCertMatcher = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
                 sdbusplus::bus::match::rules::argNpath(0, certObjPath),
             [this, hostSockFd, hostEid, instanceIdDb,
              handler](sdbusplus::message_t& msg) {
-            std::map<std::string,
-                     std::map<std::string, std::variant<std::string, uint32_t>>>
-                interfaces;
-            sdbusplus::message::object_path path;
-            msg.read(path, interfaces);
-            std::string csr;
+                std::map<
+                    std::string,
+                    std::map<std::string, std::variant<std::string, uint32_t>>>
+                    interfaces;
+                sdbusplus::message::object_path path;
+                msg.read(path, interfaces);
+                std::string csr;
 
-            for (const auto& interface : interfaces)
-            {
-                if (interface.first == certAuthority)
+                for (const auto& interface : interfaces)
                 {
-                    for (const auto& property : interface.second)
+                    if (interface.first == certAuthority)
                     {
-                        if (property.first == "CSR")
+                        for (const auto& property : interface.second)
                         {
-                            csr = std::get<std::string>(property.second);
-                            auto fileHandle =
-                                sdbusplus::message::object_path(path)
-                                    .filename();
+                            if (property.first == "CSR")
+                            {
+                                csr = std::get<std::string>(property.second);
+                                auto fileHandle =
+                                    sdbusplus::message::object_path(path)
+                                        .filename();
 
-                            dbusToFileHandlers
-                                .emplace_back(
-                                    std::make_unique<pldm::requester::oem_ibm::
-                                                         DbusToFileHandler>(
+                                dbusToFileHandlers
+                                    .emplace_back(std::make_unique<
+                                                  pldm::requester::oem_ibm::
+                                                      DbusToFileHandler>(
                                         hostSockFd, hostEid, instanceIdDb, path,
                                         handler))
-                                ->newCsrFileAvailable(csr, fileHandle);
-                            break;
+                                    ->newCsrFileAvailable(csr, fileHandle);
+                                break;
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
-            }
-        });
+            });
     }
 
     /** @brief Handler for readFileIntoMemory command

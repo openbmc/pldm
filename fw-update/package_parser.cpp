@@ -130,9 +130,9 @@ size_t PackageParser::parseFDIdentificationArea(
         fwDeviceIDRecords.emplace_back(std::make_tuple(
             deviceUpdateOptionFlags, componentsList,
             utils::toString(compImageSetVersionStr), std::move(descriptors),
-            FirmwareDevicePackageData{fwDevicePkgData.ptr,
-                                      fwDevicePkgData.ptr +
-                                          fwDevicePkgData.length}));
+            FirmwareDevicePackageData{
+                fwDevicePkgData.ptr,
+                fwDevicePkgData.ptr + fwDevicePkgData.length}));
         offset += deviceIdRecHeader.record_length;
         pkgHdrRemainingSize -= deviceIdRecHeader.record_length;
     }
@@ -151,9 +151,9 @@ size_t PackageParser::parseCompImageInfoArea(ComponentImageCount compImageCount,
         pldm_component_image_information compImageInfo{};
         variable_field compVersion{};
 
-        auto rc = decode_pldm_comp_image_info(pkgHdr.data() + offset,
-                                              pkgHdrRemainingSize,
-                                              &compImageInfo, &compVersion);
+        auto rc = decode_pldm_comp_image_info(
+            pkgHdr.data() + offset, pkgHdrRemainingSize, &compImageInfo,
+            &compVersion);
         if (rc)
         {
             error(

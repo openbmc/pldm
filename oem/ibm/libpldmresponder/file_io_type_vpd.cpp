@@ -31,9 +31,9 @@ int keywordHandler::read(uint32_t offset, uint32_t& length, Response& response,
         auto& bus = pldm::utils::DBusHandler::getBus();
         auto service = pldm::utils::DBusHandler().getService(keywrdObjPath,
                                                              keywrdInterface);
-        auto method = bus.new_method_call(service.c_str(), keywrdObjPath,
-                                          "org.freedesktop.DBus.Properties",
-                                          "Get");
+        auto method =
+            bus.new_method_call(service.c_str(), keywrdObjPath,
+                                "org.freedesktop.DBus.Properties", "Get");
         method.append(keywrdInterface, keywrdPropName);
         auto reply = bus.call(method, dbusTimeout);
         reply.read(keywrd);

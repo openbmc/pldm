@@ -93,8 +93,8 @@ class Terminus
      */
     bool setSupportedCommands(const std::vector<uint8_t>& cmds)
     {
-        const size_t expectedSize = PLDM_MAX_TYPES *
-                                    (PLDM_MAX_CMDS_PER_TYPE / 8);
+        const size_t expectedSize =
+            PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8);
         if (cmds.empty() || cmds.size() != expectedSize)
         {
             lg2::error(

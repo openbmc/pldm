@@ -163,9 +163,9 @@ int CertHandler::write(const char* buffer, uint32_t offset, uint32_t& length,
             }
             PropertyValue valueStatus{
                 "xyz.openbmc_project.Certs.Entry.State.Complete"};
-            DBusMapping dbusMappingStatus{certObjPath +
-                                              std::to_string(fileHandle),
-                                          certEntryIntf, "Status", "string"};
+            DBusMapping dbusMappingStatus{
+                certObjPath + std::to_string(fileHandle), certEntryIntf,
+                "Status", "string"};
             try
             {
                 info(
@@ -231,8 +231,8 @@ int CertHandler::newFileAvailable(uint64_t length)
     }
     else if (certType == PLDM_FILE_TYPE_ROOT_CERT)
     {
-        fileFd = open((filePath + "RootCert").c_str(), flags,
-                      S_IRUSR | S_IWUSR);
+        fileFd =
+            open((filePath + "RootCert").c_str(), flags, S_IRUSR | S_IWUSR);
     }
     if (fileFd == -1)
     {
@@ -245,11 +245,9 @@ int CertHandler::newFileAvailable(uint64_t length)
     return PLDM_SUCCESS;
 }
 
-int CertHandler::newFileAvailableWithMetaData(uint64_t length,
-                                              uint32_t metaDataValue1,
-                                              uint32_t /*metaDataValue2*/,
-                                              uint32_t /*metaDataValue3*/,
-                                              uint32_t /*metaDataValue4*/)
+int CertHandler::newFileAvailableWithMetaData(
+    uint64_t length, uint32_t metaDataValue1, uint32_t /*metaDataValue2*/,
+    uint32_t /*metaDataValue3*/, uint32_t /*metaDataValue4*/)
 {
     fs::create_directories(certFilePath);
     fs::permissions(certFilePath,
@@ -297,8 +295,8 @@ int CertHandler::newFileAvailableWithMetaData(uint64_t length,
     }
     else if (certType == PLDM_FILE_TYPE_ROOT_CERT)
     {
-        fileFd = open((filePath + "RootCert").c_str(), flags,
-                      S_IRUSR | S_IWUSR);
+        fileFd =
+            open((filePath + "RootCert").c_str(), flags, S_IRUSR | S_IWUSR);
     }
     if (fileFd == -1)
     {
@@ -311,11 +309,10 @@ int CertHandler::newFileAvailableWithMetaData(uint64_t length,
     return PLDM_SUCCESS;
 }
 
-int CertHandler::fileAckWithMetaData(uint8_t fileStatus,
-                                     uint32_t /*metaDataValue1*/,
-                                     uint32_t /*metaDataValue2*/,
-                                     uint32_t /*metaDataValue3*/,
-                                     uint32_t /*metaDataValue4*/)
+int CertHandler::fileAckWithMetaData(
+    uint8_t fileStatus, uint32_t /*metaDataValue1*/,
+    uint32_t /*metaDataValue2*/, uint32_t /*metaDataValue3*/,
+    uint32_t /*metaDataValue4*/)
 {
     if (certType == PLDM_FILE_TYPE_CERT_SIGNING_REQUEST)
     {

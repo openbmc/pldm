@@ -25,23 +25,23 @@ class Handler : public CmdHandler
         handlers.emplace(
             PLDM_GET_PLDM_TYPES,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getPLDMTypes(request, payloadLength);
-        });
+                return this->getPLDMTypes(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_GET_PLDM_COMMANDS,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getPLDMCommands(request, payloadLength);
-        });
+                return this->getPLDMCommands(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_GET_PLDM_VERSION,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getPLDMVersion(request, payloadLength);
-        });
+                return this->getPLDMVersion(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_GET_TID,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getTID(request, payloadLength);
-        });
+                return this->getTID(request, payloadLength);
+            });
     }
 
     /** @brief Handler for getPLDMTypes

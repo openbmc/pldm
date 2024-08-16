@@ -86,8 +86,8 @@ class HostEffecterParser
         pldm::utils::DBusHandler* const dbusHandler,
         const std::string& jsonPath,
         pldm::requester::Handler<pldm::requester::Request>* handler) :
-        instanceIdDb(instanceIdDb),
-        sockFd(fd), pdrRepo(repo), dbusHandler(dbusHandler), handler(handler)
+        instanceIdDb(instanceIdDb), sockFd(fd), pdrRepo(repo),
+        dbusHandler(dbusHandler), handler(handler)
     {
         try
         {
@@ -141,10 +141,9 @@ class HostEffecterParser
      * @param[in] effecterId - host effecter id
      * @return - PLDM status code
      */
-    virtual int
-        setHostStateEffecter(size_t effecterInfoIndex,
-                             std::vector<set_effecter_state_field>& stateField,
-                             uint16_t effecterId);
+    virtual int setHostStateEffecter(
+        size_t effecterInfoIndex,
+        std::vector<set_effecter_state_field>& stateField, uint16_t effecterId);
 
     /* @brief Fetches the new state value and the index in stateField set which
      *        needs to be set with the new value in the setStateEffecter call
@@ -166,11 +165,9 @@ class HostEffecterParser
      * @param[in] dbusInfoIndex - index of dbusInfo within effecterInfo
      * @param[in] effecterId - host effecter id
      */
-    virtual void createHostEffecterMatch(const std::string& objectPath,
-                                         const std::string& interface,
-                                         size_t effecterInfoIndex,
-                                         size_t dbusInfoIndex,
-                                         uint16_t effecterId);
+    virtual void createHostEffecterMatch(
+        const std::string& objectPath, const std::string& interface,
+        size_t effecterInfoIndex, size_t dbusInfoIndex, uint16_t effecterId);
 
   protected:
     pldm::InstanceIdDb* instanceIdDb; //!< Reference to the InstanceIdDb object

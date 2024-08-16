@@ -106,9 +106,8 @@ bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
  *  @return[out] parse success and get a valid set_effecter_state_field
  *               structure, return nullopt means parse failed
  */
-std::optional<std::vector<set_effecter_state_field>>
-    parseEffecterData(const std::vector<uint8_t>& effecterData,
-                      uint8_t effecterCount);
+std::optional<std::vector<set_effecter_state_field>> parseEffecterData(
+    const std::vector<uint8_t>& effecterData, uint8_t effecterCount);
 
 /**
  *  @brief creates an error log
@@ -312,8 +311,8 @@ class DBusHandler : public DBusHandlerInterface
     auto getDbusProperty(const char* objPath, const char* dbusProp,
                          const char* dbusInterface)
     {
-        auto VariantValue = getDbusPropertyVariant(objPath, dbusProp,
-                                                   dbusInterface);
+        auto VariantValue =
+            getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
 
@@ -403,10 +402,8 @@ PropertyValue jsonEntryToDbusVal(std::string_view type,
  *  @param[in] repo - pointer to BMC's primary PDR repo.
  *  @return array[array[uint8_t]] - StateEffecterPDRs
  */
-std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t tid,
-                                                       uint16_t entityID,
-                                                       uint16_t stateSetId,
-                                                       const pldm_pdr* repo);
+std::vector<std::vector<uint8_t>> findStateEffecterPDR(
+    uint8_t tid, uint16_t entityID, uint16_t stateSetId, const pldm_pdr* repo);
 /** @brief Find State Sensor PDR
  *  @param[in] tid - PLDM terminus ID.
  *  @param[in] entityID - entity that can be associated with PLDM State set.
@@ -414,10 +411,8 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(uint8_t tid,
  *  @param[in] repo - pointer to BMC's primary PDR repo.
  *  @return array[array[uint8_t]] - StateSensorPDRs
  */
-std::vector<std::vector<uint8_t>> findStateSensorPDR(uint8_t tid,
-                                                     uint16_t entityID,
-                                                     uint16_t stateSetId,
-                                                     const pldm_pdr* repo);
+std::vector<std::vector<uint8_t>> findStateSensorPDR(
+    uint8_t tid, uint16_t entityID, uint16_t stateSetId, const pldm_pdr* repo);
 
 /** @brief Find sensor id from a state sensor PDR
  *

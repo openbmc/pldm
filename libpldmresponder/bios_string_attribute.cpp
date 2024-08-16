@@ -108,8 +108,8 @@ void BIOSStringAttribute::constructEntry(
         stringInfo.defString.data(),
     };
 
-    auto attrTableEntry = table::attribute::constructStringEntry(attrTable,
-                                                                 &info);
+    auto attrTableEntry =
+        table::attribute::constructStringEntry(attrTable, &info);
     auto [attrHandle, attrType,
           _] = table::attribute::decodeHeader(attrTableEntry);
 
@@ -160,8 +160,8 @@ void BIOSStringAttribute::generateAttributeEntry(
     std::string value = std::get<std::string>(attributevalue);
     uint16_t len = value.size();
 
-    attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) +
-                          sizeof(uint16_t) + len - 1);
+    attrValueEntry.resize(
+        sizeof(pldm_bios_attr_val_table_entry) + sizeof(uint16_t) + len - 1);
 
     auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
         attrValueEntry.data());

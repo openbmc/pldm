@@ -159,12 +159,12 @@ TEST(EncodeCodeUpdateEvent, testGoodRequest)
     opStateSensorEventData->present_op_state = uint8_t(CodeUpdateState::START);
     opStateSensorEventData->previous_op_state = uint8_t(CodeUpdateState::END);
 
-    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                    PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
-                                    sensorEventDataVec.size());
+    std::vector<uint8_t> requestMsg(
+        sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
+        sensorEventDataVec.size());
 
-    auto rc = encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg,
-                             0x1);
+    auto rc =
+        encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg, 0x1);
 
     EXPECT_EQ(rc, PLDM_SUCCESS);
 }
@@ -174,8 +174,8 @@ TEST(EncodeCodeUpdate, testBadRequest)
     std::vector<uint8_t> requestMsg;
     std::vector<uint8_t> sensorEventDataVec{};
 
-    auto rc = encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg,
-                             0x1);
+    auto rc =
+        encodeEventMsg(PLDM_SENSOR_EVENT, sensorEventDataVec, requestMsg, 0x1);
 
     EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 }
@@ -210,9 +210,9 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     std::unique_ptr<CodeUpdate> mockCodeUpdate =
         std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
     std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
-        std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
-                                                 mockCodeUpdate.get(), 0x1, 0x9,
-                                                 instanceIdDb, event);
+        std::make_unique<MockOemPlatformHandler>(
+            mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, instanceIdDb,
+            event);
     Repo inRepo(inPDRRepo);
 
     mockoemPlatformHandler->buildOEMPDR(inRepo);
@@ -316,9 +316,9 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     std::unique_ptr<CodeUpdate> mockCodeUpdate =
         std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
     std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
-        std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
-                                                 mockCodeUpdate.get(), 0x1, 0x9,
-                                                 instanceIdDb, event);
+        std::make_unique<MockOemPlatformHandler>(
+            mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, instanceIdDb,
+            event);
     Repo inRepo(inPDRRepo);
     mockoemPlatformHandler->buildOEMPDR(inRepo);
     ASSERT_EQ(inRepo.empty(), false);
@@ -415,9 +415,9 @@ TEST(updateOemDbusPath, testgoodpath)
     std::unique_ptr<CodeUpdate> mockCodeUpdate =
         std::make_unique<MockCodeUpdate>(mockDbusHandler.get());
     std::unique_ptr<oem_ibm_platform::Handler> mockoemPlatformHandler =
-        std::make_unique<MockOemPlatformHandler>(mockDbusHandler.get(),
-                                                 mockCodeUpdate.get(), 0x1, 0x9,
-                                                 instanceIdDb, event);
+        std::make_unique<MockOemPlatformHandler>(
+            mockDbusHandler.get(), mockCodeUpdate.get(), 0x1, 0x9, instanceIdDb,
+            event);
     std::string dbuspath = "/inventory/system1/chassis1/motherboard1/dcm0";
     mockoemPlatformHandler->updateOemDbusPaths(dbuspath);
     EXPECT_EQ(dbuspath, "/inventory/system/chassis/motherboard/dcm0");
@@ -504,8 +504,8 @@ TEST(SetCoreCount, testgoodpath)
     std::vector<std::string> cpuInterface = {"xyz.openbmc_project.Foo.Bar"};
     auto oemMockedUtils =
         std::make_unique<MockOemUtilsHandler>(&mockedDbusUtils);
-    int coreCount = oemMockedUtils->setCoreCount(entityAssociations,
-                                                 entityMaps);
+    int coreCount =
+        oemMockedUtils->setCoreCount(entityAssociations, entityMaps);
     EXPECT_EQ(coreCount, 2);
     pldm_entity_association_tree_destroy(tree);
 }

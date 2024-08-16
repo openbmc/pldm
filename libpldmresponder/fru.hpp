@@ -67,8 +67,8 @@ class FruImpl
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
             pldm_entity_association_tree* bmcEntityTree) :
-        parser(configPath, fruMasterJsonPath),
-        pdrRepo(pdrRepo), entityTree(entityTree), bmcEntityTree(bmcEntityTree)
+        parser(configPath, fruMasterJsonPath), pdrRepo(pdrRepo),
+        entityTree(entityTree), bmcEntityTree(bmcEntityTree)
     {}
 
     /** @brief Total length of the FRU table in bytes, this includes the pad
@@ -268,23 +268,23 @@ class Handler : public CmdHandler
         handlers.emplace(
             PLDM_GET_FRU_RECORD_TABLE_METADATA,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getFRURecordTableMetadata(request, payloadLength);
-        });
+                return this->getFRURecordTableMetadata(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_GET_FRU_RECORD_TABLE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getFRURecordTable(request, payloadLength);
-        });
+                return this->getFRURecordTable(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_GET_FRU_RECORD_BY_OPTION,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->getFRURecordByOption(request, payloadLength);
-        });
+                return this->getFRURecordByOption(request, payloadLength);
+            });
         handlers.emplace(
             PLDM_SET_FRU_RECORD_TABLE,
             [this](pldm_tid_t, const pldm_msg* request, size_t payloadLength) {
-            return this->setFRURecordTable(request, payloadLength);
-        });
+                return this->setFRURecordTable(request, payloadLength);
+            });
     }
 
     /** @brief Handler for Get FRURecordTableMetadata

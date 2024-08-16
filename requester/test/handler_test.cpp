@@ -75,9 +75,9 @@ class HandlerTest : public testing::Test
 
 TEST_F(HandlerTest, singleRequestResponseScenario)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
-                                              instanceIdDb, false, seconds(1),
-                                              2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(1), 2,
+        milliseconds(100));
     pldm::Request request{};
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
@@ -96,9 +96,9 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
 
 TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
-                                              instanceIdDb, false, seconds(1),
-                                              2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(1), 2,
+        milliseconds(100));
     pldm::Request request{};
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
@@ -115,9 +115,9 @@ TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
 
 TEST_F(HandlerTest, multipleRequestResponseScenario)
 {
-    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
-                                              instanceIdDb, false, seconds(2),
-                                              2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(2), 2,
+        milliseconds(100));
     pldm::Request request{};
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
@@ -156,39 +156,40 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
 TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
 {
     exec::async_scope scope;
-    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
-                                              instanceIdDb, false, seconds(1),
-                                              2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(1), 2,
+        milliseconds(100));
 
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
 
-    scope.spawn(stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
-        pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
-        const pldm_msg* responseMsg;
-        size_t responseLen;
-        int rc = PLDM_SUCCESS;
+    scope.spawn(
+        stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
+            pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
+            const pldm_msg* responseMsg;
+            size_t responseLen;
+            int rc = PLDM_SUCCESS;
 
-        auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
-        requestPtr->hdr.instance_id = instanceId;
+            auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+            requestPtr->hdr.instance_id = instanceId;
 
-        try
-        {
-            std::tie(rc, responseMsg, responseLen) =
-                co_await reqHandler.sendRecvMsg(eid, std::move(request));
-        }
-        catch (...)
-        {
-            std::rethrow_exception(std::current_exception());
-        }
+            try
+            {
+                std::tie(rc, responseMsg, responseLen) =
+                    co_await reqHandler.sendRecvMsg(eid, std::move(request));
+            }
+            catch (...)
+            {
+                std::rethrow_exception(std::current_exception());
+            }
 
-        EXPECT_NE(responseLen, 0);
+            EXPECT_NE(responseLen, 0);
 
-        this->pldmResponseCallBack(eid, responseMsg, responseLen);
+            this->pldmResponseCallBack(eid, responseMsg, responseLen);
 
-        EXPECT_EQ(validResponse, true);
-    }),
-                exec::default_task_context<void>(exec::inline_scheduler{}));
+            EXPECT_EQ(validResponse, true);
+        }),
+        exec::default_task_context<void>(exec::inline_scheduler{}));
 
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
     auto mockResponsePtr =
@@ -202,26 +203,27 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
 TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
 {
     exec::async_scope scope;
-    Handler<NiceMock<MockRequest>> reqHandler(pldmTransport, event,
-                                              instanceIdDb, false, seconds(1),
-                                              2, milliseconds(100));
+    Handler<NiceMock<MockRequest>> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(1), 2,
+        milliseconds(100));
     auto instanceId = instanceIdDb.next(eid);
     EXPECT_EQ(instanceId, 0);
 
     bool stopped = false;
 
-    scope.spawn(stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
-        pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
-        pldm::Response response;
+    scope.spawn(
+        stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
+            pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
+            pldm::Response response;
 
-        auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
-        requestPtr->hdr.instance_id = instanceId;
+            auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+            requestPtr->hdr.instance_id = instanceId;
 
-        co_await reqHandler.sendRecvMsg(eid, std::move(request));
+            co_await reqHandler.sendRecvMsg(eid, std::move(request));
 
-        EXPECT_TRUE(false); // unreachable
-    }) | stdexec::upon_stopped([&] { stopped = true; }),
-                exec::default_task_context<void>(exec::inline_scheduler{}));
+            EXPECT_TRUE(false); // unreachable
+        }) | stdexec::upon_stopped([&] { stopped = true; }),
+        exec::default_task_context<void>(exec::inline_scheduler{}));
 
     scope.request_stop();
 
@@ -234,9 +236,9 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 {
     struct _
     {
-        static exec::task<uint8_t> getTIDTask(Handler<MockRequest>& handler,
-                                              mctp_eid_t eid,
-                                              uint8_t instanceId, uint8_t& tid)
+        static exec::task<uint8_t>
+            getTIDTask(Handler<MockRequest>& handler, mctp_eid_t eid,
+                       uint8_t instanceId, uint8_t& tid)
         {
             pldm::Request request(sizeof(pldm_msg_hdr), 0);
             auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
@@ -268,12 +270,13 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
     // Execute a coroutine to send getTID command. The coroutine is suspended
     // until reqHandler.handleResponse() is received.
     scope.spawn(stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
-        uint8_t respTid = 0;
+                    uint8_t respTid = 0;
 
-        co_await _::getTIDTask(reqHandler, eid, instanceId, respTid);
+                    co_await _::getTIDTask(reqHandler, eid, instanceId,
+                                           respTid);
 
-        EXPECT_EQ(expectedTid, respTid);
-    }),
+                    EXPECT_EQ(expectedTid, respTid);
+                }),
                 exec::default_task_context<void>(exec::inline_scheduler{}));
 
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES,

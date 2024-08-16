@@ -151,9 +151,8 @@ pldm_requester_rc_t PldmTransport::recvMsg(pldm_tid_t& tid, void*& rx,
     return pldm_transport_recv_msg(transport, &tid, (void**)&rx, &len);
 }
 
-pldm_requester_rc_t PldmTransport::sendRecvMsg(pldm_tid_t tid, const void* tx,
-                                               size_t txLen, void*& rx,
-                                               size_t& rxLen)
+pldm_requester_rc_t PldmTransport::sendRecvMsg(
+    pldm_tid_t tid, const void* tx, size_t txLen, void*& rx, size_t& rxLen)
 {
     return pldm_transport_send_recv_msg(transport, tid, tx, txLen, &rx, &rxLen);
 }

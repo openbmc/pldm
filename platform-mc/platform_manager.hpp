@@ -31,8 +31,7 @@ class PlatformManager
 
     explicit PlatformManager(TerminusManager& terminusManager,
                              TerminiMapper& termini) :
-        terminusManager(terminusManager),
-        termini(termini)
+        terminusManager(terminusManager), termini(termini)
     {}
 
     /** @brief Initialize terminus which supports PLDM Type 2
@@ -83,11 +82,9 @@ class PlatformManager
      * *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getPDRRepositoryInfo(const pldm_tid_t tid,
-                                         uint8_t& repositoryState,
-                                         uint32_t& recordCount,
-                                         uint32_t& repositorySize,
-                                         uint32_t& largestRecordSize);
+    exec::task<int> getPDRRepositoryInfo(
+        const pldm_tid_t tid, uint8_t& repositoryState, uint32_t& recordCount,
+        uint32_t& repositorySize, uint32_t& largestRecordSize);
 
     /** reference of TerminusManager for sending PLDM request to terminus*/
     TerminusManager& terminusManager;

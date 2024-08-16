@@ -35,9 +35,9 @@ void DeviceUpdater::startFwUpdateFlow()
     compImgSetVerStrInfo.length =
         static_cast<uint8_t>(compImageSetVersion.size());
 
-    Request request(sizeof(pldm_msg_hdr) +
-                    sizeof(struct pldm_request_update_req) +
-                    compImgSetVerStrInfo.length);
+    Request request(
+        sizeof(pldm_msg_hdr) + sizeof(struct pldm_request_update_req) +
+        compImgSetVerStrInfo.length);
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
 
     auto rc = encode_request_update_req(
@@ -165,9 +165,9 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVersion.data());
     compVerStrInfo.length = static_cast<uint8_t>(compVersion.size());
 
-    Request request(sizeof(pldm_msg_hdr) +
-                    sizeof(struct pldm_pass_component_table_req) +
-                    compVerStrInfo.length);
+    Request request(
+        sizeof(pldm_msg_hdr) + sizeof(struct pldm_pass_component_table_req) +
+        compVerStrInfo.length);
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
     auto rc = encode_pass_component_table_req(
         instanceId, transferFlag, compClassification, compIdentifier,
@@ -212,9 +212,9 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
     uint8_t compResponse = 0;
     uint8_t compResponseCode = 0;
 
-    auto rc = decode_pass_component_table_resp(response, respMsgLen,
-                                               &completionCode, &compResponse,
-                                               &compResponseCode);
+    auto rc =
+        decode_pass_component_table_resp(response, respMsgLen, &completionCode,
+                                         &compResponse, &compResponseCode);
     if (rc)
     {
         // Handle error scenario
@@ -293,9 +293,9 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVersion.data());
     compVerStrInfo.length = static_cast<uint8_t>(compVersion.size());
 
-    Request request(sizeof(pldm_msg_hdr) +
-                    sizeof(struct pldm_update_component_req) +
-                    compVerStrInfo.length);
+    Request request(
+        sizeof(pldm_msg_hdr) + sizeof(struct pldm_update_component_req) +
+        compVerStrInfo.length);
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
 
     auto rc = encode_update_component_req(
@@ -436,13 +436,13 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     response.resize(sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
     responseMsg = reinterpret_cast<pldm_msg*>(response.data());
     package.seekg(compOffset + offset);
-    package.read(reinterpret_cast<char*>(response.data() +
-                                         sizeof(pldm_msg_hdr) +
-                                         sizeof(completionCode)),
-                 length - padBytes);
-    rc = encode_request_firmware_data_resp(request->hdr.instance_id,
-                                           completionCode, responseMsg,
-                                           sizeof(completionCode));
+    package.read(
+        reinterpret_cast<char*>(
+            response.data() + sizeof(pldm_msg_hdr) + sizeof(completionCode)),
+        length - padBytes);
+    rc = encode_request_firmware_data_resp(
+        request->hdr.instance_id, completionCode, responseMsg,
+        sizeof(completionCode));
     if (rc)
     {
         error(
@@ -462,8 +462,8 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
     auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
 
     uint8_t transferResult = 0;
-    auto rc = decode_transfer_complete_req(request, payloadLength,
-                                           &transferResult);
+    auto rc =
+        decode_transfer_complete_req(request, payloadLength, &transferResult);
     if (rc)
     {
         error(
@@ -652,8 +652,8 @@ void DeviceUpdater::sendActivateFirmwareRequest()
 {
     pldmRequest.reset();
     auto instanceId = updateManager->instanceIdDb.next(eid);
-    Request request(sizeof(pldm_msg_hdr) +
-                    sizeof(struct pldm_activate_firmware_req));
+    Request request(
+        sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
 
     auto rc = encode_activate_firmware_req(

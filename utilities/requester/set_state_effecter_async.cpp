@@ -29,9 +29,9 @@ int main(int argc, char** argv)
 
     // Encode PLDM Request message
     uint8_t effecterCount = 1;
-    std::array<uint8_t, sizeof(pldm_msg_hdr) + sizeof(effecterId) +
-                            sizeof(effecterCount) +
-                            sizeof(set_effecter_state_field)>
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + sizeof(effecterId) +
+                   sizeof(effecterCount) + sizeof(set_effecter_state_field)>
         requestMsg{};
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     set_effecter_state_field stateField{PLDM_REQUEST_SET, state};
@@ -49,8 +49,8 @@ int main(int argc, char** argv)
 
     // Create event loop and add a callback to handle EPOLLIN on fd
     auto event = Event::get_default();
-    auto callback = [=, &pldmTransport](IO& io, int fd,
-                                        uint32_t revents) mutable {
+    auto callback = [=,
+                     &pldmTransport](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
         {
             return;

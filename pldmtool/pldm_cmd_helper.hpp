@@ -78,9 +78,8 @@ class CommandInterface
   public:
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :
-        pldmType(type),
-        commandName(name), mctp_eid(PLDM_ENTITY_ID), pldmVerbose(false),
-        instanceId(0)
+        pldmType(type), commandName(name), mctp_eid(PLDM_ENTITY_ID),
+        pldmVerbose(false), instanceId(0)
     {
         app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");
         app->add_flag("-v, --verbose", pldmVerbose);

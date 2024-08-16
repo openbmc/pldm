@@ -41,8 +41,8 @@ void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
 
     if (!names.empty())
     {
-        std::optional<std::string> sysType = getSysSpecificJsonDir(sysDirPath,
-                                                                   names);
+        std::optional<std::string> sysType =
+            getSysSpecificJsonDir(sysDirPath, names);
         if (sysType.has_value())
         {
             systemType = sysType.value();
@@ -136,9 +136,8 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
     return std::nullopt;
 }
 
-std::optional<std::string>
-    Handler::getSysSpecificJsonDir(const fs::path& dirPath,
-                                   const std::vector<std::string>& dirNames)
+std::optional<std::string> Handler::getSysSpecificJsonDir(
+    const fs::path& dirPath, const std::vector<std::string>& dirNames)
 {
     // The current setup assumes that the BIOS and PDR configurations always
     // come from the same system type. If, in the future, we need to use BIOS

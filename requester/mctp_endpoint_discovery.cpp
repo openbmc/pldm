@@ -24,10 +24,9 @@ namespace pldm
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
     std::initializer_list<MctpDiscoveryHandlerIntf*> list) :
-    bus(bus),
-    mctpEndpointAddedSignal(
-        bus, interfacesAdded(MCTPPath),
-        std::bind_front(&MctpDiscovery::discoverEndpoints, this)),
+    bus(bus), mctpEndpointAddedSignal(
+                  bus, interfacesAdded(MCTPPath),
+                  std::bind_front(&MctpDiscovery::discoverEndpoints, this)),
     mctpEndpointRemovedSignal(
         bus, interfacesRemoved(MCTPPath),
         std::bind_front(&MctpDiscovery::removeEndpoints, this)),

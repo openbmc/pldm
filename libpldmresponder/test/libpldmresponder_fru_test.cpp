@@ -134,8 +134,8 @@ TEST(FruImpl, updateAssociationTreeTest)
     mockedFruHandler.updateAssociationTree(
         objects, "/xyz/openbmc_project/inventory/system/chassis/motherboard");
 
-    pldm_entity_node* node = pldm_entity_association_tree_find(entityTree.get(),
-                                                               &systemEntity);
+    pldm_entity_node* node =
+        pldm_entity_association_tree_find(entityTree.get(), &systemEntity);
     EXPECT_TRUE(node != NULL);
 
     node = pldm_entity_association_tree_find(entityTree.get(), &chassisEntity);
@@ -143,8 +143,8 @@ TEST(FruImpl, updateAssociationTreeTest)
     test_pldm_entity_node* test_node = (test_pldm_entity_node*)node;
     EXPECT_TRUE((test_node->parent).entity_type == systemEntity.entity_type);
 
-    node = pldm_entity_association_tree_find(entityTree.get(),
-                                             &motherboardEntity);
+    node =
+        pldm_entity_association_tree_find(entityTree.get(), &motherboardEntity);
     ASSERT_TRUE(node != NULL);
     test_node = (test_pldm_entity_node*)node;
     EXPECT_TRUE((test_node->parent).entity_type == chassisEntity.entity_type);

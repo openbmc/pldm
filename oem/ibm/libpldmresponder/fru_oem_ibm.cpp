@@ -62,12 +62,12 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
                     return PLDM_ERROR_INVALID_DATA;
                 }
 
-                auto vendorId = std::format("0x{:04x}",
-                                            htole16(pcieData->vendorId));
-                auto deviceId = std::format("0x{:04x}",
-                                            htole16(pcieData->deviceId));
-                auto revisionId = std::format("0x{:02x}",
-                                              htole16(pcieData->revisionId));
+                auto vendorId =
+                    std::format("0x{:04x}", htole16(pcieData->vendorId));
+                auto deviceId =
+                    std::format("0x{:04x}", htole16(pcieData->deviceId));
+                auto revisionId =
+                    std::format("0x{:02x}", htole16(pcieData->revisionId));
 
                 std::string classCode = "0x";
                 for (const auto& ele : pcieData->classCode)
@@ -77,8 +77,8 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
 
                 auto subSystemVendorId = std::format(
                     "0x{:04x}", htole16(pcieData->subSystemVendorId));
-                auto subSystemId = std::format("0x{:04x}",
-                                               htole16(pcieData->subSystemId));
+                auto subSystemId =
+                    std::format("0x{:04x}", htole16(pcieData->subSystemId));
 
                 updateDBusProperty(fruRSI, entityAssociationMap, vendorId,
                                    deviceId, revisionId, classCode,

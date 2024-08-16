@@ -53,9 +53,8 @@ class Handler : public CmdHandler
      *  @param[in] dirNames - System names retrieved from remote application
      *  @return - The system type information
      */
-    std::optional<std::string>
-        getSysSpecificJsonDir(const fs::path& dirPath,
-                              const std::vector<std::string>& dirNames);
+    std::optional<std::string> getSysSpecificJsonDir(
+        const fs::path& dirPath, const std::vector<std::string>& dirNames);
 
     /** @brief system type/model */
     std::string systemType;

@@ -52,7 +52,7 @@ class NumericSensor
                   std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr,
                   std::string& sensorName, std::string& associationPath);
 
-    ~NumericSensor(){};
+    ~NumericSensor() {};
 
     /** @brief ConversionFormula is used to convert raw value to the unit
      * specified in PDR

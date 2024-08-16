@@ -45,8 +45,7 @@ BIOSConfig::BIOSConfig(
     pldm::requester::Handler<pldm::requester::Request>* handler,
     pldm::responder::platform_config::Handler* platformConfigHandler,
     pldm::responder::bios::Callback requestPLDMServiceName) :
-    jsonDir(jsonDir),
-    tableDir(tableDir), dbusHandler(dbusHandler), eid(eid),
+    jsonDir(jsonDir), tableDir(tableDir), dbusHandler(dbusHandler), eid(eid),
     instanceIdDb(instanceIdDb), handler(handler),
     platformConfigHandler(platformConfigHandler),
     requestPLDMServiceName(requestPLDMServiceName)
@@ -350,8 +349,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     valueDisplayNames.insert(valueDisplayNames.end(),
                                              vdn.begin(), vdn.end());
                 }
-                auto getValue = [](uint16_t handle,
-                                   const Table& table) -> std::string {
+                auto getValue =
+                    [](uint16_t handle, const Table& table) -> std::string {
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
                         table.data(), table.size(), handle);
 
@@ -414,8 +413,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 // get default_value
                 for (size_t i = 0; i < defIndices.size(); i++)
                 {
-                    defaultValue = getValue(pvHandls[defIndices[i]],
-                                            *stringTable);
+                    defaultValue =
+                        getValue(pvHandls[defIndices[i]], *stringTable);
                 }
 
                 break;
@@ -518,8 +517,8 @@ void BIOSConfig::updateBaseBIOSTableProperty()
     try
     {
         auto& bus = dbusHandler->getBus();
-        auto service = dbusHandler->getService(biosConfigPath,
-                                               biosConfigInterface);
+        auto service =
+            dbusHandler->getService(biosConfigPath, biosConfigInterface);
         auto method = bus.new_method_call(service.c_str(), biosConfigPath,
                                           dbusProperties, "Set");
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
@@ -571,9 +570,9 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
     {
         auto& bus = dbusHandler->getBus();
         auto service = dbusHandler->getService(biosObjPath, biosInterface);
-        auto method = bus.new_method_call(service.c_str(), biosObjPath,
-                                          "org.freedesktop.DBus.Properties",
-                                          "Get");
+        auto method =
+            bus.new_method_call(service.c_str(), biosObjPath,
+                                "org.freedesktop.DBus.Properties", "Get");
         method.append(biosInterface, "BaseBIOSTable");
         auto reply = bus.call(method, dbusTimeout);
         std::variant<BaseBIOSTable> varBiosTable{};
@@ -722,10 +721,9 @@ std::string BIOSConfig::decodeStringFromStringEntry(
     return std::string(buffer.data(), buffer.data() + strLength);
 }
 
-std::string
-    BIOSConfig::displayStringHandle(uint16_t handle, uint8_t index,
-                                    const std::optional<Table>& attrTable,
-                                    const std::optional<Table>& stringTable)
+std::string BIOSConfig::displayStringHandle(
+    uint16_t handle, uint8_t index, const std::optional<Table>& attrTable,
+    const std::optional<Table>& stringTable)
 {
     auto attrEntry = pldm_bios_table_attr_find_by_handle(
         attrTable->data(), attrTable->size(), handle);
@@ -905,8 +903,8 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool isBMC,
 
     auto attrValHeader = table::attribute_value::decodeHeader(attrValueEntry);
 
-    auto attrEntry = table::attribute::findByHandle(*attrTable,
-                                                    attrValHeader.attrHandle);
+    auto attrEntry =
+        table::attribute::findByHandle(*attrTable, attrValHeader.attrHandle);
     if (!attrEntry)
     {
         return PLDM_ERROR;
@@ -918,8 +916,8 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool isBMC,
         return rc;
     }
 
-    auto destTable = table::attribute_value::updateTable(*attrValueTable, entry,
-                                                         size);
+    auto destTable =
+        table::attribute_value::updateTable(*attrValueTable, entry, size);
 
     if (!destTable)
     {
@@ -1095,8 +1093,8 @@ void BIOSConfig::constructPendingAttribute(
 
         auto iter = std::find_if(biosAttributes.begin(), biosAttributes.end(),
                                  [&attributeName](const auto& attr) {
-            return attr->name == attributeName;
-        });
+                                     return attr->name == attributeName;
+                                 });
 
         if (iter == biosAttributes.end())
         {
@@ -1161,26 +1159,26 @@ void BIOSConfig::listenPendingAttributes()
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged(objPath, objInterface),
         [this](sdbusplus::message_t& msg) {
-        constexpr auto propertyName = "PendingAttributes";
+            constexpr auto propertyName = "PendingAttributes";
 
-        using Value =
-            std::variant<std::string, PendingAttributes, BaseBIOSTable>;
-        using Properties = std::map<DbusProp, Value>;
+            using Value =
+                std::variant<std::string, PendingAttributes, BaseBIOSTable>;
+            using Properties = std::map<DbusProp, Value>;
 
-        Properties props{};
-        std::string intf;
-        msg.read(intf, props);
+            Properties props{};
+            std::string intf;
+            msg.read(intf, props);
 
-        auto valPropMap = props.find(propertyName);
-        if (valPropMap == props.end())
-        {
-            return;
-        }
+            auto valPropMap = props.find(propertyName);
+            if (valPropMap == props.end())
+            {
+                return;
+            }
 
-        PendingAttributes pendingAttributes =
-            std::get<PendingAttributes>(valPropMap->second);
-        this->constructPendingAttribute(pendingAttributes);
-    });
+            PendingAttributes pendingAttributes =
+                std::get<PendingAttributes>(valPropMap->second);
+            this->constructPendingAttribute(pendingAttributes);
+        });
 
     biosAttrMatch.emplace_back(std::move(updateBIOSMatch));
 }

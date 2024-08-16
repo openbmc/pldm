@@ -101,8 +101,8 @@ int PelHandler::readIntoMemory(uint32_t offset, uint32_t length,
 
     try
     {
-        auto service = pldm::utils::DBusHandler().getService(logObjPath,
-                                                             logInterface);
+        auto service =
+            pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "GetPEL");
         method.append(fileHandle);
@@ -132,8 +132,8 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
 
     try
     {
-        auto service = pldm::utils::DBusHandler().getService(logObjPath,
-                                                             logInterface);
+        auto service =
+            pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         auto method = bus.new_method_call(service.c_str(), logObjPath,
                                           logInterface, "GetPEL");
         method.append(fileHandle);
@@ -229,8 +229,8 @@ int PelHandler::fileAck(uint8_t fileStatus)
     {
         try
         {
-            service = pldm::utils::DBusHandler().getService(logObjPath,
-                                                            logInterface);
+            service =
+                pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         }
         catch (const sdbusplus::exception_t& e)
         {
@@ -308,8 +308,8 @@ int PelHandler::storePel(std::string&& pelFileName)
 
     try
     {
-        auto service = pldm::utils::DBusHandler().getService(logObjPath,
-                                                             logInterface);
+        auto service =
+            pldm::utils::DBusHandler().getService(logObjPath, logInterface);
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         std::map<std::string, std::string> addlData{};
         auto severity =

@@ -47,8 +47,8 @@ int FileHandler::transferFileData(int32_t fd, bool upstream, uint32_t offset,
         length -= dma::maxSize;
         address += dma::maxSize;
     }
-    auto rc = xdmaInterface.transferDataHost(fd, offset, length, address,
-                                             upstream);
+    auto rc =
+        xdmaInterface.transferDataHost(fd, offset, length, address, upstream);
     return rc < 0 ? PLDM_ERROR : PLDM_SUCCESS;
 }
 
@@ -58,8 +58,8 @@ int FileHandler::transferFileDataToSocket(int32_t fd, uint32_t& length,
     dma::DMA xdmaInterface;
     while (length > dma::maxSize)
     {
-        auto rc = xdmaInterface.transferHostDataToSocket(fd, dma::maxSize,
-                                                         address);
+        auto rc =
+            xdmaInterface.transferHostDataToSocket(fd, dma::maxSize, address);
         if (rc < 0)
         {
             return PLDM_ERROR;
@@ -123,8 +123,8 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
     return transferFileData(fd(), upstream, offset, length, address);
 }
 
-std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
-                                              uint32_t fileHandle)
+std::unique_ptr<FileHandler>
+    getHandlerByType(uint16_t fileType, uint32_t fileHandle)
 {
     switch (fileType)
     {

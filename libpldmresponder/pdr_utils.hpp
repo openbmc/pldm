@@ -161,9 +161,8 @@ class RepoInterface
      *  @return opaque pointer acting as PDR record handle, will be NULL if
      *          record was not found
      */
-    virtual const pldm_pdr_record*
-        getNextRecord(const pldm_pdr_record* currRecord,
-                      PdrEntry& pdrEntry) = 0;
+    virtual const pldm_pdr_record* getNextRecord(
+        const pldm_pdr_record* currRecord, PdrEntry& pdrEntry) = 0;
 
     /** @brief Get record handle of a PDR record
      *
@@ -239,8 +238,8 @@ std::tuple<pldm::pdr::TerminusHandle, pldm::pdr::SensorID,
  *  @return std::vector<FruRecordDataFormat> - the vector of the FRU record data
  *          format structure
  */
-std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
-                                                     size_t fruLen);
+std::vector<FruRecordDataFormat>
+    parseFruRecordTable(const uint8_t* fruData, size_t fruLen);
 
 /** @brief Return the size of data type based on the effecterDataSize enum value
  *

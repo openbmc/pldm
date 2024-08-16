@@ -64,8 +64,7 @@ class OemIBM
         responder::fru::Handler* fruHandler,
         responder::base::Handler* baseHandler,
         pldm::requester::Handler<pldm::requester::Request>* reqHandler) :
-        dBusIntf(dBusIntf),
-        mctp_fd(mctp_fd), mctp_eid(mctp_eid), repo(repo),
+        dBusIntf(dBusIntf), mctp_fd(mctp_fd), mctp_eid(mctp_eid), repo(repo),
         instanceIdDb(instanceIdDb), event(event), invoker(invoker),
         reqHandler(reqHandler)
     {

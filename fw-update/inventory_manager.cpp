@@ -20,8 +20,8 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
     for (const auto& eid : eids)
     {
         auto instanceId = instanceIdDb.next(eid);
-        Request requestMsg(sizeof(pldm_msg_hdr) +
-                           PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES);
+        Request requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
         auto rc = encode_query_device_identifiers_req(
             instanceId, PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES, request);
@@ -47,9 +47,8 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
     }
 }
 
-void InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid,
-                                              const pldm_msg* response,
-                                              size_t respMsgLen)
+void InventoryManager::queryDeviceIdentifiers(
+    mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
     if (response == nullptr || !respMsgLen)
     {
@@ -152,8 +151,8 @@ void InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid,
 void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
 {
     auto instanceId = instanceIdDb.next(eid);
-    Request requestMsg(sizeof(pldm_msg_hdr) +
-                       PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES);
+    Request requestMsg(
+        sizeof(pldm_msg_hdr) + PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     auto rc = encode_get_firmware_parameters_req(
         instanceId, PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES, request);
@@ -178,9 +177,8 @@ void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
     }
 }
 
-void InventoryManager::getFirmwareParameters(mctp_eid_t eid,
-                                             const pldm_msg* response,
-                                             size_t respMsgLen)
+void InventoryManager::getFirmwareParameters(
+    mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
     if (response == nullptr || !respMsgLen)
     {

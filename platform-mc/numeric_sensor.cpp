@@ -19,8 +19,7 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
                              std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr,
                              std::string& sensorName,
                              std::string& associationPath) :
-    tid(tid),
-    sensorName(sensorName), isPriority(false)
+    tid(tid), sensorName(sensorName), isPriority(false)
 {
     if (!pdr)
     {
@@ -294,8 +293,8 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
 
     try
     {
-        availabilityIntf = std::make_unique<AvailabilityIntf>(bus,
-                                                              path.c_str());
+        availabilityIntf =
+            std::make_unique<AvailabilityIntf>(bus, path.c_str());
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -363,8 +362,7 @@ NumericSensor::NumericSensor(
     const pldm_tid_t tid, const bool sensorDisabled,
     std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr,
     std::string& sensorName, std::string& associationPath) :
-    tid(tid),
-    sensorName(sensorName), isPriority(false)
+    tid(tid), sensorName(sensorName), isPriority(false)
 {
     if (!pdr)
     {
@@ -504,8 +502,8 @@ NumericSensor::NumericSensor(
 
     try
     {
-        availabilityIntf = std::make_unique<AvailabilityIntf>(bus,
-                                                              path.c_str());
+        availabilityIntf =
+            std::make_unique<AvailabilityIntf>(bus, path.c_str());
     }
     catch (const sdbusplus::exception_t& e)
     {

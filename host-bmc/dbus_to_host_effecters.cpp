@@ -68,12 +68,12 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
         EffecterInfo effecterInfo;
         effecterInfo.mctpEid = entry.value("mctp_eid", 0xFF);
         auto jsonEffecterInfo = entry.value("effecter_info", empty);
-        auto effecterId = jsonEffecterInfo.value("effecterID",
-                                                 PLDM_INVALID_EFFECTER_ID);
+        auto effecterId =
+            jsonEffecterInfo.value("effecterID", PLDM_INVALID_EFFECTER_ID);
         effecterInfo.containerId = jsonEffecterInfo.value("containerID", 0);
         effecterInfo.entityType = jsonEffecterInfo.value("entityType", 0);
-        effecterInfo.entityInstance = jsonEffecterInfo.value("entityInstance",
-                                                             0);
+        effecterInfo.entityInstance =
+            jsonEffecterInfo.value("entityInstance", 0);
         effecterInfo.compEffecterCnt =
             jsonEffecterInfo.value("compositeEffecterCount", 0);
         auto effecters = entry.value("effecters", emptyList);
@@ -83,10 +83,10 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
             auto jsonDbusInfo = effecter.value("dbus_info", empty);
             dbusInfo.dbusMap.objectPath = jsonDbusInfo.value("object_path", "");
             dbusInfo.dbusMap.interface = jsonDbusInfo.value("interface", "");
-            dbusInfo.dbusMap.propertyName = jsonDbusInfo.value("property_name",
-                                                               "");
-            dbusInfo.dbusMap.propertyType = jsonDbusInfo.value("property_type",
-                                                               "");
+            dbusInfo.dbusMap.propertyName =
+                jsonDbusInfo.value("property_name", "");
+            dbusInfo.dbusMap.propertyType =
+                jsonDbusInfo.value("property_type", "");
             Json propertyValues = jsonDbusInfo["property_values"];
 
             populatePropVals(propertyValues, dbusInfo.propertyValues,
@@ -192,8 +192,8 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     uint8_t newState{};
     try
     {
-        newState = findNewStateValue(effecterInfoIndex, dbusInfoIndex,
-                                     it->second);
+        newState =
+            findNewStateValue(effecterInfoIndex, dbusInfoIndex, it->second);
     }
     catch (const std::out_of_range& e)
     {
@@ -235,10 +235,9 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     }
 }
 
-uint8_t
-    HostEffecterParser::findNewStateValue(size_t effecterInfoIndex,
-                                          size_t dbusInfoIndex,
-                                          const PropertyValue& propertyValue)
+uint8_t HostEffecterParser::findNewStateValue(
+    size_t effecterInfoIndex, size_t dbusInfoIndex,
+    const PropertyValue& propertyValue)
 {
     const auto& propValues = hostEffecterInfo[effecterInfoIndex]
                                  .dbusInfo[dbusInfoIndex]
@@ -285,8 +284,9 @@ int HostEffecterParser::setHostStateEffecter(
         return rc;
     }
 
-    auto setStateEffecterStatesRespHandler =
-        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
+    auto setStateEffecterStatesRespHandler = [](mctp_eid_t /*eid*/,
+                                                const pldm_msg* response,
+                                                size_t respMsgLen) {
         if (response == nullptr || !respMsgLen)
         {
             error(
@@ -326,11 +326,9 @@ int HostEffecterParser::setHostStateEffecter(
     return rc;
 }
 
-void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
-                                                 const std::string& interface,
-                                                 size_t effecterInfoIndex,
-                                                 size_t dbusInfoIndex,
-                                                 uint16_t effecterId)
+void HostEffecterParser::createHostEffecterMatch(
+    const std::string& objectPath, const std::string& interface,
+    size_t effecterInfoIndex, size_t dbusInfoIndex, uint16_t effecterId)
 {
     using namespace sdbusplus::bus::match::rules;
     effecterInfoMatch.emplace_back(std::make_unique<sdbusplus::bus::match_t>(
@@ -338,12 +336,12 @@ void HostEffecterParser::createHostEffecterMatch(const std::string& objectPath,
         propertiesChanged(objectPath, interface),
         [this, effecterInfoIndex, dbusInfoIndex,
          effecterId](sdbusplus::message_t& msg) {
-        DbusChgHostEffecterProps props;
-        std::string iface;
-        msg.read(iface, props);
-        processHostEffecterChangeNotification(props, effecterInfoIndex,
-                                              dbusInfoIndex, effecterId);
-    }));
+            DbusChgHostEffecterProps props;
+            std::string iface;
+            msg.read(iface, props);
+            processHostEffecterChangeNotification(props, effecterInfoIndex,
+                                                  dbusInfoIndex, effecterId);
+        }));
 }
 
 } // namespace host_effecters

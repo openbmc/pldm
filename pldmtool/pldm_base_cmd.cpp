@@ -162,8 +162,8 @@ class GetPLDMVersion : public CommandInterface
     }
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
-        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                        PLDM_GET_VERSION_REQ_BYTES);
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
         auto rc = encode_get_version_req(instanceId, 0, PLDM_GET_FIRSTPART,
@@ -176,9 +176,9 @@ class GetPLDMVersion : public CommandInterface
         uint8_t cc = 0, transferFlag = 0;
         uint32_t transferHandle = 0;
         ver32_t version;
-        auto rc = decode_get_version_resp(responsePtr, payloadLength, &cc,
-                                          &transferHandle, &transferFlag,
-                                          &version);
+        auto rc =
+            decode_get_version_resp(responsePtr, payloadLength, &cc,
+                                    &transferHandle, &transferFlag, &version);
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
@@ -252,8 +252,7 @@ class GetPLDMCommands : public CommandInterface
     GetPLDMCommands& operator=(GetPLDMCommands&&) = delete;
 
     explicit GetPLDMCommands(const char* type, const char* name,
-                             CLI::App* app) :
-        CommandInterface(type, name, app)
+                             CLI::App* app) : CommandInterface(type, name, app)
     {
         app->add_option("-t,--type", pldmType, "pldm supported type")
             ->required()
@@ -266,8 +265,8 @@ class GetPLDMCommands : public CommandInterface
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
-        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                        PLDM_GET_COMMANDS_REQ_BYTES);
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES);
         auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
         ver32_t version{0xFF, 0xFF, 0xFF, 0xFF};
         if (inputVersion.size() != 0)
@@ -285,8 +284,8 @@ class GetPLDMCommands : public CommandInterface
                 version.alpha = inputVersion[0];
             }
         }
-        auto rc = encode_get_commands_req(instanceId, pldmType, version,
-                                          request);
+        auto rc =
+            encode_get_commands_req(instanceId, pldmType, version, request);
         return {rc, requestMsg};
     }
 
@@ -367,13 +366,13 @@ void registerCommand(CLI::App& app)
     auto base = app.add_subcommand("base", "base type command");
     base->require_subcommand(1);
 
-    auto getPLDMTypes = base->add_subcommand("GetPLDMTypes",
-                                             "get pldm supported types");
+    auto getPLDMTypes =
+        base->add_subcommand("GetPLDMTypes", "get pldm supported types");
     commands.push_back(
         std::make_unique<GetPLDMTypes>("base", "GetPLDMTypes", getPLDMTypes));
 
-    auto getPLDMVersion = base->add_subcommand("GetPLDMVersion",
-                                               "get version of a certain type");
+    auto getPLDMVersion =
+        base->add_subcommand("GetPLDMVersion", "get version of a certain type");
     commands.push_back(std::make_unique<GetPLDMVersion>(
         "base", "GetPLDMVersion", getPLDMVersion));
 

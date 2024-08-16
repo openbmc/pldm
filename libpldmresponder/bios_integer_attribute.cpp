@@ -112,8 +112,8 @@ void BIOSIntegerAttribute::constructEntry(
         integerInfo.scalarIncrement,  integerInfo.defaultValue,
     };
 
-    auto attrTableEntry = table::attribute::constructIntegerEntry(attrTable,
-                                                                  &info);
+    auto attrTableEntry =
+        table::attribute::constructIntegerEntry(attrTable, &info);
 
     auto [attrHandle, attrType,
           _] = table::attribute::decodeHeader(attrTableEntry);
@@ -223,8 +223,8 @@ void BIOSIntegerAttribute::generateAttributeEntry(
     const std::variant<int64_t, std::string>& attributevalue,
     Table& attrValueEntry)
 {
-    attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) +
-                          sizeof(int64_t) - 1);
+    attrValueEntry.resize(
+        sizeof(pldm_bios_attr_val_table_entry) + sizeof(int64_t) - 1);
 
     auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
         attrValueEntry.data());

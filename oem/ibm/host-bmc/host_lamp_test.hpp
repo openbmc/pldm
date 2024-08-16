@@ -55,9 +55,8 @@ class HostLampTest : public HostLampTestInterfaces, public LEDGroupObj
                  uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
                  pldm_pdr* repo,
                  pldm::requester::Handler<pldm::requester::Request>* handler) :
-        LEDGroupObj(bus, objPath.c_str()),
-        path(objPath), mctp_eid(mctp_eid), instanceIdDb(instanceIdDb),
-        pdrRepo(repo), handler(handler)
+        LEDGroupObj(bus, objPath.c_str()), path(objPath), mctp_eid(mctp_eid),
+        instanceIdDb(instanceIdDb), pdrRepo(repo), handler(handler)
     {}
 
     /** @brief Property SET Override function

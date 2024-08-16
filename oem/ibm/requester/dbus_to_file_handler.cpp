@@ -26,9 +26,8 @@ DbusToFileHandler::DbusToFileHandler(
     int /* mctp_fd */, uint8_t mctp_eid, pldm::InstanceIdDb* instanceIdDb,
     sdbusplus::message::object_path resDumpCurrentObjPath,
     pldm::requester::Handler<pldm::requester::Request>* handler) :
-    mctp_eid(mctp_eid),
-    instanceIdDb(instanceIdDb), resDumpCurrentObjPath(resDumpCurrentObjPath),
-    handler(handler)
+    mctp_eid(mctp_eid), instanceIdDb(instanceIdDb),
+    resDumpCurrentObjPath(resDumpCurrentObjPath), handler(handler)
 {}
 
 void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
@@ -42,15 +41,15 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
         return;
     }
     auto instanceId = instanceIdDb->next(mctp_eid);
-    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                    PLDM_NEW_FILE_REQ_BYTES);
+    std::vector<uint8_t> requestMsg(
+        sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     // Need to revisit this logic at the time of multiple resource dump support
     uint32_t fileHandle = 1;
 
-    auto rc = encode_new_file_req(instanceId,
-                                  PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS,
-                                  fileHandle, fileSize, request);
+    auto rc =
+        encode_new_file_req(instanceId, PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS,
+                            fileHandle, fileSize, request);
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb->free(mctp_eid, instanceId);
@@ -243,9 +242,8 @@ void DbusToFileHandler::newCsrFileAvailable(const std::string& csr,
                                PLDM_FILE_TYPE_CERT_SIGNING_REQUEST);
 }
 
-void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
-                                                   const uint32_t fileHandle,
-                                                   const uint16_t type)
+void DbusToFileHandler::newFileAvailableSendToHost(
+    const uint32_t fileSize, const uint32_t fileHandle, const uint16_t type)
 {
     if (instanceIdDb == NULL)
     {
@@ -255,12 +253,12 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
         return;
     }
     auto instanceId = instanceIdDb->next(mctp_eid);
-    std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) +
-                                    PLDM_NEW_FILE_REQ_BYTES);
+    std::vector<uint8_t> requestMsg(
+        sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
 
-    auto rc = encode_new_file_req(instanceId, type, fileHandle, fileSize,
-                                  request);
+    auto rc =
+        encode_new_file_req(instanceId, type, fileHandle, fileSize, request);
     if (rc != PLDM_SUCCESS)
     {
         instanceIdDb->free(mctp_eid, instanceId);
@@ -268,8 +266,9 @@ void DbusToFileHandler::newFileAvailableSendToHost(const uint32_t fileSize,
               "RC", rc);
         return;
     }
-    auto newFileAvailableRespHandler =
-        [](mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen) {
+    auto newFileAvailableRespHandler = [](mctp_eid_t /*eid*/,
+                                          const pldm_msg* response,
+                                          size_t respMsgLen) {
         if (response == nullptr || !respMsgLen)
         {
             error(

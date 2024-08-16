@@ -206,8 +206,8 @@ void PCIeInfoHandler::parseTopologyData()
     };
 
     // memory map the topology file into pldm memory
-    void* fileInMemory = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE,
-                              topologyFd(), 0);
+    void* fileInMemory =
+        mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, topologyFd(), 0);
     if (MAP_FAILED == fileInMemory)
     {
         error("mmap on topology file failed with error {RC}", "RC", -errno);
@@ -354,9 +354,9 @@ void PCIeInfoHandler::parseTopologyData()
              static_cast<int>(slotLocCodeCompartSize)));
         std::string slotLocationCode(slotLocation.begin(), slotLocation.end());
 
-        uint8_t* suffixData = reinterpret_cast<uint8_t*>(slotData) +
-                              slotLocationDataMemberSize +
-                              slotData->slotLocCodesCmnPrtSize;
+        uint8_t* suffixData =
+            reinterpret_cast<uint8_t*>(slotData) + slotLocationDataMemberSize +
+            slotData->slotLocCodesCmnPrtSize;
         if (!suffixData)
         {
             error("slot location suffix data is nullptr");
@@ -390,8 +390,8 @@ void PCIeInfoHandler::parseTopologyData()
 
                 slotSuffixLocationCode = slotSuffLocationCode;
             }
-            std::string slotFullLocationCode = slotLocationCode +
-                                               slotSuffixLocationCode;
+            std::string slotFullLocationCode =
+                slotLocationCode + slotSuffixLocationCode;
             slotFinaLocationCode.push_back(slotFullLocationCode);
 
             // move the pointer to next slot
@@ -399,14 +399,14 @@ void PCIeInfoHandler::parseTopologyData()
         }
 
         // store the information into a map
-        topologyInformation[linkId] =
-            std::make_tuple(linkStateMap[linkStatus], type, linkSpeed,
-                            linkWidth[width], pcieHostBridgeLocationCode,
-                            std::make_pair(localTopPortLocationCode,
-                                           localBottomPortLocationCode),
-                            std::make_pair(remoteTopPortLocationCode,
-                                           remoteBottomPortLocationCode),
-                            slotFinaLocationCode, parentLinkId);
+        topologyInformation[linkId] = std::make_tuple(
+            linkStateMap[linkStatus], type, linkSpeed, linkWidth[width],
+            pcieHostBridgeLocationCode,
+            std::make_pair(localTopPortLocationCode,
+                           localBottomPortLocationCode),
+            std::make_pair(remoteTopPortLocationCode,
+                           remoteBottomPortLocationCode),
+            slotFinaLocationCode, parentLinkId);
 
         // move the pointer to next link
         singleEntryData = reinterpret_cast<struct pcieLinkEntry*>(
@@ -447,8 +447,8 @@ void PCIeInfoHandler::parseCableInfo()
         munmap(fileInMemory, sb.st_size);
     };
 
-    void* fileInMemory = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE,
-                              cableInfoFd(), 0);
+    void* fileInMemory =
+        mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, cableInfoFd(), 0);
 
     if (MAP_FAILED == fileInMemory)
     {
@@ -494,9 +494,9 @@ void PCIeInfoHandler::parseCableInfo()
                 htobe16(cableData->ioEnclosurePortLocationCodeOffset),
             cableData->ioEnclosurePortLocationCodeSize);
 
-        std::string cablePartNum(cableDataPtr +
-                                     htobe16(cableData->cablePartNumberOffset),
-                                 cableData->cablePartNumberSize);
+        std::string cablePartNum(
+            cableDataPtr + htobe16(cableData->cablePartNumberOffset),
+            cableData->cablePartNumberSize);
 
         // cache the data into a map
         cableInformation[cable] = std::make_tuple(

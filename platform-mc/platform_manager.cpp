@@ -53,9 +53,9 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
     if (terminus->doesSupportCommand(PLDM_PLATFORM,
                                      PLDM_GET_PDR_REPOSITORY_INFO))
     {
-        auto rc = co_await getPDRRepositoryInfo(tid, repositoryState,
-                                                recordCount, repositorySize,
-                                                largestRecordSize);
+        auto rc =
+            co_await getPDRRepositoryInfo(tid, repositoryState, recordCount,
+                                          repositorySize, largestRecordSize);
         if (rc)
         {
             lg2::error(
@@ -64,8 +64,8 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
         }
         else
         {
-            recordCount = std::min(recordCount + 1,
-                                   std::numeric_limits<uint32_t>::max());
+            recordCount =
+                std::min(recordCount + 1, std::numeric_limits<uint32_t>::max());
             largestRecordSize = std::min(largestRecordSize + 1,
                                          std::numeric_limits<uint32_t>::max());
         }
@@ -90,10 +90,10 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
 
     do
     {
-        auto rc = co_await getPDR(tid, recordHndl, 0, PLDM_GET_FIRSTPART,
-                                  recvBufSize, 0, nextRecordHndl,
-                                  nextDataTransferHndl, transferFlag,
-                                  responseCnt, recvBuf, transferCrc);
+        auto rc =
+            co_await getPDR(tid, recordHndl, 0, PLDM_GET_FIRSTPART, recvBufSize,
+                            0, nextRecordHndl, nextDataTransferHndl,
+                            transferFlag, responseCnt, recvBuf, transferCrc);
 
         if (rc)
         {
@@ -121,11 +121,11 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
                                              recvBuf.begin() + responseCnt);
             do
             {
-                rc = co_await getPDR(tid, recordHndl, nextDataTransferHndl,
-                                     PLDM_GET_NEXTPART, recvBufSize,
-                                     recordChgNum, nextRecordHndl,
-                                     nextDataTransferHndl, transferFlag,
-                                     responseCnt, recvBuf, transferCrc);
+                rc = co_await getPDR(
+                    tid, recordHndl, nextDataTransferHndl, PLDM_GET_NEXTPART,
+                    recvBufSize, recordChgNum, nextRecordHndl,
+                    nextDataTransferHndl, transferFlag, responseCnt, recvBuf,
+                    transferCrc);
                 if (rc)
                 {
                     lg2::error(

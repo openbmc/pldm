@@ -55,8 +55,7 @@ class TerminusManager
                              RequesterHandler& handler,
                              pldm::InstanceIdDb& instanceIdDb,
                              TerminiMapper& termini, Manager* manager) :
-        handler(handler),
-        instanceIdDb(instanceIdDb), termini(termini),
+        handler(handler), instanceIdDb(instanceIdDb), termini(termini),
         tidPool(tidPoolSize, false), manager(manager)
     {
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
@@ -100,10 +99,9 @@ class TerminusManager
      *  @param[out] responseLen - length of response PLDM message
      *  @return coroutine return_value - PLDM completion code
      */
-    virtual exec::task<int>
-        sendRecvPldmMsgOverMctp(mctp_eid_t eid, Request& request,
-                                const pldm_msg** responseMsg,
-                                size_t* responseLen);
+    virtual exec::task<int> sendRecvPldmMsgOverMctp(
+        mctp_eid_t eid, Request& request, const pldm_msg** responseMsg,
+        size_t* responseLen);
 
     /** @brief member functions to map/unmap tid
      */
@@ -135,8 +133,8 @@ class TerminusManager
      *
      *  @return tid - Terminus tid
      */
-    std::optional<pldm_tid_t> storeTerminusInfo(const MctpInfo& mctpInfo,
-                                                pldm_tid_t tid);
+    std::optional<pldm_tid_t>
+        storeTerminusInfo(const MctpInfo& mctpInfo, pldm_tid_t tid);
 
     /** @brief Member functions to remove the TID from the transportLayer and
      *         mctpInfo table

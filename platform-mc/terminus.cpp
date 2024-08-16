@@ -58,16 +58,17 @@ std::optional<std::string_view> Terminus::findTerminusName()
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
         [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
-        const auto& [key, entityNames] = *entityAuxiliaryNames;
-        /**
-         * There is only one Overal system container entity in one terminus.
-         * The entity auxiliary name PDR of that terminus with the that type of
-         * containerID will include terminus name.
-         **/
-        return (entityAuxiliaryNames &&
+            const auto& [key, entityNames] = *entityAuxiliaryNames;
+            /**
+             * There is only one Overal system container entity in one terminus.
+             * The entity auxiliary name PDR of that terminus with the that type
+             *of containerID will include terminus name.
+             **/
+            return (
+                entityAuxiliaryNames &&
                 key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
                 entityNames.size());
-    });
+        });
 
     if (it != entityAuxiliaryNamesTbl.end())
     {
@@ -234,9 +235,10 @@ std::shared_ptr<SensorAuxiliaryNames>
         sensorAuxiliaryNamesTbl.begin(), sensorAuxiliaryNamesTbl.end(),
         [id](
             const std::shared_ptr<SensorAuxiliaryNames>& sensorAuxiliaryNames) {
-        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
-        return sensorId == id;
-    });
+            const auto& [sensorId, sensorCnt, sensorNames] =
+                *sensorAuxiliaryNames;
+            return sensorId == id;
+        });
 
     if (it != sensorAuxiliaryNamesTbl.end())
     {
@@ -307,8 +309,8 @@ std::shared_ptr<EntityAuxiliaryNames>
                         PLDM_PDR_ENTITY_AUXILIARY_NAME_PDR_MIN_LENGTH;
     auto names_size = pdrData.size() - names_offset;
 
-    size_t decodedPdrSize = sizeof(struct pldm_entity_auxiliary_names_pdr) +
-                            names_size;
+    size_t decodedPdrSize =
+        sizeof(struct pldm_entity_auxiliary_names_pdr) + names_size;
     auto vPdr = std::vector<char>(decodedPdrSize);
     auto decodedPdr =
         reinterpret_cast<struct pldm_entity_auxiliary_names_pdr*>(vPdr.data());
@@ -387,16 +389,16 @@ void Terminus::addNumericSensor(
             "TID", tid);
         return;
     }
-    std::string sensorName = terminusName + "_" + "Sensor_" +
-                             std::to_string(pdr->sensor_id);
+    std::string sensorName =
+        terminusName + "_" + "Sensor_" + std::to_string(pdr->sensor_id);
 
     if (pdr->sensor_auxiliary_names_pdr)
     {
         auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
         if (sensorAuxiliaryNames)
         {
-            const auto& [sensorId, sensorCnt,
-                         sensorNames] = *sensorAuxiliaryNames;
+            const auto& [sensorId, sensorCnt, sensorNames] =
+                *sensorAuxiliaryNames;
             if (sensorCnt == 1)
             {
                 for (const auto& [languageTag, name] : sensorNames[0])
@@ -500,8 +502,8 @@ void Terminus::addCompactNumericSensor(
             "TID", tid);
         return;
     }
-    std::string sensorName = terminusName + "_" + "Sensor_" +
-                             std::to_string(pdr->sensor_id);
+    std::string sensorName =
+        terminusName + "_" + "Sensor_" + std::to_string(pdr->sensor_id);
 
     auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
     if (sensorAuxiliaryNames)

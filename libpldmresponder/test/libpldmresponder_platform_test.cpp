@@ -307,15 +307,13 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
         MockdBusHandler, Handler>(mockedUtils, handler, 0x1, stateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE);
 
-    rc = platform_state_effecter::setStateEffecterStatesHandler<MockdBusHandler,
-                                                                Handler>(
-        mockedUtils, handler, 0x9, stateField);
+    rc = platform_state_effecter::setStateEffecterStatesHandler<
+        MockdBusHandler, Handler>(mockedUtils, handler, 0x9, stateField);
     ASSERT_EQ(rc, PLDM_PLATFORM_INVALID_EFFECTER_ID);
 
     stateField.push_back({PLDM_REQUEST_SET, 4});
-    rc = platform_state_effecter::setStateEffecterStatesHandler<MockdBusHandler,
-                                                                Handler>(
-        mockedUtils, handler, 0x1, stateField);
+    rc = platform_state_effecter::setStateEffecterStatesHandler<
+        MockdBusHandler, Handler>(mockedUtils, handler, 0x1, stateField);
     ASSERT_EQ(rc, PLDM_ERROR_INVALID_DATA);
 
     pldm_pdr_destroy(inPDRRepo);
@@ -444,18 +442,17 @@ TEST(getNumericEffecterValueHandler, testGoodRequest)
                                        StrEq("xyz.openbmc_project.Foo.Bar")))
         .WillOnce(Return(PropertyValue(static_cast<uint64_t>(effecterValue))));
 
-    auto rc = platform_numeric_effecter::getNumericEffecterData<MockdBusHandler,
-                                                                Handler>(
-        mockedUtils, handler, effecterId, effecterDataSize, propertyType,
-        dbusValue);
+    auto rc = platform_numeric_effecter::getNumericEffecterData<
+        MockdBusHandler, Handler>(mockedUtils, handler, effecterId,
+                                  effecterDataSize, propertyType, dbusValue);
 
     ASSERT_EQ(rc, 0);
 
-    size_t responsePayloadLength = sizeof(completionCode) +
-                                   sizeof(effecterDataSize) +
-                                   sizeof(effecterOperationalState) +
-                                   getEffecterDataSize(effecterDataSize) +
-                                   getEffecterDataSize(effecterDataSize);
+    size_t responsePayloadLength =
+        sizeof(completionCode) + sizeof(effecterDataSize) +
+        sizeof(effecterOperationalState) +
+        getEffecterDataSize(effecterDataSize) +
+        getEffecterDataSize(effecterDataSize);
 
     Response response(responsePayloadLength + sizeof(pldm_msg_hdr));
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
@@ -511,10 +508,9 @@ TEST(getNumericEffecterValueHandler, testBadRequest)
     pldm::utils::PropertyValue dbusValue;
     std::string propertyType;
 
-    auto rc = platform_numeric_effecter::getNumericEffecterData<MockdBusHandler,
-                                                                Handler>(
-        mockedUtils, handler, effecterId, effecterDataSize, propertyType,
-        dbusValue);
+    auto rc = platform_numeric_effecter::getNumericEffecterData<
+        MockdBusHandler, Handler>(mockedUtils, handler, effecterId,
+                                  effecterDataSize, propertyType, dbusValue);
 
     ASSERT_EQ(rc, 128);
 
@@ -526,15 +522,15 @@ TEST(parseStateSensor, allScenarios)
 {
     // Sample state sensor with SensorID - 1, EntityType - Processor Module(67)
     // State Set ID - Operational Running Status(11), Supported States - 3,4
-    std::vector<uint8_t> sample1PDR{0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00,
-                                    0x00, 0x17, 0x00, 0x00, 0x00, 0x01, 0x00,
-                                    0x43, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
-                                    0x00, 0x01, 0x0b, 0x00, 0x01, 0x18};
+    std::vector<uint8_t> sample1PDR{
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00, 0x00, 0x17,
+        0x00, 0x00, 0x00, 0x01, 0x00, 0x43, 0x00, 0x01, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x0b, 0x00, 0x01, 0x18};
 
-    const auto& [terminusHandle1, sensorID1,
-                 sensorInfo1] = parseStateSensorPDR(sample1PDR);
-    const auto& [containerID1, entityType1,
-                 entityInstance1] = std::get<0>(sensorInfo1);
+    const auto& [terminusHandle1, sensorID1, sensorInfo1] =
+        parseStateSensorPDR(sample1PDR);
+    const auto& [containerID1, entityType1, entityInstance1] =
+        std::get<0>(sensorInfo1);
     const auto& states1 = std::get<1>(sensorInfo1);
     CompositeSensorStates statesCmp1{{3u, 4u}};
 
@@ -547,15 +543,15 @@ TEST(parseStateSensor, allScenarios)
 
     // Sample state sensor with SensorID - 2, EntityType - System Firmware(31)
     // State Set ID - Availability(2), Supported States - 3,4,9,10,11,13
-    std::vector<uint8_t> sample2PDR{0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00,
-                                    0x00, 0x17, 0x00, 0x00, 0x00, 0x02, 0x00,
-                                    0x1F, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00,
-                                    0x00, 0x01, 0x02, 0x00, 0x02, 0x18, 0x2E};
+    std::vector<uint8_t> sample2PDR{
+        0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x00, 0x00, 0x17, 0x00,
+        0x00, 0x00, 0x02, 0x00, 0x1F, 0x00, 0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x01, 0x02, 0x00, 0x02, 0x18, 0x2E};
 
-    const auto& [terminusHandle2, sensorID2,
-                 sensorInfo2] = parseStateSensorPDR(sample2PDR);
-    const auto& [containerID2, entityType2,
-                 entityInstance2] = std::get<0>(sensorInfo2);
+    const auto& [terminusHandle2, sensorID2, sensorInfo2] =
+        parseStateSensorPDR(sample2PDR);
+    const auto& [containerID2, entityType2, entityInstance2] =
+        std::get<0>(sensorInfo2);
     const auto& states2 = std::get<1>(sensorInfo2);
     CompositeSensorStates statesCmp2{{3u, 4u, 9u, 10u, 11u, 13u}};
 
@@ -575,10 +571,10 @@ TEST(parseStateSensor, allScenarios)
         0x00, 0x03, 0x00, 0x21, 0x00, 0x02, 0x00, 0x01, 0x00, 0x00, 0x00,
         0x02, 0x21, 0x00, 0x01, 0x06, 0x0F, 0x00, 0x01, 0x1E};
 
-    const auto& [terminusHandle3, sensorID3,
-                 sensorInfo3] = parseStateSensorPDR(sample3PDR);
-    const auto& [containerID3, entityType3,
-                 entityInstance3] = std::get<0>(sensorInfo3);
+    const auto& [terminusHandle3, sensorID3, sensorInfo3] =
+        parseStateSensorPDR(sample3PDR);
+    const auto& [containerID3, entityType3, entityInstance3] =
+        std::get<0>(sensorInfo3);
     const auto& states3 = std::get<1>(sensorInfo3);
     CompositeSensorStates statesCmp3{{1u, 2u}, {1u, 2u, 3u, 4u}};
 

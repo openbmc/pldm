@@ -105,8 +105,8 @@ void FruImpl::updateAssociationTree(const dbus::ObjectValueTree& objects,
                     pldm_entity node = pldm_entity_extract(it.second);
                     if (node.entity_type == entity.entity_type)
                     {
-                        entity.entity_instance_num = node.entity_instance_num +
-                                                     1;
+                        entity.entity_instance_num =
+                            node.entity_instance_num + 1;
                         break;
                     }
                 }
@@ -230,9 +230,9 @@ std::string FruImpl::populatefwVersion()
     std::string currentBmcVersion;
     try
     {
-        auto method = bus.new_method_call(pldm::utils::mapperService,
-                                          fwFunctionalObjPath,
-                                          pldm::utils::dbusProperties, "Get");
+        auto method =
+            bus.new_method_call(pldm::utils::mapperService, fwFunctionalObjPath,
+                                pldm::utils::dbusProperties, "Get");
         method.append("xyz.openbmc_project.Association", "endpoints");
         std::variant<std::vector<std::string>> paths;
         auto reply = bus.call(method, dbusTimeout);
@@ -385,10 +385,9 @@ void FruImpl::getFRURecordTableMetadata()
     }
 }
 
-int FruImpl::getFRURecordByOption(std::vector<uint8_t>& fruData,
-                                  uint16_t /* fruTableHandle */,
-                                  uint16_t recordSetIdentifer,
-                                  uint8_t recordType, uint8_t fieldType)
+int FruImpl::getFRURecordByOption(
+    std::vector<uint8_t>& fruData, uint16_t /* fruTableHandle */,
+    uint16_t recordSetIdentifer, uint8_t recordType, uint8_t fieldType)
 {
     using sum = uint32_t;
 
@@ -487,9 +486,9 @@ Response Handler::getFRURecordTable(const pldm_msg* request,
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
-    auto rc = encode_get_fru_record_table_resp(request->hdr.instance_id,
-                                               PLDM_SUCCESS, 0,
-                                               PLDM_START_AND_END, responsePtr);
+    auto rc =
+        encode_get_fru_record_table_resp(request->hdr.instance_id, PLDM_SUCCESS,
+                                         0, PLDM_START_AND_END, responsePtr);
     if (rc != PLDM_SUCCESS)
     {
         return ccOnlyResponse(request, rc);
@@ -534,8 +533,8 @@ Response Handler::getFRURecordByOption(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
-    auto respPayloadLength = PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES +
-                             fruData.size();
+    auto respPayloadLength =
+        PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES + fruData.size();
     Response response(sizeof(pldm_msg_hdr) + respPayloadLength, 0);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
@@ -573,8 +572,8 @@ Response Handler::setFRURecordTable(const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
-    Response response(sizeof(pldm_msg_hdr) +
-                      PLDM_SET_FRU_RECORD_TABLE_RESP_BYTES);
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_SET_FRU_RECORD_TABLE_RESP_BYTES);
     struct pldm_msg* responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     rc = encode_set_fru_record_table_resp(

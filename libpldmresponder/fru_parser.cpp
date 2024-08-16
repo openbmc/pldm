@@ -147,8 +147,8 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
             }
 
             FruRecordInfo fruInfo;
-            fruInfo = std::make_tuple(recordType, encType,
-                                      std::move(fieldInfo));
+            fruInfo =
+                std::make_tuple(recordType, encType, std::move(fieldInfo));
 
             auto search = recordMap.find(dbusIntfName);
 

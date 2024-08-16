@@ -77,8 +77,8 @@ int DMA::transferHostDataToSocket(int fd, uint32_t length, uint64_t address)
     pldm::utils::CustomFD xdmaFd(dmaFd);
 
     void* vgaMem;
-    vgaMem = mmap(nullptr, pageAlignedLength, PROT_READ, MAP_SHARED, xdmaFd(),
-                  0);
+    vgaMem =
+        mmap(nullptr, pageAlignedLength, PROT_READ, MAP_SHARED, xdmaFd(), 0);
     if (MAP_FAILED == vgaMem)
     {
         rc = -errno;
@@ -287,11 +287,10 @@ void encodeWriteResponseHandler(uint8_t instance_id, uint8_t completion_code,
     }
 }
 
-void encodeGetFileResponseHandler(uint8_t instance_id, uint8_t completion_code,
-                                  uint32_t next_transfer_handle,
-                                  uint8_t transfer_flag,
-                                  const uint8_t* table_data, size_t table_size,
-                                  struct pldm_msg* msg)
+void encodeGetFileResponseHandler(
+    uint8_t instance_id, uint8_t completion_code, uint32_t next_transfer_handle,
+    uint8_t transfer_flag, const uint8_t* table_data, size_t table_size,
+    struct pldm_msg* msg)
 {
     int rc = encode_get_file_table_resp(instance_id, completion_code,
                                         next_transfer_handle, transfer_flag,
@@ -547,8 +546,8 @@ Response Handler::getFileTable(const pldm_msg* request, size_t payloadLength)
     uint8_t transferFlag = 0;
     uint8_t tableType = 0;
 
-    Response response(sizeof(pldm_msg_hdr) +
-                      PLDM_GET_FILE_TABLE_MIN_RESP_BYTES);
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_GET_FILE_TABLE_MIN_RESP_BYTES);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
 
     if (payloadLength != PLDM_GET_FILE_TABLE_REQ_BYTES)
@@ -787,8 +786,8 @@ Response Handler::writeFile(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    auto fileDataPos = reinterpret_cast<const char*>(request->payload) +
-                       fileDataOffset;
+    auto fileDataPos =
+        reinterpret_cast<const char*>(request->payload) + fileDataOffset;
 
     std::ofstream stream(value.fsPath,
                          std::ios::in | std::ios::out | std::ios::binary);
@@ -826,9 +825,9 @@ Response rwFileByTypeIntoMemory(uint8_t cmd, const pldm_msg* request,
     uint32_t offset{};
     uint32_t length{};
     uint64_t address{};
-    auto rc = decode_rw_file_by_type_memory_req(request, payloadLength,
-                                                &fileType, &fileHandle, &offset,
-                                                &length, &address);
+    auto rc = decode_rw_file_by_type_memory_req(
+        request, payloadLength, &fileType, &fileHandle, &offset, &length,
+        &address);
     if (rc != PLDM_SUCCESS)
     {
         error(
@@ -1135,8 +1134,8 @@ Response Handler::newFileAvailable(const pldm_msg* request,
 
     rc = handler->newFileAvailable(length);
     auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
-    int responseCode = encode_new_file_resp(request->hdr.instance_id, rc,
-                                            responsePtr);
+    int responseCode =
+        encode_new_file_resp(request->hdr.instance_id, rc, responsePtr);
     if (responseCode != PLDM_SUCCESS)
     {
         error(

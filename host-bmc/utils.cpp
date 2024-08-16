@@ -93,9 +93,10 @@ void addObjectPathEntityAssociations(
                 continue;
             }
 
-            fs::path p = path / fs::path{entityName +
-                                         std::to_string(
-                                             node_entity.entity_instance_num)};
+            fs::path p =
+                path /
+                fs::path{entityName +
+                         std::to_string(node_entity.entity_instance_num)};
             std::string entity_path = p.string();
             if (oemPlatformHandler)
             {
@@ -234,13 +235,13 @@ EntityMaps parseEntityMap(const fs::path& filePath)
     char* err;
     try
     {
-        std::ranges::transform(entities.items(),
-                               std::inserter(entityMaps, entityMaps.begin()),
-                               [&err](const auto& element) {
-            std::string key = static_cast<EntityName>(element.key());
-            return std::make_pair(strtol(key.c_str(), &err, 10),
-                                  static_cast<EntityName>(element.value()));
-        });
+        std::ranges::transform(
+            entities.items(), std::inserter(entityMaps, entityMaps.begin()),
+            [&err](const auto& element) {
+                std::string key = static_cast<EntityName>(element.key());
+                return std::make_pair(strtol(key.c_str(), &err, 10),
+                                      static_cast<EntityName>(element.value()));
+            });
     }
     catch (const std::exception& e)
     {

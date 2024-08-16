@@ -30,8 +30,8 @@ TEST(MctpEndpointDiscoveryTest, MultipleHandleMctpEndpoints)
     EXPECT_CALL(manager2, handleMctpEndpoints(_)).Times(1);
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
-        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager1,
-                                                                    &manager2});
+        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{
+                 &manager1, &manager2});
     mctpDiscoveryHandler = nullptr;
 }
 

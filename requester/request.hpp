@@ -48,8 +48,7 @@ class RequestRetryTimer
     explicit RequestRetryTimer(sdeventplus::Event& event, uint8_t numRetries,
                                std::chrono::milliseconds timeout) :
 
-        event(event),
-        numRetries(numRetries), timeout(timeout),
+        event(event), numRetries(numRetries), timeout(timeout),
         timer(event.get(), std::bind_front(&RequestRetryTimer::callback, this))
     {}
 

@@ -30,8 +30,8 @@ int setupUnixSocket(const std::string& socketInterface)
     struct sockaddr_un addr;
     memset(&addr, 0, sizeof(addr));
     addr.sun_family = AF_UNIX;
-    size_t interfaceLength = strnlen(socketInterface.c_str(),
-                                     sizeof(addr.sun_path));
+    size_t interfaceLength =
+        strnlen(socketInterface.c_str(), sizeof(addr.sun_path));
     if (interfaceLength == sizeof(addr.sun_path))
     {
         error("Setup unix socket path '{PATH}' is too long '{LENGTH}'", "PATH",

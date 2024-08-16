@@ -42,9 +42,9 @@ std::optional<pldm_tid_t> TerminusManager::toTid(const MctpInfo& mctpInfo) const
 
     auto mctpInfoTableIt = std::find_if(
         mctpInfoTable.begin(), mctpInfoTable.end(), [&mctpInfo](auto& v) {
-        return (std::get<0>(v.second) == std::get<0>(mctpInfo)) &&
-               (std::get<3>(v.second) == std::get<3>(mctpInfo));
-    });
+            return (std::get<0>(v.second) == std::get<0>(mctpInfo)) &&
+                   (std::get<3>(v.second) == std::get<3>(mctpInfo));
+        });
     if (mctpInfoTableIt == mctpInfoTable.end())
     {
         return std::nullopt;
@@ -86,9 +86,9 @@ std::optional<pldm_tid_t> TerminusManager::mapTid(const MctpInfo& mctpInfo)
 
     auto mctpInfoTableIt = std::find_if(
         mctpInfoTable.begin(), mctpInfoTable.end(), [&mctpInfo](auto& v) {
-        return (std::get<0>(v.second) == std::get<0>(mctpInfo)) &&
-               (std::get<3>(v.second) == std::get<3>(mctpInfo));
-    });
+            return (std::get<0>(v.second) == std::get<0>(mctpInfo)) &&
+                   (std::get<3>(v.second) == std::get<3>(mctpInfo));
+        });
     if (mctpInfoTableIt != mctpInfoTable.end())
     {
         return mctpInfoTableIt->first;
@@ -147,14 +147,15 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
 TerminiMapper::iterator
     TerminusManager::findTerminusPtr(const MctpInfo& mctpInfo)
 {
-    auto foundIter = std::find_if(termini.begin(), termini.end(),
-                                  [&](const auto& terminusPair) {
-        auto terminusMctpInfo = toMctpInfo(terminusPair.first);
-        return (
-            terminusMctpInfo &&
-            (std::get<0>(terminusMctpInfo.value()) == std::get<0>(mctpInfo)) &&
-            (std::get<3>(terminusMctpInfo.value()) == std::get<3>(mctpInfo)));
-    });
+    auto foundIter = std::find_if(
+        termini.begin(), termini.end(), [&](const auto& terminusPair) {
+            auto terminusMctpInfo = toMctpInfo(terminusPair.first);
+            return (terminusMctpInfo &&
+                    (std::get<0>(terminusMctpInfo.value()) ==
+                     std::get<0>(mctpInfo)) &&
+                    (std::get<3>(terminusMctpInfo.value()) ==
+                     std::get<3>(mctpInfo)));
+        });
 
     return foundIter;
 }
@@ -359,10 +360,9 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int>
-    TerminusManager::sendRecvPldmMsgOverMctp(mctp_eid_t eid, Request& request,
-                                             const pldm_msg** responseMsg,
-                                             size_t* responseLen)
+exec::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
+    mctp_eid_t eid, Request& request, const pldm_msg** responseMsg,
+    size_t* responseLen)
 {
     int rc = 0;
     try
@@ -471,8 +471,8 @@ exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
     co_return responseMsg->payload[0];
 }
 
-exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
-                                              uint64_t& supportedTypes)
+exec::task<int>
+    TerminusManager::getPLDMTypes(pldm_tid_t tid, uint64_t& supportedTypes)
 {
     Request request(sizeof(pldm_msg_hdr));
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
@@ -498,8 +498,8 @@ exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
 
     uint8_t completionCode = 0;
     bitfield8_t* types = reinterpret_cast<bitfield8_t*>(&supportedTypes);
-    rc = decode_get_types_resp(responseMsg, responseLen, &completionCode,
-                               types);
+    rc =
+        decode_get_types_resp(responseMsg, responseLen, &completionCode, types);
     if (rc)
     {
         lg2::error(
@@ -569,10 +569,9 @@ exec::task<int> TerminusManager::getPLDMCommands(pldm_tid_t tid, uint8_t type,
     co_return completionCode;
 }
 
-exec::task<int> TerminusManager::sendRecvPldmMsg(pldm_tid_t tid,
-                                                 Request& request,
-                                                 const pldm_msg** responseMsg,
-                                                 size_t* responseLen)
+exec::task<int> TerminusManager::sendRecvPldmMsg(
+    pldm_tid_t tid, Request& request, const pldm_msg** responseMsg,
+    size_t* responseLen)
 {
     /**
      * Size of tidPool is `std::numeric_limits<pldm_tid_t>::max() + 1`
