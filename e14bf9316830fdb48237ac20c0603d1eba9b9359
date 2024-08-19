@@ -480,6 +480,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e16c7a72_975d8e56",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "What i mean is \n\n```\n   if (value \u003e\u003d threshold)\n        {\n            return true;\n        }\n   if (value \u003c (threshold - hyst))\n        {\n            return false;\n        }\n```",
+      "parentUuid": "7436caaa_06042dc9",
+      "range": {
+        "startLine": 640,
+        "startChar": 7,
+        "endLine": 640,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36910116_39278ed9",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 138
@@ -597,6 +621,30 @@
       "side": 1,
       "message": "The code format is similar but they are not repeated. The function name is different, the parameters to `checkThreshold` also different.",
       "parentUuid": "64764c41_b5c3c514",
+      "range": {
+        "startLine": 700,
+        "startChar": 12,
+        "endLine": 707,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ced4e89c_808ed715",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "void NumericSensor::updateThresholds()\n{\n    if (!valueIntf)\n    {\n        lg2::error(\n            \"Failed to update thresholds sensor {NAME} D-Bus interfaces don\u0027t exist.\",\n            \"NAME\", sensorName);\n        return;\n    }\n    auto value \u003d valueIntf-\u003evalue();\n\n    if (thresholdWarningIntf)\n    {\n        updateThreshold(thresholdWarningIntf, value, true, hysteresis); // High warning\n        updateThreshold(thresholdWarningIntf, value, false, hysteresis); // Low warning\n    }\n\n    if (thresholdCriticalIntf)\n    {\n        updateThreshold(thresholdCriticalIntf, value, true, hysteresis); // High critical\n        updateThreshold(thresholdCriticalIntf, value, false, hysteresis); // Low critical\n    }\n}",
+      "parentUuid": "df379cc6_b62e1df9",
       "range": {
         "startLine": 700,
         "startChar": 12,

@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "176d3c9c_df21d4c9",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "What i mean is this part of the code is repeated 4 times ?",
+      "range": {
+        "startLine": 680,
+        "startChar": 8,
+        "endLine": 691,
+        "endChar": 9
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55d56c2f_5952df7a",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "is this a documented association ? can you please share me the the link ?",
+      "range": {
+        "startLine": 101,
+        "startChar": 28,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6baac0d_d4cf2e22",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "typo\n\n```\nlg2::info(\"Terminus ID {TID}: no sensors to poll.\", \"TID\", tid);\n```",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 70
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49577c67_8d5dd6d2",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "please print exception as well.\n```\ncatch (const std::exception\u0026 e)\n{\n    lg2::error(\"Terminus ID {TID}: Failed to start sensor polling timer. Exception: {EXCEPTION}\", \"TID\", tid, \"EXCEPTION\", e);\n    return;\n}\n```",
+      "range": {
+        "startLine": 65,
+        "startChar": 3,
+        "endLine": 70,
+        "endChar": 5
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3de54fa_4dd0c414",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "why not directly erase ? why we need to pop it before that ?\n\n```\n /* Clear round-robin sensors queue */\n        roundRobinSensors.erase(tid);\n```",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 5
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cc288e1_2ca64b69",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "can this block pldm from responding to other requests ?",
+      "range": {
+        "startLine": 95,
+        "startChar": 8,
+        "endLine": 95,
+        "endChar": 45
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b238e4b7_7cb6597a",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "this is redundant, erase does not do anything if the tid is not present ?",
+      "range": {
+        "startLine": 99,
+        "startChar": 3,
+        "endLine": 99,
+        "endChar": 37
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c9be5e_f1746d09",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "This could lead to issues if the task outlives the context in which rcOpt is valid. Consider capturing by value if the lifespan of rcOpt might be shorter than the task\u0027s execution time.",
+      "range": {
+        "startLine": 125,
+        "startChar": 46,
+        "endLine": 125,
+        "endChar": 52
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db00a41b_15a20f40",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "This is an error ? not an info ? and add exception information as well\n```\ncatch (const std::exception\u0026 e)\n{\n    lg2::error(\"Terminus ID {TID}: Failed to stop polling timer. Exception: {EXCEPTION}\", \"TID\", tid, \"EXCEPTION\", e);\n}\n\n```",
+      "range": {
+        "startLine": 143,
+        "startChar": 11,
+        "endLine": 147,
+        "endChar": 13
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22144c59_dbe69b91",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "wanna print something ? here ?",
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f770ab6_0d5b87c4",
+        "filename": "platform-mc/sensor_manager.hpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "this is not a standard practice at all. In pldm we only use verbose flag to display the raw pldm messages Tx and Rx onto the console.\n\nWe either display the logs or not display , if verbosity is needed please use the raw messages to debug problems.",
+      "range": {
+        "startLine": 111,
+        "startChar": 2,
+        "endLine": 112,
+        "endChar": 17
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21cafa7a_c08587cc",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T05:51:39Z",
+      "side": 1,
+      "message": "const auto\u0026",
+      "range": {
+        "startLine": 193,
+        "startChar": 17,
+        "endLine": 193,
+        "endChar": 22
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
