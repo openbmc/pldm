@@ -95,6 +95,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eaf34ee_2239f505",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T10:08:13Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "52ef9e08_6f92e476",
+      "range": {
+        "startLine": 101,
+        "startChar": 28,
+        "endLine": 101,
+        "endChar": 42
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6baac0d_d4cf2e22",
@@ -384,6 +408,30 @@
       "side": 1,
       "message": "\u003e This could lead to issues if the task outlives the context in which rcOpt is valid. Consider capturing by value if the lifespan of rcOpt might be shorter than the task\u0027s execution time.\n\nWe still need to use `rcOpt` to keep track of the task completion state though, it has to be a reference.\n\nAs for the lifetime concern, `rcOpt` is a reference to `std::map`\u0027s entry, which should be valid as long as we make sure to NOT destroy the entry before destroying the task.\n\nThis is why every `doSensorPollingTaskHandles.erase(tid)` is preceded by a check if the task is still running:\n\n```c++\n        if (!rcOpt.has_value())\n        {\n            return;\n        }\n```\n\nto check if the task is done and has returned a return code, and\n\n```c++\n        scope.request_stop();\n```\n\nto basically stop the tasks from progressing. We\u0027re running on a single thread so it is synchronously.",
       "parentUuid": "10c9be5e_f1746d09",
+      "range": {
+        "startLine": 125,
+        "startChar": 46,
+        "endLine": 125,
+        "endChar": 52
+      },
+      "revId": "fc0c0f1016f44f488397763691dbb9b36ced883e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcc0bdf2_6ca17859",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 139
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-19T10:08:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4d478919_a5948fbf",
       "range": {
         "startLine": 125,
         "startChar": 46,
