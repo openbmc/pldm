@@ -18,8 +18,12 @@ class InventoryManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
+        aggregateUpdateManager(std::make_shared<AggregateUpdateManager>(
+            event, reqHandler, instanceIdDb, outDescriptorMap,
+            outComponentInfoMap)),
         inventoryManager(reqHandler, instanceIdDb, outDescriptorMap,
-                         outDownstreamDescriptorMap, outComponentInfoMap)
+                         outDownstreamDescriptorMap, outComponentInfoMap,
+                         aggregateUpdateManager, outComponentInfoMap)
     {}
 
     int fd = -1;
@@ -30,6 +34,7 @@ class InventoryManagerTest : public testing::Test
     DescriptorMap outDescriptorMap{};
     DownstreamDescriptorMap outDownstreamDescriptorMap{};
     ComponentInfoMap outComponentInfoMap{};
+    std::shared_ptr<AggregateUpdateManager> aggregateUpdateManager;
 };
 
 TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
