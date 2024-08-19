@@ -502,6 +502,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "477ca54a_1e7735ce",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-19T09:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e16c7a72_975d8e56",
+      "range": {
+        "startLine": 640,
+        "startChar": 7,
+        "endLine": 640,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36910116_39278ed9",
@@ -539,6 +563,30 @@
       "side": 1,
       "message": "I think it is not, Because the if check `value \u003c threshold` while the else check `value \u003e (threshold + hyst)`.",
       "parentUuid": "36910116_39278ed9",
+      "range": {
+        "startLine": 651,
+        "startChar": 8,
+        "endLine": 651,
+        "endChar": 12
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a12fdd0_7e4e0b72",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-19T09:54:03Z",
+      "side": 1,
+      "message": "Fixed in latest patch set.",
+      "parentUuid": "449a00a7_60e4414f",
       "range": {
         "startLine": 651,
         "startChar": 8,
@@ -645,6 +693,30 @@
       "side": 1,
       "message": "void NumericSensor::updateThresholds()\n{\n    if (!valueIntf)\n    {\n        lg2::error(\n            \"Failed to update thresholds sensor {NAME} D-Bus interfaces don\u0027t exist.\",\n            \"NAME\", sensorName);\n        return;\n    }\n    auto value \u003d valueIntf-\u003evalue();\n\n    if (thresholdWarningIntf)\n    {\n        updateThreshold(thresholdWarningIntf, value, true, hysteresis); // High warning\n        updateThreshold(thresholdWarningIntf, value, false, hysteresis); // Low warning\n    }\n\n    if (thresholdCriticalIntf)\n    {\n        updateThreshold(thresholdCriticalIntf, value, true, hysteresis); // High critical\n        updateThreshold(thresholdCriticalIntf, value, false, hysteresis); // Low critical\n    }\n}",
       "parentUuid": "df379cc6_b62e1df9",
+      "range": {
+        "startLine": 700,
+        "startChar": 12,
+        "endLine": 707,
+        "endChar": 13
+      },
+      "revId": "e14bf9316830fdb48237ac20c0603d1eba9b9359",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe377623_d423efce",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 138
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-19T09:54:03Z",
+      "side": 1,
+      "message": "we can add `updateThreshold` as you said. But in the `updateThreshold` we still have to check the type of threshold interface. Because for `thresholdCriticalIntf` we have to check `criticalHigh` then create `criticalHighAlarmAsserted` or `criticalHighAlarmDeAsserted`\nOR `criticalLow` then create `criticalLowAlarmAsserted` and `criticalLowAlarmDeAsserted`\nIt is the same for `thresholdWarningIntf`. So we just move the if from `updateThresholds` to new function `updateThreshold\u0027.",
+      "parentUuid": "ced4e89c_808ed715",
       "range": {
         "startLine": 700,
         "startChar": 12,
