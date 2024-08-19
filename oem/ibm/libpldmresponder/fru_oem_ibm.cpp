@@ -41,7 +41,9 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
 
         dataSize += sizeof(pldm_fru_record_data_format) -
                     sizeof(pldm_fru_record_tlv);
-        data += dataSize;
+
+        data += sizeof(pldm_fru_record_data_format) -
+                sizeof(pldm_fru_record_tlv);
 
         for ([[maybe_unused]] const auto& i :
              std::views::iota(0, (int)record->num_fru_fields))
@@ -91,11 +93,12 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
                                            &tlv->value[tlv->length]);
                 setFirmwareUAK(value);
             }
-            // length of tlv is removed from the structure pldm_fru_record_tlv
-            // and the new tlv length is added back.
+
             dataSize += sizeof(pldm_fru_record_tlv) - sizeof(uint8_t) +
                         tlv->length;
-            data += dataSize;
+
+            // Increment data pointer by the size of the current TLV
+            data += sizeof(pldm_fru_record_tlv) - sizeof(uint8_t) + tlv->length;
         }
     }
 
