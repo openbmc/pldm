@@ -1,5 +1,6 @@
 #pragma once
 
+#include "update_manager.hpp"
 #include "common/types.hpp"
 #include "version.hpp"
 
@@ -34,7 +35,8 @@ class InventoryItemManager
 
     void createInventoryItem(const eid& eid,
                              const FirmwareDeviceName& deviceName,
-                             const std::string& activeVersion);
+                             const std::string& activeVersion,
+                             const std::shared_ptr<UpdateManager>& updateManager = nullptr);
 
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
