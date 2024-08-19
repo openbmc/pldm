@@ -1,5 +1,6 @@
 #pragma once
 
+#include "aggregate_update_manager.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "inventory_item_manager.hpp"
@@ -60,11 +61,13 @@ class InventoryManager
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
+        AggregateUpdateManager& aggregateUpdateManager,
         pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap),
+        aggregateUpdateManager(aggregateUpdateManager),
         configurationDiscovery(configurationDiscovery)
     {}
 
@@ -216,6 +219,9 @@ class InventoryManager
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    /** @brief Aggregate Update Manager */
+    AggregateUpdateManager& aggregateUpdateManager [[maybe_unused]];
 
     /** @brief Configuration Discovery Handler */
     pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
