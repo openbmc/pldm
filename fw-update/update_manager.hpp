@@ -39,7 +39,7 @@ class UpdateManager
     UpdateManager(UpdateManager&&) = delete;
     UpdateManager& operator=(const UpdateManager&) = delete;
     UpdateManager& operator=(UpdateManager&&) = delete;
-    ~UpdateManager() = default;
+    virtual ~UpdateManager() = default;
 
     explicit UpdateManager(
         Event& event,
@@ -63,8 +63,8 @@ class UpdateManager
      *
      *  @return PLDM response message
      */
-    Response handleRequest(mctp_eid_t eid, uint8_t command,
-                           const pldm_msg* request, size_t reqMsgLen);
+    virtual Response handleRequest(mctp_eid_t eid, uint8_t command,
+                                   const pldm_msg* request, size_t reqMsgLen);
 
     int processPackage(const std::filesystem::path& packageFilePath);
 
