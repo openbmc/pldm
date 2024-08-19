@@ -5,7 +5,8 @@
 #include "inventory_item_manager.hpp"
 #include "requester/configuration_discovery_handler.hpp"
 #include "requester/handler.hpp"
-
+#include "aggregate_update_manager.hpp"
+ 
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/Board/server.hpp>
 #include <xyz/openbmc_project/Software/Version/server.hpp>
@@ -60,11 +61,13 @@ class InventoryManager
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
+        std::shared_ptr<AggregateUpdateManager> aggregateUpdateManager,
         pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap),
+        aggregateUpdateManager(aggregateUpdateManager),
         configurationDiscovery(configurationDiscovery)
     {}
 
@@ -236,6 +239,9 @@ class InventoryManager
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    /** @brief Aggregate Update Manager */
+    std::shared_ptr<AggregateUpdateManager> aggregateUpdateManager;
 
     /** @brief Configuration Discovery Handler */
     pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
