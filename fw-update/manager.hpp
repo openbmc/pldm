@@ -1,6 +1,7 @@
 #pragma once
 
 #include "activation.hpp"
+#include "aggregate_update_manager.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
@@ -42,11 +43,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         Event& event, requester::Handler<requester::Request>& handler,
         pldm::InstanceIdDb& instanceIdDb,
         pldm::ConfigurationDiscoveryHandler* configurationDiscovery) :
+        updateManager(std::make_shared<AggregateUpdateManager>(
+            event, handler, instanceIdDb, descriptorMap, componentInfoMap)),
         inventoryMgr(handler, instanceIdDb, descriptorMap,
-                     downstreamDescriptorMap, componentInfoMap,
-                     configurationDiscovery),
-        updateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                     downstreamDescriptorMap, componentInfoMap, updateManager,
+                     configurationDiscovery)
     {}
 
     /** @brief Helper function to invoke registered handlers for
@@ -81,7 +82,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     Response handleRequest(mctp_eid_t eid, Command command,
                            const pldm_msg* request, size_t reqMsgLen)
     {
-        return updateManager.handleRequest(eid, command, request, reqMsgLen);
+        return updateManager->handleRequest(eid, command, request, reqMsgLen);
     }
 
   private:
@@ -95,11 +96,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     /** Component information of all the discovered MCTP endpoints */
     ComponentInfoMap componentInfoMap;
 
+    /** @brief PLDM update manager */
+    std::shared_ptr<AggregateUpdateManager> updateManager;
+
     /** @brief PLDM firmware inventory manager */
     InventoryManager inventoryMgr;
-
-    /** @brief PLDM firmware update manager */
-    UpdateManager updateManager;
 };
 
 } // namespace fw_update
