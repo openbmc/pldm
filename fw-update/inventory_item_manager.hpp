@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/types.hpp"
+#include "update_manager.hpp"
 
 #include <xyz/openbmc_project/Association/Definitions/aserver.hpp>
 #include <xyz/openbmc_project/Inventory/Item/Board/aserver.hpp>

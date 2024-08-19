@@ -1,6 +1,7 @@
 #pragma once
 
 #include "activation.hpp"
+#include "aggregate_update_manager.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
@@ -42,10 +43,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     explicit Manager(Context& ctx, Event& event,
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
-        inventoryMgr(ctx, handler, instanceIdDb, descriptorMap,
-                     downstreamDescriptorMap, componentInfoMap),
         updateManager(event, handler, instanceIdDb, descriptorMap,
-                      downstreamDescriptorMap, componentInfoMap)
+                      downstreamDescriptorMap, componentInfoMap),
+        inventoryMgr(ctx, handler, instanceIdDb, descriptorMap,
+                     downstreamDescriptorMap, componentInfoMap, updateManager)
     {}
 
     /** @brief Helper function to invoke registered handlers for
@@ -120,11 +121,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     /** Component information of all the discovered MCTP endpoints */
     ComponentInfoMap componentInfoMap;
 
+    /** @brief PLDM update manager */
+    AggregateUpdateManager updateManager;
+
     /** @brief PLDM firmware inventory manager */
     InventoryManager inventoryMgr;
-
-    /** @brief PLDM firmware update manager */
-    UpdateManager updateManager;
 };
 
 } // namespace fw_update

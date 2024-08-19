@@ -18,8 +18,12 @@ class InventoryManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
+        aggregateUpdateManager(event, reqHandler, instanceIdDb,
+                               outDescriptorMap, outDownstreamDescriptorMap,
+                               outComponentInfoMap),
         inventoryManager(ctx, reqHandler, instanceIdDb, outDescriptorMap,
-                         outDownstreamDescriptorMap, outComponentInfoMap)
+                         outDownstreamDescriptorMap, outComponentInfoMap,
+                         aggregateUpdateManager)
     {}
     ~InventoryManagerTest() noexcept = default;
 
@@ -27,11 +31,12 @@ class InventoryManagerTest : public testing::Test
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> reqHandler;
-    InventoryManager inventoryManager;
     DescriptorMap outDescriptorMap{};
     DownstreamDescriptorMap outDownstreamDescriptorMap{};
     ComponentInfoMap outComponentInfoMap{};
     sdbusplus::async::context ctx;
+    AggregateUpdateManager aggregateUpdateManager;
+    InventoryManager inventoryManager;
 };
 
 TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)

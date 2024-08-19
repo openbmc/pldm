@@ -1,5 +1,6 @@
 #pragma once
 
+#include "aggregate_update_manager.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "inventory_item_manager.hpp"
@@ -53,11 +54,13 @@ class InventoryManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
-        ComponentInfoMap& componentInfoMap) :
+        ComponentInfoMap& componentInfoMap,
+        AggregateUpdateManager& aggregateUpdateManager) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), inventoryItemManager(ctx),
         downstreamDescriptorMap(downstreamDescriptorMap),
-        componentInfoMap(componentInfoMap)
+        componentInfoMap(componentInfoMap),
+        aggregateUpdateManager(aggregateUpdateManager)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
@@ -234,6 +237,9 @@ class InventoryManager
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    /** @brief Aggregate Update Manager */
+    AggregateUpdateManager& aggregateUpdateManager [[maybe_unused]];
 
     /** @brief Configuration bindings from Entity Manager */
     Configurations configurations;
