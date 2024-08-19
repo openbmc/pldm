@@ -31,7 +31,16 @@ using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
-class UpdateManager
+class UpdateManagerInf
+{
+  public:
+    virtual Response handleRequest(mctp_eid_t eid, uint8_t command,
+                                   const pldm_msg* request,
+                                   size_t reqMsgLen) = 0;
+    virtual ~UpdateManagerInf(){};
+};
+
+class UpdateManager : public UpdateManagerInf
 {
   public:
     UpdateManager() = delete;
@@ -39,7 +48,7 @@ class UpdateManager
     UpdateManager(UpdateManager&&) = delete;
     UpdateManager& operator=(const UpdateManager&) = delete;
     UpdateManager& operator=(UpdateManager&&) = delete;
-    ~UpdateManager() = default;
+    ~UpdateManager() override = default;
 
     explicit UpdateManager(
         Event& event,
@@ -64,7 +73,7 @@ class UpdateManager
      *  @return PLDM response message
      */
     Response handleRequest(mctp_eid_t eid, uint8_t command,
-                           const pldm_msg* request, size_t reqMsgLen);
+                           const pldm_msg* request, size_t reqMsgLen) override;
 
     int processPackage(const std::filesystem::path& packageFilePath);
 
@@ -101,8 +110,8 @@ class UpdateManager
     const ComponentInfoMap& componentInfoMap;
     Watch watch;
 
-    std::unique_ptr<Activation> activation;
-    std::unique_ptr<ActivationProgress> activationProgress;
+    std::shared_ptr<Activation> activation;
+    std::shared_ptr<ActivationProgress> activationProgress;
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
