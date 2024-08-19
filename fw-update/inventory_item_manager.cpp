@@ -15,7 +15,8 @@ namespace pldm::fw_update
 
 void InventoryItemManager::createInventoryItem(
     const eid& eid, const FirmwareDeviceName& deviceName,
-    const std::string& activeVersion)
+    const std::string& activeVersion,
+    std::shared_ptr<UpdateManager> updateManager [[maybe_unused]])
 {
     if (inventoryPathMap.contains(eid))
     {

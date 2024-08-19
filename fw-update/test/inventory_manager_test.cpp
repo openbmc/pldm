@@ -19,7 +19,10 @@ class InventoryManagerTest : public testing::Test
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
         inventoryManager(reqHandler, instanceIdDb, outDescriptorMap,
-                         outDownstreamDescriptorMap, outComponentInfoMap)
+                         outDownstreamDescriptorMap, outComponentInfoMap,
+                         std::make_shared<AggregateUpdateManager>(
+                             event, reqHandler, instanceIdDb, outDescriptorMap,
+                             outComponentInfoMap))
     {}
 
     int fd = -1;
