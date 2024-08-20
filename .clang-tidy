@@ -185,7 +185,24 @@ clang-analyzer-valist.Uninitialized,
 clang-analyzer-valist.Unterminated,
 clang-analyzer-valist.ValistBase,
 clang-analyzer-webkit.NoUncountedMemberChecker,
-clang-analyzer-webkit.RefCntblBaseVirtualDtor'
+clang-analyzer-webkit.RefCntblBaseVirtualDtor,
+misc-misplaced-const,
+misc-redundant-expression,
+misc-static-assert,
+misc-throw-by-value-catch-by-reference,
+misc-unconventional-assign-operator,
+misc-uniqueptr-reset-release,
+modernize-deprecated-ios-base-aliases,
+modernize-make-shared,
+modernize-make-unique,
+modernize-replace-auto-ptr,
+modernize-replace-random-shuffle,
+modernize-shrink-to-fit,
+modernize-unary-static-assert,
+modernize-use-equals-delete,
+modernize-use-noexcept,
+modernize-use-transparent-functors,
+modernize-use-uncaught-exceptions'
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'
