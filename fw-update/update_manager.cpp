@@ -115,9 +115,14 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     catch (const std::exception& e)
     {
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        activation = std::make_shared<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
+        if(activation)
+            activation->activation(software::Activation::Activations::Invalid);
+        else
+        {
+            activation = std::make_shared<Activation>(
+                pldm::utils::DBusHandler::getBus(), objPath,
+                software::Activation::Activations::Invalid, this);
+        }
         package.close();
         parser.reset();
         return -1;
@@ -130,9 +135,14 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     {
         error(
             "No matching devices found with the PLDM firmware update package");
-        activation = std::make_shared<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
+        if(activation)
+            activation->activation(software::Activation::Activations::Invalid);
+        else
+        {
+            activation = std::make_shared<Activation>(
+                pldm::utils::DBusHandler::getBus(), objPath,
+                software::Activation::Activations::Invalid, this);
+        }
         package.close();
         parser.reset();
         return 0;
@@ -154,9 +164,14 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
 
     fwPackageFilePath = packageFilePath;
-    activation = std::make_shared<Activation>(
-        pldm::utils::DBusHandler::getBus(), objPath,
-        software::Activation::Activations::Ready, this);
+    if(activation)
+        activation->activation(software::Activation::Activations::Ready);
+    else
+    {
+        activation = std::make_shared<Activation>(
+            pldm::utils::DBusHandler::getBus(), objPath,
+            software::Activation::Activations::Ready, this);
+    }
     activationProgress = std::make_shared<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPath);
 
@@ -187,6 +202,11 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
         }
     }
     return deviceUpdaterInfos;
+}
+
+void UpdateManager::assignActivation(std::shared_ptr<Activation> activation)
+{
+    this->activation = activation;
 }
 
 void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
