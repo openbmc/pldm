@@ -769,12 +769,21 @@ void InventoryManager::getFirmwareParameters(
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
     }
+    componentInfoMap.emplace(eid, std::move(componentInfo));
+
+    descriptorMaps.emplace_back(DescriptorMap{{eid, descriptorMap.at(eid)}});
+    componentInfoMaps.emplace_back(
+        ComponentInfoMap{{eid, componentInfoMap.at(eid)}});
+
+    auto updateManager = std::make_shared<UpdateManager>(
+        event, handler, instanceIdDb, descriptorMaps.back(),
+        componentInfoMaps.back(), false /* do not watch folder*/);
+
+    aggregateUpdateManager->addUpdateManager(updateManager);
 
     inventoryItemManager.createInventoryItem(
         eid, firmwareDeviceNameMap.at(eid),
-        utils::toString(activeCompImageSetVerStr));
-
-    componentInfoMap.emplace(eid, std::move(componentInfo));
+        utils::toString(activeCompImageSetVerStr), updateManager);
 }
 
 } // namespace fw_update

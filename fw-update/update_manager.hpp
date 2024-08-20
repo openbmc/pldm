@@ -54,13 +54,20 @@ class UpdateManager : public UpdateManagerInf
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
-        event(event), handler(handler), instanceIdDb(instanceIdDb),
+        const ComponentInfoMap& componentInfoMap,
+        const bool watchFolder = true) :
+        event(event),
+        handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
-        watch(event.get(),
-              std::bind_front(&UpdateManager::processPackage, this)),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
-    {}
+    {
+        if (watchFolder)
+        {
+            watch = std::make_unique<Watch>(
+                event.get(),
+                std::bind_front(&UpdateManager::processPackage, this));
+        }
+    }
 
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
@@ -108,7 +115,7 @@ class UpdateManager : public UpdateManagerInf
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
-    Watch watch;
+    std::unique_ptr<Watch> watch;
 
     std::shared_ptr<Activation> activation;
     std::shared_ptr<ActivationProgress> activationProgress;

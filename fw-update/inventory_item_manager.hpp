@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/types.hpp"
+#include "code_updater.hpp"
 #include "update_manager.hpp"
 #include "version.hpp"
 
@@ -57,6 +57,8 @@ class InventoryItemManager
     std::vector<std::unique_ptr<Version>> softwareVersions;
 
     std::vector<std::unique_ptr<AssociationDefinitionsIntf>> associations;
+
+    std::vector<std::unique_ptr<CodeUpdater>> codeUpdaters;
 };
 
 } // namespace pldm::fw_update
