@@ -84,6 +84,8 @@ class UpdateManager : public UpdateManagerInf
 
     int processPackage(const std::filesystem::path& packageFilePath);
 
+    void assignActivation(std::shared_ptr<Activation> activation);
+
     void updateDeviceCompletion(mctp_eid_t eid, bool status);
 
     void updateActivationProgress();

@@ -4,6 +4,7 @@
 #include "update_manager.hpp"
 #include "common/types.hpp"
 #include "version.hpp"
+#include "activation.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
@@ -19,6 +20,8 @@ using AssociationDefinitionsIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
 using VersionPurpose =
     sdbusplus::server::xyz::openbmc_project::software::Version::VersionPurpose;
+using Activations =
+    sdbusplus::server::xyz::openbmc_project::software::Activation::Activations;
 using SoftwareVersionIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Software::server::Version>;
 
@@ -37,7 +40,7 @@ class InventoryItemManager
     void createInventoryItem(const eid& eid,
                              const FirmwareDeviceName& deviceName,
                              const std::string& activeVersion,
-                             const std::shared_ptr<UpdateManager>& updateManager = nullptr);
+                             std::shared_ptr<UpdateManager> updateManager = nullptr);
 
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
