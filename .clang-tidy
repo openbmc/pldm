@@ -50,7 +50,24 @@ bugprone-unhandled-exception-at-new,
 bugprone-unhandled-self-assignment,
 bugprone-unused-raii,
 bugprone-unused-return-value,
-bugprone-virtual-near-miss'
+bugprone-virtual-near-miss,
+cert-con54-cpp,
+cert-dcl21-cpp,
+cert-dcl50-cpp,
+cert-dcl54-cpp,
+cert-dcl58-cpp,
+cert-dcl59-cpp,
+cert-err09-cpp,
+cert-err52-cpp,
+cert-err60-cpp,
+cert-err61-cpp,
+cert-mem57-cpp,
+cert-msc50-cpp,
+cert-msc51-cpp,
+cert-oop11-cpp,
+cert-oop54-cpp,
+cert-oop57-cpp,
+cert-oop58-cpp'
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'
