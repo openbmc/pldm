@@ -1085,7 +1085,7 @@ TEST(TrimNameForDbus, goodTest)
     std::string_view expectedName = "Name_with__space";
     std::string_view result = trimNameForDbus(name);
     EXPECT_EQ(expectedName, result);
-    name = "Name 1\0";
+    name = "Name 1\0"; // NOLINT(bugprone-string-literal-with-embedded-nul)
     expectedName = "Name_1";
     result = trimNameForDbus(name);
     EXPECT_EQ(expectedName, result);
