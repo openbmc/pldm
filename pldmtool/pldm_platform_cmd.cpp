@@ -251,9 +251,8 @@ class GetPDR : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             nextPartRequired = false;
             return;
         }
@@ -1560,8 +1559,6 @@ class GetPDR : public CommandInterface
                 printNumericSensorPDR(data, respCnt, output);
                 break;
             case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
-                printAuxNamePDR(data, output);
-                break;
             case PLDM_EFFECTER_AUXILIARY_NAMES_PDR:
                 printAuxNamePDR(data, output);
                 break;
@@ -1678,8 +1675,8 @@ class SetStateEffecter : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode << "\n";
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)completionCode << "\n";
             return;
         }
 
@@ -1759,9 +1756,8 @@ class SetNumericEffecterValue : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             return;
         }
 
@@ -1826,9 +1822,8 @@ class GetStateSensorReadings : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             return;
         }
         ordered_json output;
@@ -1925,9 +1920,8 @@ class GetSensorReading : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)completionCode
-                      << std::endl;
+            std::cerr << "Response Message Error: " << "rc=" << rc
+                      << ",cc=" << (int)completionCode << std::endl;
             return;
         }
 
@@ -2067,8 +2061,7 @@ class GetStateEffecterStates : public CommandInterface
 
         if (rc || resp.completion_code != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc="
+            std::cerr << "Response Message Error: " << "rc=" << rc << ",cc="
                       << static_cast<int>(resp.completion_code) << std::endl;
             return;
         }
@@ -2146,8 +2139,7 @@ class GetNumericEffecterValue : public CommandInterface
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
-            std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc="
+            std::cerr << "Response Message Error: " << "rc=" << rc << ",cc="
                       << static_cast<int>(completionCode) << std::endl;
             return;
         }
