@@ -57,12 +57,14 @@ class InventoryManager
      *                                 managed by the BMC.
      */
     explicit InventoryManager(
+        Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
         std::shared_ptr<AggregateUpdateManager> aggregateUpdateManager,
         pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
+        event(event),
         handler(handler),
         instanceIdDb(instanceIdDb), descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
@@ -216,6 +218,8 @@ class InventoryManager
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
 
+    Event& event;
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
 
@@ -225,11 +229,7 @@ class InventoryManager
     /** @brief Device identifiers of the managed FDs */
     DescriptorMap& descriptorMap;
 
-    /** @brief Downstream Device identifiers of the managed FDs*/
-    DownstreamDescriptorMap& downstreamDescriptorMap;
-
-    /** @brief Component information needed for the update of the managed FDs */
-    ComponentInfoMap& componentInfoMap;
+    std::vector<DescriptorMap> descriptorMaps;
 
     /** @brief Firmware Device names of the managed FDs */
     std::map<eid, FirmwareDeviceName> firmwareDeviceNameMap;
@@ -246,6 +246,8 @@ class InventoryManager
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    std::vector<ComponentInfoMap> componentInfoMaps;
 
     /** @brief Aggregate Update Manager */
     std::shared_ptr<AggregateUpdateManager> aggregateUpdateManager;

@@ -46,7 +46,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         updateManager(std::make_shared<AggregateUpdateManager>(
             std::make_shared<UpdateManager>(event, handler, instanceIdDb,
                                             descriptorMap, componentInfoMap))),
-        inventoryMgr(handler, instanceIdDb, descriptorMap,
+        inventoryMgr(event, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap,
                      std::static_pointer_cast<AggregateUpdateManager>(updateManager),
                      configurationDiscovery)

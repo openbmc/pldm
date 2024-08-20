@@ -15,7 +15,7 @@ namespace pldm::fw_update
 void InventoryItemManager::createInventoryItem(
     const eid& eid, const FirmwareDeviceName& deviceName,
     const std::string& activeVersion,
-    const std::shared_ptr<UpdateManager>& /*updateManager*/)
+    const std::shared_ptr<UpdateManager>& updateManager)
 {
     if (!inventoryPathMap.at(eid).empty())
     {
@@ -34,6 +34,12 @@ void InventoryItemManager::createInventoryItem(
                                   "_" + getVersionId(activeVersion);
         createVersion(softwarePath, activeVersion, VersionPurpose::Other);
         createAssociation(softwarePath, "running", "ran_on", devicePath);
+
+        if (updateManager)
+        {
+            codeUpdaters.emplace_back(std::make_unique<CodeUpdater>(
+                utils::DBusHandler::getBus(), softwarePath.c_str(), updateManager));
+        }
     }
 }
 
