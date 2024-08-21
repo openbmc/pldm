@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b009411_65fbbf45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-21T02:02:05Z",
+      "side": 1,
+      "message": "The patch set looks good to me. Just concern why we need enable this checking?",
+      "revId": "6ca5d6bc56cac8c391397cbee3aa2d30ae31c543",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
