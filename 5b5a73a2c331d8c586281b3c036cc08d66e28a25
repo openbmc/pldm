@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2db22f9_64e599da",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-21T05:07:48Z",
+      "side": 1,
+      "message": "Ah, I guess this came in as part of clang-format-18. Let me move this out of this ocmmit.",
+      "parentUuid": "92c0d904_7dc8441d",
+      "revId": "5b5a73a2c331d8c586281b3c036cc08d66e28a25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66e4459e_bb9cd7ec",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-08-21T02:05:57Z",
       "side": 1,
       "message": "As my opinion the code\n```\ncase PLDM_SENSOR_AUXILIARY_NAMES_PDR:\ncase PLDM_EFFECTER_AUXILIARY_NAMES_PDR:\n    printAuxNamePDR(data, output);\n    break;\n```\nis valid. Why we need enable the checking to prevent this style of code?",
+      "revId": "5b5a73a2c331d8c586281b3c036cc08d66e28a25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499c8182_0f6c18bb",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1562,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-21T05:07:48Z",
+      "side": 1,
+      "message": "@Thu, yes this check helps minimize the repeated branches in the code for better coding practice.",
+      "parentUuid": "66e4459e_bb9cd7ec",
       "revId": "5b5a73a2c331d8c586281b3c036cc08d66e28a25",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
