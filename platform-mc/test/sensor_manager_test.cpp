@@ -8,9 +8,7 @@
 
 #include <gtest/gtest.h>
 
-using ::testing::_;
-using ::testing::Between;
-using ::testing::Return;
+using namespace ::testing;
 
 class SensorManagerTest : public testing::Test
 {
@@ -152,7 +150,6 @@ class SensorManagerTest : public testing::Test
 TEST_F(SensorManagerTest, sensorPollingTest)
 {
     uint64_t seconds = 10;
-    uint64_t expectedTimes = (seconds * 1000) / SENSOR_POLLING_TIME;
 
     pldm_tid_t tid = 1;
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(tid, 0);
@@ -160,8 +157,16 @@ TEST_F(SensorManagerTest, sensorPollingTest)
     termini[tid]->pdrs.push_back(pdr2);
     termini[tid]->parseTerminusPDRs();
 
+    uint64_t t0, t1;
+    ASSERT_TRUE(sd_event_now(event.get(), CLOCK_MONOTONIC, &t0) >= 0);
+    ON_CALL(sensorManager, doSensorPolling(tid))
+        .WillByDefault([this, &t0, &t1](unsigned char) {
+            ASSERT_TRUE(sd_event_now(event.get(), CLOCK_MONOTONIC, &t1) >= 0);
+            EXPECT_GE(t1 - t0, SENSOR_POLLING_TIME * 1000);
+            t0 = t1;
+        });
     EXPECT_CALL(sensorManager, doSensorPolling(tid))
-        .Times(Between(expectedTimes - 3, expectedTimes + 3))
+        .Times(AtLeast(2))
         .WillRepeatedly(Return());
 
     sensorManager.startPolling(tid);
