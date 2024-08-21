@@ -16,6 +16,24 @@
       "message": "The patch set looks good to me. Just concern why we need enable this checking?",
       "revId": "6ca5d6bc56cac8c391397cbee3aa2d30ae31c543",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12518f14_4e413be3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-21T04:57:54Z",
+      "side": 1,
+      "message": "This is one of the clang-tidy checks, we could use this check to avoid std::string with embedded NUL characters. If we have a use-case that needs a NUL termination then we could avoid this check for that line. But this check catches the unnecessary NUL terminations in the code.",
+      "parentUuid": "5b009411_65fbbf45",
+      "revId": "6ca5d6bc56cac8c391397cbee3aa2d30ae31c543",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
