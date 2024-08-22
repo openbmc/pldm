@@ -1,6 +1,6 @@
 project(
     'pldm',
-    ['c', 'cpp'],
+    'cpp',
     version: '0.1',
     meson_version: '>=1.1.1',
     default_options: [
@@ -21,7 +21,7 @@ add_project_arguments('-Wno-psabi', language: 'cpp')
 
 # Disable FORTIFY_SOURCE when compiling with no optimization
 if (get_option('optimization') == '0')
-    add_project_arguments('-U_FORTIFY_SOURCE', language: ['cpp', 'c'])
+    add_project_arguments('-U_FORTIFY_SOURCE', language: 'cpp')
     message('Disabling FORTIFY_SOURCE as optimization is set to 0')
 endif
 
@@ -72,7 +72,7 @@ if get_option('libpldmresponder').allowed()
     conf_data.set('TERMINUS_ID', get_option('terminus-id'))
     conf_data.set('TERMINUS_HANDLE', get_option('terminus-handle'))
     conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))
-    add_project_arguments('-DLIBPLDMRESPONDER', language: ['c', 'cpp'])
+    add_project_arguments('-DLIBPLDMRESPONDER', language: 'cpp')
 endif
 if get_option('softoff').allowed()
     conf_data.set(
@@ -110,7 +110,7 @@ if get_option('oem-ibm').allowed()
         '/usr/local/share/hostfw/alternate',
     )
     conf_data.set('DMA_MAXSIZE', get_option('oem-ibm-dma-maxsize'))
-    add_project_arguments('-DOEM_IBM', language: ['c', 'cpp'])
+    add_project_arguments('-DOEM_IBM', language: 'cpp')
 endif
 conf_data.set(
     'NUMBER_OF_REQUEST_RETRIES',
