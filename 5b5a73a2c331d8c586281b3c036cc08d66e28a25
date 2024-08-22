@@ -105,6 +105,24 @@
       "parentUuid": "1d2441e2_d472122e",
       "revId": "5b5a73a2c331d8c586281b3c036cc08d66e28a25",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "822222b0_5236145c",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1562,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-22T07:13:52Z",
+      "side": 1,
+      "message": "Oh, I understand about the change now.\n```\n            case PLDM_SENSOR_AUXILIARY_NAMES_PDR:\n                printAuxNamePDR(data, output);\n                break;\n            case PLDM_EFFECTER_AUXILIARY_NAMES_PDR:\n                printAuxNamePDR(data, output);\n                break;\n```\nTo\n```\n            case PLDM_SENSOR_AUXILIARY_NAMES_PDR:\n            case PLDM_EFFECTER_AUXILIARY_NAMES_PDR:\n                printAuxNamePDR(data, output);\n                break;\n```\nThat is purpose of new CI checking.",
+      "parentUuid": "15f04da2_74a863a0",
+      "revId": "5b5a73a2c331d8c586281b3c036cc08d66e28a25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
