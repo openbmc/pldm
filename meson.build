@@ -1,6 +1,6 @@
 project(
     'pldm',
-    ['c', 'cpp'],
+    'cpp',
     version: '0.1',
     meson_version: '>=1.1.1',
     default_options: [
@@ -21,7 +21,7 @@ add_project_arguments('-Wno-psabi', language: 'cpp')
 
 # Disable FORTIFY_SOURCE when compiling with no optimization
 if (get_option('optimization') == '0')
-    add_project_arguments('-U_FORTIFY_SOURCE', language: ['cpp', 'c'])
+    add_project_arguments('-U_FORTIFY_SOURCE', language: 'cpp')
     message('Disabling FORTIFY_SOURCE as optimization is set to 0')
 endif
 
