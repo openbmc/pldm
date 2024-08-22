@@ -97,6 +97,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4874a8e8_9024fa2f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-22T06:20:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7c8b4b1b_13f870f3",
+      "range": {
+        "startLine": 44,
+        "startChar": 2,
+        "endLine": 44,
+        "endChar": 67
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "1755e6e5_16d35997",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -126,6 +150,24 @@
       "side": 1,
       "message": "\u003e Hey @Thu, The code structure looks good but can we brief why do we need this host On check. and why was it not needed for the state effecter? What\u0027s the reasoning behind it?\n\nActually, we have the `host On check` in the current code for state effecter.\nhttps://github.com/openbmc/pldm/blob/master/host-bmc/dbus_to_host_effecters.cpp#L166\n\nThat why, in this patch set, I also include `host On Check`. But to apply the code for other PLDM terminus (none-host terminus), I add the `checkHostState` option.\nWhen this option is set, the `host On Check` will be applied as the current `state effecter`.",
       "parentUuid": "1755e6e5_16d35997",
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2197899e_6ad62966",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-22T06:20:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "73820173_4d5db272",
       "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -365,6 +407,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6bcc182_616cb41b",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-22T06:20:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cf8a2422_0f7fe3d6",
+      "range": {
+        "startLine": 52,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 2
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad5b1287_c9f9ffa8",
@@ -402,6 +468,30 @@
       "side": 1,
       "message": "Just because I saw that we are using `setHostStateEffecter` name.\nhttps://github.com/openbmc/pldm/blob/master/host-bmc/dbus_to_host_effecters.cpp#L262C25-L262C45",
       "parentUuid": "ad5b1287_c9f9ffa8",
+      "range": {
+        "startLine": 189,
+        "startChar": 16,
+        "endLine": 189,
+        "endChar": 42
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81b44a50_0029df69",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-22T06:20:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9c1e17d7_6d4eaba1",
       "range": {
         "startLine": 189,
         "startChar": 16,
