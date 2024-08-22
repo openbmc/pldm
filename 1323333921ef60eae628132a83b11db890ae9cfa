@@ -96,6 +96,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2e631ec_58710d63",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-22T13:06:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb221c08_a469df60",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 29
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ebe46d9_ffc5fbbc",
@@ -393,6 +417,30 @@
       "side": 1,
       "message": "The checking is required when the D-Bus is created by other services but not pldmd. Because in those service, the D-Bus still can exist event the host is off.",
       "parentUuid": "746436f9_6a302f9c",
+      "range": {
+        "startLine": 371,
+        "startChar": 5,
+        "endLine": 375,
+        "endChar": 9
+      },
+      "revId": "1323333921ef60eae628132a83b11db890ae9cfa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac2aad6_d4503fb9",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-22T13:06:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b245da48_98edfccc",
       "range": {
         "startLine": 371,
         "startChar": 5,

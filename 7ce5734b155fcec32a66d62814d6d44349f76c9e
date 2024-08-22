@@ -106,6 +106,24 @@
       "parentUuid": "36028b63_aee23337",
       "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7ab08ca_333506de",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-22T13:06:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2af0b510_495e8229",
+      "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
