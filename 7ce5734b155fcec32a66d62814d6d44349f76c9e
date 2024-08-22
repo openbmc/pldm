@@ -70,6 +70,24 @@
       "parentUuid": "03a0ab45_fb8633af",
       "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36028b63_aee23337",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-22T07:04:23Z",
+      "side": 1,
+      "message": "This is requester code, I think. BMC sends setEffecterValue to the controlled terminus.",
+      "parentUuid": "c048c64e_c5c5b513",
+      "revId": "7ce5734b155fcec32a66d62814d6d44349f76c9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
