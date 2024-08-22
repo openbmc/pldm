@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b788ce9_daeab710",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-22T06:02:15Z",
+      "side": 1,
+      "message": "yes, it\u0027s a C-style check but in some places I see it\u0027s mentioned it is applicable for C++ as well.\n\nExample: CERT C Coding Standard (cert-con36-c) focuses on safe type conversions in C, and its principles are also applicable to C++.\n\nI can remove them if it\u0027s not preferred.",
+      "parentUuid": "f64a61ba_c9d9367b",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 13
+      },
+      "revId": "fcbcd8b43d94d01f4b57ad9fafeecd0d5ab45c0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b3adf78a_8f934825",
