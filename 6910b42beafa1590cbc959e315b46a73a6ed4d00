@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6189fac_5d065fbf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-22T09:24:13Z",
+      "side": 1,
+      "message": "sure, i am okay to rename the file.",
+      "parentUuid": "e0a14fd0_77734cb0",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "6910b42beafa1590cbc959e315b46a73a6ed4d00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80454cbf_405f92a0",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5

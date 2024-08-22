@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b84307d9_71d45256",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-22T09:24:13Z",
+      "side": 1,
+      "message": "code looks okay to me, just couple of minor nits and should be good to merge.",
+      "revId": "657cce93040b7ac0e5c22bac7f0d6f50bcb8af69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd4624ed_bcffa070",
+        "filename": "host-bmc/dbus_to_host_effecters.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-22T09:24:13Z",
+      "side": 1,
+      "message": "instead print `Effecter PDRType not supported` ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 19,
+        "endLine": 79,
+        "endChar": 42
+      },
+      "revId": "657cce93040b7ac0e5c22bac7f0d6f50bcb8af69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06407677_ad732822",
+        "filename": "host-bmc/dbus_to_host_effecters.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-22T09:24:13Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 65,
+        "startChar": 37,
+        "endLine": 65,
+        "endChar": 45
+      },
+      "revId": "657cce93040b7ac0e5c22bac7f0d6f50bcb8af69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
