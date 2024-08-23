@@ -4,12 +4,12 @@
 #include "common/utils.hpp"
 
 #include <libpldm/pdr.h>
-#include <stdint.h>
 
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <functional>

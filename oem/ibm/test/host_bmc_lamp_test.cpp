@@ -2,7 +2,7 @@
 #include "pldmd/dbus_impl_requester.hpp"
 #include "test/test_instance_id.hpp"
 
-#include <string.h>
+#include <cstring>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

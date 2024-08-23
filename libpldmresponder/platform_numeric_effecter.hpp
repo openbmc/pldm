@@ -7,11 +7,11 @@
 
 #include <libpldm/platform.h>
 #include <libpldm/states.h>
-#include <math.h>
-#include <stdint.h>
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <cmath>
+#include <cstdint>
 #include <map>
 #include <optional>
 

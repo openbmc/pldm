@@ -8,7 +8,6 @@
 #include <libpldm/pdr.h>
 #include <libpldm/platform.h>
 #include <libpldm/utils.h>
-#include <stdint.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
@@ -18,6 +17,7 @@
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
+#include <cstdint>
 #include <deque>
 #include <exception>
 #include <filesystem>

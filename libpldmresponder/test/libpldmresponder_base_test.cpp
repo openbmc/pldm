@@ -4,11 +4,11 @@
 #include "test/test_instance_id.hpp"
 
 #include <libpldm/base.h>
-#include <string.h>
 
 #include <sdeventplus/event.hpp>
 
 #include <array>
+#include <cstring>
 
 #include <gtest/gtest.h>
 
