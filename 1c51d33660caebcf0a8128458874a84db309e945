@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f48cc4_df95a316",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "just making sure if the intent behind this was right. The effecter ID\u0027s are usually transient numbers. It\u0027s not ideal to have checks against those since the remote entity can actually change the effecter ID across boots.\n\nThe ideal way , is to first to a GetPDR command, obtain the  PDR\u0027s then grab that effecter ID from there based on the PDR type, entity type, instance, container id",
+      "range": {
+        "startLine": 43,
+        "startChar": 2,
+        "endLine": 43,
+        "endChar": 56
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41bf5198_d01a9cb4",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "wanna print some trace here ?",
+      "range": {
+        "startLine": 688,
+        "startChar": 7,
+        "endLine": 688,
+        "endChar": 20
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4defe52_3faeef28",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "change this to switch-case instead ?",
+      "range": {
+        "startLine": 698,
+        "startChar": 7,
+        "endLine": 734,
+        "endChar": 5
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4194a10_b3a254d7",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "dont you wanna print what exception you have got here ?",
+      "range": {
+        "startLine": 737,
+        "startChar": 5,
+        "endLine": 737,
+        "endChar": 21
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5a9189c_e228bbf1",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "are you sure, this should be capitals as per the style guide ? which ever places you have used this variable, it looks odd that a variable name is all capitals",
+      "range": {
+        "startLine": 40,
+        "startChar": 31,
+        "endLine": 40,
+        "endChar": 52
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae80273_5445b35f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "make this a string_view ? and a const reference ?",
+      "range": {
+        "startLine": 552,
+        "startChar": 28,
+        "endLine": 552,
+        "endChar": 44
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "093ffb97_bbe9fb9d",
+        "filename": "host-bmc/dbus_to_terminus_effecters.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "should we also change the name of this file then ?",
+      "range": {
+        "startLine": 24,
+        "startChar": 35,
+        "endLine": 24,
+        "endChar": 57
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

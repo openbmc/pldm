@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ac9cc79_7220a4cb",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "02e99651_86467e6d",
+      "revId": "17e431559bafe7d48f229c88dddd9306d4bfb41e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76e381a5_e5424702",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-08-22T13:06:24Z",
       "side": 1,
       "message": "Add the API to allow converting the D-Bus property value type \"uint8_t\",  \"int16_t\", \"uint16_t\", \"int32_t\",\n    \"uint32_t\", \"int64_t\", \"uint64_t\", \"double\" to double.",
+      "revId": "17e431559bafe7d48f229c88dddd9306d4bfb41e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "757071f8_2b87269c",
+        "filename": "common/utils.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "76e381a5_e5424702",
       "revId": "17e431559bafe7d48f229c88dddd9306d4bfb41e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "568a7fd1_a9be2e61",
+        "filename": "host-bmc/dbus_to_terminus_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "68b4c527_d6ed5ad0",
+      "revId": "17e431559bafe7d48f229c88dddd9306d4bfb41e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "167f5e19_3bbb3620",
@@ -82,6 +136,24 @@
       "writtenOn": "2024-08-22T13:06:24Z",
       "side": 1,
       "message": "Call API to allow change the numeric D-Bus property type to double.",
+      "revId": "17e431559bafe7d48f229c88dddd9306d4bfb41e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf0879e2_603d6475",
+        "filename": "host-bmc/dbus_to_terminus_effecters.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-23T04:37:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "167f5e19_3bbb3620",
       "revId": "17e431559bafe7d48f229c88dddd9306d4bfb41e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
