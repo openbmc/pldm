@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa4db861_2c487405",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-23T13:20:24Z",
+      "side": 1,
+      "message": "I think you are mention about this section in the D-Bus to StateEffecter. https://github.com/openbmc/pldm/blob/0ff3435d95556031210fdbfe14f3f18a8857a3db/host-bmc/dbus_to_host_effecters.cpp#L141\nATM, In Ampere, the effecterID is static for the specific functional of Chips. So we don\u0027t have experience in using ` PDR type, entity type, instance, container id` to find effecterID.\nMoreover, in the current implementation of platform-mc, we don\u0027t include `pdrRepo` when construct the platform-manager\nhttps://github.com/openbmc/pldm/blob/0ff3435d95556031210fdbfe14f3f18a8857a3db/pldmd/pldmd.cpp#L306\nSo the pdrRepo will not include the PDRs of the discoveries terminus by `platform-mc`. That why I expected the effecterId is not empty.",
+      "parentUuid": "91f48cc4_df95a316",
+      "range": {
+        "startLine": 43,
+        "startChar": 2,
+        "endLine": 43,
+        "endChar": 56
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41bf5198_d01a9cb4",
         "filename": "common/utils.cpp",
         "patchSetId": 13
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6234c272_778b7907",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-23T13:20:24Z",
+      "side": 1,
+      "message": "The caller will and should print the error message when the API return `false` as this code\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/52514/13/host-bmc/dbus_to_terminus_effecters.cpp#362\nSo I think we don\u0027t need to print error inside API.",
+      "parentUuid": "41bf5198_d01a9cb4",
+      "range": {
+        "startLine": 688,
+        "startChar": 7,
+        "endLine": 688,
+        "endChar": 20
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4defe52_3faeef28",
         "filename": "common/utils.cpp",
         "patchSetId": 13
@@ -60,6 +108,30 @@
       "writtenOn": "2024-08-23T04:37:32Z",
       "side": 1,
       "message": "change this to switch-case instead ?",
+      "range": {
+        "startLine": 698,
+        "startChar": 7,
+        "endLine": 734,
+        "endChar": 5
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79ec7a59_ad5f4381",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-23T13:20:24Z",
+      "side": 1,
+      "message": "Switch-case does not support string type.",
+      "parentUuid": "a4defe52_3faeef28",
       "range": {
         "startLine": 698,
         "startChar": 7,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42d6c616_52bf94a1",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-23T13:20:24Z",
+      "side": 1,
+      "message": "The caller will print the error when the API return false as this code\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/52514/13/host-bmc/dbus_to_terminus_effecters.cpp#362\nSo I think we don\u0027t need to print error inside API.",
+      "parentUuid": "d4194a10_b3a254d7",
+      "range": {
+        "startLine": 737,
+        "startChar": 5,
+        "endLine": 737,
+        "endChar": 21
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e5a9189c_e228bbf1",
         "filename": "common/utils.hpp",
         "patchSetId": 13
@@ -106,6 +202,30 @@
       "writtenOn": "2024-08-23T04:37:32Z",
       "side": 1,
       "message": "are you sure, this should be capitals as per the style guide ? which ever places you have used this variable, it looks odd that a variable name is all capitals",
+      "range": {
+        "startLine": 40,
+        "startChar": 31,
+        "endLine": 40,
+        "endChar": 52
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "465e7b4b_76547001",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-23T13:20:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5a9189c_e228bbf1",
       "range": {
         "startLine": 40,
         "startChar": 31,
@@ -139,6 +259,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffcc18e5_c2c8cf96",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-23T13:20:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dae80273_5445b35f",
+      "range": {
+        "startLine": 552,
+        "startChar": 28,
+        "endLine": 552,
+        "endChar": 44
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "093ffb97_bbe9fb9d",
@@ -152,6 +296,30 @@
       "writtenOn": "2024-08-23T04:37:32Z",
       "side": 1,
       "message": "should we also change the name of this file then ?",
+      "range": {
+        "startLine": 24,
+        "startChar": 35,
+        "endLine": 24,
+        "endChar": 57
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bdb4b1b_ce153312",
+        "filename": "host-bmc/dbus_to_terminus_effecters.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-23T13:20:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "093ffb97_bbe9fb9d",
       "range": {
         "startLine": 24,
         "startChar": 35,
