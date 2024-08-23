@@ -4,9 +4,10 @@
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
-#include <stdint.h>
 
 #include <phosphor-logging/lg2.hpp>
+
+#include <cstdint>
 
 PHOSPHOR_LOG2_USING;
 

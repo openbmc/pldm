@@ -14,10 +14,10 @@
 #include <libpldm/pdr.h>
 #include <libpldm/platform.h>
 #include <libpldm/states.h>
-#include <stdint.h>
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <cstdint>
 #include <map>
 
 PHOSPHOR_LOG2_USING;

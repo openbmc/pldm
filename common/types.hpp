@@ -1,10 +1,9 @@
 #pragma once
 
-#include <stdint.h>
-
 #include <sdbusplus/message/types.hpp>
 
 #include <bitset>
+#include <cstdint>
 #include <map>
 #include <set>
 #include <string>

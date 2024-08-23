@@ -19,7 +19,6 @@
 #include <libpldm/platform.h>
 #include <libpldm/transport.h>
 #include <poll.h>
-#include <stdlib.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
@@ -32,6 +31,7 @@
 #include <stdplus/signal.hpp>
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <iomanip>
