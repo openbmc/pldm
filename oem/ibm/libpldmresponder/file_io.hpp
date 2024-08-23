@@ -10,13 +10,13 @@
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
 #include <libpldm/oem/ibm/host.h>
-#include <stdint.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <cstdint>
 #include <filesystem>
 #include <iostream>
 #include <vector>
