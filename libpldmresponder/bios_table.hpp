@@ -2,8 +2,8 @@
 
 #include <libpldm/bios.h>
 #include <libpldm/bios_table.h>
-#include <stdint.h>
 
+#include <cstdint>
 #include <filesystem>
 #include <optional>
 #include <string>

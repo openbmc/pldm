@@ -3,7 +3,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace pldm
 {

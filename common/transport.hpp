@@ -3,7 +3,8 @@
 #include <libpldm/base.h>
 #include <libpldm/pldm.h>
 #include <poll.h>
-#include <stddef.h>
+
+#include <cstddef>
 
 struct pldm_transport_mctp_demux;
 struct pldm_transport_af_mctp;
