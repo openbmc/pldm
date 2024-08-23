@@ -9,8 +9,8 @@
 
 #include <libpldm/bios.h>
 #include <libpldm/bios_table.h>
-#include <stdint.h>
 
+#include <cstdint>
 #include <ctime>
 #include <functional>
 #include <map>

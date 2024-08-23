@@ -6,7 +6,6 @@
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
-#include <stdint.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
@@ -14,6 +13,7 @@
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Dump/NewDump/server.hpp>
 
+#include <cstdint>
 #include <exception>
 #include <filesystem>
 #include <type_traits>

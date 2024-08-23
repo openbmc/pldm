@@ -1,8 +1,8 @@
 #include <libpldm/entity.h>
 #include <libpldm/oem/ibm/entity.h>
 #include <libpldm/oem/ibm/state_set.h>
-#include <stdint.h>
 
+#include <cstdint>
 #include <map>
 #include <string>
 

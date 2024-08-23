@@ -2,8 +2,6 @@
 
 #include "common/utils.hpp"
 
-#include <time.h>
-
 #include <phosphor-logging/lg2.hpp>
 
 #include <array>

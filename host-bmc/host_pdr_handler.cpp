@@ -6,8 +6,6 @@
 #endif
 #include "dbus/custom_dbus.hpp"
 
-#include <assert.h>
-
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/clock.hpp>
@@ -15,6 +13,7 @@
 #include <sdeventplus/source/io.hpp>
 #include <sdeventplus/source/time.hpp>
 
+#include <cassert>
 #include <fstream>
 #include <type_traits>
 
