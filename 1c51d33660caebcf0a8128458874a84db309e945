@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c935c209_1d0a225c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-26T04:45:29Z",
+      "side": 1,
+      "message": "sure, but that should be made compulsory ? so that implementations can decide what they want ? is effecter ID is provided use it, if not figure that out from the pdrRepo ? may be when some one really has that need they will add that in the code.. so i am okay with what we have currently.",
+      "parentUuid": "aa4db861_2c487405",
+      "range": {
+        "startLine": 43,
+        "startChar": 2,
+        "endLine": 43,
+        "endChar": 56
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41bf5198_d01a9cb4",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "The caller will and should print the error message when the API return `false` as this code\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/52514/13/host-bmc/dbus_to_terminus_effecters.cpp#362\nSo I think we don\u0027t need to print error inside API.",
       "parentUuid": "41bf5198_d01a9cb4",
+      "range": {
+        "startLine": 688,
+        "startChar": 7,
+        "endLine": 688,
+        "endChar": 20
+      },
+      "revId": "1c51d33660caebcf0a8128458874a84db309e945",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e49425dd_c4badf59",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-26T04:45:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6234c272_778b7907",
       "range": {
         "startLine": 688,
         "startChar": 7,
