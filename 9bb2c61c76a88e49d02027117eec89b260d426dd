@@ -22,6 +22,23 @@
       },
       "revId": "9bb2c61c76a88e49d02027117eec89b260d426dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "052b04f5_76781b4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-26T14:58:11Z",
+      "side": 1,
+      "message": "These changing concerns pointer in FRU records data. The comment message should include more info about those changing.",
+      "revId": "9bb2c61c76a88e49d02027117eec89b260d426dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
