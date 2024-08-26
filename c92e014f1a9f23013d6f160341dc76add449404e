@@ -158,6 +158,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78ddd4b6_06cef0fc",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2024-08-26T10:15:08Z",
+      "side": 1,
+      "message": "please ignore this comment, but you could fix the alignment.",
+      "parentUuid": "8888f93b_888a4af7",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13e2b4af_c6209b3c",
         "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
         "patchSetId": 24
