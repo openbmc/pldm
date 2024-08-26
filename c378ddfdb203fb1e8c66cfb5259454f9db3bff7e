@@ -240,6 +240,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6daf2c36_a02d15c8",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-26T07:40:07Z",
+      "side": 1,
+      "message": "no PDI for this",
+      "parentUuid": "feff85b0_b19fd1d0",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "429a9b8a_ec7ee1fe",
@@ -271,6 +289,24 @@
       "side": 1,
       "message": "This requires other dependent changes",
       "parentUuid": "429a9b8a_ec7ee1fe",
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56279ce0_3c5b2f8c",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-26T07:40:07Z",
+      "side": 1,
+      "message": "checked it and PDI is not there for this",
+      "parentUuid": "26daa106_b2459491",
       "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -499,6 +535,30 @@
       "side": 1,
       "message": "This may require other dependent changes",
       "parentUuid": "d0468c77_092cd817",
+      "range": {
+        "startLine": 28,
+        "startChar": 22,
+        "endLine": 28,
+        "endChar": 35
+      },
+      "revId": "c378ddfdb203fb1e8c66cfb5259454f9db3bff7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d3d7f48_a653ccbb",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-26T07:40:07Z",
+      "side": 1,
+      "message": "checked and PDI is not available",
+      "parentUuid": "30fd4ec7_f2a7bcfa",
       "range": {
         "startLine": 28,
         "startChar": 22,
