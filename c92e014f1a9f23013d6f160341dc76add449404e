@@ -95,6 +95,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a5e9c16_db08bb63",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-08-26T12:02:32Z",
+      "side": 1,
+      "message": "Pls move to LG2. Change e.what() to e.",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a627185_a9ddff0d",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-08-26T12:02:32Z",
+      "side": 1,
+      "message": "Pls move to LG2. Change e.what() to e.",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce0c9e41_8b5fd348",
         "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
         "patchSetId": 24
@@ -112,6 +146,57 @@
         "endLine": 139,
         "endChar": 27
       },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dbd6d6a_faa8b1da",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-08-26T12:02:32Z",
+      "side": 1,
+      "message": "Change e.what() to e.",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ea1aecb_34bd9744",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-08-26T12:02:32Z",
+      "side": 1,
+      "message": "Change e.what() to e.",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da81725f_3d1c38b2",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-08-26T12:02:32Z",
+      "side": 1,
+      "message": "Add the input parameter and description",
       "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -216,6 +301,40 @@
         "endLine": 123,
         "endChar": 20
       },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab562b03_b0242944",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-08-26T12:02:32Z",
+      "side": 1,
+      "message": "Add the return here",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe985d64_bd0f1c32",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2024-08-26T12:02:32Z",
+      "side": 1,
+      "message": "Please add the function description inline with other APIs",
       "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
