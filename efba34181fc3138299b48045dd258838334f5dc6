@@ -22,6 +22,30 @@
       },
       "revId": "efba34181fc3138299b48045dd258838334f5dc6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68267b8d_b2d94e78",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002136
+      },
+      "writtenOn": "2024-08-27T00:43:13Z",
+      "side": 1,
+      "message": "SoftwareManager is watching /tmp/images and try to untar the image. The image will be removed if the untar is failed.",
+      "parentUuid": "f67190d3_45f51cb1",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 10
+      },
+      "revId": "efba34181fc3138299b48045dd258838334f5dc6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
