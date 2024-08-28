@@ -26,6 +26,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9eb7f5f9_156b4170",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "\u003e i am not sure why we need configurable local EID value that too from a meson option ? why can\u0027t we have it defined in the code? \n\nI agree that with the current design of `pldm` repo, BMC is BO, so defined BMC Local EID is reasonable solution.\nBut if BMC is not BO, it EID can be set by BO, with assuming that the set EID is static, providing the meson option will be more reasonable and flexible.\n\n\u003e \n\u003e and EID is not a pldm default option, its actually an MCTP default, we cannot assume any EID independently right ?\n\nYes, I agree. The MCTP D-Bus interface should be updated to support `local-eid` D-Bus property for specific medium interface which connected to BMC.\n\n\u003e \n\u003e Ideally i would think pldm should be getting an EID from an MCTP exposed interface ? rather than from a meson config file ?\n\nI agree, if that option is available then we use it. But it is not available atm.\n\nI have no problem with using the defined in code value for BMCLocalEid, at this moment, I think for other OEM BMC is also BO.\n\nFor future design to support setting event receiver when BMC is Endpoint, I think I need discuss with Jerremy about proposing the BMC EID for specific medium interface.",
+      "parentUuid": "920c9999_94b0a1f1",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 25
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a06bbd0_30d6c1f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "I will update code to use BmcLocalEid later.",
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b01f818_06550fb7",
         "filename": "platform-mc/platform_manager.cpp",
         "patchSetId": 4
@@ -37,6 +78,30 @@
       "writtenOn": "2024-08-28T07:10:35Z",
       "side": 1,
       "message": "what is this magic number ?",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 29
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ec78509_c5fdfd58",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "I updated to use `HEARTBEAT_TIMEOUT` setting as the value for heartbeatTimer.",
+      "parentUuid": "5b01f818_06550fb7",
       "range": {
         "startLine": 107,
         "startChar": 8,
@@ -70,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7c9b69d_2b008fa0",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a94b31af_e8e574a0",
+      "range": {
+        "startLine": 374,
+        "startChar": 33,
+        "endLine": 374,
+        "endChar": 46
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7a1c45b_a29c0f87",
@@ -87,6 +176,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a193b2_912d08dc",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7a1c45b_a29c0f87",
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2c306fb_f6edd9c3",
@@ -100,6 +207,30 @@
       "writtenOn": "2024-08-28T07:10:35Z",
       "side": 1,
       "message": "this should be `completionCode` right ?",
+      "range": {
+        "startLine": 426,
+        "startChar": 18,
+        "endLine": 426,
+        "endChar": 20
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ace529e_db2087cc",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "a2c306fb_f6edd9c3",
       "range": {
         "startLine": 426,
         "startChar": 18,
@@ -133,6 +264,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "59336c51_de2ab535",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "I calculate eventClassCount by `responseLen - PLDM_EVENT_MESSAGE_SUPPORTED_MIN_RESP_BYTES`.\nI also try to directly use `eventClass` instead of add new variable `eventClassReturned`.",
+      "parentUuid": "96ed8fe6_4795ee41",
+      "range": {
+        "startLine": 462,
+        "startChar": 4,
+        "endLine": 462,
+        "endChar": 68
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1da44f12_cf0d1245",
@@ -156,6 +311,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24c92298_f88bae25",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1da44f12_cf0d1245",
+      "range": {
+        "startLine": 482,
+        "startChar": 7,
+        "endLine": 482,
+        "endChar": 21
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88deb0e5_631a9563",
@@ -169,6 +348,24 @@
       "writtenOn": "2024-08-28T07:10:35Z",
       "side": 1,
       "message": "if its a multi line comment, then the ending */ should be in a new line",
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ce25c6b_63d5f688",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-08-28T09:36:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88deb0e5_631a9563",
       "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
