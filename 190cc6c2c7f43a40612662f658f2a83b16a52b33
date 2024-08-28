@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "920c9999_94b0a1f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "i am not sure why we need configurable local EID value that too from a meson option ? why can\u0027t we have it defined in the code? \n\nand EID is not a pldm default option, its actually an MCTP default, we cannot assume any EID independently right ? \n\nIdeally i would think pldm should be getting an EID from an MCTP exposed interface ? rather than from a meson config file ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 25
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b01f818_06550fb7",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "what is this magic number ?",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 107,
+        "endChar": 29
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a94b31af_e8e574a0",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 374,
+        "startChar": 33,
+        "endLine": 374,
+        "endChar": 46
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7a1c45b_a29c0f87",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "new line",
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2c306fb_f6edd9c3",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "this should be `completionCode` right ?",
+      "range": {
+        "startLine": 426,
+        "startChar": 18,
+        "endLine": 426,
+        "endChar": 20
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96ed8fe6_4795ee41",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "wanna initialize this explicitly to 0 ?",
+      "range": {
+        "startLine": 462,
+        "startChar": 4,
+        "endLine": 462,
+        "endChar": 68
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1da44f12_cf0d1245",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "co_return completionCode instead ?",
+      "range": {
+        "startLine": 482,
+        "startChar": 7,
+        "endLine": 482,
+        "endChar": 21
+      },
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88deb0e5_631a9563",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-08-28T07:10:35Z",
+      "side": 1,
+      "message": "if its a multi line comment, then the ending */ should be in a new line",
+      "revId": "190cc6c2c7f43a40612662f658f2a83b16a52b33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
