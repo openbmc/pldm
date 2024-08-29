@@ -1560,8 +1560,6 @@ class GetPDR : public CommandInterface
                 printNumericSensorPDR(data, respCnt, output);
                 break;
             case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
-                printAuxNamePDR(data, output);
-                break;
             case PLDM_EFFECTER_AUXILIARY_NAMES_PDR:
                 printAuxNamePDR(data, output);
                 break;
