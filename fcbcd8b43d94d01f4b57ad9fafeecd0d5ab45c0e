@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "05030270_a929d3b7",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-29T05:18:48Z",
+      "side": 1,
+      "message": "I verified the C-checks added, it mentioned that these checks have been incorporated in some related C++ checks. So I believe even if we remove these C checks we will be incorporating same functionality check in other C++ checks.",
+      "parentUuid": "5b788ce9_daeab710",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 13
+      },
+      "revId": "fcbcd8b43d94d01f4b57ad9fafeecd0d5ab45c0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b3adf78a_8f934825",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
