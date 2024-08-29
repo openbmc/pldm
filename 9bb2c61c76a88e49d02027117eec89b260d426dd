@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "85b38479_e83646d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-29T09:29:56Z",
+      "side": 1,
+      "message": "@Thu, @manoj - The pointer incrementation here is for FRU Record Data - \nSPEC - DSP0257_1.0.0 - Table 2 – PLDM FRU Record Data Format.\nWhen we get a SetFruRecordTable command(Table 11) we have a portion of FRU record data that needs to be parsed and updated and this FRU Record data can be one or more.\nThe `data` here corresponds to the size of the whole `pldm_fru_record_data_format` and based on the number of FRU fields present we need to update the `data` pointer based on the FRU Field Length.\nThat incrementing is done here.",
+      "parentUuid": "03406f5d_25514eb3",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "9bb2c61c76a88e49d02027117eec89b260d426dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "052b04f5_76781b4f",
