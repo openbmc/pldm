@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3fcbf2d_948aa014",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1f0b36f_44fa2859",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2701bf0_698c1ac4",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-27T06:03:14Z",
       "side": 1,
       "message": "Please rephrase",
+      "range": {
+        "startLine": 12,
+        "startChar": 49,
+        "endLine": 14,
+        "endChar": 56
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "619bb6b2_5efad24d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2701bf0_698c1ac4",
       "range": {
         "startLine": 12,
         "startChar": 49,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a77f49e_dbef7152",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3ce6908_ddedb61a",
+      "range": {
+        "startLine": 40,
+        "startChar": 49,
+        "endLine": 40,
+        "endChar": 66
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9687fead_489801cd",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-08-26T10:12:39Z",
       "side": 1,
       "message": "change it to lg2 style logging",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 79
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fda0151_d2dec6f8",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9687fead_489801cd",
       "range": {
         "startLine": 14,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07ef7116_66446185",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bdda122_cef164a8",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 51
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d408dbda_5d2cf1aa",
@@ -139,6 +259,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1cd7c53_6f78c5d8",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d408dbda_5d2cf1aa",
+      "range": {
+        "startLine": 46,
+        "startChar": 12,
+        "endLine": 49,
+        "endChar": 79
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a5e9c16_db08bb63",
@@ -152,6 +296,24 @@
       "writtenOn": "2024-08-26T12:02:32Z",
       "side": 1,
       "message": "Pls move to LG2. Change e.what() to e.",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29faba0d_57a4823f",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a5e9c16_db08bb63",
       "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -181,6 +343,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23ac0026_f7e0b120",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "I think this was as per previous discussions",
+      "parentUuid": "3a5affc9_d58fa7c8",
+      "range": {
+        "startLine": 82,
+        "startChar": 39,
+        "endLine": 82,
+        "endChar": 41
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a627185_a9ddff0d",
         "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
         "patchSetId": 24
@@ -192,6 +378,24 @@
       "writtenOn": "2024-08-26T12:02:32Z",
       "side": 1,
       "message": "Pls move to LG2. Change e.what() to e.",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "478a9415_554d9a48",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a627185_a9ddff0d",
       "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -209,6 +413,30 @@
       "writtenOn": "2024-08-27T07:36:09Z",
       "side": 1,
       "message": "use contains() here?",
+      "range": {
+        "startLine": 136,
+        "startChar": 8,
+        "endLine": 136,
+        "endChar": 59
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3ace980_16da2669",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1e49437_46477c2e",
       "range": {
         "startLine": 136,
         "startChar": 8,
@@ -244,6 +472,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d23061cc_ddb11cfe",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "adding trace inside for loop could be too many traces?",
+      "parentUuid": "ce0c9e41_8b5fd348",
+      "range": {
+        "startLine": 139,
+        "startChar": 12,
+        "endLine": 139,
+        "endChar": 27
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a56d3222_057c2e91",
         "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
         "patchSetId": 24
@@ -255,6 +507,30 @@
       "writtenOn": "2024-08-27T07:36:09Z",
       "side": 1,
       "message": "dbus alias - match_t",
+      "range": {
+        "startLine": 149,
+        "startChar": 56,
+        "endLine": 149,
+        "endChar": 69
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fffbede_e0030f30",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a56d3222_057c2e91",
       "range": {
         "startLine": 149,
         "startChar": 56,
@@ -290,6 +566,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "316dbd13_59b0bd24",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "I will keep this open so @manoj can clarify",
+      "parentUuid": "0ae15a8d_3f8af0cc",
+      "range": {
+        "startLine": 170,
+        "startChar": 23,
+        "endLine": 170,
+        "endChar": 63
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5378088a_8d09fdb5",
         "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
         "patchSetId": 24
@@ -301,6 +601,30 @@
       "writtenOn": "2024-08-27T06:03:14Z",
       "side": 1,
       "message": "Camel case?",
+      "range": {
+        "startLine": 207,
+        "startChar": 16,
+        "endLine": 207,
+        "endChar": 31
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d1389e4_48e0eacb",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5378088a_8d09fdb5",
       "range": {
         "startLine": 207,
         "startChar": 16,
@@ -328,6 +652,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abb17e72_25265149",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dbd6d6a_faa8b1da",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80e31bc1_044fc834",
@@ -341,6 +683,30 @@
       "writtenOn": "2024-08-27T06:03:14Z",
       "side": 1,
       "message": "Please add more information about which Dbus Call is failed",
+      "range": {
+        "startLine": 311,
+        "startChar": 13,
+        "endLine": 311,
+        "endChar": 62
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee1f55ce_bf32385a",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80e31bc1_044fc834",
       "range": {
         "startLine": 311,
         "startChar": 13,
@@ -368,6 +734,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "577c81cd_bcca396d",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ea1aecb_34bd9744",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5b39066_67aef26c",
@@ -381,6 +765,30 @@
       "writtenOn": "2024-08-27T07:36:09Z",
       "side": 1,
       "message": "redundant variable",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 50
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e7f6e2_938a1e6c",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5b39066_67aef26c",
       "range": {
         "startLine": 26,
         "startChar": 0,
@@ -414,6 +822,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4711fed_9858a4cc",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebfd15a6_52905909",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 40
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28f475ba_8a28d131",
@@ -437,6 +869,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3722471_7bae2f15",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28f475ba_8a28d131",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 75
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "467c1a5c_e71d3e45",
@@ -450,6 +906,30 @@
       "writtenOn": "2024-08-27T07:36:09Z",
       "side": 1,
       "message": "delete the constructors?",
+      "range": {
+        "startLine": 44,
+        "startChar": 3,
+        "endLine": 46,
+        "endChar": 1
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c22be947_e2e79571",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "467c1a5c_e71d3e45",
       "range": {
         "startLine": 44,
         "startChar": 3,
@@ -490,6 +970,48 @@
       "writtenOn": "2024-08-27T06:03:14Z",
       "side": 1,
       "message": "Please change CodeUpdate to the SlotHandler",
+      "range": {
+        "startLine": 81,
+        "startChar": 57,
+        "endLine": 81,
+        "endChar": 73
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1db31d0f_bb7c4255",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da81725f_3d1c38b2",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "541d70cc_256447a7",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c4aae68_f633dd09",
       "range": {
         "startLine": 81,
         "startChar": 57,
@@ -546,6 +1068,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eabd6ec7_8e97631e",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35979152_6381d9f9",
+      "range": {
+        "startLine": 90,
+        "startChar": 59,
+        "endLine": 90,
+        "endChar": 66
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8113c92f_f7f77a6e",
@@ -559,6 +1105,30 @@
       "writtenOn": "2024-08-26T10:12:39Z",
       "side": 1,
       "message": "return",
+      "range": {
+        "startLine": 91,
+        "startChar": 18,
+        "endLine": 91,
+        "endChar": 24
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21eca7dc_5dac601b",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8113c92f_f7f77a6e",
       "range": {
         "startLine": 91,
         "startChar": 18,
@@ -604,6 +1174,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee3ffc8a_dc51c32b",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78ddd4b6_06cef0fc",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13e2b4af_c6209b3c",
@@ -617,6 +1205,30 @@
       "writtenOn": "2024-08-26T10:12:39Z",
       "side": 1,
       "message": "D-Bus",
+      "range": {
+        "startLine": 121,
+        "startChar": 51,
+        "endLine": 121,
+        "endChar": 55
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "514476a1_cffc81a9",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13e2b4af_c6209b3c",
       "range": {
         "startLine": 121,
         "startChar": 51,
@@ -650,6 +1262,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62ff8dab_1286d038",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35ee3fdd_aaebca94",
+      "range": {
+        "startLine": 123,
+        "startChar": 7,
+        "endLine": 123,
+        "endChar": 20
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22778dae_12dc222e",
@@ -663,6 +1299,30 @@
       "writtenOn": "2024-08-27T06:03:14Z",
       "side": 1,
       "message": "`Present` property is set in inventory Manager. Do you think we need \"FromVPD\" in the function name?",
+      "range": {
+        "startLine": 137,
+        "startChar": 9,
+        "endLine": 137,
+        "endChar": 37
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b5a446_36306cbd",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22778dae_12dc222e",
       "range": {
         "startLine": 137,
         "startChar": 9,
@@ -696,6 +1356,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e134433_9ce1b2db",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96bfbe13_3887a703",
+      "range": {
+        "startLine": 141,
+        "startChar": 15,
+        "endLine": 141,
+        "endChar": 57
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab562b03_b0242944",
@@ -713,6 +1397,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13ec2f51_ccae8e65",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab562b03_b0242944",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b4b19e9_983ae6d2",
@@ -726,6 +1428,30 @@
       "writtenOn": "2024-08-27T07:36:09Z",
       "side": 1,
       "message": "dbus alias - match_t",
+      "range": {
+        "startLine": 163,
+        "startChar": 35,
+        "endLine": 163,
+        "endChar": 49
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cfda725_44ea29ed",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b4b19e9_983ae6d2",
       "range": {
         "startLine": 163,
         "startChar": 35,
@@ -759,6 +1485,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a69d811_e7cc9206",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c4bb39a_fab9148a",
+      "range": {
+        "startLine": 172,
+        "startChar": 16,
+        "endLine": 172,
+        "endChar": 44
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "386040d5_97b3129e",
@@ -772,6 +1522,30 @@
       "writtenOn": "2024-08-27T07:36:09Z",
       "side": 1,
       "message": "include it within \u003c\u003e",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 25
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85d50e3d_b47a7616",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "386040d5_97b3129e",
       "range": {
         "startLine": 3,
         "startChar": 0,
@@ -805,6 +1579,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b26a414_ccd804e6",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf26509a_53a6a019",
+      "range": {
+        "startLine": 263,
+        "startChar": 7,
+        "endLine": 265,
+        "endChar": 9
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "209f4242_8490aacf",
@@ -828,6 +1626,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04974698_d2ae0a95",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "209f4242_8490aacf",
+      "range": {
+        "startLine": 375,
+        "startChar": 8,
+        "endLine": 377,
+        "endChar": 9
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe985d64_bd0f1c32",
@@ -841,6 +1663,24 @@
       "writtenOn": "2024-08-26T12:02:32Z",
       "side": 1,
       "message": "Please add the function description inline with other APIs",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a193fba_3892a3dc",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-08-29T06:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe985d64_bd0f1c32",
       "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
