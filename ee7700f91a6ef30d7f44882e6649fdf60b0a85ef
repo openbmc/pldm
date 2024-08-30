@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb7ef9e_2aeb6f8a",
+        "filename": "common/utils.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-08-30T05:20:43Z",
+      "side": 1,
+      "message": "nit: it is good to give some meaningful name",
+      "range": {
+        "startLine": 183,
+        "startChar": 6,
+        "endLine": 183,
+        "endChar": 15
+      },
+      "revId": "ee7700f91a6ef30d7f44882e6649fdf60b0a85ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cd3e7e0_56dc76e2",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-08-30T05:20:43Z",
+      "side": 1,
+      "message": "nit: Can we change `innerMap` to `jsonInterfaceMap` for better readability?\nSimilarly for other json objects.",
+      "range": {
+        "startLine": 266,
+        "startChar": 17,
+        "endLine": 266,
+        "endChar": 25
+      },
+      "revId": "ee7700f91a6ef30d7f44882e6649fdf60b0a85ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14c09c47_b98e81c5",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-08-30T05:20:43Z",
+      "side": 1,
+      "message": "change to Camel case",
+      "range": {
+        "startLine": 46,
+        "startChar": 22,
+        "endLine": 46,
+        "endChar": 31
+      },
+      "revId": "ee7700f91a6ef30d7f44882e6649fdf60b0a85ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b424d8_93c9fd0a",
+        "filename": "host-bmc/utils.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-08-30T05:20:43Z",
+      "side": 1,
+      "message": "Change to camel case",
+      "range": {
+        "startLine": 48,
+        "startChar": 5,
+        "endLine": 48,
+        "endChar": 11
+      },
+      "revId": "ee7700f91a6ef30d7f44882e6649fdf60b0a85ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61c6fe0e_0d0278cb",
+        "filename": "meson.build",
+        "patchSetId": 27
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2024-08-30T05:20:43Z",
+      "side": 1,
+      "message": "Do we still need `Cereal` Library?",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 0
+      },
+      "revId": "ee7700f91a6ef30d7f44882e6649fdf60b0a85ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
