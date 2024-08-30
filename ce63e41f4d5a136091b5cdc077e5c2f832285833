@@ -46,6 +46,30 @@
       },
       "revId": "ce63e41f4d5a136091b5cdc077e5c2f832285833",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a9b5dd_e0a61d2b",
+        "filename": ".clang-tidy",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-08-30T06:39:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f1853700_de769773",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 64
+      },
+      "revId": "ce63e41f4d5a136091b5cdc077e5c2f832285833",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
