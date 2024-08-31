@@ -51,6 +51,24 @@
       "parentUuid": "19773e72_61b76f2c",
       "revId": "427ed8bcb5d27871bc4c3cbde19c3cb1a1f16b52",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "164ab19a_58c5e7ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2024-08-31T03:00:54Z",
+      "side": 1,
+      "message": "What problems with existing MCTP devices like NVME, CXL, ... that do not support ENTITY_AUXILIARY_NAMES_PDR but still contain PDRs for sensors and other information? Do they need to be configured with mctpreactor https://gerrit.openbmc.org/c/openbmc/dbus-sensors/+/69111?",
+      "parentUuid": "0a34fe68_b4db73c9",
+      "revId": "427ed8bcb5d27871bc4c3cbde19c3cb1a1f16b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
