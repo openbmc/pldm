@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3972363_7e93b1d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-02T10:58:25Z",
+      "side": 1,
+      "message": "How about adding:\nThe adding clang-analyzer checks in the groups:\n+ apiModeling\n+ core\n+ cplusplus\n+ nullability\n+ optin\n+ security\n+ unix\n+ valist\n+ webkit",
+      "revId": "ea438db1e3c5b4cbe50872d5ff4e77c3696c4ba4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
