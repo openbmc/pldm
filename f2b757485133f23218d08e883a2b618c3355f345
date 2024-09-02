@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19e8bd52_7bc8b4d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-02T09:47:37Z",
+      "side": 1,
+      "message": "Please add the list of Clang group is adding in commit message.",
+      "revId": "f2b757485133f23218d08e883a2b618c3355f345",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
