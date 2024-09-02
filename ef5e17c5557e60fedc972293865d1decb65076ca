@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0870df40_ce45cc48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-02T09:25:20Z",
+      "side": 1,
+      "message": "Please add more detailed about the supported configuration in commit message.",
+      "revId": "ef5e17c5557e60fedc972293865d1decb65076ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
