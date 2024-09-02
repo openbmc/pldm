@@ -372,7 +372,7 @@ class Handler
                         size_t respMsgLen)
     {
         RequestKey key{eid, instanceId, type, command};
-        if (handlers.contains(key))
+        if (handlers.contains(key) && !removeRequestContainer.contains(key))
         {
             auto& [request, responseHandler, timerInstance] = handlers[key];
             request->stop();
