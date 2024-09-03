@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2bd6667b_44e3e954",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-03T05:55:58Z",
+      "side": 1,
+      "message": "Note that this isn\u0027t necessary when the struct doesn\u0027t use the flexible array member magic, we can just declare the struct directly.",
+      "parentUuid": "9ae109ad_898a97ab",
+      "revId": "d8532fd83ec36edce3406a22703f14d78381e84d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16e1270e_564ea18d",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 86
