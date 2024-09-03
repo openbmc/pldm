@@ -22,6 +22,30 @@
       },
       "revId": "2b8bafa561762ae16669e77b6c091ff7bcc31f69",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c17cf515_4689ad50",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000393
+      },
+      "writtenOn": "2024-09-03T02:11:42Z",
+      "side": 1,
+      "message": "In member function ‘void pldm::responder::SlotHandler::timeOutHandler()’:\n../oem/ibm/libpldmresponder/collect_slot_vpd.cpp:19:48: error: cannot bind packed field ‘((pldm::responder::SlotHandler*)this)-\u003epldm::responder::SlotHandler::currentOnGoingSlotEntity.pldm_entity::entity_type’ to ‘lg2::details::header_str_conversion_t\u003cshort unsigned int\u0026\u003e’ {aka ‘short unsigned int\u0026’}\n   19 |         \"ENTITY_TYP\", currentOnGoingSlotEntity.entity_type, \"ENTITY_NUM\",\n      |                       ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~\n\n\nI dont think I can remove this casting",
+      "parentUuid": "5d3c7d4f_12ea84cb",
+      "range": {
+        "startLine": 18,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 77
+      },
+      "revId": "2b8bafa561762ae16669e77b6c091ff7bcc31f69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
