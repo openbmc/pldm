@@ -97,6 +97,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c75377ac_f7f232b5",
+        "filename": "libpldmresponder/meson.build",
+        "patchSetId": 24
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-03T03:40:09Z",
+      "side": 1,
+      "message": "tabs",
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a3ce6908_ddedb61a",
         "filename": "libpldmresponder/oem_handler.hpp",
         "patchSetId": 24
@@ -355,6 +372,30 @@
       "side": 1,
       "message": "I think this was as per previous discussions",
       "parentUuid": "3a5affc9_d58fa7c8",
+      "range": {
+        "startLine": 82,
+        "startChar": 39,
+        "endLine": 82,
+        "endChar": 41
+      },
+      "revId": "c92e014f1a9f23013d6f160341dc76add449404e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2aa88e2_caa9e648",
+        "filename": "oem/ibm/libpldmresponder/collect_slot_vpd.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-03T03:40:09Z",
+      "side": 1,
+      "message": "please write down a comment on why its resanable to have 60 second timer.",
+      "parentUuid": "23ac0026_f7e0b120",
       "range": {
         "startLine": 82,
         "startChar": 39,
