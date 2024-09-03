@@ -70,6 +70,24 @@
       "parentUuid": "352c56e1_a5edf5d6",
       "revId": "cfe4a9c8444436c1fc5a57912e8a8866e8fd6ae3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bd3fc47_0cfe316d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002022
+      },
+      "writtenOn": "2024-09-03T10:09:57Z",
+      "side": 1,
+      "message": "The `updateAvailableState()` brief says that the sensor stop polling flow will be executed while the `false` state. I think it will not start sensor polling again while the `ture` state. I do not find the restart sensor polling code also.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/73012/4/platform-mc/manager.hpp#99\n\nThe `getAvailableState()` is checked in `doSensorPollingTask`. However, the function is stopped due to the timer and it will not check the available state again.\nhttps://github.com/openbmc/pldm/blob/master/platform-mc/sensor_manager.cpp#L170\nhttps://github.com/openbmc/pldm/blob/master/platform-mc/sensor_manager.cpp#L187\nhttps://github.com/openbmc/pldm/blob/master/platform-mc/sensor_manager.cpp#L259\n\nThe sensor polling Timer:\nhttps://github.com/openbmc/pldm/blob/master/platform-mc/sensor_manager.cpp#L50-L63",
+      "parentUuid": "0a9fa4f9_04b3295e",
+      "revId": "cfe4a9c8444436c1fc5a57912e8a8866e8fd6ae3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
