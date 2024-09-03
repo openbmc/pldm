@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ae109ad_898a97ab",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-03T05:46:10Z",
+      "side": 1,
+      "message": "I think we leak `cper_event`? I can\u0027t see the corresponding free from a brief scan.\n\nI\u0027ve developed a pattern for avoiding the leak, and `reinterpret_cast\u003c\u003e()`, while staying inside the boundaries of the language. The trick is to use \"placement new\".\n\nAssuming we have:\n\n```\nconstexpr size_t msgDataLen \u003d sizeof(pldm_platform_cper_event) + cperEventDateSize;\n```\n\nthen for the heap, as we need in this case:\n\n```\n#include \u003cmemory\u003e\n\nauto msgData \u003d std::make_unique\u003cunsigned char[]\u003e(msgDataLen);\nauto msg \u003d new (msgData.get()) pldm_platform_cper_event;\n...\n```\n\nFor the stack it is:\n\n```\nalignas(platform_cper_event) unsigned char msgData[msgDataLen];\nauto msg \u003d new (msgData) pldm_platform_cper_event;\n...\n```\n\nDestructors need to be invoked explicitly for placement new, but as we\u0027re using POD types generally we can ignore that and let them go out of scope without running the destructor.",
+      "revId": "d8532fd83ec36edce3406a22703f14d78381e84d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16e1270e_564ea18d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-03T05:46:10Z",
+      "side": 1,
+      "message": "I\u0027m bothered that we have the `_data` suffix on the function. We\u0027re _not_ decoding the CPER data, we\u0027re decoding the event message. Can we drop `_data` from the name?",
+      "revId": "d8532fd83ec36edce3406a22703f14d78381e84d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
