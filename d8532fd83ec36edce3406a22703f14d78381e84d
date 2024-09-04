@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62ab908f_ceddf4be",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-04T14:29:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bd6667b_44e3e954",
+      "revId": "d8532fd83ec36edce3406a22703f14d78381e84d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16e1270e_564ea18d",
@@ -49,6 +67,24 @@
       "writtenOn": "2024-09-03T05:46:10Z",
       "side": 1,
       "message": "I\u0027m bothered that we have the `_data` suffix on the function. We\u0027re _not_ decoding the CPER data, we\u0027re decoding the event message. Can we drop `_data` from the name?",
+      "revId": "d8532fd83ec36edce3406a22703f14d78381e84d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88b1f98b_0a6c365f",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 86
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-04T14:29:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16e1270e_564ea18d",
       "revId": "d8532fd83ec36edce3406a22703f14d78381e84d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
