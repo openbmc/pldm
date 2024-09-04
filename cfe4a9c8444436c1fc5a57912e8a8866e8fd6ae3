@@ -88,6 +88,24 @@
       "parentUuid": "0a9fa4f9_04b3295e",
       "revId": "cfe4a9c8444436c1fc5a57912e8a8866e8fd6ae3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "174ba1fd_52f12968",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-04T09:09:41Z",
+      "side": 1,
+      "message": "I updated code of patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/73012/5..6 to support start sensor polling again.\nI also set all sensors of terminus which is not available for PLDM request to nan. Please check.\nThanks for your comments.",
+      "parentUuid": "0bd3fc47_0cfe316d",
+      "revId": "cfe4a9c8444436c1fc5a57912e8a8866e8fd6ae3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
