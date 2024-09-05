@@ -17,34 +17,41 @@ void InventoryItemManager::createInventoryItem(
     const std::string& activeVersion,
     std::shared_ptr<UpdateManager> updateManager)
 {
-    if (!inventoryPathMap.at(eid).empty())
-    {
-        const auto boardPath = getBoardPath(inventoryPathMap.at(eid));
-        if (boardPath.empty())
-        {
-            return;
-        }
-        auto devicePath = boardPath + "_" + deviceName;
-        auto inventoryItem = std::make_unique<InventoryItemBoardIntf>(
-            utils::DBusHandler::getBus(), devicePath.c_str());
-        inventoryItems.emplace_back(std::move(inventoryItem));
+	try
+	{
+		if (!inventoryPathMap.at(eid).empty())
+		{
+			const auto boardPath = getBoardPath(inventoryPathMap.at(eid));
+			if (boardPath.empty())
+			{
+				return;
+			}
+			auto devicePath = boardPath + "_" + deviceName;
+			auto inventoryItem = std::make_unique<InventoryItemBoardIntf>(
+				utils::DBusHandler::getBus(), devicePath.c_str());
+			inventoryItems.emplace_back(std::move(inventoryItem));
 
-        const auto softwarePath = "/xyz/openbmc_project/software/" +
-                                  devicePath.substr(devicePath.rfind("/") + 1) +
-                                  "_" + getVersionId(activeVersion);
+			const auto softwarePath = "/xyz/openbmc_project/software/" +
+									  devicePath.substr(devicePath.rfind("/") + 1) +
+									  "_" + getVersionId(activeVersion);
 
-        createVersion(softwarePath, activeVersion, VersionPurpose::Other);
-        updateManager->assignActivation(std::make_shared<Activation>(utils::DBusHandler::getBus(),
-                                                                     softwarePath,
-                                                                     Activations::Active,updateManager.get()));
-        createAssociation(softwarePath, "running", "ran_on", devicePath);
+			createVersion(softwarePath, activeVersion, VersionPurpose::Other);
+			updateManager->assignActivation(std::make_shared<Activation>(utils::DBusHandler::getBus(),
+																		 softwarePath,
+																		 Activations::Active,updateManager.get()));
+			createAssociation(softwarePath, "running", "ran_on", devicePath);
 
-        if (updateManager)
-        {
-            codeUpdaters.emplace_back(std::make_unique<CodeUpdater>(
-                utils::DBusHandler::getBus(), softwarePath.c_str(), updateManager));
-        }
-    }
+			if (updateManager)
+			{
+				codeUpdaters.emplace_back(std::make_unique<CodeUpdater>(
+					utils::DBusHandler::getBus(), softwarePath.c_str(), updateManager));
+			}
+		}
+	}
+	catch(const std::out_of_range& e)
+	{
+		error("Failed to find eid in map, error, EID is {EID} - {ERROR}","EID",unsigned(eid), "ERROR", e.what());
+	}
 }
 
 using EVP_MD_CTX_Ptr =

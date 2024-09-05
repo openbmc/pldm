@@ -373,8 +373,12 @@ void InventoryManager::queryDownstreamIdentifiers(mctp_eid_t eid,
                              sizeof(pldm_downstream_device);
 
         Descriptors descriptors{};
+        info("Downstream get descriptor start!");
+        info("There are {COUNT} descriptors","COUNT",descriptorCount);
         for (uint8_t i = 0; i < descriptorCount; i++)
         {
+            info("Descriptor {C}", "C", i+1);
+            info("downstreamDevicesData.length = {D}","D",downstreamDevicesData.length);
             uint16_t descriptorType = 0;
             variable_field descriptorData{};
 
@@ -388,6 +392,10 @@ void InventoryManager::queryDownstreamIdentifiers(mctp_eid_t eid,
                     "Decoding downstream descriptor type, length and value failed, EID={EID}, RC = {RC}",
                     "EID", unsigned(eid), "RC", rc);
                 return;
+            }
+            else
+            {
+                info("Get Downstream success this time");
             }
 
             if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
