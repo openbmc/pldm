@@ -241,7 +241,7 @@ int pldm::responder::oem_ibm_utils::Handler::setCoreCount(
                     searchpath, 0 /* depth */, cpuInterface);
                 for (const auto& [objectPath, serviceMap] : response)
                 {
-                    // find the object path with first occurance of coreX
+                    // find the object path with first occurrence of coreX
                     if (objectPath.contains(grepWord))
                     {
                         pldm::utils::DBusMapping dbusMapping{

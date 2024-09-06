@@ -375,7 +375,7 @@ void HostEffecterParser::processTerminusNumericEffecterChangeNotification(
         return;
     }
 
-    /* Bypass the setting when the current value is NA or settting value is NA*/
+    /* Bypass the setting when the current value is NA or setting value is NA*/
     if (std::isnan(propValues.propertyValue) || std::isnan(val))
     {
         return;
