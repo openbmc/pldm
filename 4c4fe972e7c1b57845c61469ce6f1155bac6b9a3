@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae430df2_74eda036",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-06T13:47:32Z",
+      "side": 1,
+      "message": "Should this not be (note: not compiled, not tested):\n\n```\nofs.write(pldm_platform_cper_event_event_data(cperEvent), cperEvent-\u003eevent_data_length);\n```\n\n?",
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "55b1cf0a_5837997d",
