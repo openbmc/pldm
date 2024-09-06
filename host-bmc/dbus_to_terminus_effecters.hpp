@@ -213,7 +213,7 @@ class HostEffecterParser
         const std::string& objectPath, const std::string& interface,
         size_t effecterInfoIndex, size_t dbusInfoIndex, uint16_t effecterId);
 
-    /* @brief Adjust the nummeric effecter value base on the effecter
+    /* @brief Adjust the numeric effecter value base on the effecter
      *        configurations
      *
      * @param[in] value - Raw value

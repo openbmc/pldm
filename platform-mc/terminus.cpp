@@ -61,10 +61,10 @@ std::optional<std::string_view> Terminus::findTerminusName()
         [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
             const auto& [key, entityNames] = *entityAuxiliaryNames;
             /**
-             * There is only one Overal system container entity in one terminus.
-             * The entity auxiliary name PDR of that terminus with the that type
-             *of containerID will include terminus name.
-             **/
+             * There is only one Overall system container entity in one
+             * terminus. The entity auxiliary name PDR of that terminus with the
+             * that type of containerID will include terminus name.
+             */
             return (
                 entityAuxiliaryNames &&
                 key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&

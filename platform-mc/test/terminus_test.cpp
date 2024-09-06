@@ -78,7 +78,7 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
         0x1,
         0x0,  // Entity instance number =1
         0,
-        0,    // Overal system
+        0,    // Overall system
         0,    // shared Name Count one name only
         01,   // nameStringCount
         0x65, 0x6e, 0x00,
@@ -193,7 +193,7 @@ TEST(TerminusTest, parseSensorAuxiliaryMultiNamesPDRTest)
         0x1,
         0x0,  // Entity instance number =1
         0,
-        0,    // Overal system
+        0,    // Overall system
         0,    // shared Name Count one name only
         01,   // nameStringCount
         0x65, 0x6e, 0x00,
@@ -313,7 +313,7 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
         0x1,
         0x0,  // Entity instance number =1
         0,
-        0,    // Overal system
+        0,    // Overall system
         0,    // shared Name Count one name only
         01,   // nameStringCount
         0x65, 0x6e, 0x00,
@@ -367,7 +367,7 @@ TEST(TerminusTest, parsePDRTestNoSensorPDR)
         0x1,
         0x0,  // Entity instance number =1
         0,
-        0,    // Overal system
+        0,    // Overall system
         0,    // shared Name Count one name only
         01,   // nameStringCount
         0x65, 0x6e, 0x00,
