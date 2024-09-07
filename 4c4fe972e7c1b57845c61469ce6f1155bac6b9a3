@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3db082bf_67b0636d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-07T22:55:31Z",
+      "side": 1,
+      "message": "Actually, the CPER fault log file will include all of fields in `Table 27 – CPEREvent class eventData format` but not only CperEvent eventData. The other application such as cper-parser in libcper to decode the CPER data.",
+      "parentUuid": "ae430df2_74eda036",
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "55b1cf0a_5837997d",
