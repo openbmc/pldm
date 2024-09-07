@@ -402,7 +402,7 @@ int FruImpl::getFRURecordByOption(
     size_t recordTableSize = table.size() - padBytes + 7;
     fruData.resize(recordTableSize, 0);
 
-    int rc = get_fru_record_by_option_check(
+    int rc = get_fru_record_by_option(
         table.data(), table.size() - padBytes, fruData.data(), &recordTableSize,
         recordSetIdentifer, recordType, fieldType);
 
