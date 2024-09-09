@@ -33,6 +33,42 @@
       "message": "Can we add `codespell` to README?",
       "revId": "a0dc3bde57eb6cd66a6bca9578884f640c469c71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ad0c35c_f887d5b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-09T01:33:37Z",
+      "side": 1,
+      "message": "thanks for fixing the changes.",
+      "parentUuid": "9797d524_299118d0",
+      "revId": "a0dc3bde57eb6cd66a6bca9578884f640c469c71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33579dcf_582aa0a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-09T01:33:37Z",
+      "side": 1,
+      "message": "Hey George - we can definitely add , but since it\u0027s not always yield correct result. we can only hint a suggestion to use tools like `codespell`.I will do that in the subsequent patch-set.",
+      "parentUuid": "027fe57e_261ac6a7",
+      "revId": "a0dc3bde57eb6cd66a6bca9578884f640c469c71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
