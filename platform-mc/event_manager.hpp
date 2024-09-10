@@ -10,6 +10,9 @@
 #include "terminus.hpp"
 #include "terminus_manager.hpp"
 
+/* CPEREvent class as `Table 11 - PLDM Event Types` DSP0248 V1.3.0 */
+#define PLDM_CPER_EVENT_CLASS 0x07
+
 namespace pldm
 {
 namespace platform_mc
@@ -91,6 +94,12 @@ class EventManager
     };
 
   protected:
+    virtual int processCperEvent(uint16_t eventId, const uint8_t* eventData,
+                                 const size_t eventDataSize);
+
+    int createCperDumpEntry(const std::string& dataType,
+                            const std::string& dataPath);
+
     int processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
                                   const uint8_t* sensorData,
                                   size_t sensorDataLength);
