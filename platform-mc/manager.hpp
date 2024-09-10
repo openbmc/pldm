@@ -101,7 +101,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         sensorManager.stopPolling(tid);
     }
 
-    /** @brief Sensor event handler funtion
+    /** @brief Sensor event handler function
      *
      *  @param[in] request - Event message
      *  @param[in] payloadLength - Event message payload size
@@ -118,8 +118,32 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
                          eventDataOffset;
         auto eventDataSize = payloadLength - eventDataOffset;
-        eventManager.handlePlatformEvent(tid, 0x00, PLDM_SENSOR_EVENT,
-                                         eventData, eventDataSize);
+        eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
+                                         PLDM_SENSOR_EVENT, eventData,
+                                         eventDataSize);
+        return PLDM_SUCCESS;
+    }
+
+    /** @brief CPER event handler function
+     *
+     *  @param[in] request - Event message
+     *  @param[in] payloadLength - Event message payload size
+     *  @param[in] tid - Terminus ID
+     *  @param[in] eventDataOffset - Event data offset
+     *
+     *  @return PLDM error code: PLDM_SUCCESS when there is no error in handling
+     *          the event
+     */
+    int handleCperEvent(const pldm_msg* request, size_t payloadLength,
+                        uint8_t /* formatVersion */, uint8_t tid,
+                        size_t eventDataOffset)
+    {
+        auto eventData =
+            const_cast<const uint8_t*>(request->payload) + eventDataOffset;
+        auto eventDataSize = payloadLength - eventDataOffset;
+        eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
+                                         PLDM_CPER_EVENT, eventData,
+                                         eventDataSize);
         return PLDM_SUCCESS;
     }
 
