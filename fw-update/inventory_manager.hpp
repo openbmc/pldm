@@ -229,7 +229,8 @@ class InventoryManager
     /** @brief Device identifiers of the managed FDs */
     DescriptorMap& descriptorMap;
 
-    std::vector<DescriptorMap> descriptorMaps;
+    /** @brief splited descriptor maps, each Map has 1 record only*/
+    std::vector<std::unique_ptr<DescriptorMap>> descriptorMaps;
 
     /** @brief Firmware Device names of the managed FDs */
     std::map<eid, FirmwareDeviceName> firmwareDeviceNameMap;
@@ -247,7 +248,8 @@ class InventoryManager
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
 
-    std::vector<ComponentInfoMap> componentInfoMaps;
+    /** @brief splited component info maps, each Map has 1 record only*/
+    std::vector<std::unique_ptr<ComponentInfoMap>> componentInfoMaps;
 
     /** @brief Aggregate Update Manager */
     std::shared_ptr<AggregateUpdateManager> aggregateUpdateManager;

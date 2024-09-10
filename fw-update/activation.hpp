@@ -103,6 +103,8 @@ class Activation : public ActivationIntf
      */
     Activations activation(Activations value) override;
 
+    const std::string& getObjPath(){return objPath;}
+
     /** @brief Overriding RequestedActivations property setter function
      */
     RequestedActivations

@@ -373,12 +373,8 @@ void InventoryManager::queryDownstreamIdentifiers(mctp_eid_t eid,
                              sizeof(pldm_downstream_device);
 
         Descriptors descriptors{};
-        info("Downstream get descriptor start!");
-        info("There are {COUNT} descriptors","COUNT",descriptorCount);
         for (uint8_t i = 0; i < descriptorCount; i++)
         {
-            info("Descriptor {C}", "C", i+1);
-            info("downstreamDevicesData.length = {D}","D",downstreamDevicesData.length);
             uint16_t descriptorType = 0;
             variable_field descriptorData{};
 
@@ -392,10 +388,6 @@ void InventoryManager::queryDownstreamIdentifiers(mctp_eid_t eid,
                     "Decoding downstream descriptor type, length and value failed, EID={EID}, RC = {RC}",
                     "EID", unsigned(eid), "RC", rc);
                 return;
-            }
-            else
-            {
-                info("Get Downstream success this time");
             }
 
             if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
@@ -802,11 +794,11 @@ void InventoryManager::getFirmwareParameters(mctp_eid_t eid,
     }
     componentInfoMap.emplace(eid, std::move(componentInfo));
 
-    descriptorMaps.emplace_back(DescriptorMap{{eid, descriptorMap.at(eid)}});
-    componentInfoMaps.emplace_back(ComponentInfoMap{{eid, componentInfoMap.at(eid)}});
+    descriptorMaps.emplace_back(std::make_unique<DescriptorMap>(DescriptorMap{{eid, descriptorMap.at(eid)}}));
+    componentInfoMaps.emplace_back(std::make_unique<ComponentInfoMap>(ComponentInfoMap{{eid, componentInfoMap.at(eid)}}));
 
     auto updateManager = std::make_shared<UpdateManager>(
-        event, handler, instanceIdDb, descriptorMaps.back(), componentInfoMaps.back(),
+        event, handler, instanceIdDb, *descriptorMaps.back(), *componentInfoMaps.back(),
         false /* do not watch folder*/);
 
     aggregateUpdateManager->addUpdateManager(updateManager);

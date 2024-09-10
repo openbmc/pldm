@@ -36,13 +36,13 @@ void InventoryItemManager::createInventoryItem(
 									  "_" + getVersionId(activeVersion);
 
 			createVersion(softwarePath, activeVersion, VersionPurpose::Other);
-			updateManager->assignActivation(std::make_shared<Activation>(utils::DBusHandler::getBus(),
-																		 softwarePath,
-																		 Activations::Active,updateManager.get()));
 			createAssociation(softwarePath, "running", "ran_on", devicePath);
 
 			if (updateManager)
 			{
+                updateManager->assignActivation(std::make_shared<Activation>(utils::DBusHandler::getBus(),
+                                                                            softwarePath,
+                                                                            Activations::Active,updateManager.get()));
 				codeUpdaters.emplace_back(std::make_unique<CodeUpdater>(
 					utils::DBusHandler::getBus(), softwarePath.c_str(), updateManager));
 			}
@@ -50,7 +50,7 @@ void InventoryItemManager::createInventoryItem(
 	}
 	catch(const std::out_of_range& e)
 	{
-		error("Failed to find eid in map, error, EID is {EID} - {ERROR}","EID",unsigned(eid), "ERROR", e.what());
+		error("Failed to find eid in map, error, EID is {EID} - {ERROR}","EID", unsigned(eid), "ERROR", e.what());
 	}
 }
 

@@ -178,6 +178,142 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     return 0;
 }
 
+int UpdateManager::processStream(std::stringstream&& instream)
+{
+    stream = std::move(instream);
+
+    // If no devices discovered, take no action on the package.
+    if (descriptorMap.empty())
+    {
+        error("Empty descriptorMap");
+        return 0;
+    }
+    namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+    // If a firmware activation of a package is in progress, don't proceed with
+    // package processing
+    if (activation)
+    {
+        if (activation->activation() ==
+            software::Activation::Activations::Activating)
+        {
+            error(
+                "Activation of PLDM fw update package for version '{VERSION}' already in progress.",
+                "VERSION", parser->pkgVersion);
+            return -1;
+        }
+    }
+    if (!stream.good())
+    {
+        error(
+            "Failed to open the PLDM fw update package file");
+        return -1;
+    }
+    stream.seekg(0,std::ios::end);
+    uintmax_t packageSize = stream.tellg();
+    if (packageSize < sizeof(pldm_package_header_information))
+    {
+        error(
+            "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
+            "SIZE", packageSize, "PACKAGE_HEADER_INFO_SIZE",
+            sizeof(pldm_package_header_information));
+        return -1;
+    }
+    stream.seekg(0);
+    std::vector<uint8_t> packageHeader(sizeof(pldm_package_header_information));
+    stream.read(reinterpret_cast<char*>(packageHeader.data()),
+                 sizeof(pldm_package_header_information));
+
+    auto pkgHeaderInfo =
+        reinterpret_cast<const pldm_package_header_information*>(
+            packageHeader.data());
+    auto pkgHeaderInfoSize = sizeof(pldm_package_header_information) +
+                             pkgHeaderInfo->package_version_string_length;
+    packageHeader.clear();
+    packageHeader.resize(pkgHeaderInfoSize);
+    stream.seekg(0);
+    stream.read(reinterpret_cast<char*>(packageHeader.data()),
+                 pkgHeaderInfoSize);
+    parser = parsePkgHeader(packageHeader);
+    if (parser == nullptr)
+    {
+        error("Invalid PLDM package header information");
+        return -1;
+    }
+    // Populate object path with the hash of the package version
+    size_t versionHash = std::hash<std::string>{}(parser->pkgVersion);
+    if(activation)
+        objPath = activation->getObjPath();
+    else
+        objPath = swRootPath + std::to_string(versionHash);
+
+    stream.seekg(0);
+    packageHeader.resize(parser->pkgHeaderSize);
+    stream.read(reinterpret_cast<char*>(packageHeader.data()),
+                 parser->pkgHeaderSize);
+    try
+    {
+        parser->parse(packageHeader, packageSize);
+    }
+    catch (const std::exception& e)
+    {
+        error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
+        if(activation)
+            activation->activation(software::Activation::Activations::Invalid);
+        else
+        {
+            activation = std::make_shared<Activation>(
+                pldm::utils::DBusHandler::getBus(), objPath,
+                software::Activation::Activations::Invalid, this);
+        }
+        parser.reset();
+        return -1;
+    }
+    auto deviceUpdaterInfos =
+        associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
+                              totalNumComponentUpdates);
+    if (!deviceUpdaterInfos.size())
+    {
+        error(
+            "No matching devices found with the PLDM firmware update package");
+        if(activation)
+            activation->activation(software::Activation::Activations::Invalid);
+        else
+        {
+            activation = std::make_shared<Activation>(
+                pldm::utils::DBusHandler::getBus(), objPath,
+                software::Activation::Activations::Invalid, this);
+        }
+        parser.reset();
+        return 0;
+    }
+    const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
+    const auto& compImageInfos = parser->getComponentImageInfos();
+    for (const auto& deviceUpdaterInfo : deviceUpdaterInfos)
+    {
+        const auto& fwDeviceIDRecord =
+            fwDeviceIDRecords[deviceUpdaterInfo.second];
+        auto search = componentInfoMap.find(deviceUpdaterInfo.first);
+        deviceUpdaterMap.emplace(
+            deviceUpdaterInfo.first,
+            std::make_unique<DeviceUpdater>(
+                deviceUpdaterInfo.first, stream, fwDeviceIDRecord,
+                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+    }
+    //fwPackageFilePath = packageFilePath;
+    if(activation)
+        activation->activation(software::Activation::Activations::Ready);
+    else
+    {
+        activation = std::make_shared<Activation>(
+            pldm::utils::DBusHandler::getBus(), objPath,
+            software::Activation::Activations::Ready, this);
+    }
+    activationProgress = std::make_shared<ActivationProgress>(
+        pldm::utils::DBusHandler::getBus(), objPath);
+    activation->activation(software::Activation::Activations::Activating);
+    return 0;
+}
+
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const DescriptorMap& descriptorMap,

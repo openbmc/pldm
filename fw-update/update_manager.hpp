@@ -12,6 +12,7 @@
 
 #include <chrono>
 #include <filesystem>
+#include <istream>
 #include <fstream>
 #include <tuple>
 #include <unordered_map>
@@ -67,6 +68,8 @@ class UpdateManager : public UpdateManagerInf
                 event.get(),
                 std::bind_front(&UpdateManager::processPackage, this));
         }
+        if (descriptorMap.empty())
+          error("Too bad");
     }
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -83,6 +86,8 @@ class UpdateManager : public UpdateManagerInf
                            const pldm_msg* request, size_t reqMsgLen) override;
 
     int processPackage(const std::filesystem::path& packageFilePath);
+
+    int processStream(std::stringstream&& instream);
 
     void assignActivation(std::shared_ptr<Activation> activation);
 
@@ -126,6 +131,7 @@ class UpdateManager : public UpdateManagerInf
     std::filesystem::path fwPackageFilePath;
     std::unique_ptr<PackageParser> parser;
     std::ifstream package;
+    std::stringstream stream;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
         deviceUpdaterMap;

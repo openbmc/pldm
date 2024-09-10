@@ -1,6 +1,7 @@
 #include "code_updater.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <sstream>
 
 PHOSPHOR_LOG2_USING;
 
@@ -12,41 +13,33 @@ sdbusplus::message::object_path
                              ApplyTimeIntf::RequestedApplyTimes /*applyTime*/)
 {
     info("Starting update for image {FD}", "FD", static_cast<int>(image));
+    
+    std::stringstream sstream(std::ios::in|std::ios::out|std::ios::binary);
+    writeToSstream(image, sstream);
 
-    auto objPath = "/xyz/openbmc_project/software/updates/test";
-
-    writeToFile(image, "/tmp/pldm_package");
-    close(image);
-    updateManager->processPackage("/tmp/pldm_package");
+    updateManager->processStream(std::move(sstream));
 
     return sdbusplus::message::object_path(objPath);
 }
 
-bool CodeUpdater::writeToFile(int imageFd, const std::string& path)
+bool CodeUpdater::writeToSstream(int imageFd, std::stringstream& sstream)
 {
-    FILE* outStream = popen(path.c_str(), "w");
-    if (outStream == nullptr)
+    if(!sstream)
     {
-        error("Failed to open file {PATH}, ERRNO={ERRNO}", "PATH", path,
-              "ERRNO", errno);
+        error("Invalid stringstream");
         return false;
     }
 
-    const int BUFFER_SIZE = 100;
+    const int BUFFER_SIZE = 0x200;
     ssize_t bytesRead;
     char buffer[BUFFER_SIZE];
-
     // Read from source and write to destination
     while ((bytesRead = read(imageFd, buffer, BUFFER_SIZE)) > 0)
     {
-        if (fwrite(buffer, 1, bytesRead, outStream) != (size_t)bytesRead)
-        {
-            error("Failed to write to file {PATH}, ERRNO={ERRNO}", "PATH", path,
-                  "ERRNO", errno);
-            return false;
-        }
+        sstream.write(buffer,bytesRead);
     }
-
+    sstream.seekg(0);
+    sstream.seekp(0);
     if (bytesRead < 0)
     {
         std::cerr << "Failed to read from source file: " << strerror(errno)

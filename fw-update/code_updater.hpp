@@ -26,9 +26,10 @@ class CodeUpdater : public UpdateIntf
     ~CodeUpdater() = default;
 
     CodeUpdater(sdbusplus::bus::bus& bus, const std::string& path,
-                const std::shared_ptr<UpdateManager>& updateManager) :
+                std::shared_ptr<UpdateManager> updateManager) :
         UpdateIntf(bus, path.c_str()),
-        updateManager(updateManager)
+        updateManager(updateManager),
+        objPath(path)
     {}
 
   private:
@@ -36,9 +37,11 @@ class CodeUpdater : public UpdateIntf
         startUpdate(sdbusplus::message::unix_fd image,
                     ApplyTimeIntf::RequestedApplyTimes applyTime) override;
 
-    bool writeToFile(int imageFd, const std::string& path);
+    bool writeToSstream(int imageFd, std::stringstream& path);
 
     std::shared_ptr<UpdateManager> updateManager;
+
+    std::string objPath;
 };
 
 } // namespace pldm::fw_update
