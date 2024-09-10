@@ -162,7 +162,7 @@ void SlotHandler::createPresenceMatch(const std::string& adapterObjectPath,
         propertiesChanged(adapterObjectPath,
                           "xyz.openbmc_project.Inventory.Item"),
         [this, adapterObjectPath, stateFieldValue,
-         entity](sdbusplus::message::message& msg) {
+         entity](sdbusplus::message_t& msg) {
             pldm::utils::DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
