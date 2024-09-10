@@ -1,6 +1,184 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "324ad00a_40473b6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 88
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "@Thu - this commit seems to do much more with the event logs and redfish message registries which is not explicitly stated in the commmit message, can we also split this into two commits - one with just the eventing infrastructure support \u0026 another with the cper event support.",
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17f082aa_2ad4620a",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "this log is very inefficient, add more details like the tid, eventid e.t.c",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f22b570_8749d388",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "you are subtractrating eventClassDataOffset from eventDataSize to calculate sensorDataLength. However, you don’t check if eventClassDataOffset is larger than eventDataSize. This could lead to potential underflows or unexpected behavior when processing sensor data. need to check `eventClassDataOffset \u003e eventDataSize` and return INVALID_ERROR ? or may be that is done as part of libpldm api ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 16,
+        "endLine": 45,
+        "endChar": 79
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3ab9667_6f634ab8",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "also add tid, eventid here ? and also this is lg2:error() ? not info ? since we are rturning PLDM_ERROR ?",
+      "range": {
+        "startLine": 52,
+        "startChar": 15,
+        "endLine": 53,
+        "endChar": 48
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df542a72_59a9228d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "redundant else after a return ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 9
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a231ff74_28ba37bc",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "why do we need this ? if it is not used anywhere ?",
+      "range": {
+        "startLine": 68,
+        "startChar": 35,
+        "endLine": 68,
+        "endChar": 51
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "233dd569_52f26dc6",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "make sure eventDataSize is more than PLDM_PLATFORM_CPER_EVENT_MIN_LENGTH ? first ?",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 21
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3eb691ce_4e0f49b0",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "can generate an exception",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 102,
+        "endChar": 37
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae430df2_74eda036",
@@ -66,6 +244,213 @@
       "writtenOn": "2024-09-06T03:05:43Z",
       "side": 1,
       "message": "Correct Fault Log properties to follow the interface https://github.com/openbmc/phosphor-dbus-interfaces/blob/522846cf10edf2bee60aa6867594db1efd8cd585/yaml/xyz/openbmc_project/Dump/Entry/FaultLog.interface.yaml#L8",
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8140b39_5be1080a",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "is there a design that talk about applications writing REDFISH_MESSAGE_ID and REDFISH_MESSAGE_ARGS in their code bases ? are these custom keys that some other application us designed to look at ? sounds pretty OEM behavior to me unless its documented in some design.",
+      "range": {
+        "startLine": 212,
+        "startChar": 2,
+        "endLine": 247,
+        "endChar": 5
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc94ac84_ff2c686f",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "The code is iterating through all entries in termini and checking if (tid !\u003d terminusId) in every iteration. It might be more efficient to use std::map::find() instead of iterating through the map if termini.",
+      "range": {
+        "startLine": 273,
+        "startChar": 5,
+        "endLine": 277,
+        "endChar": 9
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc165f02_6d6de205",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "wanna log unsupported event state ?",
+      "range": {
+        "startLine": 304,
+        "startChar": 15,
+        "endLine": 305,
+        "endChar": 26
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1dc594f_0d567723",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "if none, then reading is NaN, is it explicitly handled ? dont we want to call createSensorThresholdLogEntry() only if the reading is a valid value ?",
+      "range": {
+        "startLine": 333,
+        "startChar": 16,
+        "endLine": 334,
+        "endChar": 26
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a83f1e_644dc823",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "is the intention to return right after the 1st entry in the for loop ?",
+      "range": {
+        "startLine": 340,
+        "startChar": 12,
+        "endLine": 340,
+        "endChar": 22
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ac87615_e0208f4b",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "why do we have redfish registries names mentioned in pldm code base ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 53
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e858fd4_e3ee36f8",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "TerminiMapper\u0026",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 56
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18f24911_1fd50bad",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "doxygen needed for all of these functions.",
+      "range": {
+        "startLine": 97,
+        "startChar": 3,
+        "endLine": 109,
+        "endChar": 53
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d239127_649b94e0",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-10T07:25:31Z",
+      "side": 1,
+      "message": "need an ordered map here ?",
+      "range": {
+        "startLine": 118,
+        "startChar": 3,
+        "endLine": 118,
+        "endChar": 13
+      },
       "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
