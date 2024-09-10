@@ -87,6 +87,30 @@ class EventManager
                                   const uint8_t* sensorData,
                                   size_t sensorDataLength);
 
+    /** @brief Helper method to process the PLDM CPER event class
+     *
+     *  @param[in] tid - tid where the event is from
+     *  @param[in] eventId - Event ID which is the source of event
+     *  @param[in] eventData - CPER event data
+     *  @param[in] eventDataSize - event data length
+     *
+     *  @return PLDM completion code
+     */
+    int processCperEvent(pldm_tid_t tid, uint16_t eventId,
+                         const uint8_t* eventData, const size_t eventDataSize);
+
+    /** @brief Helper method to create CPER dump log
+     *
+     *  @param[in] dataType - CPER event data type
+     *  @param[in] dataPath - CPER event data fault log file path
+     *  @param[in] terminusName - Terminus name which creates CPER event
+     *
+     *  @return PLDM completion code
+     */
+    int createCperDumpEntry(const std::string& dataType,
+                            const std::string& dataPath,
+                            const std::string& terminusName);
+
     /** @brief Reference of terminusManager */
     TerminusManager& terminusManager;
 
