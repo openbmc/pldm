@@ -19,6 +19,11 @@ class MockEventManager : public EventManager
                 (const std::string& messageID, const std::string& sensorName,
                  const double reading, const double threshold),
                 (override));
+
+    MOCK_METHOD(int, processCperEvent,
+                (uint16_t eventId, const uint8_t* eventData,
+                 size_t eventDataSize),
+                (override));
 };
 
 } // namespace platform_mc

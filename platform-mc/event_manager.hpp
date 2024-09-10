@@ -10,6 +10,9 @@
 #include "terminus.hpp"
 #include "terminus_manager.hpp"
 
+/* CPEREvent class as `Table 11 - PLDM Event Types` DSP0248 V1.3.0 */
+#define PLDM_CPER_EVENT_CLASS 0x07
+
 namespace pldm
 {
 namespace platform_mc
@@ -126,6 +129,27 @@ class EventManager
     virtual int createSensorThresholdLogEntry(
         const std::string& messageID, const std::string& sensorName,
         const double reading, const double threshold);
+
+    /** @brief Helper method to process the PLDM CPER event class
+     *
+     *  @param[in] eventId - Event ID which is the source of event
+     *  @param[in] eventData - CPER event data
+     *  @param[in] eventDataSize - event data length
+     *
+     *  @return PLDM completion code
+     */
+    virtual int processCperEvent(uint16_t eventId, const uint8_t* eventData,
+                                 const size_t eventDataSize);
+
+    /** @brief Helper method to create CPER dump log
+     *
+     *  @param[in] dataType - CPER event data type
+     *  @param[in] dataPath - CPER event data fault log file path
+     *
+     *  @return PLDM completion code
+     */
+    int createCperDumpEntry(const std::string& dataType,
+                            const std::string& dataPath);
 
     /** @brief Reference of terminusManager */
     TerminusManager& terminusManager;
