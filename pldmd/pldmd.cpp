@@ -275,6 +275,13 @@ int main(int argc, char** argv)
         std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
 
     pldm::responder::platform::EventMap addOnEventHandlers{
+        {PLDM_CPER_EVENT,
+         {[&platformManager](const pldm_msg* request, size_t payloadLength,
+                             uint8_t formatVersion, uint8_t tid,
+                             size_t eventDataOffset) {
+             return platformManager->handleCperEvent(
+                 request, payloadLength, formatVersion, tid, eventDataOffset);
+         }}},
         {PLDM_SENSOR_EVENT,
          {[&platformManager](const pldm_msg* request, size_t payloadLength,
                              uint8_t formatVersion, uint8_t tid,
