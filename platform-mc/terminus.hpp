@@ -122,8 +122,12 @@ class Terminus
     }
 
     /** @brief The getter to get terminus's mctp medium */
-    std::string_view getTerminusName()
+    std::optional<std::string_view> getTerminusName()
     {
+        if (terminusName.empty())
+        {
+            return std::nullopt;
+        }
         return terminusName;
     }
 

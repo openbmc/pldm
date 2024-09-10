@@ -16,6 +16,13 @@ namespace platform_mc
 {
 
 /**
+ * In `Table 16 - PollForPlatformEventMessage command format` of DSP0248 V1.3.0.
+ * The event receiver shall use the null value 0x0000 when requesting the first
+ * entry from the terminus.
+ */
+#define NULL_EVENT_ID 0x0000
+
+/**
  * @brief EventManager
  *
  * This class manages PLDM events from terminus. The function includes providing
@@ -86,6 +93,30 @@ class EventManager
     int processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
                                   const uint8_t* sensorData,
                                   size_t sensorDataLength);
+
+    /** @brief Helper method to process the PLDM CPER event class
+     *
+     *  @param[in] tid - tid where the event is from
+     *  @param[in] eventId - Event ID which is the source of event
+     *  @param[in] eventData - CPER event data
+     *  @param[in] eventDataSize - event data length
+     *
+     *  @return PLDM completion code
+     */
+    int processCperEvent(pldm_tid_t tid, uint16_t eventId,
+                         const uint8_t* eventData, const size_t eventDataSize);
+
+    /** @brief Helper method to create CPER dump log
+     *
+     *  @param[in] dataType - CPER event data type
+     *  @param[in] dataPath - CPER event data fault log file path
+     *  @param[in] typeName - Terminus name which creates CPER event
+     *
+     *  @return PLDM completion code
+     */
+    int createCperDumpEntry(const std::string& dataType,
+                            const std::string& dataPath,
+                            const std::string& typeName);
 
     /** @brief Reference of terminusManager */
     TerminusManager& terminusManager;
