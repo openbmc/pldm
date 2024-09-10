@@ -187,7 +187,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(2, terminus->pdrs.size());
     EXPECT_EQ(1, terminus->numericSensors.size());
-    EXPECT_EQ("S0", terminus->getTerminusName());
+    EXPECT_EQ("S0", terminus->getTerminusName().value());
 }
 
 TEST_F(PlatformManagerTest, parseTerminusNameTest)
@@ -345,7 +345,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(2, terminus->pdrs.size());
-    EXPECT_EQ("S0", terminus->getTerminusName());
+    EXPECT_EQ("S0", terminus->getTerminusName().value());
 }
 
 TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)

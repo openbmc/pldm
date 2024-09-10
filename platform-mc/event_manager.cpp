@@ -58,6 +58,12 @@ int EventManager::handlePlatformEvent(
         }
     }
 
+    /* EventClass CPEREvent as `Table 11 - PLDM Event Types` DSP0248 V1.3.0 */
+    if (eventClass == PLDM_CPER_EVENT)
+    {
+        return processCperEvent(tid, eventId, eventData, eventDataSize);
+    }
+
     lg2::info("Unsupported class type {CLASSTYPE}", "CLASSTYPE", eventClass);
 
     return PLDM_ERROR;
@@ -301,6 +307,138 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
             break;
     }
 
+    return PLDM_SUCCESS;
+}
+
+int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
+                                   const uint8_t* eventData,
+                                   const size_t eventDataSize)
+{
+    if (eventDataSize < PLDM_PLATFORM_CPER_EVENT_MIN_LENGTH)
+    {
+        lg2::error(
+            "Error : Invalid CPER Event data length for eventId {EVENTID}.",
+            "EVENTID", eventId);
+        return PLDM_ERROR;
+    }
+    const size_t cperEventDataSize =
+        eventDataSize - PLDM_PLATFORM_CPER_EVENT_MIN_LENGTH;
+    const size_t msgDataLen =
+        sizeof(pldm_platform_cper_event) + cperEventDataSize;
+    std::string terminusName = "";
+    auto msgData = std::make_unique<unsigned char[]>(msgDataLen);
+    auto cperEvent = new (msgData.get()) pldm_platform_cper_event;
+
+    auto rc = decode_pldm_platform_cper_event(eventData, eventDataSize,
+                                              cperEvent, msgDataLen);
+
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode CPER event for eventId {EVENTID} of terminus ID {TID} error {RC}.",
+            "EVENTID", eventId, "TID", tid, "RC", rc);
+        return rc;
+    }
+
+    if (termini.contains(tid) && !termini[tid])
+    {
+        auto tmp = termini[tid]->getTerminusName();
+        if (tmp && !tmp.value().empty())
+        {
+            terminusName = static_cast<std::string>(tmp.value());
+        }
+    }
+
+    // Save event data to file
+    std::filesystem::path dirName{"/var/cper"};
+    if (!std::filesystem::exists(dirName))
+    {
+        try
+        {
+            std::filesystem::create_directory(dirName);
+        }
+        catch (const std::filesystem::filesystem_error& e)
+        {
+            lg2::error("Failed to create /var/cper directory: {ERROR}", "ERROR",
+                       e);
+            return PLDM_ERROR;
+        }
+    }
+
+    std::string fileName{dirName.string() + "/cper-XXXXXX"};
+    auto fd = mkstemp(fileName.data());
+    if (fd < 0)
+    {
+        lg2::error("Failed to generate temp file, error {ERRORNO}", "ERRORNO",
+                   std::strerror(errno));
+        return PLDM_ERROR;
+    }
+    close(fd);
+
+    std::ofstream ofs;
+    ofs.exceptions(std::ofstream::failbit | std::ofstream::badbit |
+                   std::ofstream::eofbit);
+
+    try
+    {
+        ofs.open(fileName);
+        ofs.write(reinterpret_cast<const char*>(
+                      pldm_platform_cper_event_event_data(cperEvent)),
+                  cperEvent->event_data_length);
+        if (cperEvent->format_type == PLDM_PLATFORM_CPER_EVENT_WITH_HEADER)
+        {
+            rc = createCperDumpEntry("CPER", fileName, terminusName);
+        }
+        else
+        {
+            rc = createCperDumpEntry("CPERSection", fileName, terminusName);
+        }
+        ofs.close();
+    }
+    catch (const std::ofstream::failure& e)
+    {
+        lg2::error("Failed to save CPER to '{FILENAME}', error - {ERROR}.",
+                   "FILENAME", fileName, "ERROR", e);
+        return PLDM_ERROR;
+    }
+    return rc;
+}
+
+int EventManager::createCperDumpEntry(const std::string& dataType,
+                                      const std::string& dataPath,
+                                      const std::string& typeName)
+{
+    auto createDump =
+        [](std::map<std::string, std::variant<std::string, uint64_t>>&
+               addData) {
+            static constexpr auto dumpObjPath =
+                "/xyz/openbmc_project/dump/faultlog";
+            static constexpr auto dumpInterface =
+                "xyz.openbmc_project.Dump.Create";
+            auto& bus = pldm::utils::DBusHandler::getBus();
+
+            try
+            {
+                auto service = pldm::utils::DBusHandler().getService(
+                    dumpObjPath, dumpInterface);
+                auto method = bus.new_method_call(service.c_str(), dumpObjPath,
+                                                  dumpInterface, "CreateDump");
+                method.append(addData);
+                bus.call_noreply(method);
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error(
+                    "Failed to create D-Bus Dump entry, error - {ERROR}.",
+                    "ERROR", e);
+            }
+        };
+
+    std::map<std::string, std::variant<std::string, uint64_t>> addData;
+    addData["Type"] = dataType;
+    addData["PrimaryLogId"] = dataPath;
+    addData["AdditionalTypeName"] = typeName;
+    createDump(addData);
     return PLDM_SUCCESS;
 }
 
