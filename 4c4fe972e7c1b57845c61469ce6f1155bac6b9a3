@@ -59,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b66071e1_dd8f9186",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17f082aa_2ad4620a",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 33
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f22b570_8749d388",
@@ -72,6 +96,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "you are subtractrating eventClassDataOffset from eventDataSize to calculate sensorDataLength. However, you don’t check if eventClassDataOffset is larger than eventDataSize. This could lead to potential underflows or unexpected behavior when processing sensor data. need to check `eventClassDataOffset \u003e eventDataSize` and return INVALID_ERROR ? or may be that is done as part of libpldm api ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 16,
+        "endLine": 45,
+        "endChar": 79
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "694217d6_fa5ffdb5",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "The API will handle that case and return invalid data length when `eventClassDataOffset \u003e eventDataSize`.",
+      "parentUuid": "3f22b570_8749d388",
       "range": {
         "startLine": 45,
         "startChar": 16,
@@ -105,6 +153,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50b1cde4_1d4e6fc9",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3ab9667_6f634ab8",
+      "range": {
+        "startLine": 52,
+        "startChar": 15,
+        "endLine": 53,
+        "endChar": 48
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df542a72_59a9228d",
@@ -118,6 +190,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "redundant else after a return ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 9
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b00c662c_c6fb5210",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "I will remove else in next patch set which support CPER event.",
+      "parentUuid": "df542a72_59a9228d",
       "range": {
         "startLine": 58,
         "startChar": 4,
@@ -153,6 +249,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "649d50be_d07d02fc",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "CPER event data does not include the eventID, it is from the `PlatformEventMessage` which trigger `pollForPlatformEventMessage` to get the full data of CPER event base on the `EventID` in `PlatformEventMessage`.\nThe `processCperEvent` code may not need the eventID ATM, but eventID is still verify important part of processing the CPER event info.\nThat why I would like to keep the eventID.",
+      "parentUuid": "a231ff74_28ba37bc",
+      "range": {
+        "startLine": 68,
+        "startChar": 35,
+        "endLine": 68,
+        "endChar": 51
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "233dd569_52f26dc6",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 88
@@ -164,6 +284,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "make sure eventDataSize is more than PLDM_PLATFORM_CPER_EVENT_MIN_LENGTH ? first ?",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 21
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde28f5f_178b6934",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Done in patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/74490",
+      "parentUuid": "233dd569_52f26dc6",
       "range": {
         "startLine": 73,
         "startChar": 8,
@@ -187,6 +331,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "can generate an exception",
+      "range": {
+        "startLine": 102,
+        "startChar": 7,
+        "endLine": 102,
+        "endChar": 37
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d337c00a_211bda2a",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Done in patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/74490",
+      "parentUuid": "3eb691ce_4e0f49b0",
       "range": {
         "startLine": 102,
         "startChar": 7,
@@ -327,6 +495,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "767bf9e6_09a84bb5",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Look at the table `Table 15 – PlatformEventMessage command format` in DSP0248 V1.3.0, after receive the platformEventMessage from terminus, the BMC need response the `log status`, that means BMC will role as logger for the events from the terminus. Terminus can\u0027t log the event to user. That\u0027s why it send the event to BMC.\nCurrently, there are two kind of log, Ipmitool and redfish log. Because PLDM is armed to replace ipmitool so we will not log PLDM Event log to ipmitool sel log but we should for redfish.",
+      "parentUuid": "c8140b39_5be1080a",
+      "range": {
+        "startLine": 212,
+        "startChar": 2,
+        "endLine": 247,
+        "endChar": 5
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc94ac84_ff2c686f",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 88
@@ -338,6 +530,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "The code is iterating through all entries in termini and checking if (tid !\u003d terminusId) in every iteration. It might be more efficient to use std::map::find() instead of iterating through the map if termini.",
+      "range": {
+        "startLine": 273,
+        "startChar": 5,
+        "endLine": 277,
+        "endChar": 9
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93cda61b_43b7f303",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc94ac84_ff2c686f",
       "range": {
         "startLine": 273,
         "startChar": 5,
@@ -373,6 +589,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11a4563f_c41c5b18",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "The possible states of eventState are\n```\nenum pldm_sensor_present_state {\n\tPLDM_SENSOR_UNKNOWN \u003d 0x0,\n\tPLDM_SENSOR_NORMAL \u003d 0x01,\n\tPLDM_SENSOR_WARNING \u003d 0x02,\n\tPLDM_SENSOR_CRITICAL \u003d 0x03,\n\tPLDM_SENSOR_FATAL \u003d 0x04,\n\tPLDM_SENSOR_LOWERWARNING \u003d 0x05,\n\tPLDM_SENSOR_LOWERCRITICAL \u003d 0x06,\n\tPLDM_SENSOR_LOWERFATAL \u003d 0x07,\n\tPLDM_SENSOR_UPPERWARNING \u003d 0x08,\n\tPLDM_SENSOR_UPPERCRITICAL \u003d 0x09,\n\tPLDM_SENSOR_UPPERFATAL \u003d 0x0a\n};\n```\nThe current code only checks the threshold state but the other state still possible so log should not be added.",
+      "parentUuid": "cc165f02_6d6de205",
+      "range": {
+        "startLine": 304,
+        "startChar": 15,
+        "endLine": 305,
+        "endChar": 26
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f1dc594f_0d567723",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 88
@@ -384,6 +624,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "if none, then reading is NaN, is it explicitly handled ? dont we want to call createSensorThresholdLogEntry() only if the reading is a valid value ?",
+      "range": {
+        "startLine": 333,
+        "startChar": 16,
+        "endLine": 334,
+        "endChar": 26
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b631fe0_73b88693",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f1dc594f_0d567723",
       "range": {
         "startLine": 333,
         "startChar": 16,
@@ -407,6 +671,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "is the intention to return right after the 1st entry in the for loop ?",
+      "range": {
+        "startLine": 340,
+        "startChar": 12,
+        "endLine": 340,
+        "endChar": 22
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "919d54e0_a19d4f04",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Yes, event is for one specific sensorID, so when the logging for sensorID is done the loop should exit.",
+      "parentUuid": "c4a83f1e_644dc823",
       "range": {
         "startLine": 340,
         "startChar": 12,
@@ -487,6 +775,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "435a3a3b_87201900",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e858fd4_e3ee36f8",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 56
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f24911_1fd50bad",
@@ -510,6 +822,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8192331_d6a2d1d0",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18f24911_1fd50bad",
+      "range": {
+        "startLine": 97,
+        "startChar": 3,
+        "endLine": 109,
+        "endChar": 53
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d239127_649b94e0",
@@ -523,6 +859,30 @@
       "writtenOn": "2024-09-10T07:25:31Z",
       "side": 1,
       "message": "need an ordered map here ?",
+      "range": {
+        "startLine": 118,
+        "startChar": 3,
+        "endLine": 118,
+        "endChar": 13
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dd2fdf8_3e780c42",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-11T00:56:33Z",
+      "side": 1,
+      "message": "I don\u0027t see much different between `std::map` (ordered map) and `std::unordered_map`. I just use `std::map` because I usually use it.",
+      "parentUuid": "5d239127_649b94e0",
       "range": {
         "startLine": 118,
         "startChar": 3,
