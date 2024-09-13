@@ -517,6 +517,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c10d12fa_07b91354",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-13T14:58:27Z",
+      "side": 1,
+      "message": "I updated code handle NumericSensorState event, to find the sensor object base on the Sensor ID, and call the method in numeric sensor  which similar as https://github.com/openbmc/pldm/blob/a7b08dc6c12777eab2cebfca20b6c13035582d84/platform-mc/numeric_sensor.cpp#L658 to create the threshold signals",
+      "parentUuid": "767bf9e6_09a84bb5",
+      "range": {
+        "startLine": 212,
+        "startChar": 2,
+        "endLine": 247,
+        "endChar": 5
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc94ac84_ff2c686f",
@@ -742,6 +766,30 @@
       "side": 1,
       "message": "We log the redfish log and ipmitool sel log for PLDM Sensor event so includes the SensorThresholdCriticalHighGoingHigh is required. Do I miss any thing in your comment?",
       "parentUuid": "8ac87615_e0208f4b",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 53
+      },
+      "revId": "4c4fe972e7c1b57845c61469ce6f1155bac6b9a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cefc36c9_980c8295",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-13T14:58:27Z",
+      "side": 1,
+      "message": "I removed the Redfish registries names.",
+      "parentUuid": "d9c1edaa_58c70fc5",
       "range": {
         "startLine": 21,
         "startChar": 0,
