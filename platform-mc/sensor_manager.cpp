@@ -319,10 +319,10 @@ exec::task<int>
         case PLDM_SENSOR_ENABLED:
             break;
         case PLDM_SENSOR_DISABLED:
-            sensor->updateReading(true, false, value);
+            sensor->updateReading(false, true, value);
             co_return completionCode;
         case PLDM_SENSOR_FAILED:
-            sensor->updateReading(false, true, value);
+            sensor->updateReading(true, false, value);
             co_return completionCode;
         case PLDM_SENSOR_UNAVAILABLE:
         default:
