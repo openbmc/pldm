@@ -54,6 +54,68 @@ struct SensorEntry
 using HostStateSensorMap = std::map<SensorEntry, pdr::SensorInfo>;
 using PDRList = std::vector<std::vector<uint8_t>>;
 
+class Routine
+{
+  public:
+    struct sensor_t
+    {
+        uint16_t sensorId;
+        pdr::TerminusID tid;
+        uint16_t eid;
+    };
+
+  private:
+    std::queue<sensor_t> sensor_queue;
+    std::array<bool, 32> pending_requests{};
+    std::unique_ptr<InstanceIdDb> instanceIdDb;
+    std::unordered_map<int, sensor_t> allocated_requests;
+    std::vector<std::function<void()>> resumeFunctions;
+    // std::queue<std::promise<void>> resumePromises;//as there is no
+    // sdbusplus::async::suspend
+
+  public:
+    Routine(std::unique_ptr<InstanceIdDb> idDb) : instanceIdDb(std::move(idDb))
+    {}
+
+    void addSensor(const sensor_t& sensor)
+    {
+        sensor_queue.push(sensor);
+    }
+
+    std::optional<std::pair<sensor_t, int>> getNextSensorWithId()
+    {
+        if (sensor_queue.empty())
+        {
+            return std::nullopt;
+        }
+        auto sensor = sensor_queue.front();
+        auto id = instanceIdDb->next(sensor.eid);
+        if (id < 32 && !pending_requests[id])
+        {
+            sensor_queue.pop();
+            pending_requests[id] = true;
+            allocated_requests[id] = sensor;
+            return std::make_pair(sensor, id);
+        }
+        return std::nullopt;
+    }
+
+    void freeId(int id, mctp_eid_t eid)
+    {
+        if (id >= 0 && id < 32)
+        {
+            pending_requests[id] = false;
+            allocated_requests.erase(id);
+            instanceIdDb->free(eid, id);
+        }
+    }
+
+    bool hasMoreSensors() const
+    {
+        return !sensor_queue.empty();
+    }
+};
+
 /** @class HostPDRHandler
  *  @brief This class can fetch and process PDRs from host firmware
  *  @details Provides an API to fetch PDRs from the host firmware. Upon
@@ -346,6 +408,10 @@ class HostPDRHandler
 
     /** @OEM Utils handler */
     pldm::responder::oem_utils::Handler* oemUtilsHandler;
+
+    sdbusplus::async::task<void> allocateSensorsTask(Routine& pdrHandler);
+    sdbusplus::async::task<void> sendRequestTask(
+        Routine& pdrHandler, Routine::sensor_t sensor, int instanceId);
 };
 
 } // namespace pldm
