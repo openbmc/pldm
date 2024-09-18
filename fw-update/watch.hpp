@@ -27,7 +27,7 @@ class Watch
      *  @param[in] imageCallback - The callback function for processing
      *                             the image
      */
-    Watch(sd_event* loop, std::function<int(std::string&)> imageCallback);
+    Watch(sd_event* loop, std::function<int(int)> imageCallback);
 
     Watch(const Watch&) = delete;
     Watch& operator=(const Watch&) = delete;
@@ -57,7 +57,7 @@ class Watch
     int fd = -1;
 
     /** @brief The callback function for processing the image. */
-    std::function<int(std::string&)> imageCallback;
+    std::function<int(int)> imageCallback;
 };
 
 } // namespace fw_update

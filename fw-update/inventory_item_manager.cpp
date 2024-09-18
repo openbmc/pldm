@@ -40,6 +40,7 @@ void InventoryItemManager::createInventoryItem(
 
 			if (updateManager)
 			{
+                updateManager->overrideObjPath(softwarePath);
                 updateManager->assignActivation(std::make_shared<Activation>(utils::DBusHandler::getBus(),
                                                                             softwarePath,
                                                                             Activations::Active,updateManager.get()));

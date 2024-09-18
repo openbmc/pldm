@@ -1,6 +1,7 @@
 #include "watch.hpp"
 
 #include <sys/inotify.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 #include <cstddef>
@@ -8,6 +9,10 @@
 #include <filesystem>
 #include <stdexcept>
 #include <string>
+
+#include <phosphor-logging/lg2.hpp>
+
+PHOSPHOR_LOG2_USING;
 
 namespace pldm
 {
@@ -19,7 +24,7 @@ namespace fw_update
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
-Watch::Watch(sd_event* loop, std::function<int(std::string&)> imageCallback) :
+Watch::Watch(sd_event* loop, std::function<int(int)> imageCallback) :
     imageCallback(imageCallback)
 {
     // Check if IMAGE DIR exists.
@@ -92,12 +97,22 @@ int Watch::callback(sd_event_source* /* s */, int fd, uint32_t revents,
         auto event = reinterpret_cast<inotify_event*>(&buffer[offset]);
         if ((event->mask & IN_CLOSE_WRITE) && !(event->mask & IN_ISDIR))
         {
-            auto tarballPath = std::string{"/tmp/images"} + '/' + event->name;
-            auto rc = static_cast<Watch*>(userdata)->imageCallback(tarballPath);
-            if (rc < 0)
+            auto tarballPath =
+                std::string{"/tmp/pldm_images"} + '/' + event->name;
+            int file_fd = open(tarballPath.c_str(),O_RDONLY);
+            if(file_fd == -1)
             {
-                // log<level::ERR>("Error processing image",
-                //                 entry("IMAGE=%s", tarballPath.c_str()));
+                error("Bad file descriptor");
+            }
+            else
+            {
+                auto rc = static_cast<Watch*>(userdata)->imageCallback(file_fd);
+                if (rc < 0)
+                {
+                    // log<level::ERR>("Error processing image",
+                    //                 entry("IMAGE=%s", tarballPath.c_str()));
+                }
+                close(file_fd);
             }
         }
 

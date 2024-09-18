@@ -37,8 +37,6 @@ class CodeUpdater : public UpdateIntf
         startUpdate(sdbusplus::message::unix_fd image,
                     ApplyTimeIntf::RequestedApplyTimes applyTime) override;
 
-    bool writeToSstream(int imageFd, std::stringstream& path);
-
     std::shared_ptr<UpdateManager> updateManager;
 
     std::string objPath;

@@ -14,6 +14,7 @@
 #include <filesystem>
 #include <istream>
 #include <fstream>
+#include <sstream>
 #include <tuple>
 #include <unordered_map>
 
@@ -66,10 +67,8 @@ class UpdateManager : public UpdateManagerInf
         {
             watch = std::make_unique<Watch>(
                 event.get(),
-                std::bind_front(&UpdateManager::processPackage, this));
+                std::bind_front(&UpdateManager::processFd, this));
         }
-        if (descriptorMap.empty())
-          error("Too bad");
     }
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -85,10 +84,20 @@ class UpdateManager : public UpdateManagerInf
     Response handleRequest(mctp_eid_t eid, uint8_t command,
                            const pldm_msg* request, size_t reqMsgLen) override;
 
-    int processPackage(const std::filesystem::path& packageFilePath);
+    /** @brief UpdateManager support FD instead of file path now, 
+     *         since it is a general way to process data that given by
+     *         both pldm-fw-update.sh and redfish
+     */
+    int processFd(int fd);
 
-    int processStream(std::stringstream&& instream);
+    /** @brief For formal update: using given object path instead of 
+     *         generate a default one,
+     */
+    void overrideObjPath(const std::string& path);
 
+    /** @brief For formal update: using given object path instead of 
+     *         generate a default one,
+     */
     void assignActivation(std::shared_ptr<Activation> activation);
 
     void updateDeviceCompletion(mctp_eid_t eid, bool status);
@@ -127,11 +136,11 @@ class UpdateManager : public UpdateManagerInf
     std::shared_ptr<Activation> activation;
     std::shared_ptr<ActivationProgress> activationProgress;
     std::string objPath;
+    std::string _overrideObjPath;
 
     std::filesystem::path fwPackageFilePath;
     std::unique_ptr<PackageParser> parser;
-    std::ifstream package;
-    std::stringstream stream;
+    std::stringstream sstream;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
         deviceUpdaterMap;
@@ -149,6 +158,8 @@ class UpdateManager : public UpdateManagerInf
      */
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
+
+    int processIstream(std::istream& stream);
 };
 
 } // namespace fw_update
