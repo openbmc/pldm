@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e14bd34_3b65ae20",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-18T04:46:22Z",
+      "side": 1,
+      "message": "As my opinion, when the disabled state of sensor means that sensor is still available. But its functional is disabled by the user or system. So Functional state is False.",
+      "revId": "b9d60dd9e4b2cf30350fb56efbe35e355c7a372c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58b5b849_c07c199f",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-18T04:46:22Z",
+      "side": 1,
+      "message": "I agree with this changing.",
+      "revId": "b9d60dd9e4b2cf30350fb56efbe35e355c7a372c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
