@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc792e3b_c66fadc9",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-18T12:50:54Z",
+      "side": 1,
+      "message": "Correct the data type when calling CreateDump D-Bus method\nhttps://github.com/openbmc/phosphor-dbus-interfaces/blob/522846cf10edf2bee60aa6867594db1efd8cd585/yaml/xyz/openbmc_project/Dump/Create.interface.yaml#L16",
+      "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61495175_33fcf261",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-18T12:50:54Z",
+      "side": 1,
+      "message": "Correct Fault Log properties to follow the interface https://github.com/openbmc/phosphor-dbus-interfaces/blob/522846cf10edf2bee60aa6867594db1efd8cd585/yaml/xyz/openbmc_project/Dump/Entry/FaultLog.interface.yaml#L8",
+      "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
