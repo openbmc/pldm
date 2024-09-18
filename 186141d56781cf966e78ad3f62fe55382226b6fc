@@ -33,6 +33,23 @@
       "message": "Correct Fault Log properties to follow the interface https://github.com/openbmc/phosphor-dbus-interfaces/blob/522846cf10edf2bee60aa6867594db1efd8cd585/yaml/xyz/openbmc_project/Dump/Entry/FaultLog.interface.yaml#L8",
       "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e508ced2_fd580d74",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-09-18T20:21:34Z",
+      "side": 1,
+      "message": "Probably a future enhancement, can we populate AdditionalTypeName with the terminusName from which we received the CPER event? It might be useful to isolate where we got the crashdump from.",
+      "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
