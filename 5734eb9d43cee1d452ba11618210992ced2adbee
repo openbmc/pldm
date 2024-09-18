@@ -65,6 +65,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11b40677_3651f6d5",
+        "filename": "common/utils.hpp",
+        "patchSetId": 93
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-09-18T08:52:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "146076f4_fa41c5ff",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 1
+      },
+      "revId": "5734eb9d43cee1d452ba11618210992ced2adbee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa2775a9_f212378f",
