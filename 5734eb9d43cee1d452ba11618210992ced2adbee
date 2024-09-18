@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1875166_34daed68",
+        "filename": "common/utils.hpp",
+        "patchSetId": 93
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-09-18T05:45:37Z",
+      "side": 1,
+      "message": "where are these levels and direction defined in the spec?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 1
+      },
+      "revId": "5734eb9d43cee1d452ba11618210992ced2adbee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa2775a9_f212378f",
         "filename": "platform-mc/numeric_sensor.hpp",
         "patchSetId": 93
