@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "de47a5ad_f36fb8aa",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1002127
+      },
+      "writtenOn": "2024-09-18T05:38:03Z",
+      "side": 1,
+      "message": "Would like to ask do you think that PLDM_SENSOR_DISABLED should be \"Functional False, Available False\"?\n\nAs you mentioned in gerrit 51489 before, you thought that for PLDM_SENSOR_DISABLED, the sensor is still functional, it just unavailable because it is disabled so it should be set as \"Functional True, Available False\".\n\nThere is also a flag: unavailableAsFailed in phosphor-pid-control service that could use to skip the thermal sensors that should not be treated as Failed and trigger FailSafe when it is unavailable.\n\nIf we set PLDM_SENSOR_DISABLED as \"Functional False, Available True\", it will be the same with PLDM_SENSOR_FAILED and trigger FailSafe mode.",
+      "parentUuid": "8e14bd34_3b65ae20",
+      "revId": "b9d60dd9e4b2cf30350fb56efbe35e355c7a372c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "58b5b849_c07c199f",
