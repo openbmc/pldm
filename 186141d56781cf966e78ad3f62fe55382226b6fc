@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dd601e0_beb99a74",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-19T02:20:27Z",
+      "side": 1,
+      "message": "Can `const_cast\u003c\u003e()` or `static_cast\u003c\u003e()` work here instead?",
+      "range": {
+        "startLine": 384,
+        "startChar": 18,
+        "endLine": 384,
+        "endChar": 47
+      },
+      "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cc792e3b_c66fadc9",
@@ -48,6 +71,46 @@
       "writtenOn": "2024-09-18T20:21:34Z",
       "side": 1,
       "message": "Probably a future enhancement, can we populate AdditionalTypeName with the terminusName from which we received the CPER event? It might be useful to isolate where we got the crashdump from.",
+      "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ce98b6e_f61cd7bf",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-19T02:20:27Z",
+      "side": 1,
+      "message": "Should this come from libpldm instead?",
+      "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9289b5d7_cc2d4dde",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-19T02:20:27Z",
+      "side": 1,
+      "message": "Can this be `const_cast\u003c\u003e()` or `static_cast\u003c\u003e()`?",
+      "range": {
+        "startLine": 140,
+        "startChar": 25,
+        "endLine": 140,
+        "endChar": 57
+      },
       "revId": "186141d56781cf966e78ad3f62fe55382226b6fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
