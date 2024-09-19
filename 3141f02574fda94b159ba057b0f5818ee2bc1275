@@ -69,6 +69,24 @@
       "message": "Thu - please put a comment here once the recipe is bumped in the recipe which is being used by the openbmc.",
       "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cd5055d_095da549",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-19T09:00:28Z",
+      "side": 1,
+      "message": "Jeremy is created V2.0 tag in mctp CodeConstruct https://codeconstruct.com.au/docs/mctp-utils-v2-0-release/\nLet wait for OpenBMC to use new tag.",
+      "parentUuid": "238836c7_bdccc86d",
+      "revId": "3141f02574fda94b159ba057b0f5818ee2bc1275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
