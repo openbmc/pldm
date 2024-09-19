@@ -29,7 +29,7 @@ class EventManagerTest : public testing::Test
     {}
 
     PldmTransport* pldmTransport = nullptr;
-    sdbusplus::bus::bus& bus;
+    sdbusplus::bus_t& bus;
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     pldm::requester::Handler<pldm::requester::Request> reqHandler;
