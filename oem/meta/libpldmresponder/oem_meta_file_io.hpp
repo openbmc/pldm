@@ -28,6 +28,12 @@ class FileIOHandler : public CmdHandler
                    size_t payloadLength) {
                 return this->writeFileIO(tid, request, payloadLength);
             });
+        handlers.emplace(
+            PLDM_OEM_META_FILE_IO_CMD_READ_FILE,
+            [this](pldm_tid_t tid, const pldm_msg* request,
+                   size_t payloadLength) {
+                return this->readFileIO(tid, request, payloadLength);
+            });            
     }
 
   private:
