@@ -35,8 +35,9 @@ class BIOSVersionHandler : public FileHandler
      */
     int write(const message& data) override;
 
-    int read(const message&) override
+    int read(struct pldm_oem_meta_file_io_read_resp* data) override
     {
+        (void)data; // Unused
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
