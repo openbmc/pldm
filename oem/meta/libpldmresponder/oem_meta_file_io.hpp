@@ -22,10 +22,15 @@ class FileIOHandler : public CmdHandler
         dBusIntf(dBusIntf),
         configurationDiscovery(configurationDiscovery)
     {
-        handlers.emplace(PLDM_OEM_META_FILEIO_CMD_WRITE_FILE,
+        handlers.emplace(PLDM_OEM_META_FILE_IO_CMD_WRITE_FILE,
                          [this](pldm_tid_t tid, const pldm_msg* request,
                                 size_t payloadLength) {
             return this->writeFileIO(tid, request, payloadLength);
+        });
+        handlers.emplace(PLDM_OEM_META_FILE_IO_CMD_READ_FILE,
+                         [this](pldm_tid_t tid, const pldm_msg* request,
+                                size_t payloadLength) {
+            return this->readFileIO(tid, request, payloadLength);
         });
     }
 
@@ -40,6 +45,17 @@ class FileIOHandler : public CmdHandler
      */
     Response writeFileIO(pldm_tid_t tid, const pldm_msg* request,
                          size_t payloadLength);
+
+    /** @brief Handler for readFileIO command
+     *
+     *  @param[in] tid - the device tid
+     *  @param[in] request - pointer to PLDM request payload
+     *  @param[in] payloadLength - length of the message
+     *
+     *  @return PLDM response message
+     */
+    Response readFileIO(pldm_tid_t tid, const pldm_msg* request,
+                        size_t payloadLength);
 
     std::unique_ptr<FileHandler> getHandlerByType(pldm_tid_t tid,
                                                   uint8_t fileIOType);
