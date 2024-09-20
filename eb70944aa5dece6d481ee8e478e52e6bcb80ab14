@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6a1aa8a_678745e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "can you add a little more detail , on how the event is supported and its interaction with dump manager, and how this will be extracted out via external interfaces like redfish/ipmi.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 7
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76986fca_7bfb6e03",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "tmp varib",
+      "range": {
+        "startLine": 328,
+        "startChar": 4,
+        "endLine": 328,
+        "endChar": 34
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a27a1c25_ad38b990",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "i think we need to change the ergonomics of this API, it seems like its could return empty string. rather we could have it return `std::optional\u003cstd::string_view\u003e`, if there is a value we can get the value as string_view but its there is no value , we get nullopt.",
+      "range": {
+        "startLine": 345,
+        "startChar": 37,
+        "endLine": 345,
+        "endChar": 52
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43e39023_2e34ac48",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "can you rephrase this ?",
+      "range": {
+        "startLine": 348,
+        "startChar": 5,
+        "endLine": 348,
+        "endChar": 59
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3341ff40_1eac83f6",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "why do we want to check the presence of terminusName here ? even if we dont have the terminus name we are anyways going ahead and still doing the same thing.",
+      "range": {
+        "startLine": 349,
+        "startChar": 4,
+        "endLine": 349,
+        "endChar": 29
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7801495_59b7b3d4",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "if this is just a warning , why not use lg2::info() ? or lg2::warning() may be  ?",
+      "range": {
+        "startLine": 351,
+        "startChar": 8,
+        "endLine": 351,
+        "endChar": 18
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c13ffa5_9e59809a",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "```c\n    std::filesystem::path dirName{\"/var/cper\"};\n    if (!std::filesystem::exists(dirName))\n    {\n        try\n        {\n            std::filesystem::create_directory(dirName);\n        }\n        catch (const std::filesystem::filesystem_error\u0026 e)\n        {\n            lg2::error(\"Failed to create /var/cper directory: {ERROR}\", \"ERROR\", e.what());\n            return PLDM_ERROR;\n        }\n    }\n\n```\n\nthis seems a little simple and less clumsy ?",
+      "range": {
+        "startLine": 356,
+        "startChar": 3,
+        "endLine": 380,
+        "endChar": 5
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20bac163_6074fb61",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "can you explain what is the need for this if-else ? and why do we need to create multiple calls to dump ?",
+      "range": {
+        "startLine": 402,
+        "startChar": 8,
+        "endLine": 409,
+        "endChar": 9
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07267fa_c8640aef",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "The use of std::ofstream::exceptions and catch(const std::exception\u0026 e) might miss more specific exceptions related to file handling (like std::ios_base::failure). It would be clearer to catch the specific exception thrown.",
+      "range": {
+        "startLine": 412,
+        "startChar": 3,
+        "endLine": 412,
+        "endChar": 35
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "246f173e_55dc0080",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-20T04:28:40Z",
+      "side": 1,
+      "message": "magic number",
+      "range": {
+        "startLine": 143,
+        "startChar": 45,
+        "endLine": 143,
+        "endChar": 51
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
