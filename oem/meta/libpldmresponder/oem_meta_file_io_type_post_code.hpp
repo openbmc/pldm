@@ -32,8 +32,9 @@ class PostCodeHandler : public FileHandler
      *  @param[in] data - post code
      *  @return  PLDM status code
      */
-    int read(const message&)
+    int read(struct pldm_oem_meta_file_io_read_resp* data)
     {
+        (void)data; // Unused
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
