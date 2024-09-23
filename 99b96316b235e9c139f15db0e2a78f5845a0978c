@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa774097_132c2c29",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-23T02:25:15Z",
+      "side": 1,
+      "message": "This will yield undefined behaviour as the alignment of reqbuf is 1, but the required alignment of `struct pldm_oem_meta_file_io_write_req` is 4.\n\nInstead you can use something like:\n\n```\nalignas(struct pldm_oem_meta_file_io_write_req) unsigned char reqbuf[decodereqlen];\n```\n\nAnd from there, instead of `reinterpret_cast\u003c\u003e()`, use placement-new:\n\n```\nauto request_msg \u003d new (reqbuf) pldm_oem_meta_file_io_write_req;\n```",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 27
+      },
+      "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0344e4ee_eb12e2cc",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-23T02:25:15Z",
+      "side": 1,
+      "message": "Placement-new again here and not `reinterpret_cast\u003c\u003e()`.",
+      "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
