@@ -370,7 +370,7 @@ void InventoryManager::queryDownstreamIdentifiers(mctp_eid_t eid,
         auto downstreamDeviceIndex = downstreamDevice->downstream_device_index;
         auto descriptorCount = downstreamDevice->downstream_descriptor_count;
         auto descriptorPtr = downstreamDevicesData.ptr +
-                             sizeof(pldm_downstream_device);
+                             PLDM_DOWNSTREAM_DEVICE_BYTES;
 
         Descriptors descriptors{};
         for (uint8_t i = 0; i < descriptorCount; i++)
@@ -435,7 +435,7 @@ void InventoryManager::queryDownstreamIdentifiers(mctp_eid_t eid,
             downstreamDevicesData.length -= nextDescriptorOffset;
         }
 
-        downstreamDevicesData.length -= sizeof(pldm_downstream_device);
+        downstreamDevicesData.length -= PLDM_DOWNSTREAM_DEVICE_BYTES;
         downstreamDevicesData.ptr = descriptorPtr;
         downstreamDevices.emplace_back(
             DownstreamDeviceInfo{downstreamDeviceIndex, descriptors});
@@ -477,12 +477,12 @@ void InventoryManager::sendGetDownstreamFirmwareParametersRequest(
     const enum transfer_op_flag transferOperationFlag)
 {
     Request requestMsg(sizeof(pldm_msg_hdr) +
-                       PLDM_GET_DOWNSTREAM_FIRMWARE_PARAMS_REQ_BYTES);
+                       PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_REQ_BYTES);
     auto instanceId = instanceIdDb.next(eid);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     auto rc = encode_get_downstream_firmware_params_req(
-        instanceId, dataTransferHandle, transferOperationFlag, request,
-        PLDM_GET_DOWNSTREAM_FIRMWARE_PARAMS_REQ_BYTES);
+        instanceId, dataTransferHandle, transferOperationFlag,
+        request, PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_REQ_BYTES);
     if (rc)
     {
         instanceIdDb.free(eid, instanceId);
