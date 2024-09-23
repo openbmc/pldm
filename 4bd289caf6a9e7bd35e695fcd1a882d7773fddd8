@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6dae887_28fcd6a7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-23T02:07:37Z",
+      "side": 1,
+      "message": "Something that I hope to eventually address is removing the need to allocate an EID in order to serialise the request...",
+      "revId": "4bd289caf6a9e7bd35e695fcd1a882d7773fddd8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067a5ccb_715238b1",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-23T02:07:37Z",
+      "side": 1,
+      "message": "Please use placement-new rather than `reinterpret_cast\u003c\u003e()`. Can you work through the rest of the patch to apply this suggestion where it\u0027s applicable?",
+      "revId": "4bd289caf6a9e7bd35e695fcd1a882d7773fddd8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0636199_fbee09b7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-23T02:07:37Z",
+      "side": 1,
+      "message": "I really prefer this parsing be implemented in libpldm. You should not be casting this type over a buffer pointer, as it invokes undefined behaviour and potentially generates unaligned loads. You also haven\u0027t validated that the number of downstream devices and the associated variable length data correlates to the size of the buffer, which will all be handled by an implementation in libpldm.",
+      "revId": "4bd289caf6a9e7bd35e695fcd1a882d7773fddd8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
