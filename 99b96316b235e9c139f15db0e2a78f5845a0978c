@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "725ecf54_82429872",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1002130
+      },
+      "writtenOn": "2024-09-23T07:49:40Z",
+      "side": 1,
+      "message": "Done. Please help to review, thank you.",
+      "parentUuid": "aa774097_132c2c29",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 27
+      },
+      "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0344e4ee_eb12e2cc",
         "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
         "patchSetId": 10
@@ -37,6 +61,24 @@
       "writtenOn": "2024-09-23T02:25:15Z",
       "side": 1,
       "message": "Placement-new again here and not `reinterpret_cast\u003c\u003e()`.",
+      "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95aefeb5_fbd6a1ff",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1002130
+      },
+      "writtenOn": "2024-09-23T07:49:40Z",
+      "side": 1,
+      "message": "Done. Please help to review, thank you.",
+      "parentUuid": "0344e4ee_eb12e2cc",
       "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
