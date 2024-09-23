@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2240f208_4354dd92",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-23T02:10:09Z",
+      "side": 1,
+      "message": "Please use placement-new rather than `reinterpret_cast\u003c\u003e()`. Can you also please work through the rest of the patch and apply this comment where appropriate?",
+      "revId": "d63525160ded4473ec1adff5f49ed1aa9ac09670",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
