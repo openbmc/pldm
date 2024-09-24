@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0edbc4b7_f51f64aa",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-24T02:05:12Z",
+      "side": 1,
+      "message": "`rc` should be compared against `0` here, not `PLDM_SUCCESS`, as the return value is not a PLDM completion code.",
+      "revId": "9050ea67645e78e652233e14abd7f8f7c554cef7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "669b1686_9df19f59",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-24T02:05:12Z",
+      "side": 1,
+      "message": "Compare `rc` against `0` again.",
+      "revId": "9050ea67645e78e652233e14abd7f8f7c554cef7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

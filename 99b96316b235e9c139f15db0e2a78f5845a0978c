@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35ec0cfe_3b0187dc",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-24T02:05:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "725ecf54_82429872",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 27
+      },
+      "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0344e4ee_eb12e2cc",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "Done. Please help to review, thank you.",
       "parentUuid": "0344e4ee_eb12e2cc",
+      "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0733fd03_209aaf86",
+        "filename": "oem/meta/libpldmresponder/oem_meta_file_io.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-09-24T02:05:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95aefeb5_fbd6a1ff",
       "revId": "99b96316b235e9c139f15db0e2a78f5845a0978c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
