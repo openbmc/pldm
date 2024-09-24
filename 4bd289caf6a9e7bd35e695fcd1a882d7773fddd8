@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b77a9ed7_990f36a6",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-09-24T13:17:26Z",
+      "side": 1,
+      "message": "Hello, thanks again for your review and sorry for the late reply, agree with your point and I believe allocating EIDs here is just a short term solution.\n\nI\u0027ve received all your request, it will be revise in a few days...",
+      "parentUuid": "a6dae887_28fcd6a7",
+      "revId": "4bd289caf6a9e7bd35e695fcd1a882d7773fddd8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "067a5ccb_715238b1",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52764c46_d624a04d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-09-24T13:17:26Z",
+      "side": 1,
+      "message": "Got it, will be fixed soon in the next patchset.",
+      "parentUuid": "067a5ccb_715238b1",
+      "revId": "4bd289caf6a9e7bd35e695fcd1a882d7773fddd8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d0636199_fbee09b7",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 8
@@ -48,6 +84,24 @@
       "writtenOn": "2024-09-23T02:07:37Z",
       "side": 1,
       "message": "I really prefer this parsing be implemented in libpldm. You should not be casting this type over a buffer pointer, as it invokes undefined behaviour and potentially generates unaligned loads. You also haven\u0027t validated that the number of downstream devices and the associated variable length data correlates to the size of the buffer, which will all be handled by an implementation in libpldm.",
+      "revId": "4bd289caf6a9e7bd35e695fcd1a882d7773fddd8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49dbb60f_39612647",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-09-24T13:17:26Z",
+      "side": 1,
+      "message": "Got it, I\u0027ll check if there is a sutiable parser in libpldm, if not, these implementation will be migrated.",
+      "parentUuid": "d0636199_fbee09b7",
       "revId": "4bd289caf6a9e7bd35e695fcd1a882d7773fddd8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
