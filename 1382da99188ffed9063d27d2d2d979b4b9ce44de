@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab16bd78_3f25f65f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-09-24T13:31:00Z",
+      "side": 1,
+      "message": "Hello, I\u0027m very sorry for the late reply since the original author has left and this part was missed during the handover😭. \n\nYour requests will be soon applied to the next patchset.",
+      "parentUuid": "0f7a6a69_ff7b89aa",
+      "revId": "1382da99188ffed9063d27d2d2d979b4b9ce44de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a85de6fb_31a01daa",
