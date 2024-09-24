@@ -401,6 +401,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd42d697_15635eff",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-24T04:35:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c143e88a_8eb03cb2",
+      "range": {
+        "startLine": 402,
+        "startChar": 8,
+        "endLine": 409,
+        "endChar": 9
+      },
+      "revId": "eb70944aa5dece6d481ee8e478e52e6bcb80ab14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f07267fa_c8640aef",
