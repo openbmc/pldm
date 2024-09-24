@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd70f6a_ae60c834",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-24T04:37:22Z",
+      "side": 1,
+      "message": "Leaving a -1 here, so that we cannot merge this until the mctp is bumped in openbmc.",
+      "revId": "5e0e5b196c64184a552539fa6b8664cd64d9ecf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
