@@ -80,8 +80,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
-            "help_text": "Enable or Disable Predictive Guard for Memory Errors.",
-            "display_name": "Predictive Memory Guard"
+            "help_text": "The Hypervisor dynamically removes memory pages from memory that detected predictive failures. If this option is disabled, dynamic memory deallocation will not occur for the predictive memory failures.",
+            "display_name": "Predictive Dynamic Memory Deallocation"
         },
         {
             "attribute_type": "enum",
@@ -89,8 +89,8 @@
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Enabled"],
-            "help_text": "Enable or Disable Predictive Guard for Memory Errors.",
-            "display_name": "Predictive Memory Guard",
+            "help_text": "The Hypervisor dynamically removes memory pages from memory that detected predictive failures. If this option is disabled, dynamic memory deallocation will not occur for the predictive memory failures.",
+            "display_name": "Predictive Dynamic Memory Deallocation",
             "read_only": true
         },
         {
