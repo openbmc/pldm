@@ -34,6 +34,24 @@
       "parentUuid": "84040dd7_bda344ec",
       "revId": "54dddf10246e6e7187bdc473e7b15743f23ea876",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d2a00df_235224e6",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-25T00:14:54Z",
+      "side": 1,
+      "message": "The `encode/decode_poll_for_platform_event_message_req` APIs is updated on patch set https://gerrit.openbmc.org/c/openbmc/libpldm/+/74855",
+      "parentUuid": "539bbdc3_8bc9879f",
+      "revId": "54dddf10246e6e7187bdc473e7b15743f23ea876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
