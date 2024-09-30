@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8675654c_45f5b5d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-09-30T08:54:57Z",
+      "side": 1,
+      "message": "as this sentence `If the\nPollForPlatformEventMessage command is executed because of a eventData format for\npldmMessagePollEvent, this will be the dataTransferHandle value returned from the\npldmMessagePollEvent.` in `Table 16 – PollForPlatformEventMessage command format` of DSP0248, the `dataTransferHandle` in `pldmMessagePollEvent` eventClass will be inputed as parameter of `PollForPlatformEventMessage` methods.\nI updated code in patch set version #12 to support that.",
+      "revId": "b057f9c97c3470001d40608834517c66a7569f71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
