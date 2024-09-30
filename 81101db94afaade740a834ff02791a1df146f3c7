@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad9bc24_b3a7f007",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-30T07:03:54Z",
+      "side": 1,
+      "message": "the changes looks okay to me.",
+      "revId": "81101db94afaade740a834ff02791a1df146f3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf0628f4_dd0622ba",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-30T07:03:54Z",
+      "side": 1,
+      "message": "does all the oem vendors agree to having the sensor Name space as `/xyz/openbmc_project/metric/oem/` ? \n\nsay for would there be a need to have a different name space for oem-meta vs the oem-ibm ? and oem-ampere ?",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 38
+      },
+      "revId": "81101db94afaade740a834ff02791a1df146f3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7cd7dfa_eb27ec28",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-30T07:03:54Z",
+      "side": 1,
+      "message": "tmp variable ?",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 30
+      },
+      "revId": "81101db94afaade740a834ff02791a1df146f3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
