@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62d33400_f9e0a425",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-01T05:15:17Z",
+      "side": 1,
+      "message": "As my opinion:\nThe OEMUnit sensor should be in `oem` folder. So the remain part is the path `/xyz/openbmc_project/metric`. The we can\u0027t put the sensor with OEMUnit to `/xyz/openbmc_project/sensors` because it is only used for telemetry sensors (Voltage, power, temperature...) so I can\u0027t find the more suitable patch except `/xyz/openbmc_project/metric`.\nIf the other OEM or ODM want to have different path they add the code to define their expected path. But by default `/xyz/openbmc_project/metric/oem/` is reasonable one.",
+      "parentUuid": "bf0628f4_dd0622ba",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 38
+      },
+      "revId": "81101db94afaade740a834ff02791a1df146f3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7cd7dfa_eb27ec28",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 9
@@ -54,6 +78,30 @@
       "writtenOn": "2024-09-30T07:03:54Z",
       "side": 1,
       "message": "tmp variable ?",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 30
+      },
+      "revId": "81101db94afaade740a834ff02791a1df146f3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c686b9b5_7cf76503",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-01T05:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7cd7dfa_eb27ec28",
       "range": {
         "startLine": 85,
         "startChar": 8,
