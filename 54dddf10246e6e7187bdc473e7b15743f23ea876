@@ -70,6 +70,24 @@
       "parentUuid": "5d2a00df_235224e6",
       "revId": "54dddf10246e6e7187bdc473e7b15743f23ea876",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47004c72_4739a7a2",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1002038
+      },
+      "writtenOn": "2024-10-01T00:16:09Z",
+      "side": 1,
+      "message": "Thanks for the fix.",
+      "parentUuid": "a91e1a3b_82af637e",
+      "revId": "54dddf10246e6e7187bdc473e7b15743f23ea876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
