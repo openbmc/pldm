@@ -87,6 +87,24 @@
       "parentUuid": "6090d9a9_c09d868f",
       "revId": "b057f9c97c3470001d40608834517c66a7569f71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34553ffa_9a4c3d86",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-01T09:31:55Z",
+      "side": 1,
+      "message": "I updated the checking for eventIDToAcknowledge  when tranferFlag is AcknowledgementOnly https://gerrit.openbmc.org/c/openbmc/libpldm/+/74953\nPlease help checking.\n\nThe code in this patch set is also updated.",
+      "parentUuid": "a3983a1e_392627bf",
+      "revId": "b057f9c97c3470001d40608834517c66a7569f71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
