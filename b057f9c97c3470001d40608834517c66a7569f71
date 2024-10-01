@@ -51,6 +51,24 @@
       "parentUuid": "29a81873_68f3d359",
       "revId": "b057f9c97c3470001d40608834517c66a7569f71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6090d9a9_c09d868f",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1002038
+      },
+      "writtenOn": "2024-10-01T02:17:25Z",
+      "side": 1,
+      "message": "It looks like an issue in Figure 22. In Table 16, eventIDToAcknowledge mentioned for acking an event previously received and 0xFFFF should use when in the middle of a multipart event transfer (GetNextPart).",
+      "parentUuid": "dcac9dd4_89a25185",
+      "revId": "b057f9c97c3470001d40608834517c66a7569f71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
