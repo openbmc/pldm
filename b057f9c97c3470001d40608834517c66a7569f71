@@ -69,6 +69,24 @@
       "parentUuid": "dcac9dd4_89a25185",
       "revId": "b057f9c97c3470001d40608834517c66a7569f71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3983a1e_392627bf",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-01T04:30:14Z",
+      "side": 1,
+      "message": "I think you are right.\nAs DSP0248 V1.3.0, `Figure 22 - Switching from asynchronous eventing to\npoll for an event with large data` when the `tranferFlag` of\n`PollForPlatformEventMessage` is `AcknowledgementOnly` the\n`eventIDToAcknowledge` will be 0xffff.\n\nBut the contents in lines #1678 to #1681 of the same specs details\n```\n1678 0x0000 shall be returned to indicate the terminus event queue is empty. The PLDM Event Receiver shall\n1679 acknowledge reception of the event by issuing the command again with the eventIDToAcknowledge set\n1680 to the previously retrieved eventID (from the PLDM terminus). The PLDM terminus shall remove the\n1681 acknowledged event message from its internal FIFO upon reception of the acknowledgment\n```\n\nWhen the `tranferFlag` is `AcknowledgementOnly` the\n`eventIDToAcknowledge` should be `the previously retrieved eventID (from\nthe PLDM terminus)` which is not 0x0000 and 0xffff. Because `The PLDM\nterminus shall remove the acknowledged event message` so the contents in\nlines #1678 to #1681 are correct.",
+      "parentUuid": "6090d9a9_c09d868f",
+      "revId": "b057f9c97c3470001d40608834517c66a7569f71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
