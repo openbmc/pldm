@@ -33,6 +33,24 @@
       "message": "If `TransferOperationFlag` is `AcknowledgeOnly`, `eventIdToAcknowledge` should be `eventId` from PLDM terminus response to ack, right?",
       "revId": "b057f9c97c3470001d40608834517c66a7569f71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcac9dd4_89a25185",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-01T00:19:54Z",
+      "side": 1,
+      "message": "As `Figure 22 – Switching from asynchronous eventing to poll for an event with large data`, the eventIdToAcknowledge should be 0xffff when TransferOperationFlag is AcknowledgeOnly.",
+      "parentUuid": "29a81873_68f3d359",
+      "revId": "b057f9c97c3470001d40608834517c66a7569f71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
