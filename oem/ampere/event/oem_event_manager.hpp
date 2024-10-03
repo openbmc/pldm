@@ -19,6 +19,7 @@ using EventToMsgMap_t = std::unordered_map<uint8_t, std::string>;
 
 enum sensor_ids
 {
+    PCIE_HOT_PLUG = 169,
     BOOT_OVERALL = 175,
 };
 
@@ -55,8 +56,41 @@ enum boot_stage
 enum class log_level : int
 {
     OK,
+    WARNING,
+    CRITICAL,
     BIOSFWPANIC,
 };
+
+/*
+ * PresentReading value format
+ * FIELD       |                   COMMENT
+ * Bit 31      |   Reserved
+ * Bit 30:24   |   Media slot number (0 - 63) This field can be used by UEFI
+ *             |   to indicate the media slot number (such as NVMe/SSD slot)
+ *             |   (7 bits)
+ * Bit 23      |   Operation status: 1 = operation failed
+ *             |   0 = operation successful
+ * Bit 22      |   Action: 0 - Insertion 1 - Removal
+ * Bit 21:18   |   Function (4 bits)
+ * Bit 17:13   |   Device (5 bits)
+ * Bit 12:5    |   Bus (8 bits)
+ * Bit 4:0     |   Segment (5 bits)
+ */
+typedef union
+{
+    uint32_t value;
+    struct
+    {
+        uint32_t segment:5;
+        uint32_t bus:8;
+        uint32_t device:5;
+        uint32_t function:4;
+        uint32_t action:1;
+        uint32_t opStatus:1;
+        uint32_t mediaSlot:7;
+        uint32_t reserved:1;
+    } __attribute__((packed)) bits;
+} PCIeHotPlugEventRecord_t;
 
 /**
  * @brief OemEventManager
@@ -118,6 +152,15 @@ class OemEventManager
      *  @return std::string - the string of DIMM indexes
      */
     std::string dimmIdxsToString(uint32_t dimmIdxs);
+
+    /** @brief Handle numeric sensor event message from PCIe hot-plug sensor.
+     *
+     *  @param[in] tid - TID
+     *  @param[in] sensorId - Sensor ID
+     *  @param[in] presentReading - the present reading of the sensor
+     */
+    void handlePCIeHotPlugEvent(pldm_tid_t tid, uint16_t sensorId,
+                                uint32_t presentReading);
 
     /** @brief Handle numeric sensor event message from boot overall sensor.
      *
