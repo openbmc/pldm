@@ -23,6 +23,11 @@ namespace oem_ampere
 {
 namespace boot_stage = boot::stage;
 
+constexpr const char* ampereEventRegistry = "OpenBMC.0.1.AmpereEvent.OK";
+constexpr const char* ampereWarningRegistry =
+    "OpenBMC.0.1.AmpereWarning.Warning";
+constexpr const char* ampereCriticalRegistry =
+    "OpenBMC.0.1.AmpereCritical.Critical";
 constexpr const char* BIOSFWPanicRegistry =
     "OpenBMC.0.1.BIOSFirmwarePanicReason.Warning";
 constexpr auto maxDIMMIdxBitNum = 24;
@@ -54,7 +59,8 @@ EventToMsgMap_t tidToSocketNameMap = {{1, "SOCKET 0"}, {2, "SOCKET 1"}};
     A map between sensor IDs and their names in string.
     Using pldm::oem::sensor_ids
 */
-EventToMsgMap_t sensorIdToStrMap = {{BOOT_OVERALL, "BOOT_OVERALL"}};
+EventToMsgMap_t sensorIdToStrMap = {{PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},
+                                    {BOOT_OVERALL, "BOOT_OVERALL"}};
 
 /*
     A map between the boot stages and logging strings.
@@ -79,6 +85,9 @@ EventToMsgMap_t bootStageToMsgMap = {
     Using pldm::oem::log_level
 */
 std::unordered_map<log_level, std::string> logLevelToRedfishMsgIdMap = {
+    {log_level::OK, ampereEventRegistry},
+    {log_level::WARNING, ampereWarningRegistry},
+    {log_level::CRITICAL, ampereCriticalRegistry},
     {log_level::BIOSFWPANIC, BIOSFWPanicRegistry}};
 
 std::string
@@ -216,10 +225,10 @@ void OemEventManager::handleBootOverallEvent(
             strStream
                 << "Segment (0x" << std::setfill('0') << std::hex
                 << std::setw(8) << static_cast<uint32_t>(presentReading)
-                << "), Status Class (0x" << std::setw(2)
-                << static_cast<uint32_t>(byte3) << "), Status SubClass (0x"
+                << "); Status Class (0x" << std::setw(2)
+                << static_cast<uint32_t>(byte3) << "); Status SubClass (0x"
                 << std::setw(2) << static_cast<uint32_t>(byte2)
-                << "), Operation Code (0x" << std::setw(4)
+                << "); Operation Code (0x" << std::setw(4)
                 << static_cast<uint32_t>((presentReading & 0xffff0000) >> 16)
                 << ")" << std::dec;
 
@@ -254,6 +263,9 @@ int OemEventManager::processNumericSensorEvent(
     {
         case BOOT_OVERALL:
             handleBootOverallEvent(tid, sensorId, presentReading);
+            break;
+        case PCIE_HOT_PLUG:
+            handlePCIeHotPlugEvent(tid, sensorId, presentReading);
             break;
         default:
             std::string description;
@@ -421,6 +433,36 @@ int OemEventManager::handleSensorEvent(
     lg2::info("Unsupported class type {CLASSTYPE}", "CLASSTYPE",
               sensorEventClassType);
     return PLDM_ERROR;
+}
+
+void OemEventManager::handlePCIeHotPlugEvent(pldm_tid_t tid, uint16_t sensorId,
+                                             uint32_t presentReading)
+{
+    std::string description;
+    std::stringstream strStream;
+    PCIeHotPlugEventRecord_t record{presentReading};
+
+    std::string sAction = (!record.bits.action) ? "Insertion" : "Removal";
+    std::string sOpStatus = (!record.bits.opStatus) ? "Successful" : "Failed";
+    log_level logLevel =
+        (!record.bits.opStatus) ? log_level::OK : log_level::WARNING;
+
+    description += prefixMsgStrCreation(tid, sensorId);
+
+    strStream << "Segment (0x" << std::setfill('0') << std::hex << std::setw(2)
+              << static_cast<uint32_t>(record.bits.segment) << "); Bus (0x"
+              << std::setw(2) << static_cast<uint32_t>(record.bits.bus)
+              << "); Device (0x" << std::setw(2)
+              << static_cast<uint32_t>(record.bits.device) << "); Function (0x"
+              << std::setw(2) << static_cast<uint32_t>(record.bits.function)
+              << "); Action (" << sAction << "); Operation status ("
+              << sOpStatus << "); Media slot number (" << std::dec
+              << static_cast<uint32_t>(record.bits.mediaSlot) << ")";
+
+    description += strStream.str();
+
+    // Log to Redfish event
+    sendJournalRedfish(description, logLevel);
 }
 
 } // namespace oem_ampere
