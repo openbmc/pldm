@@ -19,6 +19,7 @@ using EventToMsgMap_t = std::unordered_map<uint8_t, std::string>;
 
 enum sensor_ids
 {
+    DDR_STATUS = 51,
     PCIE_HOT_PLUG = 169,
     BOOT_OVERALL = 175,
 };
@@ -92,6 +93,95 @@ typedef union
     } __attribute__((packed)) bits;
 } PCIeHotPlugEventRecord_t;
 
+typedef union
+{
+    uint32_t value;
+    struct
+    {
+        uint32_t type:2;
+        uint32_t mcuRankIdx:3;
+        uint32_t reserved_1:3; // byte0
+        uint32_t sliceNum:4;
+        uint32_t upperNibbStatErr:1;
+        uint32_t lowerNibbStatErr:1;
+        uint32_t reserved_2:2; // byte1
+        uint32_t syndrome:4;
+        uint32_t reserved_3:4; // byte2
+        uint32_t reserved_byte:8;
+    } __attribute__((packed)) bits;
+} DIMMTrainingFailure_t;
+
+namespace ddr
+{
+namespace status
+{
+enum ddr_status
+{
+    NO_SYSTEM_LEVEL_ERROR = 0x01,
+    ECC_INITIALIZATION_FAILURE = 0x04,
+    CONFIGURATION_FAILURE = 0x05,
+    TRAINING_FAILURE = 0x06,
+    OTHER_FAILURE = 0x07,
+    BOOT_FAILURE_NO_VALID_CONFIG = 0x08,
+    FAILSAFE_ACTIVATED_NEXT_BOOT_SUCCESS = 0x09,
+};
+}
+} // namespace ddr
+
+namespace dimm
+{
+namespace status
+{
+enum dimm_status
+{
+    INSTALLED_NO_ERROR = 0x01,
+    NOT_INSTALLED = 0x02,
+    OTHER_FAILURE = 0x07,
+    INSTALLED_BUT_DISABLED = 0x10,
+    TRAINING_FAILURE = 0x12,
+    PMIC_HIGH_TEMP = 0x13,
+    TSx_HIGH_TEMP = 0x14,
+    SPD_HUB_HIGH_TEMP = 0x15,
+    PMIC_TEMP_ALERT = 0x16,
+};
+} // namespace status
+
+namespace training_failure
+{
+enum dimm_training_failure_type
+{
+    PHY_TRAINING_FAILURE_TYPE = 0x01,
+    DIMM_TRAINING_FAILURE_TYPE = 0x02,
+};
+
+namespace phy_syndrome
+{
+enum phy_training_failure_syndrome
+{
+    NA = 0x00,
+    PHY_TRAINING_SETUP_FAILURE = 0x01,
+    CA_LEVELING = 0x02,
+    PHY_WRITE_LEVEL_FAILURE = 0x03,
+    PHY_READ_GATE_LEVELING_FAILURE = 0x04,
+    PHY_READ_LEVEL_FAILURE = 0x05,
+    WRITE_DQ_LEVELING = 0x06,
+    PHY_SW_TRAINING_FAILURE = 0x07,
+};
+} // namespace phy_syndrome
+
+namespace dimm_syndrome
+{
+enum dimm_training_failure_syndrome
+{
+    NA = 0x00,
+    DRAM_VREFDQ_TRAINING_FAILURE = 0x01,
+    LRDIMM_DB_TRAINING_FAILURE = 0x02,
+    LRDRIMM_DB_SW_TRAINING_FAILURE = 0x03,
+};
+} // namespace dimm_syndrome
+} // namespace training_failure
+} // namespace dimm
+
 /**
  * @brief OemEventManager
  *
@@ -153,6 +243,14 @@ class OemEventManager
      */
     std::string dimmIdxsToString(uint32_t dimmIdxs);
 
+    /** @brief Convert the DIMM training failure into logging string.
+     *
+     *  @param[in] failureInfo - the one-hot DIMM index byte
+     *
+     *  @return std::string - the returned logging string
+     */
+    std::string dimmTrainingFailureToMsg(uint32_t failureInfo);
+
     /** @brief Handle numeric sensor event message from PCIe hot-plug sensor.
      *
      *  @param[in] tid - TID
@@ -170,6 +268,24 @@ class OemEventManager
      */
     void handleBootOverallEvent(pldm_tid_t /*tid*/, uint16_t /*sensorId*/,
                                 uint32_t presentReading);
+
+    /** @brief Handle numeric sensor event message from DIMM status sensor.
+     *
+     *  @param[in] tid - TID
+     *  @param[in] sensorId - Sensor ID
+     *  @param[in] presentReading - the present reading of the sensor
+     */
+    void handleDIMMStatusEvent(pldm_tid_t tid, uint16_t sensorId,
+                               uint32_t presentReading);
+
+    /** @brief Handle numeric sensor event message from DDR status sensor.
+     *
+     *  @param[in] tid - TID
+     *  @param[in] sensorId - Sensor ID
+     *  @param[in] presentReading - the present reading of the sensor
+     */
+    void handleDDRStatusEvent(pldm_tid_t tid, uint16_t sensorId,
+                              uint32_t presentReading);
 
     /** @brief Handle numeric sensor event messages.
      *

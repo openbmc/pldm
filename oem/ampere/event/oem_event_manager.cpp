@@ -22,6 +22,11 @@ namespace pldm
 namespace oem_ampere
 {
 namespace boot_stage = boot::stage;
+namespace ddr_status = ddr::status;
+namespace dimm_status = dimm::status;
+namespace dimm_syndrome = dimm::training_failure::dimm_syndrome;
+namespace phy_syndrome = dimm::training_failure::phy_syndrome;
+namespace training_failure = dimm::training_failure;
 
 constexpr const char* ampereEventRegistry = "OpenBMC.0.1.AmpereEvent.OK";
 constexpr const char* ampereWarningRegistry =
@@ -31,6 +36,7 @@ constexpr const char* ampereCriticalRegistry =
 constexpr const char* BIOSFWPanicRegistry =
     "OpenBMC.0.1.BIOSFirmwarePanicReason.Warning";
 constexpr auto maxDIMMIdxBitNum = 24;
+constexpr auto maxDIMMInstantNum = 24;
 
 /*
     An array of possible boot status of a boot stage.
@@ -46,6 +52,13 @@ std::array<std::string, 3> ddrTrainingMsg = {
     " progress started", " in-progress", " progress completed"};
 
 /*
+    A map between PMIC status and logging strings.
+*/
+std::array<std::string, 8> pmicTempAlertMsg = {
+    "Below 85°C", "85°C",  "95°C",  "105°C",
+    "115°C",      "125°C", "135°C", "Equal or greater than 140°C"};
+
+/*
     In Ampere systems, BMC only directly communicates with MCTP/PLDM SoC
     EPs through SMBus and PCIe. When host boots up, SMBUS interface
     comes up first. In this interface, BMC is bus owner.
@@ -59,7 +72,8 @@ EventToMsgMap_t tidToSocketNameMap = {{1, "SOCKET 0"}, {2, "SOCKET 1"}};
     A map between sensor IDs and their names in string.
     Using pldm::oem::sensor_ids
 */
-EventToMsgMap_t sensorIdToStrMap = {{PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},
+EventToMsgMap_t sensorIdToStrMap = {{DDR_STATUS, "DDR_STATUS"},
+                                    {PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},
                                     {BOOT_OVERALL, "BOOT_OVERALL"}};
 
 /*
@@ -79,6 +93,77 @@ EventToMsgMap_t bootStageToMsgMap = {
     {boot_stage::S1_DDR_TRAINING_FAILURE, "DDR training failure"},
     {boot_stage::UEFI_STATUS_CLASS_CODE_MIN,
      "ATF BL33 (UEFI) booting status = "}};
+
+/*
+    A map between DDR status and logging strings.
+    Using pldm::oem::ddr::status::ddr_status
+*/
+EventToMsgMap_t ddrStatusToMsgMap = {
+    {ddr_status::NO_SYSTEM_LEVEL_ERROR, "has no system level error"},
+    {ddr_status::ECC_INITIALIZATION_FAILURE, "has ECC initialization failure"},
+    {ddr_status::CONFIGURATION_FAILURE, "has configuration failure at DIMMs:"},
+    {ddr_status::TRAINING_FAILURE, "has training failure at DIMMs:"},
+    {ddr_status::OTHER_FAILURE, "has other failure"},
+    {ddr_status::BOOT_FAILURE_NO_VALID_CONFIG,
+     "has boot failure due to no configuration"},
+    {ddr_status::FAILSAFE_ACTIVATED_NEXT_BOOT_SUCCESS,
+     "failsafe activated but boot success with the next valid configuration"}};
+
+/*
+    A map between DIMM status and logging strings.
+    Using pldm::oem::dimm::status::dimm_status
+*/
+EventToMsgMap_t dimmStatusToMsgMap = {
+    {dimm_status::INSTALLED_NO_ERROR, "is installed and no error"},
+    {dimm_status::NOT_INSTALLED, "is not installed"},
+    {dimm_status::OTHER_FAILURE, "has other failure"},
+    {dimm_status::INSTALLED_BUT_DISABLED, "is installed but disabled"},
+    {dimm_status::TRAINING_FAILURE, "has training failure; "},
+    {dimm_status::PMIC_TEMP_ALERT, "has PMIC temperature alert"}};
+
+/*
+    A map between PHY training failure syndrome and logging strings.
+    Using
+   pldm::oem::dimm::training_faillure::phy_syndrome::phy_training_failure_syndrome
+*/
+EventToMsgMap_t phyTrainingFailureSyndromeToMsgMap = {
+    {phy_syndrome::NA, "(N/A)"},
+    {phy_syndrome::PHY_TRAINING_SETUP_FAILURE, "(PHY training setup failure)"},
+    {phy_syndrome::CA_LEVELING, "(CA leveling)"},
+    {phy_syndrome::PHY_WRITE_LEVEL_FAILURE,
+     "(PHY write level failure - see syndrome 1)"},
+    {phy_syndrome::PHY_READ_GATE_LEVELING_FAILURE,
+     "(PHY read gate leveling failure)"},
+    {phy_syndrome::PHY_READ_LEVEL_FAILURE, "(PHY read level failure)"},
+    {phy_syndrome::WRITE_DQ_LEVELING, "(Write DQ leveling)"},
+    {phy_syndrome::PHY_SW_TRAINING_FAILURE, "(PHY SW training failure)"}};
+
+/*
+    A map between DIMM training failure syndrome and logging strings.
+    Using
+   pldm::oem::dimm::training_faillure::dimm_syndrome::dimm_training_failure_syndrome
+*/
+EventToMsgMap_t dimmTrainingFailureSyndromeToMsgMap = {
+    {dimm_syndrome::NA, "(N/A)"},
+    {dimm_syndrome::DRAM_VREFDQ_TRAINING_FAILURE,
+     "(DRAM VREFDQ training failure)"},
+    {dimm_syndrome::LRDIMM_DB_TRAINING_FAILURE, "(LRDIMM DB training failure)"},
+    {dimm_syndrome::LRDRIMM_DB_SW_TRAINING_FAILURE,
+     "(LRDRIMM DB SW training failure)"}};
+
+/*
+    A map between DIMM training failure type and a pair of <logging strings -
+   syndrome map>. Using
+   pldm::oem::dimm::training_faillure::dimm_training_failure_type
+*/
+std::unordered_map<uint8_t, std::pair<std::string, EventToMsgMap_t>>
+    dimmTrainingFailureTypeMap = {
+        {training_failure::PHY_TRAINING_FAILURE_TYPE,
+         std::make_pair("PHY training failure",
+                        phyTrainingFailureSyndromeToMsgMap)},
+        {training_failure::DIMM_TRAINING_FAILURE_TYPE,
+         std::make_pair("DIMM training failure",
+                        dimmTrainingFailureSyndromeToMsgMap)}};
 
 /*
     A map between log level and the registry used for Redfish SEL log
@@ -259,6 +344,14 @@ int OemEventManager::processNumericSensorEvent(
         return rc;
     }
 
+    // DIMMx_Status sensorID 4+2*index (index 0 -> maxDIMMInstantNum-1)
+    if (auto dimmIdx = (sensorId - 4) / 2;
+        sensorId >= 4 && dimmIdx >= 0 && dimmIdx < maxDIMMInstantNum)
+    {
+        handleDIMMStatusEvent(tid, sensorId, presentReading);
+        return PLDM_SUCCESS;
+    }
+
     switch (sensorId)
     {
         case BOOT_OVERALL:
@@ -266,6 +359,9 @@ int OemEventManager::processNumericSensorEvent(
             break;
         case PCIE_HOT_PLUG:
             handlePCIeHotPlugEvent(tid, sensorId, presentReading);
+            break;
+        case DDR_STATUS:
+            handleDDRStatusEvent(tid, sensorId, presentReading);
             break;
         default:
             std::string description;
@@ -460,6 +556,169 @@ void OemEventManager::handlePCIeHotPlugEvent(pldm_tid_t tid, uint16_t sensorId,
               << static_cast<uint32_t>(record.bits.mediaSlot) << ")";
 
     description += strStream.str();
+
+    // Log to Redfish event
+    sendJournalRedfish(description, logLevel);
+}
+
+std::string OemEventManager::dimmTrainingFailureToMsg(uint32_t failureInfo)
+{
+    std::string description;
+    DIMMTrainingFailure_t failure{failureInfo};
+
+    if (dimmTrainingFailureTypeMap.contains(failure.bits.type))
+    {
+        auto failureInfoMap = dimmTrainingFailureTypeMap[failure.bits.type];
+
+        description += std::get<0>(failureInfoMap);
+
+        description += "; MCU rank index " +
+                       std::to_string(failure.bits.mcuRankIdx);
+
+        description += "; Slice number " +
+                       std::to_string(failure.bits.sliceNum);
+
+        description += "; Upper nibble error status: ";
+        description += (!failure.bits.upperNibbStatErr)
+                           ? "No error"
+                           : "Found no rising edge";
+
+        description += "; Lower nibble error status: ";
+        description += (!failure.bits.lowerNibbStatErr)
+                           ? "No error"
+                           : "Found no rising edge";
+
+        description += "; Failure syndrome 0: ";
+
+        auto& syndromeMap = std::get<1>(failureInfoMap);
+        if (syndromeMap.contains(failure.bits.syndrome))
+        {
+            description += syndromeMap[failure.bits.syndrome];
+        }
+        else
+        {
+            description += "(Unknown syndrome)";
+        }
+    }
+    else
+    {
+        description += "Unknown training failure type " +
+                       std::to_string(failure.bits.type);
+    }
+
+    return description;
+}
+
+void OemEventManager::handleDIMMStatusEvent(pldm_tid_t tid, uint16_t sensorId,
+                                            uint32_t presentReading)
+{
+    log_level logLevel{log_level::WARNING};
+    std::string description;
+    uint8_t byte3 = (presentReading & 0xff000000) >> 24;
+    uint32_t byte012 = presentReading & 0xffffff;
+
+    description += prefixMsgStrCreation(tid, sensorId);
+
+    uint8_t dimmIdx = (sensorId - 4) / 2;
+
+    description += "DIMM " + std::to_string(dimmIdx) + " ";
+
+    if (dimmStatusToMsgMap.contains(byte3))
+    {
+        if (byte3 == dimm_status::INSTALLED_NO_ERROR ||
+            byte3 == dimm_status::INSTALLED_BUT_DISABLED)
+        {
+            logLevel = log_level::OK;
+        }
+
+        description += dimmStatusToMsgMap[byte3];
+
+        if (byte3 == dimm_status::TRAINING_FAILURE)
+        {
+            description += "; " + dimmTrainingFailureToMsg(byte012);
+        }
+        else if (byte3 == dimm_status::PMIC_TEMP_ALERT)
+        {
+            uint8_t byte0 = (byte012 & 0xff);
+            if (byte0 < pmicTempAlertMsg.size())
+            {
+                description += ": " + pmicTempAlertMsg[byte0];
+            }
+        }
+    }
+    else
+    {
+        switch (byte3)
+        {
+            case dimm_status::PMIC_HIGH_TEMP:
+                if (byte012 == 0x01)
+                {
+                    description += "has PMIC high temp condition";
+                }
+                break;
+            case dimm_status::TSx_HIGH_TEMP:
+                switch (byte012)
+                {
+                    case 0x01:
+                        description += "has TS0";
+                        break;
+                    case 0x02:
+                        description += "has TS1";
+                        break;
+                    case 0x03:
+                        description += "has TS0 and TS1";
+                        break;
+                }
+                description += " exceeding their high temperature threshold";
+                break;
+            case dimm_status::SPD_HUB_HIGH_TEMP:
+                if (byte012 == 0x01)
+                {
+                    description += "has SPD/HUB high temp condition";
+                }
+                break;
+            default:
+                description += "has unsupported status " +
+                               std::to_string(byte3);
+                break;
+        }
+    }
+
+    // Log to Redfish event
+    sendJournalRedfish(description, logLevel);
+}
+
+void OemEventManager::handleDDRStatusEvent(pldm_tid_t tid, uint16_t sensorId,
+                                           uint32_t presentReading)
+{
+    log_level logLevel{log_level::WARNING};
+    std::string description;
+    uint8_t byte3 = (presentReading & 0xff000000) >> 24;
+    uint32_t byte012 = presentReading & 0xffffff;
+
+    description += prefixMsgStrCreation(tid, sensorId);
+
+    description += "DDR ";
+    if (ddrStatusToMsgMap.contains(byte3))
+    {
+        if (byte3 == ddr_status::NO_SYSTEM_LEVEL_ERROR)
+        {
+            logLevel = log_level::OK;
+        }
+
+        description += ddrStatusToMsgMap[byte3];
+
+        if (byte3 == ddr_status::CONFIGURATION_FAILURE ||
+            byte3 == ddr_status::TRAINING_FAILURE)
+        {
+            // List out failed DIMMs
+            description += dimmIdxsToString(byte012);
+        }
+    }
+    else
+    {
+        description += "has unsupported status " + std::to_string(byte3);
+    }
 
     // Log to Redfish event
     sendJournalRedfish(description, logLevel);
