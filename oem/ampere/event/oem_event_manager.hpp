@@ -20,6 +20,15 @@ using EventToMsgMap_t = std::unordered_map<uint8_t, std::string>;
 enum sensor_ids
 {
     DDR_STATUS = 51,
+    PCP_VR_STATE = 75,
+    SOC_VR_STATE = 80,
+    DPHY_VR1_STATE = 85,
+    DPHY_VR2_STATE = 90,
+    D2D_VR_STATE = 95,
+    IOC_VR1_STATE = 100,
+    IOC_VR2_STATE = 105,
+    PCI_D_VR_STATE = 110,
+    PCI_A_VR_STATE = 115,
     PCIE_HOT_PLUG = 169,
     BOOT_OVERALL = 175,
 };
@@ -182,6 +191,32 @@ enum dimm_training_failure_syndrome
 } // namespace training_failure
 } // namespace dimm
 
+/*
+ * PresentReading value format
+ * FIELD       |                   COMMENT
+ * Bit 31:30   |   Reserved (2 bits)
+ * Bit 29      |   A VR Critical condition observed (1 bit)
+ * Bit 28      |   A VR Warning condition observed (1 bit)
+ * Bit 27:16   |   Reserved (12 bits)
+ * Bit 15:8    |   VR status byte high - The bit definition is the same as the
+ *             |   corresponding VR PMBUS STATUS_WORD (upper byte) (8 bits)
+ * Bit 7:0     |   VR status byte low - The bit definition is the same as the
+ *             |   corresponding VR PMBUS STATUS_WORD (lower byte) (8 bits)
+ */
+typedef union
+{
+    uint32_t value;
+    struct
+    {
+        uint32_t vr_status_byte_low:8;
+        uint32_t vr_status_byte_high:8;
+        uint32_t reserved_1:12;
+        uint32_t warning:1;
+        uint32_t critical:1;
+        uint32_t reserved_2:2;
+    } __attribute__((packed)) bits;
+} VRDStatus_t;
+
 /**
  * @brief OemEventManager
  *
@@ -285,6 +320,15 @@ class OemEventManager
      *  @param[in] presentReading - the present reading of the sensor
      */
     void handleDDRStatusEvent(pldm_tid_t tid, uint16_t sensorId,
+                              uint32_t presentReading);
+
+    /** @brief Handle numeric sensor event message from VRD status sensor.
+     *
+     *  @param[in] tid - TID
+     *  @param[in] sensorId - Sensor ID
+     *  @param[in] presentReading - the present reading of the sensor
+     */
+    void handleVRDStatusEvent(pldm_tid_t tid, uint16_t sensorId,
                               uint32_t presentReading);
 
     /** @brief Handle numeric sensor event messages.
