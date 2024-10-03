@@ -16,6 +16,24 @@
       "message": "@thu So this none-telemetry base unit is the OEM reserved unit value? and what does this value correspond to?",
       "revId": "799b8d633b070283ff0601796314ea31b5540a9b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b995c5dd_d66eff30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-03T08:47:42Z",
+      "side": 1,
+      "message": "None-telemetry base unit is not only OEM base unit but also others base Unit such as `counts`,`corrected_errors`, `uncorrected_errors`. These values will be the counts of errors or some metrics.",
+      "parentUuid": "064cf997_eb50b997",
+      "revId": "799b8d633b070283ff0601796314ea31b5540a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
