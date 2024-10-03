@@ -540,6 +540,7 @@ NumericSensor::NumericSensor(
     offset = std::numeric_limits<double>::quiet_NaN();
     baseUnitModifier = pdr->unit_modifier;
     timeStamp = 0;
+    hysteresis = 0;
 
     /**
      * DEFAULT_SENSOR_UPDATER_INTERVAL is in milliseconds
