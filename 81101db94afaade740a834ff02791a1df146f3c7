@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e577c35b_26ec406b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-03T03:44:33Z",
+      "side": 1,
+      "message": "sounds , good to me. Can you document this as well in the commit message. So that it can be uses as a reference to figure out that its the reasonable way.",
+      "parentUuid": "62d33400_f9e0a425",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 38
+      },
+      "revId": "81101db94afaade740a834ff02791a1df146f3c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7cd7dfa_eb27ec28",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 9
