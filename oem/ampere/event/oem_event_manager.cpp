@@ -72,9 +72,13 @@ EventToMsgMap_t tidToSocketNameMap = {{1, "SOCKET 0"}, {2, "SOCKET 1"}};
     A map between sensor IDs and their names in string.
     Using pldm::oem::sensor_ids
 */
-EventToMsgMap_t sensorIdToStrMap = {{DDR_STATUS, "DDR_STATUS"},
-                                    {PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},
-                                    {BOOT_OVERALL, "BOOT_OVERALL"}};
+EventToMsgMap_t sensorIdToStrMap = {
+    {DDR_STATUS, "DDR_STATUS"},         {PCP_VR_STATE, "PCP_VR_STATE"},
+    {SOC_VR_STATE, "SOC_VR_STATE"},     {DPHY_VR1_STATE, "DPHY_VR1_STATE"},
+    {DPHY_VR2_STATE, "DPHY_VR2_STATE"}, {D2D_VR_STATE, "D2D_VR_STATE"},
+    {IOC_VR1_STATE, "IOC_VR1_STATE"},   {IOC_VR2_STATE, "IOC_VR2_STATE"},
+    {PCI_D_VR_STATE, "PCI_D_VR_STATE"}, {PCI_A_VR_STATE, "PCI_A_VR_STATE"},
+    {PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},   {BOOT_OVERALL, "BOOT_OVERALL"}};
 
 /*
     A map between the boot stages and logging strings.
@@ -362,6 +366,17 @@ int OemEventManager::processNumericSensorEvent(
             break;
         case DDR_STATUS:
             handleDDRStatusEvent(tid, sensorId, presentReading);
+            break;
+        case PCP_VR_STATE:
+        case SOC_VR_STATE:
+        case DPHY_VR1_STATE:
+        case DPHY_VR2_STATE:
+        case D2D_VR_STATE:
+        case IOC_VR1_STATE:
+        case IOC_VR2_STATE:
+        case PCI_D_VR_STATE:
+        case PCI_A_VR_STATE:
+            handleVRDStatusEvent(tid, sensorId, presentReading);
             break;
         default:
             std::string description;
@@ -719,6 +734,55 @@ void OemEventManager::handleDDRStatusEvent(pldm_tid_t tid, uint16_t sensorId,
     {
         description += "has unsupported status " + std::to_string(byte3);
     }
+
+    // Log to Redfish event
+    sendJournalRedfish(description, logLevel);
+}
+
+void OemEventManager::handleVRDStatusEvent(pldm_tid_t tid, uint16_t sensorId,
+                                           uint32_t presentReading)
+{
+    log_level logLevel{log_level::WARNING};
+    std::string description;
+    std::stringstream strStream;
+
+    description += prefixMsgStrCreation(tid, sensorId);
+
+    VRDStatus_t status{presentReading};
+
+    if (status.bits.warning && status.bits.critical)
+    {
+        description += "A VR warning and a VR critical";
+        logLevel = log_level::CRITICAL;
+    }
+    else
+    {
+        if (status.bits.warning)
+        {
+            description += "A VR warning";
+        }
+        else if (status.bits.critical)
+        {
+            description += "A VR critical";
+            logLevel = log_level::CRITICAL;
+        }
+        else
+        {
+            description += "No VR warning or critical";
+            logLevel = log_level::OK;
+        }
+    }
+    description += " condition observed";
+
+    strStream << "; VR status byte high is 0x" << std::setfill('0') << std::hex
+              << std::setw(2)
+              << static_cast<uint32_t>(status.bits.vr_status_byte_high)
+              << "; VR status byte low is 0x" << std::setw(2)
+              << static_cast<uint32_t>(status.bits.vr_status_byte_low)
+              << "; Reading is 0x" << std::setw(2)
+              << static_cast<uint32_t>(presentReading) << ";";
+
+    description += strStream.str();
 
     // Log to Redfish event
     sendJournalRedfish(description, logLevel);
