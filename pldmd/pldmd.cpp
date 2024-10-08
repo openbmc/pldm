@@ -64,6 +64,10 @@ PHOSPHOR_LOG2_USING;
 #include "oem_ibm.hpp"
 #endif
 
+#ifdef AMPERE
+#include "oem/ampere/event/oem_event_manager.hpp"
+#endif
+
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
 using namespace pldm;
@@ -274,6 +278,12 @@ int main(int argc, char** argv)
     std::unique_ptr<platform_mc::Manager> platformManager =
         std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
 
+#ifdef AMPERE
+    std::unique_ptr<oem::OemEventManager> oemEventManager =
+        std::make_unique<oem::OemEventManager>(event, reqHandler, instanceIdDb,
+                                               platformManager.get());
+#endif
+
     pldm::responder::platform::EventMap addOnEventHandlers{
         {PLDM_CPER_EVENT,
          {[&platformManager](const pldm_msg* request, size_t payloadLength,
@@ -289,13 +299,30 @@ int main(int argc, char** argv)
              return platformManager->handlePldmMessagePollEvent(
                  request, payloadLength, formatVersion, tid, eventDataOffset);
          }}},
+#ifndef AMPERE
         {PLDM_SENSOR_EVENT,
          {[&platformManager](const pldm_msg* request, size_t payloadLength,
                              uint8_t formatVersion, uint8_t tid,
                              size_t eventDataOffset) {
              return platformManager->handleSensorEvent(
                  request, payloadLength, formatVersion, tid, eventDataOffset);
-         }}}};
+         }}}
+#else
+        {PLDM_SENSOR_EVENT,
+         {[&platformManager](const pldm_msg* request, size_t payloadLength,
+                             uint8_t formatVersion, uint8_t tid,
+                             size_t eventDataOffset) {
+              return platformManager->handleSensorEvent(
+                  request, payloadLength, formatVersion, tid, eventDataOffset);
+          },
+          [&oemEventManager](const pldm_msg* request, size_t payloadLength,
+                             uint8_t formatVersion, uint8_t tid,
+                             size_t eventDataOffset) {
+              return oemEventManager->handleSensorEvent(
+                  request, payloadLength, formatVersion, tid, eventDataOffset);
+          }}}
+#endif
+    };
 
     auto platformHandler = std::make_unique<platform::Handler>(
         &dbusHandler, hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),

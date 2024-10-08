@@ -208,3 +208,11 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249
 )
+
+## Ampere PLDM code build Options
+option(
+    'ampere',
+    type: 'feature',
+    description: 'Enable AMPERE PLDM',
+    value: 'enabled',
+)
