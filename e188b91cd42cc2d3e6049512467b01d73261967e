@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d149f0a2_9dfb53cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-08T04:07:03Z",
+      "side": 1,
+      "message": "Look good to me. Just wait for the revert in the libpldm is merged before we merge this patch set.",
+      "revId": "e188b91cd42cc2d3e6049512467b01d73261967e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
