@@ -448,8 +448,7 @@ exec::task<int> PlatformManager::setEventReceiver(
     pldm_tid_t tid, pldm_event_message_global_enable eventMessageGlobalEnable,
     pldm_transport_protocol_type protocolType, uint16_t heartbeatTimer)
 {
-    size_t requestBytes = PLDM_SET_EVENT_RECEIVER_REQ_BYTES +
-                          PLDM_SET_EVENT_RECEIVER_REQ_HEARTBEAT_BYTES;
+    size_t requestBytes = PLDM_SET_EVENT_RECEIVER_REQ_BYTES;
     /**
      * Ignore heartbeatTimer bytes when eventMessageGlobalEnable is not
      * ENABLE_ASYNC_KEEP_ALIVE
