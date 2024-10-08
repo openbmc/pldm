@@ -138,6 +138,10 @@ conf_data.set(
 )
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 
+if get_option('ampere').enabled()
+    add_project_arguments('-DAMPERE', language : 'cpp')
+endif
+
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(
@@ -230,6 +234,13 @@ if get_option('libpldmresponder').allowed()
     deps += [libpldmresponder_dep]
 endif
 
+oem_files = []
+if get_option('ampere').enabled()
+  oem_files += [
+  'oem/ampere/event/oem_event_manager.cpp'
+]
+endif
+
 executable(
     'pldmd',
     'pldmd/pldmd.cpp',
@@ -248,6 +259,7 @@ executable(
     'platform-mc/numeric_sensor.cpp',
     'platform-mc/event_manager.cpp',
     'requester/mctp_endpoint_discovery.cpp',
+    oem_files,
     implicit_include_directories: false,
     dependencies: deps,
     install: true,
