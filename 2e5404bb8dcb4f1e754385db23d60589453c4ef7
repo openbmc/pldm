@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48f7b11a_70d9560a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2024-10-09T06:58:25Z",
+      "side": 1,
+      "message": "Here is my suggestions to make the coroutine code well-formed. You should still test for correctness, I don\u0027t think the `co_await`s works as expected because underlying, it still depends on `registerRequest`.",
+      "revId": "2e5404bb8dcb4f1e754385db23d60589453c4ef7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05f2ac49_6e20d162",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2024-10-09T06:58:25Z",
+      "side": 1,
+      "message": "If you meant to wait until scope is empty / done, this is not what you want to do. pldmd is single-threaded, so this will definitely block the whole program if you have to wait for the response (Other usage of this statements elsewhere in `pldm` code are mistakes in hindsight, you shouldn\u0027t need this at all).\n\nPlease declare the `scope` as a member property (so that it won\u0027t destruct at end of function scope), and then remove this wait.",
+      "revId": "2e5404bb8dcb4f1e754385db23d60589453c4ef7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2ac08a9_8c9ff5fc",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2024-10-09T06:58:25Z",
+      "side": 1,
+      "message": "If I understand your intention correctly, this should be a `co_await handler-\u003esendRecvMsg(...)` (because currently, `HostPDRHandler::sendRequestTask` is marked as a coroutine but no `co_await` inside).\n\nOtherwise, `pldmd` will still spawn the requests concurrently without waiting for the response, thus using up all the instance-id as you concerned.\n\n(This change alone will hang `pldmd`, you should also remove the `sync_wait` as per my other comment)",
+      "range": {
+        "startLine": 948,
+        "startChar": 0,
+        "endLine": 951,
+        "endChar": 57
+      },
+      "revId": "2e5404bb8dcb4f1e754385db23d60589453c4ef7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
