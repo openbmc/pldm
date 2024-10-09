@@ -16,6 +16,236 @@
       "message": "Verified with meta-arm-evb system.",
       "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "536c632c_a6f94911",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "use more modern way to of initialization ?\n\n```\npldm_message_poll_event poll_event {};\n\n```",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 55
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b813e2a_7dbef13f",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "The termini.contains(tid) followed by termini[tid] results in two lookups in the termini container. You can combine them into a single lookup with find() to improve performance.\n\n```\nauto it \u003d termini.find(tid);\n    if (it !\u003d termini.end())\n    {\n        auto\u0026 terminus \u003d it-\u003esecond;  // Reference for clarity\n        terminus-\u003epollEvent \u003d true;\n        terminus-\u003epollEventId \u003d poll_event.event_id;\n        terminus-\u003epollDataTransferHandle \u003d poll_event.data_transfer_handle;\n    }\n```",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 90,
+        "endChar": 9
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b4cd7d7_7baad547",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "whats the need for it when we are not using it ? can add it when we need it ?",
+      "range": {
+        "startLine": 473,
+        "startChar": 19,
+        "endLine": 473,
+        "endChar": 46
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df35ee61_291f6aee",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "magic numbers ? any way we could have named constants for these ?",
+      "range": {
+        "startLine": 482,
+        "startChar": 0,
+        "endLine": 483,
+        "endChar": 32
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9776118_911e1465",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "can we have rest of these initialized as well ?",
+      "range": {
+        "startLine": 475,
+        "startChar": 4,
+        "endLine": 489,
+        "endChar": 40
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "953a69d6_1ad7d0d6",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "merge these two to single if ?",
+      "range": {
+        "startLine": 535,
+        "startChar": 1,
+        "endLine": 538,
+        "endChar": 13
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5551fa01_113ddb64",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "merge these two to elseif() ?",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 548,
+        "endChar": 59
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b610a95_6402fe5d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "its tough to follow the series of if-else-if\u0027s in here ..can we merge things so that it becomes readable ? took a stab at it(not tested) may be something like this ? \n\n```\n else if (transferFlag \u003d\u003d PLDM_PLATFORM_TRANSFER_START_AND_END || transferFlag \u003d\u003d PLDM_PLATFORM_TRANSFER_END)\n        {\n            // Handle both start-and-end and end of transfer cases\n            bool validChecksum \u003d transferFlag \u003d\u003d PLDM_PLATFORM_TRANSFER_START_AND_END || \n                (transferFlag \u003d\u003d PLDM_PLATFORM_TRANSFER_END \u0026\u0026 eventDataIntegrityChecksum \u003d\u003d crc32(eventMessage.data(), eventMessage.size()));\n\n            if (validChecksum \u0026\u0026 eventHandlers.contains(eventClass))\n            {\n                eventHandlers.at(eventClass)(\n                    eventTid, eventId, eventMessage.data(), eventMessage.size());\n            }\n            else if (!validChecksum)\n            {\n                lg2::error(\n                    \"pollForPlatformEventMessage for terminus {TID} with event {EVENTID} checksum error.\",\n                    \"TID\", tid, \"EVENTID\", eventId);\n                co_return PLDM_ERROR_INVALID_DATA;\n            }\n\n            // Prepare for next acknowledgment\n            transferOperationFlag \u003d PLDM_ACKNOWLEDGEMENT_ONLY;\n            dataTransferHandle \u003d 0;\n            eventIdToAcknowledge \u003d eventId;\n        }\n        else\n        {\n            // Handle ongoing transfer\n            transferOperationFlag \u003d PLDM_GET_NEXTPART;\n            dataTransferHandle \u003d nextDataTransferHandle;\n            eventIdToAcknowledge \u003d PLDM_PLATFORM_EVENT_ID_FRAGMENT;\n        }\n    }\n ```",
+      "range": {
+        "startLine": 554,
+        "startChar": 12,
+        "endLine": 584,
+        "endChar": 17
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dc11af2_76c756ea",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "arj has been advocating to placement new in all the libpldm reviews - instead of using the reinterpret_cast\u003c\u003e, can you try using that ??",
+      "range": {
+        "startLine": 606,
+        "startChar": 4,
+        "endLine": 606,
+        "endChar": 66
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5293b023_d591b0d3",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-09T23:20:14Z",
+      "side": 1,
+      "message": "directly use insert_or_assign() here from c++17 ? instead if manually figuring out and emplacing ?\n\n```\nvoid registerPolledEventHandler(uint8_t eventClass, HandlerFunc function)\n{\n    eventHandlers.insert_or_assign(eventClass, std::move(function));\n}\n\n```",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 125,
+        "endChar": 5
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
