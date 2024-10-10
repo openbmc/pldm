@@ -33,7 +33,10 @@ MctpDiscovery::MctpDiscovery(
     handlers(list)
 {
     getMctpInfos(existingMctpInfos);
-    handleMctpEndpoints(existingMctpInfos);
+    if (existingMctpInfos.size())
+    {
+        handleMctpEndpoints(existingMctpInfos);
+    }
 }
 
 void MctpDiscovery::getMctpInfos(MctpInfos& mctpInfos)
@@ -180,17 +183,23 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
 {
     MctpInfos addedInfos;
     getAddedMctpInfos(msg, addedInfos);
-    addToExistingMctpInfos(addedInfos);
-    handleMctpEndpoints(addedInfos);
+    if (addedInfos.size())
+    {
+        addToExistingMctpInfos(addedInfos);
+        handleMctpEndpoints(addedInfos);
+    }
 }
 
 void MctpDiscovery::removeEndpoints(sdbusplus::message_t&)
 {
     MctpInfos mctpInfos;
-    MctpInfos removedInfos;
     getMctpInfos(mctpInfos);
-    removeFromExistingMctpInfos(mctpInfos, removedInfos);
-    handleRemovedMctpEndpoints(removedInfos);
+    if (mctpInfos.size())
+    {
+        MctpInfos removedInfos;
+        removeFromExistingMctpInfos(mctpInfos, removedInfos);
+        handleRemovedMctpEndpoints(removedInfos);
+    }
 }
 
 void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)
