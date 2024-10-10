@@ -60,7 +60,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     void handleMctpEndpoints(const MctpInfos& mctpInfos)
     {
-        terminusManager.discoverMctpTerminus(mctpInfos);
+        if (mctpInfos.size())
+        {
+            terminusManager.discoverMctpTerminus(mctpInfos);
+        }
     }
 
     /** @brief Helper function to invoke registered handlers for
