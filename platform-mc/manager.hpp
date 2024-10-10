@@ -60,7 +60,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     void handleMctpEndpoints(const MctpInfos& mctpInfos)
     {
-        terminusManager.discoverMctpTerminus(mctpInfos);
+        if (mctpInfos.size())
+        {
+            terminusManager.discoverMctpTerminus(mctpInfos);
+        }
     }
 
     /** @brief Helper function to invoke registered handlers for
@@ -70,7 +73,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos)
     {
-        terminusManager.removeMctpTerminus(mctpInfos);
+        if (mctpInfos.size())
+        {
+            terminusManager.removeMctpTerminus(mctpInfos);
+        }
     }
 
     /** @brief Helper function to start sensor polling of the terminus TID
