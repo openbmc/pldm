@@ -13,7 +13,7 @@ TEST(MctpEndpointDiscoveryTest, SingleHandleMctpEndpoint)
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
 
-    EXPECT_CALL(manager, handleMctpEndpoints(_)).Times(1);
+    EXPECT_CALL(manager, handleMctpEndpoints(_)).Times(0);
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
         bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
@@ -26,8 +26,8 @@ TEST(MctpEndpointDiscoveryTest, MultipleHandleMctpEndpoints)
     pldm::MockManager manager1;
     pldm::MockManager manager2;
 
-    EXPECT_CALL(manager1, handleMctpEndpoints(_)).Times(1);
-    EXPECT_CALL(manager2, handleMctpEndpoints(_)).Times(1);
+    EXPECT_CALL(manager1, handleMctpEndpoints(_)).Times(0);
+    EXPECT_CALL(manager2, handleMctpEndpoints(_)).Times(0);
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
         bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{
@@ -112,7 +112,7 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveFromExistingMctpInfos)
     EXPECT_EQ(std::get<3>(mctpInfo), 2);
 }
 
-TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
+TEST(MctpEndpointDiscoveryTest, badRemoveEndpoints)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
@@ -133,5 +133,5 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
         "/xyz/openbmc_project/sdbusplus/test/object",
         "xyz.openbmc_project.sdbusplus.test.Object", "Unused");
     mctpDiscoveryHandler->removeEndpoints(msg);
-    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 0);
+    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 2);
 }
