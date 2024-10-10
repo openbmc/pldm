@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2161541_744912f4",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "536c632c_a6f94911",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 55
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b813e2a_7dbef13f",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-10-09T23:20:14Z",
       "side": 1,
       "message": "The termini.contains(tid) followed by termini[tid] results in two lookups in the termini container. You can combine them into a single lookup with find() to improve performance.\n\n```\nauto it \u003d termini.find(tid);\n    if (it !\u003d termini.end())\n    {\n        auto\u0026 terminus \u003d it-\u003esecond;  // Reference for clarity\n        terminus-\u003epollEvent \u003d true;\n        terminus-\u003epollEventId \u003d poll_event.event_id;\n        terminus-\u003epollDataTransferHandle \u003d poll_event.data_transfer_handle;\n    }\n```",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 90,
+        "endChar": 9
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33853096_f360a10d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b813e2a_7dbef13f",
       "range": {
         "startLine": 84,
         "startChar": 7,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea2eb98_e3db5453",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "In the previous patch set, I set `pollEventId` to `eventIdToAcknowledge` that why `pollEventId` is required. But it is not correct with the spec. \nI removed `pollEventId`",
+      "parentUuid": "2b4cd7d7_7baad547",
+      "range": {
+        "startLine": 473,
+        "startChar": 19,
+        "endLine": 473,
+        "endChar": 46
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df35ee61_291f6aee",
@@ -110,6 +182,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e928827a_4ea8fc71",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df35ee61_291f6aee",
+      "range": {
+        "startLine": 482,
+        "startChar": 0,
+        "endLine": 483,
+        "endChar": 32
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9776118_911e1465",
@@ -123,6 +219,30 @@
       "writtenOn": "2024-10-09T23:20:14Z",
       "side": 1,
       "message": "can we have rest of these initialized as well ?",
+      "range": {
+        "startLine": 475,
+        "startChar": 4,
+        "endLine": 489,
+        "endChar": 40
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acce45c6_a993258c",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9776118_911e1465",
       "range": {
         "startLine": 475,
         "startChar": 4,
@@ -158,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ddaff98_cebe0a58",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "I think we should not.\nThe line #535 and #545 is one if ... else pair which check the  transferOperationFlag \u003d\u003d PLDM_ACKNOWLEDGEMENT_ONLY.\nWhile `if (eventId \u003d\u003d PLDM_PLATFORM_EVENT_ID_ACK)` is used to check eventId only as the condition `transferOperationFlag \u003d\u003d PLDM_ACKNOWLEDGEMENT_ONLY`.\nMerge two line to one will cause the `else` at #545 will also `true` when ( `transferOperationFlag \u003d\u003d PLDM_ACKNOWLEDGEMENT_ONLY` \u0026\u0026 `eventId !\u003d PLDM_PLATFORM_EVENT_ID_ACK`).",
+      "parentUuid": "953a69d6_1ad7d0d6",
+      "range": {
+        "startLine": 535,
+        "startChar": 1,
+        "endLine": 538,
+        "endChar": 13
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5551fa01_113ddb64",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 13
@@ -169,6 +313,30 @@
       "writtenOn": "2024-10-09T23:20:14Z",
       "side": 1,
       "message": "merge these two to elseif() ?",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 548,
+        "endChar": 59
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81aa472b_60752716",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "`else` at line #545 is pair of `if ... else ... ` which check condition `transferOperationFlag \u003d\u003d PLDM_ACKNOWLEDGEMENT_ONLY`.\n\nWhile `if` at line #547 and else at line #554 is pair of `if ... else ...` which checking value of `transferFlag`.\nSo we should not merge those two lines.",
+      "parentUuid": "5551fa01_113ddb64",
       "range": {
         "startLine": 545,
         "startChar": 7,
@@ -204,6 +372,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aae5479a_7c1de4d7",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "Check my comment above.",
+      "parentUuid": "3b610a95_6402fe5d",
+      "range": {
+        "startLine": 554,
+        "startChar": 12,
+        "endLine": 584,
+        "endChar": 17
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2dc11af2_76c756ea",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 13
@@ -227,6 +419,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0864ee5d_fb4ecb68",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "`terminusManager.sendRecvPldmMsg` requires `request` as `std:vector\u003cuint8_t\u003e`. While `encode_poll_for_platform_event_message_req` require `struct pldm_msg *`.\n\nI can update to construct `requestMsg` use `PLDM_MSG_DEFINE_P(requestMsg, PLDM_POLL_FOR_PLATFORM_EVENT_MESSAGE_REQ_BYTES);` but we still need construct `request` from `requestMsg`.\n\nI don\u0027t see much help of using `PLDM_MSG_DEFINE_P` instead of `reinterpret_cast\u003cpldm_msg*\u003e` in this case.\n\nLet me know your idea.",
+      "parentUuid": "2dc11af2_76c756ea",
+      "range": {
+        "startLine": 606,
+        "startChar": 4,
+        "endLine": 606,
+        "endChar": 66
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5293b023_d591b0d3",
         "filename": "platform-mc/event_manager.hpp",
         "patchSetId": 13
@@ -238,6 +454,30 @@
       "writtenOn": "2024-10-09T23:20:14Z",
       "side": 1,
       "message": "directly use insert_or_assign() here from c++17 ? instead if manually figuring out and emplacing ?\n\n```\nvoid registerPolledEventHandler(uint8_t eventClass, HandlerFunc function)\n{\n    eventHandlers.insert_or_assign(eventClass, std::move(function));\n}\n\n```",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 125,
+        "endChar": 5
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9ae7efa_623ecdcd",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-10T04:23:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5293b023_d591b0d3",
       "range": {
         "startLine": 114,
         "startChar": 4,
