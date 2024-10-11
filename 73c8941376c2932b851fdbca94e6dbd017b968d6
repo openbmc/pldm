@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79e5d9a3_743ef05b",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-11T01:32:34Z",
+      "side": 1,
+      "message": "\u003e This is not obvious why this is necessary or solves anything.\n\u003e \n\u003e 1. Why would we need to put this logic around every call to `handleMctpEndpoints`?  If that function can\u0027t handle an empty list, it should be fixed, otherwise you\u0027re letting abstractions leak everywhere for the callers.\n\nThe `handleMctpEndpoints` uses the `existingMctpInfos` as input parameter, it will go thru the element in `existingMctpInfos` list. There is no reason to call that function when the list is empty, I think.\nAnyway, I will set the patch set WIP while working with Manoj in IBM\u0027s issue.\n\n\u003e \n\u003e 2. That function just does an iteration over the input parameter; nothing about it should be failing if the list is empty.",
+      "parentUuid": "401d7795_10bbecf4",
+      "revId": "73c8941376c2932b851fdbca94e6dbd017b968d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c2e90047_9a69f224",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 1
