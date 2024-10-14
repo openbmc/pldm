@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1df3c999_90046d9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-14T08:55:51Z",
+      "side": 1,
+      "message": "Tested this with IBM simulator \u0026 does not see any extra event handling from the platform-mc.",
+      "revId": "bd0277e4a2bc6b15309cd7b4d42ba46b513eb26f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
