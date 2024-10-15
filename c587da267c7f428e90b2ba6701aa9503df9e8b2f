@@ -16,6 +16,24 @@
       "message": "Hi Nguyễn,\nIs it advisable to reinitialize terminus here?\nhttps://github.com/openbmc/pldm/blob/master/platform-mc/platform_manager.cpp#L16\n\nSince it might also receive ```PLDM_NOT_READY``` ```PLDM_ERROR_NOT_READY``` from either ```GetPDR or Supported PLDM Type?",
       "revId": "c587da267c7f428e90b2ba6701aa9503df9e8b2f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f574b4bc_341df609",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-15T03:18:09Z",
+      "side": 1,
+      "message": "There is no info when the time out happens, So I would like to make the simple code.\nWhen there is failure in initialize terminus, I think it is better to end the discovery flow with error. So the issue investigation steps can be executed.\nPlease note that this code is not armed to resolve the time out issue of the terminus. It is armed to handle the available state of terminus for sensor polling and event handling.",
+      "parentUuid": "60f4d456_b3a7b64f",
+      "revId": "c587da267c7f428e90b2ba6701aa9503df9e8b2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
