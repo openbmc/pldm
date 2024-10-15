@@ -402,6 +402,98 @@
                             }
                         }
                     ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 257,
+                                "size": 1,
+                                "states": [0, 1, 4]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot0",
+                                "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+                                "property_name": "PowerState",
+                                "property_type": "string",
+                                "property_values": [
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Unknown",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.On",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Off"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 257,
+                                "size": 1,
+                                "states": [0, 1, 4]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot1",
+                                "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+                                "property_name": "PowerState",
+                                "property_type": "string",
+                                "property_values": [
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Unknown",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.On",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Off"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot2",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 257,
+                                "size": 1,
+                                "states": [0, 1, 4]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot2",
+                                "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+                                "property_name": "PowerState",
+                                "property_type": "string",
+                                "property_values": [
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Unknown",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.On",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Off"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot3",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 257,
+                                "size": 1,
+                                "states": [0, 1, 4]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/pcieslot3",
+                                "interface": "xyz.openbmc_project.State.Decorator.PowerState",
+                                "property_name": "PowerState",
+                                "property_type": "string",
+                                "property_values": [
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Unknown",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.On",
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Off"
+                                ]
+                            }
+                        }
+                    ]
                 }
             ]
         }
