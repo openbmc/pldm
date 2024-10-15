@@ -209,6 +209,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a559d795_e87c6492",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-15T14:04:14Z",
+      "side": 1,
+      "message": "It just a patch set version #12 in this patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/73033/11..13/platform-mc/event_manager.hpp#103.\nSo it is still a part of this patch set.",
+      "parentUuid": "2695610f_448337d8",
+      "range": {
+        "startLine": 473,
+        "startChar": 19,
+        "endLine": 473,
+        "endChar": 46
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "df35ee61_291f6aee",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 13
@@ -443,6 +467,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f3e8039_f2eaa055",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-15T14:04:14Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "c418ab3a_a3ca33b5",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 548,
+        "endChar": 59
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b610a95_6402fe5d",
@@ -575,6 +623,30 @@
       "side": 1,
       "message": "`PLDM_MSG_DEFINE_P()` isn\u0027t magic, you can look at its implementation. There should be no reason to require `reinterpret_cast\u003c\u003e()` here. You can use:\n\n```\nauto requestMsg \u003d new (request.data()) pldm_msg;\n```\n\nSo long as the alignment requirements are met by `request.data()`. If it\u0027s backed by a vector then the data object should be heap-allocated, in which case the alignment requirement is satisfied (heap pointers must have the strongest alignment).",
       "parentUuid": "0864ee5d_fb4ecb68",
+      "range": {
+        "startLine": 606,
+        "startChar": 4,
+        "endLine": 606,
+        "endChar": 66
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6214660_76121462",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-15T14:04:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15059b7f_29cc746f",
       "range": {
         "startLine": 606,
         "startChar": 4,
