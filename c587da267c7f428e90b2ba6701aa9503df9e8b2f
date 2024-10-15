@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60f4d456_b3a7b64f",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1002022
+      },
+      "writtenOn": "2024-10-15T02:56:46Z",
+      "side": 1,
+      "message": "Hi Nguyễn,\nIs it advisable to reinitialize terminus here?\nhttps://github.com/openbmc/pldm/blob/master/platform-mc/platform_manager.cpp#L16\n\nSince it might also receive ```PLDM_NOT_READY``` ```PLDM_ERROR_NOT_READY``` from either ```GetPDR or Supported PLDM Type?",
+      "revId": "c587da267c7f428e90b2ba6701aa9503df9e8b2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
