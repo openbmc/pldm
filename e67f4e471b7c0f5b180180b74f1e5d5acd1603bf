@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bafdff61_51cc1dfa",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-15T11:13:27Z",
+      "side": 1,
+      "message": "why do we initialise all here and then again re-initialize them below ? can we split them and intialize few here and few below ?",
+      "range": {
+        "startLine": 477,
+        "startChar": 2,
+        "endLine": 491,
+        "endChar": 44
+      },
+      "revId": "e67f4e471b7c0f5b180180b74f1e5d5acd1603bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

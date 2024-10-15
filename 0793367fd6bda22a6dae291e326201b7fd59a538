@@ -112,6 +112,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5cf9b9c_98b376e5",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-15T11:13:27Z",
+      "side": 1,
+      "message": "can you please remove `// Reference for clarity` comment - i just wrote it to explain you, i think its not needed to be in the code.",
+      "parentUuid": "33853096_f360a10d",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 90,
+        "endChar": 9
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b4cd7d7_7baad547",
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "In the previous patch set, I set `pollEventId` to `eventIdToAcknowledge` that why `pollEventId` is required. But it is not correct with the spec. \nI removed `pollEventId`",
       "parentUuid": "2b4cd7d7_7baad547",
+      "range": {
+        "startLine": 473,
+        "startChar": 19,
+        "endLine": 473,
+        "endChar": 46
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2695610f_448337d8",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-15T11:13:27Z",
+      "side": 1,
+      "message": "can we remove it stating the reason\u0027s in a new commit ? and drop the changes for these here ?",
+      "parentUuid": "5ea2eb98_e3db5453",
       "range": {
         "startLine": 473,
         "startChar": 19,
@@ -300,6 +348,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e16ead4e_d5afb647",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-15T11:13:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8ddaff98_cebe0a58",
+      "range": {
+        "startLine": 535,
+        "startChar": 1,
+        "endLine": 538,
+        "endChar": 13
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5551fa01_113ddb64",
@@ -349,6 +421,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c418ab3a_a3ca33b5",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-15T11:13:27Z",
+      "side": 1,
+      "message": "can we atleast split these into multiple functions ? its really hard to follow through the if-else-if statements.",
+      "parentUuid": "81aa472b_60752716",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 548,
+        "endChar": 59
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3b610a95_6402fe5d",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 13
@@ -384,6 +480,30 @@
       "side": 1,
       "message": "Check my comment above.",
       "parentUuid": "3b610a95_6402fe5d",
+      "range": {
+        "startLine": 554,
+        "startChar": 12,
+        "endLine": 584,
+        "endChar": 17
+      },
+      "revId": "0793367fd6bda22a6dae291e326201b7fd59a538",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fdef959_79e96426",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-15T11:13:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "aae5479a_7c1de4d7",
       "range": {
         "startLine": 554,
         "startChar": 12,
