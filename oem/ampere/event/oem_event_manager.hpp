@@ -30,7 +30,9 @@ enum sensor_ids
     PCI_D_VR_STATE = 110,
     PCI_A_VR_STATE = 115,
     PCIE_HOT_PLUG = 169,
+    SOC_HEALTH_AVAILABILITY = 170,
     BOOT_OVERALL = 175,
+    WATCH_DOG = 179,
 };
 
 namespace boot
