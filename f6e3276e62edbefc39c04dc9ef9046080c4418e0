@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73c4a0da_29f12c4a",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-16T09:37:22Z",
+      "side": 1,
+      "message": "The eventHandlers will be triggered after send ACK to the terminus in latest patch set number #17.",
+      "revId": "f6e3276e62edbefc39c04dc9ef9046080c4418e0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
