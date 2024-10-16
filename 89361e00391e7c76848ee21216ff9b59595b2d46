@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "cc83cb8a_da5b40a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-16T23:11:44Z",
+      "side": 1,
+      "message": "Hi @John Chung can you help retest latest version of this patch set. I\u0027m corrected the time call event handler as my above comment.",
+      "revId": "89361e00391e7c76848ee21216ff9b59595b2d46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "93f48d86_e687121b",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 17
