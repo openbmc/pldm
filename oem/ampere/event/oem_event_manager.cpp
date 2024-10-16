@@ -73,12 +73,19 @@ EventToMsgMap_t tidToSocketNameMap = {{1, "SOCKET 0"}, {2, "SOCKET 1"}};
     Using pldm::oem::sensor_ids
 */
 EventToMsgMap_t sensorIdToStrMap = {
-    {DDR_STATUS, "DDR_STATUS"},         {PCP_VR_STATE, "PCP_VR_STATE"},
-    {SOC_VR_STATE, "SOC_VR_STATE"},     {DPHY_VR1_STATE, "DPHY_VR1_STATE"},
-    {DPHY_VR2_STATE, "DPHY_VR2_STATE"}, {D2D_VR_STATE, "D2D_VR_STATE"},
-    {IOC_VR1_STATE, "IOC_VR1_STATE"},   {IOC_VR2_STATE, "IOC_VR2_STATE"},
-    {PCI_D_VR_STATE, "PCI_D_VR_STATE"}, {PCI_A_VR_STATE, "PCI_A_VR_STATE"},
-    {PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},   {BOOT_OVERALL, "BOOT_OVERALL"}};
+    {DDR_STATUS, "DDR_STATUS"},
+    {PCP_VR_STATE, "PCP_VR_STATE"},
+    {SOC_VR_STATE, "SOC_VR_STATE"},
+    {DPHY_VR1_STATE, "DPHY_VR1_STATE"},
+    {DPHY_VR2_STATE, "DPHY_VR2_STATE"},
+    {D2D_VR_STATE, "D2D_VR_STATE"},
+    {IOC_VR1_STATE, "IOC_VR1_STATE"},
+    {IOC_VR2_STATE, "IOC_VR2_STATE"},
+    {PCI_D_VR_STATE, "PCI_D_VR_STATE"},
+    {PCI_A_VR_STATE, "PCI_A_VR_STATE"},
+    {PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},
+    {BOOT_OVERALL, "BOOT_OVERALL"},
+    {SOC_HEALTH_AVAILABILITY, "SOC_HEALTH_AVAILABILITY"}};
 
 /*
     A map between the boot stages and logging strings.
@@ -178,6 +185,23 @@ std::unordered_map<log_level, std::string> logLevelToRedfishMsgIdMap = {
     {log_level::WARNING, ampereWarningRegistry},
     {log_level::CRITICAL, ampereCriticalRegistry},
     {log_level::BIOSFWPANIC, BIOSFWPanicRegistry}};
+
+std::unordered_map<
+    uint16_t,
+    std::vector<std::pair<
+        std::string,
+        std::unordered_map<uint8_t, std::pair<log_level, std::string>>>>>
+    stateSensorToMsgMap = {
+        {SOC_HEALTH_AVAILABILITY,
+         {{"SoC Health",
+           {{1, {log_level::OK, "Normal"}},
+            {2, {log_level::WARNING, "Non-Critical"}},
+            {3, {log_level::CRITICAL, "Critical"}},
+            {4, {log_level::CRITICAL, "Fatal"}}}},
+          {"SoC Availability",
+           {{1, {log_level::OK, "Enabled"}},
+            {2, {log_level::WARNING, "Disabled"}},
+            {3, {log_level::CRITICAL, "Shutdown"}}}}}}};
 
 std::string
     OemEventManager::prefixMsgStrCreation(pldm_tid_t tid, uint16_t sensorId)
@@ -421,18 +445,56 @@ int OemEventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
     }
 
     std::string description;
-    std::stringstream strStream;
     log_level logLevel = log_level::OK;
 
-    description += "SENSOR_EVENT : STATE_SENSOR_STATE: ";
-    description += prefixMsgStrCreation(tid, sensorId);
-    strStream << std::setfill('0') << std::hex << "sensorOffset 0x"
-              << std::setw(2) << static_cast<uint32_t>(sensorOffset)
-              << "eventState 0x" << std::setw(2)
-              << static_cast<uint32_t>(eventState) << " previousEventState 0x"
-              << std::setw(2) << static_cast<uint32_t>(previousEventState)
-              << std::dec;
-    description += strStream.str();
+    if (stateSensorToMsgMap.contains(sensorId))
+    {
+        description += prefixMsgStrCreation(tid, sensorId);
+        auto componentMap = stateSensorToMsgMap[sensorId];
+        if (sensorOffset < componentMap.size())
+        {
+            description += std::get<0>(componentMap[sensorOffset]);
+            auto stateMap = std::get<1>(componentMap[sensorOffset]);
+            if (stateMap.contains(eventState))
+            {
+                logLevel = std::get<0>(stateMap[eventState]);
+                description += " state : " + std::get<1>(stateMap[eventState]);
+                if (stateMap.contains(previousEventState))
+                {
+                    description += "; previous state: " +
+                                   std::get<1>(stateMap[previousEventState]);
+                }
+            }
+            else
+            {
+                description += " sends unsupported event state: " +
+                               std::to_string(eventState);
+                if (stateMap.contains(previousEventState))
+                {
+                    description += "; previous state: " +
+                                   std::get<1>(stateMap[previousEventState]);
+                }
+            }
+        }
+        else
+        {
+            description += "sends unsupported component sensor offset " +
+                           std::to_string(sensorOffset);
+        }
+    }
+    else
+    {
+        std::stringstream strStream;
+        description += "SENSOR_EVENT : STATE_SENSOR_STATE: ";
+        description += prefixMsgStrCreation(tid, sensorId);
+        strStream << std::setfill('0') << std::hex << "sensorOffset 0x"
+                  << std::setw(2) << static_cast<uint32_t>(sensorOffset)
+                  << "eventState 0x" << std::setw(2)
+                  << static_cast<uint32_t>(eventState)
+                  << " previousEventState 0x" << std::setw(2)
+                  << static_cast<uint32_t>(previousEventState) << std::dec;
+        description += strStream.str();
+    }
 
     sendJournalRedfish(description, logLevel);
 
