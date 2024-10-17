@@ -85,7 +85,8 @@ EventToMsgMap_t sensorIdToStrMap = {
     {PCI_A_VR_STATE, "PCI_A_VR_STATE"},
     {PCIE_HOT_PLUG, "PCIE_HOT_PLUG"},
     {BOOT_OVERALL, "BOOT_OVERALL"},
-    {SOC_HEALTH_AVAILABILITY, "SOC_HEALTH_AVAILABILITY"}};
+    {SOC_HEALTH_AVAILABILITY, "SOC_HEALTH_AVAILABILITY"},
+    {WATCH_DOG, "WATCH_DOG"}};
 
 /*
     A map between the boot stages and logging strings.
@@ -201,7 +202,17 @@ std::unordered_map<
           {"SoC Availability",
            {{1, {log_level::OK, "Enabled"}},
             {2, {log_level::WARNING, "Disabled"}},
-            {3, {log_level::CRITICAL, "Shutdown"}}}}}}};
+            {3, {log_level::CRITICAL, "Shutdown"}}}}}},
+        {WATCH_DOG,
+         {{"Global Watch Dog",
+           {{1, {log_level::OK, "Normal"}},
+            {2, {log_level::CRITICAL, "Timer Expired"}}}},
+          {"Secure Watch Dog",
+           {{1, {log_level::OK, "Normal"}},
+            {2, {log_level::CRITICAL, "Timer Expired"}}}},
+          {"Non-secure Watch Dog",
+           {{1, {log_level::OK, "Normal"}},
+            {2, {log_level::CRITICAL, "Timer Expired"}}}}}}};
 
 std::string
     OemEventManager::prefixMsgStrCreation(pldm_tid_t tid, uint16_t sensorId)
@@ -401,6 +412,9 @@ int OemEventManager::processNumericSensorEvent(
         case PCI_D_VR_STATE:
         case PCI_A_VR_STATE:
             handleVRDStatusEvent(tid, sensorId, presentReading);
+            break;
+        case WATCH_DOG:
+            handleNumericWatchdogEvent(tid, sensorId, presentReading);
             break;
         default:
             std::string description;
@@ -845,6 +859,31 @@ void OemEventManager::handleVRDStatusEvent(pldm_tid_t tid, uint16_t sensorId,
               << static_cast<uint32_t>(presentReading) << ";";
 
     description += strStream.str();
+
+    // Log to Redfish event
+    sendJournalRedfish(description, logLevel);
+}
+
+void OemEventManager::handleNumericWatchdogEvent(
+    pldm_tid_t tid, uint16_t sensorId, uint32_t presentReading)
+{
+    std::string description;
+    log_level logLevel = log_level::CRITICAL;
+
+    description += prefixMsgStrCreation(tid, sensorId);
+
+    if (presentReading & 0x01)
+    {
+        description += "Global watchdog expired;";
+    }
+    if (presentReading & 0x02)
+    {
+        description += "Secure watchdog expired;";
+    }
+    if (presentReading & 0x04)
+    {
+        description += "Non-secure watchdog expired;";
+    }
 
     // Log to Redfish event
     sendJournalRedfish(description, logLevel);

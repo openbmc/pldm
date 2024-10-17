@@ -32,6 +32,7 @@ enum sensor_ids
     PCIE_HOT_PLUG = 169,
     SOC_HEALTH_AVAILABILITY = 170,
     BOOT_OVERALL = 175,
+    WATCH_DOG = 179,
 };
 
 namespace boot
@@ -331,6 +332,15 @@ class OemEventManager
      */
     void handleVRDStatusEvent(pldm_tid_t tid, uint16_t sensorId,
                               uint32_t presentReading);
+
+    /** @brief Handle numeric sensor event message from Watchdog status sensor.
+     *
+     *  @param[in] tid - TID
+     *  @param[in] sensorId - Sensor ID
+     *  @param[in] presentReading - the present reading of the sensor
+     */
+    void handleNumericWatchdogEvent(pldm_tid_t tid, uint16_t sensorId,
+                                    uint32_t presentReading);
 
     /** @brief Handle numeric sensor event messages.
      *
