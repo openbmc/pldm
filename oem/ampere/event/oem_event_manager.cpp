@@ -413,6 +413,9 @@ int OemEventManager::processNumericSensorEvent(
         case PCI_A_VR_STATE:
             handleVRDStatusEvent(tid, sensorId, presentReading);
             break;
+        case WATCH_DOG:
+            handleNumericWatchdogEvent(tid, sensorId, presentReading);
+            break;
         default:
             std::string description;
             std::stringstream strStream;
@@ -857,6 +860,31 @@ void OemEventManager::handleVRDStatusEvent(pldm_tid_t tid, uint16_t sensorId,
               << static_cast<uint32_t>(presentReading) << ";";
 
     description += strStream.str();
+
+    // Log to Redfish event
+    sendJournalRedfish(description, logLevel);
+}
+
+void OemEventManager::handleNumericWatchdogEvent(
+    pldm_tid_t tid, uint16_t sensorId, uint32_t presentReading)
+{
+    std::string description;
+    log_level logLevel = log_level::CRITICAL;
+
+    description += prefixMsgStrCreation(tid, sensorId);
+
+    if (presentReading & 0x01)
+    {
+        description += "Global watchdog expired;";
+    }
+    if (presentReading & 0x02)
+    {
+        description += "Secure watchdog expired;";
+    }
+    if (presentReading & 0x04)
+    {
+        description += "Non-secure watchdog expired;";
+    }
 
     // Log to Redfish event
     sendJournalRedfish(description, logLevel);
