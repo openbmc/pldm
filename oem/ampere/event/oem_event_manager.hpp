@@ -333,6 +333,15 @@ class OemEventManager
     void handleVRDStatusEvent(pldm_tid_t tid, uint16_t sensorId,
                               uint32_t presentReading);
 
+    /** @brief Handle numeric sensor event message from Watchdog status sensor.
+     *
+     *  @param[in] tid - TID
+     *  @param[in] sensorId - Sensor ID
+     *  @param[in] presentReading - the present reading of the sensor
+     */
+    void handleNumericWatchdogEvent(pldm_tid_t tid, uint16_t sensorId,
+                                    uint32_t presentReading);
+
     /** @brief Handle numeric sensor event messages.
      *
      *  @param[in] tid - TID
