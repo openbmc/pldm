@@ -20,6 +20,41 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "7fa8482d_e93e644d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002038
+      },
+      "writtenOn": "2024-10-17T16:30:30Z",
+      "side": 1,
+      "message": "Verified with meta-arm-evb system.",
+      "parentUuid": "cc83cb8a_da5b40a9",
+      "revId": "89361e00391e7c76848ee21216ff9b59595b2d46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88cef0b8_1d7d901f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002038
+      },
+      "writtenOn": "2024-10-17T16:30:30Z",
+      "side": 1,
+      "message": "LGTM.",
+      "revId": "89361e00391e7c76848ee21216ff9b59595b2d46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "93f48d86_e687121b",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 17
