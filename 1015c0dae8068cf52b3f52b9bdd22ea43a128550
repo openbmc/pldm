@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c16bc431_ca86c4fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2024-10-17T06:17:02Z",
+      "side": 1,
+      "message": "Please add details to the commit m4ssage on what this is trying to do. I guess this relates to https://gerrit.openbmc.org/c/openbmc/docs/+/74653, but I am not sure.",
+      "revId": "1015c0dae8068cf52b3f52b9bdd22ea43a128550",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
