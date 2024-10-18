@@ -19,7 +19,7 @@ class InventoryManagerTest : public testing::Test
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
         inventoryManager(reqHandler, instanceIdDb, outDescriptorMap,
-                         outComponentInfoMap)
+                         outDownstreamDescriptorMap, outComponentInfoMap)
     {}
 
     int fd = -1;
@@ -28,6 +28,7 @@ class InventoryManagerTest : public testing::Test
     requester::Handler<requester::Request> reqHandler;
     InventoryManager inventoryManager;
     DescriptorMap outDescriptorMap{};
+    DownstreamDescriptorMap outDownstreamDescriptorMap{};
     ComponentInfoMap outComponentInfoMap{};
 };
 
@@ -98,6 +99,81 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponseErrorCC)
         reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp.data());
     inventoryManager.queryDeviceIdentifiers(1, responseMsg, respPayloadLength);
     EXPECT_EQ(outDescriptorMap.size(), 0);
+}
+
+TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
+{
+    constexpr uint8_t eid = 1;
+    constexpr uint8_t downstreamDeviceCount = 1;
+    constexpr uint32_t downstreamDeviceLen = 11;
+    constexpr size_t respPayloadLength =
+        PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_RESP_MIN_LEN + downstreamDeviceLen;
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
+        queryDownstreamIdentifiersResp{
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05,
+            0x0B, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
+            0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0xa0, 0x15};
+
+    inventoryManager.queryDownstreamIdentifiers(eid, responseMsg,
+                                                respPayloadLength);
+
+    DownstreamDevices downstreamDevices = {
+        {0,
+         {{PLDM_FWUP_IANA_ENTERPRISE_ID,
+           std::vector<uint8_t>{0x00, 0x00, 0xa0, 0x15}}}}};
+    DownstreamDescriptorMap refDownstreamDescriptorMap{
+        {eid, downstreamDevices}};
+
+    ASSERT_EQ(outDownstreamDescriptorMap.size(), downstreamDeviceCount);
+    ASSERT_EQ(outDownstreamDescriptorMap.size(),
+              refDownstreamDescriptorMap.size());
+    ASSERT_EQ(outDownstreamDescriptorMap, refDownstreamDescriptorMap);
+}
+
+TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
+{
+    constexpr size_t respPayloadLength = 1;
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
+        queryDownstreamIdentifiersResp{0x00, 0x00, 0x00, 0x01};
+    auto responseMsg = reinterpret_cast<const pldm_msg*>(
+        queryDownstreamIdentifiersResp.data());
+    inventoryManager.queryDownstreamIdentifiers(1, responseMsg,
+                                                respPayloadLength);
+
+    ASSERT_EQ(outDownstreamDescriptorMap.size(), 0);
+}
+
+TEST_F(InventoryManagerTest, handleGetDownstreamFirmwareParametersResponse)
+{
+    constexpr uint8_t eid = 1;
+    constexpr uint16_t compClassification = 0xFFFF; /*Downstream Device*/
+    constexpr uint16_t compIdentifier = 1;
+    constexpr uint8_t compClassificationIndex = 0;
+
+    constexpr size_t respPayloadLength =
+        sizeof(pldm_get_downstream_firmware_params_resp) +
+        sizeof(pldm_component_parameter_entry);
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
+        getDownstreamFwParametersResp{
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00,
+            0x00, 0x00, 0x01, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(getDownstreamFwParametersResp.data());
+    inventoryManager.getDownstreamFirmwareParameters(eid, responseMsg,
+                                                     respPayloadLength);
+
+    ComponentInfoMap componentInfoMap{
+        {eid,
+         {{std::make_pair(compClassification, compIdentifier),
+           compClassificationIndex}}}};
+
+    ASSERT_EQ(outComponentInfoMap.size(), componentInfoMap.size());
+    ASSERT_EQ(outComponentInfoMap, componentInfoMap);
 }
 
 TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
