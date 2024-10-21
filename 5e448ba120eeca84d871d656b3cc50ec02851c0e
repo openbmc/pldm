@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b70cc7ef_beebdd1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-10-21T01:47:33Z",
+      "side": 1,
+      "message": "Greetings:\n\nThis implementation was originally pushed as two patches, #70731[1] and #70732[2], merged to one combo due to highly related feature development, all of the reviewer\u0027s advices has been applied to this patch.\n\n[1]: https://gerrit.openbmc.org/c/openbmc/pldm/+/70731\n[2]: https://gerrit.openbmc.org/c/openbmc/pldm/+/70732",
+      "revId": "5e448ba120eeca84d871d656b3cc50ec02851c0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
