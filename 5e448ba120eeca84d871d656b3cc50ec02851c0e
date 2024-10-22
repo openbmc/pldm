@@ -51,6 +51,24 @@
       "parentUuid": "d3c01b61_c338eae7",
       "revId": "5e448ba120eeca84d871d656b3cc50ec02851c0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d21f289_b782a036",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-10-22T07:57:11Z",
+      "side": 1,
+      "message": "Oops, pardon for the missing links:\n[1]: https://gerrit.openbmc.org/c/openbmc/libpldm/+/74786\n[2]: https://gerrit.openbmc.org/c/openbmc/libpldm/+/74536",
+      "parentUuid": "c5523e3e_cece6282",
+      "revId": "5e448ba120eeca84d871d656b3cc50ec02851c0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
