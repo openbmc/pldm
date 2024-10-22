@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff1622b6_c010dc43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-10-22T09:49:10Z",
+      "side": 1,
+      "message": "This patch has been merged with adjcent [70732] to [75390], due to highly related feature development, all of the reviewer\u0027s mentions has been applied to the new patch.\n\n[70732]: https://gerrit.openbmc.org/c/openbmc/pldm/+/70732\n[75390]: https://gerrit.openbmc.org/c/openbmc/pldm/+/75390",
+      "revId": "2a041db9e4c124e01d9fcd44d5fb4bec519b1067",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
