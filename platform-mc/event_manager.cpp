@@ -377,7 +377,7 @@ int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
         return rc;
     }
 
-    if (termini.contains(tid) && !termini[tid])
+    if (termini.contains(tid) && termini[tid])
     {
         auto tmp = termini[tid]->getTerminusName();
         if (tmp && !tmp.value().empty())
