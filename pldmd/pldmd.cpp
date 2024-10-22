@@ -292,6 +292,19 @@ int main(int argc, char** argv)
              return platformManager->handleCperEvent(
                  request, payloadLength, formatVersion, tid, eventDataOffset);
          }}},
+#ifdef AMPERE
+        /** CPEREvent class (0x07) is only available in DSP0248 V1.3.0.
+         *  Before DSP0248 V1.3.0 spec, Ampere uses OEM event class 0xFA to
+         *  report the CPER event
+         */
+        {0xFA,
+         {[&platformManager](const pldm_msg* request, size_t payloadLength,
+                             uint8_t formatVersion, uint8_t tid,
+                             size_t eventDataOffset) {
+             return platformManager->handleCperEvent(
+                 request, payloadLength, formatVersion, tid, eventDataOffset);
+         }}},
+#endif /* AMPERE */
         {PLDM_MESSAGE_POLL_EVENT,
          {[&platformManager](const pldm_msg* request, size_t payloadLength,
                              uint8_t formatVersion, uint8_t tid,
@@ -323,6 +336,17 @@ int main(int argc, char** argv)
           }}}
 #endif
     };
+
+/* Support handle the polled event with Ampere OEM CPER event class */
+#ifdef AMPERE
+    platformManager->registerPolledEventHandler(
+        0xFA,
+        [&platformManager](pldm_tid_t tid, uint16_t eventId,
+                           const uint8_t* eventData, size_t eventDataSize) {
+            return platformManager->handlePolledCperEvent(
+                tid, eventId, eventData, eventDataSize);
+        });
+#endif /* AMPERE */
 
     auto platformHandler = std::make_unique<platform::Handler>(
         &dbusHandler, hostEID, &instanceIdDb, PDR_JSONS_DIR, pdrRepo.get(),
