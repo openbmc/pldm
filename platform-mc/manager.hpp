@@ -181,6 +181,35 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     exec::task<int> pollForPlatformEvent(pldm_tid_t tid, uint16_t pollEventId,
                                          uint32_t pollDataTransferHandle);
 
+    /** @brief Handle Polled CPER event
+     *
+     *  @param[in] tid - tid where the event is from
+     *  @param[in] eventId - event Id
+     *  @param[in] eventData - event data
+     *  @param[in] eventDataSize - size of event data
+     *  @return PLDM completion code
+     */
+    int handlePolledCperEvent(pldm_tid_t tid, uint16_t eventId,
+                              const uint8_t* eventData, size_t eventDataSize)
+    {
+        return eventManager.handlePlatformEvent(tid, eventId, PLDM_CPER_EVENT,
+                                                eventData, eventDataSize);
+    }
+
+    /** @brief The helper function to allow register the handler function for
+     *         the polled event by PollForPlatformEventMessage
+     *
+     *  @param[in] eventClass - Event class
+     *  @param[in] handlerFunc - Event handler
+     *
+     */
+    void registerPolledEventHandler(uint8_t eventClass,
+                                    pldm::platform_mc::HandlerFunc handlerFunc)
+    {
+        eventManager.registerPolledEventHandler(eventClass,
+                                                std::move(handlerFunc));
+    }
+
   private:
     /** @brief List of discovered termini */
     TerminiMapper termini{};
