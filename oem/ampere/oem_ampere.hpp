@@ -55,14 +55,15 @@ class OemAMPERE
         responder::fru::Handler* /* fruHandler */,
         responder::base::Handler* /* baseHandler */,
         responder::bios::Handler* /* biosHandler */,
-        platform_mc::Manager* /* platformManager */,
+        platform_mc::Manager* platformManager,
         pldm::requester::Handler<pldm::requester::Request>* reqHandler) :
         instanceIdDb(instanceIdDb), event(event),
-        platformHandler(platformHandler), reqHandler(reqHandler)
+        platformHandler(platformHandler), platformManager(platformManager),
+        reqHandler(reqHandler)
     {
         oemEventManager = std::make_shared<oem_ampere::OemEventManager>(
             this->event, this->reqHandler, this->instanceIdDb);
-        createOemEventHandler(oemEventManager);
+        createOemEventHandler(oemEventManager, this->platformManager);
     }
 
   private:
@@ -72,7 +73,8 @@ class OemAMPERE
      *  different handlers.
      */
     void createOemEventHandler(
-        std::shared_ptr<oem_ampere::OemEventManager> oemEventManager)
+        std::shared_ptr<oem_ampere::OemEventManager> oemEventManager,
+        platform_mc::Manager* platformManager)
     {
         platformHandler->registerEventHandlers(
             PLDM_SENSOR_EVENT,
@@ -83,6 +85,27 @@ class OemAMPERE
                     request, payloadLength, formatVersion, tid,
                     eventDataOffset);
             }});
+        /** CPEREvent class (0x07) is only available in DSP0248 V1.3.0.
+         *  Before DSP0248 V1.3.0 spec, Ampere uses OEM event class 0xFA to
+         *  report the CPER event
+         */
+        platformHandler->registerEventHandlers(
+            0xFA,
+            {[platformManager](const pldm_msg* request, size_t payloadLength,
+                               uint8_t formatVersion, uint8_t tid,
+                               size_t eventDataOffset) {
+                return platformManager->handleCperEvent(
+                    request, payloadLength, formatVersion, tid,
+                    eventDataOffset);
+            }});
+        /* Support handle the polled event with Ampere OEM CPER event class */
+        platformManager->registerPolledEventHandler(
+            0xFA,
+            [platformManager](pldm_tid_t tid, uint16_t eventId,
+                              const uint8_t* eventData, size_t eventDataSize) {
+                return platformManager->handlePolledCperEvent(
+                    tid, eventId, eventData, eventDataSize);
+            });
     }
 
   private:
@@ -98,6 +121,9 @@ class OemAMPERE
 
     /** @brief Platform handler*/
     responder::platform::Handler* platformHandler = nullptr;
+
+    /** @brief MC Platform manager*/
+    platform_mc::Manager* platformManager = nullptr;
 
     /** @brief pointer to the requester class*/
     requester::Handler<requester::Request>* reqHandler = nullptr;

@@ -110,7 +110,8 @@ class EventManager
     /** @brief Register response handler for the polled events from
      *         PollForPlatFormEventMessage
      */
-    void registerPolledEventHandler(uint8_t eventClass, HandlerFunc function)
+    void registerPolledEventHandler(uint8_t eventClass,
+                                    pldm::platform_mc::HandlerFunc function)
     {
         eventHandlers.insert_or_assign(eventClass, std::move(function));
     }
