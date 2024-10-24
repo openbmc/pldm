@@ -569,5 +569,14 @@ bool dbusPropValuesToDouble(const std::string_view& type,
                             const pldm::utils::PropertyValue& value,
                             double* doubleValue);
 
+/**
+ * @brief Convert a uint32_t value to a hexadecimal string in "0x" format
+ *
+ * @param[in] value - uint32_t value to convert
+ *
+ * @return the result string
+ */
+std::string uint32ToHexString(uint32_t value);
+
 } // namespace utils
 } // namespace pldm
