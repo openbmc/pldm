@@ -149,6 +149,9 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         return PLDM_ERROR;
     }
 
+    auto errLog = sensor->sensorName +
+                  ", data: " + pldm::utils::uint32ToHexString(presentReading);
+
     switch (previousEventState)
     {
         case PLDM_SENSOR_UNKNOWN:
@@ -156,6 +159,9 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         {
             switch (eventState)
             {
+                case PLDM_SENSOR_CRITICAL:
+                    pldm::utils::reportError(errLog.c_str());
+                    break;
                 case PLDM_SENSOR_UPPERFATAL:
                 case PLDM_SENSOR_UPPERCRITICAL:
                 {
