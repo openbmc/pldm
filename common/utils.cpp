@@ -738,5 +738,11 @@ bool dbusPropValuesToDouble(const std::string_view& type,
 
     return true;
 }
+
+std::string uint32ToHexString(uint32_t value)
+{
+    return std::format("0x{:04X}", value);
+}
+
 } // namespace utils
 } // namespace pldm
