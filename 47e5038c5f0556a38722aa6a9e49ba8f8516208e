@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f6db3d_9f29cd15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "@thu - please add your self as a maintainer for all the files in ampere folder.\n\nwould looks something like this \n\n```\n- partial_regex: ampere/\n  owners:\n  - \u003cyour email\u003e\n```",
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d5f6ce1_e9671077",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "oem-ampere",
+      "range": {
+        "startLine": 141,
+        "startChar": 15,
+        "endLine": 141,
+        "endChar": 21
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "163fe17f_f24606bb",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "-DOEM-AMPERE\n\nlets be little explicit that its OEM code by adding OEM",
+      "range": {
+        "startLine": 142,
+        "startChar": 27,
+        "endLine": 142,
+        "endChar": 35
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd5a36c3_b37b7d68",
+        "filename": "meson.build",
+        "patchSetId": 9
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "this is not how we do for oem-ibm, define a new meson.build in your oem folder , call that subdir() ..and then append the files to the existing files that does into the executable.",
+      "range": {
+        "startLine": 237,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 5
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b278d40_98ec9435",
+        "filename": "meson.options",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "please move this to the oem section.",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 7
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b73fe51_7394f8df",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "This is really unclean - having redfish specific data in pldm code base. Please check if @patricks logging solution can be leveraged to achieve the same thing.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 50
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b4032f6_8dad607a",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "i am not generally rigid when it comes to OEM code , but this definitely looks like it can be improved. @patrick has the new proposal to send redfish event logs over journal and his approach is very clean.He already made good progress on that front. can you see if that can be leveraged to achieve this ?\n\nand also use lg2() ? instead of using a raw send() ?",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 47
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "201892d5_82de2d02",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-25T03:12:50Z",
+      "side": 1,
+      "message": "can we do something like how IBM did ? we basically create an OEMIBM Class, that initialises all the oem handles for us , and in this file we will only have just one entry point for the OEM code.\n\nfor reference : https://github.com/openbmc/pldm/blob/master/pldmd/oem_ibm.hpp",
+      "range": {
+        "startLine": 281,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 6
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
