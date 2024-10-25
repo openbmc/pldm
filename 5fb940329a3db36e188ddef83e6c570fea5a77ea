@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "887b565c_1e73a6b8",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-25T10:41:22Z",
+      "side": 1,
+      "message": "I agree with you.\n\nI thought that it will be easier to mapping entity type value in the `EntityType` D-Bus property to value in the table `Table 15 – Entity ID Codes` of DSP0249 V1.3.0 if we filter out the physical/logical type. But the D-Bus consumer still need to know physical/logical type of entity.",
+      "parentUuid": "1ceff4b3_ff4e4388",
+      "range": {
+        "startLine": 337,
+        "startChar": 3,
+        "endLine": 338,
+        "endChar": 55
+      },
+      "revId": "5fb940329a3db36e188ddef83e6c570fea5a77ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1af14440_fe545480",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d1747e1_65332ed6",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-25T10:41:22Z",
+      "side": 1,
+      "message": "I removed the variable and directly use pdr-\u003econtainer_id in line #355.",
+      "parentUuid": "1af14440_fe545480",
+      "range": {
+        "startLine": 339,
+        "startChar": 3,
+        "endLine": 340,
+        "endChar": 45
+      },
+      "revId": "5fb940329a3db36e188ddef83e6c570fea5a77ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1bd6bc8_4adb9c5c",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-10-25T09:20:50Z",
       "side": 1,
       "message": "pdr-\u003eentity_instance_num instead ?",
+      "range": {
+        "startLine": 354,
+        "startChar": 37,
+        "endLine": 354,
+        "endChar": 54
+      },
+      "revId": "5fb940329a3db36e188ddef83e6c570fea5a77ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07f38df4_a938cd2b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-25T10:41:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1bd6bc8_4adb9c5c",
       "range": {
         "startLine": 354,
         "startChar": 37,
