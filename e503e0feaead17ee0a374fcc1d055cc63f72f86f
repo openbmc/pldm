@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adc6f7c5_da20a78b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001939
+      },
+      "writtenOn": "2024-10-25T06:11:05Z",
+      "side": 1,
+      "message": "My idea was to have a sensor event represent the failure status of a sensor, such as the PMBus status word (16-bit). I believe that the Numeric Sensor is the most appropriate choice.\n\nSo the failure status does not involve thresholds, it only has a Severity level, which the device sending the event will determine. If the device considers the issue critical, it can log it as such in the SEL, rather than in the \n journal, ensuring efficient documentation of significant events.",
+      "parentUuid": "e4c3b44d_6bb3607b",
+      "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d2b1b04_3a5ac80f",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-10-25T04:48:10Z",
       "side": 1,
       "message": "Does sensor cross warning operation state before cross critical state?\nThere is no asserted/de-asserted for this kind of event?",
+      "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b2aed6a_fc811983",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1001939
+      },
+      "writtenOn": "2024-10-25T06:11:05Z",
+      "side": 1,
+      "message": "The Event Receiver only needs to accurately record the failure status, without any assert or deassert conditions.",
+      "parentUuid": "3d2b1b04_3a5ac80f",
       "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
