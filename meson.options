@@ -175,6 +175,15 @@ option(
     description: 'OEM-IBM: max DMA size'
 )
 
+
+## OEM AMPERE Options
+option(
+    'oem-ampere',
+    type: 'feature',
+    description: 'Enable AMPERE OEM PLDM',
+    value: 'enabled',
+)
+
 ## Default Sensor Update Interval Options
 option(
     'default-sensor-update-interval',
