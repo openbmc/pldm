@@ -219,6 +219,22 @@ class Handler : public CmdHandler
         oemPlatformHandler = handler;
     }
 
+    /* @brief Method to register event handlers
+     *
+     * @param[in] handler - oem event handlers
+     */
+    inline void registerEventHandlers(EventType eventId, EventHandlers handlers)
+    {
+        // Try to emplace the eventId with an empty vector if it doesn't exist
+        auto [iter,
+              inserted] = eventHandlers.try_emplace(eventId, EventHandlers{});
+
+        for (const auto& handler : handlers)
+        {
+            iter->second.emplace_back(handler);
+        }
+    }
+
     /** @brief Handler for GetPDR
      *
      *  @param[in] request - Request message payload
