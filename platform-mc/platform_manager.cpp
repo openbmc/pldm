@@ -21,7 +21,6 @@ exec::task<int> PlatformManager::initTerminus()
         {
             continue;
         }
-        terminus->initialized = true;
 
         if (terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_GET_PDR))
         {
@@ -67,6 +66,7 @@ exec::task<int> PlatformManager::initTerminus()
                 "Failed to config event receiver for terminus with TID: {TID}, error: {ERROR}",
                 "TID", tid, "ERROR", rc);
         }
+        terminus->initialized = true;
     }
 
     co_return PLDM_SUCCESS;
