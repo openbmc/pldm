@@ -64,6 +64,10 @@ PHOSPHOR_LOG2_USING;
 #include "oem_ibm.hpp"
 #endif
 
+#ifdef OEM_AMPERE
+#include "oem/ampere/oem_ampere.hpp"
+#endif
+
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
 using namespace pldm;
@@ -308,6 +312,14 @@ int main(int argc, char** argv)
         platformConfigHandler.get(), requestPLDMServiceName);
 
     auto baseHandler = std::make_unique<base::Handler>(event);
+
+#ifdef OEM_AMPERE
+    pldm::oem_ampere::OemAMPERE oemAMPERE(
+        &dbusHandler, pldmTransport.getEventSource(), hostEID, pdrRepo.get(),
+        instanceIdDb, event, invoker, hostPDRHandler.get(),
+        platformHandler.get(), fruHandler.get(), baseHandler.get(),
+        biosHandler.get(), &reqHandler);
+#endif
 
 #ifdef OEM_IBM
     pldm::oem_ibm::OemIBM oemIBM(
