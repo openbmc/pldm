@@ -326,6 +326,7 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     {
         lg2::error("Failed to Get PLDM Types for terminus {TID}, error {ERROR}",
                    "TID", tid, "ERROR", rc);
+        unmapTid(tid);
         co_return PLDM_ERROR;
     }
 
