@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9827eb7_16461628",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-28T03:46:05Z",
+      "side": 1,
+      "message": "Can you update the commit message to include the requirement for `Init Agent` in line 1555 and 1538 in DSP0248 V1.3.0? Add `The Init Agent will response for Get PRDs and Set Event Receiver so the `initialized` should be set after those steps.",
+      "revId": "7b0303633dfcf3ba079c0162f72afd5a49c15369",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
