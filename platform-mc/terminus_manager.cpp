@@ -326,6 +326,7 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     {
         lg2::error("Failed to Get PLDM Types for terminus {TID}, error {ERROR}",
                    "TID", tid, "ERROR", rc);
+        unmapTid(tid);
         co_return PLDM_ERROR;
     }
 
@@ -337,6 +338,7 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     {
         lg2::error("Failed to create terminus manager for terminus {TID}",
                    "TID", tid);
+        unmapTid(tid);
         co_return PLDM_ERROR;
     }
 
