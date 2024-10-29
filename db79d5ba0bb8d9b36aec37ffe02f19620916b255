@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7057f8bc_1ad9beaf",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-29T10:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da0b532a_4c561ac9",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 10
+      },
+      "revId": "db79d5ba0bb8d9b36aec37ffe02f19620916b255",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16dae507_94519ebf",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-29T10:08:17Z",
+      "side": 1,
+      "message": "I removed reference. 😄",
+      "parentUuid": "99dbaa0c_752a35db",
+      "range": {
+        "startLine": 120,
+        "startChar": 34,
+        "endLine": 120,
+        "endChar": 53
+      },
+      "revId": "db79d5ba0bb8d9b36aec37ffe02f19620916b255",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82f86ccd_19ccd9aa",
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3127765f_fa5f1d14",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-29T10:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82f86ccd_19ccd9aa",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 34
+      },
+      "revId": "db79d5ba0bb8d9b36aec37ffe02f19620916b255",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac246411_a385bce3",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-10-29T05:48:25Z",
       "side": 1,
       "message": "lets try to avoid reinterpret_cast , and use placement new.",
+      "range": {
+        "startLine": 641,
+        "startChar": 22,
+        "endLine": 641,
+        "endChar": 66
+      },
+      "revId": "db79d5ba0bb8d9b36aec37ffe02f19620916b255",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b329f9_eed056bf",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-29T10:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac246411_a385bce3",
       "range": {
         "startLine": 641,
         "startChar": 22,
