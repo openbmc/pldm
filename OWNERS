@@ -42,6 +42,9 @@ reviewers:
 - thu@os.amperecomputing.com
 
 matchers:
+- partial_regex: ampere
+  owners:
+  - thu@os.amperecomputing.com
 - partial_regex: ibm
   owners:
   - manojkiran.eda@gmail.com
