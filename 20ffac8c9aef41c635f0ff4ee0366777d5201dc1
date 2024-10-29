@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0a3379f_08b34f7b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-29T07:17:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fc39980_2ea2f0d0",
+      "range": {
+        "startLine": 346,
+        "startChar": 19,
+        "endLine": 346,
+        "endChar": 25
+      },
+      "revId": "20ffac8c9aef41c635f0ff4ee0366777d5201dc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b09aaf13_10efdc03",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-10-29T05:27:25Z",
       "side": 1,
       "message": "same code repeated twice ? can we move this to a function instead ?",
+      "range": {
+        "startLine": 608,
+        "startChar": 3,
+        "endLine": 623,
+        "endChar": 1
+      },
+      "revId": "20ffac8c9aef41c635f0ff4ee0366777d5201dc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3af5dfd_80c6d131",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-29T07:17:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b09aaf13_10efdc03",
       "range": {
         "startLine": 608,
         "startChar": 3,
