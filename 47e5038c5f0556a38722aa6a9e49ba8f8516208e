@@ -350,6 +350,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcaed2ed_7b9b722d",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-29T10:48:48Z",
+      "side": 1,
+      "message": "\"and also use lg2() ? instead of using a raw send() ?\"\n\nIn the mean time, I updated code to use and also use lg2::error() in the latest path set instead of using a raw send().",
+      "parentUuid": "b04699cf_a589bfa8",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 47
+      },
+      "revId": "47e5038c5f0556a38722aa6a9e49ba8f8516208e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "201892d5_82de2d02",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 9
