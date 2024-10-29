@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc39980_2ea2f0d0",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-29T05:27:25Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be invPath ?",
+      "range": {
+        "startLine": 346,
+        "startChar": 19,
+        "endLine": 346,
+        "endChar": 25
+      },
+      "revId": "20ffac8c9aef41c635f0ff4ee0366777d5201dc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09aaf13_10efdc03",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-10-29T05:27:25Z",
+      "side": 1,
+      "message": "same code repeated twice ? can we move this to a function instead ?",
+      "range": {
+        "startLine": 608,
+        "startChar": 3,
+        "endLine": 623,
+        "endChar": 1
+      },
+      "revId": "20ffac8c9aef41c635f0ff4ee0366777d5201dc1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
