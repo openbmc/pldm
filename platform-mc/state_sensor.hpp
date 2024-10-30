@@ -29,7 +29,7 @@ class ComponentStateSensor
     ComponentStateSensor(
         [[maybe_unused]] const pdr::SensorID& sensorId,
         const std::string& sensorName, const std::string& invPath,
-        const pdr::EntityType& entityType,
+        const std::string& terminusName, const pdr::EntityType& entityType,
         const pdr::EntityInstance& entityInstance,
         const pdr::ContainerID& containerID,
         const pdr::SensorOffset& sensorOffset,
@@ -79,7 +79,8 @@ class StateSensor
 {
   public:
     StateSensor(
-        const pldm_tid_t tid, const std::shared_ptr<pdr::PDR> pdr,
+        const pldm_tid_t tid, const std::string& terminusName,
+        const std::shared_ptr<pdr::PDR> pdr,
         const std::vector<std::string>& sensorNames,
         const std::string& associationPath,
         pldm::responder::events::StateSensorHandler& stateSensorHandler);
