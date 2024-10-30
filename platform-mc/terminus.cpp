@@ -450,8 +450,9 @@ void Terminus::addStateSensor(const std::shared_ptr<PDR> pdr)
 
     try
     {
-        auto sensor = std::make_shared<StateSensor>(
-            tid, pdr, sensorNames, inventoryPath, stateSensorHandler);
+        auto sensor =
+            std::make_shared<StateSensor>(tid, terminusName, pdr, sensorNames,
+                                          inventoryPath, stateSensorHandler);
         stateSensors.emplace_back(sensor);
     }
     catch (const std::exception& e)

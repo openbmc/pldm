@@ -29,42 +29,42 @@ struct StateSensorEntry
     pdr::SensorOffset sensorOffset;
     pdr::StateSetId stateSetid;
     bool skipContainerId;
+    std::string terminusName = "";
+
+    /* If both terminus names are empty strings, the logic is like
+        they are skipped. If either one is not empty, they shall
+        be compared */
 
     bool operator==(const StateSensorEntry& e) const
     {
         if (!skipContainerId)
         {
-            return ((containerId == e.containerId) &&
+            return ((terminusName == e.terminusName) &&
+                    (containerId == e.containerId) &&
                     (entityType == e.entityType) &&
                     (entityInstance == e.entityInstance) &&
                     (sensorOffset == e.sensorOffset) &&
                     (stateSetid == e.stateSetid));
         }
-        else
-        {
-            return ((entityType == e.entityType) &&
-                    (entityInstance == e.entityInstance) &&
-                    (sensorOffset == e.sensorOffset) &&
-                    (stateSetid == e.stateSetid));
-        }
+        return (
+            (terminusName == e.terminusName) && (entityType == e.entityType) &&
+            (entityInstance == e.entityInstance) &&
+            (sensorOffset == e.sensorOffset) && (stateSetid == e.stateSetid));
     }
 
     bool operator<(const StateSensorEntry& e) const
     {
         if (!skipContainerId)
         {
-            return std::tie(entityType, entityInstance, containerId,
-                            sensorOffset, stateSetid) <
-                   std::tie(e.entityType, e.entityInstance, e.containerId,
-                            e.sensorOffset, e.stateSetid);
+            return std::tie(terminusName, entityType, entityInstance,
+                            containerId, sensorOffset, stateSetid) <
+                   std::tie(e.terminusName, e.entityType, e.entityInstance,
+                            e.containerId, e.sensorOffset, e.stateSetid);
         }
-        else
-        {
-            return std::tie(entityType, entityInstance, sensorOffset,
-                            stateSetid) <
-                   std::tie(e.entityType, e.entityInstance, e.sensorOffset,
-                            e.stateSetid);
-        }
+        return std::tie(terminusName, entityType, entityInstance, sensorOffset,
+                        stateSetid) <
+               std::tie(e.terminusName, e.entityType, e.entityInstance,
+                        e.sensorOffset, e.stateSetid);
     }
 };
 

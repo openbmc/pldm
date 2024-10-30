@@ -26,6 +26,7 @@
             }
         },
         {
+            "terminusName": "S0",
             "containerID": 4,
             "entityType": 31,
             "entityInstance": 20,

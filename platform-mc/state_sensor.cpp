@@ -17,7 +17,7 @@ namespace platform_mc
 ComponentStateSensor::ComponentStateSensor(
     [[maybe_unused]] const pdr::SensorID& sensorId,
     const std::string& sensorName, const std::string& invPath,
-    const pdr::EntityType& entityType,
+    const std::string& terminusName, const pdr::EntityType& entityType,
     const pdr::EntityInstance& entityInstance,
     const pdr::ContainerID& containerID, const pdr::SensorOffset& sensorOffset,
     const pdr::StateSetId& stateSetId,
@@ -26,7 +26,7 @@ ComponentStateSensor::ComponentStateSensor(
     sensorName(sensorName), possibleStates(possibleStates),
     stateSensorHandler(stateSensorHandler),
     entry({containerID, entityType, entityInstance, sensorOffset, stateSetId,
-           false})
+           false, terminusName})
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
 
@@ -85,7 +85,8 @@ int ComponentStateSensor::processSensorState(const pdr::EventState& state)
 }
 
 StateSensor::StateSensor(
-    const pldm_tid_t tid, const std::shared_ptr<pdr::PDR> pdr,
+    const pldm_tid_t tid, const std::string& terminusName,
+    const std::shared_ptr<pdr::PDR> pdr,
     const std::vector<std::string>& sensorNames,
     const std::string& associationPath,
     pldm::responder::events::StateSensorHandler& stateSensorHandler) : tid(tid)
@@ -158,8 +159,9 @@ StateSensor::StateSensor(
 
         std::unique_ptr<ComponentStateSensor> componentSensor;
         componentSensor = std::make_unique<ComponentStateSensor>(
-            sensorId, name, invPath, entityType, entityInstance, containerID,
-            sensorOffset, stateSetId, possibleStates, stateSensorHandler);
+            sensorId, name, invPath, terminusName, entityType, entityInstance,
+            containerID, sensorOffset, stateSetId, possibleStates,
+            stateSensorHandler);
 
         componentSensors.emplace_back(std::move(componentSensor));
         sensorOffset++;

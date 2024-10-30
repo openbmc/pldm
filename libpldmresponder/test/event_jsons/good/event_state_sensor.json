@@ -107,6 +107,52 @@
                 "property_type": "string",
                 "property_values": ["Enabled", "Disabled", "Auto"]
             }
+        },
+        {
+            "terminusName": "S0",
+            "entityType": 31,
+            "entityInstance": 20,
+            "sensorOffset": 0,
+            "stateSetId": 2,
+            "event_states": [0, 1, 2],
+            "dbus": {
+                "object_path": "/xyz/abc/qrs",
+                "interface": "xyz.openbmc_project.example8.value",
+                "property_name": "value8",
+                "property_type": "string",
+                "property_values": ["Enabled", "Disabled", "Auto"]
+            }
+        },
+        {
+            "entityType": 31,
+            "containerID": 4,
+            "entityInstance": 20,
+            "sensorOffset": 0,
+            "stateSetId": 2,
+            "event_states": [0, 1, 2],
+            "dbus": {
+                "object_path": "/xyz/abc/tuv",
+                "interface": "xyz.openbmc_project.example9.value",
+                "property_name": "value9",
+                "property_type": "string",
+                "property_values": ["Enabled", "Disabled", "Auto"]
+            }
+        },
+        {
+            "terminusName": "S0",
+            "entityType": 31,
+            "containerID": 4,
+            "entityInstance": 20,
+            "sensorOffset": 0,
+            "stateSetId": 2,
+            "event_states": [0, 1, 2],
+            "dbus": {
+                "object_path": "/xyz/abc/why",
+                "interface": "xyz.openbmc_project.example10.value",
+                "property_name": "value10",
+                "property_type": "string",
+                "property_values": ["Enabled", "Disabled", "Auto"]
+            }
         }
     ]
 }

@@ -48,6 +48,8 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
         for (const auto& entry : entries)
         {
             StateSensorEntry stateSensorEntry{};
+            stateSensorEntry.terminusName =
+                static_cast<std::string>(entry.value("terminusName", ""));
             stateSensorEntry.containerId =
                 static_cast<uint16_t>(entry.value("containerID", 0xFFFF));
             stateSensorEntry.entityType =
