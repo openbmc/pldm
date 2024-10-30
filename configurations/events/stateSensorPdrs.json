@@ -1029,6 +1029,86 @@
                 "property_type": "bool",
                 "property_values": [true, false]
             }
+        },
+        {
+            "terminusName": "S0",
+            "containerID": 4,
+            "entityType": 32799,
+            "entityInstance": 20,
+            "sensorOffset": 0,
+            "stateSetId": 1,
+            "event_states": [1, 2, 3, 4],
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/S0",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values": [true, false, false, false]
+            }
+        },
+        {
+            "terminusName": "S0",
+            "containerID": 4,
+            "entityType": 32799,
+            "entityInstance": 20,
+            "sensorOffset": 1,
+            "stateSetId": 2,
+            "event_states": [1, 2, 3],
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/S0",
+                "interface": "xyz.openbmc_project.State.Decorator.Availability",
+                "property_name": "Available",
+                "property_type": "bool",
+                "property_values": [true, false, false]
+            }
+        },
+        {
+            "terminusName": "S0",
+            "containerID": 5,
+            "entityType": 32799,
+            "entityInstance": 6,
+            "sensorOffset": 0,
+            "stateSetId": 244,
+            "event_states": [1, 2],
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/GlobalWD",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "terminusName": "S0",
+            "containerID": 5,
+            "entityType": 32799,
+            "entityInstance": 6,
+            "sensorOffset": 1,
+            "stateSetId": 244,
+            "event_states": [1, 2],
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/SecureWD",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "terminusName": "S0",
+            "containerID": 5,
+            "entityType": 32799,
+            "entityInstance": 6,
+            "sensorOffset": 2,
+            "stateSetId": 244,
+            "event_states": [1, 2],
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/NonSecureWD",
+                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                "property_name": "Functional",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
         }
     ]
 }

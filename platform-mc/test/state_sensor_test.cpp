@@ -50,14 +50,16 @@ TEST(StateSensor, processStateSensorReadings)
 
     pldm_tid_t tid = 0x01;
     auto pdr1_ptr = std::make_shared<std::vector<uint8_t>>(pdr1);
+    std::string terminusName = "S0";
     std::vector<std::string> sensorNames = {"Test_Health_Sensor",
                                             "Test_Availability_Sensor"};
     std::string inventoryPath{"/xyz/openbmc_project/inventory/board/S0"};
     pldm::responder::events::StateSensorHandler stateSensorHandler(
         EVENTS_JSONS_DIR);
 
-    pldm::platform_mc::StateSensor stateSensor = pldm::platform_mc::StateSensor(
-        tid, pdr1_ptr, sensorNames, inventoryPath, stateSensorHandler);
+    pldm::platform_mc::StateSensor stateSensor =
+        pldm::platform_mc::StateSensor(tid, terminusName, pdr1_ptr, sensorNames,
+                                       inventoryPath, stateSensorHandler);
 
     EXPECT_EQ(stateSensor.compositeCount, comp_sensor_count);
 
