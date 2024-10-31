@@ -53,6 +53,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed1d5d8_ca1b5513",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-10-31T22:57:04Z",
+      "side": 1,
+      "message": "I think it is better to discuss with community about the behavior of platform-mc for this case in `pmci` discord group.",
+      "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d2b1b04_3a5ac80f",
