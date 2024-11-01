@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63c9aa1b_6e4c7efd",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-01T09:54:18Z",
+      "side": 1,
+      "message": "The terminus supports many PLDM command types for each type it will support many commands.\nI don\u0027t think return Error and un-map the terminus at this step is reasonable.\nWhy the PLDM command is failed? What is the reason? If the connection is not stable or the terminus is not stable then we should fix the terminus but not repeat retry to discovery the terminus.",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
