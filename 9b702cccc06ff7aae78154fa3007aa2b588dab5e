@@ -52,6 +52,24 @@
       "parentUuid": "58dc1f05_017f4e6b",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a5a16eb_33999585",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-01T12:02:20Z",
+      "side": 1,
+      "message": "The pldm support the option to set the timeout in access terminus and also number of retry when there is failure. This command is sent in the discovery flow, no sensor polling, no event handling at this moment. Then why it is time out?",
+      "parentUuid": "1cd3f0a6_ee7b81ee",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
