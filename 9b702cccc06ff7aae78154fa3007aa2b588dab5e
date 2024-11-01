@@ -16,6 +16,24 @@
       "message": "The terminus supports many PLDM command types for each type it will support many commands.\nI don\u0027t think return Error and un-map the terminus at this step is reasonable.\nWhy the PLDM command is failed? What is the reason? If the connection is not stable or the terminus is not stable then we should fix the terminus but not repeat retry to discovery the terminus.",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58dc1f05_017f4e6b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-11-01T10:19:39Z",
+      "side": 1,
+      "message": "The \"get PLDM command failed\" issue occurs during a request timeout.\nCould it be that with an overload of requests, the PLDM device responds within the timeout, but PLDM cannot process it in time, marking the request as failed?\n\nWhen a get PLDM command fails, it results in an incorrect initialization of the PLDM device, and if the failed command is for PDR, this can cause the PLDM device to disappear with no further chance for sensor polling.\nShould the request timeout duration be extended in this case?\n\nYour advice would be appreciated. Thank you.",
+      "parentUuid": "63c9aa1b_6e4c7efd",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
