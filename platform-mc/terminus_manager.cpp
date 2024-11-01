@@ -359,6 +359,13 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
             lg2::error(
                 "Failed to Get PLDM Commands for terminus {TID}, error {ERROR}",
                 "TID", tid, "ERROR", rc);
+            auto it = termini.find(tid);
+            if (it != termini.end())
+            {
+                termini.erase(it);
+            }
+            unmapTid(tid);
+            co_return PLDM_ERROR;
         }
 
         for (size_t i = 0; i < cmds.size(); i++)
