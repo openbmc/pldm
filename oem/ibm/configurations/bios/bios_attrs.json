@@ -1316,6 +1316,30 @@
         },
         {
             "attribute_type": "string",
+            "attribute_name": "hb_full_ipl_fw_version",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 64,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Provides the full system firmware version level with which last full CEC IPL was performed",
+            "displayName": "Complete IPL System FW Level",
+            "readOnly": true
+        },
+        {
+            "attribute_type": "string",
+            "attribute_name": "hb_ipl_fw_version",
+            "string_type": "ASCII",
+            "minimum_string_length": 0,
+            "maximum_string_length": 64,
+            "default_string_length": 0,
+            "default_string": "",
+            "helpText": "Provides the full system firmware version level with which last CEC IPL was performed (mpipl)",
+            "displayName": "System FW Level",
+            "readOnly": true
+        },
+        {
+            "attribute_type": "string",
             "attribute_name": "pvm_ibmi_load_source",
             "string_type": "ASCII",
             "minimum_string_length": 0,
