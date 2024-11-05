@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4609962d_1fa27743",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-05T11:43:19Z",
+      "side": 1,
+      "message": "Data type of `EventHandler` is already used in many code sections. I think it is better to not change this data type.",
+      "parentUuid": "edbdf1bc_2804ef97",
+      "range": {
+        "startLine": 226,
+        "startChar": 1,
+        "endLine": 238,
+        "endChar": 5
+      },
+      "revId": "94fef3c1d77db78fbd0d22d6547a8d657b534580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2aee7528_171ca5c7",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1f3ce39_dd6d2c3b",
+        "filename": "meson.options",
+        "patchSetId": 12
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-05T11:43:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2aee7528_171ca5c7",
+      "range": {
+        "startLine": 183,
+        "startChar": 18,
+        "endLine": 183,
+        "endChar": 36
+      },
+      "revId": "94fef3c1d77db78fbd0d22d6547a8d657b534580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5d96a32_f03d32fa",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-11-05T09:27:06Z",
       "side": 1,
       "message": "can you make sure you run meson format \n`meson format -i -r` in the repo",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 46
+      },
+      "revId": "94fef3c1d77db78fbd0d22d6547a8d657b534580",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58546567_d4e6527b",
+        "filename": "oem/ampere/event/meson.build",
+        "patchSetId": 12
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-05T11:43:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5d96a32_f03d32fa",
       "range": {
         "startLine": 1,
         "startChar": 0,
