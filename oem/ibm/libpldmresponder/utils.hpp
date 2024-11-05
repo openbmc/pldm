@@ -72,6 +72,7 @@ class Handler : public oem_utils::Handler
      *  @param[in] associations - the data of entity association
      *  @param[in] entityMaps - the mapping of entity to DBus string
      *
+     *  @return int - the processor core count
      */
     virtual int
         setCoreCount(const pldm::utils::EntityAssociations& associations,

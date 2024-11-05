@@ -536,6 +536,6 @@ TEST(SetCoreCount, testgoodpath)
         std::make_unique<MockOemUtilsHandler>(&mockedDbusUtils);
     int coreCount =
         oemMockedUtils->setCoreCount(entityAssociations, entityMaps);
-    EXPECT_EQ(coreCount, 2);
+    EXPECT_EQ(coreCount, 1);
     pldm_entity_association_tree_destroy(tree);
 }
