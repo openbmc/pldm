@@ -142,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8aeff91_5f60bbb3",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-05T16:22:19Z",
+      "side": 1,
+      "message": "This still isn\u0027t a valid event; I\u0027m not really sure what you are trying to accomplish here.  New-style events need to have a YAML file in phosphor-dbus-interfaces.  https://github.com/openbmc/docs/blob/master/designs/event-logging.md\n\nSending arbitrary strings to phosphor-logging is no longer desired.",
+      "parentUuid": "8ab4e799_54686892",
+      "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d2b1b04_3a5ac80f",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 2
