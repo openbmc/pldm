@@ -87,6 +87,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f64ca15_55f28cd2",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 1001939
+      },
+      "writtenOn": "2024-11-05T08:38:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97d9a682_fc95bf75",
+      "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d899246_ca05e9a9",
@@ -100,6 +118,24 @@
       "writtenOn": "2024-11-01T14:59:44Z",
       "side": 1,
       "message": "This is not a valid event name.",
+      "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ab4e799_54686892",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1001939
+      },
+      "writtenOn": "2024-11-05T08:38:33Z",
+      "side": 1,
+      "message": "change \"data\" to \"presentReading\"",
+      "parentUuid": "9d899246_ca05e9a9",
       "revId": "e503e0feaead17ee0a374fcc1d055cc63f72f86f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
