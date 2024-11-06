@@ -181,7 +181,7 @@ option(
     'oem-ampere',
     type: 'feature',
     description: 'Enable AMPERE OEM PLDM',
-    value: 'disabled',
+    value: 'enabled',
 )
 
 ## Default Sensor Update Interval Options
