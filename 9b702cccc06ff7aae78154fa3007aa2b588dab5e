@@ -70,6 +70,24 @@
       "parentUuid": "1cd3f0a6_ee7b81ee",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "308b42e7_e7579ae1",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-11-06T01:51:33Z",
+      "side": 1,
+      "message": "Are you referring to the instance-id-expiration-interval (request timeout option) and number-of-request-retries (retry attempt count) in the meson.options?\nCould modifying the instance-id-expiration-interval potentially lead to a shortage due to slow release of instance IDs?\nWhile the number-of-request-retries is currently set to 2, I haven\u0027t observed a retry mechanism in the current PLDM execution logs. Is there a way to enable immediate retry on encountering a PLDM error?\n\nDo you think modifying these two parameters would be beneficial, or might the impact be too broad? Could we configure these parameters specifically for our project layer instead?\n\nIn our system, during startup, the BMC interfaces with approximately 16 PLDM devices, requiring simultaneous communication and initialization. Each device has nearly a hundred sensors and services like phosphor-pid-control that also need PLDM information. From my understanding, processRxMsg handles incoming requests and responses one by one. Is it possible that the transmission is completed much sooner, but due to processRxMsg taking too long, it fails to process the request in time?\n\nThank you very much!",
+      "parentUuid": "2a5a16eb_33999585",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
