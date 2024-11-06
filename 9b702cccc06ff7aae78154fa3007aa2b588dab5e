@@ -88,6 +88,24 @@
       "parentUuid": "2a5a16eb_33999585",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94cb69f3_8007bee0",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-06T02:08:15Z",
+      "side": 1,
+      "message": "\u003e Are you referring to the instance-id-expiration-interval (request timeout option) and number-of-request-retries (retry attempt count) in the meson.options?\n\u003e Could modifying the instance-id-expiration-interval potentially lead to a shortage due to slow release of instance IDs?\n\u003e While the number-of-request-retries is currently set to 2, I haven\u0027t observed a retry mechanism in the current PLDM execution logs. Is there a way to enable immediate retry on encountering a PLDM error?\n\nDid you try those option yet?\n\n\u003e \n\u003e Do you think modifying these two parameters would be beneficial, or might the impact be too broad? Could we configure these parameters specifically for our project layer instead?\n\u003e \n\u003e In our system, during startup, the BMC interfaces with approximately 16 PLDM devices, requiring simultaneous communication and initialization. Each device has nearly a hundred sensors and services like phosphor-pid-control that also need PLDM information. From my understanding, processRxMsg handles incoming requests and responses one by one. Is it possible that the transmission is completed much sooner, but due to processRxMsg taking too long, it fails to process the request in time?\n\nWhat is the error you see in the failure case?\nIf the failure happen in the discovery phase because there are too much devices. I think it is better to order the binding devices one by one instead of binding all at one.\nMoreover, if the `processRxMsg handles incoming requests and responses` then I can\u0027t handle the `pldmd` communication when `pldmd` in handling sensor polling for all of 16 devices.\n\nFailure in `getting PLDM commands supports` of one PLDM type does not mean the device not good to unmap it and rediscovery it.\n\n\u003e \n\u003e Thank you very much!",
+      "parentUuid": "308b42e7_e7579ae1",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
