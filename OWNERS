@@ -42,7 +42,7 @@ reviewers:
 - thu@os.amperecomputing.com
 
 matchers:
-- partial_regex: ampere
+- partial_regex: oem/ampere
   owners:
   - thu@os.amperecomputing.com
 - partial_regex: ibm
