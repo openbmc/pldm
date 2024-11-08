@@ -106,6 +106,24 @@
       "parentUuid": "308b42e7_e7579ae1",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "570480a7_eb5e48cf",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-11-08T10:22:56Z",
+      "side": 1,
+      "message": "\u003e Did you try those option yet?\n\nApologies, but I have not tried modifying the parameters in meson.option yet. Our project requires the OpenBMC build to stay fully aligned with upstream, so I don’t think we can change these options freely.\n\nAlso, I am still unclear on the role of number-of-request-retries in the PLDM code and which part handles the retry. From the logs, it seems that failed requests only attempt once and then fail.\n\n\n\u003e What is the error you see in the failure case?\n\u003e If the failure happen in the discovery phase because there are too much devices. I think it is better to order the binding devices one by one instead of binding all at one.\n\nDuring the discovery process, there are messages such as:\nInstance ID expiry for EID \u002740\u0027 using InstanceID ...\nFailed to Get PLDM Commands for terminus 40, error 4\n\nIf this step fails, it might cause the getPDRs process to assume the get PDR command is unsupported, leading to the PLDM device not initializing properly.\n\n\u003e Moreover, if the `processRxMsg handles incoming requests and responses` then I can\u0027t handle the `pldmd` communication when `pldmd` in handling sensor polling for all of 16 devices.\n\nCould you explain if there is a way to configure or achieve binding devices one by one instead of binding all at once? Is your point that, in our environment, the initialization of so many PLDM devices could indeed overwhelm the PLDM response handling? \n\n\u003e Failure in `getting PLDM commands supports` of one PLDM type does not mean the device not good to unmap it and rediscovery it.\n\nI’m also not clear on whether this means the device should not be unmapped even if it fails. My goal is to ensure that if a timeout occurs during the initialization phase, the PLDM device still has a chance to retry initialization.\n\nThank you very much for your advice.",
+      "parentUuid": "94cb69f3_8007bee0",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
