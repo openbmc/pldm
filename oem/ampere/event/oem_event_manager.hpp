@@ -280,6 +280,15 @@ class OemEventManager
      */
     std::string dimmIdxsToString(uint32_t dimmIdxs);
 
+    /** @brief Convert sensor ID to DIMM index. Return maxDIMMInstantNum
+     * in failure.
+     *
+     *  @param[in] sensorId - sensorID
+     *
+     *  @return uint8_t - DIMM index
+     */
+    uint8_t sensorIdToDIMMIdx(const uint16_t& sensorId);
+
     /** @brief Convert the DIMM training failure into logging string.
      *
      *  @param[in] failureInfo - the one-hot DIMM index byte

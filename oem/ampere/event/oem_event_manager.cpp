@@ -271,6 +271,18 @@ std::string OemEventManager::dimmIdxsToString(uint32_t dimmIdxs)
     return description;
 }
 
+uint8_t OemEventManager::sensorIdToDIMMIdx(const uint16_t& sensorId)
+{
+    uint8_t dimmIdx = maxDIMMInstantNum;
+    int sensorId_Off = sensorId - 4;
+    if ((sensorId_Off >= 0) && ((sensorId_Off % 2) == 0) &&
+        ((sensorId_Off / 2) < maxDIMMInstantNum))
+    {
+        dimmIdx = sensorId_Off / 2;
+    }
+    return dimmIdx;
+}
+
 void OemEventManager::handleBootOverallEvent(
     pldm_tid_t /*tid*/, uint16_t /*sensorId*/, uint32_t presentReading)
 {
@@ -384,8 +396,7 @@ int OemEventManager::processNumericSensorEvent(
     }
 
     // DIMMx_Status sensorID 4+2*index (index 0 -> maxDIMMInstantNum-1)
-    if (auto dimmIdx = (sensorId - 4) / 2;
-        sensorId >= 4 && dimmIdx >= 0 && dimmIdx < maxDIMMInstantNum)
+    if (auto dimmIdx = sensorIdToDIMMIdx(sensorId); dimmIdx < maxDIMMInstantNum)
     {
         handleDIMMStatusEvent(tid, sensorId, presentReading);
         return PLDM_SUCCESS;
@@ -710,7 +721,12 @@ void OemEventManager::handleDIMMStatusEvent(pldm_tid_t tid, uint16_t sensorId,
 
     description += prefixMsgStrCreation(tid, sensorId);
 
-    uint8_t dimmIdx = (sensorId - 4) / 2;
+    // DIMMx_Status sensorID 4+2*index (index 0 -> maxDIMMInstantNum-1)
+    auto dimmIdx = sensorIdToDIMMIdx(sensorId);
+    if (dimmIdx >= maxDIMMIdxBitNum)
+    {
+        return;
+    }
 
     description += "DIMM " + std::to_string(dimmIdx) + " ";
 
