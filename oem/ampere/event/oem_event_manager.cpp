@@ -384,8 +384,8 @@ int OemEventManager::processNumericSensorEvent(
     }
 
     // DIMMx_Status sensorID 4+2*index (index 0 -> maxDIMMInstantNum-1)
-    if (auto dimmIdx = (sensorId - 4) / 2;
-        sensorId >= 4 && dimmIdx >= 0 && dimmIdx < maxDIMMInstantNum)
+    if (((sensorId - 4) % 2) == 0 && sensorId >= 4 &&
+        sensorId <= (4 + 2 * (maxDIMMInstantNum - 1)))
     {
         handleDIMMStatusEvent(tid, sensorId, presentReading);
         return PLDM_SUCCESS;
