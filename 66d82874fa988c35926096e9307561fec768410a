@@ -69,6 +69,24 @@
       "parentUuid": "7c73873f_ebcb185d",
       "revId": "66d82874fa988c35926096e9307561fec768410a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "252f761c_095b71e9",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-15T03:51:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e238fb86_7ff6e94b",
+      "revId": "66d82874fa988c35926096e9307561fec768410a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
