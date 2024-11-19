@@ -918,6 +918,29 @@ int OemEventManager::processOemMsgPollEvent(pldm_tid_t tid, uint16_t eventId,
 
     addCperSELLog(tid, eventId, &ampHdr);
 
+    /* isBert at bit 12 of TypeId */
+    if (ampHdr.TypeId & 0x0800)
+    {
+        lg2::info("Ampere SoC BERT is triggered.");
+        std::variant<std::string> value(
+            "com.ampere.CrashCapture.Trigger.TriggerAction.Bert");
+        try
+        {
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            auto method =
+                bus.new_method_call("com.ampere.CrashCapture.Trigger",
+                                    "/com/ampere/crashcapture/trigger",
+                                    pldm::utils::dbusProperties, "Set");
+            method.append("com.ampere.CrashCapture.Trigger", "TriggerActions",
+                          value);
+            bus.call_noreply(method);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error("call BERT trigger error - {ERROR}", "ERROR", e);
+        }
+    }
+
     return PLDM_SUCCESS;
 }
 
