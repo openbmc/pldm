@@ -101,11 +101,11 @@ class OemAMPERE
         /* Support handle the polled event with Ampere OEM CPER event class */
         platformManager->registerPolledEventHandler(
             0xFA,
-            [platformManager](pldm_tid_t tid, uint16_t eventId,
-                              const uint8_t* eventData, size_t eventDataSize) {
+            {[platformManager](pldm_tid_t tid, uint16_t eventId,
+                               const uint8_t* eventData, size_t eventDataSize) {
                 return platformManager->handlePolledCperEvent(
                     tid, eventId, eventData, eventDataSize);
-            });
+            }});
     }
 
   private:
