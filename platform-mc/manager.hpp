@@ -204,10 +204,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      */
     void registerPolledEventHandler(uint8_t eventClass,
-                                    pldm::platform_mc::HandlerFunc handlerFunc)
+                                    pldm::platform_mc::HandlerFuncs handlers)
     {
-        eventManager.registerPolledEventHandler(eventClass,
-                                                std::move(handlerFunc));
+        eventManager.registerPolledEventHandler(eventClass, handlers);
     }
 
   private:

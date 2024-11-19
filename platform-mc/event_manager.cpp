@@ -518,6 +518,33 @@ int EventManager::getNextPartParameters(
     return PLDM_SUCCESS;
 }
 
+void EventManager::callPolledEventHandlers(pldm_tid_t tid, uint8_t eventClass,
+                                           uint16_t eventId,
+                                           std::vector<uint8_t>& eventMessage)
+{
+    try
+    {
+        const auto& handlers = eventHandlers.at(eventClass);
+        for (const auto& handler : handlers)
+        {
+            auto rc =
+                handler(tid, eventId, eventMessage.data(), eventMessage.size());
+            if (rc != PLDM_SUCCESS)
+            {
+                lg2::error(
+                    "Failed to handle platform event msg for terminus {TID}, event {EVENTID} return {RET}",
+                    "TID", tid, "EVENTID", eventId, "RET", rc);
+            }
+        }
+    }
+    catch (const std::out_of_range& e)
+    {
+        lg2::error(
+            "Failed to handle platform event msg for terminus {TID}, event {EVENTID} error - {ERROR}",
+            "TID", tid, "EVENTID", eventId, "ERROR", e);
+    }
+}
+
 exec::task<int> EventManager::pollForPlatformEventTask(
     pldm_tid_t tid, uint32_t pollDataTransferHandle)
 {
@@ -582,9 +609,8 @@ exec::task<int> EventManager::pollForPlatformEventTask(
             /* Handle the polled event after finish ACK it */
             if (eventHandlers.contains(polledEventClass))
             {
-                eventHandlers.at(
-                    polledEventClass)(polledEventTid, polledEventId,
-                                      eventMessage.data(), eventMessage.size());
+                callPolledEventHandlers(polledEventTid, polledEventClass,
+                                        polledEventId, eventMessage);
             }
             eventMessage.clear();
 

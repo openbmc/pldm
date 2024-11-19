@@ -19,7 +19,8 @@ using EventType = uint8_t;
 using HandlerFunc =
     std::function<int(pldm_tid_t tid, uint16_t eventId,
                       const uint8_t* eventData, size_t eventDataSize)>;
-using EventMap = std::map<EventType, HandlerFunc>;
+using HandlerFuncs = std::vector<HandlerFunc>;
+using EventMap = std::map<EventType, HandlerFuncs>;
 
 /**
  * @brief EventManager
@@ -46,19 +47,19 @@ class EventManager
         // Default response handler for PollForPlatFormEventMessage
         registerPolledEventHandler(
             PLDM_MESSAGE_POLL_EVENT,
-            [this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
-                   size_t eventDataSize) {
+            {[this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                    size_t eventDataSize) {
                 return this->handlePlatformEvent(tid, eventId,
                                                  PLDM_MESSAGE_POLL_EVENT,
                                                  eventData, eventDataSize);
-            });
+            }});
         registerPolledEventHandler(
             PLDM_CPER_EVENT,
-            [this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
-                   size_t eventDataSize) {
+            {[this](pldm_tid_t tid, uint16_t eventId, const uint8_t* eventData,
+                    size_t eventDataSize) {
                 return this->handlePlatformEvent(tid, eventId, PLDM_CPER_EVENT,
                                                  eventData, eventDataSize);
-            });
+            }});
     };
 
     /** @brief Handle platform event
@@ -111,9 +112,15 @@ class EventManager
      *         PollForPlatFormEventMessage
      */
     void registerPolledEventHandler(uint8_t eventClass,
-                                    pldm::platform_mc::HandlerFunc function)
+                                    pldm::platform_mc::HandlerFuncs handlers)
     {
-        eventHandlers.insert_or_assign(eventClass, std::move(function));
+        auto [iter, inserted] = eventHandlers.try_emplace(
+            eventClass, pldm::platform_mc::HandlerFuncs{});
+
+        for (const auto& handler : handlers)
+        {
+            iter->second.emplace_back(handler);
+        }
     }
 
   protected:
@@ -201,6 +208,18 @@ class EventManager
         uint8_t transferFlag, uint32_t eventDataIntegrityChecksum,
         uint32_t nextDataTransferHandle, uint8_t* transferOperationFlag,
         uint32_t* dataTransferHandle, uint32_t* eventIdToAcknowledge);
+
+    /** @brief Helper function to call the event handler for polled events
+     *
+     *  @param[in] tid - terminus ID
+     *  @param[out] eventClass - Event class
+     *  @param[out] eventId - Event ID
+     *  @param[in] eventMessage - event data of response message
+     *
+     */
+    void callPolledEventHandlers(pldm_tid_t tid, uint8_t eventClass,
+                                 uint16_t eventId,
+                                 std::vector<uint8_t>& eventMessage);
 
     /** @brief Reference of terminusManager */
     TerminusManager& terminusManager;
