@@ -46,6 +46,30 @@
       },
       "revId": "6af279b8064dfb7dc627effbd5cefc082abc9659",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a491fee_2601a96e",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-21T14:15:30Z",
+      "side": 1,
+      "message": "I updated code.",
+      "parentUuid": "76f218b9_5228bc09",
+      "range": {
+        "startLine": 523,
+        "startChar": 42,
+        "endLine": 523,
+        "endChar": 63
+      },
+      "revId": "6af279b8064dfb7dc627effbd5cefc082abc9659",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
