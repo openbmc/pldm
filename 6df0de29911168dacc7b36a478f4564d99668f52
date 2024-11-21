@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67b1aa9e_fe4a6ab6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-21T02:46:19Z",
+      "side": 1,
+      "message": "The Patch set is failed because missing the Command number in the patch set https://gerrit.openbmc.org/c/openbmc/libpldm/+/75972",
+      "revId": "6df0de29911168dacc7b36a478f4564d99668f52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
