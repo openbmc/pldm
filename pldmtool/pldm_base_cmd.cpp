@@ -32,10 +32,16 @@ const std::map<const char*, pldm_supported_types> pldmTypes{
 };
 
 const std::map<const char*, pldm_supported_commands> pldmBaseCmds{
+    {"SetTID", PLDM_SET_TID},
     {"GetTID", PLDM_GET_TID},
     {"GetPLDMVersion", PLDM_GET_PLDM_VERSION},
     {"GetPLDMTypes", PLDM_GET_PLDM_TYPES},
-    {"GetPLDMCommands", PLDM_GET_PLDM_COMMANDS}};
+    {"GetPLDMCommands", PLDM_GET_PLDM_COMMANDS},
+    {"SelectPLDMVersion", PLDM_SELECT_PLDM_VERSION},
+    {"NegotiateTransferParameters", PLDM_NEGOTIATE_TRANSFER_PARAMETERS},
+    {"MultipartSend", PLDM_MULTIPART_SEND},
+    {"MultipartReceive", PLDM_MULTIPART_RECEIVE},
+    {"GetMultipartTransferSupport", PLDM_GET_MULTIPART_TRANSFER_SUPPORT}};
 
 const std::map<const char*, pldm_bios_commands> pldmBiosCmds{
     {"GetBIOSTable", PLDM_GET_BIOS_TABLE},
