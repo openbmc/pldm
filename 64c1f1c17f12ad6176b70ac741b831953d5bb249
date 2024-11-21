@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bd6bc6c_7a864fa5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-21T02:47:00Z",
+      "side": 1,
+      "message": "The patch set CI is failed because the missing of Command numbers in https://gerrit.openbmc.org/c/openbmc/libpldm/+/75971",
+      "revId": "64c1f1c17f12ad6176b70ac741b831953d5bb249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
