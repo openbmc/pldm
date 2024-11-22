@@ -34,6 +34,24 @@
       "parentUuid": "a3928a9b_fdacb642",
       "revId": "0610a508bdd511ea222c8d2675c9381570152144",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7721fd9d_6c949b11",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-11-22T09:41:50Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t want to use sensor_ids enum which is using to define the status sensors\n\nNot at all. I defined `sensor_ids` to hold sensorID values with a name to easily handle them in the code.\n\n\u003e The reason of not using vector is show which sensors will trigger the LED.\n\nI don\u0027t get it. I think we can have a vector that only holds sensorIDs that will trigger LED.",
+      "parentUuid": "6121a37f_6ad02f93",
+      "revId": "0610a508bdd511ea222c8d2675c9381570152144",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
