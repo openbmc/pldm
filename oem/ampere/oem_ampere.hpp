@@ -122,6 +122,17 @@ class OemAMPERE
                 return platformManager->handlePolledCperEvent(
                     tid, eventId, eventData, eventDataSize);
             }});
+
+        /* Register OEM handling for pldmMessagePollEvent */
+        platformHandler->registerEventHandlers(
+            PLDM_MESSAGE_POLL_EVENT,
+            {[oemEventManager](const pldm_msg* request, size_t payloadLength,
+                               uint8_t formatVersion, uint8_t tid,
+                               size_t eventDataOffset) {
+                return oemEventManager->handlepldmMessagePollEvent(
+                    request, payloadLength, formatVersion, tid,
+                    eventDataOffset);
+            }});
     }
 
   private:

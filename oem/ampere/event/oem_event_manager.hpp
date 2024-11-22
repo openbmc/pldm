@@ -33,6 +33,11 @@ enum sensor_ids
     SOC_HEALTH_AVAILABILITY = 170,
     BOOT_OVERALL = 175,
     WATCH_DOG = 179,
+    CORE_UE = 192,
+    MCU_UE = 194,
+    PCIE_UE = 196,
+    SOC_UE = 198,
+    SOC_BERT = 200,
 };
 
 namespace boot
@@ -264,6 +269,20 @@ class OemEventManager
      */
     int processOemMsgPollEvent(pldm_tid_t tid, uint16_t eventId,
                                const uint8_t* eventData, size_t eventDataSize);
+
+    /** @brief Decode sensor event messages and handle correspondingly.
+     *
+     *  @param[in] request - the request message of sensor event
+     *  @param[in] payloadLength - the payload length of sensor event
+     *  @param[in] formatVersion - the format version of sensor event
+     *  @param[in] tid - TID
+     *  @param[in] eventDataOffset - the event data offset of sensor event
+     *
+     *  @return int - returned error code
+     */
+    int handlepldmMessagePollEvent(
+        const pldm_msg* request, size_t payloadLength,
+        uint8_t /* formatVersion */, pldm_tid_t tid, size_t eventDataOffset);
 
   protected:
     /** @brief Create prefix string for logging message.

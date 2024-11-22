@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <map>
+#include <set>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -40,6 +41,8 @@ constexpr const char* BIOSFWPanicRegistry =
     "OpenBMC.0.1.BIOSFirmwarePanicReason.Warning";
 constexpr auto maxDIMMIdxBitNum = 24;
 constexpr auto maxDIMMInstantNum = 24;
+
+const std::set<uint16_t> rasUESensorIDs = {CORE_UE, MCU_UE, PCIE_UE, SOC_UE};
 
 /*
     An array of possible boot status of a boot stage.
@@ -938,6 +941,53 @@ int OemEventManager::processOemMsgPollEvent(pldm_tid_t tid, uint16_t eventId,
         catch (const std::exception& e)
         {
             lg2::error("call BERT trigger error - {ERROR}", "ERROR", e);
+        }
+    }
+
+    return PLDM_SUCCESS;
+}
+
+int OemEventManager::handlepldmMessagePollEvent(
+    const pldm_msg* request, size_t payloadLength, uint8_t /* formatVersion */,
+    pldm_tid_t tid, size_t eventDataOffset)
+{
+    /* This OEM event handler is only used for SoC terminus*/
+    if (!tidToSocketNameMap.contains(tid))
+    {
+        return PLDM_SUCCESS;
+    }
+
+    auto eventData =
+        reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
+    auto eventDataSize = payloadLength - eventDataOffset;
+
+    pldm_message_poll_event poll_event{};
+    auto rc = decode_pldm_message_poll_event_data(eventData, eventDataSize,
+                                                  &poll_event);
+    if (rc)
+    {
+        lg2::error("Failed to decode PldmMessagePollEvent event, error {RC} ",
+                   "RC", rc);
+        return rc;
+    }
+
+    auto sensorID = poll_event.event_id;
+    /* The UE errors */
+    if (rasUESensorIDs.contains(sensorID))
+    {
+        pldm::utils::DBusMapping dbusMapping{
+            "/xyz/openbmc_project/led/groups/ras_ue_fault",
+            "xyz.openbmc_project.Led.Group", "Asserted", "bool"};
+        try
+        {
+            pldm::utils::DBusHandler().setDbusProperty(
+                dbusMapping, pldm::utils::PropertyValue{bool(true)});
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error(
+                "Failed to set the RAS UE LED terminus ID {TID} sensor ID {SENSORID} - errors {ERROR}",
+                "TID", tid, "SENSORID", sensorID, "ERROR", e);
         }
     }
 
