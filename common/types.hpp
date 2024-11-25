@@ -100,10 +100,14 @@ using VendorDefinedDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorInfo =
     std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
 using Descriptors =
-    std::map<DescriptorType,
-             std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+    std::multimap<DescriptorType,
+                  std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+using DownstreamDeviceIndex = uint16_t;
+using DownstreamDeviceInfo =
+    std::unordered_map<DownstreamDeviceIndex, Descriptors>;
 
 using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 
 // Component information
 using CompClassification = uint16_t;
