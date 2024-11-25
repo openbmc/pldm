@@ -19,7 +19,7 @@ class InventoryManagerTest : public testing::Test
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
         inventoryManager(reqHandler, instanceIdDb, outDescriptorMap,
-                         outComponentInfoMap)
+                         outDownstreamDescriptorMap, outComponentInfoMap)
     {}
 
     int fd = -1;
@@ -28,6 +28,7 @@ class InventoryManagerTest : public testing::Test
     requester::Handler<requester::Request> reqHandler;
     InventoryManager inventoryManager;
     DescriptorMap outDescriptorMap{};
+    DownstreamDescriptorMap outDownstreamDescriptorMap{};
     ComponentInfoMap outComponentInfoMap{};
 };
 
@@ -41,8 +42,9 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
             0x44, 0xd2, 0x64, 0x8d, 0x7d, 0x47, 0x18, 0xa0, 0x30, 0xfc, 0x8a,
             0x56, 0x58, 0x7d, 0x5b, 0xFF, 0xFF, 0x0B, 0x00, 0x01, 0x07, 0x4f,
             0x70, 0x65, 0x6e, 0x42, 0x4d, 0x43, 0x01, 0x02};
-    auto responseMsg1 =
-        reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp1.data());
+    const auto responseMsg1 =
+        new (const_cast<unsigned char*>(queryDeviceIdentifiersResp1.data()))
+            pldm_msg;
     inventoryManager.queryDeviceIdentifiers(1, responseMsg1,
                                             respPayloadLength1);
 
@@ -66,8 +68,9 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
             0x00, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x01, 0x02,
             0x00, 0x10, 0x00, 0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D, 0x49,
             0x43, 0x98, 0x00, 0xA0, 0x2F, 0x59, 0x9A, 0xCA, 0x02};
-    auto responseMsg2 =
-        reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp2.data());
+    const auto responseMsg2 =
+        new (const_cast<unsigned char*>(queryDeviceIdentifiersResp2.data()))
+            pldm_msg;
     inventoryManager.queryDeviceIdentifiers(2, responseMsg2,
                                             respPayloadLength2);
     DescriptorMap descriptorMap2{
@@ -94,10 +97,55 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponseErrorCC)
     constexpr size_t respPayloadLength = 1;
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
         queryDeviceIdentifiersResp{0x00, 0x00, 0x00, 0x01};
-    auto responseMsg =
-        reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp.data());
+    const auto responseMsg = new (
+        const_cast<unsigned char*>(queryDeviceIdentifiersResp.data())) pldm_msg;
     inventoryManager.queryDeviceIdentifiers(1, responseMsg, respPayloadLength);
     EXPECT_EQ(outDescriptorMap.size(), 0);
+}
+
+TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
+{
+    constexpr uint8_t eid = 1;
+    constexpr uint8_t downstreamDeviceCount = 1;
+    constexpr uint32_t downstreamDeviceLen = 11;
+    constexpr size_t respPayloadLength =
+        PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_RESP_MIN_LEN + downstreamDeviceLen;
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
+        queryDownstreamIdentifiersResp{
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05,
+            0x0B, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
+            0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0xa0, 0x15};
+    auto responseMsg = new (queryDownstreamIdentifiersResp.data()) pldm_msg;
+
+    inventoryManager.queryDownstreamIdentifiers(eid, responseMsg,
+                                                respPayloadLength);
+
+    DownstreamDevices downstreamDevices = {
+        {0,
+         {{PLDM_FWUP_IANA_ENTERPRISE_ID,
+           std::vector<uint8_t>{0x00, 0x00, 0xa0, 0x15}}}}};
+    DownstreamDescriptorMap refDownstreamDescriptorMap{
+        {eid, downstreamDevices}};
+
+    ASSERT_EQ(outDownstreamDescriptorMap.size(), downstreamDeviceCount);
+    ASSERT_EQ(outDownstreamDescriptorMap.size(),
+              refDownstreamDescriptorMap.size());
+    ASSERT_EQ(outDownstreamDescriptorMap, refDownstreamDescriptorMap);
+}
+
+TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
+{
+    constexpr size_t respPayloadLength = 1;
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
+        queryDownstreamIdentifiersResp{0x00, 0x00, 0x00, 0x01};
+    const auto responseMsg =
+        new (const_cast<unsigned char*>(queryDownstreamIdentifiersResp.data()))
+            pldm_msg;
+    inventoryManager.queryDownstreamIdentifiers(1, responseMsg,
+                                                respPayloadLength);
+
+    ASSERT_EQ(outDownstreamDescriptorMap.size(), 0);
 }
 
 TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
@@ -128,8 +176,8 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x43, 0x6f, 0x6d, 0x70, 0x32, 0x76, 0x33, 0x2e,
             0x30};
-    auto responseMsg1 =
-        reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp1.data());
+    const auto responseMsg1 = new (
+        const_cast<unsigned char*>(getFirmwareParametersResp1.data())) pldm_msg;
     inventoryManager.getFirmwareParameters(1, responseMsg1, respPayloadLength1);
 
     ComponentInfoMap componentInfoMap1{
@@ -158,8 +206,8 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x43,
             0x6f, 0x6d, 0x70, 0x33, 0x76, 0x34, 0x2e, 0x30};
-    auto responseMsg2 =
-        reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp2.data());
+    const auto responseMsg2 = new (
+        const_cast<unsigned char*>(getFirmwareParametersResp2.data())) pldm_msg;
     inventoryManager.getFirmwareParameters(2, responseMsg2, respPayloadLength2);
 
     ComponentInfoMap componentInfoMap2{
@@ -180,8 +228,8 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponseErrorCC)
     constexpr size_t respPayloadLength = 1;
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
         getFirmwareParametersResp{0x00, 0x00, 0x00, 0x01};
-    auto responseMsg =
-        reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp.data());
+    const auto responseMsg = new (
+        const_cast<unsigned char*>(getFirmwareParametersResp.data())) pldm_msg;
     inventoryManager.getFirmwareParameters(1, responseMsg, respPayloadLength);
     EXPECT_EQ(outComponentInfoMap.size(), 0);
 }
