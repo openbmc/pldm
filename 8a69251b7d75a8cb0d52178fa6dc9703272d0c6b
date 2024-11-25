@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99a1788_bcae4d94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 62
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-11-25T02:08:30Z",
+      "side": 1,
+      "message": "Greetings:\n\nThe dependency of this patch has been changed.\nIt is still based on [libpldm/74536] but [libpldm/74786] has been abandoned, due to a patch with equivalant feature has been merged ([libpldm/75733]), this patch is now implemented based on that.\n\n[libpldm/74536]: https://gerrit.openbmc.org/c/openbmc/libpldm/+/74536\n[libpldm/74786]: https://gerrit.openbmc.org/c/openbmc/libpldm/+/74786\n[libpldm/75733]: https://gerrit.openbmc.org/c/openbmc/libpldm/+/75733",
+      "revId": "8a69251b7d75a8cb0d52178fa6dc9703272d0c6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
