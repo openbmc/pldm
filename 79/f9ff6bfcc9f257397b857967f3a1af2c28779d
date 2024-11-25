@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Thu Nguyen <thu@os.amperecomputing.com>
+Code-Review+1: Chau Ly <chaul@amperecomputing.com>
+Submitted-by: Thu Nguyen <thu@os.amperecomputing.com>
+Submitted-at: Mon, 25 Nov 2024 06:34:43 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/75996
+Comments-Total: 5
+Project: openbmc/pldm
+Branch: refs/heads/master
