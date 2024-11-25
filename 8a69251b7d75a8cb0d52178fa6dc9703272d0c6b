@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb6e022c_35889341",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-11-25T03:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5460cb52_be6f8bfb",
+      "revId": "8a69251b7d75a8cb0d52178fa6dc9703272d0c6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb9425b1_6c8bd84e",
@@ -48,6 +66,24 @@
       "writtenOn": "2024-11-25T02:14:42Z",
       "side": 1,
       "message": "Again here.",
+      "revId": "8a69251b7d75a8cb0d52178fa6dc9703272d0c6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b964ac21_cd1c99d8",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-11-25T03:05:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb9425b1_6c8bd84e",
       "revId": "8a69251b7d75a8cb0d52178fa6dc9703272d0c6b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
