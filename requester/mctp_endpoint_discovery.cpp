@@ -24,9 +24,10 @@ namespace pldm
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
     std::initializer_list<MctpDiscoveryHandlerIntf*> list) :
-    bus(bus), mctpEndpointAddedSignal(
-                  bus, interfacesAdded(MCTPPath),
-                  std::bind_front(&MctpDiscovery::discoverEndpoints, this)),
+    bus(bus),
+    mctpEndpointAddedSignal(
+        bus, interfacesAdded(MCTPPath),
+        std::bind_front(&MctpDiscovery::discoverEndpoints, this)),
     mctpEndpointRemovedSignal(
         bus, interfacesRemoved(MCTPPath),
         std::bind_front(&MctpDiscovery::removeEndpoints, this)),
@@ -157,15 +158,29 @@ void MctpDiscovery::addToExistingMctpInfos(const MctpInfos& addedInfos)
 
 void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
                                                 MctpInfos& removedInfos)
+
 {
     for (const auto& mctpInfo : existingMctpInfos)
     {
+        std::string MCTPObject = std::string(MCTPPath) + "/" +
+                                 std::to_string(std::get<3>(mctpInfo)) + "/" +
+                                 std::to_string(std::get<0>(mctpInfo));
+
         if (std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo) ==
             mctpInfos.end())
         {
-            removedInfos.emplace_back(mctpInfo);
+            try
+            {
+                pldm::utils::DBusHandler().getDbusPropertyVariant(
+                    MCTPObject.c_str(), "EID", MCTPInterface);
+            }
+            catch (const sdbusplus::exception::SdBusError& e)
+            {
+                removedInfos.emplace_back(mctpInfo);
+            }
         }
     }
+
     for (const auto& mctpInfo : removedInfos)
     {
         info("Removing Endpoint networkId '{NETWORK}' and  EID '{EID}'",
