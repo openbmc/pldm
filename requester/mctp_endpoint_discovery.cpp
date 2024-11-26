@@ -160,12 +160,25 @@ void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
 {
     for (const auto& mctpInfo : existingMctpInfos)
     {
+        std::string MCTPObject = std::string(MCTPPath) + "/" +
+                                 std::to_string(std::get<3>(mctpInfo)) + "/" +
+                                 std::to_string(std::get<0>(mctpInfo));
+
         if (std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo) ==
             mctpInfos.end())
         {
-            removedInfos.emplace_back(mctpInfo);
+            try
+            {
+                pldm::utils::DBusHandler().getDbusPropertyVariant(
+                    MCTPObject.c_str(), "EID", MCTPInterface);
+            }
+            catch (const sdbusplus::exception::SdBusError& e)
+            {
+                removedInfos.emplace_back(mctpInfo);
+            }
         }
     }
+
     for (const auto& mctpInfo : removedInfos)
     {
         info("Removing Endpoint networkId '{NETWORK}' and  EID '{EID}'",
