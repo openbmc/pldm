@@ -34,6 +34,24 @@
       "parentUuid": "f20ca807_c5e31dbf",
       "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28da6110_b0958175",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-11-28T16:02:26Z",
+      "side": 1,
+      "message": "I have tried using the same method as handling the interface added signal to read the remove signal with msg.read, in order to accurately delete the PLDM device corresponding to the EID that was actually removed.\nHowever, I found that errors such as \"no such device\" or \"address\" would occur.",
+      "parentUuid": "99c864d1_9345cea0",
+      "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
