@@ -106,6 +106,24 @@
       "parentUuid": "fb861349_4d13ef41",
       "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40b0cc44_9e317e73",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-29T09:26:51Z",
+      "side": 1,
+      "message": "Can you ask Patric about that inconsistent of `GetSubTree` in discord?\nApplied this patch set will cause the D-Bus error message every time we remove one MCTP endpoint from D-Bus. That is unexpected behavior for `pldmd`.\nCan you try to use `dbus-monitor` to watch the MCTP signal to confirm there is no \"AddInterfaces\" signals for removing EP before `pldmd` remove the EP from watch list?",
+      "parentUuid": "988c1dd4_2cc58d4d",
+      "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
