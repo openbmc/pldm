@@ -70,6 +70,24 @@
       "parentUuid": "28da6110_b0958175",
       "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb861349_4d13ef41",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-11-29T08:53:04Z",
+      "side": 1,
+      "message": "Yes, it seems the current `getSubtree` function is not working correctly.\n\nFrom my understanding, `pldm` uses `getSubtree` to determine the available object paths and then removes the object paths in `existingMctpInfos` that are not in `getSubtree`.\n\nHowever, it appears that the available object paths obtained from `getSubtree` may not be accurate, causing `pldm` to mistakenly remove available object paths.\n\nWith my commit applied, if the `getSubtree` results are accurate, the code should reach:\n\n```cpp\ncatch (const sdbusplus::exception::SdBusError\u0026 e)\n{\n    removedInfos.emplace_back(mctpInfo);\n}\n```\n\nbecause those object paths are actually not available. \nBut in our system, it is possible to reach:\n\n```cpp\ntry\n{\n    pldm::utils::DBusHandler().getDbusPropertyVariant(MCTPObject.c_str(), \"EID\", MCTPInterface);\n    info(\"Endpoint with EID \u0027{EID}\u0027 exists at object path \u0027{OBJECT}\u0027, not removing\",\n         \"EID\", std::get\u003c0\u003e(mctpInfo), \"OBJECT\", MCTPObject);\n}\n```\n\nwhich prints the additional debug message I added.\n\nAdditionally, in our system, when performing a 12V off on a server board, multiple MCTP EIDs are removed almost simultaneously.\nI have observed that the `getSubtree` results can be inconsistent during these instances.",
+      "parentUuid": "4ee144d2_3b0d7b96",
+      "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
