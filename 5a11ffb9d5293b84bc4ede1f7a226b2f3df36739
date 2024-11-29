@@ -124,6 +124,24 @@
       "parentUuid": "988c1dd4_2cc58d4d",
       "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14342426_ad6351ce",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-29T09:35:35Z",
+      "side": 1,
+      "message": "If the `GetSubTree` is inconsistent, I would like to use other solution to find the available MCTP EP D-Bus object paths to identify the removed EP correctly, rather than try to get the property of the removed EP which causes error message for each of removed EP. What do you think about that?",
+      "parentUuid": "40b0cc44_9e317e73",
+      "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
