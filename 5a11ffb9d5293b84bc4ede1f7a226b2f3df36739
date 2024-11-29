@@ -88,6 +88,24 @@
       "parentUuid": "4ee144d2_3b0d7b96",
       "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "988c1dd4_2cc58d4d",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-11-29T09:01:33Z",
+      "side": 1,
+      "message": "The results of getSubtree are sometimes inconsistent with the actual situation. When this happens, it can lead to the erroneous removal of existing pldm devices.",
+      "parentUuid": "fb861349_4d13ef41",
+      "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
