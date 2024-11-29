@@ -52,6 +52,24 @@
       "parentUuid": "99c864d1_9345cea0",
       "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee144d2_3b0d7b96",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-11-29T03:25:37Z",
+      "side": 1,
+      "message": "Do you mean the `GetSubTree` and `GetSubTreePaths` does not response all of EP object paths?\n\n```\nvoid MctpDiscovery::removeEndpoints(sdbusplus::message_t\u0026)\n{\n    MctpInfos mctpInfos;\n    MctpInfos removedInfos;\n    std::map\u003cMctpInfo, Availability\u003e currentMctpInfoMap;\n    getMctpInfos(currentMctpInfoMap);\n    for (const auto\u0026 mapIt : currentMctpInfoMap)\n    {\n        mctpInfos.push_back(mapIt.first);\n    }\n    removeFromExistingMctpInfos(mctpInfos, removedInfos);\n    handleRemovedMctpEndpoints(removedInfos);\n}\n```\nIn the current pldmd code, to identify the removed MCTP object paths, we check the available MCTP EP object paths by call `getSubtree` method. Then comparing the stored object paths with currently available object paths to find the removed ones.\nI wonder how the object still available in `handleRemovedMctpEndpoints` steps?\n\nIs it because `getSubtree` in `getMctpInfos` does not work correctly? Does it missed some available EP object path?",
+      "parentUuid": "28da6110_b0958175",
+      "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
