@@ -222,6 +222,14 @@ void Terminus::parseTerminusPDRs()
         return;
     }
 
+    if (blackListNames.contains(terminusName))
+    {
+        lg2::error(
+            "Terminus ID {TID}: with name {NAME} in termini name black list.",
+            "TID", tid, "NAME", terminusName);
+        return;
+    }
+
     if (createInventoryPath(terminusName))
     {
         lg2::error("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
