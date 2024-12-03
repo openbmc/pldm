@@ -355,6 +355,7 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     try
     {
         termini[tid] = std::make_shared<Terminus>(tid, supportedTypes);
+        termini[tid]->setTerminiNamesBlackList(blackListNames);
     }
     catch (const sdbusplus::exception_t& e)
     {
