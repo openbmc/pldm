@@ -62,6 +62,7 @@ class TerminusManager
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
         tidPool[0] = true;
         tidPool[PLDM_TID_RESERVED] = true;
+        blackListNames = pldm::utils::parseTerminusBlackList(BLACK_LIST_JSON);
     }
 
     /** @brief start a coroutine to discover terminus
@@ -293,6 +294,11 @@ class TerminusManager
      *  work
      */
     sdeventplus::Event& event;
+
+    /** @brief List of termini names which `pldmd` will not automatically
+     *         creates sensors D-Bus objects
+     */
+    pldm::utils::TerminiNames blackListNames{};
 };
 } // namespace platform_mc
 } // namespace pldm

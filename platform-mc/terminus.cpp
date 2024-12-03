@@ -201,12 +201,32 @@ void Terminus::parseTerminusPDRs()
         }
     }
 
+    /* Check terminus name from Top most Entity AUX Name PDR */
     auto tName = findTerminusName();
     if (tName && !tName.value().empty())
     {
-        lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
-                  "NAME", tName.value());
-        terminusName = static_cast<std::string>(tName.value());
+        auto sName = static_cast<std::string>(tName.value());
+        if (!blackListNames.contains(sName))
+        {
+            lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
+                      "NAME", sName);
+            terminusName = static_cast<std::string>(tName.value());
+        }
+        else
+        {
+            if (terminusName.empty())
+            {
+                lg2::info(
+                    "Terminus {TID} has Auxiliary Name {NAME} in black list.",
+                    "TID", tid, "NAME", sName);
+            }
+            else
+            {
+                lg2::info(
+                    "Terminus {TID} has Auxiliary Name {NAME} in black list. Use different name {TERNAME}",
+                    "TID", tid, "NAME", sName, "TERNAME", terminusName);
+            }
+        }
     }
 
     if (terminusName.empty() &&
@@ -215,6 +235,13 @@ void Terminus::parseTerminusPDRs()
         lg2::error(
             "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
             "TID", tid);
+        return;
+    }
+
+    if (blackListNames.contains(terminusName))
+    {
+        lg2::error("Terminus ID {TID}: with name {NAME} in black list.", "TID",
+                   tid, "NAME", terminusName);
         return;
     }
 

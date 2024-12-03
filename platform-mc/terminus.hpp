@@ -156,6 +156,12 @@ class Terminus
      */
     void updateInventoryWithFru(const uint8_t* fruData, const size_t fruLen);
 
+    /** @brief The setter to set termini black list names */
+    void setTerminiNamesBlackList(pldm::utils::TerminiNames names)
+    {
+        blackListNames = names;
+    }
+
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
 
@@ -344,6 +350,11 @@ class Terminus
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorId sensorPdrIt = 0;
+
+    /** @brief List of termini names which `pldmd` will not automatically
+     *         creates sensors D-Bus objects
+     */
+    pldm::utils::TerminiNames blackListNames{};
 };
 } // namespace platform_mc
 } // namespace pldm
