@@ -1,0 +1,10 @@
+{
+    "Description": {
+        "_comment": [
+            "This JSON file includes the termini names of the termini which `pldmd` will not automatically create the sensors D-Bus objects from the retrieved PDRs.",
+            "For these termini, `pldmd` will use the sensor configuration file to create sensor D-Bus if the configuration file is available.",
+            "Example configuration: [\"NVMe0\", \"NVMe1\"]"
+        ]
+    },
+    "names": []
+}
