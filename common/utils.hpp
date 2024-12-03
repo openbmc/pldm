@@ -23,6 +23,7 @@
 #include <filesystem>
 #include <iostream>
 #include <map>
+#include <set>
 #include <string>
 #include <variant>
 #include <vector>
@@ -185,6 +186,7 @@ using DBusInterfaceAdded = std::vector<
 using ObjectPath = std::string;
 using EntityName = std::string;
 using Entities = std::vector<pldm_entity_node*>;
+using TerminiNames = std::set<EntityName>;
 using EntityAssociations = std::vector<Entities>;
 using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
 using EntityMaps = std::map<pldm::pdr::EntityType, EntityName>;
@@ -615,6 +617,14 @@ std::optional<std::string> fruFieldValuestring(const uint8_t* value,
  */
 std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
                                           const uint8_t& length);
+
+/** @brief Parsing termini black list names from json file
+ *
+ *  @param[in]  filePath - JSON file path for parsing
+ *
+ *  @return the list of termini names
+ */
+TerminiNames parseTerminusBlackList(const fs::path& filePath);
 
 } // namespace utils
 } // namespace pldm

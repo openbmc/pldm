@@ -138,6 +138,11 @@ conf_data.set(
 )
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 
+conf_data.set_quoted(
+    'BLACK_LIST_JSON',
+    join_paths(package_datadir, 'blackList.json'),
+)
+
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(

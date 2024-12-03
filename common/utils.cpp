@@ -801,5 +801,37 @@ std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
     return ret;
 }
 
+TerminiNames parseTerminusBlackList(const fs::path& filePath)
+{
+    TerminiNames terminiNames{};
+    const std::vector<Json> emptyList{};
+
+    if (!fs::exists(filePath))
+    {
+        error("File path {JSON_PATH} does not exist.", "JSON_PATH", filePath);
+        return terminiNames;
+    }
+
+    std::ifstream jsonFile(filePath);
+    auto data = Json::parse(jsonFile);
+    if (data.is_discarded())
+    {
+        error(
+            "Failed parsing of Termini names black list from json file: '{JSON_PATH}'",
+            "JSON_PATH", filePath);
+        return terminiNames;
+    }
+
+    auto names = data.value("names", emptyList);
+    for (const auto& name : names)
+    {
+        info("File path {JSON_PATH} name {NAME}", "JSON_PATH", filePath, "NAME",
+             name);
+        terminiNames.emplace(name);
+    }
+
+    return terminiNames;
+}
+
 } // namespace utils
 } // namespace pldm
