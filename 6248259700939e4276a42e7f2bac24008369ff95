@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6bb7b3f_c83923ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "I updated the commit comments.\nBecause Fru data will be got in the discovery phase so no need to backed up into the file system.",
+      "parentUuid": "48fd1011_91e05557",
+      "range": {
+        "startLine": 9,
+        "startChar": 30,
+        "endLine": 9,
+        "endChar": 67
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db7bd7be_2e44089e",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f041bcb3_6541ed23",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "\u003cTID_Name\u003e is the terminus aux name which you mention.\nAbout the `fru`, I would like to identify that is PLDM Fru Dbus object path that why I use `fru`.\n\nMaybe I will change PLDM object path to to `xyz/openbmc_project/FruPldm/\u003cTerminus_Name\u003e` To consistent with the object path `/xyz/openbmc_project/FruDevice/\u003cName\u003e` from `xyz.openbmc_project.FruDevice` service. what do you think?\n\nSo the PLDM Fru object can be:\n```\nbusctl introspect xyz.openbmc_project.PLDM  /xyz/openbmc_project/FruPldm/S0\nNAME                                     TYPE      SIGNATURE RESULT/VALUE FLAGS\norg.freedesktop.DBus.Introspectable      interface -         -            -\n.Introspect                              method    -         s            -\n...\nxyz.openbmc_project.Inventory.Source.PLDM.FRU interface -         -                                  -\n.AssetTag                                     property  s         \"\"                                 emits-change writable\n.ChassisType                                  property  s         \"\"                                 emits-change writable\n.Description                                  property  s         \"\"                                 emits-change writable\n.ECLevel                                      property  s         \"\"                                 emits-change writable\n.IANA                                         property  u         52538                              emits-change writable\n.Manufacturer                                 property  s         \"\"                                 emits-change writable\n.ManufacturerDate                             property  s         \"\"                                 emits-change writable\n.Model                                        property  s         \"00014003\"                         emits-change writable\n.Name                                         property  s         \"\"                                 emits-change writable\n.Other                                        property  s         \"\"                                 emits-change writable\n.PN                                           property  s         \"\"                                 emits-change writable\n.SKU                                          property  s         \"\"                                 emits-change writable\n.SN                                           property  s         \"123445\" emits-change writable\n.Vendor                                       property  s         \"\"                                 emits-change writable\n.Version                                      property  s         \"0.0.00007.003\"                    emits-change writable\n```",
+      "parentUuid": "db7bd7be_2e44089e",
+      "range": {
+        "startLine": 10,
+        "startChar": 38,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7f7ed59_655f34d7",
         "filename": "/COMMIT_MSG",
         "patchSetId": 8
@@ -60,6 +108,24 @@
       "writtenOn": "2024-12-04T04:42:57Z",
       "side": 1,
       "message": "would also like to know the intent behind using the Inventory/Source/PLDM rather than directly hosting the inventory item interfaces ? (because inventory item interfaces are usually looked up by apps like bmcweb to populate redfish inventory). \n\n\nDo you also plan to implement patches in bmcweb to expose this data out ?",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b8bfb0_6290770a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "\u003e would also like to know the intent behind using the Inventory/Source/PLDM rather than directly hosting the inventory item interfaces ? (because inventory item interfaces are usually looked up by apps like bmcweb to populate redfish inventory).\n\nActually, there is no specific reason. Just because the Fru data is from PLDM Fru commands and there is also `xyz.openbmc_project.Inventory.Source.PLDM.FRU` D-Bus interface in phosphor-dbus-interface. We didn\u0027t think about show up PLDM Fru in BMCWeb.\n\nI think I will also update Fru data to the inventory item object path `/xyz/openbmc_project/inventory/system/board/S0` of terminus name `S0`  as below:\n```\nbusctl introspect xyz.openbmc_project.PLDM  /xyz/openbmc_project/inventory/system/board/S0\nNAME                                     TYPE      SIGNATURE RESULT/VALUE FLAGS\norg.freedesktop.DBus.Introspectable      interface -         -            -\n.Introspect                              method    -         s            -\n...\nxyz.openbmc_project.Inventory.Decorator.Asset       interface -         -                                        -\n.BuildDate                                          property  s         \"1234\"                       emits-change\n.Manufacturer                                       property  s         \"1234\"                       emits-change\n.Model                                              property  s         \"BMC DC-SCM\"                 emits-change\n.PartNumber                                         property  s         \"DVT1\"                       emits-change\n.SerialNumber                                       property  s         \"12345\"                      emits-change\n```\n\nWhat do you think about that? ( I will update code after get your feedback ).\n\n`xyz.openbmc_project.Inventory.Decorator.Asset` will be consumed by BMCWeb and Redfish.\n\n\u003e \n\u003e \n\u003e Do you also plan to implement patches in bmcweb to expose this data out ?\n\nWith the added `xyz.openbmc_project.Inventory.Decorator.Asset` interface, I think we don\u0027t need update BMCWeb or Redfish. I will check that.",
+      "parentUuid": "f7f7ed59_655f34d7",
       "revId": "6248259700939e4276a42e7f2bac24008369ff95",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -104,6 +170,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0145c8ea_edb2b0f0",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaf4f7af_84fddc93",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 30
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31d23595_a02ed0f3",
@@ -117,6 +207,30 @@
       "writtenOn": "2024-12-04T04:42:57Z",
       "side": 1,
       "message": "remove ?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 10
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd4e5a06_b45c5a35",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31d23595_a02ed0f3",
       "range": {
         "startLine": 87,
         "startChar": 0,
@@ -173,6 +287,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "433fd9a0_008c52f9",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3a66422_cf87a490",
+      "range": {
+        "startLine": 41,
+        "startChar": 28,
+        "endLine": 41,
+        "endChar": 66
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41009fcc_8fc1b74f",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54c4d8cb_527d528b",
+      "range": {
+        "startLine": 41,
+        "startChar": 16,
+        "endLine": 41,
+        "endChar": 26
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e7b4ee1_3c468235",
@@ -186,6 +348,30 @@
       "writtenOn": "2024-12-04T04:42:57Z",
       "side": 1,
       "message": "Fru Record table",
+      "range": {
+        "startLine": 52,
+        "startChar": 35,
+        "endLine": 52,
+        "endChar": 47
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17195730_ae719aeb",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e7b4ee1_3c468235",
       "range": {
         "startLine": 52,
         "startChar": 35,
@@ -219,6 +405,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "079ce41b_5645b14c",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37ac3402_021e698e",
+      "range": {
+        "startLine": 596,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 1
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d270d28_0752739b",
@@ -242,6 +452,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed57ee6f_ef02a7cb",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d270d28_0752739b",
+      "range": {
+        "startLine": 639,
+        "startChar": 4,
+        "endLine": 639,
+        "endChar": 58
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3f9144c_a55dca69",
@@ -255,6 +489,30 @@
       "writtenOn": "2024-12-04T04:42:57Z",
       "side": 1,
       "message": "fix the wrapping here",
+      "range": {
+        "startLine": 178,
+        "startChar": 7,
+        "endLine": 179,
+        "endChar": 9
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84ef1cd2_c882654d",
+        "filename": "platform-mc/platform_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T12:16:54Z",
+      "side": 1,
+      "message": "Done. Not sure why the CI does not report the alignment errors.",
+      "parentUuid": "e3f9144c_a55dca69",
       "range": {
         "startLine": 178,
         "startChar": 7,
