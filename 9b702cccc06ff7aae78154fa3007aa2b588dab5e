@@ -178,6 +178,24 @@
       "parentUuid": "8c6cbe7d_08eba421",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd14e9fb_7766084c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-04T11:34:49Z",
+      "side": 1,
+      "message": "\u003e Thank you for your previous explanation.\n\u003e Based on your guidance, I have adjusted the system to handle MCTP EP D-Bus objects one by one and set `instance-id-expiration-interval\u003d6`, the occurrence of request timeouts causing init failures has indeed decreased.\n\u003e However, it still happens occasionally, and currently, the `instance-id-expiration-interval` cannot be increased further due to the meson.option max setting of 6.\n\u003e \n\u003e I would like to reconfirm:\n\u003e With the settings:\n\u003e - `instance-id-expiration-interval\u003d6`\n\u003e - `number-of-request-retries\u003d2`\n\u003e - `response-time-out\u003d2000`\n\u003e \n\u003e Does this mean that within the 6-second interval of an instance, a maximum of 3 requests can be sent every 2 seconds?\n\u003e If so, why is the default setting for `instance-id-expiration-interval` 5 and not 6? If it is set to 5, it seems that only the response received within 1 second of the third request would not be considered a timeout, while responses received within 1-2 seconds would be considered timeouts.\n\u003e \n\u003e If I adjust `response-time-out` to 4800, should I set `number-of-request-retries` to 1, and does this mean that the response to the second request must be received within 1.2 seconds to avoid being considered a timeout?\n\u003e If `number-of-request-retries` remains at 2, what would be the impact?\n\nI did not notify about `instance-id-expiration-interval` setting before.\nLook at https://github.com/openbmc/pldm/blob/09fb89c9cab82402d408af00054df78c375c3e79/requester/request.hpp#L59 you can see that the `RequestRetryTimer` does not include `instance-id-expiration-interval`.\nAs my opinion, `instance-id-expiration-interval` should equal (`number-of-request-retries` + 1)*`response-time-out`\nMaybe you can ask in `pmci` discord group.\n\n\u003e \n\u003e Additionally, I would like to ask about the behavior of PLDM when sending these instance-based requests.\n\u003e Does it wait for one instance to complete or timeout before sending the next one? Is it possible for different instances to send requests simultaneously?\n\nAs the pldm base spec, there should only one pldm request to endpoint per time. So `pldmd` will wait for one instance to complete or timeout before sending the next one. You can check this commit to understand my comments.\nhttps://github.com/openbmc/pldm/commit/4ddee3a0fda62e647cadafe07062d10e9db275b4\n\n\u003e And for the requests retried every 2 seconds, is there a possibility of multiple requests being sent simultaneously?\n\nNo, there is not.\n\n\u003e \n\u003e Also, I would like to confirm if the target socket for `pldmTransport-\u003esendMsg` is established by the MCTP driver based on the EID.\n\u003e Does the MCTP driver still collect requests from different sockets and process them in FIFO order?\n\nI think so. But it is better to ask in `pmci` discord team.\n\n\u003e \n\u003e Thank you very much for your guidance!\n\n\nI think you can bring the Patch set to `pmci` for more discussion.\nATM, I don\u0027t know how to handle this patch set.",
+      "parentUuid": "0a758a9a_f0ec528a",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
