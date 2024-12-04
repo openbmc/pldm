@@ -160,6 +160,24 @@
       "parentUuid": "9a4599fd_47ae5aa2",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a758a9a_f0ec528a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-12-04T09:52:23Z",
+      "side": 1,
+      "message": "Thank you for your previous explanation.\nBased on your guidance, I have adjusted the system to handle MCTP EP D-Bus objects one by one and set `instance-id-expiration-interval\u003d6`, the occurrence of request timeouts causing init failures has indeed decreased.\nHowever, it still happens occasionally, and currently, the `instance-id-expiration-interval` cannot be increased further due to the meson.option max setting of 6.\n\nI would like to reconfirm:\nWith the settings:\n- `instance-id-expiration-interval\u003d6`\n- `number-of-request-retries\u003d2`\n- `response-time-out\u003d2000`\n\nDoes this mean that within the 6-second interval of an instance, a maximum of 3 requests can be sent every 2 seconds?\nIf so, why is the default setting for `instance-id-expiration-interval` 5 and not 6? If it is set to 5, it seems that only the response received within 1 second of the third request would not be considered a timeout, while responses received within 1-2 seconds would be considered timeouts.\n\nIf I adjust `response-time-out` to 4800, should I set `number-of-request-retries` to 1, and does this mean that the response to the second request must be received within 1.2 seconds to avoid being considered a timeout?\nIf `number-of-request-retries` remains at 2, what would be the impact?\n\nAdditionally, I would like to ask about the behavior of PLDM when sending these instance-based requests.\nDoes it wait for one instance to complete or timeout before sending the next one? Is it possible for different instances to send requests simultaneously?\nAnd for the requests retried every 2 seconds, is there a possibility of multiple requests being sent simultaneously?\n\nAlso, I would like to confirm if the target socket for `pldmTransport-\u003esendMsg` is established by the MCTP driver based on the EID.\nDoes the MCTP driver still collect requests from different sockets and process them in FIFO order?\n\nThank you very much for your guidance!",
+      "parentUuid": "8c6cbe7d_08eba421",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
