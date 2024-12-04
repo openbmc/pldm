@@ -142,6 +142,24 @@
       "parentUuid": "40b0cc44_9e317e73",
       "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b069737_96d37dc5",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-12-04T09:23:25Z",
+      "side": 1,
+      "message": "Sorry for the late reply.\nI noticed that `getSubTree` seems to be retrieving MCTP EP D-Bus objects that have already been removed, rather than missing existing ones.\nThis causes an error during `getMctpInfos`:\n\n```\n   error(\n        \"Error reading MCTP Endpoint property at path \u0027{PATH}\u0027 and service \u0027{SERVICE}\u0027, error - {ERROR}\",\n        \"ERROR\", e, \"SERVICE\", service, \"PATH\", path);\n}\n\n```\n\nThis error leads to a return, preventing PLDM from obtaining subsequent MCTP EP D-Bus object information and removing them.\n\nHowever, I noticed that your recent merge (https://gerrit.openbmc.org/c/openbmc/pldm/+/73005) removed the following code:\n\n```cpp\ncatch (const sdbusplus::exception_t\u0026 e)\n{\n    error(\n        \"Error reading MCTP Endpoint property at path \u0027{PATH}\u0027 and service \u0027{SERVICE}\u0027, error - {ERROR}\",\n        \"ERROR\", e, \"SERVICE\", service, \"PATH\", path);\n    return;\n}\n```\n\nI believe that without returning on read failure, we might successfully retrieve all existing MCTP EP D-Bus objects without erroneously removing them.\nTherefore, this commit might no longer be necessary.\n\nI will verify this on the latest PLDM version, including the changes from 73005.\n\nThank you very much.",
+      "parentUuid": "14342426_ad6351ce",
+      "revId": "5a11ffb9d5293b84bc4ede1f7a226b2f3df36739",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
