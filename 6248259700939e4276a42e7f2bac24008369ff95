@@ -1,0 +1,268 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48fd1011_91e05557",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "please also add comments on what is the life time of these objects ? and whether they are backed up into the filesystem as well or not ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 30,
+        "endLine": 9,
+        "endChar": 67
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7bd7be_2e44089e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "it be worth to keep the entity aux name here instead of fru ? (if the entity has an aux names pdr)",
+      "range": {
+        "startLine": 10,
+        "startChar": 38,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7f7ed59_655f34d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "would also like to know the intent behind using the Inventory/Source/PLDM rather than directly hosting the inventory item interfaces ? (because inventory item interfaces are usually looked up by apps like bmcweb to populate redfish inventory). \n\n\nDo you also plan to implement patches in bmcweb to expose this data out ?",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "741bc8f4_3a52f009",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "Hi thu, could not complete an indepth review on this. But at the outset i do have certain questions which i have outlined here.",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaf4f7af_84fddc93",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "bus_t",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 30
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d23595_a02ed0f3",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "remove ?",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 10
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3a66422_cf87a490",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "grammatically incorrect.\n\nhow about ```Fru record table meta data has 0 records```",
+      "range": {
+        "startLine": 41,
+        "startChar": 28,
+        "endLine": 41,
+        "endChar": 66
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c4d8cb_527d528b",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "its ideally not an error, its just an info, because a remote endpoint can technically support the command but return 0 records which is perfectly valid.",
+      "range": {
+        "startLine": 41,
+        "startChar": 16,
+        "endLine": 41,
+        "endChar": 26
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e7b4ee1_3c468235",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "Fru Record table",
+      "range": {
+        "startLine": 52,
+        "startChar": 35,
+        "endLine": 52,
+        "endChar": 47
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37ac3402_021e698e",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "these can be considered as util functions ? can we move them into util.cpp ?",
+      "range": {
+        "startLine": 596,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 1
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d270d28_0752739b",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "make this a filesystem::path object, so that the appends to this object will be easier in the later part of the code.",
+      "range": {
+        "startLine": 639,
+        "startChar": 4,
+        "endLine": 639,
+        "endChar": 58
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3f9144c_a55dca69",
+        "filename": "platform-mc/platform_manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-04T04:42:57Z",
+      "side": 1,
+      "message": "fix the wrapping here",
+      "range": {
+        "startLine": 178,
+        "startChar": 7,
+        "endLine": 179,
+        "endChar": 9
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
