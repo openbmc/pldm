@@ -130,6 +130,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "496739c0_b8998849",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-05T07:53:55Z",
+      "side": 1,
+      "message": "\u003e \u003e would also like to know the intent behind using the Inventory/Source/PLDM rather than directly hosting the inventory item interfaces ? (because inventory item interfaces are usually looked up by apps like bmcweb to populate redfish inventory).\n\u003e \n\u003e Actually, there is no specific reason. Just because the Fru data is from PLDM Fru commands and there is also `xyz.openbmc_project.Inventory.Source.PLDM.FRU` D-Bus interface in phosphor-dbus-interface. We didn\u0027t think about show up PLDM Fru in BMCWeb.\n\u003e \n\u003e I think I will also update Fru data to the inventory item object path `/xyz/openbmc_project/inventory/system/board/S0` of terminus name `S0`  as below:\n\u003e ```\n\u003e busctl introspect xyz.openbmc_project.PLDM  /xyz/openbmc_project/inventory/system/board/S0\n\u003e NAME                                     TYPE      SIGNATURE RESULT/VALUE FLAGS\n\u003e org.freedesktop.DBus.Introspectable      interface -         -            -\n\u003e .Introspect                              method    -         s            -\n\u003e ...\n\u003e xyz.openbmc_project.Inventory.Decorator.Asset       interface -         -                                        -\n\u003e .BuildDate                                          property  s         \"1234\"                       emits-change\n\u003e .Manufacturer                                       property  s         \"1234\"                       emits-change\n\u003e .Model                                              property  s         \"BMC DC-SCM\"                 emits-change\n\u003e .PartNumber                                         property  s         \"DVT1\"                       emits-change\n\u003e .SerialNumber                                       property  s         \"12345\"                      emits-change\n\u003e ```\n\u003e \n\u003e What do you think about that? ( I will update code after get your feedback ).\n\nI updated the patch set.\n\n\u003e \n\u003e `xyz.openbmc_project.Inventory.Decorator.Asset` will be consumed by BMCWeb and Redfish.\n\u003e \n\u003e \u003e \n\u003e \u003e \n\u003e \u003e Do you also plan to implement patches in bmcweb to expose this data out ?\n\u003e \n\u003e With the added `xyz.openbmc_project.Inventory.Decorator.Asset` interface, I think we don\u0027t need update BMCWeb or Redfish. I will check that.\n\nI tested the latest patch set version. The Fru data is exposed to BMCWeb and Redfish.",
+      "parentUuid": "77b8bfb0_6290770a",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "741bc8f4_3a52f009",
