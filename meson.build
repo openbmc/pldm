@@ -258,6 +258,7 @@ executable(
     'platform-mc/event_manager.cpp',
     oem_files,
     'requester/mctp_endpoint_discovery.cpp',
+    'requester/configuration_discovery_handler.cpp',
     implicit_include_directories: false,
     dependencies: deps,
     install: true,
