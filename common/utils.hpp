@@ -17,6 +17,7 @@
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
+#include <concepts>
 #include <cstdint>
 #include <deque>
 #include <exception>
@@ -24,6 +25,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <type_traits>
 #include <variant>
 #include <vector>
 
@@ -174,7 +176,7 @@ struct DBusMapping
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
                  uint64_t, double, std::string, std::vector<uint8_t>,
-                 std::vector<std::string>>;
+                 std::vector<uint64_t>, std::vector<std::string>>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -194,6 +196,8 @@ using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using GetSubTreePathsResponse = std::vector<std::string>;
+using GetAssociatedSubTreeResponse =
+    std::map<std::string, std::map<std::string, std::vector<std::string>>>;
 using GetAncestorsResponse =
     std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using PropertyMap = std::map<std::string, PropertyValue>;
@@ -232,6 +236,10 @@ class DBusHandlerInterface
     virtual PropertyMap getDbusPropertiesVariant(
         const char* serviceName, const char* objPath,
         const char* dbusInterface) const = 0;
+
+    virtual GetAssociatedSubTreeResponse getAssociatedSubTree(
+        const sdbusplus::message::object_path& path,
+        const std::string& interface) const = 0;
 };
 
 /**
@@ -361,6 +369,18 @@ class DBusHandler : public DBusHandlerInterface
             getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
+
+    /** @brief Get the associated subtree from the mapper
+     *
+     * @param[in] path - The D-Bus object path
+     *
+     * @param[in] interface - The D-Bus interface
+     *
+     * @return GetAssociatedSubtreeResponse - The associated subtree
+     */
+    GetAssociatedSubTreeResponse getAssociatedSubTree(
+        const sdbusplus::message::object_path& path,
+        const std::string& interface) const override;
 
     /** @brief Set Dbus property
      *
@@ -609,6 +629,149 @@ std::optional<std::string> fruFieldValuestring(const uint8_t* value,
  */
 std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
                                           const uint8_t& length);
+
+/**
+ *  @brief A functor that safely casts an integral source type to an integral
+ * target type.
+ *
+ *  This struct template provides an operator() that performs a safe cast from a
+ * source integral type to a target integral type. It checks for overflow and
+ * underflow conditions before performing the cast and throws an
+ * std::overflow_error if the source value is outside the range of the target
+ * type.
+ *
+ *  @tparam Target The target integral type to cast to.
+ *  @tparam Source The source integral type to cast from.
+ *
+ *  @throws std::overflow_error If the source value is outside the range of the
+ * target type.
+ *
+ *  @param source The source value to be casted.
+ *  @return The casted value of type Target.
+ */
+template <std::integral Target>
+struct VariantToIntegralVisitor
+{
+    template <typename Source>
+    Target operator()(const Source& source)
+    {
+        if constexpr (std::is_same_v<Source, Target>)
+        {
+            return source;
+        }
+        else if constexpr (!std::is_integral_v<Source>)
+        {
+            throw std::invalid_argument("Source type is not integral");
+        }
+        else if constexpr (std::is_same_v<Source, bool>)
+        {
+            return source ? 1 : 0;
+        }
+        else if constexpr (std::is_signed_v<Source> && std::is_signed_v<Target>)
+        {
+            if (source < std::numeric_limits<Target>::min() ||
+                source > std::numeric_limits<Target>::max())
+            {
+                throw std::overflow_error("Source value is out of range");
+            }
+            return static_cast<Target>(source);
+        }
+        else if constexpr (std::is_signed_v<Source> &&
+                           std::is_unsigned_v<Target>)
+        {
+            auto source_unsigned =
+                static_cast<std::make_unsigned_t<Source>>(source);
+            if (source < 0 ||
+                source_unsigned > std::numeric_limits<Target>::max())
+            {
+                throw std::overflow_error("Source value is out of range");
+            }
+            return static_cast<Target>(source);
+        }
+        else
+        {
+            if (source > std::numeric_limits<Target>::max())
+            {
+                throw std::overflow_error("Source value is out of range");
+            }
+            return static_cast<Target>(source);
+        }
+    }
+};
+
+/**
+ * @brief A functor that safely casts an array of integral source types to an
+ * array of integral target types.
+ *
+ * This struct template provides an operator() that performs a safe cast from an
+ * array of source integral types to an array of target integral types. It
+ * checks for overflow and underflow conditions before performing the cast and
+ * throws an std::overflow_error if any source value is outside the range of the
+ * target type.
+ *
+ * @tparam Target The target integral type to cast to.
+ * @tparam Source The source integral type to cast from.
+ *
+ * @throws std::invalid_argument If the source type is not an array.
+ * @throws std::overflow_error If any source value is outside the range of the
+ * target type.
+ *
+ * @param source The source array to be casted.
+ * @return The casted array of type Target.
+ */
+template <std::integral Target>
+struct VariantToIntegralArrayVisitor
+{
+    template <typename Source>
+    std::vector<Target> operator()(const Source& source)
+    {
+        if constexpr (!std::ranges::range<Source>)
+        {
+            throw std::invalid_argument("Source type is not an array");
+        }
+        else
+        {
+            std::vector<Target> target;
+            for (const auto& s : source)
+            {
+                target.push_back(VariantToIntegralVisitor<Target>{}(s));
+            }
+            return target;
+        }
+    }
+};
+
+/**
+ * @brief A functor that converts a variant to a string.
+ *
+ * This struct template provides an operator() that converts a variant to a
+ * string. It checks for the type of the variant and converts it to a string.
+ *
+ * @param T The type of the variant.
+ *
+ * @throws std::invalid_argument If the type of the variant is not supported.
+ *
+ * @param t The variant to be converted to a string.
+ * @return The string representation of the variant.
+ */
+struct VariantToStringVisitor
+{
+    template <typename T>
+    std::string operator()(const T& t) const
+    {
+        if constexpr (std::is_same_v<T, std::string>)
+        {
+            return t;
+        }
+        else if constexpr (std::is_arithmetic_v<T>)
+        {
+            return std::to_string(t);
+        }
+        throw std::invalid_argument(
+            "Cannot translate type " + std::string(typeid(T).name()) +
+            " to string");
+    }
+};
 
 } // namespace utils
 } // namespace pldm
