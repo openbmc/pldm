@@ -1,8 +1,17 @@
 test_src = declare_dependency(
-    sources: ['../mctp_endpoint_discovery.cpp', '../../common/utils.cpp'],
+    sources: [
+        '../mctp_endpoint_discovery.cpp',
+        '../../common/utils.cpp',
+        '../configuration_discovery_handler.cpp',
+    ],
 )
 
-tests = ['handler_test', 'request_test', 'mctp_endpoint_discovery_test']
+tests = [
+    'handler_test',
+    'request_test',
+    'mctp_endpoint_discovery_test',
+    'configuration_discovery_handler_test',
+]
 
 foreach t : tests
     test(
