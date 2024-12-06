@@ -148,6 +148,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e2ac386_c0ce4e1d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-06T05:13:22Z",
+      "side": 1,
+      "message": "based on the design documented in docs/design/pldm-stack :\n\n```\nThis design is built around the pldmd and entity-manager applications on the BMC:\n\n    The pldmd asks the host firmware\u0027s PLDM stack for the host\u0027s FRU record table, by sending it the PLDM GetFRURecordTable command. The pldmd should send this command if the host indicates support for the PLDM FRU spec. The pldmd receives a PLDM FRU record table from the host firmware ( www.dmtf.org/sites/default/files/standards/documents/DSP0257_1.0.0.pdf). The daemon parses the FRU record table and hosts raw PLDM FRU information on D-Bus. It will house the PLDM FRU properties for a certain FRU under an xyz.openbmc_project.Inventory.Source.PLDM.FRU D-Bus interface, and house the PLDM entity info extracted from the FRU record set PDR under an xyz.openbmc_project.Source.PLDM.Entity interface.\n\n    Configurations can be written for entity-manager to probe an interface like xyz.openbmc_project.Inventory.Source.PLDM.FRU, and create FRU inventory D-Bus objects. Inventory interfaces from the xyz.openbmc_project. Inventory namespace can be applied on these objects, by converting PLDM FRU property values into xyz.openbmc_project.Invnetory.Decorator.Asset property values, such as Part Number and Serial Number, in the entity manager configuration file. Bmcweb can find these FRU inventory objects based on D-Bus interfaces, as it does today.\n```\n\n----------\n\nwe do need entity manager configs that would probe an interface like `xyz.openbmc_project.Inventory.Source.PLDM.FRU` - do you have that in place ? can you show how does this look in redfish ? the example you had shown is a DC-SCM above - is that shown in the redfish processor collection ?",
+      "parentUuid": "496739c0_b8998849",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "741bc8f4_3a52f009",
