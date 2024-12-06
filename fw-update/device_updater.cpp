@@ -397,8 +397,8 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     auto compOffset = std::get<5>(comp);
     auto compSize = std::get<6>(comp);
-    info("Decoded fw request data at offset '{OFFSET}' and length '{LENGTH}' ",
-         "OFFSET", offset, "LENGTH", length);
+    debug("Decoded fw request data at offset '{OFFSET}' and length '{LENGTH}' ",
+          "OFFSET", offset, "LENGTH", length);
     if (length < PLDM_FWUP_BASELINE_TRANSFER_SIZE || length > maxTransferSize)
     {
         rc = encode_request_firmware_data_resp(
