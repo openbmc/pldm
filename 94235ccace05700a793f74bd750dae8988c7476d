@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7cf12e8_78d4beac",
+        "filename": ".clang-tidy",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-12-06T05:22:27Z",
+      "side": 1,
+      "message": "this is a valid check, why disable it?",
+      "revId": "94235ccace05700a793f74bd750dae8988c7476d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "036dd19b_90571cb1",
