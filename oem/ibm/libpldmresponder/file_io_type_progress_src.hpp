@@ -59,7 +59,8 @@ class ProgressCodeHandler : public FileHandler
      *  @param[in] progressCodeBuffer - the progress Code SRC Buffer
      */
     virtual int setRawBootProperty(
-        const std::tuple<uint64_t, std::vector<uint8_t>>& progressCodeBuffer);
+        const std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>&
+            progressCodeBuffer);
 
     /** @brief ProgressCodeHandler destructor
      */
