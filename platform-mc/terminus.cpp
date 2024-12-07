@@ -117,6 +117,34 @@ bool Terminus::createInventoryPath(std::string tName)
     return false;
 }
 
+bool Terminus::updateInventoryEntity(const pdr::PDRList& fruPdrs)
+{
+    if (fruPdrs.empty())
+    {
+        lg2::error("Fru Record Set PDRs of Terminus ID {TID} is empty.", "TID",
+                   tid);
+        return true;
+    }
+
+    if (!inventoryItemBoardInft)
+    {
+        return false;
+    }
+
+    for (const auto& pdr : fruPdrs)
+    {
+        auto fruPdr = reinterpret_cast<const pldm_pdr_fru_record_set*>(
+            const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
+
+        inventoryItemBoardInft->entityType(fruPdr->entity_type);
+        inventoryItemBoardInft->entityInstanceNumber(fruPdr->entity_instance);
+        inventoryItemBoardInft->containerID(fruPdr->container_id);
+        break;
+    }
+
+    return true;
+}
+
 void Terminus::parseTerminusPDRs()
 {
     std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
@@ -193,6 +221,11 @@ void Terminus::parseTerminusPDRs()
                     continue;
                 }
                 entityAuxiliaryNamesTbl.emplace_back(std::move(entityNames));
+                break;
+            }
+            case PLDM_PDR_FRU_RECORD_SET:
+            {
+                fruRecordSetPDRs.emplace_back(std::move(pdr));
                 break;
             }
             default:
@@ -606,6 +639,13 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
     if (createInventoryPath(static_cast<std::string>(tmp.value())))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path.", "TID", tid);
+    }
+
+    if (!updateInventoryEntity(fruRecordSetPDRs))
+    {
+        lg2::error(
+            "Terminus ID {TID}: Failed to update Entity Inventory path {PATH}.",
+            "TID", tid, "PATH", inventoryPath);
     }
 
     auto ptr = fruData;
