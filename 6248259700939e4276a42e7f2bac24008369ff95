@@ -184,6 +184,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb7d158_d39f1741",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-07T08:13:27Z",
+      "side": 1,
+      "message": "\u003e \u003e and house the PLDM entity info extracted from the FRU record set PDR under an xyz.openbmc_project.Source.PLDM.Entity interface.\n\u003e \n\u003e \n\u003e The latest patch set does not support this part.\n\nI supported this part in patch set https://gerrit.openbmc.org/c/openbmc/pldm/+/76335",
+      "parentUuid": "42607599_04442920",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "741bc8f4_3a52f009",
