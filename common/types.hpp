@@ -184,6 +184,8 @@ using EntityInfo = std::tuple<ContainerID, EntityType, EntityInstance>;
 using SensorInfo =
     std::tuple<EntityInfo, CompositeSensorStates, std::vector<StateSetId>>;
 
+using PDR = std::vector<uint8_t>;
+using PDRList = std::vector<PDR>;
 } // namespace pdr
 
 } // namespace pldm
