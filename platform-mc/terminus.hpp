@@ -162,8 +162,21 @@ class Terminus
      */
     void createGernalFruDbus(const uint8_t* fruData, const size_t fruLen);
 
+    /** @brief Update Inventory.PLDM.Entity interface for FruPLDM/<TerminuName>
+     *         object path.
+     *
+     *  @param[in] fruPdrs - Fru Record Set PDRs of terminus
+     *
+     *  @return success state - True if success or Fru PDRs is empty,
+     *          otherwise False
+     */
+    bool updateFruEntity(const pdr::PDRList& fruPdrs);
+
     /** @brief A list of PDRs fetched from Terminus */
-    std::vector<std::vector<uint8_t>> pdrs{};
+    pdr::PDRList pdrs{};
+
+    /** @brief A list of Fru Record Set PDRs fetched from Terminus */
+    pdr::PDRList fruRecordSetPDRs{};
 
     /** @brief A flag to indicate if terminus has been initialized */
     bool initialized = false;

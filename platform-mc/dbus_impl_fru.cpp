@@ -82,5 +82,20 @@ uint32_t FruReq::iana(uint32_t value)
     return fruserver::iana(value);
 }
 
+uint16_t FruReq::entityType(uint16_t value)
+{
+    return entityserver::entityType(value);
+}
+
+uint16_t FruReq::entityInstanceNumber(uint16_t value)
+{
+    return entityserver::entityInstanceNumber(value);
+}
+
+uint16_t FruReq::containerID(uint16_t value)
+{
+    return entityserver::containerID(value);
+}
+
 } // namespace dbus_api
 } // namespace pldm

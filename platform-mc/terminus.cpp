@@ -128,6 +128,34 @@ bool Terminus::createInventoryPath(std::string tName)
     return true;
 }
 
+bool Terminus::updateFruEntity(const pdr::PDRList& fruPdrs)
+{
+    if (fruPdrs.empty())
+    {
+        lg2::error("Fru Record Set PDRs of Terminus ID {TID} is empty.", "TID",
+                   tid);
+        return true;
+    }
+
+    if (!fruObj)
+    {
+        return false;
+    }
+
+    for (const auto& pdr : fruPdrs)
+    {
+        auto fruPdr = reinterpret_cast<const pldm_pdr_fru_record_set*>(
+            const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
+
+        fruObj->entityType(fruPdr->entity_type);
+        fruObj->entityInstanceNumber(fruPdr->entity_instance);
+        fruObj->containerID(fruPdr->container_id);
+        break;
+    }
+
+    return true;
+}
+
 void Terminus::parseTerminusPDRs()
 {
     std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
@@ -204,6 +232,11 @@ void Terminus::parseTerminusPDRs()
                     continue;
                 }
                 entityAuxiliaryNamesTbl.emplace_back(std::move(entityNames));
+                break;
+            }
+            case PLDM_PDR_FRU_RECORD_SET:
+            {
+                fruRecordSetPDRs.emplace_back(std::move(pdr));
                 break;
             }
             default:
@@ -626,6 +659,13 @@ void Terminus::createGernalFruDbus(const uint8_t* fruData, const size_t fruLen)
             "Failed to create Fru D-Bus object for Terminus {TID} at path {PATH}",
             "TID", tid, "PATH", tidFRUObjPath);
         return;
+    }
+
+    if (!updateFruEntity(fruRecordSetPDRs))
+    {
+        lg2::error(
+            "Terminus ID {TID}: Failed to update Fru Entity Interface path {PATH}.",
+            "TID", tid, "PATH", inventoryPath);
     }
 
     if (createInventoryPath(static_cast<std::string>(tmp.value())))
