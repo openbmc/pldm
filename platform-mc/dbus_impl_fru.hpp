@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xyz/openbmc_project/Inventory/Source/PLDM/Entity/server.hpp"
 #include "xyz/openbmc_project/Inventory/Source/PLDM/FRU/server.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -16,13 +17,17 @@ using fruserver =
     sdbusplus::xyz::openbmc_project::Inventory::Source::PLDM::server::FRU;
 
 using FruIntf = sdbusplus::server::object::object<fruserver>;
+using entityserver =
+    sdbusplus::xyz::openbmc_project::Inventory::Source::PLDM::server::Entity;
+
+using EntityIntf = sdbusplus::server::object::object<entityserver>;
 
 /** @class FruRequester
  *  @brief OpenBMC PLDM.FRU implementation.
  *  @details A concrete implementation for the
  *  xyz.openbmc_project.Inventory.Source.PLDM.FRU DBus APIs.
  */
-class FruReq : public FruIntf
+class FruReq : public FruIntf, public EntityIntf
 {
   public:
     FruReq() = delete;
@@ -37,7 +42,7 @@ class FruReq : public FruIntf
      *  @param[in] path - Path to attach at.
      */
     FruReq(sdbusplus::bus_t& bus, const std::string& path) :
-        FruIntf(bus, path.c_str()) {};
+        FruIntf(bus, path.c_str()), EntityIntf(bus, path.c_str()) {};
 
     /** @brief Set value of chassisType */
     std::string chassisType(std::string value);
@@ -83,6 +88,15 @@ class FruReq : public FruIntf
 
     /** @brief Set value of IANA */
     uint32_t iana(uint32_t value);
+
+    /** @brief Set entityType of Inventory.Source:.PLDM.Entity */
+    uint16_t entityType(uint16_t value);
+
+    /** @brief Set entityInstanceNumber of Inventory.Source:.PLDM.Entity */
+    uint16_t entityInstanceNumber(uint16_t value);
+
+    /** @brief Set containerID of Inventory.Source:.PLDM.Entity */
+    uint16_t containerID(uint16_t value);
 };
 
 } // namespace dbus_api
