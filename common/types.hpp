@@ -22,6 +22,10 @@ using Response = std::vector<uint8_t>;
 using MCTPMsgTypes = std::vector<uint8_t>;
 using Command = uint8_t;
 
+using DownstreamDeviceIndex = uint16_t;
+using InventoryPath = std::string;
+using FirmwareDeviceName = std::string;
+
 /** @brief MCTP Endpoint Medium type in string
  *         Reserved for future purpose
  */
@@ -118,6 +122,7 @@ using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 // Component information
 using CompClassification = uint16_t;
 using CompIdentifier = uint16_t;
+using DeviceIdentifier = std::pair<eid, CompIdentifier>;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
