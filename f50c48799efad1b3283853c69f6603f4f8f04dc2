@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4be1e211_18927efc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2024-12-09T13:02:55Z",
+      "side": 1,
+      "message": "@Manoj Can we add the reference where the signature of Primary SRCs changed, in the commit message?",
+      "revId": "f50c48799efad1b3283853c69f6603f4f8f04dc2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
