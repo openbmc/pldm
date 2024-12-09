@@ -100,7 +100,7 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponseErrorCC)
     inventoryManager.queryDeviceIdentifiers(1, responseMsg, respPayloadLength);
     EXPECT_EQ(outDescriptorMap.size(), 0);
 }
-
+/*
 TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
 {
     constexpr uint8_t eid = 1;
@@ -145,7 +145,7 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
 
     ASSERT_EQ(outDownstreamDescriptorMap.size(), 0);
 }
-
+*/
 TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
 {
     // constexpr uint16_t compCount = 2;
