@@ -18,9 +18,10 @@ class InventoryManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
-        inventoryManager(reqHandler, instanceIdDb, outDescriptorMap,
+        inventoryManager(ctx, reqHandler, instanceIdDb, outDescriptorMap,
                          outDownstreamDescriptorMap, outComponentInfoMap)
     {}
+    ~InventoryManagerTest() noexcept = default;
 
     int fd = -1;
     sdeventplus::Event event;
@@ -30,6 +31,7 @@ class InventoryManagerTest : public testing::Test
     DescriptorMap outDescriptorMap{};
     DownstreamDescriptorMap outDownstreamDescriptorMap{};
     ComponentInfoMap outComponentInfoMap{};
+    sdbusplus::async::context ctx;
 };
 
 TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
