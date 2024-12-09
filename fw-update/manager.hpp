@@ -5,6 +5,7 @@
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "inventory_manager.hpp"
+#include "requester/configuration_discovery_handler.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "update_manager.hpp"
@@ -37,11 +38,13 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] handler - PLDM request handler
      */
-    explicit Manager(Event& event,
-                     requester::Handler<requester::Request>& handler,
-                     pldm::InstanceIdDb& instanceIdDb) :
+    explicit Manager(
+        Event& event, requester::Handler<requester::Request>& handler,
+        pldm::InstanceIdDb& instanceIdDb,
+        pldm::ConfigurationDiscoveryHandler* configurationDiscovery) :
         inventoryMgr(handler, instanceIdDb, descriptorMap,
-                     downstreamDescriptorMap, componentInfoMap),
+                     downstreamDescriptorMap, componentInfoMap,
+                     configurationDiscovery),
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap)
     {}
@@ -53,13 +56,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     void handleMctpEndpoints(const MctpInfos& mctpInfos)
     {
-        std::vector<mctp_eid_t> eids;
-        for (const auto& mctpInfo : mctpInfos)
-        {
-            eids.emplace_back(std::get<mctp_eid_t>(mctpInfo));
-        }
-
-        inventoryMgr.discoverFDs(eids);
+        inventoryMgr.discoverFDs(mctpInfos);
     }
 
     /** @brief Helper function to invoke registered handlers for
