@@ -18,6 +18,8 @@ namespace pldm
 namespace fw_update
 {
 
+using Context = sdbusplus::async::context;
+
 /** @class Manager
  *
  * This class handles all the aspects of the PLDM FW update specification for
@@ -37,10 +39,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] handler - PLDM request handler
      */
-    explicit Manager(Event& event,
+    explicit Manager(Context& ctx, Event& event,
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
-        inventoryMgr(handler, instanceIdDb, descriptorMap,
+        inventoryMgr(ctx, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap),
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap)
@@ -53,13 +55,12 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     void handleMctpEndpoints(const MctpInfos& mctpInfos)
     {
-        std::vector<mctp_eid_t> eids;
-        for (const auto& mctpInfo : mctpInfos)
-        {
-            eids.emplace_back(std::get<mctp_eid_t>(mctpInfo));
-        }
+        inventoryMgr.discoverFDs(mctpInfos);
+    }
 
-        inventoryMgr.discoverFDs(eids);
+    void handleConfigurations(const Configurations& configurations) override
+    {
+        inventoryMgr.updateConfigurations(configurations);
     }
 
     /** @brief Helper function to invoke registered handlers for
