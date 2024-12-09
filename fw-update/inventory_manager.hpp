@@ -2,13 +2,21 @@
 
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
+#include "inventory_item_manager.hpp"
+#include "requester/configuration_discovery_handler.hpp"
 #include "requester/handler.hpp"
+
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Board/server.hpp>
+#include <xyz/openbmc_project/Software/Version/server.hpp>
 
 namespace pldm
 {
 
 namespace fw_update
 {
+
+using Context = sdbusplus::async::context;
 
 /** @class InventoryManager
  *
@@ -30,6 +38,7 @@ class InventoryManager
 
     /** @brief Constructor
      *
+     *  @param[in] ctx - D-Bus context
      *  @param[in] handler - PLDM request handler
      *  @param[in] instanceIdDb - Managing instance ID for PLDM requests
      *  @param[out] descriptorMap - Populate the firmware identifiers for the
@@ -41,14 +50,17 @@ class InventoryManager
      *                                 managed by the BMC.
      */
     explicit InventoryManager(
+        Context& ctx,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
-        ComponentInfoMap& componentInfoMap) :
+        ComponentInfoMap& componentInfoMap,
+        pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
         handler(handler), instanceIdDb(instanceIdDb),
-        descriptorMap(descriptorMap),
+        descriptorMap(descriptorMap), inventoryItemManager(ctx),
         downstreamDescriptorMap(downstreamDescriptorMap),
-        componentInfoMap(componentInfoMap)
+        componentInfoMap(componentInfoMap),
+        configurationDiscovery(configurationDiscovery)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
@@ -57,9 +69,9 @@ class InventoryManager
      *  commands are sent to every FD and the response is used to populate
      *  the firmware identifiers and component details of the FDs.
      *
-     *  @param[in] eids - MCTP endpoint ID of the FDs
+     *  @param[in] mctpInfos - List of MCTP endpoint information
      */
-    void discoverFDs(const std::vector<mctp_eid_t>& eids);
+    void discoverFDs(const MctpInfos& mctpInfos);
 
     /** @brief Handler for QueryDeviceIdentifiers command response
      *
@@ -114,6 +126,12 @@ class InventoryManager
                                size_t respMsgLen);
 
   private:
+    /** @brief Refresh the inventory path of the FD
+     *
+     *  @param[in] mctpInfo - MCTP endpoint information
+     */
+    void refreshInventoryPath(const MctpInfo& mctpInfo);
+
     /**
      * @brief Sends QueryDeviceIdentifiers request
      *
@@ -153,6 +171,36 @@ class InventoryManager
         mctp_eid_t eid, uint32_t dataTransferHandle,
         const enum transfer_op_flag transferOperationFlag);
 
+    /**
+     * @brief composite Downstream Device Name by combining the descriptors
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] index - Downstream device index
+     * @param[in] descriptors - Descriptors of the downstream device
+     */
+    void updateDownstreamDeviceName(const eid& eid,
+                                    const DownstreamDeviceIndex& index,
+                                    const Descriptors& descriptors);
+
+    /**
+     * @brief update Firmware Device Name
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] descriptors - Descriptors of the firmware device
+     */
+    void updateFirmwareDeviceName(const eid& eid,
+                                  const Descriptors& descriptors);
+
+    /**
+     * @brief Obtain the device name from the descriptors
+     *
+     * @param[in] descriptors - Descriptors of the device
+     *
+     * @return FirmwareDeviceName - The Device name, empty if not found
+     */
+    FirmwareDeviceName obtainDeviceNameFromDescriptors(
+        const Descriptors& descriptors);
+
     /** @brief Send GetFirmwareParameters command request
      *
      *  @param[in] eid - Remote MCTP endpoint
@@ -168,11 +216,24 @@ class InventoryManager
     /** @brief Device identifiers of the managed FDs */
     DescriptorMap& descriptorMap;
 
+    /** @brief Firmware Device names of the managed FDs */
+    std::map<eid, FirmwareDeviceName> firmwareDeviceNameMap;
+
+    /** @brief Downstream Devices names of the managed FDs */
+    std::map<std::tuple<eid, DownstreamDeviceIndex>, FirmwareDeviceName>
+        downstreamDeviceNameMap;
+
+    /** @brief Dbus Inventory Item Manager */
+    InventoryItemManager inventoryItemManager;
+
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    /** @brief Configuration Discovery Handler */
+    pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
 };
 
 } // namespace fw_update
