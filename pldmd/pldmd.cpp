@@ -70,6 +70,8 @@ PHOSPHOR_LOG2_USING;
 #endif
 
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
+constexpr const char* PLDMFWManagerService =
+    "xyz.openbmc_project.PLDM.FWUpdateManager";
 
 using namespace pldm;
 using namespace sdeventplus;
@@ -175,6 +177,7 @@ void optionUsage(void)
 
 int main(int argc, char** argv)
 {
+    sdbusplus::async::context ctx;
     bool verbose = false;
     static struct option long_options[] = {
         {"verbose", no_argument, nullptr, 'v'}, {nullptr, 0, nullptr, 0}};
@@ -251,7 +254,7 @@ int main(int argc, char** argv)
     std::unique_ptr<DbusToPLDMEvent> dbusToPLDMEventHandler;
 
     auto configurationDiscovery =
-        std::make_unique<pldm::ConfigurationDiscoveryHandler>(&dbusHandler);
+        std::make_shared<pldm::ConfigurationDiscoveryHandler>(&dbusHandler);
 
     std::unique_ptr<platform_config::Handler> platformConfigHandler{};
     platformConfigHandler =
@@ -346,12 +349,13 @@ int main(int argc, char** argv)
 #endif
 
     std::unique_ptr<fw_update::Manager> fwManager =
-        std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<fw_update::Manager>(
+            ctx, event, reqHandler, instanceIdDb, configurationDiscovery);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
-                     fwManager.get(), platformManager.get(),
-                     configurationDiscovery.get()});
+                     configurationDiscovery.get(), fwManager.get(),
+                     platformManager.get()});
 
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
@@ -435,6 +439,11 @@ int main(int argc, char** argv)
               PLDMService, "ERROR", e);
     }
 #endif
+    sdbusplus::server::manager_t asyncObjManager(
+        ctx, "/xyz/openbmc_project/software");
+    ctx.request_name(PLDMFWManagerService);
+    std::thread ctxThread([&] { ctx.run(); });
+
     IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
     if (hostPDRHandler)
