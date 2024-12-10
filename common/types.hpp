@@ -14,12 +14,21 @@
 namespace pldm
 {
 
+const std::string emptyUUID = "00000000-0000-0000-0000-000000000000";
+constexpr const char* MCTPService = "au.com.codeconstruct.MCTP1";
+constexpr const char* MCTPInterface = "xyz.openbmc_project.MCTP.Endpoint";
+constexpr const char* EndpointUUID = "xyz.openbmc_project.Common.UUID";
+constexpr const char* MCTPPath = "/au/com/codeconstruct/mctp1";
+constexpr const char* MCTPInterfaceCC = "au.com.codeconstruct.MCTP.Endpoint1";
+constexpr const char* MCTPConnectivityProp = "Connectivity";
+
 using Availability = bool;
 using eid = uint8_t;
 using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using MCTPMsgTypes = std::vector<uint8_t>;
+using LocalEids = std::vector<uint8_t>;
 using Command = uint8_t;
 
 /** @brief MCTP Endpoint Medium type in string
@@ -38,8 +47,9 @@ using NetworkId = uint32_t;
  *         UUID : Endpoint UUID which is used to different the endpoints
  *         MctpMedium: Endpoint MCTP Medium info (Resersed)
  *         NetworkId: MCTP network index
+ *         LocalEids: BMC Local EIDs of MCTP Network
  */
-using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
+using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId, LocalEids>;
 
 /** @brief Type definition of MCTP endpoint D-Bus properties in
  *         xyz.openbmc_project.MCTP.Endpoint D-Bus interface.
