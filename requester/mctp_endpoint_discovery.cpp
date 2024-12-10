@@ -80,15 +80,36 @@ void MctpDiscovery::getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap)
             const Availability& availability =
                 getEndpointConnectivityProp(path);
             auto types = std::get<MCTPMsgTypes>(epProps);
+            auto localEids = getLocalEids(std::get<NetworkId>(epProps));
+
             if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                 types.end())
             {
                 mctpInfoMap[MctpInfo(std::get<eid>(epProps), uuid, "",
-                                     std::get<NetworkId>(epProps))] =
+                                     std::get<NetworkId>(epProps), localEids)] =
                     availability;
             }
         }
     }
+}
+
+LocalEids MctpDiscovery::getLocalEids(const NetworkId& networkId)
+{
+    LocalEids localEids = {};
+    if (!listLocalEids.contains(networkId))
+    {
+        localEids = pldm::utils::getLocalEids(networkId);
+        if (!localEids.empty())
+        {
+            listLocalEids[networkId] = localEids;
+        }
+    }
+    else
+    {
+        localEids = listLocalEids[networkId];
+    }
+
+    return localEids;
 }
 
 MctpEndpointProps MctpDiscovery::getMctpEndpointProps(
@@ -216,6 +237,7 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                 auto eid = std::get<mctp_eid_t>(properties.at("EID"));
                 auto types = std::get<std::vector<uint8_t>>(
                     properties.at("SupportedMessageTypes"));
+                auto localEids = getLocalEids(networkId);
 
                 if (!availability)
                 {
@@ -231,7 +253,8 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                     info(
                         "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
                         "NETWORK", networkId, "EID", eid, "UUID", uuid);
-                    mctpInfos.emplace_back(MctpInfo(eid, uuid, "", networkId));
+                    mctpInfos.emplace_back(
+                        MctpInfo(eid, uuid, "", networkId, localEids));
                 }
             }
         }
@@ -314,9 +337,10 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
                 return;
             }
             const UUID& uuid = getEndpointUUIDProp(service, objPath);
+            auto localEids = getLocalEids(std::get<NetworkId>(epProps));
 
             MctpInfo mctpInfo(std::get<eid>(epProps), uuid, "",
-                              std::get<NetworkId>(epProps));
+                              std::get<NetworkId>(epProps), localEids);
             if (!std::ranges::contains(existingMctpInfos, mctpInfo))
             {
                 if (availability)

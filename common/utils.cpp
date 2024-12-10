@@ -31,6 +31,8 @@ using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 
 constexpr const char* MCTP_INTERFACE_CC = "au.com.codeconstruct.MCTP.Endpoint1";
 constexpr const char* MCTP_ENDPOINT_RECOVER_METHOD = "Recover";
+constexpr const char* MCTPNetworkCC = "au.com.codeconstruct.MCTP.Network1";
+constexpr const char* MCTPLocalEidsProp = "LocalEIDs";
 
 std::vector<std::vector<uint8_t>> findStateEffecterPDR(
     uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
@@ -803,6 +805,28 @@ std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
     uint32_t ret;
     std::memcpy(&ret, value, length);
     return ret;
+}
+
+LocalEids getLocalEids(const NetworkId& networkId)
+{
+    LocalEids localEids = {};
+    std::string nwPath = std::format("{}/networks/{}", MCTPPath, networkId);
+    try
+    {
+        pldm::utils::PropertyValue propertyValue =
+            pldm::utils::DBusHandler().getDbusPropertyVariant(
+                nwPath.c_str(), MCTPLocalEidsProp, MCTPNetworkCC);
+        localEids = std::get<LocalEids>(propertyValue);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error(
+            "Error reading LocalEids property of network Id '{ID}', error - {ERROR}",
+            "ID", networkId, "ERROR", e);
+        return {};
+    }
+
+    return localEids;
 }
 
 } // namespace utils
