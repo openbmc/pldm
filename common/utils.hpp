@@ -616,5 +616,13 @@ std::optional<std::string> fruFieldValuestring(const uint8_t* value,
 std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
                                           const uint8_t& length);
 
+/** @brief Helper function to get LocalEids of one MCTP network
+ *
+ *  @param[in] networkId - Network ID
+ *
+ *  @return Local Eids of BMC or empty.
+ */
+LocalEids getLocalEids(const NetworkId& networkId);
+
 } // namespace utils
 } // namespace pldm

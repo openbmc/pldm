@@ -53,8 +53,8 @@ TEST(MctpEndpointDiscoveryTest, goodAddToExistingMctpInfos)
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
     const pldm::MctpInfos& mctpInfos = {
-        pldm::MctpInfo(11, pldm::emptyUUID, "", 1),
-        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1)};
+        pldm::MctpInfo(11, pldm::emptyUUID, "", 1, {}),
+        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, {})};
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
         bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
@@ -71,7 +71,7 @@ TEST(MctpEndpointDiscoveryTest, badAddToExistingMctpInfos)
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
     const pldm::MctpInfos& mctpInfos = {
-        pldm::MctpInfo(11, pldm::emptyUUID, "", 1)};
+        pldm::MctpInfo(11, pldm::emptyUUID, "", 1, {})};
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
         bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
@@ -84,8 +84,8 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveFromExistingMctpInfos)
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
     const pldm::MctpInfos& mctpInfos = {
-        pldm::MctpInfo(11, pldm::emptyUUID, "def", 2),
-        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1)};
+        pldm::MctpInfo(11, pldm::emptyUUID, "def", 2, {}),
+        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, {})};
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
         bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
@@ -97,7 +97,8 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveFromExistingMctpInfos)
     EXPECT_EQ(std::get<3>(mctpInfo), 1);
     pldm::MctpInfos removedInfos;
     pldm::MctpInfos remainMctpInfos;
-    remainMctpInfos.emplace_back(pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1));
+    remainMctpInfos.emplace_back(
+        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, {}));
 
     mctpDiscoveryHandler->removeFromExistingMctpInfos(remainMctpInfos,
                                                       removedInfos);
@@ -118,8 +119,8 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
     const pldm::MctpInfos& mctpInfos = {
-        pldm::MctpInfo(11, pldm::emptyUUID, "def", 2),
-        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1)};
+        pldm::MctpInfo(11, pldm::emptyUUID, "def", 2, {}),
+        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, {})};
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
         bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
