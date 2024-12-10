@@ -214,6 +214,24 @@
       "parentUuid": "bd14e9fb_7766084c",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2283457_169c2f3f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-10T04:37:58Z",
+      "side": 1,
+      "message": "These are my two scents on the problem:\n\n`GetPLDMCommands` is a mandatory command that should be supported for a valid pldm terminus (as per pldm base spec DSP0240).\n\n`GetPLDMCommands` command would return the supported pldm commands per PLDM Type. The way i think its supposed to work is : \n\n1. requester sends `GetPLDMTypes` commnand  -  responder would return which command types are supported. {say for example it returned `base`, `fru`, `platform` }\nrequester sends GetPLDMCommands on each type that was returned in the GetPLDMTypes command like:\n\n`GetPLDMCommands` - for `fru`  - if that returns success  -\u003e this would mean we can talk PLDM fru commands {like `GetFRURecordTableMetadata`,`GetFRURecordTable`, `GetFRURecordByOption` } to the remote end.\n\n`GetPLDMCommands` - for `platform`  - if that returns `ERROR`   -\u003e  this would mean something bad happened on the other side.\nat this point if we send a `GetPLDMTypes` again - that might not even return platform - so , i think its reasonable to basically think that the remote endpoint is `not capable to talk platform commands` - but that does not mean that we cannot talk to the remote endpoint at all right ? (we can still talk base, fru, and what ever is supported)\n....\nso , we should not basically mark the endpoint as problamatic and remove it from the map. Rather we should handle it gracefully and stop sending the commands that the remote endpoint is not capable. despite all this even if we accidentally send the commands, the responder can return back `ERROR_UNSUPPORTED_PLDM_CMD`",
+      "parentUuid": "94d344e4_59cc70e7",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
