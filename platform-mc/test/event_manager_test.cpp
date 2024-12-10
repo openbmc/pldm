@@ -167,7 +167,7 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
 TEST_F(EventManagerTest, SetEventReceiverTest)
 {
     // Add terminus
-    auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
+    auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, {}));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
@@ -360,7 +360,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     terminusManager.updateMctpEndpointAvailability(
-        pldm::MctpInfo(10, "", "", 1), true);
+        pldm::MctpInfo(10, "", "", 1, {}), true);
 
     // queue SetEventReceiver response
     const size_t SetEventReceiverLen = 1;
@@ -395,7 +395,7 @@ TEST_F(EventManagerTest, updateAvailableState)
 TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
 {
     // Add terminus
-    auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
+    auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, {}));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
@@ -487,7 +487,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     terminusManager.updateMctpEndpointAvailability(
-        pldm::MctpInfo(10, "", "", 1), true);
+        pldm::MctpInfo(10, "", "", 1, {}), true);
 
     EXPECT_CALL(eventManager, processCperEvent(_, _, _, _))
         .Times(1)
