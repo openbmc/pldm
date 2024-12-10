@@ -14,14 +14,6 @@
 namespace pldm
 {
 
-const std::string emptyUUID = "00000000-0000-0000-0000-000000000000";
-constexpr const char* MCTPService = "au.com.codeconstruct.MCTP1";
-constexpr const char* MCTPInterface = "xyz.openbmc_project.MCTP.Endpoint";
-constexpr const char* EndpointUUID = "xyz.openbmc_project.Common.UUID";
-constexpr const char* MCTPPath = "/au/com/codeconstruct/mctp1";
-constexpr const char* MCTPInterfaceCC = "au.com.codeconstruct.MCTP.Endpoint1";
-constexpr const char* MCTPConnectivityProp = "Connectivity";
-
 /** @class MctpDiscoveryHandlerIntf
  *
  * This abstract class defines the APIs for MctpDiscovery class has common
@@ -75,6 +67,8 @@ class MctpDiscovery
 
     /** @brief The existing MCTP endpoints */
     MctpInfos existingMctpInfos;
+
+    std::map<NetworkId, LocalEids> listLocalEids;
 
     /** @brief Callback function when the propertiesChanged D-Bus
      * signal is triggered for MCTP endpoint's properties.
@@ -180,6 +174,14 @@ class MctpDiscovery
      *  @return Availability status: true if active false if inactive
      */
     Availability getEndpointConnectivityProp(const std::string& path);
+
+    /** @brief Helper function to get LocalEids of one MCTP network
+     *
+     *  @param[in] networkId - Network ID
+     *
+     *  @return Local Eids of BMC or empty.
+     */
+    LocalEids getLocalEids(const NetworkId& networkId);
 
     static constexpr uint8_t mctpTypePLDM = 1;
 };
