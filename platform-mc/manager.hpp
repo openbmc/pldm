@@ -37,8 +37,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     explicit Manager(sdeventplus::Event& event, RequesterHandler& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
-        terminusManager(event, handler, instanceIdDb, termini, this,
-                        pldm::BmcMctpEid),
+        terminusManager(event, handler, instanceIdDb, termini, this),
         platformManager(terminusManager, termini),
         sensorManager(event, terminusManager, termini, this),
         eventManager(terminusManager, termini)
