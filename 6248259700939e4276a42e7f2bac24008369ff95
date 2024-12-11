@@ -202,6 +202,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b187799a_d195b6f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-12-11T04:34:36Z",
+      "side": 1,
+      "message": "I dont think we are following the design as stated in https://github.com/openbmc/docs/blob/master/designs/pldm-stack.md#processing-pldm-fru-information-sent-down-by-the-host-firmware\n\nEntity manager is supposed to probe on the `xyz.openbmc_project.Source.PLDM.Entity interface` and should host the Inventory.Item interfaces which should be consumed by bmcweb.\n\nI dont think we should be exposing the `xyz.openbmc_project.Source.PLDM.Entity interface.` interfaces directly to redfish/bmcweb.\n\n\nIn your example above , how is the information from Asset interface appended to the Chassis redfish object ?\n\n\u003e In the final patch set, pldmd will also create xyz.openbmc_project.Invnetory.Decorator.Asset in the inventory object path /xyz/openbmc_project/inventory/system/board/S1 so no entity-manager configuration is need.\n\nwhy do you think EM configuration is not needed ? , if the remote endpoint has PLDM_ENTITY_CHASSIS,if pldm is hosting Asset interface , how does that show us as a Chassis in redfish ?",
+      "parentUuid": "fbb7d158_d39f1741",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "741bc8f4_3a52f009",
