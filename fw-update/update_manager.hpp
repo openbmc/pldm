@@ -13,6 +13,7 @@
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <tuple>
 #include <unordered_map>
 
@@ -67,6 +68,15 @@ class UpdateManager
                                    const pldm_msg* request, size_t reqMsgLen);
 
     int processPackage(const std::filesystem::path& packageFilePath);
+
+    /** @brief Process the firmware update package
+     *
+     *  @param[in] packageStream - Stream of the firmware update package
+     *  @param[in] packageSize - Size of the firmware update package
+     *
+     *  @return 0 on success, -1 on failure
+     */
+    int processStream(std::istream& packageStream, size_t packageSize);
 
     void updateDeviceCompletion(mctp_eid_t eid, bool status);
 
