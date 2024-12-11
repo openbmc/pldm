@@ -220,6 +220,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "01041f88_19972f25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-11T05:24:02Z",
+      "side": 1,
+      "message": "\u003e I dont think we are following the design as stated in https://github.com/openbmc/docs/blob/master/designs/pldm-stack.md#processing-pldm-fru-information-sent-down-by-the-host-firmware\n\u003e \n\u003e Entity manager is supposed to probe on the `xyz.openbmc_project.Source.PLDM.Entity interface` and should host the Inventory.Item interfaces which should be consumed by bmcweb.\n\u003e \n\u003e I dont think we should be exposing the `xyz.openbmc_project.Source.PLDM.Entity interface.` interfaces directly to redfish/bmcweb.\n\u003e \n\u003e \n\u003e In your example above , how is the information from Asset interface appended to the Chassis redfish object ?\n\nThis question is similar below question, right? So I answer as below.\n\n\u003e \n\u003e \u003e In the final patch set, pldmd will also create xyz.openbmc_project.Invnetory.Decorator.Asset in the inventory object path /xyz/openbmc_project/inventory/system/board/S1 so no entity-manager configuration is need.\n\u003e \n\u003e why do you think EM configuration is not needed ? , if the remote endpoint has PLDM_ENTITY_CHASSIS,if pldm is hosting Asset interface , how does that show us as a Chassis in redfish ?\n\nThere are some reason which I think that `pldmd` should directly add `xyz.openbmc_project.Invnetory.Decorator.Asset`.\n\n1. When there are 1x or 5x entity in the system which is reporting thru the pldm adding EM configuration for all of them can cause much headaches.\n\n2. Moreover, the entity name is unknown until `pldmd` discovery terminus PDRs so we should not use the static configuration for them.\n\n3. In the current `pldmd` we are creating the inventory patch for board entity at `/xyz/openbmc_project/inventory/system/board/\u003cEntityName\u003e`, in the future, if the entity is `PLDM_ENTITY_CHASSIS`, we can change the inventory path to `/xyz/openbmc_project/inventory/chassis/chassis/\u003cEntityName\u003e` or some thing like that. In this case, `pldmd` will create the `xyz.openbmc_project.Invnetory.Decorator.Asset` in inventory chassis path.\nThe redfish or web will collect `xyz.openbmc_project.Invnetory.Decorator.Asset` from chassis object path.\n4. We still can use entity manager configuration to create `xyz.openbmc_project.Invnetory.Decorator.Asset` while `pldmd` still create `xyz.openbmc_project.Invnetory.Decorator.Asset` right? Maybe I should add the build option to identity if `pldmd` will directly create `xyz.openbmc_project.Invnetory.Decorator.Asset`.",
+      "parentUuid": "b187799a_d195b6f4",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "741bc8f4_3a52f009",
