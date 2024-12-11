@@ -8,6 +8,7 @@
 
 #include <libpldm/platform.h>
 #include <libpldm/pldm.h>
+#include <linux/mctp.h>
 
 #include <limits>
 #include <map>
@@ -51,13 +52,12 @@ class TerminusManager
     TerminusManager& operator=(TerminusManager&&) = delete;
     virtual ~TerminusManager() = default;
 
-    explicit TerminusManager(
-        sdeventplus::Event& event, RequesterHandler& handler,
-        pldm::InstanceIdDb& instanceIdDb, TerminiMapper& termini,
-        Manager* manager, mctp_eid_t localEid) :
+    explicit TerminusManager(sdeventplus::Event& event,
+                             RequesterHandler& handler,
+                             pldm::InstanceIdDb& instanceIdDb,
+                             TerminiMapper& termini, Manager* manager) :
         handler(handler), instanceIdDb(instanceIdDb), termini(termini),
-        tidPool(tidPoolSize, false), manager(manager), localEid(localEid),
-        event(event)
+        tidPool(tidPoolSize, false), manager(manager), event(event)
     {
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
         tidPool[0] = true;
@@ -146,15 +146,6 @@ class TerminusManager
      */
     bool unmapTid(const pldm_tid_t& tid);
 
-    /** @brief getter of local EID
-     *
-     *  @return uint8_t - local EID
-     */
-    mctp_eid_t getLocalEid()
-    {
-        return localEid;
-    }
-
     /** @brief Helper function to invoke registered handlers for
      *  updating the availability status of the MCTP endpoint
      *
@@ -180,6 +171,15 @@ class TerminusManager
      */
     std::optional<mctp_eid_t> getActiveEidByName(
         const std::string& terminusName);
+
+    /** @brief Member function to get the first BMC local EID from localEids
+     *         D-Bus property in the MCTP D-Bus network of the Endpoint
+     *
+     *  @param[in] tid - terminus tid
+     *
+     *  @return option mctp_eid_t - local EID
+     */
+    std::optional<mctp_eid_t> getLocalEid(const pldm_tid_t& tid);
 
   private:
     /** @brief Find the terminus object pointer in termini list.
@@ -282,9 +282,6 @@ class TerminusManager
 
     /** @brief A Manager interface for calling the hook functions **/
     Manager* manager;
-
-    /** @brief local EID */
-    mctp_eid_t localEid;
 
     /** @brief MCTP Endpoint available status mapping */
     std::map<MctpInfo, Availability> mctpInfoAvailTable;

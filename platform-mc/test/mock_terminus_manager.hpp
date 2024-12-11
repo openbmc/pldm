@@ -17,8 +17,7 @@ class MockTerminusManager : public TerminusManager
     MockTerminusManager(sdeventplus::Event& event, RequesterHandler& handler,
                         pldm::InstanceIdDb& instanceIdDb,
                         TerminiMapper& termini, Manager* manager) :
-        TerminusManager(event, handler, instanceIdDb, termini, manager,
-                        pldm::BmcMctpEid)
+        TerminusManager(event, handler, instanceIdDb, termini, manager)
     {}
 
     exec::task<int> sendRecvPldmMsgOverMctp(

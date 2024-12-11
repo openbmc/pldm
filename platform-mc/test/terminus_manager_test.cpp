@@ -33,8 +33,7 @@ class TerminusManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false,
                    std::chrono::seconds(1), 2, std::chrono::milliseconds(100)),
-        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
-                        pldm::BmcMctpEid),
+        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
         mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
         platformManager(mockTerminusManager, termini, nullptr)
     {}

@@ -773,5 +773,25 @@ std::optional<mctp_eid_t> TerminusManager::getActiveEidByName(
 
     return std::nullopt;
 }
+
+std::optional<mctp_eid_t> TerminusManager::getLocalEid(const pldm_tid_t& tid)
+{
+    auto mctpInfo = toMctpInfo(tid);
+    if (!mctpInfo)
+    {
+        return std::nullopt;
+    }
+
+    auto& localEids = std::get<LocalEids>(*mctpInfo);
+    if (localEids.size())
+    {
+        lg2::info("BMC Local EID of terminus {TID} : eid {EID}", "TID", tid,
+                  "EID", localEids[0]);
+        return localEids[0];
+    }
+
+    return std::nullopt;
+}
+
 } // namespace platform_mc
 } // namespace pldm
