@@ -28,6 +28,33 @@ namespace software = sdbusplus::xyz::openbmc_project::Software::server;
 
 int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 {
+    package.open(packageFilePath, std::ios::binary);
+    if (!package)
+    {
+        error(
+            "Failed to open the PLDM fw update package file '{FILE}', error - {ERROR}.",
+            "ERROR", errno, "FILE", packageFilePath);
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+
+    package.seekg(0, std::ios::end);
+    size_t packageSize = package.tellg();
+    package.seekg(0, std::ios::beg);
+
+    int result = processStream(package, packageSize);
+
+    if (result != 0)
+    {
+        package.close();
+        std::filesystem::remove(packageFilePath);
+    }
+
+    return result;
+}
+
+int UpdateManager::processStream(std::istream& package, size_t packageSize)
+{
     // If no devices discovered, take no action on the package.
     if (!descriptorMap.size())
     {
@@ -45,7 +72,6 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
             error(
                 "Activation of PLDM fw update package for version '{VERSION}' already in progress.",
                 "VERSION", parser->pkgVersion);
-            std::filesystem::remove(packageFilePath);
             return -1;
         }
         else
@@ -53,26 +79,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
             clearActivationInfo();
         }
     }
-
-    package.open(packageFilePath,
-                 std::ios::binary | std::ios::in | std::ios::ate);
-    if (!package.good())
-    {
-        error(
-            "Failed to open the PLDM fw update package file '{FILE}', error - {ERROR}.",
-            "ERROR", errno, "FILE", packageFilePath);
-        package.close();
-        std::filesystem::remove(packageFilePath);
-        return -1;
-    }
-
-    uintmax_t packageSize = package.tellg();
-
     package.seekg(0);
     std::vector<uint8_t> packageHeader(packageSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
-    package.close();
-    std::filesystem::remove(packageFilePath);
     try
     {
         parser = std::make_unique<PackageParser>(packageHeader);
@@ -80,15 +89,11 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     catch (const InternalFailure&)
     {
         error("Failed to parse the PLDM fw update package header");
-        package.close();
-        std::filesystem::remove(packageFilePath);
         return -1;
     }
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
-        package.close();
-        std::filesystem::remove(packageFilePath);
         return -1;
     }
 
@@ -100,11 +105,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     packageHeader.resize(parser->pkgHeaderSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
                  parser->pkgHeaderSize);
-
     auto deviceUpdaterInfos = associatePkgToDevices(
         parser->getFwDeviceIDRecords(), parser->getDownstreamDeviceIDRecords(),
         descriptorMap, downstreamDescriptorMap, totalNumComponentUpdates);
-
     if (!deviceUpdaterInfos.size())
     {
         error(
@@ -112,7 +115,6 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        package.close();
         parser.reset();
         return 0;
     }
@@ -132,7 +134,6 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
                 compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
     }
 
-    fwPackageFilePath = packageFilePath;
     activation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPath,
         software::Activation::Activations::Ready, this);
