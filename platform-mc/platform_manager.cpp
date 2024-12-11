@@ -513,9 +513,17 @@ exec::task<int> PlatformManager::setEventReceiver(
     }
     Request request(sizeof(pldm_msg_hdr) + requestBytes);
     auto requestMsg = new (request.data()) pldm_msg;
-    auto rc = encode_set_event_receiver_req(
-        0, eventMessageGlobalEnable, protocolType,
-        terminusManager.getLocalEid(), heartbeatTimer, requestMsg);
+    auto eid = terminusManager.getLocalEid(tid);
+    if (!eid || !pldm::utils::isValidEID(*eid))
+    {
+        lg2::error(
+            "Failed to encode request SetEventReceiver for terminus ID {TID}, invalid BMC local EID.",
+            "TID", tid);
+        co_return PLDM_ERROR;
+    }
+    auto rc =
+        encode_set_event_receiver_req(0, eventMessageGlobalEnable, protocolType,
+                                      *eid, heartbeatTimer, requestMsg);
     if (rc)
     {
         lg2::error(

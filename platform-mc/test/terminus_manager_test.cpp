@@ -33,8 +33,7 @@ class TerminusManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false,
                    std::chrono::seconds(1), 2, std::chrono::milliseconds(100)),
-        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
-                        pldm::BmcMctpEid),
+        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
         mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
         platformManager(mockTerminusManager, termini, nullptr)
     {}
@@ -550,7 +549,7 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
 TEST_F(TerminusManagerTest, getActiveEidByNameTest)
 {
     // Add terminus
-    pldm::MctpInfo mctpInfo(10, "", "", 1);
+    pldm::MctpInfo mctpInfo(10, "", "", 1, {});
     auto mappedTid = mockTerminusManager.mapTid(mctpInfo);
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
