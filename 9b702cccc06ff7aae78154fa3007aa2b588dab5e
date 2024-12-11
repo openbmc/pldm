@@ -232,6 +232,24 @@
       "parentUuid": "94d344e4_59cc70e7",
       "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ee20961_cc5496d6",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-12-11T02:12:15Z",
+      "side": 1,
+      "message": "Thank you very much for your explanation.\nI understand that we should not consider the entire PLDM device initialization as failed just because some Get PLDM Commands failed.\n\nThe reason I initially thought of removing it from the map was due to concerns that a request timeout during the Get PLDM Commands might result in an incomplete PLDM device initialization.\nBy removing and exiting the task, the MCTP info remains in the queue, allowing it to be reinitialized as a complete PLDM device when another interface added signal triggers the task.\n\nI will consider other ways to handle this situation.\nThanks!",
+      "parentUuid": "c2283457_169c2f3f",
+      "revId": "9b702cccc06ff7aae78154fa3007aa2b588dab5e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
