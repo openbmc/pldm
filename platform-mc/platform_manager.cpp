@@ -504,7 +504,7 @@ exec::task<int> PlatformManager::setEventReceiver(
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
     auto rc = encode_set_event_receiver_req(
         0, eventMessageGlobalEnable, protocolType,
-        terminusManager.getLocalEid(), heartbeatTimer, requestMsg);
+        terminusManager.getLocalEid(tid), heartbeatTimer, requestMsg);
     if (rc)
     {
         lg2::error(

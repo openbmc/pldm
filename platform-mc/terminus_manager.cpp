@@ -738,5 +738,24 @@ exec::task<int> TerminusManager::getPLDMVersion(pldm_tid_t tid, uint8_t type,
     co_return completionCode;
 }
 
+mctp_eid_t TerminusManager::getLocalEid(const pldm_tid_t& tid)
+{
+    auto mctpInfo = toMctpInfo(tid);
+    if (!mctpInfo)
+    {
+        return MCTP_ADDR_NULL;
+    }
+
+    auto& localEids = std::get<LocalEids>(mctpInfo.value());
+    if (localEids.size())
+    {
+        lg2::info("BMC Local EID of terminus {TID} : eid {EID}", "TID", tid,
+                  "EID", localEids[0]);
+        return localEids[0];
+    }
+
+    return MCTP_ADDR_NULL;
+}
+
 } // namespace platform_mc
 } // namespace pldm
