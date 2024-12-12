@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a55f445b_6b5816b8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-12T09:58:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6bb7b3f_c83923ac",
+      "range": {
+        "startLine": 9,
+        "startChar": 30,
+        "endLine": 9,
+        "endChar": 67
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db7bd7be_2e44089e",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "\u003cTID_Name\u003e is the terminus aux name which you mention.\nAbout the `fru`, I would like to identify that is PLDM Fru Dbus object path that why I use `fru`.\n\nMaybe I will change PLDM object path to to `xyz/openbmc_project/FruPldm/\u003cTerminus_Name\u003e` To consistent with the object path `/xyz/openbmc_project/FruDevice/\u003cName\u003e` from `xyz.openbmc_project.FruDevice` service. what do you think?\n\nSo the PLDM Fru object can be:\n```\nbusctl introspect xyz.openbmc_project.PLDM  /xyz/openbmc_project/FruPldm/S0\nNAME                                     TYPE      SIGNATURE RESULT/VALUE FLAGS\norg.freedesktop.DBus.Introspectable      interface -         -            -\n.Introspect                              method    -         s            -\n...\nxyz.openbmc_project.Inventory.Source.PLDM.FRU interface -         -                                  -\n.AssetTag                                     property  s         \"\"                                 emits-change writable\n.ChassisType                                  property  s         \"\"                                 emits-change writable\n.Description                                  property  s         \"\"                                 emits-change writable\n.ECLevel                                      property  s         \"\"                                 emits-change writable\n.IANA                                         property  u         52538                              emits-change writable\n.Manufacturer                                 property  s         \"\"                                 emits-change writable\n.ManufacturerDate                             property  s         \"\"                                 emits-change writable\n.Model                                        property  s         \"00014003\"                         emits-change writable\n.Name                                         property  s         \"\"                                 emits-change writable\n.Other                                        property  s         \"\"                                 emits-change writable\n.PN                                           property  s         \"\"                                 emits-change writable\n.SKU                                          property  s         \"\"                                 emits-change writable\n.SN                                           property  s         \"123445\" emits-change writable\n.Vendor                                       property  s         \"\"                                 emits-change writable\n.Version                                      property  s         \"0.0.00007.003\"                    emits-change writable\n```",
       "parentUuid": "db7bd7be_2e44089e",
+      "range": {
+        "startLine": 10,
+        "startChar": 38,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2be81c55_3b92eb9f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-12T09:58:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f041bcb3_6541ed23",
       "range": {
         "startLine": 10,
         "startChar": 38,
@@ -234,6 +282,24 @@
       "side": 1,
       "message": "\u003e I dont think we are following the design as stated in https://github.com/openbmc/docs/blob/master/designs/pldm-stack.md#processing-pldm-fru-information-sent-down-by-the-host-firmware\n\u003e \n\u003e Entity manager is supposed to probe on the `xyz.openbmc_project.Source.PLDM.Entity interface` and should host the Inventory.Item interfaces which should be consumed by bmcweb.\n\u003e \n\u003e I dont think we should be exposing the `xyz.openbmc_project.Source.PLDM.Entity interface.` interfaces directly to redfish/bmcweb.\n\u003e \n\u003e \n\u003e In your example above , how is the information from Asset interface appended to the Chassis redfish object ?\n\nThis question is similar below question, right? So I answer as below.\n\n\u003e \n\u003e \u003e In the final patch set, pldmd will also create xyz.openbmc_project.Invnetory.Decorator.Asset in the inventory object path /xyz/openbmc_project/inventory/system/board/S1 so no entity-manager configuration is need.\n\u003e \n\u003e why do you think EM configuration is not needed ? , if the remote endpoint has PLDM_ENTITY_CHASSIS,if pldm is hosting Asset interface , how does that show us as a Chassis in redfish ?\n\nThere are some reason which I think that `pldmd` should directly add `xyz.openbmc_project.Invnetory.Decorator.Asset`.\n\n1. When there are 1x or 5x entity in the system which is reporting thru the pldm adding EM configuration for all of them can cause much headaches.\n\n2. Moreover, the entity name is unknown until `pldmd` discovery terminus PDRs so we should not use the static configuration for them.\n\n3. In the current `pldmd` we are creating the inventory patch for board entity at `/xyz/openbmc_project/inventory/system/board/\u003cEntityName\u003e`, in the future, if the entity is `PLDM_ENTITY_CHASSIS`, we can change the inventory path to `/xyz/openbmc_project/inventory/chassis/chassis/\u003cEntityName\u003e` or some thing like that. In this case, `pldmd` will create the `xyz.openbmc_project.Invnetory.Decorator.Asset` in inventory chassis path.\nThe redfish or web will collect `xyz.openbmc_project.Invnetory.Decorator.Asset` from chassis object path.\n4. We still can use entity manager configuration to create `xyz.openbmc_project.Invnetory.Decorator.Asset` while `pldmd` still create `xyz.openbmc_project.Invnetory.Decorator.Asset` right? Maybe I should add the build option to identity if `pldmd` will directly create `xyz.openbmc_project.Invnetory.Decorator.Asset`.",
       "parentUuid": "b187799a_d195b6f4",
+      "revId": "6248259700939e4276a42e7f2bac24008369ff95",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "696e9fc8_aca484fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-12T09:58:04Z",
+      "side": 1,
+      "message": "As the discussion in the discord https://discord.com/channels/775381525260664832/778790638563885086/1316321181405806592, I removed the `/xyz/openbmc_project/FruPldm/\u003cterminusName\u003e` object path. The `PLDM.Fru` interface is also removed.\nFor now we will only have Entity Inventory object path `/xyz/openbmc_project/inventory/system/board/\u003cEntityName\u003e`. `pldmd` will host the inventory object path with the `Decorator` interfaces and `Pldm.Entity` as below:\n\n```\nbusctl introspect xyz.openbmc_project.PLDM /xyz/openbmc_project/inventory/system/board/S0\nNAME                                               TYPE      SIGNATURE RESULT/VALUE                       FLAGS\norg.freedesktop.DBus.Introspectable                interface -         -                                  -\n.Introspect                                        method    -         s                                  -\norg.freedesktop.DBus.Peer                          interface -         -                                  -\n.GetMachineId                                      method    -         s                                  -\n.Ping                                              method    -         -                                  -\norg.freedesktop.DBus.Properties                    interface -         -                                  -\n.Get                                               method    ss        v                                  -\n.GetAll                                            method    s         a{sv}                              -\n.Set                                               method    ssv       -                                  -\n.PropertiesChanged                                 signal    sa{sv}as  -                                  -\nxyz.openbmc_project.Inventory.Decorator.Asset      interface -         -                                  -\n.BuildDate                                         property  s         \"\"                                 emits-change writable\n.Manufacturer                                      property  s         \"\"                                 emits-change writable\n.Model                                             property  s         \"00014003\"                         emits-change writable\n.PartNumber                                        property  s         \"\"                                 emits-change writable\n.SerialNumber                                      property  s         \"000000123444456789\" emits-change writable\n.SparePartNumber                                   property  s         \"\"                                 emits-change writable\n.SubModel                                          property  s         \"\"                                 emits-change writable\nxyz.openbmc_project.Inventory.Decorator.AssetTag   interface -         -                                  -\n.AssetTag                                          property  s         \"\"                                 emits-change writable\nxyz.openbmc_project.Inventory.Decorator.Compatible interface -         -                                  -\n.Names                                             property  as        0                                  emits-change writable\nxyz.openbmc_project.Inventory.Decorator.Revision   interface -         -                                  -\n.Version                                           property  s         \"x.x.x.x\"                    emits-change writable\nxyz.openbmc_project.Inventory.Item.Board           interface -         -                                  -\nxyz.openbmc_project.Inventory.Source.PLDM.Entity   interface -         -                                  -\n.ContainerID                                       property  q         0                                  emits-change writable\n.EntityInstanceNumber                              property  q         0                                  emits-change writable\n.EntityType                                        property  q         0                                  emits-change writable\n```\n\nThe redfish will response for request `https://\u003cBMCIP\u003e/redfish/v1/Chassis/S0` as below:\n\n```\n\"AssetTag\": \"\",\n\"ChassisType\": \"RackMount\",\n\"EnvironmentMetrics\": {\n\"@odata.id\": \"/redfish/v1/Chassis/S0/EnvironmentMetrics\"\n},\n\"Id\": \"S0\",\n\"Links\": {\n\"ComputerSystems\": [\n{\n\"@odata.id\": \"/redfish/v1/Systems/system\"\n}\n],\n\"ManagedBy\": [\n{\n\"@odata.id\": \"/redfish/v1/Managers/bmc\"\n}\n]\n},\n\"Manufacturer\": \"\",\n\"Model\": \"00014003\",\n\"Name\": \"S0\",\n\"PartNumber\": \"\",\n\"PhysicalSecurity\": {\n\"IntrusionSensor\": \"Normal\",\n\"IntrusionSensorReArm\": \"Manual\"\n},\n\"PowerState\": \"On\",\n\"PowerSubsystem\": {\n\"@odata.id\": \"/redfish/v1/Chassis/S0/PowerSubsystem\"\n},\n\"Sensors\": {\n\"@odata.id\": \"/redfish/v1/Chassis/S0/Sensors\"\n},\n\"SerialNumber\": \"00000012345668\",\n\"Status\": {\n\"State\": \"Enabled\"\n},\n\"ThermalSubsystem\": {\n\"@odata.id\": \"/redfish/v1/Chassis/S0/ThermalSubsystem\"\n},\n\"Version\": \"x.x.x.x\"\n```",
+      "parentUuid": "01041f88_19972f25",
       "revId": "6248259700939e4276a42e7f2bac24008369ff95",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
