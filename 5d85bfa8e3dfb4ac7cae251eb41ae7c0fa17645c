@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74528a37_2e67317f",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-12-13T05:44:41Z",
+      "side": 1,
+      "message": "Done, An exception handler added.",
+      "parentUuid": "a8ec6476_04f79029",
+      "revId": "5d85bfa8e3dfb4ac7cae251eb41ae7c0fa17645c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30dc6dda_b9a34427",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-12T01:55:15Z",
       "side": 1,
       "message": "nit: spelling - definitions",
+      "revId": "5d85bfa8e3dfb4ac7cae251eb41ae7c0fa17645c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "287691e5_e734f262",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-12-13T05:44:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30dc6dda_b9a34427",
       "revId": "5d85bfa8e3dfb4ac7cae251eb41ae7c0fa17645c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5efcd7ec_120832f2",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-12-13T05:44:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecfdb45b_eb726cdd",
+      "revId": "5d85bfa8e3dfb4ac7cae251eb41ae7c0fa17645c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c90abf74_b87a9bf8",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-12-12T01:55:15Z",
       "side": 1,
       "message": "I see it in almost every test. What\u0027s the reason for this change?",
+      "revId": "5d85bfa8e3dfb4ac7cae251eb41ae7c0fa17645c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d6c3f7_fa8a2cc6",
+        "filename": "fw-update/test/inventory_manager_test.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2024-12-13T05:44:41Z",
+      "side": 1,
+      "message": "There was a request on the [old patch], but actually the revise is out of the scope of the patch, removed\n\n[old patch]: https://gerrit.openbmc.org/c/openbmc/pldm/+/70731/8..13/fw-update/inventory_manager.cpp#b40",
+      "parentUuid": "c90abf74_b87a9bf8",
       "revId": "5d85bfa8e3dfb4ac7cae251eb41ae7c0fa17645c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
