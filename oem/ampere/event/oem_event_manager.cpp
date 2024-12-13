@@ -32,13 +32,11 @@ namespace dimm_syndrome = dimm::training_failure::dimm_syndrome;
 namespace phy_syndrome = dimm::training_failure::phy_syndrome;
 namespace training_failure = dimm::training_failure;
 
-constexpr const char* ampereEventRegistry = "OpenBMC.0.1.AmpereEvent.OK";
-constexpr const char* ampereWarningRegistry =
-    "OpenBMC.0.1.AmpereWarning.Warning";
-constexpr const char* ampereCriticalRegistry =
-    "OpenBMC.0.1.AmpereCritical.Critical";
+constexpr const char* ampereEventRegistry = "OpenBMC.0.1.AmpereEvent";
+constexpr const char* ampereWarningRegistry = "OpenBMC.0.1.AmpereWarning";
+constexpr const char* ampereCriticalRegistry = "OpenBMC.0.1.AmpereCritical";
 constexpr const char* BIOSFWPanicRegistry =
-    "OpenBMC.0.1.BIOSFirmwarePanicReason.Warning";
+    "OpenBMC.0.1.BIOSFirmwarePanicReason";
 constexpr auto maxDIMMIdxBitNum = 24;
 constexpr auto maxDIMMInstantNum = 24;
 
