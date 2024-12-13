@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5abbdc32_a96f24e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-13T09:51:12Z",
+      "side": 1,
+      "message": "The commit concern the oem-ampere events will start with `oem-ampere: eventManager:`",
+      "revId": "6f71d6a608aed73f8990855777946e8009da09db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
