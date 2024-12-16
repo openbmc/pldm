@@ -49,6 +49,10 @@ class InventoryItemManager
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
   private:
+#ifdef OPENSSL
+    std::string getVersionId(const std::string& version);
+#endif
+
     void createVersion(InventoryItemInterfaces& interfaces,
                        const std::string& path, const std::string& version,
                        VersionPurpose purpose);

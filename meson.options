@@ -128,6 +128,14 @@ option(
                     requested by the FD, via RequestFirmwareData command''',
 )
 
+# openssl dependency for version hash
+option(
+    'openssl',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Dependency for hashing version string of pldm firmware devices'
+)
+
 # Bios Attributes option
 option(
     'system-specific-bios-json',
