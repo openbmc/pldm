@@ -3,6 +3,8 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
+#include <openssl/evp.h>
+
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
 
@@ -28,9 +30,14 @@ void InventoryItemManager::createInventoryItem(
         auto devicePath = boardPath + "_" + deviceName;
         interfaces.board = std::make_unique<InventoryItemBoardIntf>(
             utils::DBusHandler::getBus(), devicePath.c_str());
-
+#ifdef OPENSSL
+        const auto softwarePath = "/xyz/openbmc_project/software/" +
+                                  devicePath.substr(devicePath.rfind("/") + 1) +
+                                  "_" + getVersionId(activeVersion);
+#else
         const auto softwarePath = "/xyz/openbmc_project/software/" +
                                   devicePath.substr(devicePath.rfind("/") + 1);
+#endif
 
         createVersion(interfaces, softwarePath, activeVersion,
                       VersionPurpose::Other);
@@ -42,7 +49,33 @@ void InventoryItemManager::createInventoryItem(
         error("EID {EID} not found in inventory path map", "EID", eid);
     }
 }
+#ifdef OPENSSL
+using EVP_MD_CTX_Ptr =
+    std::unique_ptr<EVP_MD_CTX, decltype(&::EVP_MD_CTX_free)>;
 
+std::string InventoryItemManager::getVersionId(const std::string& version)
+{
+    if (version.empty())
+    {
+        error("Version is empty.");
+    }
+
+    std::array<unsigned char, EVP_MAX_MD_SIZE> digest{};
+    EVP_MD_CTX_Ptr ctx(EVP_MD_CTX_new(), &::EVP_MD_CTX_free);
+
+    EVP_DigestInit(ctx.get(), EVP_sha512());
+    EVP_DigestUpdate(ctx.get(), version.c_str(), strlen(version.c_str()));
+    EVP_DigestFinal(ctx.get(), digest.data(), nullptr);
+
+    // We are only using the first 8 characters.
+    char mdString[9];
+    snprintf(mdString, sizeof(mdString), "%02x%02x%02x%02x",
+             (unsigned int)digest[0], (unsigned int)digest[1],
+             (unsigned int)digest[2], (unsigned int)digest[3]);
+
+    return mdString;
+}
+#endif
 void InventoryItemManager::createVersion(
     InventoryItemInterfaces& interfaces, const std::string& path,
     std::string version, VersionPurpose purpose)
