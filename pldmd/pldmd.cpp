@@ -175,8 +175,8 @@ void optionUsage(void)
 int main(int argc, char** argv)
 {
     bool verbose = false;
-    static struct option long_options[] = {{"verbose", no_argument, 0, 'v'},
-                                           {0, 0, 0, 0}};
+    static struct option long_options[] = {
+        {"verbose", no_argument, nullptr, 'v'}, {nullptr, 0, nullptr, 0}};
 
     auto argflag = getopt_long(argc, argv, "v", long_options, nullptr);
     switch (argflag)

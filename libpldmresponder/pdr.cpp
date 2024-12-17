@@ -16,8 +16,8 @@ void getRepoByType(const Repo& inRepo, Repo& outRepo, Type pdrType)
 {
     uint8_t* pdrData = nullptr;
     uint32_t pdrSize{};
-    auto record = pldm_pdr_find_record_by_type(inRepo.getPdr(), pdrType, NULL,
-                                               &pdrData, &pdrSize);
+    auto record = pldm_pdr_find_record_by_type(inRepo.getPdr(), pdrType,
+                                               nullptr, &pdrData, &pdrSize);
     while (record)
     {
         PdrEntry pdrEntry{};
