@@ -32,6 +32,8 @@ using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
+namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+
 class UpdateManager
 {
   public:
@@ -88,6 +90,8 @@ class UpdateManager
      */
     void activatePackage();
 
+    void assignInventoryPath(const std::string& objPath);
+
     void clearActivationInfo();
 
     /** @brief
@@ -135,6 +139,8 @@ class UpdateManager
      */
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
+
+    std::string inventoryObjPath;
 };
 
 } // namespace fw_update

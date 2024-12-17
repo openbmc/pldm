@@ -100,7 +100,14 @@ int UpdateManager::processStream(std::istream& package, size_t packageSize)
 
     // Populate object path with the hash of the package version
     size_t versionHash = std::hash<std::string>{}(parser->pkgVersion);
-    objPath = swRootPath + std::to_string(versionHash);
+    if (!inventoryObjPath.empty())
+    {
+        objPath = inventoryObjPath;
+    }
+    else
+    {
+        objPath = swRootPath + std::to_string(versionHash);
+    }
 
     packageHeader.resize(parser->pkgHeaderSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
@@ -258,6 +265,17 @@ void UpdateManager::activatePackage()
     for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
     {
         deviceUpdaterPtr->startFwUpdateFlow();
+    }
+}
+
+void UpdateManager::assignInventoryPath(const std::string& objPath)
+{
+    this->inventoryObjPath = objPath;
+    if (!activation)
+    {
+        activation = std::make_unique<Activation>(
+            pldm::utils::DBusHandler::getBus(), objPath,
+            software::Activation::Activations::Active, this);
     }
 }
 
