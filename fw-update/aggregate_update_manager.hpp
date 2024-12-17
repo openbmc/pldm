@@ -63,16 +63,16 @@ class AggregateUpdateManager final :
                          std::unique_ptr<DescriptorMap> descriptorMap,
                          std::unique_ptr<ComponentInfoMap> componentInfoMap)
     {
-        return insert_or_assign(
+        auto ret = insert_or_assign(
             deviceIdentifier,
-            std::make_tuple(
-                std::move(descriptorMap), std::move(componentInfoMap),
-                std::make_shared<UpdateManager>(
-                    event, handler, instanceIdDb,
-                    *std::get<std::unique_ptr<DescriptorMap>>(
-                        at(deviceIdentifier)),
-                    *std::get<std::unique_ptr<ComponentInfoMap>>(
-                        at(deviceIdentifier)))));
+            std::make_tuple(std::move(descriptorMap),
+                            std::move(componentInfoMap), nullptr));
+        auto& [descriptorMap_, componentInfoMap_,
+               updateManager] = ret.first->second;
+
+        updateManager = std::make_shared<UpdateManager>(
+            event, handler, instanceIdDb, descriptorMap_, componentInfoMap_);
+        return ret;
     }
 
   private:

@@ -655,7 +655,11 @@ void InventoryManager::getFirmwareParameters(
                 DeviceIdentifier(eid, compIdentifier),
                 downstreamDeviceNameMap.at(
                     std::make_tuple(eid, compIdentifier)),
-                utils::toString(activeCompVerStr));
+                utils::toString(activeCompVerStr),
+                std::make_unique<DescriptorMap>(
+                    DescriptorMap({{eid, descriptorMap.at(eid)}})),
+                std::make_unique<ComponentInfoMap>(
+                    ComponentInfoMap{{eid, componentInfo}}));
         }
         else
         {
@@ -669,7 +673,11 @@ void InventoryManager::getFirmwareParameters(
     {
         inventoryItemManager.createInventoryItem(
             DeviceIdentifier(eid, 0), firmwareDeviceNameMap.at(eid),
-            utils::toString(activeCompImageSetVerStr));
+            utils::toString(activeCompImageSetVerStr),
+            std::make_unique<DescriptorMap>(
+                DescriptorMap({{eid, descriptorMap.at(eid)}})),
+            std::make_unique<ComponentInfoMap>(
+                ComponentInfoMap{{eid, componentInfo}}));
     }
     else
     {

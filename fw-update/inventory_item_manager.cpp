@@ -15,7 +15,9 @@ namespace pldm::fw_update
 
 void InventoryItemManager::createInventoryItem(
     const DeviceIdentifier& deviceIdentifier,
-    const FirmwareDeviceName& deviceName, const std::string& activeVersion)
+    const FirmwareDeviceName& deviceName, const std::string& activeVersion,
+    std::unique_ptr<DescriptorMap> descriptorMap,
+    std::unique_ptr<ComponentInfoMap> componentInfoMap)
 {
     auto& eid = deviceIdentifier.first;
     if (inventoryPathMap.contains(eid))
@@ -38,7 +40,28 @@ void InventoryItemManager::createInventoryItem(
         const auto softwarePath = "/xyz/openbmc_project/software/" +
                                   devicePath.substr(devicePath.rfind("/") + 1);
 #endif
-
+        if (!descriptorMap || !componentInfoMap)
+        {
+            error("DescriptorMap or ComponentInfoMap is nullptr");
+            return;
+        }
+        try
+        {
+            auto [itr, inserted] = aggregateUpdateManager.insert_or_assign(
+                deviceIdentifier, std::move(descriptorMap),
+                std::move(componentInfoMap));
+            auto& [_3, _4, updateManager] = itr->second;
+            updateManager->assignInventoryPath(softwarePath);
+            interfaces.codeUpdater = std::make_unique<CodeUpdater>(
+                utils::DBusHandler::getBus(), softwarePath, updateManager);
+        }
+        catch (const std::out_of_range& e)
+        {
+            error(
+                "Failed to insert or assign to aggregateUpdateManager, error={ERROR}",
+                "ERROR", e);
+            return;
+        }
         createVersion(interfaces, softwarePath, activeVersion,
                       VersionPurpose::Other);
         createAssociation(interfaces, softwarePath, "running", "ran_on",
