@@ -241,7 +241,7 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
     {
         pdr_utils::PdrEntry e;
         auto record = pdr::getRecordByHandle(pdrRepo, recordHandle, e);
-        if (record == NULL)
+        if (record == nullptr)
         {
             return CmdHandler::ccOnlyResponse(
                 request, PLDM_PLATFORM_INVALID_RECORD_HANDLE);
@@ -455,7 +455,7 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
                                    previousEventState);
 
         // If there are no HOST PDR's, there is no further action
-        if (hostPDRHandler == NULL)
+        if (hostPDRHandler == nullptr)
         {
             return PLDM_SUCCESS;
         }
@@ -866,7 +866,7 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
     while (pdrRecord)
     {
         pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrEntry.data);
-        assert(pdr != NULL);
+        assert(pdr != nullptr);
         if (pdr->sensor_id != sensorId)
         {
             pdr = nullptr;
@@ -938,7 +938,7 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
     while (pdrRecord)
     {
         pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
-        assert(pdr != NULL);
+        assert(pdr != nullptr);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;

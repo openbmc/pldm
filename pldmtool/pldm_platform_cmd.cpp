@@ -846,7 +846,7 @@ class GetPDR : public CommandInterface
 
     void printPDRFruRecordSet(uint8_t* data, ordered_json& output)
     {
-        if (data == NULL)
+        if (data == nullptr)
         {
             return;
         }
@@ -874,7 +874,7 @@ class GetPDR : public CommandInterface
             {PLDM_ENTITY_ASSOCIAION_LOGICAL, "Logical"},
         };
 
-        if (data == NULL)
+        if (data == nullptr)
         {
             return;
         }
@@ -1495,7 +1495,7 @@ class GetPDR : public CommandInterface
     void printPDRMsg(uint32_t& nextRecordHndl, const uint16_t respCnt,
                      uint8_t* data, std::optional<uint16_t> terminusHandle)
     {
-        if (data == NULL)
+        if (data == nullptr)
         {
             std::cerr << "Failed to get PDR message" << std::endl;
             return;
