@@ -110,7 +110,7 @@ int getStateSensorReadingsHandler(
     while (pdrRecord)
     {
         pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrEntry.data);
-        assert(pdr != NULL);
+        assert(pdr != nullptr);
         if (pdr->sensor_id != sensorId)
         {
             pdr = nullptr;

@@ -159,7 +159,7 @@ class GetFileTable : public CommandInterface
 
     void printFileAttrTable(uint8_t* data, size_t length)
     {
-        if (data == NULL || length == 0)
+        if (data == nullptr || length == 0)
         {
             return;
         }

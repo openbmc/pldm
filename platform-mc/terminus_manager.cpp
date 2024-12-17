@@ -490,7 +490,7 @@ exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
         co_return rc;
     }
 
-    if (responseMsg == NULL || responseLen != PLDM_SET_TID_RESP_BYTES)
+    if (responseMsg == nullptr || responseLen != PLDM_SET_TID_RESP_BYTES)
     {
         lg2::error(
             "Failed to decode response SetTID for Endpoint ID {EID}, error {RC} ",

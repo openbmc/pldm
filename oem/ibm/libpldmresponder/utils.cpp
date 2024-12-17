@@ -72,7 +72,7 @@ int setupUnixSocket(const std::string& socketInterface)
     int nfd = sock + 1;
     int fd = -1;
 
-    int retval = select(nfd, &rfd, NULL, NULL, &tv);
+    int retval = select(nfd, &rfd, nullptr, nullptr, &tv);
     if (retval < 0)
     {
         error(
@@ -84,7 +84,7 @@ int setupUnixSocket(const std::string& socketInterface)
 
     if ((retval > 0) && (FD_ISSET(sock, &rfd)))
     {
-        fd = accept(sock, NULL, NULL);
+        fd = accept(sock, nullptr, nullptr);
         if (fd < 0)
         {
             error(
@@ -114,7 +114,7 @@ int writeToUnixSocket(const int sock, const char* buf, const uint64_t blockSize)
         FD_SET(sock, &wfd);
         int nfd = sock + 1;
 
-        int retval = select(nfd, NULL, &wfd, NULL, &tv);
+        int retval = select(nfd, nullptr, &wfd, nullptr, &tv);
         if (retval < 0)
         {
             error(
