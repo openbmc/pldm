@@ -32,6 +32,8 @@ using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
+namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+
 class UpdateManager
 {
   public:
@@ -47,17 +49,24 @@ class UpdateManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
         const DownstreamDescriptorMap& downstreamDescriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
-        event(event),
-        handler(handler), instanceIdDb(instanceIdDb),
+        const ComponentInfoMap& componentInfoMap,
+        const std::string& inventoryObjPath = std::string()) :
+        event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap),
-        watch(event.get(),
-              [this](std::string& packageFilePath) {
-                  return this->processPackage(
-                      std::filesystem::path(packageFilePath));
-              }),
+        watch(std::make_unique<Watch>(
+            event.get(),
+            [this](std::string& packageFilePath) {
+                return this->processPackage(
+                    std::filesystem::path(packageFilePath));
+            })),
+        activation(
+            inventoryObjPath.empty()
+                ? nullptr
+                : std::make_unique<Activation>(
+                      pldm::utils::DBusHandler::getBus(), inventoryObjPath,
+                      software::Activation::Activations::Active, this)),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 
@@ -115,12 +124,17 @@ class UpdateManager
 
   private:
     /** @brief Device identifiers of the managed FDs */
+    DescriptorMap localDescriptorMap;
     const DescriptorMap& descriptorMap;
     /** @brief Downstream identifiers of the managed FDs */
     const DownstreamDescriptorMap& downstreamDescriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
+    ComponentInfoMap localComponentInfoMap;
     const ComponentInfoMap& componentInfoMap;
-    Watch watch;
+    /** @brief Object path override from InventoryItemManager */
+    std::string inventoryObjPath;
+
+    std::unique_ptr<Watch> watch;
 
     std::unique_ptr<Activation> activation;
     std::unique_ptr<ActivationProgress> activationProgress;

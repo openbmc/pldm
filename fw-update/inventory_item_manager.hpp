@@ -1,5 +1,7 @@
 #pragma once
 
+#include "aggregate_update_manager.hpp"
+#include "code_updater.hpp"
 #include "common/types.hpp"
 #include "update_manager.hpp"
 
@@ -30,22 +32,31 @@ struct InventoryItemInterfaces
     std::unique_ptr<InventoryItemBoardIntf> board;
     std::unique_ptr<SoftwareVersionIntf> version;
     std::unique_ptr<AssociationDefinitionsIntf> association;
+    std::unique_ptr<CodeUpdater> codeUpdater;
 };
 
 class InventoryItemManager
 {
   public:
     InventoryItemManager() = delete;
-    InventoryItemManager(Context& ctx) : ctx(ctx) {}
     InventoryItemManager(const InventoryItemManager&) = delete;
     InventoryItemManager(InventoryItemManager&&) = delete;
     InventoryItemManager& operator=(const InventoryItemManager&) = delete;
     InventoryItemManager& operator=(InventoryItemManager&&) = delete;
     ~InventoryItemManager() = default;
 
+    InventoryItemManager(Context& ctx,
+                         AggregateUpdateManager& aggregateUpdateManager) :
+        ctx(ctx),
+        aggregateUpdateManager(aggregateUpdateManager)
+    {}
+
     void createInventoryItem(const DeviceIdentifier& deviceIdentifier,
                              const FirmwareDeviceName& deviceName,
-                             const std::string& activeVersion);
+                             const std::string& activeVersion,
+                             DescriptorMap&& descriptorMap,
+                             DownstreamDescriptorMap&& downstreamDescriptorMap,
+                             ComponentInfoMap&& componentInfoMap);
 
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
@@ -68,6 +79,8 @@ class InventoryItemManager
     std::map<eid, InventoryPath> inventoryPathMap;
 
     std::map<DeviceIdentifier, InventoryItemInterfaces> interfacesMap;
+
+    AggregateUpdateManager& aggregateUpdateManager;
 };
 
 } // namespace pldm::fw_update

@@ -12,7 +12,10 @@ namespace pldm::fw_update
 
 void InventoryItemManager::createInventoryItem(
     const DeviceIdentifier& deviceIdentifier,
-    const FirmwareDeviceName& deviceName, const std::string& activeVersion)
+    const FirmwareDeviceName& deviceName, const std::string& activeVersion,
+    DescriptorMap&& descriptorMap,
+    DownstreamDescriptorMap&& downstreamDescriptorMap,
+    ComponentInfoMap&& componentInfoMap)
 {
     auto& eid = deviceIdentifier.first;
     if (inventoryPathMap.contains(eid))
@@ -33,7 +36,13 @@ void InventoryItemManager::createInventoryItem(
         const auto softwarePath =
             "/xyz/openbmc_project/software/" + boardDeviceName + "_" +
             getVersionId(activeVersion);
-
+        auto [itr, inserted] = aggregateUpdateManager.insert_or_assign(
+            deviceIdentifier, std::move(descriptorMap),
+            std::move(downstreamDescriptorMap), std::move(componentInfoMap),
+            softwarePath);
+        auto& [_3, _4, _5, updateManager] = itr->second;
+        interfaces.codeUpdater = std::make_unique<CodeUpdater>(
+            utils::DBusHandler::getBus(), softwarePath, updateManager);
         createVersion(interfaces, softwarePath, activeVersion,
                       VersionPurpose::Other);
         createAssociation(interfaces, softwarePath, "running", "ran_on",
