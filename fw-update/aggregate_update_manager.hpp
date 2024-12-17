@@ -58,7 +58,8 @@ class AggregateUpdateManager final :
 
     std::pair<AggregateUpdateManager::iterator, bool> insert_or_assign(
         const DeviceIdentifier& deviceIdentifier, DescriptorMap&& descriptorMap,
-        ComponentInfoMap&& componentInfoMap)
+        ComponentInfoMap&& componentInfoMap,
+        const std::string& inventoryObjPath)
     {
         auto ret = insert_or_assign(
             deviceIdentifier,
@@ -66,7 +67,8 @@ class AggregateUpdateManager final :
                             std::move(componentInfoMap), nullptr));
         auto& [descriptorMap_, componentInfoMap_, manager] = ret.first->second;
         manager = std::make_shared<UpdateManager>(
-            event, handler, instanceIdDb, descriptorMap_, componentInfoMap_);
+            event, handler, instanceIdDb, descriptorMap_, componentInfoMap_,
+            inventoryObjPath);
         return ret;
     }
 
