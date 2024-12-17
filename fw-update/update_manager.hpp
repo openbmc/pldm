@@ -32,6 +32,8 @@ using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
+namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+
 class UpdateManager
 {
   public:
@@ -46,11 +48,22 @@ class UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
+        const ComponentInfoMap& componentInfoMap,
+        const std::string& inventoryObjPath = std::string()) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
-        watch(event.get(),
-              std::bind_front(&UpdateManager::processPackage, this)),
+        inventoryObjPath(inventoryObjPath),
+        watch(!inventoryObjPath.empty()
+                  ? nullptr
+                  : std::make_unique<Watch>(
+                        event.get(),
+                        std::bind_front(&UpdateManager::processPackage, this))),
+        activation(
+            inventoryObjPath.empty()
+                ? nullptr
+                : std::make_unique<Activation>(
+                      pldm::utils::DBusHandler::getBus(), inventoryObjPath,
+                      software::Activation::Activations::Active, this)),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 
@@ -106,10 +119,15 @@ class UpdateManager
 
   private:
     /** @brief Device identifiers of the managed FDs */
+    DescriptorMap localDescriptorMap;
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
+    ComponentInfoMap localComponentInfoMap;
     const ComponentInfoMap& componentInfoMap;
-    Watch watch;
+    /** @brief Object path override from InventoryItemManager */
+    std::string inventoryObjPath;
+
+    std::unique_ptr<Watch> watch;
 
     std::unique_ptr<Activation> activation;
     std::unique_ptr<ActivationProgress> activationProgress;

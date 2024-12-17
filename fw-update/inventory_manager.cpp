@@ -549,7 +549,9 @@ void InventoryManager::getDownstreamFirmwareParameters(
                 "EID", eid, "INDEX", downstreamDeviceIndex);
             inventoryItemManager.createInventoryItem(
                 deviceIdentifier, downstreamDeviceNameMap.at(deviceIdentifier),
-                utils::toString(activeCompVerStr));
+                utils::toString(activeCompVerStr),
+                DescriptorMap{{eid, descriptorMap.at(eid)}},
+                ComponentInfoMap{{eid, componentInfoMap.at(eid)}});
         }
         else
         {
@@ -774,7 +776,9 @@ void InventoryManager::getFirmwareParameters(
     {
         inventoryItemManager.createInventoryItem(
             DeviceIdentifier(eid, 0), firmwareDeviceNameMap.at(eid),
-            utils::toString(activeCompImageSetVerStr));
+            utils::toString(activeCompImageSetVerStr),
+            DescriptorMap{{eid, descriptorMap.at(eid)}},
+            ComponentInfoMap{{eid, componentInfo}});
     }
     else
     {
