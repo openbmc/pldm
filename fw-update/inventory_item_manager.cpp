@@ -38,7 +38,6 @@ void InventoryItemManager::createInventoryItem(
         const auto softwarePath = "/xyz/openbmc_project/software/" +
                                   devicePath.substr(devicePath.rfind("/") + 1);
 #endif
-
         createVersion(interfaces, softwarePath, activeVersion,
                       VersionPurpose::Other);
         createAssociation(interfaces, softwarePath, "running", "ran_on",
