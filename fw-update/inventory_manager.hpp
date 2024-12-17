@@ -67,7 +67,7 @@ class InventoryManager
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap),
-        aggregateUpdateManager(aggregateUpdateManager),
+        inventoryItemManager(aggregateUpdateManager),
         configurationDiscovery(configurationDiscovery)
     {}
 
@@ -211,17 +211,14 @@ class InventoryManager
     std::map<std::tuple<eid, DownstreamDeviceIndex>, FirmwareDeviceName>
         downstreamDeviceNameMap;
 
-    /** @brief Dbus Inventory Item Manager */
-    InventoryItemManager inventoryItemManager;
-
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
 
-    /** @brief Aggregate Update Manager */
-    AggregateUpdateManager& aggregateUpdateManager [[maybe_unused]];
+    /** @brief Dbus Inventory Item Manager */
+    InventoryItemManager inventoryItemManager;
 
     /** @brief Configuration Discovery Handler */
     pldm::ConfigurationDiscoveryHandler* configurationDiscovery;
