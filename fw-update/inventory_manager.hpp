@@ -57,12 +57,14 @@ class InventoryManager
      *                                 managed by the BMC.
      */
     explicit InventoryManager(
+        Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
         std::shared_ptr<AggregateUpdateManager> aggregateUpdateManager,
         pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
+        event(event),
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
@@ -194,6 +196,8 @@ class InventoryManager
      *  @param[in] eid - Remote MCTP endpoint
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
+
+    Event& event;
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;

@@ -651,11 +651,15 @@ void InventoryManager::getFirmwareParameters(
         if (downstreamDeviceNameMap.contains(
                 std::make_tuple(eid, compIdentifier)))
         {
+            auto updateManager = std::make_shared<UpdateManager>(
+                event, handler, instanceIdDb,
+                DescriptorMap({{eid, descriptorMap.at(eid)}}),
+                ComponentInfoMap({{eid, componentInfo}}));
             inventoryItemManager.createInventoryItem(
                 DeviceIdentifier(eid, compIdentifier),
                 downstreamDeviceNameMap.at(
                     std::make_tuple(eid, compIdentifier)),
-                utils::toString(activeCompVerStr));
+                utils::toString(activeCompVerStr), updateManager);
         }
         else
         {
@@ -667,9 +671,13 @@ void InventoryManager::getFirmwareParameters(
 
     if (firmwareDeviceNameMap.contains(eid))
     {
+        auto updateManager = std::make_shared<UpdateManager>(
+            event, handler, instanceIdDb,
+            DescriptorMap({{eid, descriptorMap.at(eid)}}),
+            ComponentInfoMap({{eid, componentInfo}}));
         inventoryItemManager.createInventoryItem(
             DeviceIdentifier(eid, 0), firmwareDeviceNameMap.at(eid),
-            utils::toString(activeCompImageSetVerStr));
+            utils::toString(activeCompImageSetVerStr), updateManager);
     }
     else
     {

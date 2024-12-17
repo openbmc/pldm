@@ -1,5 +1,6 @@
 #pragma once
 
+#include "code_updater.hpp"
 #include "common/types.hpp"
 #include "update_manager.hpp"
 #include "version.hpp"
@@ -26,6 +27,7 @@ struct InventoryItemInterfaces
     std::unique_ptr<InventoryItemBoardIntf> board;
     std::unique_ptr<Version> version;
     std::unique_ptr<AssociationDefinitionsIntf> association;
+    std::unique_ptr<CodeUpdater> codeUpdater;
 };
 
 class InventoryItemManager
@@ -38,9 +40,10 @@ class InventoryItemManager
     InventoryItemManager& operator=(InventoryItemManager&&) = delete;
     ~InventoryItemManager() = default;
 
-    void createInventoryItem(const DeviceIdentifier& deviceIdentifier,
-                             const FirmwareDeviceName& deviceName,
-                             const std::string& activeVersion);
+    void createInventoryItem(
+        const DeviceIdentifier& deviceIdentifier,
+        const FirmwareDeviceName& deviceName, const std::string& activeVersion,
+        std::shared_ptr<UpdateManager> updateManager = nullptr);
 
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
