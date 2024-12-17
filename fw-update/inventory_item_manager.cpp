@@ -38,6 +38,10 @@ void InventoryItemManager::createInventoryItem(
                                   devicePath.substr(devicePath.rfind("/") + 1);
 #endif
 
+        if (updateManager)
+        {
+            updateManager->assignInventoryPath(softwarePath);
+        }
         createVersion(softwarePath, activeVersion, VersionPurpose::Other);
         createAssociation(softwarePath, "running", "ran_on", devicePath);
     }
