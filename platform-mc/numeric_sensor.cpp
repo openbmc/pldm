@@ -40,6 +40,65 @@ inline bool NumericSensor::createInventoryPath(
     return true;
 }
 
+inline double getSensorDataValue(uint8_t sensor_data_size,
+                                 union_sensor_data_size& value)
+{
+    double ret = std::numeric_limits<double>::quiet_NaN();
+    switch (sensor_data_size)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            ret = value.value_u8;
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            ret = value.value_s8;
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            ret = value.value_u16;
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            ret = value.value_s16;
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            ret = value.value_u32;
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            ret = value.value_s32;
+            break;
+    }
+    return ret;
+}
+
+inline double getRangeFieldValue(uint8_t range_field_format,
+                                 union_range_field_format& value)
+{
+    double ret = std::numeric_limits<double>::quiet_NaN();
+    switch (range_field_format)
+    {
+        case PLDM_RANGE_FIELD_FORMAT_UINT8:
+            ret = value.value_u8;
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_SINT8:
+            ret = value.value_s8;
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_UINT16:
+            ret = value.value_u16;
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_SINT16:
+            ret = value.value_s16;
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_UINT32:
+            ret = value.value_u32;
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_SINT32:
+            ret = value.value_s32;
+            break;
+        case PLDM_RANGE_FIELD_FORMAT_REAL32:
+            ret = value.value_f32;
+            break;
+    }
+    return ret;
+}
+
 void NumericSensor::setSensorUnit(uint8_t baseUnit)
 {
     sensorUnit = SensorUnit::DegreesC;
@@ -148,42 +207,11 @@ NumericSensor::NumericSensor(
     associationDefinitionsIntf->associations(
         {{"chassis", "all_sensors", associationPath}});
 
-    double maxValue = std::numeric_limits<double>::quiet_NaN();
-    double minValue = std::numeric_limits<double>::quiet_NaN();
-
-    switch (pdr->sensor_data_size)
-    {
-        case PLDM_SENSOR_DATA_SIZE_UINT8:
-            maxValue = pdr->max_readable.value_u8;
-            minValue = pdr->min_readable.value_u8;
-            hysteresis = pdr->hysteresis.value_u8;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT8:
-            maxValue = pdr->max_readable.value_s8;
-            minValue = pdr->min_readable.value_s8;
-            hysteresis = pdr->hysteresis.value_s8;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_UINT16:
-            maxValue = pdr->max_readable.value_u16;
-            minValue = pdr->min_readable.value_u16;
-            hysteresis = pdr->hysteresis.value_u16;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT16:
-            maxValue = pdr->max_readable.value_s16;
-            minValue = pdr->min_readable.value_s16;
-            hysteresis = pdr->hysteresis.value_s16;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_UINT32:
-            maxValue = pdr->max_readable.value_u32;
-            minValue = pdr->min_readable.value_u32;
-            hysteresis = pdr->hysteresis.value_u32;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT32:
-            maxValue = pdr->max_readable.value_s32;
-            minValue = pdr->min_readable.value_s32;
-            hysteresis = pdr->hysteresis.value_s32;
-            break;
-    }
+    double maxValue =
+        getSensorDataValue(pdr->sensor_data_size, pdr->max_readable);
+    double minValue =
+        getSensorDataValue(pdr->sensor_data_size, pdr->min_readable);
+    hysteresis = getSensorDataValue(pdr->sensor_data_size, pdr->hysteresis);
 
     bool hasCriticalThresholds = false;
     bool hasWarningThresholds = false;
@@ -195,117 +223,29 @@ NumericSensor::NumericSensor(
     if (pdr->supported_thresholds.bits.bit0)
     {
         hasWarningThresholds = true;
-        switch (pdr->range_field_format)
-        {
-            case PLDM_RANGE_FIELD_FORMAT_UINT8:
-                warningHigh = pdr->warning_high.value_u8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                warningHigh = pdr->warning_high.value_s8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT16:
-                warningHigh = pdr->warning_high.value_u16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                warningHigh = pdr->warning_high.value_s16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT32:
-                warningHigh = pdr->warning_high.value_u32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                warningHigh = pdr->warning_high.value_s32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                warningHigh = pdr->warning_high.value_f32;
-                break;
-        }
+        warningHigh =
+            getRangeFieldValue(pdr->range_field_format, pdr->warning_high);
     }
 
     if (pdr->supported_thresholds.bits.bit3)
     {
         hasWarningThresholds = true;
-        switch (pdr->range_field_format)
-        {
-            case PLDM_RANGE_FIELD_FORMAT_UINT8:
-                warningLow = pdr->warning_low.value_u8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                warningLow = pdr->warning_low.value_s8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT16:
-                warningLow = pdr->warning_low.value_u16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                warningLow = pdr->warning_low.value_s16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT32:
-                warningLow = pdr->warning_low.value_u32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                warningLow = pdr->warning_low.value_s32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                warningLow = pdr->warning_low.value_f32;
-                break;
-        }
+        warningLow =
+            getRangeFieldValue(pdr->range_field_format, pdr->warning_low);
     }
 
     if (pdr->supported_thresholds.bits.bit1)
     {
         hasCriticalThresholds = true;
-        switch (pdr->range_field_format)
-        {
-            case PLDM_RANGE_FIELD_FORMAT_UINT8:
-                criticalHigh = pdr->critical_high.value_u8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                criticalHigh = pdr->critical_high.value_s8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT16:
-                criticalHigh = pdr->critical_high.value_u16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                criticalHigh = pdr->critical_high.value_s16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT32:
-                criticalHigh = pdr->critical_high.value_u32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                criticalHigh = pdr->critical_high.value_s32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                criticalHigh = pdr->critical_high.value_f32;
-                break;
-        }
+        criticalHigh =
+            getRangeFieldValue(pdr->range_field_format, pdr->critical_high);
     }
 
     if (pdr->supported_thresholds.bits.bit4)
     {
         hasCriticalThresholds = true;
-        switch (pdr->range_field_format)
-        {
-            case PLDM_RANGE_FIELD_FORMAT_UINT8:
-                criticalLow = pdr->critical_low.value_u8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                criticalLow = pdr->critical_low.value_s8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT16:
-                criticalLow = pdr->critical_low.value_u16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                criticalLow = pdr->critical_low.value_s16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT32:
-                criticalLow = pdr->critical_low.value_u32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                criticalLow = pdr->critical_low.value_s32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                criticalLow = pdr->critical_low.value_f32;
-                break;
-        }
+        criticalLow =
+            getRangeFieldValue(pdr->range_field_format, pdr->critical_low);
     }
 
     resolution = pdr->resolution;
