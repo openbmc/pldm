@@ -456,7 +456,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
             "EID", eid, "RC", rc);
         return response;
     }
-
+    _progress = offset * 33 / packageSize;
     return response;
 }
 
@@ -516,6 +516,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
         return response;
     }
 
+    _progress = 33;
     return response;
 }
 
@@ -573,7 +574,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             "EID", eid, "RC", rc);
         return response;
     }
-
+    _progress = 66;
     return response;
 }
 
@@ -651,6 +652,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
                       componentIndex));
     }
 
+    _progress = 100;
     return response;
 }
 
@@ -721,6 +723,11 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     }
 
     updateManager->updateDeviceCompletion(eid, true);
+}
+
+uint8_t DeviceUpdater::progress() const
+{
+    return _progress;
 }
 
 } // namespace fw_update

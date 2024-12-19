@@ -56,7 +56,12 @@ class DeviceUpdater
         eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
         compImageInfos(compImageInfos), compInfo(compInfo),
         maxTransferSize(maxTransferSize), updateManager(updateManager)
-    {}
+    {
+        auto current = package.tellg();
+        package.seekg(0, std::ios::end);
+        packageSize = package.tellg();
+        package.seekg(current);
+    }
 
     /** @brief Start the firmware update flow for the FD
      *
@@ -153,6 +158,11 @@ class DeviceUpdater
     void activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                           size_t respMsgLen);
 
+    /** @brief Get the progress of the firmware update
+     *  @return uint8_t - Progress of the firmware update
+     */
+    uint8_t progress() const;
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -174,6 +184,12 @@ class DeviceUpdater
 
     /** @brief File stream for firmware update package */
     std::istream& package;
+
+    /** @brief Size of the firmware update package */
+    size_t packageSize;
+
+    /** @brief Progress of the firmware update */
+    uint8_t _progress;
 
     /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
      *         firmware device
