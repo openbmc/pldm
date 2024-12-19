@@ -40,23 +40,11 @@ inline bool NumericSensor::createInventoryPath(
     return true;
 }
 
-NumericSensor::NumericSensor(
-    const pldm_tid_t tid, const bool sensorDisabled,
-    std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr, std::string& sensorName,
-    std::string& associationPath) : tid(tid), sensorName(sensorName)
+void NumericSensor::setSensorUnit(uint8_t baseUnit)
 {
-    if (!pdr)
-    {
-        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
-    }
-
-    sensorId = pdr->sensor_id;
-    std::string path;
-    SensorUnit sensorUnit = SensorUnit::DegreesC;
-    MetricUnit metricUnit = MetricUnit::Count;
+    sensorUnit = SensorUnit::DegreesC;
     useMetricInterface = false;
-
-    switch (pdr->base_unit)
+    switch (baseUnit)
     {
         case PLDM_SENSOR_UNIT_DEGRESS_C:
             sensorNameSpace = "/xyz/openbmc_project/sensors/temperature/";
@@ -98,11 +86,27 @@ NumericSensor::NumericSensor(
             break;
         default:
             lg2::error("Sensor {NAME} has Invalid baseUnit {UNIT}.", "NAME",
-                       sensorName, "UNIT", pdr->base_unit);
+                       sensorName, "UNIT", baseUnit);
             throw sdbusplus::xyz::openbmc_project::Common::Error::
                 InvalidArgument();
             break;
     }
+}
+
+NumericSensor::NumericSensor(
+    const pldm_tid_t tid, const bool sensorDisabled,
+    std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr, std::string& sensorName,
+    std::string& associationPath) : tid(tid), sensorName(sensorName)
+{
+    if (!pdr)
+    {
+        throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
+    }
+
+    sensorId = pdr->sensor_id;
+    std::string path;
+    MetricUnit metricUnit = MetricUnit::Count;
+    setSensorUnit(pdr->base_unit);
 
     path = sensorNameSpace + sensorName;
     try
@@ -444,57 +448,8 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
-    SensorUnit sensorUnit = SensorUnit::DegreesC;
     MetricUnit metricUnit = MetricUnit::Count;
-    useMetricInterface = false;
-
-    switch (pdr->base_unit)
-    {
-        case PLDM_SENSOR_UNIT_DEGRESS_C:
-            sensorNameSpace = "/xyz/openbmc_project/sensors/temperature/";
-            sensorUnit = SensorUnit::DegreesC;
-            break;
-        case PLDM_SENSOR_UNIT_VOLTS:
-            sensorNameSpace = "/xyz/openbmc_project/sensors/voltage/";
-            sensorUnit = SensorUnit::Volts;
-            break;
-        case PLDM_SENSOR_UNIT_AMPS:
-            sensorNameSpace = "/xyz/openbmc_project/sensors/current/";
-            sensorUnit = SensorUnit::Amperes;
-            break;
-        case PLDM_SENSOR_UNIT_RPM:
-            sensorNameSpace = "/xyz/openbmc_project/sensors/fan_pwm/";
-            sensorUnit = SensorUnit::RPMS;
-            break;
-        case PLDM_SENSOR_UNIT_WATTS:
-            sensorNameSpace = "/xyz/openbmc_project/sensors/power/";
-            sensorUnit = SensorUnit::Watts;
-            break;
-        case PLDM_SENSOR_UNIT_JOULES:
-            sensorNameSpace = "/xyz/openbmc_project/sensors/energy/";
-            sensorUnit = SensorUnit::Joules;
-            break;
-        case PLDM_SENSOR_UNIT_PERCENTAGE:
-            sensorNameSpace = "/xyz/openbmc_project/sensors/utilization/";
-            sensorUnit = SensorUnit::Percent;
-            break;
-        case PLDM_SENSOR_UNIT_COUNTS:
-        case PLDM_SENSOR_UNIT_CORRECTED_ERRORS:
-        case PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS:
-            sensorNameSpace = "/xyz/openbmc_project/metric/count/";
-            useMetricInterface = true;
-            break;
-        case PLDM_SENSOR_UNIT_OEMUNIT:
-            sensorNameSpace = "/xyz/openbmc_project/metric/oem/";
-            useMetricInterface = true;
-            break;
-        default:
-            lg2::error("Sensor {NAME} has Invalid baseUnit {UNIT}.", "NAME",
-                       sensorName, "UNIT", pdr->base_unit);
-            throw sdbusplus::xyz::openbmc_project::Common::Error::
-                InvalidArgument();
-            break;
-    }
+    setSensorUnit(pdr->base_unit);
 
     path = sensorNameSpace + sensorName;
     try
