@@ -220,9 +220,9 @@ class NumericSensor
     void updateThresholds();
 
     /**
-     * @brief Update the object units based on the PDR base_unit
+     * @brief Update the object units based on the PDR baseUnit
      */
-    void setSensorUnit(uint8_t base_unit);
+    void setSensorUnit(uint8_t baseUnit);
 
     /** @brief Create the sensor inventory path.
      *
