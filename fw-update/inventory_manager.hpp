@@ -81,6 +81,12 @@ class InventoryManager
      */
     void discoverFDs(const MctpInfos& mctpInfos);
 
+    /** @brief Remove the firmware devices from the inventory
+     *
+     *  @param[in] mctpInfos - List of MCTP endpoint information
+     */
+    void removeFDs(const MctpInfos& mctpInfos);
+
     /** @brief Handler for QueryDeviceIdentifiers command response
      *
      *  The response of the QueryDeviceIdentifiers is processed and firmware

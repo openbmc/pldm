@@ -49,6 +49,10 @@ class InventoryItemManager
         const FirmwareDeviceName& deviceName, const std::string& activeVersion,
         DescriptorMap&& descriptorMap, ComponentInfoMap&& componentInfoMap);
 
+    void removeInventoryItem(const DeviceIdentifier& deviceIdentifier);
+
+    void removeInventoryItems(const eid& eid);
+
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
   private:
