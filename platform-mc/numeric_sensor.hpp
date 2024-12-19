@@ -209,12 +209,20 @@ class NumericSensor
     /** @brief  sensorNameSpace */
     std::string sensorNameSpace;
 
+    /** @brief Sensor Unit */
+    SensorUnit sensorUnit;
+
   private:
     /**
      * @brief Check sensor reading if any threshold has been crossed and update
      * Threshold interfaces accordingly
      */
     void updateThresholds();
+
+    /**
+     * @brief Update the object units based on the PDR base_unit
+     */
+    void setSensorUnit(uint8_t base_unit);
 
     /** @brief Create the sensor inventory path.
      *
