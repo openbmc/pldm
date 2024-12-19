@@ -65,9 +65,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos&)
+    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos)
     {
-        return;
+        inventoryMgr.removeFDs(mctpInfos);
     }
 
     /** @brief Handle PLDM request for the commands in the FW update
