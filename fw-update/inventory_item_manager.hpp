@@ -58,6 +58,10 @@ class InventoryItemManager
                              DownstreamDescriptorMap&& downstreamDescriptorMap,
                              ComponentInfoMap&& componentInfoMap);
 
+    void removeInventoryItem(const DeviceIdentifier& deviceIdentifier);
+
+    void removeInventoryItems(const eid& eid);
+
     void refreshInventoryPath(const eid& eid, const InventoryPath& path);
 
   private:

@@ -41,6 +41,24 @@ void InventoryManager::updateConfigurations(
     this->configurations = configurations;
 }
 
+void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
+{
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        auto eid = std::get<pldm::eid>(mctpInfo);
+        try
+        {
+            inventoryItemManager.removeInventoryItems(eid);
+        }
+        catch (const std::exception& e)
+        {
+            error(
+                "Failed to discover file descriptors for endpoint ID {EID} with {ERROR}",
+                "EID", eid, "ERROR", e);
+        }
+    }
+}
+
 void InventoryManager::refreshInventoryPath(const MctpInfo& mctpInfo)
 {
     const auto eid = std::get<pldm::eid>(mctpInfo);

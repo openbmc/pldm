@@ -69,9 +69,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos&) override
+    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) override
     {
-        return;
+        inventoryMgr.removeFDs(mctpInfos);
     }
 
     /** @brief Helper function to invoke registered handlers for
