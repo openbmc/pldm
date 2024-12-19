@@ -38,6 +38,23 @@ void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
     }
 }
 
+void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
+{
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        auto eid = std::get<EID_INDEX>(mctpInfo);
+        try
+        {
+            inventoryItemManager.removeInventoryItems(eid);
+        }
+        catch (const std::exception& e)
+        {
+            error("Failed to remove FDs, EID={EID}, Error={ERROR}", "EID", eid,
+                  "ERROR", e.what());
+        }
+    }
+}
+
 void InventoryManager::refreshInventoryPath(const MctpInfo& mctpInfo)
 {
     const auto eid = std::get<EID_INDEX>(mctpInfo);

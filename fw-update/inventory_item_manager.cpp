@@ -55,6 +55,47 @@ void InventoryItemManager::createInventoryItem(
         error("EID {EID} not found in inventory path map", "EID", eid);
     }
 }
+
+void InventoryItemManager::removeInventoryItem(
+    const DeviceIdentifier& deviceIdentifier)
+{
+    if (interfacesMap.contains(deviceIdentifier))
+    {
+        interfacesMap.erase(deviceIdentifier);
+    }
+    if (aggregateUpdateManager.contains(deviceIdentifier))
+    {
+        aggregateUpdateManager.erase(deviceIdentifier);
+    }
+}
+
+void InventoryItemManager::removeInventoryItems(const eid& eid)
+{
+    for (auto it = interfacesMap.begin(); it != interfacesMap.end();)
+    {
+        if (it->first.first == eid)
+        {
+            it = interfacesMap.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+    for (auto it = aggregateUpdateManager.begin();
+         it != aggregateUpdateManager.end();)
+    {
+        if (it->first.first == eid)
+        {
+            it = aggregateUpdateManager.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
 #ifdef OPENSSL
 using EVP_MD_CTX_Ptr =
     std::unique_ptr<EVP_MD_CTX, decltype(&::EVP_MD_CTX_free)>;
