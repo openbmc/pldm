@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2623bbd3_6b4465ab",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-12-20T04:14:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b3da9f75_d6169651",
+      "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a80d657_bad42f08",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb4c88c2_b15a8752",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-12-20T04:14:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7a80d657_bad42f08",
+      "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21c8b06d_597e02f3",
@@ -65,6 +101,24 @@
       "writtenOn": "2024-12-20T02:41:48Z",
       "side": 1,
       "message": "How about merging this line with #210 and below line with #211?",
+      "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bcdc7f3_cea0c555",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-12-20T04:14:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "21c8b06d_597e02f3",
       "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
