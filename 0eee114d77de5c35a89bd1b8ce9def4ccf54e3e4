@@ -51,6 +51,24 @@
       "parentUuid": "10f0e0ff_c93b910b",
       "revId": "0eee114d77de5c35a89bd1b8ce9def4ccf54e3e4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8391c257_d42625cf",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-20T04:19:08Z",
+      "side": 1,
+      "message": "I don\u0027t see the changing in header file.",
+      "parentUuid": "bfb2d9f2_51942e8c",
+      "revId": "0eee114d77de5c35a89bd1b8ce9def4ccf54e3e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
