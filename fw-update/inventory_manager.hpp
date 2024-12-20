@@ -67,7 +67,10 @@ class InventoryManager
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap),
-        inventoryItemManager(aggregateUpdateManager),
+        inventoryItemManager(
+            aggregateUpdateManager,
+            std::bind_front(
+                &InventoryManager::sendQueryDeviceIdentifiersRequest, this)),
         configurationDiscovery(configurationDiscovery)
     {}
 
