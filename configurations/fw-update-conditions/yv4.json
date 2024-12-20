@@ -1,0 +1,74 @@
+{
+    "Components": [
+        {
+            "Component": "BIC",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-bic-post-update"
+        },
+        {
+            "Component": "CXL_1",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-cxl-post-update"
+        },
+        {
+            "Component": "CXL_2",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-cxl-post-update"
+        },
+        {
+            "Component": "BIOS",
+            "PreSetupTarget": "yv4-host-down",
+            "PostSetupTarget": "yv4-bios-post-update"
+        },
+        {
+            "Component": "ASTERALAB_Retimer_1",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-retimer-post-update"
+        },
+        {
+            "Component": "ASTERALAB_Retimer_2",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-retimer-post-update"
+        },
+        {
+            "Component": "MPS_VR_1",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-vr-post-update"
+        },
+        {
+            "Component": "MPS_VR_2",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-vr-post-update"
+        },
+        {
+            "Component": "MPS_VR_3",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-vr-post-update"
+        },
+        {
+            "Component": "INF_VR_AB_ASIC1",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-vr-post-update"
+        },
+        {
+            "Component": "INF_VR_AB_ASIC2",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-vr-post-update"
+        },
+        {
+            "Component": "INF_VR_CD_ASIC1",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-vr-post-update"
+        },
+        {
+            "Component": "INF_VR_CD_ASIC2",
+            "PreSetupTarget": "",
+            "PostSetupTarget": "yv4-vr-post-update"
+        },
+        {
+            "Component": "NIC",
+            "PreSetupTarget": "yv4-nic-pre-update",
+            "PostSetupTarget": "yv4-nic-post-update"
+        }
+    ]
+}
