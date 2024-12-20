@@ -3,6 +3,7 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
+#include "firmware_condition.hpp"
 #include "fw-update/activation.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
@@ -49,8 +50,13 @@ class UpdateManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap,
-        const std::string& inventoryObjPath = std::string()) :
-        event(event), handler(handler), instanceIdDb(instanceIdDb),
+        const std::string& inventoryObjPath = std::string(),
+        [[maybe_unused]] std::unique_ptr<FirmwareCondition> preCondition =
+            nullptr,
+        [[maybe_unused]] std::unique_ptr<FirmwareCondition> postCondition =
+            nullptr) :
+        event(event),
+        handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
         inventoryObjPath(inventoryObjPath),
         watch(!inventoryObjPath.empty()
@@ -153,6 +159,11 @@ class UpdateManager
      */
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
+
+    /** @brief Precondition for the firmware update */
+    std::unique_ptr<FirmwareCondition> preCondition;
+    /** @brief Postcondition for the firmware update */
+    std::unique_ptr<FirmwareCondition> postCondition;
 };
 
 } // namespace fw_update
