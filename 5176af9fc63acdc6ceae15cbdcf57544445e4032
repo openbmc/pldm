@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4ae352c_0e72f916",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-20T02:41:48Z",
+      "side": 1,
+      "message": "The patch set is looking good, just have some minor comments.",
+      "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3da9f75_d6169651",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-20T02:41:48Z",
+      "side": 1,
+      "message": "The default value should be `std::numeric_limits\u003cdouble\u003e::quiet_NaN();`",
+      "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a80d657_bad42f08",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-20T02:41:48Z",
+      "side": 1,
+      "message": "The default value should be `std::numeric_limits\u003cdouble\u003e::quiet_NaN();`",
+      "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21c8b06d_597e02f3",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2024-12-20T02:41:48Z",
+      "side": 1,
+      "message": "How about merging this line with #210 and below line with #211?",
+      "revId": "5176af9fc63acdc6ceae15cbdcf57544445e4032",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
