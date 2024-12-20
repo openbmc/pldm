@@ -165,6 +165,9 @@ int UpdateManager::processStream(std::istream& package, size_t packageSize)
         pldm::utils::DBusHandler::getBus(), objPath);
     if (!inventoryObjPath.empty())
     {
+        activationBlocksTransition =
+            std::make_unique<ActivationBlocksTransition>(
+                pldm::utils::DBusHandler::getBus(), objPath.c_str());
         activation->activation(software::Activation::Activations::Activating);
     }
 
@@ -211,12 +214,18 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
                 return;
             }
         }
+        if (postCondition &&
+            applyTime == ApplyTimeIntf::RequestedApplyTimes::Immediate)
+        {
+            postCondition->execute();
+        }
 
         auto endTime = std::chrono::steady_clock::now();
         auto dur =
             std::chrono::duration<double, std::milli>(endTime - startTime)
                 .count();
         info("Firmware update time: {DURATION}ms", "DURATION", dur);
+        activationBlocksTransition.reset();
         activation->activation(software::Activation::Activations::Active);
     }
     return;
@@ -277,10 +286,27 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
 void UpdateManager::activatePackage()
 {
     startTime = std::chrono::steady_clock::now();
-    for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
+    if (preCondition)
     {
-        deviceUpdaterPtr->startFwUpdateFlow();
+        preCondition->execute(std::make_unique<std::function<void()>>([this]() {
+            for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
+            {
+                deviceUpdaterPtr->startFwUpdateFlow();
+            }
+        }));
     }
+    else
+    {
+        for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
+        {
+            deviceUpdaterPtr->startFwUpdateFlow();
+        }
+    }
+}
+
+void UpdateManager::setApplyTime(ApplyTimeIntf::RequestedApplyTimes applyTime)
+{
+    this->applyTime = applyTime;
 }
 
 void UpdateManager::clearActivationInfo()
