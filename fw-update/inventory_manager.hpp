@@ -60,7 +60,10 @@ class InventoryManager
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap),
-        inventoryItemManager(ctx, aggregateUpdateManager)
+        inventoryItemManager(
+            ctx, aggregateUpdateManager,
+            std::bind_front(
+                &InventoryManager::sendQueryDeviceIdentifiersRequest, this))
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs

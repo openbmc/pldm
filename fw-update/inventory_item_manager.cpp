@@ -36,10 +36,18 @@ void InventoryItemManager::createInventoryItem(
         const auto softwarePath =
             "/xyz/openbmc_project/software/" + boardDeviceName + "_" +
             getVersionId(activeVersion);
+        auto [preConditionPath, postConditionPath] =
+            jsonConditionCollector.conditions(deviceName);
         auto [itr, inserted] = aggregateUpdateManager.insert_or_assign(
             deviceIdentifier, std::move(descriptorMap),
             std::move(downstreamDescriptorMap), std::move(componentInfoMap),
-            softwarePath);
+            softwarePath,
+            std::make_shared<FirmwareCondition>(preConditionPath, boardName),
+            std::make_shared<FirmwareCondition>(
+                postConditionPath, boardName,
+                std::make_unique<std::function<void()>>([this, eid]() {
+                    getFirmwareParameters(eid);
+                })));
         auto& [_3, _4, _5, updateManager] = itr->second;
         interfaces.codeUpdater = std::make_unique<CodeUpdater>(
             utils::DBusHandler::getBus(), softwarePath, updateManager);

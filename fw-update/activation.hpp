@@ -3,6 +3,7 @@
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Object/Delete/server.hpp>
 #include <xyz/openbmc_project/Software/Activation/server.hpp>
+#include <xyz/openbmc_project/Software/ActivationBlocksTransition/server.hpp>
 #include <xyz/openbmc_project/Software/ActivationProgress/server.hpp>
 
 #include <string>
@@ -21,6 +22,9 @@ using ActivationProgressIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Software::server::ActivationProgress>;
 using DeleteIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Object::server::Delete>;
+using ActivationBlocksTransition =
+    sdbusplus::server::object_t<sdbusplus::xyz::openbmc_project::Software::
+                                    server::ActivationBlocksTransition>;
 
 /** @class ActivationProgress
  *

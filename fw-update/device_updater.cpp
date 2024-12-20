@@ -721,7 +721,6 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
             "EID", eid, "CC", completionCode);
         return;
     }
-
     updateManager->updateDeviceCompletion(eid, true);
 }
 

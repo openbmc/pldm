@@ -3,6 +3,7 @@
 #include "aggregate_update_manager.hpp"
 #include "code_updater.hpp"
 #include "common/types.hpp"
+#include "json_condition_collector.hpp"
 #include "update_manager.hpp"
 
 #include <xyz/openbmc_project/Association/Definitions/aserver.hpp>
@@ -46,9 +47,12 @@ class InventoryItemManager
     ~InventoryItemManager() = default;
 
     InventoryItemManager(Context& ctx,
-                         AggregateUpdateManager& aggregateUpdateManager) :
+                         AggregateUpdateManager& aggregateUpdateManager,
+                         std::function<void(eid)>&& getFirmwareParameters) :
         ctx(ctx),
-        aggregateUpdateManager(aggregateUpdateManager)
+        aggregateUpdateManager(aggregateUpdateManager),
+        jsonConditionCollector(JSON_CONDITION_FILE_PATH),
+        getFirmwareParameters(std::move(getFirmwareParameters))
     {}
 
     void createInventoryItem(const DeviceIdentifier& deviceIdentifier,
@@ -85,6 +89,10 @@ class InventoryItemManager
     std::map<DeviceIdentifier, InventoryItemInterfaces> interfacesMap;
 
     AggregateUpdateManager& aggregateUpdateManager;
+
+    JsonConditionCollector jsonConditionCollector;
+
+    std::function<void(eid)> getFirmwareParameters;
 };
 
 } // namespace pldm::fw_update

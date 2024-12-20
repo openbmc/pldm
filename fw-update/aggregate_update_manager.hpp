@@ -63,7 +63,9 @@ class AggregateUpdateManager final :
         const DeviceIdentifier& deviceIdentifier, DescriptorMap&& descriptorMap,
         DownstreamDescriptorMap&& downstreamDescriptorMap,
         ComponentInfoMap&& componentInfoMap,
-        const std::string& inventoryObjPath)
+        const std::string& inventoryObjPath,
+        std::shared_ptr<FirmwareCondition> preCondition = nullptr,
+        std::shared_ptr<FirmwareCondition> postCondition = nullptr)
     {
         auto ret = insert_or_assign(
             deviceIdentifier,
@@ -74,7 +76,8 @@ class AggregateUpdateManager final :
                manager] = ret.first->second;
         manager = std::make_shared<UpdateManager>(
             event, handler, instanceIdDb, descriptorMap_,
-            downstreamDescriptorMap_, componentInfoMap_, inventoryObjPath);
+            downstreamDescriptorMap_, componentInfoMap_, inventoryObjPath,
+            std::move(preCondition), std::move(postCondition));
         return ret;
     }
 

@@ -27,7 +27,7 @@ sdbusplus::message::object_path CodeUpdater::startUpdate(
     {
         throw std::runtime_error("Failed to read image file descriptor");
     }
-
+    updateManager->setApplyTime(applyTime);
     updateManager->processStream(imageStream, imageStream.str().size());
 
     return sdbusplus::message::object_path(objPath);
