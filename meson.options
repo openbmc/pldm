@@ -133,6 +133,13 @@ option(
                     requested by the FD, via RequestFirmwareData command'''
 )
 
+option(
+    'update-platform',
+    type: 'string',
+    value: '',
+    description: 'To specify what platform to do fw update'
+)
+
 # openssl dependency for version hash
 option(
     'openssl',
