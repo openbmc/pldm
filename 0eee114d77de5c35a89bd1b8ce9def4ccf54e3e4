@@ -33,6 +33,24 @@
       "message": "Use C++ style. `base_unit` to \u0027baseUnit`.\nAdd @param[in] for baseUnit also.",
       "revId": "0eee114d77de5c35a89bd1b8ce9def4ccf54e3e4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfb2d9f2_51942e8c",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2024-12-20T04:13:46Z",
+      "side": 1,
+      "message": "Done!",
+      "parentUuid": "10f0e0ff_c93b910b",
+      "revId": "0eee114d77de5c35a89bd1b8ce9def4ccf54e3e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
