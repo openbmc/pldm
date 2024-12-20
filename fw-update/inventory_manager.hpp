@@ -63,11 +63,14 @@ class InventoryManager
         ComponentInfoMap& componentInfoMap,
         AggregateUpdateManager& aggregateUpdateManager,
         pldm::ConfigurationDiscoveryHandler* configurationDiscovery = nullptr) :
-        handler(handler), instanceIdDb(instanceIdDb),
-        descriptorMap(descriptorMap),
+        handler(handler),
+        instanceIdDb(instanceIdDb), descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap),
-        inventoryItemManager(aggregateUpdateManager),
+        inventoryItemManager(
+            aggregateUpdateManager,
+            std::bind_front(
+                &InventoryManager::sendQueryDownstreamDevicesRequest, this)),
         configurationDiscovery(configurationDiscovery)
     {}
 

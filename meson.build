@@ -84,6 +84,16 @@ if get_option('softoff').allowed()
         join_paths(package_datadir, 'softoff'),
     )
 endif
+update_platform = get_option('update-platform')
+if update_platform != ''
+    conf_data.set_quoted(
+        'JSON_CONDITION_FILE_PATH',
+        join_paths(package_datadir, 'fw-update-conditions', update_platform) + '.json',
+    )
+else
+    conf_data.set_quoted(
+        'JSON_CONDITION_FILE_PATH','')
+endif
 if get_option('oem-ibm').allowed()
     conf_data.set_quoted(
         'FILE_TABLE_JSON',

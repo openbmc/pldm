@@ -143,6 +143,16 @@ using ComponentImageInfo =
                CompSize, CompVersion>;
 using ComponentImageInfos = std::vector<ComponentImageInfo>;
 
+// Pre/Post condition
+using FirmwareTypeName = std::string;
+using FirmwareConditionPath = std::string;
+using FirmwareConditionPathPair =
+    std::pair<FirmwareConditionPath, FirmwareConditionPath>;
+using FirmwareTypeCondition =
+    std::pair<FirmwareTypeName, FirmwareConditionPathPair>;
+using FirmwareTypeConditionMap =
+    std::unordered_map<FirmwareTypeName, FirmwareConditionPathPair>;
+
 enum class ComponentImageInfoPos : size_t
 {
     CompClassificationPos = 0,
