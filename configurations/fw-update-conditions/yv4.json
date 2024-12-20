@@ -1,0 +1,34 @@
+{
+  "Components": [
+    {
+      "Component": "BIC",
+      "PreSetupTarget": "",
+      "PostSetupTarget": "yv4-bic-post-update"
+    },
+    {
+      "Component": "CXL1",
+      "PreSetupTarget": "",
+      "PostSetupTarget": "yv4-ac-cycle"
+    },
+    {
+      "Component": "CXL2",
+      "PreSetupTarget": "",
+      "PostSetupTarget": "yv4-ac-cycle"
+    },
+    {
+      "Component": "BIOS",
+      "PreSetupTarget": "yv4-host-down",
+      "PostSetupTarget": "yv4-host-up"
+    },
+    {
+      "Component": "ASTERALAB_Retimer",
+      "PreSetupTarget": "",
+      "PostSetupTarget": "yv4-ac-cycle"
+    },
+    {
+      "Component": "MPS_VR",
+      "PreSetupTarget": "",
+      "PostSetupTarget": "yv4-ac-cycle"
+    }
+  ]
+}
