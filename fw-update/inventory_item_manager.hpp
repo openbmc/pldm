@@ -3,6 +3,7 @@
 #include "aggregate_update_manager.hpp"
 #include "code_updater.hpp"
 #include "common/types.hpp"
+#include "json_condition_collector.hpp"
 #include "version.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -40,8 +41,11 @@ class InventoryItemManager
     InventoryItemManager& operator=(InventoryItemManager&&) = delete;
     ~InventoryItemManager() = default;
 
-    InventoryItemManager(AggregateUpdateManager& aggregateUpdateManager) :
-        aggregateUpdateManager(aggregateUpdateManager)
+    InventoryItemManager(AggregateUpdateManager& aggregateUpdateManager,
+                         std::function<void(eid)>&& getFirmwareParameters) :
+        aggregateUpdateManager(aggregateUpdateManager),
+        jsonConditionCollector(JSON_CONDITION_FILE_PATH),
+        getFirmwareParameters(std::move(getFirmwareParameters))
     {}
 
     void createInventoryItem(
@@ -76,6 +80,10 @@ class InventoryItemManager
     std::map<DeviceIdentifier, InventoryItemInterfaces> interfacesMap;
 
     AggregateUpdateManager& aggregateUpdateManager;
+
+    JsonConditionCollector jsonConditionCollector;
+
+    std::function<void(eid)> getFirmwareParameters;
 };
 
 } // namespace pldm::fw_update

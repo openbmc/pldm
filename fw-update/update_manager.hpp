@@ -3,12 +3,15 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
+#include "firmware_condition.hpp"
 #include "fw-update/activation.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
 #include "watch.hpp"
 
 #include <libpldm/base.h>
+
+#include <xyz/openbmc_project/Software/ApplyTime/server.hpp>
 
 #include <chrono>
 #include <filesystem>
@@ -31,6 +34,8 @@ using DeviceIDRecordOffset = size_t;
 using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
+using ApplyTimeIntf =
+    sdbusplus::xyz::openbmc_project::Software::server::ApplyTime;
 
 namespace software = sdbusplus::xyz::openbmc_project::Software::server;
 
@@ -49,7 +54,9 @@ class UpdateManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap,
-        const std::string& inventoryObjPath = std::string()) :
+        const std::string& inventoryObjPath = std::string(),
+        std::shared_ptr<FirmwareCondition> preCondition = nullptr,
+        std::shared_ptr<FirmwareCondition> postCondition = nullptr) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
         inventoryObjPath(inventoryObjPath),
@@ -64,7 +71,9 @@ class UpdateManager
                 : std::make_unique<Activation>(
                       pldm::utils::DBusHandler::getBus(), inventoryObjPath,
                       software::Activation::Activations::Active, this)),
-        totalNumComponentUpdates(0), compUpdateCompletedCount(0)
+        totalNumComponentUpdates(0), compUpdateCompletedCount(0),
+        preCondition(std::move(preCondition)),
+        postCondition(std::move(postCondition))
     {}
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -101,6 +110,12 @@ class UpdateManager
      */
     void activatePackage();
 
+    /** @brief Set the requested apply time for the firmware update
+     *
+     *  @param[in] applyTime - Requested apply time
+     */
+    void setApplyTime(ApplyTimeIntf::RequestedApplyTimes applyTime);
+
     void clearActivationInfo();
 
     /** @brief
@@ -131,11 +146,15 @@ class UpdateManager
 
     std::unique_ptr<Activation> activation;
     std::unique_ptr<ActivationProgress> activationProgress;
+    std::unique_ptr<ActivationBlocksTransition> activationBlocksTransition;
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
     std::unique_ptr<PackageParser> parser;
     std::ifstream package;
+
+    ApplyTimeIntf::RequestedApplyTimes applyTime =
+        ApplyTimeIntf::RequestedApplyTimes::OnReset;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
         deviceUpdaterMap;
@@ -153,6 +172,11 @@ class UpdateManager
      */
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
+
+    /** @brief Precondition for the firmware update */
+    std::shared_ptr<FirmwareCondition> preCondition;
+    /** @brief Postcondition for the firmware update */
+    std::shared_ptr<FirmwareCondition> postCondition;
 };
 
 } // namespace fw_update
