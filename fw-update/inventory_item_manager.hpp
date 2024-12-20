@@ -4,6 +4,7 @@
 #include "code_updater.hpp"
 #include "common/types.hpp"
 #include "version.hpp"
+#include "json_condition_collector.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
@@ -30,6 +31,8 @@ struct InventoryItemInterfaces
     std::unique_ptr<CodeUpdater> codeUpdater;
 };
 
+constexpr auto JSON_CONDITION_FILE_PATH = "/usr/share/pldm/fw_update/conditions.json";
+
 class InventoryItemManager
 {
   public:
@@ -41,7 +44,8 @@ class InventoryItemManager
     ~InventoryItemManager() = default;
 
     InventoryItemManager(AggregateUpdateManager& aggregateUpdateManager) :
-        aggregateUpdateManager(aggregateUpdateManager)
+        aggregateUpdateManager(aggregateUpdateManager),
+        jsonConditionCollector(JSON_CONDITION_FILE_PATH)
     {}
 
     void createInventoryItem(
@@ -76,6 +80,8 @@ class InventoryItemManager
     std::map<DeviceIdentifier, InventoryItemInterfaces> interfacesMap;
 
     AggregateUpdateManager& aggregateUpdateManager;
+
+    JsonConditionCollector jsonConditionCollector;
 };
 
 } // namespace pldm::fw_update

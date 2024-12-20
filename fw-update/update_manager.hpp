@@ -7,6 +7,7 @@
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
 #include "watch.hpp"
+#include "firmware_condition.hpp"
 
 #include <libpldm/base.h>
 
@@ -49,7 +50,9 @@ class UpdateManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap,
-        const std::string& inventoryObjPath = std::string()) :
+        const std::string& inventoryObjPath = std::string(),
+        [[maybe_unused]] std::unique_ptr<FirmwareCondition> preCondition = nullptr,
+        [[maybe_unused]] std::unique_ptr<FirmwareCondition> postCondition = nullptr) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
         inventoryObjPath(inventoryObjPath),
@@ -153,6 +156,11 @@ class UpdateManager
      */
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
+
+    /** @brief Precondition for the firmware update */
+    std::unique_ptr<FirmwareCondition> preCondition;
+    /** @brief Postcondition for the firmware update */
+    std::unique_ptr<FirmwareCondition> postCondition;
 };
 
 } // namespace fw_update

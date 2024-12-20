@@ -211,6 +211,10 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
                 return;
             }
         }
+        if (postCondition)
+        {
+            postCondition->execute();
+        }
 
         auto endTime = std::chrono::steady_clock::now();
         auto dur =
@@ -277,6 +281,10 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
 void UpdateManager::activatePackage()
 {
     startTime = std::chrono::steady_clock::now();
+    if (preCondition)
+    {
+        preCondition->execute();
+    }
     for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
     {
         deviceUpdaterPtr->startFwUpdateFlow();
