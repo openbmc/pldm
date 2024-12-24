@@ -26,6 +26,7 @@ std::vector<std::unique_ptr<CommandInterface>> commands;
 const std::map<const char*, pldm_supported_types> pldmTypes{
     {"base", PLDM_BASE},   {"platform", PLDM_PLATFORM},
     {"bios", PLDM_BIOS},   {"fru", PLDM_FRU},
+    {"firmware update", PLDM_FWUP},
 #ifdef OEM_IBM
     {"oem-ibm", PLDM_OEM},
 #endif
