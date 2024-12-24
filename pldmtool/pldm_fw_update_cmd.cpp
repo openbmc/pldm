@@ -229,6 +229,19 @@ class GetFwParams : public CommandInterface
 
         if (fwParams.capabilities_during_update.bits.bit2)
         {
+            capabilitiesDuringUpdate
+                ["Firmware Device Host Functionality during Firmware Update"] =
+                    "Device host functionality will be reduced, perhaps becoming inaccessible, during Firmware Update.";
+        }
+        else
+        {
+            capabilitiesDuringUpdate
+                ["Firmware Device Host Functionality during Firmware Update"] =
+                    "Device host functionality is not reduced during Firmware Update.";
+        }
+
+        if (fwParams.capabilities_during_update.bits.bit3)
+        {
             capabilitiesDuringUpdate["Firmware Device Partial Updates"] =
                 "Firmware Device can support a partial update, whereby a package which contains a component image set that is a subset of all components currently residing on the FD, can be transferred.";
         }
@@ -236,19 +249,6 @@ class GetFwParams : public CommandInterface
         {
             capabilitiesDuringUpdate["Firmware Device Partial Updates"] =
                 "Firmware Device cannot accept a partial update and all components present on the FD shall be updated.";
-        }
-
-        if (fwParams.capabilities_during_update.bits.bit3)
-        {
-            capabilitiesDuringUpdate
-                ["Firmware Device Host Functionality during Firmware Update"] =
-                    "Device will not revert to previous component image upon failure, timeout or cancellation of the transfer";
-        }
-        else
-        {
-            capabilitiesDuringUpdate
-                ["Firmware Device Host Functionality during Firmware Update"] =
-                    "Device will revert to previous component image upon failure, timeout or cancellation of the transfer";
         }
 
         if (fwParams.capabilities_during_update.bits.bit4)
