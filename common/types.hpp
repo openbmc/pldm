@@ -28,9 +28,9 @@ using Command = uint8_t;
 
 using MctpMedium = std::string;
 /** @brief Type definition of MCTP Network Index.
- *         uint32_t is used as defined in MCTP Endpoint D-Bus Interface
+ *         int32_t is used as defined in MCTP Endpoint D-Bus Interface
  */
-using NetworkId = uint32_t;
+using NetworkId = int32_t;
 
 /** @brief Type definition of MCTP interface information between two endpoints.
  *         eid : Endpoint EID in byte. Defined to match with MCTP D-Bus
