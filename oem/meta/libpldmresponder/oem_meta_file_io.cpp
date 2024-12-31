@@ -1,6 +1,7 @@
 #include "oem_meta_file_io.hpp"
 
 #include "oem_meta_file_io_type_bios_version.hpp"
+#include "oem_meta_file_io_type_crash_dump.hpp"
 #include "oem_meta_file_io_type_event_log.hpp"
 #include "oem_meta_file_io_type_http_boot.hpp"
 #include "oem_meta_file_io_type_post_code.hpp"
@@ -38,6 +39,9 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(uint8_t messageTid,
             return std::make_unique<HttpBootHandler>(
         case EVENT_LOG:
             return std::make_unique<EventLogHandler>(
+                messageTid, configurationDiscovery->getConfigurations());
+        case CRASH_DUMP:
+            return std::make_unique<CrashDumpHandler>(
                 messageTid, configurationDiscovery->getConfigurations());
         default:
             error("Get invalid file io type, FILEIOTYPE={FILEIOTYPE}",

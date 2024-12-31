@@ -12,7 +12,7 @@ namespace pldm::responder::oem_meta
 
 using message = std::span<uint8_t>;
 using configDbusPath = std::string;
-constexpr auto decodeDataMaxLength = 32;
+constexpr auto decodeDataMaxLength = 150;
 
 enum pldm_oem_meta_file_io_type : uint8_t
 {
@@ -21,6 +21,7 @@ enum pldm_oem_meta_file_io_type : uint8_t
     POWER_CONTROL = 0x02,
     HTTP_BOOT = 0x03,
     EVENT_LOG = 0x05,
+    CRASH_DUMP = 0x06,
 };
 
 enum pldm_oem_meta_decode_file_io_minisize : size_t

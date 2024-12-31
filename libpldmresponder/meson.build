@@ -66,6 +66,7 @@ if get_option('oem-meta').allowed()
     '../oem/meta/libpldmresponder/oem_meta_file_io_type_power_control.cpp',
     '../oem/meta/libpldmresponder/oem_meta_file_io_type_http_boot.cpp',
     '../oem/meta/libpldmresponder/oem_meta_file_io_type_event_log.cpp',
+    '../oem/meta/libpldmresponder/oem_meta_file_io_type_crash_dump.cpp',
   ]
 endif
 
