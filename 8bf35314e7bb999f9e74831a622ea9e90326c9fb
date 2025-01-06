@@ -52,6 +52,24 @@
       "parentUuid": "93199fd8_d72917f0",
       "revId": "8bf35314e7bb999f9e74831a622ea9e90326c9fb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b734b10_4e86cd92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-01-06T09:06:56Z",
+      "side": 1,
+      "message": "I updated PLDM Fru design spec in pldmstack. https://gerrit.openbmc.org/c/openbmc/docs/+/77090",
+      "parentUuid": "f44b6279_9fda7e26",
+      "revId": "8bf35314e7bb999f9e74831a622ea9e90326c9fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
