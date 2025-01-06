@@ -294,6 +294,12 @@ class NumericSensor
         return false;
     }
 
+    /* @brief Returns true if at least one threshold alarm is set
+     *
+     * @return true if at least one threshold alarm is set
+     */
+    bool hasThresholdAlarm();
+
     /* @brief raises the alarm on the warning threshold
      *
      * @param[in] direction - The threshold direction (HIGH/LOW)
@@ -380,6 +386,10 @@ class NumericSensor
     SensorUnit sensorUnit;
 
   private:
+    void clearThresholdLog(std::optional<sdbusplus::message::object_path>& log);
+    void createNormalRangeLog(double value);
+    void createThresholdLog(pldm::utils::Level level,
+                            pldm::utils::Direction direction, double value);
     /**
      * @brief Check sensor reading if any threshold has been crossed and update
      * Threshold interfaces accordingly
@@ -431,6 +441,10 @@ class NumericSensor
     /** @brief A power-of-10 multiplier for baseUnit */
     int8_t baseUnitModifier;
     bool useMetricInterface = false;
+
+    std::map<std::tuple<pldm::utils::Level, pldm::utils::Direction>,
+             std::optional<sdbusplus::message::object_path>>
+        assertedLog;
 };
 } // namespace platform_mc
 } // namespace pldm
