@@ -5,6 +5,11 @@
 
 #include <libpldm/platform.h>
 
+#include <phosphor-logging/commit.hpp>
+#include <sdbusplus/asio/property.hpp>
+#include <xyz/openbmc_project/Logging/Entry/client.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/event.hpp>
+
 #include <limits>
 #include <regex>
 
@@ -14,6 +19,11 @@ namespace pldm
 {
 namespace platform_mc
 {
+#if defined(CONFIG_PLDM_THRESHOLD_LOGGING) && CONFIG_PLDM_THRESHOLD_LOGGING == 0
+static constexpr bool PLDM_THRESHOLD_LOGGING = false;
+#else
+static constexpr bool PLDM_THRESHOLD_LOGGING = true;
+#endif
 
 inline bool NumericSensor::createInventoryPath(
     const std::string& associationPath, const std::string& sensorName,
@@ -716,9 +726,130 @@ bool NumericSensor::checkThreshold(bool alarm, bool direction, double value,
     return alarm;
 }
 
+bool NumericSensor::clearLog(
+    std::optional<sdbusplus::message::object_path>& log)
+{
+    if constexpr (PLDM_THRESHOLD_LOGGING)
+    {
+        if (log)
+        {
+            try
+            {
+                // Wait for merge.
+                lg2::resolve(*log);
+            }
+            catch (std::exception& ec)
+            {
+                std::cerr << "Error trying to resolve: " << std::string(*log)
+                          << " : " << ec.what() << std::endl;
+            }
+            log.reset();
+            return true;
+        }
+    }
+    return false;
+}
+
+template <typename errorObj>
+auto logAlarmHelper(const std::string& sensorObjPath, double value,
+                    SensorUnit sensorUnit, double threshold)
+    -> sdbusplus::message::object_path
+{
+    try
+    {
+        return lg2::commit(
+            errorObj("SENSOR_NAME", sensorObjPath, "READING_VALUE", value,
+                     "UNITS", sensorUnit, "THRESHOLD_VALUE", threshold));
+    }
+    catch (std::exception& ec)
+    {
+        std::cerr << "Unable to create log entry for " << sensorObjPath << " : "
+                  << ec.what() << std::endl;
+    }
+    return {};
+}
+
+void NumericSensor::logAlarm(pldm::utils::Level level,
+                             pldm::utils::Direction direction, double value)
+{
+    namespace Errors =
+        sdbusplus::error::xyz::openbmc_project::sensor::Threshold;
+    if constexpr (PLDM_THRESHOLD_LOGGING)
+    {
+        std::string sensorObjPath = sensorNameSpace + sensorName;
+        double threshold = std::numeric_limits<double>::quiet_NaN();
+        switch (level)
+        {
+            case pldm::utils::Level::WARNING:
+                switch (direction)
+                {
+                    case pldm::utils::Direction::HIGH:
+                        threshold = thresholdWarningIntf->warningHigh();
+                        assertedUpperWarningLog = logAlarmHelper<
+                            Errors::ReadingAboveUpperWarningThreshold>(
+                            sensorObjPath, value, sensorUnit, threshold);
+                        break;
+                    case pldm::utils::Direction::LOW:
+                        threshold = thresholdWarningIntf->warningLow();
+                        assertedLowerWarningLog = logAlarmHelper<
+                            Errors::ReadingBelowLowerWarningThreshold>(
+                            sensorObjPath, value, sensorUnit, threshold);
+                        break;
+                    default:
+                        return;
+                }
+                break;
+            case pldm::utils::Level::CRITICAL:
+                switch (direction)
+                {
+                    case pldm::utils::Direction::HIGH:
+                        threshold = thresholdCriticalIntf->criticalHigh();
+                        assertedUpperCriticalLog = logAlarmHelper<
+                            Errors::ReadingAboveUpperCriticalThreshold>(
+                            sensorObjPath, value, sensorUnit, threshold);
+                        break;
+                    case pldm::utils::Direction::LOW:
+                        threshold = thresholdCriticalIntf->criticalLow();
+                        assertedLowerCriticalLog = logAlarmHelper<
+                            Errors::ReadingBelowLowerCriticalThreshold>(
+                            sensorObjPath, value, sensorUnit, threshold);
+                        break;
+                    default:
+                        return;
+                }
+            default:
+                return;
+        }
+    }
+}
+
+void NumericSensor::logNormalRange(double value)
+{
+    if constexpr (PLDM_THRESHOLD_LOGGING)
+    {
+        namespace Events =
+            sdbusplus::event::xyz::openbmc_project::sensor::Threshold;
+        std::string objPath = sensorNameSpace + sensorName;
+        try
+        {
+            lg2::commit(Events::SensorReadingNormalRange(
+                "SENSOR_NAME", objPath, "READING_VALUE", value, "UNITS",
+                sensorUnit));
+        }
+        catch (std::exception& ec)
+        {
+            lg2::error(
+                "Unable to create SensorReadingNormalRange log entry for {OBJPATH}: {ERROR}",
+                "OBJPATH", objPath, "ERROR", ec.what());
+        }
+    }
+}
+
 void NumericSensor::updateThresholds()
 {
     double value = std::numeric_limits<double>::quiet_NaN();
+    namespace Errors =
+        sdbusplus::error::xyz::openbmc_project::sensor::Threshold;
 
     if ((!useMetricInterface && !valueIntf) ||
         (useMetricInterface && !metricIntf))
@@ -736,6 +867,9 @@ void NumericSensor::updateThresholds()
     {
         value = metricIntf->value();
     }
+    bool outstandingAlarm = false;
+    bool clearedLog = false;
+    std::string sensorObjPath = sensorNameSpace + sensorName;
     if (thresholdWarningIntf &&
         std::isfinite(thresholdWarningIntf->warningHigh()))
     {
@@ -743,16 +877,20 @@ void NumericSensor::updateThresholds()
         auto alarm = thresholdWarningIntf->warningAlarmHigh();
         auto newAlarm =
             checkThreshold(alarm, true, value, threshold, hysteresis);
+        outstandingAlarm |= newAlarm;
         if (alarm != newAlarm)
         {
             thresholdWarningIntf->warningAlarmHigh(newAlarm);
             if (newAlarm)
             {
                 thresholdWarningIntf->warningHighAlarmAsserted(value);
+                logAlarm(pldm::utils::Level::WARNING,
+                         pldm::utils::Direction::HIGH, value);
             }
             else
             {
                 thresholdWarningIntf->warningHighAlarmDeasserted(value);
+                clearedLog |= clearLog(assertedUpperWarningLog);
             }
         }
     }
@@ -764,16 +902,20 @@ void NumericSensor::updateThresholds()
         auto alarm = thresholdWarningIntf->warningAlarmLow();
         auto newAlarm =
             checkThreshold(alarm, false, value, threshold, hysteresis);
+        outstandingAlarm |= newAlarm;
         if (alarm != newAlarm)
         {
             thresholdWarningIntf->warningAlarmLow(newAlarm);
             if (newAlarm)
             {
                 thresholdWarningIntf->warningLowAlarmAsserted(value);
+                logAlarm(pldm::utils::Level::WARNING,
+                         pldm::utils::Direction::LOW, value);
             }
             else
             {
                 thresholdWarningIntf->warningLowAlarmDeasserted(value);
+                clearedLog |= clearLog(assertedLowerWarningLog);
             }
         }
     }
@@ -785,16 +927,20 @@ void NumericSensor::updateThresholds()
         auto alarm = thresholdCriticalIntf->criticalAlarmHigh();
         auto newAlarm =
             checkThreshold(alarm, true, value, threshold, hysteresis);
+        outstandingAlarm |= newAlarm;
         if (alarm != newAlarm)
         {
             thresholdCriticalIntf->criticalAlarmHigh(newAlarm);
             if (newAlarm)
             {
                 thresholdCriticalIntf->criticalHighAlarmAsserted(value);
+                logAlarm(pldm::utils::Level::CRITICAL,
+                         pldm::utils::Direction::HIGH, value);
             }
             else
             {
                 thresholdCriticalIntf->criticalHighAlarmDeasserted(value);
+                clearedLog |= clearLog(assertedUpperCriticalLog);
             }
         }
     }
@@ -806,18 +952,26 @@ void NumericSensor::updateThresholds()
         auto alarm = thresholdCriticalIntf->criticalAlarmLow();
         auto newAlarm =
             checkThreshold(alarm, false, value, threshold, hysteresis);
+        outstandingAlarm |= newAlarm;
         if (alarm != newAlarm)
         {
             thresholdCriticalIntf->criticalAlarmLow(newAlarm);
             if (newAlarm)
             {
                 thresholdCriticalIntf->criticalLowAlarmAsserted(value);
+                logAlarm(pldm::utils::Level::CRITICAL,
+                         pldm::utils::Direction::LOW, value);
             }
             else
             {
                 thresholdCriticalIntf->criticalLowAlarmDeasserted(value);
+                clearedLog |= clearLog(assertedLowerCriticalLog);
             }
         }
+    }
+    if (clearedLog && !outstandingAlarm)
+    {
+        logNormalRange(value);
     }
 }
 
@@ -862,10 +1016,12 @@ int NumericSensor::triggerThresholdEvent(
                 if (assert)
                 {
                     thresholdWarningIntf->warningHighAlarmAsserted(value);
+                    logAlarm(eventType, direction, value);
                 }
                 else
                 {
                     thresholdWarningIntf->warningHighAlarmDeasserted(value);
+                    clearLog(assertedUpperWarningLog);
                 }
             }
             else if (direction == pldm::utils::Direction::LOW &&
@@ -880,10 +1036,12 @@ int NumericSensor::triggerThresholdEvent(
                 if (assert)
                 {
                     thresholdWarningIntf->warningLowAlarmAsserted(value);
+                    logAlarm(eventType, direction, value);
                 }
                 else
                 {
                     thresholdWarningIntf->warningLowAlarmDeasserted(value);
+                    clearLog(assertedLowerWarningLog);
                 }
             }
             break;
@@ -909,10 +1067,12 @@ int NumericSensor::triggerThresholdEvent(
                 if (assert)
                 {
                     thresholdCriticalIntf->criticalHighAlarmAsserted(value);
+                    logAlarm(eventType, direction, value);
                 }
                 else
                 {
                     thresholdCriticalIntf->criticalHighAlarmDeasserted(value);
+                    clearLog(assertedUpperCriticalLog);
                 }
             }
             else if (direction == pldm::utils::Direction::LOW &&
@@ -927,10 +1087,12 @@ int NumericSensor::triggerThresholdEvent(
                 if (assert)
                 {
                     thresholdCriticalIntf->criticalLowAlarmAsserted(value);
+                    logAlarm(eventType, direction, value);
                 }
                 else
                 {
                     thresholdCriticalIntf->criticalLowAlarmDeasserted(value);
+                    clearLog(assertedLowerCriticalLog);
                 }
             }
             break;
@@ -939,7 +1101,6 @@ int NumericSensor::triggerThresholdEvent(
         default:
             break;
     }
-
     return PLDM_SUCCESS;
 }
 
@@ -955,8 +1116,7 @@ int NumericSensor::triggerThresholdNormal(double rawValue)
 
     auto value = unitModifier(conversionFormula(rawValue));
 
-    lg2::info("Sensor {SENSOR} now operating in normal range. Value: {VALUE}",
-              "SENSOR", sensorName, "VALUE", value);
+    logNormalRange(value);
     return PLDM_SUCCESS;
 }
 
