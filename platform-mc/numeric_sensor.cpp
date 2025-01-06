@@ -258,7 +258,7 @@ NumericSensor::NumericSensor(
      * updateTime is in microseconds
      */
     updateTime = static_cast<uint64_t>(DEFAULT_SENSOR_UPDATER_INTERVAL * 1000);
-    if (!std::isnan(pdr->update_interval))
+    if (std::isfinite(pdr->update_interval))
     {
         updateTime = pdr->update_interval * 1000000;
     }
@@ -589,14 +589,24 @@ NumericSensor::NumericSensor(
 double NumericSensor::conversionFormula(double value)
 {
     double convertedValue = value;
-    convertedValue *= std::isnan(resolution) ? 1 : resolution;
-    convertedValue += std::isnan(offset) ? 0 : offset;
+    if (std::isfinite(resolution))
+    {
+        convertedValue *= resolution;
+    }
+    if (std::isfinite(offset))
+    {
+        convertedValue += offset;
+    }
     return convertedValue;
 }
 
 double NumericSensor::unitModifier(double value)
 {
-    return std::isnan(value) ? value : value * std::pow(10, baseUnitModifier);
+    if (!std::isfinite(value))
+    {
+        return value;
+    }
+    return value * std::pow(10, baseUnitModifier);
 }
 
 void NumericSensor::updateReading(bool available, bool functional, double value)
@@ -627,7 +637,7 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
     {
         newValue = unitModifier(conversionFormula(value));
         if (newValue != curValue &&
-            (!std::isnan(newValue) || !std::isnan(curValue)))
+            (std::isfinite(newValue) || std::isfinite(curValue)))
         {
             if (!useMetricInterface)
             {
@@ -643,7 +653,7 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
     else
     {
         if (newValue != curValue &&
-            (!std::isnan(newValue) || !std::isnan(curValue)))
+            (std::isfinite(newValue) || std::isfinite(curValue)))
         {
             if (!useMetricInterface)
             {
@@ -727,7 +737,7 @@ void NumericSensor::updateThresholds()
         value = metricIntf->value();
     }
     if (thresholdWarningIntf &&
-        !std::isnan(thresholdWarningIntf->warningHigh()))
+        std::isfinite(thresholdWarningIntf->warningHigh()))
     {
         auto threshold = thresholdWarningIntf->warningHigh();
         auto alarm = thresholdWarningIntf->warningAlarmHigh();
@@ -747,7 +757,8 @@ void NumericSensor::updateThresholds()
         }
     }
 
-    if (thresholdWarningIntf && !std::isnan(thresholdWarningIntf->warningLow()))
+    if (thresholdWarningIntf &&
+        std::isfinite(thresholdWarningIntf->warningLow()))
     {
         auto threshold = thresholdWarningIntf->warningLow();
         auto alarm = thresholdWarningIntf->warningAlarmLow();
@@ -768,7 +779,7 @@ void NumericSensor::updateThresholds()
     }
 
     if (thresholdCriticalIntf &&
-        !std::isnan(thresholdCriticalIntf->criticalHigh()))
+        std::isfinite(thresholdCriticalIntf->criticalHigh()))
     {
         auto threshold = thresholdCriticalIntf->criticalHigh();
         auto alarm = thresholdCriticalIntf->criticalAlarmHigh();
@@ -789,7 +800,7 @@ void NumericSensor::updateThresholds()
     }
 
     if (thresholdCriticalIntf &&
-        !std::isnan(thresholdCriticalIntf->criticalLow()))
+        std::isfinite(thresholdCriticalIntf->criticalLow()))
     {
         auto threshold = thresholdCriticalIntf->criticalLow();
         auto alarm = thresholdCriticalIntf->criticalAlarmLow();
@@ -840,7 +851,7 @@ int NumericSensor::triggerThresholdEvent(
                 return PLDM_ERROR;
             }
             if (direction == pldm::utils::Direction::HIGH &&
-                !std::isnan(thresholdWarningIntf->warningHigh()))
+                std::isfinite(thresholdWarningIntf->warningHigh()))
             {
                 auto alarm = thresholdWarningIntf->warningAlarmHigh();
                 if (alarm == newAlarm)
@@ -858,7 +869,7 @@ int NumericSensor::triggerThresholdEvent(
                 }
             }
             else if (direction == pldm::utils::Direction::LOW &&
-                     !std::isnan(thresholdWarningIntf->warningLow()))
+                     std::isfinite(thresholdWarningIntf->warningLow()))
             {
                 auto alarm = thresholdWarningIntf->warningAlarmLow();
                 if (alarm == newAlarm)
@@ -887,7 +898,7 @@ int NumericSensor::triggerThresholdEvent(
                 return PLDM_ERROR;
             }
             if (direction == pldm::utils::Direction::HIGH &&
-                !std::isnan(thresholdCriticalIntf->criticalHigh()))
+                std::isfinite(thresholdCriticalIntf->criticalHigh()))
             {
                 auto alarm = thresholdCriticalIntf->criticalAlarmHigh();
                 if (alarm == newAlarm)
@@ -905,7 +916,7 @@ int NumericSensor::triggerThresholdEvent(
                 }
             }
             else if (direction == pldm::utils::Direction::LOW &&
-                     !std::isnan(thresholdCriticalIntf->criticalLow()))
+                     std::isfinite(thresholdCriticalIntf->criticalLow()))
             {
                 auto alarm = thresholdCriticalIntf->criticalAlarmLow();
                 if (alarm == newAlarm)
