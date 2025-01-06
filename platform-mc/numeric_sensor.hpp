@@ -213,6 +213,10 @@ class NumericSensor
     SensorUnit sensorUnit;
 
   private:
+    bool clearLog(std::optional<sdbusplus::message::object_path>& log);
+    void logNormalRange(double value);
+    void logAlarm(pldm::utils::Level level, pldm::utils::Direction direction,
+                  double value);
     /**
      * @brief Check sensor reading if any threshold has been crossed and update
      * Threshold interfaces accordingly
@@ -262,6 +266,11 @@ class NumericSensor
     /** @brief A power-of-10 multiplier for baseUnit */
     int8_t baseUnitModifier;
     bool useMetricInterface = false;
+
+    std::optional<sdbusplus::message::object_path> assertedUpperCriticalLog;
+    std::optional<sdbusplus::message::object_path> assertedUpperWarningLog;
+    std::optional<sdbusplus::message::object_path> assertedLowerCriticalLog;
+    std::optional<sdbusplus::message::object_path> assertedLowerWarningLog;
 };
 } // namespace platform_mc
 } // namespace pldm
