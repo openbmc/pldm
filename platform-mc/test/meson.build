@@ -29,6 +29,7 @@ foreach t : tests
             t.underscorify(),
             t + '.cpp',
             implicit_include_directories: false,
+            cpp_args : '-DCONFIG_PLDM_THRESHOLD_LOGGING=0',
             dependencies: [
                 gtest,
                 gmock,
