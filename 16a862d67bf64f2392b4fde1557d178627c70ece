@@ -16,6 +16,23 @@
       "message": "I added the changing in host-bmc/dbus_to_terminus_effecters.cpp.\n\nI also tested the patch set with Ampere system. The change looks good now.",
       "revId": "16a862d67bf64f2392b4fde1557d178627c70ece",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "627b9941_1c921c86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-07T05:27:00Z",
+      "side": 1,
+      "message": "@thu - thanks for testing this patch.",
+      "revId": "16a862d67bf64f2392b4fde1557d178627c70ece",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
