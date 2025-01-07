@@ -16,6 +16,24 @@
       "message": "the condition is changed from `||` to `\u0026\u0026`.\nThe value interface will be updated when `newValue` or `curValue` is finite. So `||` condition should be used.\nIt is the same for line #656.",
       "revId": "63db8c369a71c1c4c8e20ec040c62b833d8c9afe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "425c366c_6e4312b3",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-01-07T00:02:26Z",
+      "side": 1,
+      "message": "You are correct;  Fixed.",
+      "parentUuid": "04be0bbc_e1048ddc",
+      "revId": "63db8c369a71c1c4c8e20ec040c62b833d8c9afe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
