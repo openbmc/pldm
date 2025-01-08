@@ -62,7 +62,8 @@ class OemAMPERE
         reqHandler(reqHandler)
     {
         oemEventManager = std::make_shared<oem_ampere::OemEventManager>(
-            this->event, this->reqHandler, this->instanceIdDb);
+            this->event, this->reqHandler, this->instanceIdDb,
+            this->platformManager);
         createOemEventHandler(oemEventManager.get(), this->platformManager);
     }
 
@@ -133,6 +134,12 @@ class OemAMPERE
                     request, payloadLength, formatVersion, tid,
                     eventDataOffset);
             }});
+
+        /* Register Ampere OEM handler to poll the PLDM events */
+        platformManager->registerOEMPollMethod(
+            [oemEventManager](pldm_tid_t tid) {
+                return oemEventManager->oemPollForPlatformEvent(tid);
+            });
     }
 
   private:
