@@ -25,6 +25,9 @@ namespace pldm
 {
 namespace oem_ampere
 {
+namespace fs = std::filesystem;
+using namespace std::chrono;
+
 namespace boot_stage = boot::stage;
 namespace ddr_status = ddr::status;
 namespace dimm_status = dimm::status;
@@ -992,5 +995,30 @@ int OemEventManager::handlepldmMessagePollEvent(
     return PLDM_SUCCESS;
 }
 
+exec::task<int> OemEventManager::oemPollForPlatformEvent(pldm_tid_t tid)
+{
+    uint64_t t1 = 0;
+    uint64_t elapsed = 0;
+    uint64_t t0 = 0;
+
+    auto it = timeStamp.find(tid);
+    if (it == timeStamp.end())
+    {
+        sd_event_now(event.get(), CLOCK_MONOTONIC, &t0);
+        timeStamp.emplace(std::make_pair(tid, t0));
+    }
+    else
+    {
+        sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
+        elapsed = t1 - timeStamp[tid];
+        if (elapsed >= pollingTime)
+        {
+            co_await manager->pollForPlatformEvent(tid, 0, 0);
+            timeStamp[tid] = t1;
+        }
+    }
+
+    co_return PLDM_SUCCESS;
+}
 } // namespace oem_ampere
 } // namespace pldm
