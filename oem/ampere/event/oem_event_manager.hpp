@@ -14,6 +14,7 @@ namespace pldm
 namespace oem_ampere
 {
 using namespace pldm::pdr;
+#define NORMAL_EVENT_POLLING_TIME 5000000 // ms
 
 using EventToMsgMap_t = std::unordered_map<uint8_t, std::string>;
 
@@ -242,7 +243,9 @@ class OemEventManager
     explicit OemEventManager(
         sdeventplus::Event& event,
         requester::Handler<requester::Request>* /* handler */,
-        pldm::InstanceIdDb& /* instanceIdDb */) : event(event) {};
+        pldm::InstanceIdDb& /* instanceIdDb */,
+        platform_mc::Manager* platformManager) :
+        event(event), manager(platformManager) {};
 
     /** @brief Decode sensor event messages and handle correspondingly.
      *
@@ -283,6 +286,13 @@ class OemEventManager
     int handlepldmMessagePollEvent(
         const pldm_msg* request, size_t payloadLength,
         uint8_t /* formatVersion */, pldm_tid_t tid, size_t eventDataOffset);
+
+    /** @brief A Coroutine to do OEM PollForPlatformEvent action
+     *
+     *  @param[in] tid - the destination TID
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> oemPollForPlatformEvent(pldm_tid_t tid);
 
   protected:
     /** @brief Create prefix string for logging message.
@@ -425,6 +435,12 @@ class OemEventManager
      *  work
      */
     sdeventplus::Event& event;
+
+    /** @brief Latest OEM PollForPlatformEvent message timeStamp. */
+    std::map<pldm_tid_t, uint64_t> timeStampMap;
+
+    /** @brief A Manager interface for calling the hook functions */
+    platform_mc::Manager* manager;
 };
 } // namespace oem_ampere
 } // namespace pldm
