@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "540553c0_9d51c60f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-01-09T03:38:48Z",
+      "side": 1,
+      "message": "MTCP source code is changed from 1.1 to 2.1.\nhttps://gerrit.openbmc.org/c/openbmc/openbmc/+/77092/3",
+      "revId": "ef16cdecca9ed5186f44577b57fa190ab959da56",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
