@@ -70,6 +70,24 @@
       "parentUuid": "f44b6279_9fda7e26",
       "revId": "8bf35314e7bb999f9e74831a622ea9e90326c9fb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "055a4a1f_9b9482ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-01-09T22:29:14Z",
+      "side": 1,
+      "message": "The PLDM Fru design spec is merged.",
+      "parentUuid": "8b734b10_4e86cd92",
+      "revId": "8bf35314e7bb999f9e74831a622ea9e90326c9fb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
