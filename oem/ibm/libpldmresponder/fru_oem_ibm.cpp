@@ -41,7 +41,9 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
 
         dataSize += sizeof(pldm_fru_record_data_format) -
                     sizeof(pldm_fru_record_tlv);
-        data += dataSize;
+
+        data += sizeof(pldm_fru_record_data_format) -
+                sizeof(pldm_fru_record_tlv);
 
         for ([[maybe_unused]] const auto& i :
              std::views::iota(0, (int)record->num_fru_fields))
@@ -95,7 +97,7 @@ int pldm::responder::oem_ibm_fru::Handler::processOEMFRUTable(
             // and the new tlv length is added back.
             dataSize += sizeof(pldm_fru_record_tlv) - sizeof(uint8_t) +
                         tlv->length;
-            data += dataSize;
+            data += sizeof(pldm_fru_record_tlv) - sizeof(uint8_t) + tlv->length;
         }
     }
 
