@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee839ea0_f0237058",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-13T08:58:38Z",
+      "side": 1,
+      "message": "can you also point the link to the design document here.\n\nand also add the example dbus object based on the latest code.",
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dceb73c4_0b3f813a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-13T08:58:38Z",
+      "side": 1,
+      "message": "this seems be a very small function - i think this can be merged into the function that uses it right ?",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 592,
+        "endChar": 1
+      },
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2603198b_addb7b5d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-13T08:58:38Z",
+      "side": 1,
+      "message": "nit: redundant check",
+      "range": {
+        "startLine": 618,
+        "startChar": 34,
+        "endLine": 618,
+        "endChar": 39
+      },
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
