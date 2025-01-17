@@ -83,6 +83,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdf17d38_0430504a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-17T13:49:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "23c093ad_ae7c5a74",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 592,
+        "endChar": 1
+      },
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2603198b_addb7b5d",
@@ -120,6 +144,30 @@
       "side": 1,
       "message": "This help protect the code from invalid Fru data from PLDM terminus.\nIt may redundant as you said but I think it is not harm when add this checking.",
       "parentUuid": "2603198b_addb7b5d",
+      "range": {
+        "startLine": 618,
+        "startChar": 34,
+        "endLine": 618,
+        "endChar": 39
+      },
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3634ff55_58731de5",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-17T13:49:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fc1e0a70_ad3a3e0b",
       "range": {
         "startLine": 618,
         "startChar": 34,
