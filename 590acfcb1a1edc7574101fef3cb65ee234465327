@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c661e0a_fe3e20a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-01-17T13:34:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee839ea0_f0237058",
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dceb73c4_0b3f813a",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23c093ad_ae7c5a74",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-01-17T13:34:54Z",
+      "side": 1,
+      "message": "The check is while condition at line #612. So it thinks using function makes the clearer code.",
+      "parentUuid": "dceb73c4_0b3f813a",
+      "range": {
+        "startLine": 582,
+        "startChar": 0,
+        "endLine": 592,
+        "endChar": 1
+      },
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2603198b_addb7b5d",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 17
@@ -54,6 +96,30 @@
       "writtenOn": "2025-01-13T08:58:38Z",
       "side": 1,
       "message": "nit: redundant check",
+      "range": {
+        "startLine": 618,
+        "startChar": 34,
+        "endLine": 618,
+        "endChar": 39
+      },
+      "revId": "590acfcb1a1edc7574101fef3cb65ee234465327",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc1e0a70_ad3a3e0b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-01-17T13:34:54Z",
+      "side": 1,
+      "message": "This help protect the code from invalid Fru data from PLDM terminus.\nIt may redundant as you said but I think it is not harm when add this checking.",
+      "parentUuid": "2603198b_addb7b5d",
       "range": {
         "startLine": 618,
         "startChar": 34,
