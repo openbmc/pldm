@@ -27,11 +27,11 @@ using compatibleserver =
 using boardserver =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board;
 
-using AssetIntf = sdbusplus::server::object::object<assetserver>;
-using AssetTagIntf = sdbusplus::server::object::object<assettagserver>;
-using RevisionIntf = sdbusplus::server::object::object<revisionserver>;
-using CompatibleIntf = sdbusplus::server::object::object<compatibleserver>;
-using BoardIntf = sdbusplus::server::object::object<boardserver>;
+using AssetIntf = sdbusplus::server::object_t<assetserver>;
+using AssetTagIntf = sdbusplus::server::object_t<assettagserver>;
+using RevisionIntf = sdbusplus::server::object_t<revisionserver>;
+using CompatibleIntf = sdbusplus::server::object_t<compatibleserver>;
+using BoardIntf = sdbusplus::server::object_t<boardserver>;
 
 /** @class PldmEntityRequester
  *  @brief OpenBMC PLDM Inventory entity implementation.
