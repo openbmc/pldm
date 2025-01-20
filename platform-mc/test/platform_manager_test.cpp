@@ -18,7 +18,7 @@ class PlatformManagerTest : public testing::Test
         reqHandler(pldmTransport, event, instanceIdDb, false,
                    std::chrono::seconds(1), 2, std::chrono::milliseconds(100)),
         mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
-        platformManager(mockTerminusManager, termini)
+        platformManager(mockTerminusManager, termini, nullptr)
     {}
 
     PldmTransport* pldmTransport = nullptr;
