@@ -39,7 +39,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      pldm::InstanceIdDb& instanceIdDb) :
         terminusManager(event, handler, instanceIdDb, termini, this,
                         pldm::BmcMctpEid),
-        platformManager(terminusManager, termini),
+        platformManager(terminusManager, termini, this),
         sensorManager(event, terminusManager, termini, this),
         eventManager(terminusManager, termini)
     {}
