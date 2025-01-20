@@ -25,7 +25,7 @@ class EventManagerTest : public testing::Test
                    std::chrono::seconds(1), 2, std::chrono::milliseconds(100)),
         terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
         eventManager(terminusManager, termini),
-        platformManager(terminusManager, termini)
+        platformManager(terminusManager, termini, nullptr)
     {}
 
     PldmTransport* pldmTransport = nullptr;

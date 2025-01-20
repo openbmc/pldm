@@ -1,5 +1,6 @@
 #include "platform_manager.hpp"
 
+#include "manager.hpp"
 #include "terminus_manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -109,6 +110,15 @@ exec::task<int> PlatformManager::initTerminus()
                 "TID", tid, "ERROR", rc);
         }
         terminus->initialized = true;
+        if (manager)
+        {
+            manager->startSensorPolling(tid);
+        }
+        else
+        {
+            lg2::error(
+                "Cannot start sensor polling because the manager is not initialized.");
+        }
     }
 
     co_return PLDM_SUCCESS;
