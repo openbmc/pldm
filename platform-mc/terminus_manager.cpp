@@ -216,10 +216,6 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
         if (manager)
         {
             co_await manager->afterDiscoverTerminus();
-            for (const auto& tid : addedTids)
-            {
-                manager->startSensorPolling(tid);
-            }
         }
 
         queuedMctpInfos.pop();

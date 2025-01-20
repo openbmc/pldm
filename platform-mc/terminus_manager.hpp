@@ -169,6 +169,10 @@ class TerminusManager
      *  @param[in] mctpInfo - information of the target endpoint
      */
     std::string constructEndpointObjPath(const MctpInfo& mctpInfo);
+    Manager* getManager() const
+    {
+        return manager;
+    }
 
   private:
     /** @brief Find the terminus object pointer in termini list.
