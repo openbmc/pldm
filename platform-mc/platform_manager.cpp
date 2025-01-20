@@ -2,6 +2,8 @@
 
 #include "terminus_manager.hpp"
 
+#include "manager.hpp"
+
 #include <phosphor-logging/lg2.hpp>
 
 #include <ranges>
@@ -109,6 +111,10 @@ exec::task<int> PlatformManager::initTerminus()
                 "TID", tid, "ERROR", rc);
         }
         terminus->initialized = true;
+        if (auto manager = terminusManager.getManager())
+        {
+            manager->startSensorPolling(tid);
+        }
     }
 
     co_return PLDM_SUCCESS;
