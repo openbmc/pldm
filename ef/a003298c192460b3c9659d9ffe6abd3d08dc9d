@@ -1,0 +1,10 @@
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Code-Review+1: Thu Nguyen <thu@os.amperecomputing.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: George Liu <liuxiwei@ieisystem.com>
+Code-Review+1: Pavithra Barithaya <pavithrabarithaya07@gmail.com>
+Submitted-by: Tom Joseph <rushtotom@gmail.com>
+Submitted-at: Mon, 20 Jan 2025 06:02:58 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/77320
+Project: openbmc/pldm
+Branch: refs/heads/master
