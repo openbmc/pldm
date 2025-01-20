@@ -31,8 +31,8 @@ class PlatformManager
     ~PlatformManager() = default;
 
     explicit PlatformManager(TerminusManager& terminusManager,
-                             TerminiMapper& termini) :
-        terminusManager(terminusManager), termini(termini)
+                             TerminiMapper& termini, Manager* manager) :
+        terminusManager(terminusManager), termini(termini), manager(manager)
     {}
 
     /** @brief Initialize terminus which supports PLDM Type 2
@@ -187,6 +187,12 @@ class PlatformManager
 
     /** @brief Managed termini list */
     TerminiMapper& termini;
+
+    /**
+     * @brief Pointer to the Manager instance, used for sensor polling
+     *        and other platform-level PLDM operations.
+     */
+    Manager* manager;
 };
 } // namespace platform_mc
 } // namespace pldm
