@@ -154,6 +154,11 @@ class TerminusManager
         return localEid;
     }
 
+    Manager* getManager() const
+    {
+        return manager;
+    }
+
   private:
     /** @brief Find the terminus object pointer in termini list.
      *
