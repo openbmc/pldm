@@ -1,0 +1,108 @@
+From f7bdbdbe62a637ab0052dad4208d7f0aa7e4f85d Mon Sep 17 00:00:00 2001
+From: Eric Yang <eric.yang.wiwynn@gmail.com>
+Date: Mon, 20 Jan 2025 17:13:33 +0800
+Subject: [PATCH] pldatform-mc: startSensorPolling post PDR init
+
+Move startSensorPolling after confirming PDR initialization of pldm
+device to avoid missing the start sensor polling opportunity if GetPDR
+fails initially and succeeds later.
+
+Removed the redundant handling of addedTids for sensor polling, as
+initTerminus now ensures all necessary termini are processed.
+
+Change-Id: I4e090a0f3c5b0a7ce85b56f9f3f2c585e42b638f
+Signed-off-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+---
+ platform-mc/manager.hpp          |  2 +-
+ platform-mc/platform_manager.cpp |  9 +++++++++
+ platform-mc/platform_manager.hpp | 12 ++++++++++--
+ platform-mc/terminus_manager.cpp |  4 ----
+ 4 files changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/platform-mc/manager.hpp b/platform-mc/manager.hpp
+index 5654099..039d6f9 100644
+--- a/platform-mc/manager.hpp
++++ b/platform-mc/manager.hpp
+@@ -39,7 +39,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
+                      pldm::InstanceIdDb& instanceIdDb) :
+         terminusManager(event, handler, instanceIdDb, termini, this,
+                         pldm::BmcMctpEid),
+-        platformManager(terminusManager, termini),
++        platformManager(terminusManager, termini, this),
+         sensorManager(event, terminusManager, termini, this),
+         eventManager(terminusManager, termini)
+     {}
+diff --git a/platform-mc/platform_manager.cpp b/platform-mc/platform_manager.cpp
+index 9a053fc..cc1a49e 100644
+--- a/platform-mc/platform_manager.cpp
++++ b/platform-mc/platform_manager.cpp
+@@ -1,5 +1,6 @@
+ #include "platform_manager.hpp"
+ 
++#include "manager.hpp"
+ #include "terminus_manager.hpp"
+ 
+ #include <phosphor-logging/lg2.hpp>
+@@ -109,6 +110,14 @@ exec::task<int> PlatformManager::initTerminus()
+                 "TID", tid, "ERROR", rc);
+         }
+         terminus->initialized = true;
++        if (manager)
++        {
++            manager->startSensorPolling(tid);
++        }
++        else
++        {
++            lg2::error("Manager pointer is null in PlatformManager::initTerminus");
++        }
+     }
+ 
+     co_return PLDM_SUCCESS;
+diff --git a/platform-mc/platform_manager.hpp b/platform-mc/platform_manager.hpp
+index c555452..1836087 100644
+--- a/platform-mc/platform_manager.hpp
++++ b/platform-mc/platform_manager.hpp
+@@ -31,8 +31,10 @@ class PlatformManager
+     ~PlatformManager() = default;
+ 
+     explicit PlatformManager(TerminusManager& terminusManager,
+-                             TerminiMapper& termini) :
+-        terminusManager(terminusManager), termini(termini)
++        TerminiMapper& termini, Manager* manager) :
++        terminusManager(terminusManager),
++        termini(termini),
++        manager(manager)
+     {}
+ 
+     /** @brief Initialize terminus which supports PLDM Type 2
+@@ -187,6 +189,12 @@ class PlatformManager
+ 
+     /** @brief Managed termini list */
+     TerminiMapper& termini;
++
++    /**
++     * @brief Pointer to the Manager instance, used for sensor polling
++     *        and other platform-level PLDM operations.
++     */
++    Manager* manager;
+ };
+ } // namespace platform_mc
+ } // namespace pldm
+diff --git a/platform-mc/terminus_manager.cpp b/platform-mc/terminus_manager.cpp
+index 0aacf33..c05d89e 100644
+--- a/platform-mc/terminus_manager.cpp
++++ b/platform-mc/terminus_manager.cpp
+@@ -216,10 +216,6 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
+         if (manager)
+         {
+             co_await manager->afterDiscoverTerminus();
+-            for (const auto& tid : addedTids)
+-            {
+-                manager->startSensorPolling(tid);
+-            }
+         }
+ 
+         queuedMctpInfos.pop();
+-- 
+2.25.1
+
