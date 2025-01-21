@@ -34,6 +34,24 @@
       "parentUuid": "b0a33b4e_70a531cd",
       "revId": "af69242bc5a1ae49ed060b9a20fb38584ea19a00",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "094ec484_aa104b7e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-01-21T07:08:12Z",
+      "side": 1,
+      "message": "path in description, declaration and definition is fine.",
+      "parentUuid": "d7e3a7b5_060a1bcc",
+      "revId": "af69242bc5a1ae49ed060b9a20fb38584ea19a00",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

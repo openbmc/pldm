@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e80cf20_58e196b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-01-21T07:08:12Z",
+      "side": 1,
+      "message": "\u003eA use case is getting an inventory item\u0027s parent path for its \u003eboard or chassis.\n\nPlease add an example",
+      "revId": "89fead616069b0ce92e57f7670fc6e561c82e213",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "903c14ad_34559c1f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-01-21T07:08:12Z",
+      "side": 1,
+      "message": "searchPath -\u003e path",
+      "revId": "89fead616069b0ce92e57f7670fc6e561c82e213",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f49f86_37be9d0d",
+        "filename": "common/utils.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-01-21T07:08:12Z",
+      "side": 1,
+      "message": "DBUS -\u003e D-Bus",
+      "revId": "89fead616069b0ce92e57f7670fc6e561c82e213",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4105bb_eb0c72dc",
+        "filename": "common/utils.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-01-21T07:08:12Z",
+      "side": 1,
+      "message": "an optional list of interfaces to constrain the search to",
+      "revId": "89fead616069b0ce92e57f7670fc6e561c82e213",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
