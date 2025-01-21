@@ -170,6 +170,16 @@ class TerminusManager
      */
     std::string constructEndpointObjPath(const MctpInfo& mctpInfo);
 
+    /** @brief Member functions to get the MCTP eid of active MCTP medium
+     *         interface of one terminus by terminus name
+     *
+     *  @param[in] terminusName - terminus name
+     *
+     *  @return option mctp_eid_t - the mctp eid or std::nullopt
+     */
+    std::optional<mctp_eid_t> getActiveEidByName(
+        const std::string& terminusName);
+
   private:
     /** @brief Find the terminus object pointer in termini list.
      *
