@@ -67,6 +67,7 @@ void HostEffecterParser::parseEffecterJson(const std::string& jsonPath)
     {
         EffecterInfo effecterInfo;
         effecterInfo.mctpEid = entry.value("mctp_eid", 0xFF);
+        effecterInfo.terminusName = entry.value("terminus_name", "");
         auto jsonEffecterInfo = entry.value("effecter_info", empty);
         auto effecterId =
             jsonEffecterInfo.value("effecterID", PLDM_INVALID_EFFECTER_ID);
@@ -469,7 +470,17 @@ int HostEffecterParser::setTerminusNumericEffecter(
     size_t effecterInfoIndex, uint16_t effecterId, uint8_t dataSize,
     double rawValue)
 {
+    std::string terminusName = hostEffecterInfo[effecterInfoIndex].terminusName;
     uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
+    if (!terminusName.empty())
+    {
+        auto tmpEid = platformManager->getActiveEidByName(terminusName);
+        if (tmpEid)
+        {
+            mctpEid = tmpEid.value();
+        }
+    }
+
     auto instanceId = instanceIdDb->next(mctpEid);
     int rc = PLDM_ERROR;
     std::vector<uint8_t> requestMsg;
@@ -597,7 +608,17 @@ int HostEffecterParser::setHostStateEffecter(
     size_t effecterInfoIndex, std::vector<set_effecter_state_field>& stateField,
     uint16_t effecterId)
 {
+    std::string terminusName = hostEffecterInfo[effecterInfoIndex].terminusName;
     uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
+    if (!terminusName.empty())
+    {
+        auto tmpEid = platformManager->getActiveEidByName(terminusName);
+        if (tmpEid)
+        {
+            mctpEid = tmpEid.value();
+        }
+    }
+
     uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
     auto instanceId = instanceIdDb->next(mctpEid);
 

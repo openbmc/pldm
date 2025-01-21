@@ -3,6 +3,7 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "platform-mc/manager.hpp"
 #include "requester/handler.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -62,6 +63,7 @@ struct DBusNumericEffecterMapping
 struct EffecterInfo
 {
     uint8_t mctpEid;             //!< Host mctp eid
+    std::string terminusName;    //!< Terminus name
     uint8_t effecterPdrType;     //!< Effecter PDR type state/numeric
     uint16_t containerId;        //!< Container Id for host effecter
     uint16_t entityType;         //!< Entity type for the host effecter
@@ -102,9 +104,11 @@ class HostEffecterParser
         pldm::InstanceIdDb* instanceIdDb, int fd, const pldm_pdr* repo,
         pldm::utils::DBusHandler* const dbusHandler,
         const std::string& jsonPath,
-        pldm::requester::Handler<pldm::requester::Request>* handler) :
+        pldm::requester::Handler<pldm::requester::Request>* handler,
+        platform_mc::Manager* platformManager) :
         instanceIdDb(instanceIdDb), sockFd(fd), pdrRepo(repo),
-        dbusHandler(dbusHandler), handler(handler)
+        dbusHandler(dbusHandler), handler(handler),
+        platformManager(platformManager)
     {
         try
         {
@@ -245,6 +249,9 @@ class HostEffecterParser
     const pldm::utils::DBusHandler* dbusHandler; //!< D-bus Handler
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
+
+    /** @brief MC Platform manager*/
+    platform_mc::Manager* platformManager = nullptr;
 };
 
 } // namespace host_effecters
