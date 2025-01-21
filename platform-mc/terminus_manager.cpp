@@ -738,5 +738,49 @@ exec::task<int> TerminusManager::getPLDMVersion(pldm_tid_t tid, uint8_t type,
     co_return completionCode;
 }
 
+std::optional<mctp_eid_t> TerminusManager::getActiveEidByName(
+    const std::string terminusName)
+{
+    if (!termini.size() || terminusName.empty())
+    {
+        return std::nullopt;
+    }
+
+    for (auto& [tid, terminus] : termini)
+    {
+        if (!terminus)
+        {
+            continue;
+        }
+
+        auto tmp = terminus->getTerminusName();
+        if (!tmp || tmp.value().empty() || tmp.value() != terminusName)
+        {
+            continue;
+        }
+
+        try
+        {
+            auto mctpInfo = toMctpInfo(tid);
+            if (!mctpInfo.has_value())
+            {
+                return std::nullopt;
+            }
+
+            if (!mctpInfoAvailTable[mctpInfo.value()])
+            {
+                return std::nullopt;
+            }
+
+            return std::get<0>(mctpInfo.value());
+        }
+        catch (const std::exception& e)
+        {
+            return std::nullopt;
+        }
+    }
+
+    return std::nullopt;
+}
 } // namespace platform_mc
 } // namespace pldm

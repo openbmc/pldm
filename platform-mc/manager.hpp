@@ -255,6 +255,17 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     exec::task<int> oemPollForPlatformEvent(pldm_tid_t tid);
 
+    /** @brief Get Active EIDs.
+     *
+     *  @param[in] addr - MCTP address of terminus
+     *  @param[in] terminiNames - MCTP terminus name
+     */
+    std::optional<mctp_eid_t> getActiveEidByName(
+        const std::string& terminusName)
+    {
+        return terminusManager.getActiveEidByName(terminusName);
+    }
+
   private:
     /** @brief List of discovered termini */
     TerminiMapper termini{};
