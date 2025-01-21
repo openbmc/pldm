@@ -220,11 +220,16 @@ int main(int argc, char** argv)
         throw std::runtime_error("Failed to instantiate PDR repository");
     }
     DBusHandler dbusHandler;
+
+    std::unique_ptr<platform_mc::Manager> platformManager =
+        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
+
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &instanceIdDb, pldmTransport.getEventSource(), pdrRepo.get(),
-                &dbusHandler, HOST_JSONS_DIR, &reqHandler);
+                &dbusHandler, HOST_JSONS_DIR, &reqHandler,
+                platformManager.get());
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
     dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
@@ -274,9 +279,6 @@ int main(int argc, char** argv)
     // FRU table is built lazily when a FRU command or Get PDR command is
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
-
-    std::unique_ptr<platform_mc::Manager> platformManager =
-        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
 
     pldm::responder::platform::EventMap addOnEventHandlers{
         {PLDM_CPER_EVENT,
