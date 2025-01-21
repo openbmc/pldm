@@ -34,6 +34,14 @@ class MctpDiscoveryHandlerIntf
     virtual void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) = 0;
     virtual void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                                 Availability availability) = 0;
+    /** @brief Get Active EIDs.
+     *
+     *  @param[in] addr - MCTP address of terminus
+     *  @param[in] terminiNames - MCTP terminus name
+     */
+    virtual std::optional<mctp_eid_t> getActiveEidByName(
+        const std::string& terminusName) = 0;
+
     virtual ~MctpDiscoveryHandlerIntf() {}
 };
 
