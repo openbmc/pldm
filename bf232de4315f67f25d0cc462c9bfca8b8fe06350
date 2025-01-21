@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55e28ce_7e044e0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-01-21T07:47:22Z",
+      "side": 1,
+      "message": "startSensorPolling() [1] is called after `afterDiscoverTerminus`.\nThe `afterDiscoverTerminus()` [2] will call `platformManager.initTerminus` which getPDRs from the EP. The functions are coroutine function current code is already make sure that `startSensorPolling` is called after get the PRDs from terminus. \n[1] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/terminus_manager.cpp#L196\n\n[2] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/manager.cpp#L19",
+      "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
