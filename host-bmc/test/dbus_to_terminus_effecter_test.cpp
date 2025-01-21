@@ -15,7 +15,8 @@ class MockHostEffecterParser : public HostEffecterParser
     MockHostEffecterParser(int fd, const pldm_pdr* repo,
                            DBusHandler* const dbusHandler,
                            const std::string& jsonPath) :
-        HostEffecterParser(nullptr, fd, repo, dbusHandler, jsonPath, nullptr)
+        HostEffecterParser(nullptr, fd, repo, dbusHandler, jsonPath, nullptr,
+                           nullptr)
     {}
 
     MOCK_METHOD(int, setHostStateEffecter,

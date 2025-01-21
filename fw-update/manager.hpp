@@ -98,6 +98,16 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return updateManager.handleRequest(eid, command, request, reqMsgLen);
     }
 
+    /** @brief Get Active EIDs.
+     *
+     *  @param[in] addr - MCTP address of terminus
+     *  @param[in] terminiNames - MCTP terminus name
+     */
+    std::optional<mctp_eid_t> getActiveEidByName(const std::string&)
+    {
+        return std::nullopt;
+    }
+
   private:
     /** Descriptor information of all the discovered MCTP endpoints */
     DescriptorMap descriptorMap;
