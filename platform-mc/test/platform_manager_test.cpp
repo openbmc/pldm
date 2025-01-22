@@ -37,7 +37,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -196,7 +196,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -354,7 +354,7 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -471,8 +471,8 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
     // terminus doesn't Type2 support
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
-    termini[tid] =
-        std::make_shared<pldm::platform_mc::Terminus>(tid, 1 << PLDM_BASE);
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+        tid, 1 << PLDM_BASE, event);
     auto terminus = termini[tid];
 
     stdexec::sync_wait(platformManager.initTerminus());
@@ -487,7 +487,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     // queue getPDRRepositoryInfo response cc=PLDM_ERROR

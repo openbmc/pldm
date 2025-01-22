@@ -33,20 +33,10 @@ void SensorManager::startPolling(pldm_tid_t tid)
                   tid);
         return;
     }
-    // numeric sensor
-    auto terminus = termini[tid];
-    for (auto& sensor : terminus->numericSensors)
-    {
-        roundRobinSensors[tid].push(sensor);
-    }
+
+    roundRobinSensorItMap[tid] = 0;
 
     updateAvailableState(tid, true);
-
-    if (!roundRobinSensors[tid].size())
-    {
-        lg2::info("Terminus ID {TID}: no sensors to poll.", "TID", tid);
-        return;
-    }
 
     sensorPollTimers[tid] = std::make_unique<sdbusplus::Timer>(
         event.get(),
@@ -80,7 +70,7 @@ void SensorManager::stopPolling(pldm_tid_t tid)
         sensorPollTimers.erase(tid);
     }
 
-    roundRobinSensors.erase(tid);
+    roundRobinSensorItMap.erase(tid);
 
     if (doSensorPollingTaskHandles.contains(tid))
     {
@@ -195,7 +185,11 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
         }
 
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
-        auto toBeUpdated = roundRobinSensors[tid].size();
+
+        auto& numericSensors = terminus->numericSensors;
+        auto toBeUpdated = numericSensors.size();
+        auto& sensorIt = roundRobinSensorItMap[tid];
+
         while (((t1 - t0) < pollingTimeInUsec) && (toBeUpdated > 0))
         {
             if (!getAvailableState(tid))
@@ -206,7 +200,12 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
                 co_await stdexec::just_stopped();
             }
 
-            auto sensor = roundRobinSensors[tid].front();
+            if (sensorIt >= numericSensors.size())
+            {
+                sensorIt = 0;
+            }
+
+            auto sensor = numericSensors[sensorIt];
 
             sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
             elapsed = t1 - sensor->timeStamp;
@@ -234,11 +233,8 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             }
 
             toBeUpdated--;
-            if (roundRobinSensors.contains(tid))
-            {
-                roundRobinSensors[tid].pop();
-                roundRobinSensors[tid].push(std::move(sensor));
-            }
+            sensorIt++;
+
             sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
         }
 
