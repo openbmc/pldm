@@ -7,9 +7,10 @@
 
 TEST(TerminusTest, supportedTypeTest)
 {
-    auto t1 = pldm::platform_mc::Terminus(1, 1 << PLDM_BASE);
-    auto t2 =
-        pldm::platform_mc::Terminus(2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(1, 1 << PLDM_BASE, event);
+    auto t2 = pldm::platform_mc::Terminus(
+        2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
 
     EXPECT_EQ(true, t1.doesSupportType(PLDM_BASE));
     EXPECT_EQ(false, t1.doesSupportType(PLDM_PLATFORM));
@@ -19,16 +20,18 @@ TEST(TerminusTest, supportedTypeTest)
 
 TEST(TerminusTest, getTidTest)
 {
+    auto event = sdeventplus::Event::get_default();
     const pldm_tid_t tid = 1;
-    auto t1 = pldm::platform_mc::Terminus(tid, 1 << PLDM_BASE);
+    auto t1 = pldm::platform_mc::Terminus(tid, 1 << PLDM_BASE, event);
 
     EXPECT_EQ(tid, t1.getTid());
 }
 
 TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
 {
-    auto t1 =
-        pldm::platform_mc::Terminus(1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     std::vector<uint8_t> pdr1{
         0x0,
         0x0,
@@ -110,8 +113,9 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
 
 TEST(TerminusTest, parseSensorAuxiliaryMultiNamesPDRTest)
 {
-    auto t1 =
-        pldm::platform_mc::Terminus(1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     std::vector<uint8_t> pdr1{
         0x0,
         0x0,
@@ -229,8 +233,9 @@ TEST(TerminusTest, parseSensorAuxiliaryMultiNamesPDRTest)
 
 TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
 {
-    auto t1 =
-        pldm::platform_mc::Terminus(1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     std::vector<uint8_t> pdr1{
         0x0,
         0x0,
@@ -350,8 +355,9 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
 
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
 {
-    auto t1 =
-        pldm::platform_mc::Terminus(1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     std::vector<uint8_t> pdr1{
         0x1, 0x0, 0x0,
         0x0,                             // record handle
