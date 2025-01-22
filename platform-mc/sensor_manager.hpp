@@ -19,6 +19,8 @@ namespace pldm
 namespace platform_mc
 {
 
+using namespace pldm::pdr;
+
 /**
  * @brief SensorManager
  *
@@ -117,9 +119,8 @@ class SensorManager
     /** @brief Available state for pldm request of terminus */
     std::map<pldm_tid_t, Availability> availableState;
 
-    /** @brief round robin sensor list */
-    std::map<pldm_tid_t, std::queue<std::shared_ptr<NumericSensor>>>
-        roundRobinSensors;
+    /** @brief Round robin sensor iter of terminus */
+    std::map<pldm_tid_t, SensorID> roundRobinSensorItMap;
 
     /** @brief pointer to Manager */
     Manager* manager;

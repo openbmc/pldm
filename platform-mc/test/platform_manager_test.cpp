@@ -2,6 +2,7 @@
 #include "mock_terminus_manager.hpp"
 #include "platform-mc/platform_manager.hpp"
 #include "test/test_instance_id.hpp"
+#include "utils_test.hpp"
 
 #include <sdeventplus/event.hpp>
 
@@ -37,7 +38,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -190,6 +191,9 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(true, terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_GET_PDR));
     EXPECT_EQ(2, terminus->pdrs.size());
+    // Run event loop for a few seconds to let sensor creation
+    // defer tasks be run. May increase time when sensor num is large
+    utils::runEventLoopForSeconds(event, 1);
     EXPECT_EQ(1, terminus->numericSensors.size());
     EXPECT_EQ("S0", terminus->getTerminusName().value());
 }
@@ -200,7 +204,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -361,7 +365,7 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -478,11 +482,14 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
     // terminus doesn't Type2 support
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
-    termini[tid] =
-        std::make_shared<pldm::platform_mc::Terminus>(tid, 1 << PLDM_BASE);
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+        tid, 1 << PLDM_BASE, event);
     auto terminus = termini[tid];
 
     stdexec::sync_wait(platformManager.initTerminus());
+    // Run event loop for a few seconds to let sensor creation
+    // defer tasks be run. May increase time when sensor num is large
+    utils::runEventLoopForSeconds(event, 1);
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(0, terminus->pdrs.size());
     EXPECT_EQ(0, terminus->numericSensors.size());
@@ -494,7 +501,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     auto mappedTid = mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     // queue getPDRRepositoryInfo response cc=PLDM_ERROR
@@ -515,6 +522,9 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     stdexec::sync_wait(platformManager.initTerminus());
+    // Run event loop for a few seconds to let sensor creation
+    // defer tasks be run. May increase time when sensor num is large
+    utils::runEventLoopForSeconds(event, 1);
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(0, terminus->pdrs.size());
     EXPECT_EQ(0, terminus->numericSensors.size());
