@@ -52,11 +52,12 @@ class TerminusManager
     virtual ~TerminusManager() = default;
 
     explicit TerminusManager(
-        sdeventplus::Event& /* event */, RequesterHandler& handler,
+        sdeventplus::Event& event, RequesterHandler& handler,
         pldm::InstanceIdDb& instanceIdDb, TerminiMapper& termini,
         Manager* manager, mctp_eid_t localEid) :
         handler(handler), instanceIdDb(instanceIdDb), termini(termini),
-        tidPool(tidPoolSize, false), manager(manager), localEid(localEid)
+        tidPool(tidPoolSize, false), manager(manager), localEid(localEid),
+        event(event)
     {
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
         tidPool[0] = true;
@@ -287,6 +288,11 @@ class TerminusManager
 
     /** @brief MCTP Endpoint available status mapping */
     std::map<MctpInfo, Availability> mctpInfoAvailTable;
+
+    /** @brief reference of main event loop of pldmd, primarily used to schedule
+     *  work
+     */
+    sdeventplus::Event& event;
 };
 } // namespace platform_mc
 } // namespace pldm
