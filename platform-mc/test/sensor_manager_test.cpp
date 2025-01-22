@@ -151,9 +151,8 @@ class SensorManagerTest : public testing::Test
 TEST_F(SensorManagerTest, sensorPollingTest)
 {
     uint64_t seconds = 10;
-
     pldm_tid_t tid = 1;
-    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(tid, 0);
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(tid, 0, event);
     termini[tid]->pdrs.push_back(pdr1);
     termini[tid]->pdrs.push_back(pdr2);
     termini[tid]->parseTerminusPDRs();
