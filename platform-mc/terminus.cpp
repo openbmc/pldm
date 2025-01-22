@@ -14,10 +14,11 @@ namespace pldm
 namespace platform_mc
 {
 
-Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
+Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
+                   sdeventplus::Event& event) :
     initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
     synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
-    supportedTypes(supportedTypes)
+    supportedTypes(supportedTypes), event(event)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)
@@ -119,11 +120,6 @@ bool Terminus::createInventoryPath(std::string tName)
 
 void Terminus::parseTerminusPDRs()
 {
-    std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
-        numericSensorPdrs{};
-    std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
-        compactNumericSensorPdrs{};
-
     for (auto& pdr : pdrs)
     {
         auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
@@ -228,15 +224,47 @@ void Terminus::parseTerminusPDRs()
                    tid, "PATH", inventoryPath);
     }
 
-    for (auto pdr : numericSensorPdrs)
+    addNextSensorFromPDRs();
+}
+
+void Terminus::addNextSensorFromPDRs()
+{
+    sensorCreationEvent.reset();
+
+    if (terminusName.empty())
     {
-        addNumericSensor(pdr);
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
+            "TID", tid);
+        return;
     }
 
-    for (auto pdr : compactNumericSensorPdrs)
+    auto pdrIt = sensorPdrIt;
+
+    if (pdrIt < numericSensorPdrs.size())
     {
-        addCompactNumericSensor(pdr);
+        const auto pdr = numericSensorPdrs[pdrIt];
+        // Defer adding the next Numeric Sensor
+        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
+            event,
+            std::bind(std::mem_fn(&Terminus::addNumericSensor), this, pdr));
     }
+    else if (pdrIt < numericSensorPdrs.size() + compactNumericSensorPdrs.size())
+    {
+        pdrIt -= numericSensorPdrs.size();
+        const auto pdr = compactNumericSensorPdrs[pdrIt];
+        // Defer adding the next Compact Numeric Sensor
+        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
+            event, std::bind(std::mem_fn(&Terminus::addCompactNumericSensor),
+                             this, pdr));
+    }
+    else
+    {
+        return;
+    }
+
+    // Move the iteration to the next sensor PDR
+    sensorPdrIt++;
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
@@ -391,14 +419,6 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr> Terminus::parseNumericSensorPDR(
 void Terminus::addNumericSensor(
     const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
 {
-    if (terminusName.empty())
-    {
-        lg2::error(
-            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
-            "TID", tid);
-        return;
-    }
-
     auto sensorId = pdr->sensor_id;
     auto sensorNames = getSensorNames(sensorId);
 
@@ -425,6 +445,8 @@ void Terminus::addNumericSensor(
             "Failed to create NumericSensor. error - {ERROR} sensorname - {NAME}",
             "ERROR", e, "NAME", sensorName);
     }
+
+    addNextSensorFromPDRs();
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::parseCompactNumericSensorNames(
@@ -495,14 +517,6 @@ std::shared_ptr<pldm_compact_numeric_sensor_pdr>
 void Terminus::addCompactNumericSensor(
     const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr)
 {
-    if (terminusName.empty())
-    {
-        lg2::error(
-            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
-            "TID", tid);
-        return;
-    }
-
     auto sensorId = pdr->sensor_id;
     auto sensorNames = getSensorNames(sensorId);
 
@@ -530,6 +544,8 @@ void Terminus::addCompactNumericSensor(
             "Failed to create Compact NumericSensor. error - {ERROR} sensorname - {NAME}",
             "ERROR", e, "NAME", sensorName);
     }
+
+    addNextSensorFromPDRs();
 }
 
 std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorId id)
