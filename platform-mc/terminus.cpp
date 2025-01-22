@@ -14,10 +14,12 @@ namespace pldm
 namespace platform_mc
 {
 
-Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes) :
+Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
+                   sdeventplus::Event& event) :
     initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
     synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
-    supportedTypes(supportedTypes)
+    supportedTypes(supportedTypes), event(event),
+    timer(event, std::bind(std::mem_fn(&Terminus::addNextSensorFromPDRs), this))
 {}
 
 bool Terminus::doesSupportType(uint8_t type)
@@ -119,11 +121,6 @@ bool Terminus::createInventoryPath(std::string tName)
 
 void Terminus::parseTerminusPDRs()
 {
-    std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
-        numericSensorPdrs{};
-    std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
-        compactNumericSensorPdrs{};
-
     for (auto& pdr : pdrs)
     {
         auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
@@ -228,15 +225,32 @@ void Terminus::parseTerminusPDRs()
                    tid, "PATH", inventoryPath);
     }
 
-    for (auto pdr : numericSensorPdrs)
+    addNextSensorFromPDRs();
+}
+
+void Terminus::addNextSensorFromPDRs()
+{
+    auto pdrIt = sensorPdrIt;
+    timer.setEnabled(false);
+
+    if (pdrIt < numericSensorPdrs.size())
     {
+        const auto pdr = numericSensorPdrs[pdrIt];
         addNumericSensor(pdr);
     }
-
-    for (auto pdr : compactNumericSensorPdrs)
+    else if (pdrIt < numericSensorPdrs.size() + compactNumericSensorPdrs.size())
     {
+        pdrIt -= numericSensorPdrs.size();
+        const auto pdr = compactNumericSensorPdrs[pdrIt];
         addCompactNumericSensor(pdr);
     }
+    else
+    {
+        return;
+    }
+
+    sensorPdrIt++;
+    timer.restartOnce(std::chrono::milliseconds(SENSOR_CREATION_INTERVAL));
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
