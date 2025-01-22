@@ -16,6 +16,24 @@
       "message": "startSensorPolling() [1] is called after `afterDiscoverTerminus`.\nThe `afterDiscoverTerminus()` [2] will call `platformManager.initTerminus` which getPDRs from the EP. The functions are coroutine function current code is already make sure that `startSensorPolling` is called after get the PRDs from terminus. \n[1] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/terminus_manager.cpp#L196\n\n[2] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/manager.cpp#L19",
       "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9db73caa_33d2bc18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-01-22T03:03:23Z",
+      "side": 1,
+      "message": "Under normal circumstances, the behavior is as you described.\nHowever, there\u0027s a specific scenario where this issue arises.\n\nExample:\nIf EID 20 is probed, the process begins by handling EID 20[1].\nAfter finishing the terminus initialization, it attempts to get the PDR for EID 20 via initTerminus.\nIf a GetPDR error occurs during this step[2], the terminus-\u003einitialized \u003d true flag is not set.\nAs a result, when startPolling is triggered, there are no sensors to poll[3], and EID 20\u0027s MctpInfos is removed from the queue.\n\nThen, if EID 30 is probed, the process begins handling EID 30.\nAfter initializing the terminus, it proceeds to initTerminus.\nSince [4] retrieves PDRs for all terminuses, it will attempt to reinitialize EID 20\u0027s terminus because its terminus-\u003einitialized is set to false at this point. Consequently, GetPDR is performed for EID 20 first, and then for EID 30.\nHowever, when PLDM returns to discoverMctpTerminusTask, [5] only calls startSensorPolling for addedTids, which in this case is EID 30.\n\nThis means that although EID 20 has successfully fetched the PDR this time and the PLDM tree is updated correctly, the PLDM does not initiate sensor polling for EID 20.\nThis is why I suggest moving startSensorPolling to occur right after terminus-\u003einitialized \u003d true, or alternatively, modifying the existing logic in [5] to call startSensorPolling for all terminuses instead of just addedTids.\n\nReferences:\n[1] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/terminus_manager.cpp#L166\n[2] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/platform_manager.cpp#L63\n[3] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/sensor_manager.cpp#L47\n[4] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/platform_manager.cpp#L18\n[5] \nhttps://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/terminus_manager.cpp#L194",
+      "parentUuid": "c55e28ce_7e044e0a",
+      "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
