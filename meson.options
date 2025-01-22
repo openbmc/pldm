@@ -212,3 +212,16 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249,
 )
+
+## Timer interval for creating sensor objects from sensor PDRs
+## Sensor Object Creation Options
+option(
+    'sensor-creation-interval',
+    type: 'integer',
+    min: 0,
+    max: 1000,
+    description: '''The timer interval in milliseconds between each creation of
+                    sensor objects from sensor PDRs. If not zero, there will be
+                    delay in the creation of sensors on to D-Bus.''',
+    value: 0
+)
