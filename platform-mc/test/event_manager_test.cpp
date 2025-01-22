@@ -9,6 +9,7 @@
 #include "platform-mc/platform_manager.hpp"
 #include "platform-mc/terminus_manager.hpp"
 #include "test/test_instance_id.hpp"
+#include "utils_test.hpp"
 
 #include <gtest/gtest.h>
 
@@ -45,7 +46,7 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
 #define WARNING_HIGH 45
     pldm_tid_t tid = 1;
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     std::vector<uint8_t> pdr1{
         0x1,
         0x0,
@@ -146,6 +147,9 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
     termini[tid]->pdrs.emplace_back(pdr1);
     termini[tid]->pdrs.emplace_back(pdr2);
     termini[tid]->parseTerminusPDRs();
+    // Run event loop for a few seconds to let sensor creation
+    // defer tasks be run. May increase time when sensor num is large
+    utils::runEventLoopForSeconds(event, 1);
     EXPECT_EQ(1, termini[tid]->numericSensors.size());
 
     uint8_t platformEventStatus = 0;
@@ -170,7 +174,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -374,6 +378,9 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
 
     // should finish immediately
     stdexec::sync_wait(platformManager.initTerminus());
+    // Run event loop for a few seconds to let sensor creation
+    // defer tasks be run. May increase time when sensor num is large
+    utils::runEventLoopForSeconds(event, 1);
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(32, terminus->maxBufferSize);
     EXPECT_EQ(0x06, terminus->synchronyConfigurationSupported.byte);
@@ -398,7 +405,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
     auto mappedTid = terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
     auto terminus = termini[tid];
 
     // queue pollForPlatformEventMessage first part response
