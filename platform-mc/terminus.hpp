@@ -11,6 +11,7 @@
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
+#include <sdeventplus/utility/timer.hpp>
 
 #include <algorithm>
 #include <bitset>
@@ -68,7 +69,8 @@ using EntityAuxiliaryNames = std::tuple<EntityKey, AuxiliaryNames>;
 class Terminus
 {
   public:
-    Terminus(pldm_tid_t tid, uint64_t supportedPLDMTypes);
+    Terminus(pldm_tid_t tid, uint64_t supportedPLDMTypes,
+             sdeventplus::Event& event);
 
     /** @brief Check if the terminus supports the PLDM type message
      *
@@ -275,6 +277,11 @@ class Terminus
      */
     bool createInventoryPath(std::string tName);
 
+    /** @brief Add the next sensor PDR to this terminus, iterated by
+     *         sensorPdrIt.
+     */
+    void addNextSensorFromPDRs();
+
     /* @brief The terminus's TID */
     pldm_tid_t tid;
 
@@ -310,6 +317,25 @@ class Terminus
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
+
+    /** @brief reference of main event loop of pldmd, primarily used to schedule
+     *  work
+     */
+    sdeventplus::Event& event;
+
+    /** @brief The event source to defer sensor creation tasks to event loop*/
+    std::unique_ptr<sdeventplus::source::Defer> sensorCreationEvent;
+
+    /** @brief Numeric Sensor PDR list */
+    std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>
+        numericSensorPdrs{};
+
+    /** @brief Compact Numeric Sensor PDR list */
+    std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
+        compactNumericSensorPdrs{};
+
+    /** @brief Iteration to loop through sensor PDRs when adding sensors */
+    uint32_t sensorPdrIt = 0;
 };
 } // namespace platform_mc
 } // namespace pldm
