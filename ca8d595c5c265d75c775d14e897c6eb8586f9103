@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "226d9bc4_bc440605",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-01-24T10:58:09Z",
+      "side": 1,
+      "message": "`new` will allocate memory each time right, why not use `reinterpret_cast` here?",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 52
+      },
+      "revId": "ca8d595c5c265d75c775d14e897c6eb8586f9103",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb27831_9f8a0fdb",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-01-24T10:58:09Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 171,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 52
+      },
+      "revId": "ca8d595c5c265d75c775d14e897c6eb8586f9103",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1952e078_60516118",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-01-24T10:58:09Z",
+      "side": 1,
+      "message": "can we use the new way of lg2 format?",
+      "range": {
+        "startLine": 248,
+        "startChar": 40,
+        "endLine": 248,
+        "endChar": 51
+      },
+      "revId": "ca8d595c5c265d75c775d14e897c6eb8586f9103",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c04f46ed_51cb29ec",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 74
