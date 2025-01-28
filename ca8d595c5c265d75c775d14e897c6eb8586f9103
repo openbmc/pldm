@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae00712d_d1f71ced",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-01-28T00:17:11Z",
+      "side": 1,
+      "message": "\u003e `new` will allocate memory each time right\n\nNo. This syntax is for placement-new:\n\nhttps://en.cppreference.com/w/cpp/language/new#Placement_new\n\n`reinterpret_cast` is prohibited by the C++ core guidelines:\n\nhttps://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Pro-type-reinterpretcast\n\n`reinterpret_cast` is prohibited because it takes the behaviour outside the language definition and gives you problems with type safety. Placement-new on the other-hand allows us to control the object storage while still properly instantiating an object, keeping the behaviour _inside_ the C++ language specification.",
+      "parentUuid": "226d9bc4_bc440605",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 52
+      },
+      "revId": "ca8d595c5c265d75c775d14e897c6eb8586f9103",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdb27831_9f8a0fdb",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 74
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-24T10:58:09Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 171,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 52
+      },
+      "revId": "ca8d595c5c265d75c775d14e897c6eb8586f9103",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81c69d15_52c81ec6",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-01-28T00:17:11Z",
+      "side": 1,
+      "message": "As above.",
+      "parentUuid": "cdb27831_9f8a0fdb",
       "range": {
         "startLine": 171,
         "startChar": 4,
