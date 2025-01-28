@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64ee75b8_e449c15d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 82
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-28T05:34:30Z",
+      "side": 1,
+      "message": "Hi @unive - The changes looks good to be at",
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "066b6031_8d219032",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-28T05:34:30Z",
+      "side": 1,
+      "message": "Make these lg2 messages human-readable, please refer https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings for the best practice.\n\nMay be some thing like this would be more readable \n\n`Failed to discover file descriptors for {EID} with {Error}`\n\nSame comment applies throughout the commit, please check and modify where ever necessary.",
+      "range": {
+        "startLine": 28,
+        "startChar": 19,
+        "endLine": 28,
+        "endChar": 68
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecd2fc87_a12c0930",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-28T05:34:30Z",
+      "side": 1,
+      "message": "just an `e` would work instead of e.what()",
+      "range": {
+        "startLine": 29,
+        "startChar": 32,
+        "endLine": 29,
+        "endChar": 40
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40c3486a_a96d14b9",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-28T05:34:30Z",
+      "side": 1,
+      "message": "is it not worth to print an INFO log here ..saying so and so FD does not support the Qeury downstream device command ?",
+      "range": {
+        "startLine": 224,
+        "startChar": 12,
+        "endLine": 224,
+        "endChar": 19
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8ce5d1d_36419bb8",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-28T05:34:30Z",
+      "side": 1,
+      "message": "could lead to a crash .. need to ensure that eid key exists first before the look up ?",
+      "range": {
+        "startLine": 342,
+        "startChar": 33,
+        "endLine": 342,
+        "endChar": 64
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
