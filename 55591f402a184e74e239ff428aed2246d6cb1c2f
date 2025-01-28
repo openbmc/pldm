@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b08e803e_6d50d74a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 82
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-01-28T05:35:07Z",
+      "side": 1,
+      "message": "just couple of minor comments, and i think it is good to go.",
+      "parentUuid": "64ee75b8_e449c15d",
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "066b6031_8d219032",
