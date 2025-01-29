@@ -172,7 +172,7 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     uint32_t recordHandle{};
     if (!nextRecordHandle && (!modifiedPDRRecordHandles.empty()) &&
         isHostPdrModified)
@@ -234,8 +234,8 @@ void HostPDRHandler::mergeEntityAssociations(
     size_t numEntities{};
     pldm_entity* entities = nullptr;
     bool merged = false;
-    auto entityPdr = reinterpret_cast<pldm_pdr_entity_association*>(
-        const_cast<uint8_t*>(pdr.data()) + sizeof(pldm_pdr_hdr));
+    auto entityPdr = new (const_cast<uint8_t*>(pdr.data()) +
+                          sizeof(pldm_pdr_hdr)) pldm_pdr_entity_association;
 
     if (oemPlatformHandler &&
         oemPlatformHandler->checkRecordHandleInRange(record_handle))
@@ -372,9 +372,8 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                      changeEntries[0].size() * sizeof(uint32_t);
     std::vector<uint8_t> eventDataVec{};
     eventDataVec.resize(maxSize);
-    auto eventData =
-        reinterpret_cast<struct pldm_pdr_repository_chg_event_data*>(
-            eventDataVec.data());
+    auto eventData = new (eventDataVec.data())
+        pldm_pdr_repository_chg_event_data;
     size_t actualSize{};
     auto firstEntry = changeEntries[0].data();
     auto rc = encode_pldm_pdr_repository_chg_event_data(
@@ -391,7 +390,7 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         actualSize);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     rc = encode_platform_event_message_req(
         instanceId, 1, TERMINUS_ID, PLDM_PDR_REPOSITORY_CHG_EVENT,
         eventDataVec.data(), actualSize, request,
@@ -531,7 +530,7 @@ void HostPDRHandler::processHostPDRs(
                 rh = nextRecordHandle - 1;
             }
 
-            auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+            auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
             if (!rh)
             {
                 rh = pdrHdr->record_handle;
@@ -717,7 +716,7 @@ void HostPDRHandler::setHostFirmwareCondition()
     auto instanceId = instanceIdDb.next(mctp_eid);
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_get_version_req(instanceId, 0, PLDM_GET_FIRSTPART,
                                      PLDM_BASE, request);
     if (rc != PLDM_SUCCESS)
@@ -790,7 +789,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                 std::vector<uint8_t> requestMsg(
                     sizeof(pldm_msg_hdr) +
                     PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
-                auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+                auto request = new (requestMsg.data()) pldm_msg;
                 auto rc = encode_get_state_sensor_readings_req(
                     instanceId, sensorId, sensorRearm, 0, request);
 
@@ -933,7 +932,7 @@ void HostPDRHandler::getFRURecordTableMetadataByRemote(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
 
     // GetFruRecordTableMetadata
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_get_fru_record_table_metadata_req(
         instanceId, request, requestMsg.size() - sizeof(pldm_msg_hdr));
     if (rc != PLDM_SUCCESS)
@@ -1011,7 +1010,7 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
 
     // send the getFruRecordTable command
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_get_fru_record_table_req(
         instanceId, 0, PLDM_GET_FIRSTPART, request,
         requestMsg.size() - sizeof(pldm_msg_hdr));
