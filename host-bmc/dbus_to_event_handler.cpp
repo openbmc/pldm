@@ -31,7 +31,7 @@ void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         eventDataVec.size());
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
 
     auto rc = encode_platform_event_message_req(
         instanceId, 1 /*formatVersion*/, TERMINUS_ID /*tId*/, eventType,
@@ -97,8 +97,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
     {
         std::vector<uint8_t> sensorEventDataVec{};
         sensorEventDataVec.resize(sensorEventSize);
-        auto eventData = reinterpret_cast<struct pldm_sensor_event_data*>(
-            sensorEventDataVec.data());
+        auto eventData = new (sensorEventDataVec.data()) pldm_sensor_event_data;
         eventData->sensor_id = sensorId;
         eventData->sensor_event_class_type = PLDM_STATE_SENSOR_STATE;
         eventData->event_class[0] = static_cast<uint8_t>(offset);
@@ -150,9 +149,8 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
 
                     if (findValue)
                     {
-                        auto eventData =
-                            reinterpret_cast<struct pldm_sensor_event_data*>(
-                                sensorEventDataVec.data());
+                        auto eventData = new (sensorEventDataVec.data())
+                            pldm_sensor_event_data;
                         eventData->event_class[1] = itr.first;
                         if (sensorCacheMap.contains(sensorId) &&
                             sensorCacheMap[sensorId][offset] !=
@@ -206,7 +204,7 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
         auto pdrRecord = sensorPDRs.getFirstRecord(pdrEntry);
         while (pdrRecord)
         {
-            pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrEntry.data);
+            pdr = new (pdrEntry.data) pldm_state_sensor_pdr;
             SensorId sensorId = LE16TOH(pdr->sensor_id);
             if (sensorHandlers.contains(pdrType))
             {
