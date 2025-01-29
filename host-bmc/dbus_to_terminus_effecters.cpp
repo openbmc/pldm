@@ -484,7 +484,7 @@ int HostEffecterParser::setTerminusNumericEffecter(
     size_t payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES - 1 +
                             getEffecterDataSize(dataSize);
     requestMsg.resize(sizeof(pldm_msg_hdr) + payload_length);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     switch (dataSize)
     {
         case PLDM_EFFECTER_DATA_SIZE_UINT8:
@@ -605,7 +605,7 @@ int HostEffecterParser::setHostStateEffecter(
         sizeof(pldm_msg_hdr) + sizeof(effecterId) + sizeof(compEffCnt) +
             sizeof(set_effecter_state_field) * compEffCnt,
         0);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_set_state_effecter_states_req(
         instanceId, effecterId, compEffCnt, stateField.data(), request);
 
