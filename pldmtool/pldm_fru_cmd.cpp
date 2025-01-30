@@ -42,7 +42,7 @@ class GetFruRecordTableMetadata : public CommandInterface
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_fru_record_table_metadata_req(
             instanceId, request, PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
@@ -361,8 +361,7 @@ class GetFRURecordByOption : public CommandInterface
 
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadLength,
                                         0);
-        auto reqMsg = reinterpret_cast<pldm_msg*>(requestMsg.data());
-
+        auto reqMsg = new (requestMsg.data()) pldm_msg;
         auto rc = encode_get_fru_record_by_option_req(
             instanceId, 0 /* DataTransferHandle */, 0 /* FRUTableHandle */,
             recordSetIdentifier, recordType, fieldType, PLDM_GET_FIRSTPART,
@@ -414,7 +413,7 @@ class GetFruRecordTable : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_fru_record_table_req(
             instanceId, 0, PLDM_GET_FIRSTPART, request,
