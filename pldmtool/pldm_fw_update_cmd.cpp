@@ -88,7 +88,7 @@ class GetStatus : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_STATUS_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
         auto rc = encode_get_status_req(instanceId, request,
                                         PLDM_GET_STATUS_REQ_BYTES);
         return {rc, requestMsg};
@@ -178,7 +178,7 @@ class GetFwParams : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
         auto rc = encode_get_firmware_parameters_req(
             instanceId, PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES, request);
         return {rc, requestMsg};
@@ -519,7 +519,7 @@ std::pair<int, std::vector<uint8_t>> QueryDeviceIdentifiers::createRequestMsg()
 {
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_query_device_identifiers_req(
         instanceId, PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES, request);
     return {rc, requestMsg};
