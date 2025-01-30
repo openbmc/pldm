@@ -186,8 +186,7 @@ bool SoftPowerOff::getEffecterID(pldm::pdr::EntityType& entityType,
         {
             for (auto& rep : response)
             {
-                auto softoffPdr =
-                    reinterpret_cast<pldm_state_effecter_pdr*>(rep.data());
+                auto softoffPdr = new (rep.data()) pldm_state_effecter_pdr;
                 effecterID = softoffPdr->effecter_id;
             }
         }
@@ -229,7 +228,7 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
         pldm_state_sensor_pdr* pdr = nullptr;
         for (auto& rep : Response)
         {
-            pdr = reinterpret_cast<pldm_state_sensor_pdr*>(rep.data());
+            pdr = new (rep.data()) pldm_state_sensor_pdr;
             if (!pdr)
             {
                 error("Failed to get state sensor PDR.");
@@ -244,9 +243,8 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
 
         for (auto offset = 0; offset < compositeSensorCount; offset++)
         {
-            auto possibleStates =
-                reinterpret_cast<state_sensor_possible_states*>(
-                    possibleStatesStart);
+            auto possibleStates = new (possibleStatesStart)
+                state_sensor_possible_states;
             auto setId = possibleStates->state_set_id;
             auto possibleStateSize = possibleStates->possible_states_size;
 
@@ -284,7 +282,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                sizeof(pldm_msg_hdr) + sizeof(effecterID) +
                    sizeof(effecterCount) + sizeof(set_effecter_state_field)>
         requestMsg{};
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     set_effecter_state_field stateField{
         PLDM_REQUEST_SET, PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED};
     instanceID = instanceIdDb.next(pldmTID);
@@ -346,7 +344,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         // We've got the response meant for the PLDM request msg that was
         // sent out
         io.set_enabled(Enabled::Off);
-        auto response = reinterpret_cast<pldm_msg*>(responseMsgPtr.get());
+        auto response = new (responseMsgPtr.get()) pldm_msg;
 
         if (srcTID != pldmTID ||
             !pldm_msg_hdr_correlate_response(&request->hdr, &response->hdr))
