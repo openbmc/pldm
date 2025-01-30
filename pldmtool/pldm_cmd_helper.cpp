@@ -43,7 +43,7 @@ void CommandInterface::exec()
         return;
     }
 
-    auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+    auto responsePtr = new (responseMsg.data()) pldm_msg;
     parseResponseMsg(responsePtr, responseMsg.size() - sizeof(pldm_msg_hdr));
     instanceIdDb.free(mctp_eid, instanceId);
 }
