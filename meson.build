@@ -191,7 +191,7 @@ libpldm_dep = dependency(
     include_type: 'system',
 )
 
-if get_option('oem-ampere').enabled()
+if get_option('oem-ampere').allowed()
     add_project_arguments('-DOEM_AMPERE', language : 'cpp')
 endif
 
@@ -229,7 +229,7 @@ deps = [
 ]
 
 oem_files = []
-if get_option('oem-ampere').enabled()
+if get_option('oem-ampere').allowed()
     subdir('oem/ampere')
 endif
 
