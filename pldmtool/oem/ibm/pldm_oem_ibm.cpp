@@ -52,7 +52,7 @@ class GetAlertStatus : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_ALERT_STATUS_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_alert_status_req(instanceId, versionId, request,
                                               PLDM_GET_ALERT_STATUS_REQ_BYTES);
@@ -114,7 +114,7 @@ class GetFileTable : public CommandInterface
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_FILE_TABLE_REQ_BYTES);
 
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_file_table_req(instanceId, 0, PLDM_GET_FIRSTPART,
                                             0, request);
@@ -137,8 +137,7 @@ class GetFileTable : public CommandInterface
         uint32_t nextTransferHandle = 0;
         size_t fileTableDataLength = 0;
         uint8_t table_data_start_offset;
-        auto responsePtr =
-            reinterpret_cast<struct pldm_msg*>(responseMsg.data());
+        auto responsePtr = new (responseMsg.data()) pldm_msg;
         auto payloadLength = responseMsg.size() - sizeof(pldm_msg_hdr);
 
         rc = decode_get_file_table_resp(
@@ -171,8 +170,7 @@ class GetFileTable : public CommandInterface
         while (startptr < endptr)
         {
             ordered_json fdata;
-            auto filetableData =
-                reinterpret_cast<pldm_file_attr_table_entry*>(startptr);
+            auto filetableData = new (startptr) pldm_file_attr_table_entry;
             fdata["FileHandle"] = std::to_string(filetableData->file_handle);
             startptr += sizeof(filetableData->file_handle);
 

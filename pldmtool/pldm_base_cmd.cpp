@@ -132,7 +132,7 @@ class GetPLDMTypes : public CommandInterface
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
         auto rc = encode_get_types_req(instanceId, request);
         return {rc, requestMsg};
     }
@@ -199,7 +199,7 @@ class GetPLDMVersion : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_version_req(instanceId, 0, PLDM_GET_FIRSTPART,
                                          pldmType, request);
@@ -253,7 +253,7 @@ class GetTID : public CommandInterface
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
         auto rc = encode_get_tid_req(instanceId, request);
         return {rc, requestMsg};
     }
@@ -302,7 +302,7 @@ class GetPLDMCommands : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
         ver32_t version{0xFF, 0xFF, 0xFF, 0xFF};
         if (inputVersion.size() != 0)
         {
