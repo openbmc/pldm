@@ -26,7 +26,7 @@ int main(int argc, char** argv)
                sizeof(pldm_msg_hdr) + sizeof(effecterId) +
                    sizeof(effecterCount) + sizeof(set_effecter_state_field)>
         requestMsg{};
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     set_effecter_state_field stateField{PLDM_REQUEST_SET, state};
     auto rc = encode_set_state_effecter_states_req(0, effecterId, effecterCount,
                                                    &stateField, request);
@@ -53,7 +53,7 @@ int main(int argc, char** argv)
             "RC", rc, "ERROR", errno);
         return -1;
     }
-    pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg);
+    pldm_msg* response = new (responseMsg) pldm_msg;
     info(
         "Done! Got the response for PLDM send receive message request, response code '{RC}'",
         "RC", lg2::hex, response->payload[0]);

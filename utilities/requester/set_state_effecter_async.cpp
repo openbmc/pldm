@@ -33,7 +33,7 @@ int main(int argc, char** argv)
                sizeof(pldm_msg_hdr) + sizeof(effecterId) +
                    sizeof(effecterCount) + sizeof(set_effecter_state_field)>
         requestMsg{};
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     set_effecter_state_field stateField{PLDM_REQUEST_SET, state};
     auto rc = encode_set_state_effecter_states_req(0, effecterId, effecterCount,
                                                    &stateField, request);
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
         size_t responseMsgSize{};
         pldm_tid_t srcTid;
         auto rc = pldmTransport.recvMsg(srcTid, responseMsg, responseMsgSize);
-        pldm_msg* response = reinterpret_cast<pldm_msg*>(responseMsg);
+        pldm_msg* response = new (responseMsg) pldm_msg;
         if (rc || dstTid != srcTid ||
             !pldm_msg_hdr_correlate_response(&request->hdr, &response->hdr))
         {
