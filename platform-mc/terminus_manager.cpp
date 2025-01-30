@@ -422,7 +422,7 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
 {
     auto instanceId = instanceIdDb.next(eid);
     Request request(sizeof(pldm_msg_hdr));
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_get_tid_req(instanceId, requestMsg);
     if (rc)
     {
@@ -468,7 +468,7 @@ exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
 {
     auto instanceId = instanceIdDb.next(eid);
     Request request(sizeof(pldm_msg_hdr) + sizeof(pldm_set_tid_req));
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_set_tid_req(instanceId, tid, requestMsg);
     if (rc)
     {
@@ -505,7 +505,7 @@ exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
                                               uint64_t& supportedTypes)
 {
     Request request(sizeof(pldm_msg_hdr));
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_get_types_req(0, requestMsg);
     if (rc)
     {
@@ -552,7 +552,7 @@ exec::task<int> TerminusManager::getPLDMCommands(
     pldm_tid_t tid, uint8_t type, ver32_t version, bitfield8_t* supportedCmds)
 {
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_get_commands_req(0, type, version, requestMsg);
     if (rc)
@@ -628,7 +628,7 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
     }
 
     auto eid = std::get<0>(mctpInfo.value());
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     requestMsg->hdr.instance_id = instanceIdDb.next(eid);
     auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
                                                responseLen);

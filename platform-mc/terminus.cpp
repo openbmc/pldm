@@ -126,7 +126,7 @@ void Terminus::parseTerminusPDRs()
 
     for (auto& pdr : pdrs)
     {
-        auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+        auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
         switch (pdrHdr->type)
         {
             case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
@@ -323,8 +323,7 @@ std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(
     size_t decodedPdrSize =
         sizeof(struct pldm_entity_auxiliary_names_pdr) + names_size;
     auto vPdr = std::vector<char>(decodedPdrSize);
-    auto decodedPdr =
-        reinterpret_cast<struct pldm_entity_auxiliary_names_pdr*>(vPdr.data());
+    auto decodedPdr = new (vPdr.data()) pldm_entity_auxiliary_names_pdr;
 
     auto rc = decode_entity_auxiliary_names_pdr(pdrData.data(), pdrData.size(),
                                                 decodedPdr, decodedPdrSize);
@@ -444,6 +443,7 @@ std::shared_ptr<SensorAuxiliaryNames> Terminus::parseCompactNumericSensorNames(
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>
         sensorAuxNames{};
     AuxiliaryNames nameStrings{};
+
     auto pdr =
         reinterpret_cast<const pldm_compact_numeric_sensor_pdr*>(sPdr.data());
 
