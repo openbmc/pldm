@@ -226,7 +226,7 @@ class GetPDR : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_pdr_req(
             instanceId, recordHandle, dataTransferHandle, operationFlag,
@@ -294,8 +294,8 @@ class GetPDR : public CommandInterface
             {
                 nextPartRequired = true;
                 dataTransferHandle = nextDataTransferHndl;
-                struct pldm_pdr_hdr* pdr_hdr =
-                    reinterpret_cast<struct pldm_pdr_hdr*>(respRecordData);
+                struct pldm_pdr_hdr* pdr_hdr = new (respRecordData)
+                    pldm_pdr_hdr;
                 recordChangeNumber = pdr_hdr->record_change_num;
                 operationFlag = PLDM_GET_NEXTPART;
             }
@@ -852,8 +852,7 @@ class GetPDR : public CommandInterface
         }
 
         data += sizeof(pldm_pdr_hdr);
-        pldm_pdr_fru_record_set* pdr =
-            reinterpret_cast<pldm_pdr_fru_record_set*>(data);
+        pldm_pdr_fru_record_set* pdr = new (data) pldm_pdr_fru_record_set;
         if (!pdr)
         {
             std::cerr << "Failed to get the FRU record set PDR" << std::endl;
@@ -880,8 +879,8 @@ class GetPDR : public CommandInterface
         }
 
         data += sizeof(pldm_pdr_hdr);
-        pldm_pdr_entity_association* pdr =
-            reinterpret_cast<pldm_pdr_entity_association*>(data);
+        pldm_pdr_entity_association* pdr = new (data)
+            pldm_pdr_entity_association;
         if (!pdr)
         {
             std::cerr << "Failed to get the PDR eneity association"
@@ -1635,7 +1634,7 @@ class SetStateEffecter : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         if (effecterCount > maxEffecterCount ||
             effecterCount < minEffecterCount)
@@ -1729,7 +1728,8 @@ class SetNumericEffecterValue : public CommandInterface
 
         uint8_t* effecterValue = (uint8_t*)&maxEffecterValue;
 
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
+
         size_t payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES;
 
         if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
@@ -1802,7 +1802,7 @@ class GetStateSensorReadings : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         uint8_t reserved = 0;
         bitfield8_t bf;
@@ -1895,7 +1895,7 @@ class GetSensorReading : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_SENSOR_READING_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc =
             encode_get_sensor_reading_req(instanceId, sensorId, rearm, request);
@@ -2048,7 +2048,7 @@ class GetStateEffecterStates : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_STATE_EFFECTER_STATES_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_state_effecter_states_req(
             instanceId, effecter_id, request,
@@ -2117,7 +2117,7 @@ class GetNumericEffecterValue : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_numeric_effecter_value_req(instanceId, effecterId,
                                                         request);
