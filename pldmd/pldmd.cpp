@@ -108,7 +108,7 @@ static std::optional<Response>
     uint8_t eid = tid;
 
     pldm_header_info hdrFields{};
-    auto hdr = reinterpret_cast<const pldm_msg_hdr*>(requestMsg.data());
+    auto hdr = new (requestMsg.data()) const pldm_msg_hdr;
     if (PLDM_SUCCESS != unpack_pldm_header(hdr, &hdrFields))
     {
         error("Empty PLDM request header");
@@ -118,7 +118,7 @@ static std::optional<Response>
     if (PLDM_RESPONSE != hdrFields.msg_type)
     {
         Response response;
-        auto request = reinterpret_cast<const pldm_msg*>(hdr);
+        auto request = new (hdr) const pldm_msg;
         size_t requestLen = requestMsg.size() - sizeof(struct pldm_msg_hdr);
         try
         {
@@ -138,7 +138,7 @@ static std::optional<Response>
         {
             uint8_t completion_code = PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
             response.resize(sizeof(pldm_msg_hdr));
-            auto responseHdr = reinterpret_cast<pldm_msg_hdr*>(response.data());
+            auto responseHdr = new (response.data()) pldm_msg_hdr;
             pldm_header_info header{};
             header.msg_type = PLDM_RESPONSE;
             header.instance = hdrFields.instance;
@@ -157,7 +157,7 @@ static std::optional<Response>
     }
     else if (PLDM_RESPONSE == hdrFields.msg_type)
     {
-        auto response = reinterpret_cast<const pldm_msg*>(hdr);
+        auto response = new (hdr) const pldm_msg;
         size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr);
         handler.handleResponse(eid, hdrFields.instance, hdrFields.pldm_type,
                                hdrFields.command, response, responseLen);
