@@ -281,7 +281,7 @@ exec::task<int> SensorManager::getSensorReading(
     auto tid = sensor->tid;
     auto sensorId = sensor->sensorId;
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_SENSOR_READING_REQ_BYTES);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_get_sensor_reading_req(0, sensorId, false, requestMsg);
     if (rc)
     {
