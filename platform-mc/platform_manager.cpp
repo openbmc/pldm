@@ -296,7 +296,7 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
         {
             // multipart transfer
             uint32_t receivedRecordSize = responseCnt;
-            auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(recvBuf.data());
+            auto pdrHdr = new (recvBuf.data()) pldm_pdr_hdr;
             uint16_t recordChgNum = le16toh(pdrHdr->record_change_num);
             std::vector<uint8_t> receivedPdr(recvBuf.begin(),
                                              recvBuf.begin() + responseCnt);
@@ -343,7 +343,7 @@ exec::task<int> PlatformManager::getPDR(
     std::vector<uint8_t>& recordData, uint8_t& transferCrc)
 {
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_get_pdr_req(0, recordHndl, dataTransferHndl,
                                  transferOpFlag, requestCnt, recordChgNum,
                                  requestMsg, PLDM_GET_PDR_REQ_BYTES);
@@ -395,7 +395,7 @@ exec::task<int> PlatformManager::getPDRRepositoryInfo(
     uint32_t& repositorySize, uint32_t& largestRecordSize)
 {
     Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_pldm_header_only(PLDM_REQUEST, 0, PLDM_PLATFORM,
                                       PLDM_GET_PDR_REPOSITORY_INFO, requestMsg);
     if (rc)
@@ -452,7 +452,7 @@ exec::task<int> PlatformManager::eventMessageBufferSize(
 {
     Request request(
         sizeof(pldm_msg_hdr) + PLDM_EVENT_MESSAGE_BUFFER_SIZE_REQ_BYTES);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_event_message_buffer_size_req(0, receiverMaxBufferSize,
                                                    requestMsg);
     if (rc)
@@ -512,7 +512,7 @@ exec::task<int> PlatformManager::setEventReceiver(
         requestBytes = requestBytes - sizeof(heartbeatTimer);
     }
     Request request(sizeof(pldm_msg_hdr) + requestBytes);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_set_event_receiver_req(
         0, eventMessageGlobalEnable, protocolType,
         terminusManager.getLocalEid(), heartbeatTimer, requestMsg);
@@ -565,7 +565,7 @@ exec::task<int> PlatformManager::eventMessageSupported(
 {
     Request request(
         sizeof(pldm_msg_hdr) + PLDM_EVENT_MESSAGE_SUPPORTED_REQ_BYTES);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_event_message_supported_req(0, formatVersion, requestMsg);
     if (rc)
     {
@@ -620,7 +620,7 @@ exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
 {
     Request request(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_get_fru_record_table_metadata_req(
         0, requestMsg, PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
@@ -689,7 +689,7 @@ exec::task<int> PlatformManager::getFRURecordTable(
     std::vector<uint8_t>& recordData)
 {
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_get_fru_record_table_req(
         0, dataTransferHndl, transferOpFlag, requestMsg,
