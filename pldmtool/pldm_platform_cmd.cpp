@@ -226,7 +226,7 @@ class GetPDR : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_pdr_req(
             instanceId, recordHandle, dataTransferHandle, operationFlag,
@@ -294,8 +294,8 @@ class GetPDR : public CommandInterface
             {
                 nextPartRequired = true;
                 dataTransferHandle = nextDataTransferHndl;
-                struct pldm_pdr_hdr* pdr_hdr =
-                    reinterpret_cast<struct pldm_pdr_hdr*>(respRecordData);
+                struct pldm_pdr_hdr* pdr_hdr = new (respRecordData)
+                    pldm_pdr_hdr;
                 recordChangeNumber = pdr_hdr->record_change_num;
                 operationFlag = PLDM_GET_NEXTPART;
             }
@@ -806,7 +806,7 @@ class GetPDR : public CommandInterface
 
     void printStateSensorPDR(const uint8_t* data, ordered_json& output)
     {
-        auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
+        auto pdr = new (data) const pldm_state_sensor_pdr;
         output["PLDMTerminusHandle"] = pdr->terminus_handle;
         output["sensorID"] = pdr->sensor_id;
         output["entityType"] = getEntityName(pdr->entity_type);
@@ -822,8 +822,7 @@ class GetPDR : public CommandInterface
 
         while (compCount--)
         {
-            auto state = reinterpret_cast<const state_sensor_possible_states*>(
-                statesPtr);
+            auto state = new (statesPtr) const state_sensor_possible_states;
             output.emplace(("stateSetID[" + std::to_string(compCount) + "]"),
                            getStateSetName(state->state_set_id));
             output.emplace(
@@ -852,8 +851,7 @@ class GetPDR : public CommandInterface
         }
 
         data += sizeof(pldm_pdr_hdr);
-        pldm_pdr_fru_record_set* pdr =
-            reinterpret_cast<pldm_pdr_fru_record_set*>(data);
+        pldm_pdr_fru_record_set* pdr = new (data) pldm_pdr_fru_record_set;
         if (!pdr)
         {
             std::cerr << "Failed to get the FRU record set PDR" << std::endl;
@@ -880,8 +878,8 @@ class GetPDR : public CommandInterface
         }
 
         data += sizeof(pldm_pdr_hdr);
-        pldm_pdr_entity_association* pdr =
-            reinterpret_cast<pldm_pdr_entity_association*>(data);
+        pldm_pdr_entity_association* pdr = new (data)
+            pldm_pdr_entity_association;
         if (!pdr)
         {
             std::cerr << "Failed to get the PDR eneity association"
@@ -1113,7 +1111,7 @@ class GetPDR : public CommandInterface
 
     void printStateEffecterPDR(const uint8_t* data, ordered_json& output)
     {
-        auto pdr = reinterpret_cast<const pldm_state_effecter_pdr*>(data);
+        auto pdr = new (data) const pldm_state_effecter_pdr;
 
         output["PLDMTerminusHandle"] = pdr->terminus_handle;
         output["effecterID"] = pdr->effecter_id;
@@ -1132,9 +1130,7 @@ class GetPDR : public CommandInterface
 
         while (compEffCount--)
         {
-            auto state =
-                reinterpret_cast<const state_effecter_possible_states*>(
-                    statesPtr);
+            auto state = new (statesPtr) const state_effecter_possible_states;
             output.emplace(("stateSetID[" + std::to_string(compEffCount) + "]"),
                            getStateSetName(state->state_set_id));
             output.emplace(
@@ -1162,8 +1158,7 @@ class GetPDR : public CommandInterface
 
         if (pdr->type == PLDM_TERMINUS_LOCATOR_PDR)
         {
-            auto tlpdr =
-                reinterpret_cast<const pldm_terminus_locator_pdr*>(data);
+            auto tlpdr = new (data) const pldm_terminus_locator_pdr;
 
             if (tlpdr->terminus_handle != terminusHandle)
             {
@@ -1172,7 +1167,7 @@ class GetPDR : public CommandInterface
         }
         else if (pdr->type == PLDM_STATE_SENSOR_PDR)
         {
-            auto sensor = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
+            auto sensor = new (data) const pldm_state_sensor_pdr;
 
             if (sensor->terminus_handle != terminusHandle)
             {
@@ -1181,8 +1176,8 @@ class GetPDR : public CommandInterface
         }
         else if (pdr->type == PLDM_NUMERIC_EFFECTER_PDR)
         {
-            auto numericEffecter =
-                reinterpret_cast<const pldm_numeric_effecter_value_pdr*>(data);
+            auto numericEffecter = new (data)
+                const pldm_numeric_effecter_value_pdr;
 
             if (numericEffecter->terminus_handle != terminusHandle)
             {
@@ -1192,8 +1187,7 @@ class GetPDR : public CommandInterface
 
         else if (pdr->type == PLDM_STATE_EFFECTER_PDR)
         {
-            auto stateEffecter =
-                reinterpret_cast<const pldm_state_effecter_pdr*>(data);
+            auto stateEffecter = new (data) const pldm_state_effecter_pdr;
             if (stateEffecter->terminus_handle != terminusHandle)
             {
                 return true;
@@ -1202,7 +1196,7 @@ class GetPDR : public CommandInterface
         else if (pdr->type == PLDM_PDR_FRU_RECORD_SET)
         {
             data += sizeof(pldm_pdr_hdr);
-            auto fru = reinterpret_cast<const pldm_pdr_fru_record_set*>(data);
+            auto fru = new (data) const pldm_pdr_fru_record_set;
 
             if (fru->terminus_handle != terminusHandle)
             {
@@ -1223,7 +1217,7 @@ class GetPDR : public CommandInterface
         const std::array<std::string_view, 4> terminusLocatorType = {
             "UID", "MCTP_EID", "SMBusRelative", "systemSoftware"};
 
-        auto pdr = reinterpret_cast<const pldm_terminus_locator_pdr*>(data);
+        auto pdr = new (data) const pldm_terminus_locator_pdr;
 
         output["PLDMTerminusHandle"] = pdr->terminus_handle;
         output["validity"] = (pdr->validity ? "valid" : "notValid");
@@ -1236,9 +1230,8 @@ class GetPDR : public CommandInterface
 
         if (pdr->terminus_locator_type == PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID)
         {
-            auto locatorValue =
-                reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
-                    pdr->terminus_locator_value);
+            auto locatorValue = new (pdr->terminus_locator_value)
+                const pldm_terminus_locator_type_mctp_eid;
             output["EID"] = unsigned(locatorValue->eid);
         }
     }
@@ -1249,7 +1242,7 @@ class GetPDR : public CommandInterface
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
         if (pdr->type == PLDM_TERMINUS_LOCATOR_PDR)
         {
-            auto pdr = reinterpret_cast<const pldm_terminus_locator_pdr*>(data);
+            auto pdr = new (data) pldm_terminus_locator_pdr;
             if (pdr->tid == tid)
             {
                 handleFound = true;
@@ -1635,7 +1628,7 @@ class SetStateEffecter : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         if (effecterCount > maxEffecterCount ||
             effecterCount < minEffecterCount)
@@ -1729,7 +1722,8 @@ class SetNumericEffecterValue : public CommandInterface
 
         uint8_t* effecterValue = (uint8_t*)&maxEffecterValue;
 
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
+
         size_t payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES;
 
         if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT16 ||
@@ -1802,7 +1796,7 @@ class GetStateSensorReadings : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         uint8_t reserved = 0;
         bitfield8_t bf;
@@ -1895,7 +1889,7 @@ class GetSensorReading : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_SENSOR_READING_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc =
             encode_get_sensor_reading_req(instanceId, sensorId, rearm, request);
@@ -2048,7 +2042,7 @@ class GetStateEffecterStates : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_STATE_EFFECTER_STATES_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_state_effecter_states_req(
             instanceId, effecter_id, request,
@@ -2117,7 +2111,7 @@ class GetNumericEffecterValue : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_NUMERIC_EFFECTER_VALUE_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_numeric_effecter_value_req(instanceId, effecterId,
                                                         request);

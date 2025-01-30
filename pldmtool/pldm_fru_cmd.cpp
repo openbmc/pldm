@@ -42,7 +42,7 @@ class GetFruRecordTableMetadata : public CommandInterface
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_fru_record_table_metadata_req(
             instanceId, request, PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
@@ -96,8 +96,7 @@ class FRUTablePrint
         ordered_json output;
         while (!isTableEnd(p))
         {
-            auto record =
-                reinterpret_cast<const pldm_fru_record_data_format*>(p);
+            auto record = new (p) const pldm_fru_record_data_format;
             output["FRU Record Set Identifier"] =
                 (int)le16toh(record->record_set_id);
             output["FRU Record Type"] =
@@ -117,7 +116,7 @@ class FRUTablePrint
             frufielddata.emplace_back(output);
             for (int i = 0; i < record->num_fru_fields; i++)
             {
-                auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(p);
+                auto tlv = new (p) const pldm_fru_record_tlv;
                 if (record->record_type == PLDM_FRU_RECORD_TYPE_GENERAL)
                 {
                     FruFieldTypeMap.insert(fruGeneralFieldTypes.begin(),
@@ -361,8 +360,7 @@ class GetFRURecordByOption : public CommandInterface
 
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadLength,
                                         0);
-        auto reqMsg = reinterpret_cast<pldm_msg*>(requestMsg.data());
-
+        auto reqMsg = new (requestMsg.data()) pldm_msg;
         auto rc = encode_get_fru_record_by_option_req(
             instanceId, 0 /* DataTransferHandle */, 0 /* FRUTableHandle */,
             recordSetIdentifier, recordType, fieldType, PLDM_GET_FIRSTPART,
@@ -414,7 +412,7 @@ class GetFruRecordTable : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
-        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_fru_record_table_req(
             instanceId, 0, PLDM_GET_FIRSTPART, request,
