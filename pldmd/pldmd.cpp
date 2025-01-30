@@ -138,7 +138,7 @@ static std::optional<Response>
         {
             uint8_t completion_code = PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
             response.resize(sizeof(pldm_msg_hdr));
-            auto responseHdr = reinterpret_cast<pldm_msg_hdr*>(response.data());
+            auto responseHdr = new (response.data()) pldm_msg_hdr;
             pldm_header_info header{};
             header.msg_type = PLDM_RESPONSE;
             header.instance = hdrFields.instance;
