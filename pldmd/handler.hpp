@@ -48,7 +48,7 @@ class CmdHandler
     static Response ccOnlyResponse(const pldm_msg* request, uint8_t cc)
     {
         Response response(sizeof(pldm_msg), 0);
-        auto ptr = reinterpret_cast<pldm_msg*>(response.data());
+        auto ptr = new (response.data()) pldm_msg;
         auto rc =
             encode_cc_only_resp(request->hdr.instance_id, request->hdr.type,
                                 request->hdr.command, cc, ptr);
