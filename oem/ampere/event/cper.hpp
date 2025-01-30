@@ -1,9 +1,9 @@
 #include "libcper/Cper.h"
 
-#include <stdint.h>
-#include <stdio.h>
 #include <unistd.h>
 
+#include <cstdint>
+#include <cstdio>
 #include <fstream>
 #include <vector>
 
