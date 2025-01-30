@@ -126,7 +126,7 @@ void Terminus::parseTerminusPDRs()
 
     for (auto& pdr : pdrs)
     {
-        auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
+        auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
         switch (pdrHdr->type)
         {
             case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
@@ -262,8 +262,7 @@ std::shared_ptr<SensorAuxiliaryNames>
     Terminus::parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData)
 {
     constexpr uint8_t nullTerminator = 0;
-    auto pdr = reinterpret_cast<const struct pldm_sensor_auxiliary_names_pdr*>(
-        pdrData.data());
+    auto pdr = new ((pdrData.data()) const pldm_sensor_auxiliary_names_pdr;
     const uint8_t* ptr = pdr->names;
     std::vector<AuxiliaryNames> sensorAuxNames{};
     char16_t alignedBuffer[PLDM_STR_UTF_16_MAX_LEN];
@@ -323,8 +322,7 @@ std::shared_ptr<EntityAuxiliaryNames>
     size_t decodedPdrSize =
         sizeof(struct pldm_entity_auxiliary_names_pdr) + names_size;
     auto vPdr = std::vector<char>(decodedPdrSize);
-    auto decodedPdr =
-        reinterpret_cast<struct pldm_entity_auxiliary_names_pdr*>(vPdr.data());
+    auto decodedPdr = new (vPdr.data()) pldm_entity_auxiliary_names_pdr;
 
     auto rc = decode_entity_auxiliary_names_pdr(pdrData.data(), pdrData.size(),
                                                 decodedPdr, decodedPdrSize);
@@ -444,8 +442,7 @@ std::shared_ptr<SensorAuxiliaryNames>
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>
         sensorAuxNames{};
     AuxiliaryNames nameStrings{};
-    auto pdr =
-        reinterpret_cast<const pldm_compact_numeric_sensor_pdr*>(sPdr.data());
+    auto pdr = new (sPdr.data()) const pldm_compact_numeric_sensor_pdr;
 
     if (sPdr.size() <
         (sizeof(pldm_compact_numeric_sensor_pdr) - sizeof(uint8_t)))
@@ -473,8 +470,7 @@ std::shared_ptr<SensorAuxiliaryNames>
 std::shared_ptr<pldm_compact_numeric_sensor_pdr>
     Terminus::parseCompactNumericSensorPDR(const std::vector<uint8_t>& sPdr)
 {
-    auto pdr =
-        reinterpret_cast<const pldm_compact_numeric_sensor_pdr*>(sPdr.data());
+    auto pdr = new (sPdr.data()) const pldm_compact_numeric_sensor_pdr;
     if (sPdr.size() < sizeof(pldm_compact_numeric_sensor_pdr))
     {
         // Handle error: input data too small to contain valid pdr
@@ -611,7 +607,7 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
     auto ptr = fruData;
     while (!isTableEnd(fruData, ptr, fruLen))
     {
-        auto record = reinterpret_cast<const pldm_fru_record_data_format*>(ptr);
+        auto record = new (ptr) const pldm_fru_record_data_format;
         ptr += sizeof(pldm_fru_record_data_format) -
                sizeof(pldm_fru_record_tlv);
 
@@ -633,7 +629,7 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             for ([[maybe_unused]] const auto& idx :
                  std::views::iota(0, static_cast<int>(record->num_fru_fields)))
             {
-                auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+                auto tlv = new (ptr) const pldm_fru_record_tlv;
                 ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
             }
             continue;
@@ -642,7 +638,7 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
         for ([[maybe_unused]] const auto& idx :
              std::views::iota(0, static_cast<int>(record->num_fru_fields)))
         {
-            auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+            auto tlv = new (ptr) const pldm_fru_record_tlv;
             std::string fruField{};
             if (tlv->type != PLDM_FRU_FIELD_TYPE_IANA)
             {
