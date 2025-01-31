@@ -48,16 +48,15 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(
                                                   record, &outData, &size);
             if (record)
             {
-                auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(outData);
+                auto pdr = new (outData) pldm_state_effecter_pdr;
                 auto compositeEffecterCount = pdr->composite_effecter_count;
                 auto possible_states_start = pdr->possible_states;
 
                 for (auto effecters = 0x00; effecters < compositeEffecterCount;
                      effecters++)
                 {
-                    auto possibleStates =
-                        reinterpret_cast<state_effecter_possible_states*>(
-                            possible_states_start);
+                    auto possibleStates = new (possible_states_start)
+                        state_effecter_possible_states;
                     auto setId = possibleStates->state_set_id;
                     auto possibleStateSize =
                         possibleStates->possible_states_size;
@@ -100,16 +99,15 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(
                                                   record, &outData, &size);
             if (record)
             {
-                auto pdr = reinterpret_cast<pldm_state_sensor_pdr*>(outData);
+                auto pdr = new (outData) pldm_state_sensor_pdr;
                 auto compositeSensorCount = pdr->composite_sensor_count;
                 auto possible_states_start = pdr->possible_states;
 
                 for (auto sensors = 0x00; sensors < compositeSensorCount;
                      sensors++)
                 {
-                    auto possibleStates =
-                        reinterpret_cast<state_sensor_possible_states*>(
-                            possible_states_start);
+                    auto possibleStates = new (possible_states_start)
+                        state_sensor_possible_states;
                     auto setId = possibleStates->state_set_id;
                     auto possibleStateSize =
                         possibleStates->possible_states_size;
@@ -496,16 +494,15 @@ uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                                               record, &pdrData, &pdrSize);
         if (record && (localOrRemote ^ pldm_pdr_record_is_remote(record)))
         {
-            auto pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrData);
+            auto pdr = new (pdrData) pldm_state_effecter_pdr;
             auto compositeEffecterCount = pdr->composite_effecter_count;
             auto possible_states_start = pdr->possible_states;
 
             for (auto effecters = 0x00; effecters < compositeEffecterCount;
                  effecters++)
             {
-                auto possibleStates =
-                    reinterpret_cast<state_effecter_possible_states*>(
-                        possible_states_start);
+                auto possibleStates = new (possible_states_start)
+                    state_effecter_possible_states;
                 auto setId = possibleStates->state_set_id;
                 auto possibleStateSize = possibleStates->possible_states_size;
 
@@ -575,15 +572,14 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
     auto pdrs = findStateSensorPDR(tid, entityType, stateSetId, pdrRepo);
     for (auto pdr : pdrs)
     {
-        auto sensorPdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+        auto sensorPdr = new (pdr.data()) pldm_state_sensor_pdr;
         auto compositeSensorCount = sensorPdr->composite_sensor_count;
         auto possible_states_start = sensorPdr->possible_states;
 
         for (auto sensors = 0x00; sensors < compositeSensorCount; sensors++)
         {
-            auto possibleStates =
-                reinterpret_cast<state_sensor_possible_states*>(
-                    possible_states_start);
+            auto possibleStates = new (possible_states_start)
+                state_sensor_possible_states;
             auto setId = possibleStates->state_set_id;
             auto possibleStateSize = possibleStates->possible_states_size;
             if (entityType == sensorPdr->entity_type &&
