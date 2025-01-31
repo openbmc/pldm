@@ -239,7 +239,7 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
         }
         else
         {
-            auto ptr = reinterpret_cast<pldm_msg*>(response.data());
+            auto ptr = new (response.data()) pldm_msg;
             auto rc = encode_cc_only_resp(
                 request->hdr.instance_id, request->hdr.type,
                 request->hdr.command, PLDM_ERROR_INVALID_DATA, ptr);
@@ -248,7 +248,7 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
     }
     else
     {
-        auto ptr = reinterpret_cast<pldm_msg*>(response.data());
+        auto ptr = new (response.data()) pldm_msg;
         auto rc = encode_cc_only_resp(request->hdr.instance_id,
                                       request->hdr.type, +request->hdr.command,
                                       PLDM_FWUP_COMMAND_NOT_EXPECTED, ptr);
