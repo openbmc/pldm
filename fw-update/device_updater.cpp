@@ -38,7 +38,7 @@ void DeviceUpdater::startFwUpdateFlow()
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_request_update_req) +
         compImgSetVerStrInfo.length);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_request_update_req(
         instanceId, maxTransferSize, applicableComponents.size(),
@@ -168,7 +168,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_pass_component_table_req) +
         compVerStrInfo.length);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_pass_component_table_req(
         instanceId, transferFlag, compClassification, compIdentifier,
         compClassificationIndex, compComparisonStamp, PLDM_STR_TYPE_ASCII,
@@ -296,7 +296,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_update_component_req) +
         compVerStrInfo.length);
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_update_component_req(
         instanceId, compClassification, compIdentifier, compClassificationIndex,
@@ -372,7 +372,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     uint32_t offset = 0;
     uint32_t length = 0;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
-    auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
+    auto responseMsg = new (response.data()) pldm_msg;
     auto rc = decode_request_firmware_data_req(request, payloadLength, &offset,
                                                &length);
     if (rc)
@@ -434,7 +434,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     }
 
     response.resize(sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
-    responseMsg = reinterpret_cast<pldm_msg*>(response.data());
+    responseMsg = new (response.data()) pldm_msg;
     package.seekg(compOffset + offset);
     package.read(
         reinterpret_cast<char*>(
@@ -459,7 +459,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
 {
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
-    auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
+    auto responseMsg = new (response.data()) pldm_msg;
 
     uint8_t transferResult = 0;
     auto rc =
@@ -518,7 +518,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
 {
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
-    auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
+    auto responseMsg = new (response.data()) pldm_msg;
 
     uint8_t verifyResult = 0;
     auto rc = decode_verify_complete_req(request, payloadLength, &verifyResult);
@@ -576,7 +576,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
 {
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
-    auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
+    auto responseMsg = new (response.data()) pldm_msg;
 
     uint8_t applyResult = 0;
     bitfield16_t compActivationModification{};
@@ -654,7 +654,7 @@ void DeviceUpdater::sendActivateFirmwareRequest()
     auto instanceId = updateManager->instanceIdDb.next(eid);
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
-    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_activate_firmware_req(
         instanceId, PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
