@@ -455,7 +455,7 @@ Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
     Response response(sizeof(pldm_msg_hdr) +
                           PLDM_GET_FRU_RECORD_TABLE_METADATA_RESP_BYTES,
                       0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     impl.getFRURecordTableMetadata();
 
@@ -484,7 +484,7 @@ Response Handler::getFRURecordTable(const pldm_msg* request,
 
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     auto rc =
         encode_get_fru_record_table_resp(request->hdr.instance_id, PLDM_SUCCESS,
@@ -536,7 +536,7 @@ Response Handler::getFRURecordByOption(const pldm_msg* request,
     auto respPayloadLength =
         PLDM_GET_FRU_RECORD_BY_OPTION_MIN_RESP_BYTES + fruData.size();
     Response response(sizeof(pldm_msg_hdr) + respPayloadLength, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     rc = encode_get_fru_record_by_option_resp(
         request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END,
@@ -574,7 +574,7 @@ Response Handler::setFRURecordTable(const pldm_msg* request,
 
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_SET_FRU_RECORD_TABLE_RESP_BYTES);
-    struct pldm_msg* responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    struct pldm_msg* responsePtr = new (response.data()) pldm_msg;
 
     rc = encode_set_fru_record_table_resp(
         request->hdr.instance_id, PLDM_SUCCESS, 0 /* nextDataTransferHandle */,
