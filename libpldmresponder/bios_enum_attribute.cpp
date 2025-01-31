@@ -272,8 +272,7 @@ void BIOSEnumAttribute::generateAttributeEntry(
 {
     attrValueEntry.resize(sizeof(pldm_bios_attr_val_table_entry) + 1);
 
-    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-        attrValueEntry.data());
+    auto entry = new (attrValueEntry.data()) pldm_bios_attr_val_table_entry;
 
     std::string value = std::get<std::string>(attributevalue);
     entry->attr_type = 0;

@@ -79,7 +79,7 @@ Response Handler::getPLDMTypes(const pldm_msg* request,
     }
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
     auto rc = encode_get_types_resp(request->hdr.instance_id, PLDM_SUCCESS,
                                     types.data(), responsePtr);
     if (rc != PLDM_SUCCESS)
@@ -96,7 +96,7 @@ Response Handler::getPLDMCommands(const pldm_msg* request, size_t payloadLength)
     Type type;
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     auto rc = decode_get_commands_req(request, payloadLength, &type, &version);
 
@@ -138,7 +138,7 @@ Response Handler::getPLDMVersion(const pldm_msg* request, size_t payloadLength)
     uint8_t transferFlag;
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     uint8_t rc = decode_get_version_req(request, payloadLength, &transferHandle,
                                         &transferFlag, &type);
@@ -179,7 +179,7 @@ void Handler::_processSetEventReceiver(sdeventplus::source::EventBase&
 Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
 {
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
     auto rc = encode_get_tid_resp(request->hdr.instance_id, PLDM_SUCCESS,
                                   TERMINUS_ID, responsePtr);
     if (rc != PLDM_SUCCESS)

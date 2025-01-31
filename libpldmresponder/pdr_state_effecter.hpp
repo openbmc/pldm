@@ -55,8 +55,8 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         std::vector<uint8_t> entry{};
         entry.resize(pdrSize);
 
-        pldm_state_effecter_pdr* pdr =
-            reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+        pldm_state_effecter_pdr* pdr = new (entry.data())
+            pldm_state_effecter_pdr;
         if (!pdr)
         {
             error("Failed to get state effecter PDR.");

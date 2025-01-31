@@ -1103,8 +1103,7 @@ void BIOSConfig::constructPendingAttribute(
         }
 
         Table attrValueEntry(sizeof(pldm_bios_attr_val_table_entry), 0);
-        auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-            attrValueEntry.data());
+        auto entry = new (attrValueEntry.data()) pldm_bios_attr_val_table_entry;
 
         auto handler = findAttrHandle(attributeName);
         auto type =
