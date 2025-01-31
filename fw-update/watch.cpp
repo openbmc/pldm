@@ -89,7 +89,7 @@ int Watch::callback(sd_event_source* /* s */, int fd, uint32_t revents,
     auto offset = 0;
     while (offset < bytes)
     {
-        auto event = reinterpret_cast<inotify_event*>(&buffer[offset]);
+        auto event = new (&buffer[offset]) inotify_event;
         if ((event->mask & IN_CLOSE_WRITE) && !(event->mask & IN_ISDIR))
         {
             auto tarballPath = std::string{"/tmp/images"} + '/' + event->name;
