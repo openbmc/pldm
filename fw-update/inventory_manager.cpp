@@ -542,7 +542,7 @@ void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
     auto instanceId = instanceIdDb.next(eid);
     Request requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_get_firmware_parameters_req(
         instanceId, PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES, request);
     if (rc)
