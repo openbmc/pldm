@@ -259,7 +259,7 @@ Response Handler::getPDR(const pldm_msg* request, size_t payloadLength)
         response.resize(sizeof(pldm_msg_hdr) + PLDM_GET_PDR_MIN_RESP_BYTES +
                             respSizeBytes,
                         0);
-        auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+        auto responsePtr = new (response.data()) pldm_msg;
         rc = encode_get_pdr_resp(
             request->hdr.instance_id, PLDM_SUCCESS, e.handle.nextRecordHandle,
             0, PLDM_START_AND_END, respSizeBytes, recordData, 0, responsePtr);
@@ -283,7 +283,7 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
 {
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
     uint16_t effecterId;
     uint8_t compEffecterCnt;
     constexpr auto maxCompositeEffecterCnt = 8;
@@ -401,7 +401,7 @@ Response Handler::platformEventMessage(const pldm_msg* request,
     }
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     rc = encode_platform_event_message_resp(request->hdr.instance_id, rc,
                                             PLDM_EVENT_NO_LOGGING, responsePtr);
@@ -684,7 +684,7 @@ Response Handler::getNumericEffecterValue(const pldm_msg* request,
         getEffecterDataSize(effecterDataSize);
 
     Response response(responsePayloadLength + sizeof(pldm_msg_hdr));
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     rc = platform_numeric_effecter::getNumericEffecterValueHandler(
         propertyType, dbusValue, effecterDataSize, responsePtr,
@@ -820,7 +820,7 @@ Response Handler::getStateSensorReadings(const pldm_msg* request,
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_MIN_RESP_BYTES +
         sizeof(get_sensor_state_field) * comSensorCnt);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
     rc = encode_get_state_sensor_readings_resp(
         request->hdr.instance_id, rc, comSensorCnt, stateField.data(),
         responsePtr);
@@ -984,7 +984,7 @@ void Handler::setEventReceiver()
 {
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_SET_EVENT_RECEIVER_REQ_BYTES);
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     auto instanceId = instanceIdDb->next(eid);
     uint8_t eventMessageGlobalEnable =
         PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
