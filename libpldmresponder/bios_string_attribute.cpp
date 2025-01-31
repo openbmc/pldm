@@ -163,8 +163,7 @@ void BIOSStringAttribute::generateAttributeEntry(
     attrValueEntry.resize(
         sizeof(pldm_bios_attr_val_table_entry) + sizeof(uint16_t) + len - 1);
 
-    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-        attrValueEntry.data());
+    auto entry = new (attrValueEntry.data()) pldm_bios_attr_val_table_entry;
 
     entry->attr_type = 1;
     memcpy(entry->value, &len, sizeof(uint16_t));

@@ -226,8 +226,7 @@ void BIOSIntegerAttribute::generateAttributeEntry(
     attrValueEntry.resize(
         sizeof(pldm_bios_attr_val_table_entry) + sizeof(int64_t) - 1);
 
-    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-        attrValueEntry.data());
+    auto entry = new (attrValueEntry.data()) pldm_bios_attr_val_table_entry;
 
     int64_t value = std::get<int64_t>(attributevalue);
     entry->attr_type = 3;

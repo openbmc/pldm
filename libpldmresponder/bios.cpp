@@ -120,7 +120,7 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     constexpr auto timeInterface = "xyz.openbmc_project.Time.EpochTime";
     constexpr auto bmcTimePath = "/xyz/openbmc_project/time/bmc";
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
     EpochTimeUS timeUsec;
 
     try
@@ -246,7 +246,7 @@ Response Handler::getBIOSTable(const pldm_msg* request, size_t payloadLength)
 
     Response response(sizeof(pldm_msg_hdr) +
                       PLDM_GET_BIOS_TABLE_MIN_RESP_BYTES + table->size());
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     rc = encode_get_bios_table_resp(
         request->hdr.instance_id, PLDM_SUCCESS, 0 /* nxtTransferHandle */,
@@ -281,7 +281,7 @@ Response Handler::setBIOSTable(const pldm_msg* request, size_t payloadLength)
     }
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_SET_BIOS_TABLE_RESP_BYTES);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     rc = encode_set_bios_table_resp(request->hdr.instance_id, PLDM_SUCCESS,
                                     0 /* nxtTransferHandle */, responsePtr);
@@ -326,7 +326,7 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
                           PLDM_GET_BIOS_ATTR_CURR_VAL_BY_HANDLE_MIN_RESP_BYTES +
                           entryLength,
                       0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
     rc = encode_get_bios_current_value_by_handle_resp(
         request->hdr.instance_id, PLDM_SUCCESS, 0, PLDM_START_AND_END,
         reinterpret_cast<const uint8_t*>(entry), entryLength, responsePtr);
@@ -358,7 +358,7 @@ Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
 
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_SET_BIOS_ATTR_CURR_VAL_RESP_BYTES, 0);
-    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    auto responsePtr = new (response.data()) pldm_msg;
 
     encode_set_bios_attribute_current_value_resp(request->hdr.instance_id, rc,
                                                  0, responsePtr);
