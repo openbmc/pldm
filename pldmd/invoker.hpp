@@ -40,6 +40,10 @@ class Invoker
     Response handle(pldm_tid_t tid, Type pldmType, Command pldmCommand,
                     const pldm_msg* request, size_t reqMsgLen)
     {
+        if (handlers.find(pldmType) == handlers.end())
+        {
+            return ccOnlyResponse(request, PLDM_ERROR_INVALID_PLDM_TYPE);
+        }
         return handlers.at(pldmType)->handle(tid, pldmCommand, request,
                                              reqMsgLen);
     }
