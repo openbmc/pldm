@@ -53,8 +53,16 @@ TEST(Registration, testSuccess)
 TEST(Registration, testFailure)
 {
     Invoker invoker{};
-    ASSERT_THROW(invoker.handle(tid, testType, testCmd, nullptr, 0),
-                 std::out_of_range);
+    const Response kExpectedBadTypeResponse = {0x01, 0x02, 0x03,
+                                               PLDM_ERROR_INVALID_PLDM_TYPE};
+    const std::array<uint8_t, sizeof(pldm_msg)> kDummyPldmRequestBacking = {
+        0x01, 0x02, 0x03};
+    const pldm_msg* kDummyPldmRequest =
+        reinterpret_cast<const pldm_msg*>(kDummyPldmRequestBacking.data());
+
+    EXPECT_EQ(invoker.handle(tid, testType, testCmd, kDummyPldmRequest, 0),
+              kExpectedBadTypeResponse);
+
     invoker.registerHandler(testType, std::make_unique<TestHandler>());
     uint8_t badCmd = 0xFE;
     ASSERT_THROW(invoker.handle(tid, testType, badCmd, nullptr, 0),
