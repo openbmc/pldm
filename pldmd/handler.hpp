@@ -36,6 +36,10 @@ class CmdHandler
     Response handle(pldm_tid_t tid, Command pldmCommand,
                     const pldm_msg* request, size_t reqMsgLen)
     {
+        if (handlers.find(pldmCommand) == handlers.end())
+        {
+            return ccOnlyResponse(request, PLDM_ERROR_UNSUPPORTED_PLDM_CMD);
+        }
         return handlers.at(pldmCommand)(tid, request, reqMsgLen);
     }
 
