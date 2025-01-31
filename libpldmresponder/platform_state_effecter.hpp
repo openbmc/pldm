@@ -68,7 +68,7 @@ int setStateEffecterStatesHandler(
     auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
+        pdr = new (pdrEntry.data) pldm_state_effecter_pdr;
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;
