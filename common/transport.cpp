@@ -63,8 +63,8 @@ static constexpr uint8_t MCTP_EID_VALID_MAX = 255;
     return pldmTransport;
 }
 
-[[maybe_unused]] static struct pldm_transport*
-    pldm_transport_impl_af_mctp_init(TransportImpl& impl, pollfd& pollfd)
+[[maybe_unused]] static struct pldm_transport* pldm_transport_impl_af_mctp_init(
+    TransportImpl& impl, pollfd& pollfd)
 {
     impl.af_mctp = nullptr;
     pldm_transport_af_mctp_init(&impl.af_mctp);

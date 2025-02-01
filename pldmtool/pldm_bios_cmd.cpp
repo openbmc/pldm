@@ -239,9 +239,9 @@ class GetBIOSTableHandler : public CommandInterface
         return std::make_optional<Table>(tableData, tableData + tableSize);
     }
 
-    const pldm_bios_attr_table_entry*
-        findAttrEntryByName(const std::string& name, const Table& attrTable,
-                            const Table& stringTable)
+    const pldm_bios_attr_table_entry* findAttrEntryByName(
+        const std::string& name, const Table& attrTable,
+        const Table& stringTable)
     {
         auto stringEntry = pldm_bios_table_string_find_by_string(
             stringTable.data(), stringTable.size(), name.c_str());
@@ -266,9 +266,9 @@ class GetBIOSTableHandler : public CommandInterface
         return nullptr;
     }
 
-    std::optional<uint16_t>
-        findAttrHandleByName(const std::string& name, const Table& attrTable,
-                             const Table& stringTable)
+    std::optional<uint16_t> findAttrHandleByName(const std::string& name,
+                                                 const Table& attrTable,
+                                                 const Table& stringTable)
     {
         auto attribute = findAttrEntryByName(name, attrTable, stringTable);
         if (attribute == nullptr)
@@ -677,10 +677,10 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
         const GetBIOSAttributeCurrentValueByHandle&) = delete;
     GetBIOSAttributeCurrentValueByHandle(
         GetBIOSAttributeCurrentValueByHandle&&) = delete;
-    GetBIOSAttributeCurrentValueByHandle&
-        operator=(const GetBIOSAttributeCurrentValueByHandle&) = delete;
-    GetBIOSAttributeCurrentValueByHandle&
-        operator=(GetBIOSAttributeCurrentValueByHandle&&) = delete;
+    GetBIOSAttributeCurrentValueByHandle& operator=(
+        const GetBIOSAttributeCurrentValueByHandle&) = delete;
+    GetBIOSAttributeCurrentValueByHandle& operator=(
+        GetBIOSAttributeCurrentValueByHandle&&) = delete;
 
     explicit GetBIOSAttributeCurrentValueByHandle(
         const char* type, const char* name, CLI::App* app) :
@@ -767,10 +767,10 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
     SetBIOSAttributeCurrentValue() = delete;
     SetBIOSAttributeCurrentValue(const SetBIOSAttributeCurrentValue&) = delete;
     SetBIOSAttributeCurrentValue(SetBIOSAttributeCurrentValue&&) = delete;
-    SetBIOSAttributeCurrentValue&
-        operator=(const SetBIOSAttributeCurrentValue&) = delete;
-    SetBIOSAttributeCurrentValue&
-        operator=(SetBIOSAttributeCurrentValue&&) = delete;
+    SetBIOSAttributeCurrentValue& operator=(
+        const SetBIOSAttributeCurrentValue&) = delete;
+    SetBIOSAttributeCurrentValue& operator=(SetBIOSAttributeCurrentValue&&) =
+        delete;
 
     explicit SetBIOSAttributeCurrentValue(const char* type, const char* name,
                                           CLI::App* app) :

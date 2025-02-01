@@ -16,8 +16,8 @@ void CustomDBus::setLocationCode(const std::string& path, std::string value)
     location.at(path)->locationCode(value);
 }
 
-std::optional<std::string>
-    CustomDBus::getLocationCode(const std::string& path) const
+std::optional<std::string> CustomDBus::getLocationCode(
+    const std::string& path) const
 {
     if (location.contains(path))
     {

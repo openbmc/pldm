@@ -105,8 +105,8 @@ class Activation : public ActivationIntf
 
     /** @brief Overriding RequestedActivations property setter function
      */
-    RequestedActivations
-        requestedActivation(RequestedActivations value) override
+    RequestedActivations requestedActivation(
+        RequestedActivations value) override
     {
         if ((value == RequestedActivations::Active) &&
             (requestedActivation() != RequestedActivations::Active))

@@ -164,8 +164,8 @@ std::string decodeString(const pldm_bios_string_table_entry* entry);
  *  @param[in] str - string itself
  *  @return pointer to the constructed entry
  */
-const pldm_bios_string_table_entry*
-    constructEntry(Table& table, const std::string& str);
+const pldm_bios_string_table_entry* constructEntry(Table& table,
+                                                   const std::string& str);
 
 } // namespace string
 
@@ -193,16 +193,16 @@ TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry);
  *  @param[in] handle - attribute handle
  *  @return Pointer to the attribute table entry
  */
-const pldm_bios_attr_table_entry*
-    findByHandle(const Table& table, uint16_t handle);
+const pldm_bios_attr_table_entry* findByHandle(const Table& table,
+                                               uint16_t handle);
 
 /** @brief Find attribute entry by string handle
  *  @param[in] table - attribute table
  *  @param[in] handle - string handle
  *  @return Pointer to the attribute table entry
  */
-const pldm_bios_attr_table_entry*
-    findByStringHandle(const Table& table, uint16_t handle);
+const pldm_bios_attr_table_entry* findByStringHandle(const Table& table,
+                                                     uint16_t handle);
 
 /** @struct StringField
  *  @brief String field of attribute table
@@ -317,8 +317,8 @@ uint64_t decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry);
  *  @param[in] entry - Pointer to an attribute value table entry
  *  @return Current value string handle indices
  */
-std::vector<uint8_t>
-    decodeEnumEntry(const pldm_bios_attr_val_table_entry* entry);
+std::vector<uint8_t> decodeEnumEntry(
+    const pldm_bios_attr_val_table_entry* entry);
 
 /** @brief Construct string entry of attribute value table at the end of the
  *         given table
@@ -328,9 +328,9 @@ std::vector<uint8_t>
  *  @param[in] str - The string
  *  @return Pointer to the constructed entry
  */
-const pldm_bios_attr_val_table_entry*
-    constructStringEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
-                         const std::string& str);
+const pldm_bios_attr_val_table_entry* constructStringEntry(
+    Table& table, uint16_t attrHandle, uint8_t attrType,
+    const std::string& str);
 
 /** @brief Construct integer entry of attribute value table at the end of
  *         the given table
@@ -351,9 +351,9 @@ const pldm_bios_attr_val_table_entry* constructIntegerEntry(
  *  @param[in] handleIndices -  handle indices
  *  @return Pointer to the constructed entry
  */
-const pldm_bios_attr_val_table_entry*
-    constructEnumEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
-                       const std::vector<uint8_t>& handleIndices);
+const pldm_bios_attr_val_table_entry* constructEnumEntry(
+    Table& table, uint16_t attrHandle, uint8_t attrType,
+    const std::vector<uint8_t>& handleIndices);
 
 /** @brief construct a table with an new entry
  *  @param[in] table - the table need to be updated

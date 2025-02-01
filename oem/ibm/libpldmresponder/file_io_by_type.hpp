@@ -130,7 +130,7 @@ class FileHandler
  *  @param[in] fileHandle - file handle
  */
 
-std::unique_ptr<FileHandler>
-    getHandlerByType(uint16_t fileType, uint32_t fileHandle);
+std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
+                                              uint32_t fileHandle);
 } // namespace responder
 } // namespace pldm

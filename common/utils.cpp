@@ -27,9 +27,9 @@ namespace pldm
 namespace utils
 {
 
-std::vector<std::vector<uint8_t>>
-    findStateEffecterPDR(uint8_t /*tid*/, uint16_t entityID,
-                         uint16_t stateSetId, const pldm_pdr* repo)
+std::vector<std::vector<uint8_t>> findStateEffecterPDR(
+    uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
+    const pldm_pdr* repo)
 {
     uint8_t* outData = nullptr;
     uint32_t size{};
@@ -79,9 +79,9 @@ std::vector<std::vector<uint8_t>>
     return pdrs;
 }
 
-std::vector<std::vector<uint8_t>>
-    findStateSensorPDR(uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
-                       const pldm_pdr* repo)
+std::vector<std::vector<uint8_t>> findStateSensorPDR(
+    uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
+    const pldm_pdr* repo)
 {
     uint8_t* outData = nullptr;
     uint32_t size{};
@@ -248,9 +248,9 @@ std::string DBusHandler::getService(const char* path,
     return mapperResponse.begin()->first;
 }
 
-GetSubTreeResponse
-    DBusHandler::getSubtree(const std::string& searchPath, int depth,
-                            const std::vector<std::string>& ifaceList) const
+GetSubTreeResponse DBusHandler::getSubtree(
+    const std::string& searchPath, int depth,
+    const std::vector<std::string>& ifaceList) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     auto method = bus.new_method_call(ObjectMapper::default_service,
@@ -739,8 +739,8 @@ bool dbusPropValuesToDouble(const std::string_view& type,
     return true;
 }
 
-std::optional<std::string>
-    fruFieldValuestring(const uint8_t* value, const uint8_t& length)
+std::optional<std::string> fruFieldValuestring(const uint8_t* value,
+                                               const uint8_t& length)
 {
     if (!value || !length)
     {

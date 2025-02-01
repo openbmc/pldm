@@ -33,8 +33,8 @@ class GetFruRecordTableMetadata : public CommandInterface
     GetFruRecordTableMetadata() = delete;
     GetFruRecordTableMetadata(const GetFruRecordTableMetadata&) = delete;
     GetFruRecordTableMetadata(GetFruRecordTableMetadata&&) = default;
-    GetFruRecordTableMetadata&
-        operator=(const GetFruRecordTableMetadata&) = delete;
+    GetFruRecordTableMetadata& operator=(const GetFruRecordTableMetadata&) =
+        delete;
     GetFruRecordTableMetadata& operator=(GetFruRecordTableMetadata&&) = delete;
 
     using CommandInterface::CommandInterface;

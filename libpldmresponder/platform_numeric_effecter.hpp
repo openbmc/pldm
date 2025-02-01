@@ -32,9 +32,9 @@ namespace platform_numeric_effecter
  *          failure, PropertyValue: The value to be set
  */
 template <typename T>
-std::pair<int, std::optional<pldm::utils::PropertyValue>>
-    getEffecterRawValue(const pldm_numeric_effecter_value_pdr* pdr,
-                        T& effecterValue, std::string propertyType)
+std::pair<int, std::optional<pldm::utils::PropertyValue>> getEffecterRawValue(
+    const pldm_numeric_effecter_value_pdr* pdr, T& effecterValue,
+    std::string propertyType)
 {
     // X = Round [ (Y - B) / m ]
     // refer to DSP0248_1.2.0 27.8

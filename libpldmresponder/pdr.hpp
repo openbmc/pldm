@@ -34,10 +34,10 @@ void getRepoByType(const pldm::responder::pdr_utils::Repo& inRepo,
  *
  *  @return pldm_pdr_record - Instance of pdr::RepoInterface
  */
-const pldm_pdr_record*
-    getRecordByHandle(const pldm::responder::pdr_utils::RepoInterface& pdrRepo,
-                      pldm::responder::pdr_utils::RecordHandle recordHandle,
-                      pldm::responder::pdr_utils::PdrEntry& pdrEntry);
+const pldm_pdr_record* getRecordByHandle(
+    const pldm::responder::pdr_utils::RepoInterface& pdrRepo,
+    pldm::responder::pdr_utils::RecordHandle recordHandle,
+    pldm::responder::pdr_utils::PdrEntry& pdrEntry);
 
 } // namespace pdr
 } // namespace responder

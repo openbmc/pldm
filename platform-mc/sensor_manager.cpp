@@ -248,8 +248,8 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int>
-    SensorManager::getSensorReading(std::shared_ptr<NumericSensor> sensor)
+exec::task<int> SensorManager::getSensorReading(
+    std::shared_ptr<NumericSensor> sensor)
 {
     if (!sensor)
     {

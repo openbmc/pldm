@@ -52,8 +52,8 @@ std::optional<pldm_tid_t> TerminusManager::toTid(const MctpInfo& mctpInfo) const
     return mctpInfoTableIt->first;
 }
 
-std::optional<pldm_tid_t>
-    TerminusManager::storeTerminusInfo(const MctpInfo& mctpInfo, pldm_tid_t tid)
+std::optional<pldm_tid_t> TerminusManager::storeTerminusInfo(
+    const MctpInfo& mctpInfo, pldm_tid_t tid)
 {
     if (tid == PLDM_TID_UNASSIGNED || tid == PLDM_TID_RESERVED)
     {
@@ -144,8 +144,8 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
                 exec::default_task_context<void>(exec::inline_scheduler{}));
 }
 
-TerminiMapper::iterator
-    TerminusManager::findTerminusPtr(const MctpInfo& mctpInfo)
+TerminiMapper::iterator TerminusManager::findTerminusPtr(
+    const MctpInfo& mctpInfo)
 {
     auto foundIter = std::find_if(
         termini.begin(), termini.end(), [&](const auto& terminusPair) {
@@ -501,8 +501,8 @@ exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
     co_return responseMsg->payload[0];
 }
 
-exec::task<int>
-    TerminusManager::getPLDMTypes(pldm_tid_t tid, uint64_t& supportedTypes)
+exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
+                                              uint64_t& supportedTypes)
 {
     Request request(sizeof(pldm_msg_hdr));
     auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());

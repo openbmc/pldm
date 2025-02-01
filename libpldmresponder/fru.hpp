@@ -156,8 +156,8 @@ class FruImpl
      *
      *  @return pldm_entity
      */
-    std::optional<pldm_entity>
-        getEntityByObjectPath(const dbus::InterfaceMap& intfMaps);
+    std::optional<pldm_entity> getEntityByObjectPath(
+        const dbus::InterfaceMap& intfMaps);
 
     /** @brief Update pldm entity to association tree
      *
@@ -320,8 +320,8 @@ class Handler : public CmdHandler
      *
      *  @return std::map<ObjectPath, pldm_entity>
      */
-    const pldm::responder::dbus::AssociatedEntityMap&
-        getAssociateEntityMap() const
+    const pldm::responder::dbus::AssociatedEntityMap& getAssociateEntityMap()
+        const
     {
         return impl.getAssociateEntityMap();
     }

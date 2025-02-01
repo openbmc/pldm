@@ -221,8 +221,8 @@ std::unordered_map<
            {{1, {log_level::OK, "Normal"}},
             {2, {log_level::CRITICAL, "Timer Expired"}}}}}}};
 
-std::string
-    OemEventManager::prefixMsgStrCreation(pldm_tid_t tid, uint16_t sensorId)
+std::string OemEventManager::prefixMsgStrCreation(pldm_tid_t tid,
+                                                  uint16_t sensorId)
 {
     std::string description;
     if (!tidToSocketNameMap.contains(tid))
