@@ -192,7 +192,7 @@ libpldm_dep = dependency(
 )
 
 if get_option('oem-ampere').allowed()
-    add_project_arguments('-DOEM_AMPERE', language : 'cpp')
+    add_project_arguments('-DOEM_AMPERE', language: 'cpp')
 endif
 
 libpldmutils_headers = ['.']
