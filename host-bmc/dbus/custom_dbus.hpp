@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cable.hpp"
+#include "chassis.hpp"
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
 #include "fan.hpp"
@@ -143,9 +144,15 @@ class CustomDBus
      */
     void implementFanInterface(const std::string& path);
 
+    /** @brief Implement Chassis Interface
+     *  @param[in] path - the object path
+     */
+    void implementChassisInterface(const std::string& path);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
+    std::unordered_map<ObjectPath, std::unique_ptr<ItemChassis>> chassis;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
     std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;

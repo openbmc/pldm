@@ -137,5 +137,15 @@ void CustomDBus::implementFanInterface(const std::string& path)
     }
 }
 
+void CustomDBus::implementChassisInterface(const std::string& path)
+{
+    if (!chassis.contains(path))
+    {
+        chassis.emplace(path,
+                        std::make_unique<ItemChassis>(
+                            pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
