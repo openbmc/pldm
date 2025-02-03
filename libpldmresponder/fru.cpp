@@ -22,8 +22,8 @@ namespace responder
 
 constexpr auto root = "/xyz/openbmc_project/inventory/";
 
-std::optional<pldm_entity>
-    FruImpl::getEntityByObjectPath(const dbus::InterfaceMap& intfMaps)
+std::optional<pldm_entity> FruImpl::getEntityByObjectPath(
+    const dbus::InterfaceMap& intfMaps)
 {
     for (const auto& intfMap : intfMaps)
     {

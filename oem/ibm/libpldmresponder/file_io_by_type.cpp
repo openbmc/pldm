@@ -123,8 +123,8 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
     return transferFileData(fd(), upstream, offset, length, address);
 }
 
-std::unique_ptr<FileHandler>
-    getHandlerByType(uint16_t fileType, uint32_t fileHandle)
+std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
+                                              uint32_t fileHandle)
 {
     switch (fileType)
     {

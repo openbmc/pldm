@@ -106,8 +106,8 @@ std::string decodeString(const pldm_bios_string_table_entry* entry)
                                                buffer.size());
     return std::string(buffer.data(), buffer.data() + strLength);
 }
-const pldm_bios_string_table_entry*
-    constructEntry(Table& table, const std::string& str)
+const pldm_bios_string_table_entry* constructEntry(Table& table,
+                                                   const std::string& str)
 {
     auto tableSize = table.size();
     auto entryLength = pldm_bios_table_string_entry_encode_length(str.length());
@@ -131,15 +131,15 @@ TableHeader decodeHeader(const pldm_bios_attr_table_entry* entry)
     return {attrHandle, attrType, stringHandle};
 }
 
-const pldm_bios_attr_table_entry*
-    findByHandle(const Table& table, uint16_t handle)
+const pldm_bios_attr_table_entry* findByHandle(const Table& table,
+                                               uint16_t handle)
 {
     return pldm_bios_table_attr_find_by_handle(table.data(), table.size(),
                                                handle);
 }
 
-const pldm_bios_attr_table_entry*
-    findByStringHandle(const Table& table, uint16_t handle)
+const pldm_bios_attr_table_entry* findByStringHandle(const Table& table,
+                                                     uint16_t handle)
 {
     return pldm_bios_table_attr_find_by_string_handle(table.data(),
                                                       table.size(), handle);
@@ -219,8 +219,8 @@ IntegerField decodeIntegerEntry(const pldm_bios_attr_table_entry* entry)
     return {lower, upper, scalar, def};
 }
 
-const pldm_bios_attr_table_entry*
-    constructEnumEntry(Table& table, pldm_bios_table_attr_entry_enum_info* info)
+const pldm_bios_attr_table_entry* constructEnumEntry(
+    Table& table, pldm_bios_table_attr_entry_enum_info* info)
 {
     auto entryLength = pldm_bios_table_attr_entry_enum_encode_length(
         info->pv_num, info->def_num);
@@ -285,8 +285,8 @@ uint64_t decodeIntegerEntry(const pldm_bios_attr_val_table_entry* entry)
     return pldm_bios_table_attr_value_entry_integer_decode_cv(entry);
 }
 
-std::vector<uint8_t>
-    decodeEnumEntry(const pldm_bios_attr_val_table_entry* entry)
+std::vector<uint8_t> decodeEnumEntry(
+    const pldm_bios_attr_val_table_entry* entry)
 {
     auto number = pldm_bios_table_attr_value_entry_enum_decode_number(entry);
     std::vector<uint8_t> currHdls(number, 0);
@@ -339,9 +339,9 @@ const pldm_bios_attr_val_table_entry* constructIntegerEntry(
         table.data() + tableSize);
 }
 
-const pldm_bios_attr_val_table_entry*
-    constructEnumEntry(Table& table, uint16_t attrHandle, uint8_t attrType,
-                       const std::vector<uint8_t>& handleIndices)
+const pldm_bios_attr_val_table_entry* constructEnumEntry(
+    Table& table, uint16_t attrHandle, uint8_t attrType,
+    const std::vector<uint8_t>& handleIndices)
 {
     auto entryLength = pldm_bios_table_attr_value_entry_encode_enum_length(
         handleIndices.size());

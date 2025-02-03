@@ -133,8 +133,8 @@ class TerminusManager
      *
      *  @return tid - Terminus tid
      */
-    std::optional<pldm_tid_t>
-        storeTerminusInfo(const MctpInfo& mctpInfo, pldm_tid_t tid);
+    std::optional<pldm_tid_t> storeTerminusInfo(const MctpInfo& mctpInfo,
+                                                pldm_tid_t tid);
 
     /** @brief Member functions to remove the TID from the transportLayer and
      *         mctpInfo table

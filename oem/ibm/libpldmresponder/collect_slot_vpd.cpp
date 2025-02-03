@@ -131,8 +131,8 @@ void SlotHandler::callVPDManager(const std::string& adapterObjPath,
     }
 }
 
-std::optional<std::string>
-    SlotHandler::getAdapterObjPath(const std::string& slotObjPath)
+std::optional<std::string> SlotHandler::getAdapterObjPath(
+    const std::string& slotObjPath)
 {
     static constexpr auto searchpath = "/xyz/openbmc_project/inventory";
     int depth = 0;

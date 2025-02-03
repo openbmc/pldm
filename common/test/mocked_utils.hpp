@@ -25,8 +25,8 @@ inline bool operator==(const DBusMapping& lhs, const DBusMapping& rhs)
 class GetManagedEmptyObject
 {
   public:
-    static pldm::utils::ObjectValueTree
-        getManagedObj(const char* /*service*/, const char* /*path*/)
+    static pldm::utils::ObjectValueTree getManagedObj(const char* /*service*/,
+                                                      const char* /*path*/)
     {
         return pldm::utils::ObjectValueTree{};
     }
@@ -35,8 +35,8 @@ class GetManagedEmptyObject
 class GetManagedObject
 {
   public:
-    static pldm::utils::ObjectValueTree
-        getManagedObj(const char* /*service*/, const char* /*path*/)
+    static pldm::utils::ObjectValueTree getManagedObj(const char* /*service*/,
+                                                      const char* /*path*/)
     {
         return pldm::utils::ObjectValueTree{
             {sdbusplus::message::object_path("/foo/bar"),

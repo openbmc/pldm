@@ -407,8 +407,8 @@ class Handler
      *          Return [PLDM_ERROR_NOT_READY, nullptr, 0] if timed out.
      *          Return [PLDM_SUCCESS, resp, len] if succeeded
      */
-    stdexec::sender_of<stdexec::set_value_t(SendRecvCoResp)> auto
-        sendRecvMsg(mctp_eid_t eid, pldm::Request&& request);
+    stdexec::sender_of<stdexec::set_value_t(SendRecvCoResp)> auto sendRecvMsg(
+        mctp_eid_t eid, pldm::Request&& request);
 
   private:
     PldmTransport* pldmTransport; //!< PLDM transport object

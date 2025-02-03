@@ -236,9 +236,9 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 {
     struct _
     {
-        static exec::task<uint8_t>
-            getTIDTask(Handler<MockRequest>& handler, mctp_eid_t eid,
-                       uint8_t instanceId, uint8_t& tid)
+        static exec::task<uint8_t> getTIDTask(Handler<MockRequest>& handler,
+                                              mctp_eid_t eid,
+                                              uint8_t instanceId, uint8_t& tid)
         {
             pldm::Request request(sizeof(pldm_msg_hdr), 0);
             auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
