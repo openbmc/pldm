@@ -3,6 +3,7 @@
 #include "cable.hpp"
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
+#include "fan.hpp"
 #include "motherboard.hpp"
 #include "pcie_device.hpp"
 #include "pcie_slot.hpp"
@@ -135,6 +136,13 @@ class CustomDBus
      */
     void implementMotherboardInterface(const std::string& path);
 
+    /** @brief Implement Fan Interface
+     *
+     *  @param[in] path - The object path
+     *
+     */
+    void implementFanInterface(const std::string& path);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
@@ -142,6 +150,7 @@ class CustomDBus
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
     std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;
     std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
+    std::unordered_map<ObjectPath, std::unique_ptr<Fan>> fan;
 };
 
 } // namespace dbus
