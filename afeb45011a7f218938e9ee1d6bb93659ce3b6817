@@ -22,6 +22,30 @@
       },
       "revId": "afeb45011a7f218938e9ee1d6bb93659ce3b6817",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a21310e3_ba2e781f",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-03T08:54:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e07f4ab9_d4491901",
+      "range": {
+        "startLine": 207,
+        "startChar": 10,
+        "endLine": 207,
+        "endChar": 74
+      },
+      "revId": "afeb45011a7f218938e9ee1d6bb93659ce3b6817",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
