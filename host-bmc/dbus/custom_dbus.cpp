@@ -126,5 +126,16 @@ void CustomDBus::implementMotherboardInterface(const std::string& path)
                                 pldm::utils::DBusHandler::getBus(), path));
     }
 }
+
+void CustomDBus::implementFanInterface(const std::string& path)
+{
+    if (fan.find(path) == fan.end())
+    {
+        fan.emplace(path,
+                    std::make_unique<Fan>(pldm::utils::DBusHandler::getBus(),
+                                          path.c_str()));
+    }
+}
+
 } // namespace dbus
 } // namespace pldm

@@ -1146,6 +1146,9 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
                 CustomDBus::getCustomDBus().implementMotherboardInterface(
                     entity.first);
                 break;
+            case PLDM_ENTITY_FAN:
+                CustomDBus::getCustomDBus().implementFanInterface(entity.first);
+                break;
             default:
                 break;
         }
