@@ -158,8 +158,8 @@ StatestoDbusVal populateMapping(const std::string& type, const Json& dBusValues,
     return valueMap;
 }
 
-std::tuple<TerminusHandle, SensorID, SensorInfo>
-    parseStateSensorPDR(const std::vector<uint8_t>& stateSensorPdr)
+std::tuple<TerminusHandle, SensorID, SensorInfo> parseStateSensorPDR(
+    const std::vector<uint8_t>& stateSensorPdr)
 {
     auto pdr =
         reinterpret_cast<const pldm_state_sensor_pdr*>(stateSensorPdr.data());
@@ -209,8 +209,8 @@ std::tuple<TerminusHandle, SensorID, SensorInfo>
                            std::move(sensorInfo));
 }
 
-std::vector<FruRecordDataFormat>
-    parseFruRecordTable(const uint8_t* fruData, size_t fruLen)
+std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
+                                                     size_t fruLen)
 {
     // Refer: DSP0257_1.0.0 Table 2
     // 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),

@@ -104,8 +104,8 @@ class SlotHandler
      *  @param[in] slotObjPath - The slot dbus object path
      *  @return - if Successfull, returns the adapter dbus object path
      */
-    std::optional<std::string>
-        getAdapterObjPath(const std::string& slotObjPath);
+    std::optional<std::string> getAdapterObjPath(
+        const std::string& slotObjPath);
 
     /** @brief Method to call VPD collection & VPD removal API's
      *  @param[in] adapterObjectPath - The adapter D-Bus object path

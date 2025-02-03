@@ -100,10 +100,10 @@ void requestPLDMServiceName()
     }
 }
 
-static std::optional<Response>
-    processRxMsg(const std::vector<uint8_t>& requestMsg, Invoker& invoker,
-                 requester::Handler<requester::Request>& handler,
-                 fw_update::Manager* fwManager, pldm_tid_t tid)
+static std::optional<Response> processRxMsg(
+    const std::vector<uint8_t>& requestMsg, Invoker& invoker,
+    requester::Handler<requester::Request>& handler,
+    fw_update::Manager* fwManager, pldm_tid_t tid)
 {
     uint8_t eid = tid;
 

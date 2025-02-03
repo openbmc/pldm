@@ -174,8 +174,8 @@ class HostPDRHandler
      *
      * @param[in] handler - oem platform handler
      */
-    inline void
-        setOemPlatformHandler(pldm::responder::oem_platform::Handler* handler)
+    inline void setOemPlatformHandler(
+        pldm::responder::oem_platform::Handler* handler)
     {
         oemPlatformHandler = handler;
     }

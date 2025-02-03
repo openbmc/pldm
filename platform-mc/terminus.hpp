@@ -223,24 +223,24 @@ class Terminus
      *  @param[in] pdrData - the response PDRs from GetPDR command
      *  @return pointer to numeric sensor info struct
      */
-    std::shared_ptr<pldm_numeric_sensor_value_pdr>
-        parseNumericSensorPDR(const std::vector<uint8_t>& pdrData);
+    std::shared_ptr<pldm_numeric_sensor_value_pdr> parseNumericSensorPDR(
+        const std::vector<uint8_t>& pdrData);
 
     /** @brief Parse the sensor Auxiliary name PDRs
      *
      *  @param[in] pdrData - the response PDRs from GetPDR command
      *  @return pointer to sensor Auxiliary name info struct
      */
-    std::shared_ptr<SensorAuxiliaryNames>
-        parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
+    std::shared_ptr<SensorAuxiliaryNames> parseSensorAuxiliaryNamesPDR(
+        const std::vector<uint8_t>& pdrData);
 
     /** @brief Parse the Entity Auxiliary name PDRs
      *
      *  @param[in] pdrData - the response PDRs from GetPDR command
      *  @return pointer to Entity Auxiliary name info struct
      */
-    std::shared_ptr<EntityAuxiliaryNames>
-        parseEntityAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData);
+    std::shared_ptr<EntityAuxiliaryNames> parseEntityAuxiliaryNamesPDR(
+        const std::vector<uint8_t>& pdrData);
 
     /** @brief Construct the NumericSensor sensor class for the compact numeric
      *         PLDM sensor.
@@ -263,8 +263,8 @@ class Terminus
      *  @param[in] pdrData - the response PDRs from GetPDR command
      *  @return pointer to sensor Auxiliary name info struct
      */
-    std::shared_ptr<SensorAuxiliaryNames>
-        parseCompactNumericSensorNames(const std::vector<uint8_t>& pdrData);
+    std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
+        const std::vector<uint8_t>& pdrData);
 
     /** @brief Create the terminus inventory path to
      *         /xyz/openbmc_project/inventory/Item/Board/.

@@ -27,8 +27,8 @@ std::vector<std::vector<uint8_t>> Pdr::findStateEffecterPDR(
     return pdrs;
 }
 
-std::vector<std::vector<uint8_t>>
-    Pdr::findStateSensorPDR(uint8_t tid, uint16_t entityID, uint16_t stateSetId)
+std::vector<std::vector<uint8_t>> Pdr::findStateSensorPDR(
+    uint8_t tid, uint16_t entityID, uint16_t stateSetId)
 {
     auto pdrs =
         pldm::utils::findStateSensorPDR(tid, entityID, stateSetId, pdrRepo);

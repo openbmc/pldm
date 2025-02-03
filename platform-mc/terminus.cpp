@@ -239,8 +239,8 @@ void Terminus::parseTerminusPDRs()
     }
 }
 
-std::shared_ptr<SensorAuxiliaryNames>
-    Terminus::getSensorAuxiliaryNames(SensorId id)
+std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
+    SensorId id)
 {
     auto it = std::find_if(
         sensorAuxiliaryNamesTbl.begin(), sensorAuxiliaryNamesTbl.end(),
@@ -258,8 +258,8 @@ std::shared_ptr<SensorAuxiliaryNames>
     return nullptr;
 };
 
-std::shared_ptr<SensorAuxiliaryNames>
-    Terminus::parseSensorAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData)
+std::shared_ptr<SensorAuxiliaryNames> Terminus::parseSensorAuxiliaryNamesPDR(
+    const std::vector<uint8_t>& pdrData)
 {
     constexpr uint8_t nullTerminator = 0;
     auto pdr = reinterpret_cast<const struct pldm_sensor_auxiliary_names_pdr*>(
@@ -313,8 +313,8 @@ std::shared_ptr<SensorAuxiliaryNames>
         pdr->sensor_id, pdr->sensor_count, std::move(sensorAuxNames));
 }
 
-std::shared_ptr<EntityAuxiliaryNames>
-    Terminus::parseEntityAuxiliaryNamesPDR(const std::vector<uint8_t>& pdrData)
+std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(
+    const std::vector<uint8_t>& pdrData)
 {
     auto names_offset = sizeof(struct pldm_pdr_hdr) +
                         PLDM_PDR_ENTITY_AUXILIARY_NAME_PDR_MIN_LENGTH;
@@ -376,8 +376,8 @@ std::shared_ptr<EntityAuxiliaryNames>
     return std::make_shared<EntityAuxiliaryNames>(key, nameStrings);
 }
 
-std::shared_ptr<pldm_numeric_sensor_value_pdr>
-    Terminus::parseNumericSensorPDR(const std::vector<uint8_t>& pdr)
+std::shared_ptr<pldm_numeric_sensor_value_pdr> Terminus::parseNumericSensorPDR(
+    const std::vector<uint8_t>& pdr)
 {
     const uint8_t* ptr = pdr.data();
     auto parsedPdr = std::make_shared<pldm_numeric_sensor_value_pdr>();
@@ -438,8 +438,8 @@ void Terminus::addNumericSensor(
     }
 }
 
-std::shared_ptr<SensorAuxiliaryNames>
-    Terminus::parseCompactNumericSensorNames(const std::vector<uint8_t>& sPdr)
+std::shared_ptr<SensorAuxiliaryNames> Terminus::parseCompactNumericSensorNames(
+    const std::vector<uint8_t>& sPdr)
 {
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>
         sensorAuxNames{};

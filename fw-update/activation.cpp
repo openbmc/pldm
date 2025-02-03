@@ -7,8 +7,8 @@ namespace pldm
 namespace fw_update
 {
 
-ActivationIntf::Activations
-    Activation::activation(ActivationIntf::Activations value)
+ActivationIntf::Activations Activation::activation(
+    ActivationIntf::Activations value)
 {
     if (value == ActivationIntf::Activations::Activating)
     {

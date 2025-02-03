@@ -238,8 +238,8 @@ std::tuple<pldm::pdr::TerminusHandle, pldm::pdr::SensorID,
  *  @return std::vector<FruRecordDataFormat> - the vector of the FRU record data
  *          format structure
  */
-std::vector<FruRecordDataFormat>
-    parseFruRecordTable(const uint8_t* fruData, size_t fruLen);
+std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
+                                                     size_t fruLen);
 
 /** @brief Return the size of data type based on the effecterDataSize enum value
  *

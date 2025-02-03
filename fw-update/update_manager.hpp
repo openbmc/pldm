@@ -83,10 +83,10 @@ class UpdateManager
     /** @brief
      *
      */
-    DeviceUpdaterInfos
-        associatePkgToDevices(const FirmwareDeviceIDRecords& fwDeviceIDRecords,
-                              const DescriptorMap& descriptorMap,
-                              TotalComponentUpdates& totalNumComponentUpdates);
+    DeviceUpdaterInfos associatePkgToDevices(
+        const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const DescriptorMap& descriptorMap,
+        TotalComponentUpdates& totalNumComponentUpdates);
 
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
     Event& event; //!< reference to PLDM daemon's main event loop

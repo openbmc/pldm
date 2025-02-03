@@ -38,10 +38,10 @@ class BIOSEnumAttribute : public BIOSAttribute
      *                         attribute value entry
      *  @param[in] stringTable - The string table
      */
-    void
-        setAttrValueOnDbus(const pldm_bios_attr_val_table_entry* attrValueEntry,
-                           const pldm_bios_attr_table_entry* attrEntry,
-                           const BIOSStringTable& stringTable) override;
+    void setAttrValueOnDbus(
+        const pldm_bios_attr_val_table_entry* attrValueEntry,
+        const pldm_bios_attr_table_entry* attrEntry,
+        const BIOSStringTable& stringTable) override;
 
     /** @brief Construct corresponding entries at the end of the attribute table
      *         and attribute value tables
@@ -85,9 +85,9 @@ class BIOSEnumAttribute : public BIOSAttribute
      *  @param[in] pVs - The possible values
      *  @return The handles
      */
-    std::vector<uint16_t>
-        getPossibleValuesHandle(const BIOSStringTable& stringTable,
-                                const std::vector<std::string>& pVs);
+    std::vector<uint16_t> getPossibleValuesHandle(
+        const BIOSStringTable& stringTable,
+        const std::vector<std::string>& pVs);
 
     /** @brief Method to populate the valueDisplayNamesMap
      *  @param[in] attrHandle - attribute handle

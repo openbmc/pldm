@@ -604,8 +604,8 @@ exec::task<int> PlatformManager::eventMessageSupported(
     co_return completionCode;
 }
 
-exec::task<int>
-    PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid, uint16_t* total)
+exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
+                                                           uint16_t* total)
 {
     Request request(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);

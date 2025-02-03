@@ -48,10 +48,10 @@ class BIOSAttribute
      *                         attribute value entry
      *  @param[in] stringTable - The string table
      */
-    virtual void
-        setAttrValueOnDbus(const pldm_bios_attr_val_table_entry* attrValueEntry,
-                           const pldm_bios_attr_table_entry* attrEntry,
-                           const BIOSStringTable& stringTable) = 0;
+    virtual void setAttrValueOnDbus(
+        const pldm_bios_attr_val_table_entry* attrValueEntry,
+        const pldm_bios_attr_table_entry* attrEntry,
+        const BIOSStringTable& stringTable) = 0;
 
     /** @brief Construct corresponding entries at the end of the attribute table
      *         and attribute value tables

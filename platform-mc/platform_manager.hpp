@@ -72,13 +72,13 @@ class PlatformManager
      *  @param[out] transferCrc - CRC value when record data is last part of PDR
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int>
-        getPDR(const pldm_tid_t tid, const uint32_t recordHndl,
-               const uint32_t dataTransferHndl, const uint8_t transferOpFlag,
-               const uint16_t requestCnt, const uint16_t recordChgNum,
-               uint32_t& nextRecordHndl, uint32_t& nextDataTransferHndl,
-               uint8_t& transferFlag, uint16_t& responseCnt,
-               std::vector<uint8_t>& recordData, uint8_t& transferCrc);
+    exec::task<int> getPDR(
+        const pldm_tid_t tid, const uint32_t recordHndl,
+        const uint32_t dataTransferHndl, const uint8_t transferOpFlag,
+        const uint16_t requestCnt, const uint16_t recordChgNum,
+        uint32_t& nextRecordHndl, uint32_t& nextDataTransferHndl,
+        uint8_t& transferFlag, uint16_t& responseCnt,
+        std::vector<uint8_t>& recordData, uint8_t& transferCrc);
 
     /** @brief get PDR repository information.
      *
