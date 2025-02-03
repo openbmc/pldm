@@ -30,6 +30,7 @@ sources = [
     '../host-bmc/host_condition.cpp',
     '../host-bmc/dbus/custom_dbus.cpp',
     '../host-bmc/dbus/cable.cpp',
+    '../host-bmc/dbus/chassis.cpp',
     '../host-bmc/dbus/cpu_core.cpp',
     '../host-bmc/utils.cpp',
     '../host-bmc/dbus/pcie_device.cpp',
