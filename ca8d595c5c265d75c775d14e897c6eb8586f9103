@@ -166,6 +166,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "008a41a6_f773efad",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-03T08:32:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3e79672_0d20f73b",
+      "range": {
+        "startLine": 248,
+        "startChar": 40,
+        "endLine": 248,
+        "endChar": 51
+      },
+      "revId": "ca8d595c5c265d75c775d14e897c6eb8586f9103",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c04f46ed_51cb29ec",

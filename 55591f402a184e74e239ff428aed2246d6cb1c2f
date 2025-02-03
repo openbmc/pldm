@@ -76,6 +76,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc4ffbd9_4eafdb22",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-03T08:32:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "066b6031_8d219032",
+      "range": {
+        "startLine": 28,
+        "startChar": 19,
+        "endLine": 28,
+        "endChar": 68
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecd2fc87_a12c0930",
@@ -89,6 +113,30 @@
       "writtenOn": "2025-01-28T05:34:30Z",
       "side": 1,
       "message": "just an `e` would work instead of e.what()",
+      "range": {
+        "startLine": 29,
+        "startChar": 32,
+        "endLine": 29,
+        "endChar": 40
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e343625_33695a54",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-03T08:32:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecd2fc87_a12c0930",
       "range": {
         "startLine": 29,
         "startChar": 32,
@@ -122,6 +170,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b9daec_03d324a7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-03T08:32:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40c3486a_a96d14b9",
+      "range": {
+        "startLine": 224,
+        "startChar": 12,
+        "endLine": 224,
+        "endChar": 19
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8ce5d1d_36419bb8",
@@ -145,6 +217,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ae0d8dc_77a1b976",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-03T08:32:13Z",
+      "side": 1,
+      "message": "Done, implementation here has slightly changed to address the potential issue.",
+      "parentUuid": "f8ce5d1d_36419bb8",
+      "range": {
+        "startLine": 342,
+        "startChar": 33,
+        "endLine": 342,
+        "endChar": 64
+      },
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c77532a_f6b04bc6",
@@ -158,6 +254,24 @@
       "writtenOn": "2025-01-28T23:26:24Z",
       "side": 1,
       "message": "You need to test the value of `rc` here also. I thought we\u0027d fixed that previously?",
+      "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3829285_053a2e73",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 82
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-03T08:32:13Z",
+      "side": 1,
+      "message": "Done, careless me had only handled the outer loop but forgot the inner one. 😅",
+      "parentUuid": "6c77532a_f6b04bc6",
       "revId": "55591f402a184e74e239ff428aed2246d6cb1c2f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
