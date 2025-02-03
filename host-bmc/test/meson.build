@@ -8,6 +8,7 @@ test_sources = [
     '../utils.cpp',
     '../dbus/custom_dbus.cpp',
     '../dbus/cable.cpp',
+    '../dbus/chassis.cpp',
     '../dbus/cpu_core.cpp',
     '../dbus/pcie_device.cpp',
     '../dbus/pcie_slot.cpp',
