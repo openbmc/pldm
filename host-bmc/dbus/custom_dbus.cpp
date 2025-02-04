@@ -147,5 +147,25 @@ void CustomDBus::implementFanInterface(const std::string& path)
     }
 }
 
+void CustomDBus::implementChassisInterface(const std::string& path)
+{
+    if (!chassis.contains(path))
+    {
+        chassis.emplace(path,
+                        std::make_unique<ItemChassis>(
+                            pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
+void CustomDBus::implementAssetInterface(const std::string& path)
+{
+    if (!asset.contains(path))
+    {
+        asset.emplace(path, std::make_unique<Asset>(
+                                pldm::utils::DBusHandler::getBus(), path));
+    }
+}
+
+>>>>>>> 0b08d8cb62d0 (pldm: Implement Asset interface)
 } // namespace dbus
 } // namespace pldm

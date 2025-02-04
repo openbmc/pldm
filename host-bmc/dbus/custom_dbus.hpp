@@ -1,5 +1,6 @@
 #pragma once
 
+#include "asset.hpp"
 #include "cable.hpp"
 #include "common/utils.hpp"
 #include "cpu_core.hpp"
@@ -156,7 +157,15 @@ class CustomDBus
      */
     void implementPowerSupplyInterface(const std::string& path);
 
+    /** @brief Implement Asset Interface
+     *
+     *  @param[in] path - The object path
+     *
+     */
+    void implementAssetInterface(const std::string& path);
+
   private:
+    std::unordered_map<ObjectPath, std::unique_ptr<Asset>> asset;
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
