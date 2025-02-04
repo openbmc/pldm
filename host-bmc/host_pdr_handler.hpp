@@ -268,6 +268,12 @@ class HostPDRHandler
      */
     void setPresenceFrus();
 
+    /** @brief Set the Present dbus Property
+     *  @param[in] path     - object path
+     *  @return
+     */
+    void setPresentPropertyStatus(const std::string& path);
+
     /** @brief Set the availabilty dbus Property
      *  @param[in] path     - object path
      */

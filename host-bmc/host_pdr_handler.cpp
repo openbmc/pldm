@@ -1135,6 +1135,11 @@ void HostPDRHandler::setFRUDataOnDBus(
 #endif
 }
 
+void HostPDRHandler::setPresentPropertyStatus(const std::string& path)
+{
+    CustomDBus::getCustomDBus().updateItemPresentStatus(path, true);
+}
+
 void HostPDRHandler::setAvailabilityState(const std::string& path)
 {
     CustomDBus::getCustomDBus().setAvailabilityState(path, true);
@@ -1146,6 +1151,8 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 
     for (const auto& entity : objPathMap)
     {
+        // update the Present Property
+        setPresentPropertyStatus(entity.first);
         // Implement & update the Availability to true
         setAvailabilityState(entity.first);
 

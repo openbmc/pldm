@@ -9,6 +9,7 @@
 #include "cpu_core.hpp"
 #include "fabric_adapter.hpp"
 #include "fan.hpp"
+#include "inventory_item.hpp"
 #include "motherboard.hpp"
 #include "pcie_device.hpp"
 #include "pcie_slot.hpp"
@@ -190,11 +191,19 @@ class CustomDBus
      */
     void setAvailabilityState(const std::string& path, const bool& state);
 
+    /** @brief Set the Inventory Item property
+     *  @param[in] path - The object path
+     *  @param[in] bool - the presence of fru
+     */
+    void updateItemPresentStatus(const std::string& path, bool isPresent);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<Asset>> asset;
     std::unordered_map<ObjectPath, std::unique_ptr<Availability>>
         availabilityState;
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
+    std::unordered_map<ObjectPath, std::unique_ptr<InventoryItem>>
+        presentStatus;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
     std::unordered_map<ObjectPath, std::unique_ptr<ItemChassis>> chassis;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
