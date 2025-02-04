@@ -5,6 +5,7 @@
 #include "cable.hpp"
 #include "chassis.hpp"
 #include "common/utils.hpp"
+#include "connector.hpp"
 #include "cpu_core.hpp"
 #include "fan.hpp"
 #include "motherboard.hpp"
@@ -159,6 +160,13 @@ class CustomDBus
      */
     void implementPowerSupplyInterface(const std::string& path);
 
+    /** @brief Implement Connector Interface
+     *
+     *  @param[in] path - The object path
+     *
+     */
+    void implementConnecterInterface(const std::string& path);
+
     /** @brief Implement Asset Interface
      *
      *  @param[in] path - The object path
@@ -187,6 +195,7 @@ class CustomDBus
     std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;
     std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
     std::unordered_map<ObjectPath, std::unique_ptr<Fan>> fan;
+    std::unordered_map<ObjectPath, std::unique_ptr<Connector>> connector;
 };
 
 } // namespace dbus
