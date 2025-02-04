@@ -1171,6 +1171,10 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
                 CustomDBus::getCustomDBus().implementPowerSupplyInterface(
                     entity.first);
                 break;
+            case PLDM_ENTITY_CHASSIS_FRONT_PANEL_BOARD:
+                CustomDBus::getCustomDBus().implementPanelInterface(
+                    entity.first);
+                break;
             case PLDM_ENTITY_SLOT:
                 CustomDBus::getCustomDBus().implementPCIeSlotInterface(
                     entity.first);
