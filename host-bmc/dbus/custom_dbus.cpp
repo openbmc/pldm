@@ -157,5 +157,14 @@ void CustomDBus::implementChassisInterface(const std::string& path)
     }
 }
 
+void CustomDBus::implementAssetInterface(const std::string& path)
+{
+    if (!asset.contains(path))
+    {
+        asset.emplace(path, std::make_unique<Asset>(
+                                pldm::utils::DBusHandler::getBus(), path));
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
