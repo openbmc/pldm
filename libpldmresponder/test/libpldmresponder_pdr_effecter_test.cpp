@@ -43,8 +43,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     pdr_utils::PdrEntry e;
     auto record2 = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record2, nullptr);
-    pldm_state_effecter_pdr* pdr =
-        reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
+    pldm_state_effecter_pdr* pdr = new (e.data) pldm_state_effecter_pdr;
 
     ASSERT_EQ(pdr->hdr.record_handle, 2);
     ASSERT_EQ(pdr->hdr.version, 1);
@@ -61,8 +60,8 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
     ASSERT_EQ(pdr->composite_effecter_count, 2);
-    state_effecter_possible_states* states =
-        reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states);
+    state_effecter_possible_states* states = new (pdr->possible_states)
+        state_effecter_possible_states;
     ASSERT_EQ(states->state_set_id, 196);
     ASSERT_EQ(states->possible_states_size, 1);
     bitfield8_t bf1{};
@@ -76,7 +75,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     // Check second PDR
     auto record3 = pdr::getRecordByHandle(outRepo, 3, e);
     ASSERT_NE(record3, nullptr);
-    pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
+    pdr = new (e.data) pldm_state_effecter_pdr;
 
     ASSERT_EQ(pdr->hdr.record_handle, 3);
     ASSERT_EQ(pdr->hdr.version, 1);
@@ -93,14 +92,13 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
     ASSERT_EQ(pdr->has_description_pdr, false);
     ASSERT_EQ(pdr->composite_effecter_count, 2);
-    states =
-        reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states);
+    states = new (pdr->possible_states) state_effecter_possible_states;
     ASSERT_EQ(states->state_set_id, 197);
     ASSERT_EQ(states->possible_states_size, 1);
     bf1.byte = 2;
     ASSERT_EQ(states->states[0].byte, bf1.byte);
-    states = reinterpret_cast<state_effecter_possible_states*>(
-        pdr->possible_states + sizeof(state_effecter_possible_states));
+    states = new (pdr->possible_states + sizeof(state_effecter_possible_states))
+        state_effecter_possible_states;
     ASSERT_EQ(states->state_set_id, 198);
     ASSERT_EQ(states->possible_states_size, 2);
     bitfield8_t bf2[2];
@@ -145,8 +143,8 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
     auto record = pdr::getRecordByHandle(outRepo, 4, e);
     ASSERT_NE(record, nullptr);
 
-    pldm_numeric_effecter_value_pdr* pdr =
-        reinterpret_cast<pldm_numeric_effecter_value_pdr*>(e.data);
+    pldm_numeric_effecter_value_pdr* pdr = new (e.data)
+        pldm_numeric_effecter_value_pdr;
     EXPECT_EQ(pdr->hdr.record_handle, 4);
     EXPECT_EQ(pdr->hdr.version, 1);
     EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);

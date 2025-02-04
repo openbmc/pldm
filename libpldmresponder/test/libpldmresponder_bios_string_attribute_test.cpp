@@ -193,8 +193,7 @@ TEST_F(TestBIOSStringAttribute, setAttrValueOnDbus)
         4,   0,             /* current string length */
         'a', 'b', 'c', 'd', /* default value string handle index */
     };
-    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-        attrValueEntry.data());
+    auto entry = new (attrValueEntry.data()) pldm_bios_attr_val_table_entry;
     PropertyValue value = std::string("abcd");
     EXPECT_CALL(dbusHandler, setDbusProperty(dbusMapping, value)).Times(1);
     stringReadWrite.setAttrValueOnDbus(entry, nullptr, biosStringTable);
