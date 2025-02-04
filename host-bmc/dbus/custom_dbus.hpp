@@ -7,6 +7,7 @@
 #include "motherboard.hpp"
 #include "pcie_device.hpp"
 #include "pcie_slot.hpp"
+#include "power_supply.hpp"
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
@@ -143,11 +144,24 @@ class CustomDBus
      */
     void implementFanInterface(const std::string& path);
 
+    /** @brief Implement Chassis Interface
+     *  @param[in] path - the object path
+     */
+    void implementChassisInterface(const std::string& path);
+
+    /** @brief Implement PowerSupply Interface
+     *
+     *  @param[in] path - The object path
+     *
+     */
+    void implementPowerSupplyInterface(const std::string& path);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
+    std::unordered_map<ObjectPath, std::unique_ptr<PowerSupply>> powersupply;
     std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;
     std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
     std::unordered_map<ObjectPath, std::unique_ptr<Fan>> fan;
