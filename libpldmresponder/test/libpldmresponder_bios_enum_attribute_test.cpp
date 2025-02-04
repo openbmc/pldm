@@ -233,8 +233,6 @@ TEST_F(TestBIOSEnumAttribute, setAttrValueOnDbus)
                 setDbusProperty(dbusMapping, PropertyValue{bool(true)}))
         .Times(1);
     enumReadWrite.setAttrValueOnDbus(
-        reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-            attrValueEntry.data()),
-        reinterpret_cast<pldm_bios_attr_table_entry*>(attrEntry.data()),
-        biosStringTable);
+        new (attrValueEntry.data()) pldm_bios_attr_val_table_entry,
+        new (attrEntry.data()) pldm_bios_attr_table_entry, biosStringTable);
 }
