@@ -200,8 +200,7 @@ TEST_F(TestBIOSIntegerAttribute, setAttrValueOnDbus)
         7, 0, 0, 0, 0, 0, 0, 0, /* current value */
     };
 
-    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
-        attrValueEntry.data());
+    auto entry = new (attrValueEntry.data()) pldm_bios_attr_val_table_entry;
     EXPECT_CALL(dbusHandler,
                 setDbusProperty(dbusMapping, PropertyValue{uint8_t(7)}))
         .Times(1);

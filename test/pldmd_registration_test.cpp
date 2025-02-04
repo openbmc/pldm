@@ -33,7 +33,7 @@ class TestHandler : public CmdHandler
 TEST(CcOnlyResponse, testEncode)
 {
     std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
-    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    auto request = new (requestMsg.data()) pldm_msg;
     encode_get_types_req(0, request);
 
     auto responseMsg = CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
