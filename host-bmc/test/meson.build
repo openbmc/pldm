@@ -12,6 +12,7 @@ test_sources = [
     '../dbus/cable.cpp',
     '../dbus/chassis.cpp',
     '../dbus/cpu_core.cpp',
+    '../dbus/inventory_item.cpp',
     '../dbus/pcie_device.cpp',
     '../dbus/pcie_slot.cpp',
 ]
