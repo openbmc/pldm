@@ -264,6 +264,15 @@ class HostPDRHandler
      */
     void createDbusObjects(const PDRList& fruRecordSetPDRs);
 
+    /** @brief set the FRU presence based on the remote PLDM terminus off signal
+     */
+    void setPresenceFrus();
+
+    /** @brief Set the availabilty dbus Property
+     *  @param[in] path     - object path
+     */
+    void setAvailabilityState(const std::string& path);
+
     /** @brief Get FRU Record Set Identifier from FRU Record data Format
      *  @param[in] fruRecordSetPDRs - fru record set pdr
      *  @param[in] entity           - PLDM entity information
