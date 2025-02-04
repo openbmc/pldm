@@ -127,6 +127,16 @@ void CustomDBus::implementMotherboardInterface(const std::string& path)
     }
 }
 
+void CustomDBus::implementPowerSupplyInterface(const std::string& path)
+{
+    if (!powersupply.contains(path))
+    {
+        powersupply.emplace(
+            path, std::make_unique<PowerSupply>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
 void CustomDBus::implementFanInterface(const std::string& path)
 {
     if (fan.find(path) == fan.end())
