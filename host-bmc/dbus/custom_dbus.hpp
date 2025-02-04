@@ -11,6 +11,7 @@
 #include "fan.hpp"
 #include "inventory_item.hpp"
 #include "motherboard.hpp"
+#include "panel.hpp"
 #include "pcie_device.hpp"
 #include "pcie_slot.hpp"
 #include "power_supply.hpp"
@@ -197,6 +198,13 @@ class CustomDBus
      */
     void updateItemPresentStatus(const std::string& path, bool isPresent);
 
+    /** @brief Implement Panel Interface
+     *
+     *  @param[in] path - The object path
+     *
+     */
+    void implementPanelInterface(const std::string& path);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<Asset>> asset;
     std::unordered_map<ObjectPath, std::unique_ptr<Availability>>
@@ -215,6 +223,7 @@ class CustomDBus
     std::unordered_map<ObjectPath, std::unique_ptr<Motherboard>> motherboard;
     std::unordered_map<ObjectPath, std::unique_ptr<Fan>> fan;
     std::unordered_map<ObjectPath, std::unique_ptr<Connector>> connector;
+    std::unordered_map<ObjectPath, std::unique_ptr<Panel>> panel;
 };
 
 } // namespace dbus
