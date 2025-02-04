@@ -199,5 +199,29 @@ void CustomDBus::setAvailabilityState(const std::string& path,
     availabilityState.at(path)->available(state);
 }
 
+void CustomDBus::updateItemPresentStatus(const std::string& path,
+                                         bool isPresent)
+{
+    if (!presentStatus.contains(path))
+    {
+        presentStatus.emplace(
+            path, std::make_unique<InventoryItem>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+        std::filesystem::path ObjectPath(path);
+
+        // Hardcode the present dbus property to true
+        presentStatus.at(path)->present(true);
+
+        // Set the pretty name dbus property to the filename
+        // form the dbus path object
+        presentStatus.at(path)->prettyName(ObjectPath.filename());
+    }
+    else
+    {
+        // object is already created
+        presentStatus.at(path)->present(isPresent);
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
