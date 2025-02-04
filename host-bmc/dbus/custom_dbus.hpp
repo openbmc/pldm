@@ -1,6 +1,7 @@
 #pragma once
 
 #include "asset.hpp"
+#include "availability.hpp"
 #include "cable.hpp"
 #include "chassis.hpp"
 #include "common/utils.hpp"
@@ -165,8 +166,18 @@ class CustomDBus
      */
     void implementAssetInterface(const std::string& path);
 
+    /** @brief Set the availability state property
+     *
+     *  @param[in] path   - The object path
+     *
+     *  @param[in] state  - Availability state
+     */
+    void setAvailabilityState(const std::string& path, const bool& state);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<Asset>> asset;
+    std::unordered_map<ObjectPath, std::unique_ptr<Availability>>
+        availabilityState;
     std::unordered_map<ObjectPath, std::unique_ptr<LocationIntf>> location;
     std::unordered_map<ObjectPath, std::unique_ptr<CPUCore>> cpuCore;
     std::unordered_map<ObjectPath, std::unique_ptr<ItemChassis>> chassis;

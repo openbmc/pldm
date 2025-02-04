@@ -166,5 +166,18 @@ void CustomDBus::implementAssetInterface(const std::string& path)
     }
 }
 
+void CustomDBus::setAvailabilityState(const std::string& path,
+                                      const bool& state)
+{
+    if (!availabilityState.contains(path))
+    {
+        availabilityState.emplace(
+            path, std::make_unique<Availability>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+
+    availabilityState.at(path)->available(state);
+}
+
 } // namespace dbus
 } // namespace pldm

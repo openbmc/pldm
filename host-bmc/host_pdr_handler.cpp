@@ -115,6 +115,9 @@ HostPDRHandler::HostPDRHandler(
                         const auto& [key, value] = item;
                         return key != TERMINUS_HANDLE;
                     });
+                    // when the host is powered off, set the availability
+                    // state of all the dbus objects to false
+                    this->setPresenceFrus();
                     pldm_pdr_remove_remote_pdrs(repo);
                     pldm_entity_association_tree_destroy_root(entityTree);
                     pldm_entity_association_tree_copy_root(bmcEntityTree,
@@ -125,6 +128,15 @@ HostPDRHandler::HostPDRHandler(
                 }
             }
         });
+}
+
+void HostPDRHandler::setPresenceFrus()
+{
+    // iterate over all dbus objects
+    for (const auto& [path, entityId] : objPathMap)
+    {
+        CustomDBus::getCustomDBus().setAvailabilityState(path, false);
+    }
 }
 
 void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
@@ -1122,11 +1134,21 @@ void HostPDRHandler::setFRUDataOnDBus(
     }
 #endif
 }
+
+void HostPDRHandler::setAvailabilityState(const std::string& path)
+{
+    CustomDBus::getCustomDBus().setAvailabilityState(path, true);
+}
+
 void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
 {
-    // TODO: Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
+    // Creating and Refreshing dbus hosted by remote PLDM entity Fru PDRs
+
     for (const auto& entity : objPathMap)
     {
+        // Implement & update the Availability to true
+        setAvailabilityState(entity.first);
+
         pldm_entity node = pldm_entity_extract(entity.second);
         switch (node.entity_type)
         {
