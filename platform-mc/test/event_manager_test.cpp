@@ -226,7 +226,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
             0x0 // dataTransferHandleTimeout
         };
     auto rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPDRRepositoryInfoResp.data()),
+        new (getPDRRepositoryInfoResp.data()) pldm_msg,
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -300,8 +300,8 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
         0,                             // fatalHigh
         0                              // fatalLow
     };
-    rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrResp.data()), sizeof(getPdrResp));
+    rc = terminusManager.enqueueResponse(new (getPdrResp.data()) pldm_msg,
+                                         sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     const size_t getPdrAuxNameRespLen = 39;
@@ -336,8 +336,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
             0x00  // Entity Name "S0"
         };
     rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrAuxNameResp.data()),
-        sizeof(getPdrAuxNameResp));
+        new (getPdrAuxNameResp.data()) pldm_msg, sizeof(getPdrAuxNameResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     // queue eventMessageBufferSize response(bufferSize=32)
@@ -345,7 +344,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     std::array<uint8_t, sizeof(pldm_msg_hdr) + eventMessageBufferSizeRespLen>
         eventMessageBufferSizeResp{0x0, 0x02, 0x0d, PLDM_SUCCESS, 32, 0};
     rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(eventMessageBufferSizeResp.data()),
+        new (eventMessageBufferSizeResp.data()) pldm_msg,
         sizeof(eventMessageBufferSizeResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -359,7 +358,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
                                   3,    // numberEventClassReturned
                                   0x0,  0x5,  0xfa};
     rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(eventMessageSupportedResp.data()),
+        new (eventMessageSupportedResp.data()) pldm_msg,
         sizeof(eventMessageSupportedResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -372,7 +371,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     std::array<uint8_t, sizeof(pldm_msg_hdr) + SetEventReceiverLen>
         SetEventReceiverResp{0x0, 0x02, 0x04, PLDM_SUCCESS};
     rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(SetEventReceiverResp.data()),
+        new (SetEventReceiverResp.data()) pldm_msg,
         sizeof(SetEventReceiverResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -439,7 +438,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             4 // eventData first part
         };
     auto rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(pollForPlatformEventMessage1Resp.data()),
+        new (pollForPlatformEventMessage1Resp.data()) pldm_msg,
         sizeof(pollForPlatformEventMessage1Resp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -476,7 +475,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             0x5d // crc32
         };
     rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(pollForPlatformEventMessage2Resp.data()),
+        new (pollForPlatformEventMessage2Resp.data()) pldm_msg,
         sizeof(pollForPlatformEventMessage2Resp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -489,7 +488,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             0x0, 0x0 // eventID
         };
     rc = terminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(pollForPlatformEventMessage3Resp.data()),
+        new (pollForPlatformEventMessage3Resp.data()) pldm_msg,
         sizeof(pollForPlatformEventMessage3Resp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
