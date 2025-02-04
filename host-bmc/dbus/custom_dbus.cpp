@@ -223,5 +223,15 @@ void CustomDBus::updateItemPresentStatus(const std::string& path,
     }
 }
 
+void CustomDBus::implementPanelInterface(const std::string& path)
+{
+    if (!panel.contains(path))
+    {
+        panel.emplace(path,
+                      std::make_unique<Panel>(
+                          pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
