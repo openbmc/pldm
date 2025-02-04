@@ -147,10 +147,9 @@ TEST(FindStateEffecterPDR, testOneMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -181,10 +180,9 @@ TEST(FindStateEffecterPDR, testNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -231,10 +229,9 @@ TEST(FindStateEffecterPDR, testMoreMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -251,11 +248,10 @@ TEST(FindStateEffecterPDR, testMoreMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_effecter_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
 
-    auto state_second = reinterpret_cast<state_effecter_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_effecter_possible_states;
 
     rec_second->hdr.type = 11;
     rec_second->hdr.record_handle = 2;
@@ -292,10 +288,9 @@ TEST(FindStateEffecterPDR, testManyNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -312,11 +307,10 @@ TEST(FindStateEffecterPDR, testManyNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_effecter_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
 
-    auto state_second = reinterpret_cast<state_effecter_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_effecter_possible_states;
 
     rec_second->hdr.type = 11;
     rec_second->hdr.record_handle = 2;
@@ -349,10 +343,9 @@ TEST(FindStateEffecterPDR, testOneMatchOneNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -369,11 +362,10 @@ TEST(FindStateEffecterPDR, testOneMatchOneNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_effecter_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
 
-    auto state_second = reinterpret_cast<state_effecter_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_effecter_possible_states;
 
     rec_second->hdr.type = 11;
     rec_second->hdr.record_handle = 2;
@@ -407,10 +399,9 @@ TEST(FindStateEffecterPDR, testOneMatchManyNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
 
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -427,11 +418,10 @@ TEST(FindStateEffecterPDR, testOneMatchManyNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_effecter_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
 
-    auto state_second = reinterpret_cast<state_effecter_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_effecter_possible_states;
 
     rec_second->hdr.type = 11;
     rec_second->hdr.record_handle = 2;
@@ -450,11 +440,10 @@ TEST(FindStateEffecterPDR, testOneMatchManyNoMatch)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states));
 
-    auto rec_third =
-        reinterpret_cast<pldm_state_effecter_pdr*>(pdr_third.data());
+    auto rec_third = new (pdr_third.data()) pldm_state_effecter_pdr;
 
-    auto state_third = reinterpret_cast<state_effecter_possible_states*>(
-        rec_third->possible_states);
+    auto state_third = new (rec_third->possible_states)
+        state_effecter_possible_states;
 
     rec_third->hdr.type = 11;
     rec_third->hdr.record_handle = 3;
@@ -483,10 +472,10 @@ TEST(FindStateEffecterPDR, testCompositeEffecter)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states) * 3);
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
     auto state_start = rec->possible_states;
 
-    auto state = reinterpret_cast<state_effecter_possible_states*>(state_start);
+    auto state = new (state_start) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -498,13 +487,13 @@ TEST(FindStateEffecterPDR, testCompositeEffecter)
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
+    state = new (state_start) state_effecter_possible_states;
     state->state_set_id = 193;
     state->possible_states_size = 1;
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
+    state = new (state_start) state_effecter_possible_states;
     state->state_set_id = 192;
     state->possible_states_size = 1;
 
@@ -529,10 +518,10 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
         sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
         sizeof(struct state_effecter_possible_states) * 3);
 
-    auto rec = reinterpret_cast<pldm_state_effecter_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
     auto state_start = rec->possible_states;
 
-    auto state = reinterpret_cast<state_effecter_possible_states*>(state_start);
+    auto state = new (state_start) state_effecter_possible_states;
 
     rec->hdr.type = 11;
     rec->hdr.record_handle = 1;
@@ -544,13 +533,13 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
+    state = new (state_start) state_effecter_possible_states;
     state->state_set_id = 193;
     state->possible_states_size = 1;
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_effecter_possible_states*>(state_start);
+    state = new (state_start) state_effecter_possible_states;
     state->state_set_id = 123;
     state->possible_states_size = 1;
 
@@ -575,10 +564,9 @@ TEST(FindStateSensorPDR, testOneMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -609,10 +597,9 @@ TEST(FindStateSensorPDR, testNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -659,10 +646,9 @@ TEST(FindStateSensorPDR, testMoreMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -679,11 +665,10 @@ TEST(FindStateSensorPDR, testMoreMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_sensor_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_sensor_pdr;
 
-    auto state_second = reinterpret_cast<state_sensor_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_sensor_possible_states;
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
@@ -720,10 +705,9 @@ TEST(FindStateSensorPDR, testManyNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -740,11 +724,10 @@ TEST(FindStateSensorPDR, testManyNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_sensor_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_sensor_pdr;
 
-    auto state_second = reinterpret_cast<state_sensor_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_sensor_possible_states;
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
@@ -777,10 +760,9 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -797,11 +779,10 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_sensor_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_sensor_pdr;
 
-    auto state_second = reinterpret_cast<state_sensor_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_sensor_possible_states;
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
@@ -835,10 +816,9 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
 
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(rec->possible_states);
+    auto state = new (rec->possible_states) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -855,11 +835,10 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec_second =
-        reinterpret_cast<pldm_state_sensor_pdr*>(pdr_second.data());
+    auto rec_second = new (pdr_second.data()) pldm_state_sensor_pdr;
 
-    auto state_second = reinterpret_cast<state_sensor_possible_states*>(
-        rec_second->possible_states);
+    auto state_second = new (rec_second->possible_states)
+        state_sensor_possible_states;
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
@@ -878,10 +857,10 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states));
 
-    auto rec_third = reinterpret_cast<pldm_state_sensor_pdr*>(pdr_third.data());
+    auto rec_third = new (pdr_third.data()) pldm_state_sensor_pdr;
 
-    auto state_third = reinterpret_cast<state_sensor_possible_states*>(
-        rec_third->possible_states);
+    auto state_third = new (rec_third->possible_states)
+        state_sensor_possible_states;
 
     rec_third->hdr.type = 4;
     rec_third->hdr.record_handle = 3;
@@ -910,10 +889,10 @@ TEST(FindStateSensorPDR, testCompositeSensor)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states) * 3);
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
     auto state_start = rec->possible_states;
 
-    auto state = reinterpret_cast<state_sensor_possible_states*>(state_start);
+    auto state = new (state_start) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -925,14 +904,14 @@ TEST(FindStateSensorPDR, testCompositeSensor)
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
+    state = new (state_start) state_sensor_possible_states;
 
     state->state_set_id = 7;
     state->possible_states_size = 1;
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
+    state = new (state_start) state_sensor_possible_states;
 
     state->state_set_id = 1;
     state->possible_states_size = 1;
@@ -958,10 +937,10 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
         sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
         sizeof(struct state_sensor_possible_states) * 3);
 
-    auto rec = reinterpret_cast<pldm_state_sensor_pdr*>(pdr.data());
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
     auto state_start = rec->possible_states;
 
-    auto state = reinterpret_cast<state_sensor_possible_states*>(state_start);
+    auto state = new (state_start) state_sensor_possible_states;
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
@@ -973,13 +952,13 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
+    state = new (state_start) state_sensor_possible_states;
     state->state_set_id = 19;
     state->possible_states_size = 1;
 
     state_start += state->possible_states_size + sizeof(state->state_set_id) +
                    sizeof(state->possible_states_size);
-    state = reinterpret_cast<state_sensor_possible_states*>(state_start);
+    state = new (state_start) state_sensor_possible_states;
     state->state_set_id = 39;
     state->possible_states_size = 1;
 

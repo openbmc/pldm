@@ -69,7 +69,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
             0x0 // dataTransferHandleTimeout
         };
     auto rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPDRRepositoryInfoResp.data()),
+        new (getPDRRepositoryInfoResp.data()) pldm_msg,
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -143,8 +143,8 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         0,                             // fatalHigh
         0                              // fatalLow
     };
-    rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrResp.data()), sizeof(getPdrResp));
+    rc = mockTerminusManager.enqueueResponse(new (getPdrResp.data()) pldm_msg,
+                                             sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     const size_t getPdrAuxNameRespLen = 39;
@@ -179,8 +179,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
             0x00  // Entity Name "S0"
         };
     rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrAuxNameResp.data()),
-        sizeof(getPdrAuxNameResp));
+        new (getPdrAuxNameResp.data()) pldm_msg, sizeof(getPdrAuxNameResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     stdexec::sync_wait(platformManager.initTerminus());
@@ -228,7 +227,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
             0x0 // dataTransferHandleTimeout
         };
     auto rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPDRRepositoryInfoResp.data()),
+        new (getPDRRepositoryInfoResp.data()) pldm_msg,
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -302,8 +301,8 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
         0,                             // fatalHigh
         0                              // fatalLow
     };
-    rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrResp.data()), sizeof(getPdrResp));
+    rc = mockTerminusManager.enqueueResponse(new (getPdrResp.data()) pldm_msg,
+                                             sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     const size_t getPdrAuxNameRespLen = 39;
@@ -338,8 +337,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
             0x00  // Entity Name "S0"
         };
     rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrAuxNameResp.data()),
-        sizeof(getPdrAuxNameResp));
+        new (getPdrAuxNameResp.data()) pldm_msg, sizeof(getPdrAuxNameResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     stdexec::sync_wait(platformManager.initTerminus());
@@ -383,7 +381,7 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
             0x0 // dataTransferHandleTimeout
         };
     auto rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPDRRepositoryInfoResp.data()),
+        new (getPDRRepositoryInfoResp.data()) pldm_msg,
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -457,8 +455,8 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
         0,                             // fatalHigh
         0                              // fatalLow
     };
-    rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrResp.data()), sizeof(getPdrResp));
+    rc = mockTerminusManager.enqueueResponse(new (getPdrResp.data()) pldm_msg,
+                                             sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     stdexec::sync_wait(platformManager.initTerminus());
@@ -495,7 +493,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     std::array<uint8_t, sizeof(pldm_msg_hdr) + getPDRRepositoryInfoLen>
         getPDRRepositoryInfoResp{0x0, 0x02, 0x50, PLDM_ERROR};
     auto rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPDRRepositoryInfoResp.data()),
+        new (getPDRRepositoryInfoResp.data()) pldm_msg,
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -503,8 +501,8 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     const size_t getPdrRespLen = 1;
     std::array<uint8_t, sizeof(pldm_msg_hdr) + getPdrRespLen> getPdrResp{
         0x0, 0x02, 0x51, PLDM_ERROR};
-    rc = mockTerminusManager.enqueueResponse(
-        reinterpret_cast<pldm_msg*>(getPdrResp.data()), sizeof(getPdrResp));
+    rc = mockTerminusManager.enqueueResponse(new (getPdrResp.data()) pldm_msg,
+                                             sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     stdexec::sync_wait(platformManager.initTerminus());

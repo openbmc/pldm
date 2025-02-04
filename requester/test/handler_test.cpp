@@ -170,7 +170,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
             size_t responseLen;
             int rc = PLDM_SUCCESS;
 
-            auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+            auto requestPtr = new (request.data()) pldm_msg;
             requestPtr->hdr.instance_id = instanceId;
 
             try
@@ -216,7 +216,7 @@ TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
             pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
             pldm::Response response;
 
-            auto requestPtr = reinterpret_cast<pldm_msg*>(request.data());
+            auto requestPtr = new (request.data()) pldm_msg;
             requestPtr->hdr.instance_id = instanceId;
 
             co_await reqHandler.sendRecvMsg(eid, std::move(request));
@@ -241,7 +241,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
                        uint8_t instanceId, uint8_t& tid)
         {
             pldm::Request request(sizeof(pldm_msg_hdr), 0);
-            auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+            auto requestMsg = new (request.data()) pldm_msg;
             const pldm_msg* responseMsg;
             size_t responseLen;
 
@@ -281,7 +281,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES,
                                 0);
-    auto mockResponseMsg = reinterpret_cast<pldm_msg*>(mockResponse.data());
+    auto mockResponseMsg = new (mockResponse.data()) pldm_msg;
 
     // Compose response message of getTID command
     encode_get_tid_resp(instanceId, PLDM_SUCCESS, expectedTid, mockResponseMsg);
