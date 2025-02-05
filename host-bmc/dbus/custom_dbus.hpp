@@ -15,6 +15,7 @@
 #include "pcie_device.hpp"
 #include "pcie_slot.hpp"
 #include "power_supply.hpp"
+#include "vrm.hpp"
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/LocationCode/server.hpp>
@@ -205,6 +206,13 @@ class CustomDBus
      */
     void implementPanelInterface(const std::string& path);
 
+    /** @brief Implement Voltage Regulator Module Interface
+     *
+     *  @param[in] path - The object path
+     *
+     */
+    void implementVRMInterface(const std::string& path);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<Asset>> asset;
     std::unordered_map<ObjectPath, std::unique_ptr<Availability>>
@@ -224,6 +232,7 @@ class CustomDBus
     std::unordered_map<ObjectPath, std::unique_ptr<Fan>> fan;
     std::unordered_map<ObjectPath, std::unique_ptr<Connector>> connector;
     std::unordered_map<ObjectPath, std::unique_ptr<Panel>> panel;
+    std::unordered_map<ObjectPath, std::unique_ptr<VRM>> vrm;
 };
 
 } // namespace dbus
