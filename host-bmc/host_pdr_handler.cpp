@@ -1186,6 +1186,9 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
                 CustomDBus::getCustomDBus().implementConnecterInterface(
                     entity.first);
                 break;
+            case PLDM_ENTITY_BOARD:
+                CustomDBus::getCustomDBus().implementBoard(entity.first);
+                break;
             case PLDM_ENTITY_CARD:
                 CustomDBus::getCustomDBus().implementPCIeDeviceInterface(
                     entity.first);
