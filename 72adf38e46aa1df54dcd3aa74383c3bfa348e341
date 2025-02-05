@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb310a21_a9836e74",
+        "filename": "host-bmc/dbus/board.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-05T13:44:30Z",
+      "side": 1,
+      "message": "nit: alias it object_t",
+      "range": {
+        "startLine": 14,
+        "startChar": 37,
+        "endLine": 14,
+        "endChar": 51
+      },
+      "revId": "72adf38e46aa1df54dcd3aa74383c3bfa348e341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ca92d60_0ff09903",
+        "filename": "host-bmc/dbus/board.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-05T13:44:30Z",
+      "side": 1,
+      "message": "same here bus_t",
+      "range": {
+        "startLine": 27,
+        "startChar": 19,
+        "endLine": 27,
+        "endChar": 30
+      },
+      "revId": "72adf38e46aa1df54dcd3aa74383c3bfa348e341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
