@@ -233,5 +233,15 @@ void CustomDBus::implementPanelInterface(const std::string& path)
     }
 }
 
+void CustomDBus::implementVRMInterface(const std::string& path)
+{
+    if (!vrm.contains(path))
+    {
+        vrm.emplace(path,
+                    std::make_unique<VRM>(pldm::utils::DBusHandler::getBus(),
+                                          path.c_str()));
+    }
+}
+
 } // namespace dbus
 } // namespace pldm
