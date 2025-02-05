@@ -34,6 +34,24 @@
       "parentUuid": "3e24f8fd_43621d34",
       "revId": "04225660c01d7a9a36aa12f39cecb35a94419f19",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8fe0a8c_3ef7f66e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-05T01:53:30Z",
+      "side": 1,
+      "message": "Done, the use cases of this have tagged into the description.\n\nThe upcoming commit [#73512] has multiple dependencies([#75390]/[#69869]/[#68346]), which is the reason I submitted them toghether, but I have no concern if this one be merged independently, actually I think these three commits can be merged in any order.\n\n[#73512]: https://gerrit.openbmc.org/q/73512\n[#75390]: https://gerrit.openbmc.org/q/75390\n[#69869]: https://gerrit.openbmc.org/q/69869\n[#68346]: https://gerrit.openbmc.org/q/68346",
+      "parentUuid": "837e7d79_11c4dec9",
+      "revId": "04225660c01d7a9a36aa12f39cecb35a94419f19",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
