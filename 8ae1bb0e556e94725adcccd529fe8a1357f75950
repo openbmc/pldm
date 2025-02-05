@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afe7352d_31d09725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-05T07:33:28Z",
+      "side": 1,
+      "message": "The patch set looks good, just has small comment.",
+      "revId": "8ae1bb0e556e94725adcccd529fe8a1357f75950",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7cec4bb_455c73ac",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-05T07:33:28Z",
+      "side": 1,
+      "message": "how about `contains`?",
+      "revId": "8ae1bb0e556e94725adcccd529fe8a1357f75950",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
