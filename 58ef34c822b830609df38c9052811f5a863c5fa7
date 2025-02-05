@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e4d2c0_e65fcf0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-05T08:05:52Z",
+      "side": 1,
+      "message": "```\nbios_string_attribute.cpp:166:    auto entry \u003d reinterpret_cast\u003cpldm_bios_attr_val_table_entry*\u003e(\npdr_state_sensor.hpp:145:                bitfield8_t* bf \u003d reinterpret_cast\u003cbitfield8_t*\u003e(start + index);\nbios_config.cpp:1106:        auto entry \u003d reinterpret_cast\u003cpldm_bios_attr_val_table_entry*\u003e(\nbios_enum_attribute.cpp:275:    auto entry \u003d reinterpret_cast\u003cpldm_bios_attr_val_table_entry*\u003e(\nplatform_numeric_effecter.hpp:193:        uint8_t currentValue \u003d *(reinterpret_cast\u003cuint8_t*\u003e(\u0026effecterValue[0]));\nplatform_numeric_effecter.hpp:198:        int8_t currentValue \u003d *(reinterpret_cast\u003cint8_t*\u003e(\u0026effecterValue[0]));\nplatform_numeric_effecter.hpp:204:            *(reinterpret_cast\u003cuint16_t*\u003e(\u0026effecterValue[0]));\nplatform_numeric_effecter.hpp:209:        int16_t currentValue \u003d *(reinterpret_cast\u003cint16_t*\u003e(\u0026effecterValue[0]));\nplatform_numeric_effecter.hpp:215:            *(reinterpret_cast\u003cuint32_t*\u003e(\u0026effecterValue[0]));\nplatform_numeric_effecter.hpp:220:        int32_t currentValue \u003d *(reinterpret_cast\u003cint32_t*\u003e(\u0026effecterValue[0]));\nplatform.cpp:752:    auto locatorValue \u003d reinterpret_cast\u003cpldm_terminus_locator_type_mctp_eid*\u003e(\npdr_state_effecter.hpp:133:                bitfield8_t* bf \u003d reinterpret_cast\u003cbitfield8_t*\u003e(start + index);\nbios_integer_attribute.cpp:229:    auto entry \u003d reinterpret_cast\u003cpldm_bios_attr_val_table_entry*\u003e(\n\n```",
+      "revId": "58ef34c822b830609df38c9052811f5a863c5fa7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
