@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f3b862_96eadc11",
+        "filename": "host-bmc/dbus/panel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-05T13:53:45Z",
+      "side": 1,
+      "message": "object_t",
+      "range": {
+        "startLine": 14,
+        "startChar": 36,
+        "endLine": 14,
+        "endChar": 52
+      },
+      "revId": "9e536706d420421ac712490a2fafb0bef63b1bac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a88a8993_4858a7e0",
+        "filename": "host-bmc/dbus/panel.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-05T13:53:45Z",
+      "side": 1,
+      "message": "bus_t",
+      "range": {
+        "startLine": 27,
+        "startChar": 21,
+        "endLine": 27,
+        "endChar": 30
+      },
+      "revId": "9e536706d420421ac712490a2fafb0bef63b1bac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
