@@ -137,6 +137,16 @@ void CustomDBus::implementFabricAdapter(const std::string& path)
     }
 }
 
+void CustomDBus::implementBoard(const std::string& path)
+{
+    if (!board.contains(path))
+    {
+        board.emplace(path,
+                      std::make_unique<Board>(
+                          pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+}
+
 void CustomDBus::implementPowerSupplyInterface(const std::string& path)
 {
     if (!powersupply.contains(path))

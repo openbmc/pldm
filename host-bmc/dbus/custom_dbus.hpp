@@ -2,6 +2,7 @@
 
 #include "asset.hpp"
 #include "availability.hpp"
+#include "board.hpp"
 #include "cable.hpp"
 #include "chassis.hpp"
 #include "common/utils.hpp"
@@ -178,6 +179,13 @@ class CustomDBus
      */
     void implementFabricAdapter(const std::string& path);
 
+    /** @brief Implement Board Interface
+     *
+     *  @param[in] path - The object path
+     *
+     */
+    void implementBoard(const std::string& path);
+
     /** @brief Implement Asset Interface
      *
      *  @param[in] path - The object path
@@ -225,6 +233,7 @@ class CustomDBus
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeDevice>> pcieDevice;
     std::unordered_map<ObjectPath, std::unique_ptr<PCIeSlot>> pcieSlot;
     std::unordered_map<ObjectPath, std::unique_ptr<PowerSupply>> powersupply;
+    std::unordered_map<ObjectPath, std::unique_ptr<Board>> board;
     std::unordered_map<ObjectPath, std::unique_ptr<FabricAdapter>>
         fabricAdapter;
     std::unordered_map<ObjectPath, std::unique_ptr<Cable>> cable;
