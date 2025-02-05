@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a146d9b_731bbfc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-05T08:01:02Z",
+      "side": 1,
+      "message": "Can you help check?\n```\nhost_pdr_handler.cpp:225:    auto entityPdr \u003d reinterpret_cast\u003cpldm_pdr_entity_association*\u003e(\n```",
+      "revId": "84792f28e574bf1c39fd64659626d5efae2aca8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
