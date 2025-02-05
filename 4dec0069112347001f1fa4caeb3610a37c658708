@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "714c2a26_835c264f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-05T08:07:26Z",
+      "side": 1,
+      "message": "Can you help check?\n```\nwatch.cpp:92:        auto event \u003d reinterpret_cast\u003cinotify_event*\u003e(\u0026buffer[offset]);\n\n```",
+      "revId": "4dec0069112347001f1fa4caeb3610a37c658708",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
