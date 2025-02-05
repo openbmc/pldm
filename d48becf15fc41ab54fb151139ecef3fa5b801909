@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ee818c_2489d6cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-05T07:57:58Z",
+      "side": 1,
+      "message": "Can you check these lines?\n```\npldm_platform_cmd.cpp:910:        auto child \u003d reinterpret_cast\u003cpldm_entity*\u003e(\u0026pdr-\u003echildren[0]);\npldm_base_cmd.cpp:135:        auto request \u003d reinterpret_cast\u003cpldm_msg*\u003e(requestMsg.data());\npldm_bios_cmd.cpp:915:            reinterpret_cast\u003cpldm_msg*\u003e(requestMsg.data()),\n```",
+      "revId": "d48becf15fc41ab54fb151139ecef3fa5b801909",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
