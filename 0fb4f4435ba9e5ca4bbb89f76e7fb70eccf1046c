@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a38bd674_de15bea7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-05T07:55:07Z",
+      "side": 1,
+      "message": "Can we apply the changing for this code https://github.com/openbmc/pldm/blob/366507c82a4781c4a893ab9b9ca7b38f2157a353/platform-mc/terminus_manager.cpp#L530",
+      "revId": "0fb4f4435ba9e5ca4bbb89f76e7fb70eccf1046c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
