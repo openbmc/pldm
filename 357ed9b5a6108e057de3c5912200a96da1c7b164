@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5c5554a_aad3272c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-02-06T16:58:42Z",
+      "side": 1,
+      "message": "The below comments apply to all the changes done in this commit",
+      "revId": "357ed9b5a6108e057de3c5912200a96da1c7b164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "992cba96_6e3c8f46",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-02-06T16:58:42Z",
+      "side": 1,
+      "message": "Another overwrite, maybe a `bit_cast` would be more suitable here?",
+      "revId": "357ed9b5a6108e057de3c5912200a96da1c7b164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c58c2f8_5cb9b980",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-02-06T16:58:42Z",
+      "side": 1,
+      "message": "nit: Same as above",
+      "revId": "357ed9b5a6108e057de3c5912200a96da1c7b164",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
