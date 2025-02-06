@@ -33,6 +33,24 @@
       "message": "Wouldn\u0027t this overwrite any data present at location `responseMsg.data()` when it calls the default constructor for `pldm_msg`?",
       "revId": "d48becf15fc41ab54fb151139ecef3fa5b801909",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a23534b_c5f3b638",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-06T11:32:40Z",
+      "side": 1,
+      "message": "yes my bad, Thanks for pointing it out!",
+      "parentUuid": "98ed23b0_9eb7db2b",
+      "revId": "d48becf15fc41ab54fb151139ecef3fa5b801909",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
