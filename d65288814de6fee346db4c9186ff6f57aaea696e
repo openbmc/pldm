@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3a0dff6_06c5a7c3",
+        "filename": "host-bmc/dbus/connector.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-02-07T01:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69c54b78_2ff32772",
+      "range": {
+        "startLine": 14,
+        "startChar": 40,
+        "endLine": 14,
+        "endChar": 56
+      },
+      "revId": "d65288814de6fee346db4c9186ff6f57aaea696e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98d198a2_63971291",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95769250_3484f0ed",
+        "filename": "host-bmc/dbus/connector.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-02-07T01:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98d198a2_63971291",
+      "range": {
+        "startLine": 27,
+        "startChar": 25,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "d65288814de6fee346db4c9186ff6f57aaea696e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0bc59e6_de5b2e83",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-02-05T13:51:14Z",
       "side": 1,
       "message": "can we use contains?",
+      "range": {
+        "startLine": 152,
+        "startChar": 3,
+        "endLine": 152,
+        "endChar": 48
+      },
+      "revId": "d65288814de6fee346db4c9186ff6f57aaea696e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb5cd957_6b25cb99",
+        "filename": "host-bmc/dbus/custom_dbus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-02-07T01:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0bc59e6_de5b2e83",
       "range": {
         "startLine": 152,
         "startChar": 3,
