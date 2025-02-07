@@ -26,7 +26,7 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
         catch (const std::exception& e)
         {
             error(
-                "Failed to discover file descriptors for endpoint ID {EID} with {Error}",
+                "Failed to discover file descriptors for endpoint ID {EID} with {ERROR}",
                 "EID", eid, "ERROR", e);
         }
     }
