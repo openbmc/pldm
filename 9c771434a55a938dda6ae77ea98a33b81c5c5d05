@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fca493e_86832bbe",
+        "filename": "host-bmc/dbus/vrm.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-02-07T01:45:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9585e24_de87f24b",
+      "revId": "9c771434a55a938dda6ae77ea98a33b81c5c5d05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c340c204_2d7f8d94",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-02-05T13:54:35Z",
       "side": 1,
       "message": "bus_t",
+      "range": {
+        "startLine": 27,
+        "startChar": 19,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "9c771434a55a938dda6ae77ea98a33b81c5c5d05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5fbd8ab_0486047a",
+        "filename": "host-bmc/dbus/vrm.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-02-07T01:45:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c340c204_2d7f8d94",
       "range": {
         "startLine": 27,
         "startChar": 19,
