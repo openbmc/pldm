@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b005c984_02f326ea",
+        "filename": "pldmd/handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-07T11:46:22Z",
+      "side": 1,
+      "message": "use map.contains instead ?",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 39,
+        "endChar": 57
+      },
+      "revId": "867e969cc732747d8e9741b036a476e375d440c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
