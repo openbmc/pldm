@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf752631_af9d3a59",
+        "filename": "host-bmc/dbus/fabric_adapter.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-02-07T01:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9622c55_fa3688a2",
+      "range": {
+        "startLine": 14,
+        "startChar": 45,
+        "endLine": 14,
+        "endChar": 60
+      },
+      "revId": "e27966ba47f9a6f3b6eda41e3c85f633fab3d6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f08b019e_36723d5f",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-05T13:51:51Z",
       "side": 1,
       "message": "bus_t",
+      "range": {
+        "startLine": 27,
+        "startChar": 29,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "e27966ba47f9a6f3b6eda41e3c85f633fab3d6a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d3f621c_367bfcbf",
+        "filename": "host-bmc/dbus/fabric_adapter.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-02-07T01:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f08b019e_36723d5f",
       "range": {
         "startLine": 27,
         "startChar": 29,
