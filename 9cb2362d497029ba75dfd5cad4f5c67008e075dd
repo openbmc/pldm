@@ -16,6 +16,24 @@
       "message": "Data at `response.data()` is being overwritten here",
       "revId": "9cb2362d497029ba75dfd5cad4f5c67008e075dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9ef6a0a_95a6ac46",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-10T06:48:08Z",
+      "side": 1,
+      "message": "no, I don\u0027t this so\nWhen you catch an exception (e.g., std::out_of_range), you have not yet populated the response vector with any meaningful data, as you\u0027re still constructing it inside the try block and the data here is not overwritten, correct me if I am wrong!",
+      "parentUuid": "9f6a02da_d242b2fe",
+      "revId": "9cb2362d497029ba75dfd5cad4f5c67008e075dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
