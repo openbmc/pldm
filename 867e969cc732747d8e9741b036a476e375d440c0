@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2909975f_84b2f2a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-10T09:41:57Z",
+      "side": 1,
+      "message": "same commit applies to the other commit that you have in th series.",
+      "revId": "867e969cc732747d8e9741b036a476e375d440c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b005c984_02f326ea",
