@@ -16,6 +16,24 @@
       "message": "a word on the impact would be useful \n\n\nalso note it\u0027s an error message \n\nthese are good habits and allows others to determine the severity of bugs",
       "revId": "863b09b56bb06876a28882170363859577a1b162",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be8e0512_50757b0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-10T01:49:54Z",
+      "side": 1,
+      "message": "Acknowledged, thanks for reviewing and reminding.",
+      "parentUuid": "258ce34e_896b0f2b",
+      "revId": "863b09b56bb06876a28882170363859577a1b162",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
