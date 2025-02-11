@@ -437,7 +437,6 @@ int OemEventManager::processNumericSensorEvent(
         default:
             std::string description;
             std::stringstream strStream;
-            log_level logLevel = log_level::OK;
 
             description += "SENSOR_EVENT : NUMERIC_SENSOR_STATE: ";
             description += prefixMsgStrCreation(tid, sensorId);
@@ -450,9 +449,7 @@ int OemEventManager::processNumericSensorEvent(
                       << " presentReading 0x" << std::setw(8)
                       << static_cast<uint32_t>(presentReading) << std::dec;
             description += strStream.str();
-
-            sendJournalRedfish(description, logLevel);
-            break;
+            std::cout << description << "\n";
     }
     return PLDM_SUCCESS;
 }
@@ -477,10 +474,11 @@ int OemEventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
     }
 
     std::string description;
-    log_level logLevel = log_level::OK;
 
     if (stateSensorToMsgMap.contains(sensorId))
     {
+        log_level logLevel = log_level::OK;
+
         description += prefixMsgStrCreation(tid, sensorId);
         auto componentMap = stateSensorToMsgMap[sensorId];
         if (sensorOffset < componentMap.size())
@@ -513,6 +511,8 @@ int OemEventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
             description += "sends unsupported component sensor offset " +
                            std::to_string(sensorOffset);
         }
+
+        sendJournalRedfish(description, logLevel);
     }
     else
     {
@@ -526,9 +526,8 @@ int OemEventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
                   << " previousEventState 0x" << std::setw(2)
                   << static_cast<uint32_t>(previousEventState) << std::dec;
         description += strStream.str();
+        std::cout << description << "\n";
     }
-
-    sendJournalRedfish(description, logLevel);
 
     return PLDM_SUCCESS;
 }
@@ -552,7 +551,6 @@ int OemEventManager::processSensorOpStateEvent(
 
     std::string description;
     std::stringstream strStream;
-    log_level logLevel = log_level::OK;
 
     description += "SENSOR_EVENT : SENSOR_OP_STATE: ";
     description += prefixMsgStrCreation(tid, sensorId);
@@ -561,8 +559,7 @@ int OemEventManager::processSensorOpStateEvent(
               << "previous_op_state 0x" << std::setw(2)
               << static_cast<uint32_t>(previous_op_state) << std::dec;
     description += strStream.str();
-
-    sendJournalRedfish(description, logLevel);
+    std::cout << description << "\n";
 
     return PLDM_SUCCESS;
 }
@@ -615,7 +612,6 @@ int OemEventManager::handleSensorEvent(
         default:
             std::string description;
             std::stringstream strStream;
-            log_level logLevel = log_level::OK;
 
             description += "SENSOR_EVENT : Unsupported Sensor Class " +
                            std::to_string(sensorEventClassType) + ": ";
@@ -632,11 +628,9 @@ int OemEventManager::handleSensorEvent(
             }
 
             description += strStream.str();
-
-            sendJournalRedfish(description, logLevel);
+            std::cout << description << "\n";
     }
-    lg2::info("Unsupported class type {CLASSTYPE}", "CLASSTYPE",
-              sensorEventClassType);
+
     return PLDM_ERROR;
 }
 
