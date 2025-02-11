@@ -16,6 +16,24 @@
       "message": "Please do not merge this commit, until its dependency from mctpreactor has resolved.",
       "revId": "e379c92753cd440d73db5780bc7cebb5b474ddcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c83d83_95734a2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-02-11T12:09:00Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Can you share the dependent MR here.",
+      "parentUuid": "97c8e2a1_9f7f5461",
+      "revId": "e379c92753cd440d73db5780bc7cebb5b474ddcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
