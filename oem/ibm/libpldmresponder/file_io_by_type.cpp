@@ -148,6 +148,10 @@ std::unique_ptr<FileHandler> getHandlerByType(uint16_t fileType,
         case PLDM_FILE_TYPE_DUMP:
         case PLDM_FILE_TYPE_RESOURCE_DUMP_PARMS:
         case PLDM_FILE_TYPE_RESOURCE_DUMP:
+        case PLDM_FILE_TYPE_BMC_DUMP:
+        case PLDM_FILE_TYPE_SBE_DUMP:
+        case PLDM_FILE_TYPE_HOSTBOOT_DUMP:
+        case PLDM_FILE_TYPE_HARDWARE_DUMP:
         {
             return std::make_unique<DumpHandler>(fileHandle, fileType);
         }
