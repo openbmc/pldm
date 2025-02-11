@@ -34,6 +34,24 @@
       "parentUuid": "c55e28ce_7e044e0a",
       "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb83c7a_480b3905",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-11T09:13:42Z",
+      "side": 1,
+      "message": "\u003e Under normal circumstances, the behavior is as you described.\n\u003e However, there\u0027s a specific scenario where this issue arises.\n\u003e \n\u003e Example:\n\u003e If EID 20 is probed, the process begins by handling EID 20[1].\n\u003e After finishing the terminus initialization, it attempts to get the PDR for EID 20 via initTerminus.\n\u003e If a GetPDR error occurs during this step[2], the terminus-\u003einitialized \u003d true flag is not set.\n\u003e As a result, when startPolling is triggered, there are no sensors to poll[3], and EID 20\u0027s MctpInfos is removed from the queue.\n\u003e \n\u003e Then, if EID 30 is probed, the process begins handling EID 30.\n\u003e After initializing the terminus, it proceeds to initTerminus.\n\u003e Since [4] retrieves PDRs for all terminuses, it will attempt to reinitialize EID 20\u0027s terminus because its terminus-\u003einitialized is set to false at this point. Consequently, GetPDR is performed for EID 20 first, and then for EID 30.\n\nWhen calling GetPDRs for EID 20 is failed at [2], `exec::task\u003cint\u003e PlatformManager::initTerminus()` will not GetPDRs of EID 20 again.\nIf the code is getting PDRs of EID20 then the code should be fixed.\n\n\u003e However, when PLDM returns to discoverMctpTerminusTask, [5] only calls startSensorPolling for addedTids, which in this case is EID 30.\n\u003e \n\u003e This means that although EID 20 has successfully fetched the PDR this time and the PLDM tree is updated correctly, the PLDM does not initiate sensor polling for EID 20.\n\u003e This is why I suggest moving startSensorPolling to occur right after terminus-\u003einitialized \u003d true, or alternatively, modifying the existing logic in [5] to call startSensorPolling for all terminuses instead of just addedTids.\n\u003e \n\u003e References:\n\u003e [1] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/terminus_manager.cpp#L166\n\u003e [2] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/platform_manager.cpp#L63\n\u003e [3] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/sensor_manager.cpp#L47\n\u003e [4] https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/platform_manager.cpp#L18\n\u003e [5] \n\u003e https://github.com/openbmc/pldm/blob/fb732fd99648eae137a1606a702906b2aa5b4756/platform-mc/terminus_manager.cpp#L194",
+      "parentUuid": "9db73caa_33d2bc18",
+      "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
