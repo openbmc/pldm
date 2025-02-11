@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0da3e21_97101676",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-11T10:46:04Z",
+      "side": 1,
+      "message": "THE CI fails because it is dependent on - https://gerrit.openbmc.org/c/openbmc/pldm/+/71684/2/oem/ibm/libpldmresponder/file_io_type_dump.cpp",
+      "revId": "105dfdb4d30b182fdaaf8363ae79920854124a80",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
