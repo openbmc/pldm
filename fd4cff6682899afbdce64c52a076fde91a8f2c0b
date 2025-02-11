@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a471e415_49e2b206",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-11T05:03:07Z",
+      "side": 1,
+      "message": "what does ths package config do ?",
+      "revId": "fd4cff6682899afbdce64c52a076fde91a8f2c0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63c7cb07_569b5a1e",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-11T05:03:07Z",
+      "side": 1,
+      "message": "This logic seems to iterates through all sensors in roundRobinSensors[tid] and moves them to the back of the queue after updating them. This results in unnecessary movement of elements, which isn\u0027t required just to update readings. Instead, you can directly iterate without popping and pushing elements ?",
+      "revId": "fd4cff6682899afbdce64c52a076fde91a8f2c0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d09b0f51_38231e71",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-11T05:03:07Z",
+      "side": 1,
+      "message": "why dont you just do \n\n```\n    mctpInfoAvailTable.insert_or_assign(mctpInfo, availability);\n```",
+      "revId": "fd4cff6682899afbdce64c52a076fde91a8f2c0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
