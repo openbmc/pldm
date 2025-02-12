@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85201d89_a0e5ec21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-12T14:11:55Z",
+      "side": 1,
+      "message": "@Thu, I had few comments",
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff5573c_d61db611",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-12T14:11:55Z",
+      "side": 1,
+      "message": "do we want to add an info log here before we return?",
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40a88df6_6791186c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-12T14:11:55Z",
+      "side": 1,
+      "message": "this function does the similar thing as - https://gerrit.openbmc.org/c/openbmc/pldm/+/73012/18/platform-mc/manager.hpp\ncan we split the similar things to a common function and use it everywhere?",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a227dc_07b96558",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-12T14:11:55Z",
+      "side": 1,
+      "message": "can we use `std::ranges::contains` here?\nsomething like this\n`if (!std::ranges::contains(types, mctpTypePLDM))`",
+      "range": {
+        "startLine": 312,
+        "startChar": 12,
+        "endLine": 314,
+        "endChar": 13
+      },
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f3168a_a2d3ea34",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-12T14:11:55Z",
+      "side": 1,
+      "message": "here as well? same as above",
+      "range": {
+        "startLine": 320,
+        "startChar": 12,
+        "endLine": 321,
+        "endChar": 80
+      },
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
