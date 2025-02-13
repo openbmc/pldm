@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "954aad1c_2a2ece9e",
+        "filename": "common/utils.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-13T07:18:13Z",
+      "side": 1,
+      "message": "in pldm we are restricting all the bus call that go out to PLDM to be expired after 5 seconds , because of the instance id expiry. Dont you want to get the bus call completed before we expire the PLDM message ?",
+      "revId": "633a9ea5362a7c262848564ed94067b212f51030",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a245eb8_bda729bc",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-13T07:18:13Z",
+      "side": 1,
+      "message": "use std::format instead ?",
+      "revId": "633a9ea5362a7c262848564ed94067b212f51030",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
