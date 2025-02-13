@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8c2a6d7_38d76877",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-13T02:40:36Z",
+      "side": 1,
+      "message": "Actually, this condition will never happened, it prevents the crash for below line `auto terminus \u003d termini[tid];`",
+      "parentUuid": "aff5573c_d61db611",
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40a88df6_6791186c",
@@ -48,6 +66,30 @@
       "writtenOn": "2025-02-12T14:11:55Z",
       "side": 1,
       "message": "this function does the similar thing as - https://gerrit.openbmc.org/c/openbmc/pldm/+/73012/18/platform-mc/manager.hpp\ncan we split the similar things to a common function and use it everywhere?",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 1
+      },
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b4ecba_33d4cb3d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-13T02:40:36Z",
+      "side": 1,
+      "message": "Manager and terminus manager are two different classes. The name of functions are the same, but the code is different.",
+      "parentUuid": "40a88df6_6791186c",
       "range": {
         "startLine": 128,
         "startChar": 0,
@@ -81,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f16a3ce5_9a1f66f7",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-13T02:40:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88a227dc_07b96558",
+      "range": {
+        "startLine": 312,
+        "startChar": 12,
+        "endLine": 314,
+        "endChar": 13
+      },
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45f3168a_a2d3ea34",
@@ -94,6 +160,30 @@
       "writtenOn": "2025-02-12T14:11:55Z",
       "side": 1,
       "message": "here as well? same as above",
+      "range": {
+        "startLine": 320,
+        "startChar": 12,
+        "endLine": 321,
+        "endChar": 80
+      },
+      "revId": "cd932f1047ddd266a648bc3addc666e48d169876",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb4d94ca_78ca84aa",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-13T02:40:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45f3168a_a2d3ea34",
       "range": {
         "startLine": 320,
         "startChar": 12,
