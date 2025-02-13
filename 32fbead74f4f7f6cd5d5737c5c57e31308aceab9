@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "303a981d_8529dede",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-02-13T02:57:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f13e700a_85c2b8d4",
+      "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84d3def4_cc8bf0b6",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-02-13T02:48:04Z",
       "side": 1,
       "message": "Do we need this line?",
+      "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6463d99f_448330e7",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-02-13T02:57:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84d3def4_cc8bf0b6",
       "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a49555f1_5d7b9fd8",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-02-13T02:57:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84f6f22c_e742b5b1",
+      "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07e31095_daf445ba",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e7d253f_b4959e45",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-02-13T02:57:18Z",
+      "side": 1,
+      "message": "This line is redundant, because the default case already handles logging it. I did this on purpose.",
+      "parentUuid": "07e31095_daf445ba",
+      "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d962a1fb_cd71eea2",
@@ -82,6 +154,24 @@
       "writtenOn": "2025-02-13T02:48:04Z",
       "side": 1,
       "message": "Do we need this line?",
+      "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3513a0d1_5fa996ed",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-02-13T02:57:18Z",
+      "side": 1,
+      "message": "My mistake. Resolved",
+      "parentUuid": "d962a1fb_cd71eea2",
       "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
