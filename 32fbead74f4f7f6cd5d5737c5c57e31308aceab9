@@ -54,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07e31095_daf445ba",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-13T02:49:45Z",
+      "side": 1,
+      "message": "The change will remove `lg2::info(\"Unsupported class type {CLASSTYPE}\", \"CLASSTYPE\",`. Please check again.",
+      "revId": "32fbead74f4f7f6cd5d5737c5c57e31308aceab9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d962a1fb_cd71eea2",
         "filename": "oem/ampere/event/oem_event_manager.cpp",
         "patchSetId": 1
