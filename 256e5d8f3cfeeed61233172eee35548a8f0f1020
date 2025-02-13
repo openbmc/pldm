@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1ca0c3f_b7e0681c",
+        "filename": "utilities/requester/set_state_effecter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-13T09:55:16Z",
+      "side": 1,
+      "message": "Hi Arun, I took a look at the code thoroughly again and I think `sendRecvMsg` which is called above to receive the responseMsg will handle it clearly such that when we try a placement new on the responseMsg it will properly assign the memory.\n\ndata is overwritten when using placement new only when the responseMsg has not been allocated with sufficient memory to store the pldm_msg object and I think this is handled in `sendRecvMsg`.\n\nDo you think other way? Please let me know how we could handle this?",
+      "parentUuid": "333c7b9d_69a696d9",
+      "revId": "256e5d8f3cfeeed61233172eee35548a8f0f1020",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f13bfe0e_83b60109",
         "filename": "utilities/requester/set_state_effecter_async.cpp",
         "patchSetId": 6
@@ -31,6 +49,24 @@
       "writtenOn": "2025-02-06T17:21:40Z",
       "side": 1,
       "message": "Data is being overwritten at `responseMsg`",
+      "revId": "256e5d8f3cfeeed61233172eee35548a8f0f1020",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6193558c_56d6b6c2",
+        "filename": "utilities/requester/set_state_effecter_async.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-02-13T09:55:16Z",
+      "side": 1,
+      "message": "same comment here - I believe `recvMsg` will handle the memory allocated",
+      "parentUuid": "f13bfe0e_83b60109",
       "revId": "256e5d8f3cfeeed61233172eee35548a8f0f1020",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
