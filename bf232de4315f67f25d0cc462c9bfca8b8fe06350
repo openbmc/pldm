@@ -70,6 +70,24 @@
       "parentUuid": "2fb83c7a_480b3905",
       "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c72f69f_a7eea0b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-13T13:57:27Z",
+      "side": 1,
+      "message": "\u003e So, should we avoid getting PDR for all terminus[4] during initTerminus,\n\nThe `platform-manager` will discovery the new MCTP EPs in `initTerminus ` one by one. The number of termini is initialized depend on the number added termini. I don\u0027t see any problem with this behavior.\n \n\u003e or should we release the successfully initialized termini when get PDR fails?\n\nIn the current code, each terminus has one `initialized` flag and this flag will be set to true when the discovery steps for that terminus is completed.\n\n\u003e However, wouldn’t this make the terminus-\u003einitialized flag ineffective?\n\nCan you describe more about your idea in the `ineffective`?. \n\n\u003e \n\u003e Thank you very much for your advice.",
+      "parentUuid": "c749ca94_40de19ed",
+      "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
