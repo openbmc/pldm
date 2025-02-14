@@ -321,7 +321,17 @@ int PelHandler::storePel(std::string&& pelFileName)
                                           logInterface, "Create");
         method.append("xyz.openbmc_project.Host.Error.Event", severity,
                       addlData);
-        bus.call_noreply(method, dbusTimeout);
+
+        auto callback = [pelFileName](sdbusplus::message_t&& msg) {
+            if (msg.is_method_error())
+            {
+                error(
+                    "Async DBus call failed for PEL file name - '{FILE}', ERROR - {ERROR}",
+                    "FILE", pelFileName, "ERROR", msg.get_error()->message);
+            }
+        };
+
+        [[maybe_unused]] auto slot = method.call_async(callback);
     }
     catch (const std::exception& e)
     {
