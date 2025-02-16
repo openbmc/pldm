@@ -34,6 +34,74 @@
       "parentUuid": "97c8e2a1_9f7f5461",
       "revId": "e379c92753cd440d73db5780bc7cebb5b474ddcd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9351f4fb_dd4687b0",
+        "filename": "common/utils.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-02-16T17:46:01Z",
+      "side": 1,
+      "message": "How is this function different from `getDbusPropertiesVariant` above? Please remove if not needed",
+      "revId": "e379c92753cd440d73db5780bc7cebb5b474ddcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d8e7d6_be01c131",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-02-16T17:46:01Z",
+      "side": 1,
+      "message": "Does this imply that the D-Bus objects under `/xyz/openbmc_project/inventory/` will now publish the new MCTP Endpoint Configuration interface?",
+      "revId": "e379c92753cd440d73db5780bc7cebb5b474ddcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "027ea51b_7bb020a3",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-02-16T17:46:01Z",
+      "side": 1,
+      "message": "Aren\u0027t these values supposed to `uint8_t`? Or are they being defined as `uint64_t` in the new interface MCTP config interface?",
+      "revId": "e379c92753cd440d73db5780bc7cebb5b474ddcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb47235d_8f952890",
+        "filename": "requester/configuration_discovery_handler.hpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-02-16T17:46:01Z",
+      "side": 1,
+      "message": "nit: Can we change the base to `sdbusplus::exception::exception`?",
+      "revId": "e379c92753cd440d73db5780bc7cebb5b474ddcd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
