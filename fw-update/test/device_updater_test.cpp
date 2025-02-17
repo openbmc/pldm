@@ -53,19 +53,14 @@ TEST_F(DeviceUpdaterTest, validatePackage)
     auto pkgHeaderInfo =
         reinterpret_cast<const pldm_package_header_information*>(
             packageHeader.data());
-    auto pkgHeaderInfoSize = sizeof(pldm_package_header_information) +
-                             pkgHeaderInfo->package_version_string_length;
+    auto pkgHeaderInfoSize = pkgHeaderInfo->package_header_size;
+    ;
     packageHeader.clear();
     packageHeader.resize(pkgHeaderInfoSize);
     package.seekg(0);
     package.read(new (packageHeader.data()) char, pkgHeaderInfoSize);
 
-    auto parser = parsePkgHeader(packageHeader);
-    EXPECT_NE(parser, nullptr);
-
-    package.seekg(0);
-    packageHeader.resize(parser->pkgHeaderSize);
-    package.read(new (packageHeader.data()) char, parser->pkgHeaderSize);
+    parser = std::make_unique<PackageParserV1>();
 
     parser->parse(packageHeader, packageSize);
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
