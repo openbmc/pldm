@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "634553b3_a84f1779",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000008
+      },
+      "writtenOn": "2025-02-17T16:38:14Z",
+      "side": 1,
+      "message": "LGTM.\n\nIf we ever end up seeing this call fail, we could pull some PEL fields out of hardcoded offsets in the file to trace for a hint on the PEL that was lost, but I don\u0027t think that\u0027s necessary at this point.",
+      "revId": "dd18174a573abbe0083160e214a9d4a9724e79ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
