@@ -25,13 +25,19 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
 
     constexpr uintmax_t pkgSize = 166;
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
+    auto pkgHeaderInfo =
+        reinterpret_cast<const pldm_package_header_information*>(
+            fwPkgHdr.data());
+    EXPECT_EQ(pkgHeaderInfo->package_header_size, fwPkgHdr.size());
+
+    auto parser = std::make_unique<PackageParserV1>();
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
+
+    parser->parse(fwPkgHdr, pkgSize);
     EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
     EXPECT_EQ(parser->pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
@@ -85,7 +91,11 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
 
     constexpr uintmax_t pkgSize = 407;
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
+    auto pkgHeaderInfo = reinterpret_cast<const pldm_package_header_information*>(
+        fwPkgHdr.data());
+    EXPECT_EQ(pkgHeaderInfo->package_header_size, fwPkgHdr.size());
+
+    auto parser = std::make_unique<PackageParserV1>();
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
     EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
@@ -133,29 +143,6 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     EXPECT_EQ(outCompImageInfos, compImageInfos);
 }
 
-TEST(PackageParser, InvalidPkgHeaderInfoIncomplete)
-{
-    std::vector<uint8_t> fwPkgHdr{0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D,
-                                  0x49, 0x43, 0x98, 0x00, 0xA0, 0x2F,
-                                  0x05, 0x9A, 0xCA, 0x02};
-
-    auto parser = parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
-}
-
-TEST(PackageParser, InvalidPkgNotSupportedHeaderFormat)
-{
-    std::vector<uint8_t> fwPkgHdr{
-        0x12, 0x44, 0xD2, 0x64, 0x8D, 0x7D, 0x47, 0x18, 0xA0, 0x30,
-        0xFC, 0x8A, 0x56, 0x58, 0x7D, 0x5B, 0x02, 0x8B, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x19, 0x0C, 0xE5,
-        0x07, 0x00, 0x08, 0x00, 0x01, 0x0E, 0x56, 0x65, 0x72, 0x73,
-        0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x31};
-
-    auto parser = parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
-}
-
 TEST(PackageParser, InvalidPkgBadChecksum)
 {
     std::vector<uint8_t> fwPkgHdr{
@@ -174,10 +161,14 @@ TEST(PackageParser, InvalidPkgBadChecksum)
 
     constexpr uintmax_t pkgSize = 166;
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
+    auto pkgHeaderInfo =
+        reinterpret_cast<const pldm_package_header_information*>(
+            fwPkgHdr.data());
+    EXPECT_EQ(pkgHeaderInfo->package_header_size, fwPkgHdr.size());
+
+    auto parser = std::make_unique<PackageParserV1>();
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
-    EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
+
     EXPECT_THROW(parser->parse(fwPkgHdr, pkgSize), std::exception);
 }
