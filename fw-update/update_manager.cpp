@@ -83,31 +83,14 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     auto pkgHeaderInfo =
         reinterpret_cast<const pldm_package_header_information*>(
             packageHeader.data());
-    auto pkgHeaderInfoSize = sizeof(pldm_package_header_information) +
-                             pkgHeaderInfo->package_version_string_length;
+    auto pkgHeaderInfoSize = pkgHeaderInfo->package_header_size;
+
     packageHeader.clear();
-    packageHeader.resize(pkgHeaderInfoSize);
     package.seekg(0);
+    packageHeader.resize(pkgHeaderInfoSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
                  pkgHeaderInfoSize);
-
-    parser = parsePkgHeader(packageHeader);
-    if (parser == nullptr)
-    {
-        error("Invalid PLDM package header information");
-        package.close();
-        std::filesystem::remove(packageFilePath);
-        return -1;
-    }
-
-    // Populate object path with the hash of the package version
-    size_t versionHash = std::hash<std::string>{}(parser->pkgVersion);
-    objPath = swRootPath + std::to_string(versionHash);
-
-    package.seekg(0);
-    packageHeader.resize(parser->pkgHeaderSize);
-    package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 parser->pkgHeaderSize);
+    parser = std::make_unique<PackageParserV1>();
     try
     {
         parser->parse(packageHeader, packageSize);
@@ -115,13 +98,14 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     catch (const std::exception& e)
     {
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
         package.close();
         parser.reset();
+        std::filesystem::remove(packageFilePath);
         return -1;
     }
+    // Populate object path with the hash of the package version
+    size_t versionHash = std::hash<std::string>{}(parser->pkgVersion);
+    objPath = swRootPath + std::to_string(versionHash);
 
     auto deviceUpdaterInfos =
         associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
