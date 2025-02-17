@@ -16,6 +16,24 @@
       "message": "I\u0027m unable to find any references to the MCTP Endpoint configuration interface in the pldm repo, is there a dependent MR handling the changes related to that?",
       "revId": "89555543cd51b06e28cf0fd9e4ccd9e5e2aa8024",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f80bbe5_28490939",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-17T05:52:35Z",
+      "side": 1,
+      "message": "Hi, thanks for the review 😊, this commit were assuming static EID binding between MCTP Endpoint and EM config, but now it has changed to query MCTP Reactor for the association, the description is now outdated, I\u0027ll give it a revision.",
+      "parentUuid": "6a89eedb_56e52b07",
+      "revId": "89555543cd51b06e28cf0fd9e4ccd9e5e2aa8024",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
