@@ -28,43 +28,30 @@ namespace fw_update
 class PackageParser
 {
   public:
-    PackageParser() = delete;
-    PackageParser(const PackageParser&) = delete;
-    PackageParser(PackageParser&&) = default;
-    PackageParser& operator=(const PackageParser&) = delete;
-    PackageParser& operator=(PackageParser&&) = delete;
-    virtual ~PackageParser() = default;
-
-    /** @brief Constructor
-     *
-     *  @param[in] pkgHeaderSize - Size of package header section
-     *  @param[in] pkgVersion - Package version
-     *  @param[in] componentBitmapBitLength - The number of bits used to
-     *                                        represent the bitmap in the
-     *                                        ApplicableComponents field for a
-     *                                        matching device.
-     */
-    explicit PackageParser(PackageHeaderSize pkgHeaderSize,
-                           const PackageVersion& pkgVersion,
-                           ComponentBitmapBitLength componentBitmapBitLength) :
-        pkgHeaderSize(pkgHeaderSize), pkgVersion(pkgVersion),
-        componentBitmapBitLength(componentBitmapBitLength)
+    PackageParser() : pkgHeaderSize(0), componentBitmapBitLength(0), pkgIter{}
     {}
+
+    PackageParser(const PackageParser&) = delete;
+    PackageParser& operator=(const PackageParser&) = delete;
+
+    PackageParser(PackageParser&&) = default;
+    PackageParser& operator=(PackageParser&&) = default;
+
+    virtual ~PackageParser() = default;
 
     /** @brief Parse the firmware update package header
      *
      *  @param[in] pkgHdr - Package header
      *  @param[in] pkgSize - Size of the firmware update package
      *
-     *  @note Throws exception is parsing fails
+     *  @throws InternalFailure if parsing fails
      */
     virtual void parse(const std::vector<uint8_t>& pkgHdr,
                        uintmax_t pkgSize) = 0;
 
     /** @brief Get firmware device ID records from the package
      *
-     *  @return if parsing the package is successful, return firmware device ID
-     *          records
+     *  @return Firmware device ID records if parsing the package is successful
      */
     const FirmwareDeviceIDRecords& getFwDeviceIDRecords() const
     {
@@ -73,48 +60,31 @@ class PackageParser
 
     /** @brief Get component image information from the package
      *
-     *  @return if parsing the package is successful, return component image
-     *          information
+     *  @return Component image information if parsing the package is successful
      */
     const ComponentImageInfos& getComponentImageInfos() const
     {
         return componentImageInfos;
     }
 
-    /** @brief Device identifiers of the managed FDs */
-    const PackageHeaderSize pkgHeaderSize;
+    /** @brief Size of the package header */
+    PackageHeaderSize pkgHeaderSize = 0;
 
     /** @brief Package version string */
-    const PackageVersion pkgVersion;
+    PackageVersion pkgVersion{};
 
   protected:
     /** @brief Parse the firmware device identification area
      *
-     *  @param[in] deviceIdRecCount - count of firmware device ID records
-     *  @param[in] pkgHdr - firmware package header
-     *  @param[in] offset - offset in package header which is the start of the
-     *                      firmware device identification area
-     *
-     *  @return On success return the offset which is the end of the firmware
-     *          device identification area, on error throw exception.
+     *  @throws InternalFailure if parsing fails
      */
-    size_t parseFDIdentificationArea(DeviceIDRecordCount deviceIdRecCount,
-                                     const std::vector<uint8_t>& pkgHdr,
-                                     size_t offset);
+    void parseFDIdentificationArea();
 
     /** @brief Parse the component image information area
      *
-     *  @param[in] compImageCount - component image count
-     *  @param[in] pkgHdr - firmware package header
-     *  @param[in] offset - offset in package header which is the start of the
-     *                      component image information area
-     *
-     *  @return On success return the offset which is the end of the component
-     *          image information area, on error throw exception.
+     *  @throws InternalFailure if parsing fails
      */
-    size_t parseCompImageInfoArea(ComponentImageCount compImageCount,
-                                  const std::vector<uint8_t>& pkgHdr,
-                                  size_t offset);
+    void parseCompImageInfoArea();
 
     /** @brief Validate the total size of the package
      *
@@ -123,7 +93,7 @@ class PackageParser
      *
      *  @param[in] pkgSize - firmware update package size
      *
-     *  @note Throws exception if validation fails
+     *  @throws InternalFailure if validation fails
      */
     void validatePkgTotalSize(uintmax_t pkgSize);
 
@@ -138,7 +108,10 @@ class PackageParser
      *         shall be a multiple of 8 and be large enough to contain a bit
      *         for each component in the package.
      */
-    const ComponentBitmapBitLength componentBitmapBitLength;
+    ComponentBitmapBitLength componentBitmapBitLength = 0;
+
+    /** @brief Package iterator for parsing the firmware update package */
+    pldm_fwup_pkg_iter pkgIter{};
 };
 
 /** @class PackageParserV1
@@ -148,39 +121,18 @@ class PackageParser
 class PackageParserV1 final : public PackageParser
 {
   public:
-    PackageParserV1() = delete;
+    PackageParserV1() : PackageParser() {}
+
     PackageParserV1(const PackageParserV1&) = delete;
-    PackageParserV1(PackageParserV1&&) = default;
     PackageParserV1& operator=(const PackageParserV1&) = delete;
-    PackageParserV1& operator=(PackageParserV1&&) = delete;
+
+    PackageParserV1(PackageParserV1&&) = default;
+    PackageParserV1& operator=(PackageParserV1&&) = default;
+
     ~PackageParserV1() = default;
 
-    /** @brief Constructor
-     *
-     *  @param[in] pkgHeaderSize - Size of package header section
-     *  @param[in] pkgVersion - Package version
-     *  @param[in] componentBitmapBitLength - The number of bits used to
-     *                                        represent the bitmap in the
-     *                                        ApplicableComponents field for a
-     *                                        matching device.
-     */
-    explicit PackageParserV1(
-        PackageHeaderSize pkgHeaderSize, const PackageVersion& pkgVersion,
-        ComponentBitmapBitLength componentBitmapBitLength) :
-        PackageParser(pkgHeaderSize, pkgVersion, componentBitmapBitLength)
-    {}
-
-    virtual void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize);
+    void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize) override;
 };
-
-/** @brief Parse the package header information
- *
- *  @param[in] pkgHdrInfo - package header information section in the package
- *
- *  @return On success return the PackageParser for the header format version
- *          on failure return nullptr
- */
-std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgHdrInfo);
 
 } // namespace fw_update
 
