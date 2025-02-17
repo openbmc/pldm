@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d4a2b17_bef25257",
+        "filename": "common/types.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-17T02:37:51Z",
+      "side": 1,
+      "message": "The final functions which use those definition is `new_method_call` https://github.com/openbmc/sdbusplus/blob/master/include/sdbusplus/bus.hpp#L292. The function requires `const char*` that why the code use `const char*`.",
+      "parentUuid": "53faeb1f_986229c4",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 1
+      },
+      "revId": "7240726446d54bac16551c1922f62f081b439990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f813d4e_2835838f",
         "filename": "common/utils.cpp",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-14T08:51:04Z",
       "side": 1,
       "message": "can we use `std::string or std::string_view`?",
+      "range": {
+        "startLine": 32,
+        "startChar": 10,
+        "endLine": 36,
+        "endChar": 1
+      },
+      "revId": "7240726446d54bac16551c1922f62f081b439990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0dac379_8bbee795",
+        "filename": "common/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-17T02:37:51Z",
+      "side": 1,
+      "message": "See my comments above.\nDo we have to use `std::string or std::string_view`?",
+      "parentUuid": "1f813d4e_2835838f",
       "range": {
         "startLine": 32,
         "startChar": 10,
