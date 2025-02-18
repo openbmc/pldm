@@ -16,6 +16,24 @@
       "message": "Update patch set to get UUID inside `propertiesChangedCb`. The patch set is created before the patch set `support Get UUID` that why it need to be updated.",
       "revId": "3e746d34a7218aeed1153894a8322d97c7783c26",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fd368f5_9977c25d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-18T04:19:04Z",
+      "side": 1,
+      "message": "ack.",
+      "parentUuid": "c19ea13e_2318e6b2",
+      "revId": "3e746d34a7218aeed1153894a8322d97c7783c26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
