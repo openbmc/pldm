@@ -151,6 +151,23 @@ class CodeUpdate
         return firmwareUpdateSensorId;
     }
 
+    /* @brief Method to set the sensor id for boot side rename state
+     * @param[in] sensorId - sensor id for boot side rename update
+     *                       state
+     */
+    void setBootSideRenameStateSensor(uint16_t sensorId)
+    {
+        bootSideRenameStateSensorId = sensorId;
+    }
+
+    /* @brief Method to fetch the sensor id for boot side rename state
+     * @return - sensor id
+     */
+    uint16_t getBootSideRenameStateSensor()
+    {
+        return bootSideRenameStateSensorId;
+    }
+
     /* @brief Method to send a state sensor event to Host from CodeUpdate class
      * @param[in] sensorId - sensor id for the event
      * @param[in] sensorEventClass - sensor event class wrt DSP0248
@@ -174,6 +191,10 @@ class CodeUpdate
      */
     int assembleCodeUpdateImage();
 
+    /* @brief Method to process the bootside rename event, sends a boot side
+     * rename event notification to host when code update is initiated*/
+    void processRenameEvent();
+
     virtual ~CodeUpdate() {}
 
   private:
@@ -195,7 +216,7 @@ class CodeUpdate
         oemPlatformHandler; //!< oem platform handler
     uint16_t markerLidSensorId;
     uint16_t firmwareUpdateSensorId;
-
+    uint16_t bootSideRenameStateSensorId;
     /** @brief D-Bus property changed signal match for image activation */
     std::unique_ptr<sdbusplus::bus::match_t> imageActivationMatch;
 
