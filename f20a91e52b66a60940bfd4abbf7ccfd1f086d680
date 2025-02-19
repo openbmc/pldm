@@ -16,6 +16,24 @@
       "message": "Need a better commit message explaining why this would be a feature that the common pldm stack would need ?\n\ncan you please explain \"why\" ?",
       "revId": "f20a91e52b66a60940bfd4abbf7ccfd1f086d680",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33397aa4_fd39657c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-19T05:56:41Z",
+      "side": 1,
+      "message": "I updated the commit message.\n\nThis is the reason:\n```\nThe `pldmd` will always create all available PLDM sensors from\nterminus PDRs if they include the sensor name and terminus name. But\nfor pluggable PCIes cards such as NIC card, one PCIe slot can plug the\nNIC cards from different manufacture which can have different PDRs set.\nThis causes the created PLDM sensors names can be different.\n\nBut the PLDM sensors can be used by thermal control which should be\nindependent with the plugged NIC cards. This requires solution to\nconfigure the unique PLDM sensors name for the different OEM PCIe cards\nwhich plugs to the same PCIe slot. This also requires the terminus Name\nblack list to notify the `pldmd` which terminus it will not\nautomatically create the PLDM sensors from PRDs.\n```\n\nI think Meta also has the same solution which they use the sensor configuration file to create the PLDM sensors for NIC cards. The NIC cards can come from different OEM, but the created sensor name will be unique. So the thermal control can be applied regardless the installed  cards.\nIn this case, the `pldmd` should not automatically create the PLDM sensors for those cards. and it should not use the sensors name and terminus name from PDRs but the sensor name and terminus name from the configuration file.",
+      "parentUuid": "4b32e6cc_0f811d0a",
+      "revId": "f20a91e52b66a60940bfd4abbf7ccfd1f086d680",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
