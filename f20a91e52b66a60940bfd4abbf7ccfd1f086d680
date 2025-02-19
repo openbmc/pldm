@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b32e6cc_0f811d0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-19T04:49:23Z",
+      "side": 1,
+      "message": "Need a better commit message explaining why this would be a feature that the common pldm stack would need ?\n\ncan you please explain \"why\" ?",
+      "revId": "f20a91e52b66a60940bfd4abbf7ccfd1f086d680",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
