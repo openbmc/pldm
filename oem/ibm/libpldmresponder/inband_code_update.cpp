@@ -319,9 +319,25 @@ void CodeUpdate::setVersions()
                             "ERROR", e, "INTERFACE", imageInterface, "PATH",
                             imageObjPath);
                     }
+                    else if (imageProp == "xyz.openbmc_project.Software."
+                                          "Activation.Activations.Ready" &&
+                             !isOutOfBandCodeUpdateInProgress())
+                    {
+                        outOfBandCodeUpdateInProgress = true;
+                        processRenameEvent();
+                    }
                 }
             }
         }));
+}
+
+void CodeUpdate::processRenameEvent()
+{
+    currBootSide = Pside;
+    auto sensorId = getBootSideRenameStateSensor();
+    sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                         PLDM_BOOT_SIDE_HAS_BEEN_RENAMED,
+                         PLDM_BOOT_SIDE_NOT_RENAMED);
 }
 
 void CodeUpdate::processPriorityChangeNotification(
