@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bad46c69_8193584c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-19T12:22:20Z",
+      "side": 0,
+      "message": "It seems we can remove `addedTids` from the code.",
+      "revId": "8fa40dbeb861ba078f5839d65abb4c48c49ece64",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
