@@ -88,6 +88,24 @@
       "parentUuid": "c749ca94_40de19ed",
       "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65f516bc_ed414dc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-02-19T11:19:22Z",
+      "side": 1,
+      "message": "\u003e The platform-manager will discovery the new MCTP EPs in initTerminus one by one. The number of termini is initialized depend on the number added termini. I don\u0027t see any problem with this behavior.\n\nMy understanding is that each time `queuedMctpInfos` receives `addedTids`, the following steps occur:\n\n1. The `initMctpTerminus` function initializes the `addedTids` into `termini`.\n2. The `initTerminus` function then initializes the PDRs of all `termini` where `terminus-\u003einitialized` is false.\n3. Finally, sensor polling is started for all `addedTids`.\n\nHowever, since `initTerminus` processes all `termini` rather than only the `addedTids`, if a Tid encounters a `get PDR failed` scenario, the corresponding `terminus` for that Tid is not deleted and will still proceed to start sensor polling for that Tid.\n\nWhen new `addedTids` are received next time, both `initMctpTerminus` and start sensor polling will only process the new `addedTids`.\nHowever, during `initTerminus`, since it targets `termini` with `terminus-\u003einitialized` set to false, it will retry `get PDR` for the previously failed Tid. Even if the `get PDR` succeeds this time, sensor polling will still not be started for that Tid.\n\nWe have observed this issue multiple times in our system\u0027s journal logs.\nThis commit aims to prevent this situation, and after applying the patch, we have confirmed that the issue no longer reproduces.\n\n\u003e Can you describe more about your idea in the `ineffective`?. \n\nRegarding the idea that the `terminus-\u003einitialized` flag is ineffective:\nIf, as you mentioned, `initTerminus` should be modified to process only the `addedTids` instead of all `termini` with `terminus-\u003einitialized` set to false, it would imply there would no longer be any `termini` with `terminus-\u003einitialized` set to false. \nThis is why I believe the `terminus-\u003einitialized` flag becomes ineffective in this scenario.\n\nIf there’s any part of my understanding that is incorrect, I would greatly appreciate your guidance.\nThank you very much for your patience and support!",
+      "parentUuid": "6c72f69f_a7eea0b4",
+      "revId": "bf232de4315f67f25d0cc462c9bfca8b8fe06350",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
