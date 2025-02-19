@@ -228,10 +228,7 @@ void CodeUpdate::setVersions()
                     {
                         auto propVal = dBusIntf->getDbusPropertyVariant(
                             imageObjPath, "Activation", imageInterface);
-                        const auto& imageProp = std::get<std::string>(propVal);
-                        if (imageProp == "xyz.openbmc_project.Software."
-                                         "Activation.Activations.Ready" &&
-                            isCodeUpdateInProgress())
+                        if (isCodeUpdateInProgress())
                         {
                             newImageId = path.str;
                             if (!imageActivationMatch)
@@ -311,6 +308,11 @@ void CodeUpdate::setVersions()
                             }
                             break;
                         }
+                        else
+                        {
+                            // Out of band update
+                            processRenameEvent();
+                        }
                     }
                     catch (const sdbusplus::exception_t& e)
                     {
@@ -322,6 +324,15 @@ void CodeUpdate::setVersions()
                 }
             }
         }));
+}
+
+void CodeUpdate::processRenameEvent()
+{
+    currBootSide = Pside;
+    auto sensorId = getBootSideRenameStateSensor();
+    sendStateSensorEvent(sensorId, PLDM_STATE_SENSOR_STATE, 0,
+                         PLDM_BOOT_SIDE_HAS_BEEN_RENAMED,
+                         PLDM_BOOT_SIDE_NOT_RENAMED);
 }
 
 void CodeUpdate::processPriorityChangeNotification(
