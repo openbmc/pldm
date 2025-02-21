@@ -52,6 +52,24 @@
       "parentUuid": "73901b5b_3862d775",
       "revId": "a55d6a63cfbc82a74e89f4bf5d8545434afff653",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae5280b8_a88b7b9c",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-02-21T01:36:38Z",
+      "side": 1,
+      "message": "The Patch set looks good now. I have no more comments on this patch set.",
+      "parentUuid": "55bdbad7_cbc02a66",
+      "revId": "a55d6a63cfbc82a74e89f4bf5d8545434afff653",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
