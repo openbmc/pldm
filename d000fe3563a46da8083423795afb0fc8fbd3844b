@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89262fff_4aa4ce5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-24T07:49:47Z",
+      "side": 1,
+      "message": "For reviewers,\nThis MR was originally [68346], but has migrated to here due to the ownership of the commit has changed and there\u0027re major changes to the content, for previous discussions please check the original one.\n\nThe dependencies of this MR have all been removed or merged, seems ready to start the review.\n\n[68346]: https://gerrit.openbmc.org/c/openbmc/pldm/+/68346",
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
