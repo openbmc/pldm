@@ -1,0 +1,9 @@
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Thu Nguyen <thu@os.amperecomputing.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 24 Feb 2025 09:56:32 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/77562
+Comments-Total: 7
+Project: openbmc/pldm
+Branch: refs/heads/master
