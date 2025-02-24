@@ -34,6 +34,24 @@
       "parentUuid": "1190797e_9a17fd4a",
       "revId": "397beeec9d53fec967019c1bc9ee0577cfc7d921",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f20c98be_a401f0c8",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-24T09:55:11Z",
+      "side": 1,
+      "message": "yes, thank you for the change. Looks a lot better now.",
+      "parentUuid": "24d324d3_06cb5912",
+      "revId": "397beeec9d53fec967019c1bc9ee0577cfc7d921",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
