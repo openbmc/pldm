@@ -34,6 +34,24 @@
       "parentUuid": "6a89eedb_56e52b07",
       "revId": "89555543cd51b06e28cf0fd9e4ccd9e5e2aa8024",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc4b7cbc_3188daa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-24T07:58:03Z",
+      "side": 1,
+      "message": "Done, changes has been made to the migrated MR:\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/73512",
+      "parentUuid": "9f80bbe5_28490939",
+      "revId": "89555543cd51b06e28cf0fd9e4ccd9e5e2aa8024",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
