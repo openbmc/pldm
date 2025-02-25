@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f09a66cf_0731fd7f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-25T11:20:25Z",
+      "side": 1,
+      "message": "what do you mean by far terminus ? is this a specification term ?",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ce9ff1_f33e3e61",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-25T11:20:25Z",
+      "side": 1,
+      "message": "can you mention the sequence of operations that happens before this, and which step this fix is going in.. that will give a better picture of what you are trying to achieve.",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64e0276c_26d85aad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-25T11:20:25Z",
+      "side": 1,
+      "message": "I was under the assumption that we dont have any blocking methods as such ..may be I am mistaken. can you point out here on what is exactly being a blocking method ..and what this method is blocking ?",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bc5cbd9_5779e5ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-25T11:20:25Z",
+      "side": 1,
+      "message": "I was thinking that with the help of coroutine based infrastructure, it does not matter how long it takes to construct..but the application will always be responsive enough during that time ? is my understanding wrong ?",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0572c365_97578368",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-25T11:20:25Z",
+      "side": 1,
+      "message": "why cant we achive the same by pushing th task onto an eventloop ? why did we prefer going with the timer approach.",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dea2003_7c72c3aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-02-25T11:20:25Z",
+      "side": 1,
+      "message": "Hey Thu - I have a lot of questions on this one. The commit message really does not explain the core problem in detail. Can you please take a stab it the commit message again and explain it in layman terms ? \n\nI would like to see something like:\n\ncurrent behaviour:\n1. `a` happens\n2. then `b` happens\n3. then `c` starts\n4. but then `c` is blocking, so it does not allow us from doing `d`\n\nand also mention the reasons why `c` is made a blocking call ..and what are the other options explored to make `c` a non-blocking call. Why did we choose to opt for the timer approach what are the merits in that ? with respect to its alternative solutions.\n\nNow with the fix , what the behaviour:\n1. \u003c\u003e\n2. \u003c\u003e\n....\n\nThis would give me and any others a better chance at understanding the problem being solved.",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
