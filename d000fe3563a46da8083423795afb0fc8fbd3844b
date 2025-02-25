@@ -16,6 +16,144 @@
       "message": "For reviewers,\nThis MR was originally [68346], but has migrated to here due to the ownership of the commit has changed and there\u0027re major changes to the content, for previous discussions please check the original one.\n\nThe dependencies of this MR have all been removed or merged, seems ready to start the review.\n\n[68346]: https://gerrit.openbmc.org/c/openbmc/pldm/+/68346",
       "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c85139e1_5ae08436",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-02-25T06:57:56Z",
+      "side": 1,
+      "message": "Magic numbers aren\u0027t great. Can you make it a named constant?",
+      "range": {
+        "startLine": 59,
+        "startChar": 48,
+        "endLine": 59,
+        "endChar": 49
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "185039b7_5e5105f6",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-02-25T06:57:56Z",
+      "side": 1,
+      "message": "The unchecked dereferencing makes me a little nervous.",
+      "range": {
+        "startLine": 66,
+        "startChar": 1,
+        "endLine": 68,
+        "endChar": 69
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73993e4e_d38f7b99",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-02-25T06:57:56Z",
+      "side": 1,
+      "message": "The presence of these properties is a requirement of the associated schema. My approach would be to reflect the objects defined by the EM schema as C++ classes and enforce the requirements using a `std::expected` and a constructor wrapper.",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 51
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "340921c1_a8718e6f",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-02-25T06:57:56Z",
+      "side": 1,
+      "message": "Why do we need to capture `Address` and `Bus`? We have the EID, which is what pldmd needs in order to communicate with the device. This seems like a layering violation.",
+      "range": {
+        "startLine": 112,
+        "startChar": 53,
+        "endLine": 112,
+        "endChar": 67
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7673dd8e_cad382f7",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-02-25T06:57:56Z",
+      "side": 1,
+      "message": "This message falls foul of https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings\n\nI prefer you do something like the following instead:\n\n```\ndebug(\"Endpoint {EID} identified as device \u0027{NAME}\u0027\", \"EID\", eidValue, \"NAME\", name, \"BUS\", bus, \"ADDRESS\", address);\n```\n\nThis still captures the bus and address values in the structured log, but does not expose them in the message (as they\u0027re uniquely identified by the EID).",
+      "range": {
+        "startLine": 114,
+        "startChar": 12,
+        "endLine": 115,
+        "endChar": 73
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa117d4_1abef2ac",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-02-25T06:57:56Z",
+      "side": 1,
+      "message": "I\u0027d prefer you use `:` instead of `,` here.",
+      "range": {
+        "startLine": 119,
+        "startChar": 66,
+        "endLine": 119,
+        "endChar": 67
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
