@@ -164,6 +164,15 @@ int pldm::responder::oem_ibm_platform::Handler::
                 slotHandler->enableSlot(effecterId, entityAssociationMap,
                                         stateField[currState].effecter_state);
             }
+            else if (entityType == PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE &&
+                     stateSetId == PLDM_OEM_IBM_BOOT_SIDE_RENAME)
+            {
+                if (stateField[currState].effecter_state ==
+                    PLDM_BOOT_SIDE_HAS_BEEN_RENAMED)
+                {
+                    codeUpdate->processRenameEvent();
+                }
+            }
             else
             {
                 rc = PLDM_PLATFORM_SET_EFFECTER_UNSUPPORTED_SENSORSTATE;
@@ -217,7 +226,8 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
     possibleStates->possible_states_size = 2;
     auto state =
         reinterpret_cast<state_effecter_possible_states*>(possibleStates);
-    if (stateSetID == PLDM_OEM_IBM_BOOT_STATE)
+    if ((stateSetID == PLDM_OEM_IBM_BOOT_STATE) ||
+        (stateSetID == PLDM_OEM_IBM_BOOT_SIDE_RENAME))
         state->states[0].byte = 6;
     else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
         state->states[0].byte = 126;
