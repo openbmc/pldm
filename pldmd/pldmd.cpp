@@ -220,6 +220,23 @@ int main(int argc, char** argv)
         throw std::runtime_error("Failed to instantiate PDR repository");
     }
     DBusHandler dbusHandler;
+    std::unique_ptr<platform_mc::Manager> platformManager =
+        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb,
+                                               nullptr);
+
+#ifdef LIBPLDMRESPONDER
+    std::unique_ptr<platform_config::Handler> biosConfigHandler{};
+    biosConfigHandler =
+        std::make_unique<platform_config::Handler>(BIOS_JSONS_DIR);
+
+    auto biosHandler = std::make_unique<bios::Handler>(
+        pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
+        biosConfigHandler.get(), requestPLDMServiceName);
+
+    platformManager = std::make_unique<platform_mc::Manager>(
+        event, reqHandler, instanceIdDb, biosHandler.get());
+#endif
+
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
@@ -275,9 +292,6 @@ int main(int argc, char** argv)
     // handled. To enable building FRU table, the FRU handler is passed to the
     // Platform handler.
 
-    std::unique_ptr<platform_mc::Manager> platformManager =
-        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
-
     pldm::responder::platform::EventMap addOnEventHandlers{
         {PLDM_CPER_EVENT,
          {[&platformManager](const pldm_msg* request, size_t payloadLength,
@@ -306,10 +320,6 @@ int main(int argc, char** argv)
         hostPDRHandler.get(), dbusToPLDMEventHandler.get(), fruHandler.get(),
         platformConfigHandler.get(), &reqHandler, event, true,
         addOnEventHandlers);
-
-    auto biosHandler = std::make_unique<bios::Handler>(
-        pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
-        platformConfigHandler.get(), requestPLDMServiceName);
 
     auto baseHandler = std::make_unique<base::Handler>(event);
 
@@ -341,7 +351,13 @@ int main(int argc, char** argv)
 #endif
 
     std::unique_ptr<fw_update::Manager> fwManager =
-        std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb,
+                                             nullptr);
+
+#ifdef LIBPLDMRESPONDER
+    fwManager = std::make_unique<fw_update::Manager>(
+        event, reqHandler, instanceIdDb, biosHandler.get());
+#endif
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{

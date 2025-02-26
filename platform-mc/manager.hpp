@@ -36,9 +36,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     ~Manager() = default;
 
     explicit Manager(sdeventplus::Event& event, RequesterHandler& handler,
-                     pldm::InstanceIdDb& instanceIdDb) :
+                     pldm::InstanceIdDb& instanceIdDb,
+                     [[maybe_unused]] void* biosHandler) :
         terminusManager(event, handler, instanceIdDb, termini, this,
-                        pldm::BmcMctpEid),
+                        pldm::BmcMctpEid, biosHandler),
         platformManager(terminusManager, termini, this),
         sensorManager(event, terminusManager, termini, this),
         eventManager(terminusManager, termini)

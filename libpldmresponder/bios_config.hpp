@@ -140,6 +140,14 @@ class BIOSConfig
      */
     void initBIOSAttributes(const std::string& sysType, bool registerService);
 
+    /** @brief Set MCTP Eid of the BIOS terminus
+     *  @param[in] host_eid - the MCTP Eid of the BIOS terminus
+     */
+    void setEid(mctp_eid_t host_eid)
+    {
+        eid = host_eid;
+    }
+
   private:
     /** @enum Index into the fields in the BaseBIOSTable
      */

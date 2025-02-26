@@ -18,7 +18,7 @@ class SensorManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false),
         terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
-                        pldm::BmcMctpEid),
+                        pldm::BmcMctpEid, nullptr),
         sensorManager(event, terminusManager, termini, nullptr)
     {}
 

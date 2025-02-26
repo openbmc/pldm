@@ -408,6 +408,20 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         type++;
     }
     termini[tid]->setSupportedCommands(pldmCmds);
+    if (biosHandler && termini[tid]->doesSupportType(PLDM_BIOS) &&
+        termini[tid]->doesSupportCommand(PLDM_BIOS, PLDM_GET_BIOS_TABLE) &&
+        termini[tid]->doesSupportCommand(PLDM_BIOS, PLDM_SET_BIOS_TABLE))
+    {
+        if (!setBiosEid)
+        {
+            biosHandler->setEid(eid);
+            setBiosEid = true;
+        }
+        else
+        {
+            lg2::error("Can't have two Bios EID in the same platform.");
+        }
+    }
 
     co_return PLDM_SUCCESS;
 }

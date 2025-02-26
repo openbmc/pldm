@@ -92,6 +92,14 @@ class Handler : public CmdHandler
     Response setBIOSAttributeCurrentValue(const pldm_msg* request,
                                           size_t payloadLength);
 
+    /** @brief Set MCTP Eid of the BIOS terminus
+     *  @param[in] host_eid - the MCTP Eid of the BIOS terminus
+     */
+    void setEid(mctp_eid_t host_eid)
+    {
+        biosConfig.setEid(host_eid);
+    }
+
   private:
     BIOSConfig biosConfig;
 };

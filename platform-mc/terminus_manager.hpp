@@ -17,6 +17,10 @@
 #include <utility>
 #include <vector>
 
+#ifdef LIBPLDMRESPONDER
+#include "libpldmresponder/bios.hpp"
+#endif
+
 namespace pldm
 {
 
@@ -54,13 +58,18 @@ class TerminusManager
     explicit TerminusManager(
         sdeventplus::Event& /* event */, RequesterHandler& handler,
         pldm::InstanceIdDb& instanceIdDb, TerminiMapper& termini,
-        Manager* manager, mctp_eid_t localEid) :
+        Manager* manager, mctp_eid_t localEid,
+        [[maybe_unused]] void* biosHandler) :
         handler(handler), instanceIdDb(instanceIdDb), termini(termini),
         tidPool(tidPoolSize, false), manager(manager), localEid(localEid)
     {
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
         tidPool[0] = true;
         tidPool[PLDM_TID_RESERVED] = true;
+#ifdef LIBPLDMRESPONDER
+        this->biosHandler =
+            reinterpret_cast<pldm::responder::bios::Handler*>(biosHandler);
+#endif
     }
 
     /** @brief start a coroutine to discover terminus
@@ -277,6 +286,14 @@ class TerminusManager
 
     /** @brief MCTP Endpoint available status mapping */
     std::map<MctpInfo, Availability> mctpInfoAvailTable;
+
+#ifdef LIBPLDMRESPONDER
+    /** @brief Bios Handler pointer */
+    pldm::responder::bios::Handler* biosHandler;
+#endif
+
+    /** @brief Flag identity that the Bios EID is already set */
+    bool setBiosEid = false;
 };
 } // namespace platform_mc
 } // namespace pldm
