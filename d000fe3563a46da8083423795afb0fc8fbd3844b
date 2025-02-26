@@ -43,6 +43,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c5b97b2b_6dec6a7b",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-26T06:30:29Z",
+      "side": 1,
+      "message": "Hi Andrew, thanks for the review 😊\nDone",
+      "parentUuid": "c85139e1_5ae08436",
+      "range": {
+        "startLine": 59,
+        "startChar": 48,
+        "endLine": 59,
+        "endChar": 49
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "185039b7_5e5105f6",
         "filename": "requester/configuration_discovery_handler.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-25T06:57:56Z",
       "side": 1,
       "message": "The unchecked dereferencing makes me a little nervous.",
+      "range": {
+        "startLine": 66,
+        "startChar": 1,
+        "endLine": 68,
+        "endChar": 69
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab05609f_7535886c",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-26T06:30:29Z",
+      "side": 1,
+      "message": "Done, I\u0027ve made an additional check here.",
+      "parentUuid": "185039b7_5e5105f6",
       "range": {
         "startLine": 66,
         "startChar": 1,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9feca57f_325b1cf8",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-26T06:30:29Z",
+      "side": 1,
+      "message": "I\u0027ve just had a try, please check if it is what you meant.",
+      "parentUuid": "73993e4e_d38f7b99",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 51
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "340921c1_a8718e6f",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-02-25T06:57:56Z",
       "side": 1,
       "message": "Why do we need to capture `Address` and `Bus`? We have the EID, which is what pldmd needs in order to communicate with the device. This seems like a layering violation.",
+      "range": {
+        "startLine": 112,
+        "startChar": 53,
+        "endLine": 112,
+        "endChar": 67
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa134e6_a66e6197",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-26T06:30:29Z",
+      "side": 1,
+      "message": "Done, address and bus field are removed.",
+      "parentUuid": "340921c1_a8718e6f",
       "range": {
         "startLine": 112,
         "startChar": 53,
@@ -133,6 +229,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45c5d812_2ccdf3f2",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-26T06:30:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7673dd8e_cad382f7",
+      "range": {
+        "startLine": 114,
+        "startChar": 12,
+        "endLine": 115,
+        "endChar": 73
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "daa117d4_1abef2ac",
@@ -146,6 +266,30 @@
       "writtenOn": "2025-02-25T06:57:56Z",
       "side": 1,
       "message": "I\u0027d prefer you use `:` instead of `,` here.",
+      "range": {
+        "startLine": 119,
+        "startChar": 66,
+        "endLine": 119,
+        "endChar": 67
+      },
+      "revId": "d000fe3563a46da8083423795afb0fc8fbd3844b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d12d92_b6ccedba",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-02-26T06:30:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daa117d4_1abef2ac",
       "range": {
         "startLine": 119,
         "startChar": 66,
