@@ -88,6 +88,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef9c2b19_2a02f96e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-02-26T03:27:34Z",
+      "side": 1,
+      "message": "Are you mentioning defer task? As I defined a default 0 interval timer, I assume they-re not too different while a timer is easier to implement. Not to mention it allows a reconfiguration to the interval, like we prefer a 5 ms interval. Above all, it\u0027s just that I\u0027m more familiar with time. If defer has more advantages, I will consider.",
+      "parentUuid": "0572c365_97578368",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4dea2003_7c72c3aa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
@@ -99,6 +117,24 @@
       "writtenOn": "2025-02-25T11:20:25Z",
       "side": 1,
       "message": "Hey Thu - I have a lot of questions on this one. The commit message really does not explain the core problem in detail. Can you please take a stab it the commit message again and explain it in layman terms ? \n\nI would like to see something like:\n\ncurrent behaviour:\n1. `a` happens\n2. then `b` happens\n3. then `c` starts\n4. but then `c` is blocking, so it does not allow us from doing `d`\n\nand also mention the reasons why `c` is made a blocking call ..and what are the other options explored to make `c` a non-blocking call. Why did we choose to opt for the timer approach what are the merits in that ? with respect to its alternative solutions.\n\nNow with the fix , what the behaviour:\n1. \u003c\u003e\n2. \u003c\u003e\n....\n\nThis would give me and any others a better chance at understanding the problem being solved.",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "393cfcff_8379abdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-02-26T03:27:34Z",
+      "side": 1,
+      "message": "Hi @ManojKiran Eda, sorry for the unclarity in the commit msg. Can you please first look at the reasons below and share your thoughts before I modify the commit msg and officially address your other comments. CC anh @thu@os.amperecomputing.com\n\nAfter all PDRs retrieved from the other terminus are parsed into pdr structs. They will be processed to create sensor objects (e.g via addNumericSensor function for Numeric Sensors).\n\nDuring this phase for one sensor, sensor name is achieved (may enlist Sensor Aux Name PDRs), and NumericSensor object is constructed. Sensor object construction involves parsing pdr struct elements into sensor class variables, D-Bus interface initialization and many calls to set D-Bus object properties.\n\nExcept for the D-Bus calls (which are setting properties to the D-Bus objects that pldmd itself holds so I think it\u0027s not waiting for responses, and I don\u0027t know if we can improve something here, please share your thoughts), all the other actions are not making any io call. Therefore, coroutine is not helpful here.\n\nThey actually may not be blocking actions, but as it continuously loops through sensor PDRs in `parseTerminusPDRs` to add sensors, they take too much time and prevent BMC from processing events coming from other termini. Not to mention the adding of new sensor types in the future and the increase in sensor numbers, the total time will be large.\n\nFor Ampere Mt.Jefferson platform, it takes around 1.5s to construct 156 Numeric and Compact Numeric sensors. As we also receive Boot Progress events from Host during the init phase, it exceeds Request-To-Response timeout of 100ms in Table 5 DSP0240 if Boot Progress event comes while BMC is creating sensor objects.\n\nAs it\u0027s not essential to create sensor objects that fast, I chose to use a timer to delay the creation of each sensor in the PDR list. Instead of a continuous loop through sensor PDRs to do thetask.",
+      "parentUuid": "4dea2003_7c72c3aa",
       "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
