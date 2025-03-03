@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2349e9b9_d9f31a02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-03T09:12:16Z",
+      "side": 1,
+      "message": "How can other handler such as platform-mc/terminus-manager or platform-mc/manager call the `getConfigurations()` of ConfigurationDiscoveryHandler?\nI thought it ConfigurationDiscoveryHandler should be apart of requester/mctp_discovery_handler",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
