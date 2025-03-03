@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "666e324b_ecb920cf",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-03T08:06:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b018b38a_b0b235c3",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74485815_54bd2b0e",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-03-03T03:51:19Z",
       "side": 1,
       "message": "Does the EP is always inn network 1? Why don\u0027t we use `networkId`?",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6322de18_2b3fb4eb",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-03T08:06:30Z",
+      "side": 1,
+      "message": "Done, thanks for reminding.",
+      "parentUuid": "74485815_54bd2b0e",
       "revId": "3196895f095dc7b776ecc76107befff888809d1e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf3152cd_380f31f8",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-03T08:06:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44b92e39_8d62bb3c",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6f3c479_918a31c4",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-03-03T03:51:19Z",
       "side": 1,
       "message": "Can we remove the debug message in upstreaming patch set?",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ff32b2_409f2859",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-03T08:06:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6f3c479_918a31c4",
       "revId": "3196895f095dc7b776ecc76107befff888809d1e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
