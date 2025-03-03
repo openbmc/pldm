@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b018b38a_b0b235c3",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-03T03:51:19Z",
+      "side": 1,
+      "message": "const MctpInfo\u0026 /* mctpinfo */,\n    Availability /* availability */)",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74485815_54bd2b0e",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-03T03:51:19Z",
+      "side": 1,
+      "message": "Does the EP is always inn network 1? Why don\u0027t we use `networkId`?",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b92e39_8d62bb3c",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-03T03:51:19Z",
+      "side": 1,
+      "message": "Remove the debug.",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6f3c479_918a31c4",
+        "filename": "requester/configuration_discovery_handler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-03T03:51:19Z",
+      "side": 1,
+      "message": "Can we remove the debug message in upstreaming patch set?",
+      "revId": "3196895f095dc7b776ecc76107befff888809d1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
