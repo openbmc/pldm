@@ -124,6 +124,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e797b09_653b9219",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-03T05:15:31Z",
+      "side": 1,
+      "message": "That makes sense. I will try `defer` out for `addNextSensorFromPDRs` in my current patch, instead of a timer, and give feedback.",
+      "parentUuid": "8ef3bb7a_78c64824",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4dea2003_7c72c3aa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
@@ -171,6 +189,24 @@
       "side": 1,
       "message": "\u003e Except for the D-Bus calls (which are setting properties to the D-Bus objects that pldmd itself holds so I think it\u0027s not waiting for responses, and I don\u0027t know if we can improve something here, please share your thoughts), all the other actions are not making any io call. Therefore, coroutine is not helpful here.\n\u003e \n\nThanks for the explanation. This gave me an excellent understanding on where the problem is.\n\nSo the crux is that when we create the dbus objects and we set the properties, the delay is coming from that place? am I understanding it right?\n\nCan we do an exercise on which function is taking more time in the entire process?  is it at the processing of the PDR\u0027s ? or is it at the parsing place? or creating the dbus objects? can you measure the time taken for each of these functions ? and tell which function exactly is taking time ? \n\n\ncreating the dbus objects should not be slow, as you are not backing the dbus objects with the filesystem (serial persistence).\n\nif the creation of dbus objects takes time, we can defer that out to the event loop , so that the scheduler will create them when pldmd was not busy with something else.\n\nan example for deferring a task to event loop : https://github.com/openbmc/pldm/blob/36b36938a4eedcf87d3918acc10b07a28e7f1e9d/host-bmc/host_pdr_handler.cpp#L159\n\n\n\n\n\u003e They actually may not be blocking actions, but as it continuously loops through sensor PDRs in `parseTerminusPDRs` to add sensors, they take too much time and prevent BMC from processing events coming from other termini. Not to mention the adding of new sensor types in the future and the increase in sensor numbers, the total time will be large.\n\u003e \n\u003e For Ampere Mt.Jefferson platform, it takes around 1.5s to construct 156 Numeric and Compact Numeric sensors. As we also receive Boot Progress events from Host during the init phase, it exceeds Request-To-Response timeout of 100ms in Table 5 DSP0240 if Boot Progress event comes while BMC is creating sensor objects.\n\u003e \n\nWell, are there no retries in place for your pldm stack? less than a 2-second with just one request is a little too restrictive. If retries are in place then you would not have this problem at all right ?\n\n\u003e As it\u0027s not essential to create sensor objects that fast, I chose to use a timer to delay the creation of each sensor in the PDR list. Instead of a continuous loop through sensor PDRs to do thetask.",
       "parentUuid": "393cfcff_8379abdf",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8db98dad_7bfcd736",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-03T05:15:31Z",
+      "side": 1,
+      "message": "Thank you @manojkiran.eda@gmail.com for your response. I will soon give a brief timing measure from our system.\n\n\u003e Well, are there no retries in place for your pldm stack? less than a 2-second with just one request is a little too restrictive. If retries are in place then you would not have this problem at all right ?\n\nWe do have `retries` scheme on Host side: 2 retries, 500ms each if response is not received from BMC. After totally 1.5s, Host will consider it as a timeout.\n\nTherefore, if the request is sent during the sensor creation task of BMC, when BMC finishes creating sensors (1.5s), BMC will process 3 requests of the same message content in the queue and respond to them, but it\u0027s late. BMC can still receive the event (actually 3 of them), but does not have method to filter out duplication, and Host screams out a timeout. Those are not desirable.",
+      "parentUuid": "ccfdaa8b_3c4720ec",
       "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
