@@ -142,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3271038_8982d1b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-03T10:35:52Z",
+      "side": 1,
+      "message": "UPDATE: I tried using defer for `addNextSensorFromPDRs()` as the below implementation, which modifies to my current patch set. Defer event source is set to Enabled::OneShot right after the callback is executed in order to add it to the queue again, cuz Defer is One-Shot by default. However, events from Host are still processed ONLY AFTER all the sensor objects are created. I don\u0027t know why host events couldn\u0027t intervene in, will investigate more to find out why.\n\n       terminus.hpp: private member: std::unique_ptr\u003csdeventplus::source::Defer\u003e sensorCreationEvent;\n       \n       ...\n       terminus.cpp:\n    \n       void Terminus::parseTerminusPDRs()\n       {\n          /*...parse PDRs to pdr structs */\n   \n          sensorCreationEvent \u003d std::make_unique\u003csdeventplus::source::Defer\u003e(\n             event, std::bind(std::mem_fn(\u0026Terminus::addNextSensorFromPDRs), this));\n       }\n\n      void Terminus::addNextSensorFromPDRs()\n      {\n          auto pdrIt \u003d sensorPdrIt;\n          if (pdrIt \u003c numericSensorPdrs.size())\n         {\n             const auto pdr \u003d numericSensorPdrs[pdrIt];\n             addNumericSensor(pdr);\n         }\n         else if (pdrIt \u003c numericSensorPdrs.size() + compactNumericSensorPdrs.size())\n         {\n             pdrIt -\u003d numericSensorPdrs.size();\n             const auto pdr \u003d compactNumericSensorPdrs[pdrIt];\n             addCompactNumericSensor(pdr);\n         }\n         else if (pdrIt \u003c numericSensorPdrs.size() + compactNumericSensorPdrs.size()\n             + numericEffecterPdrs.size())\n         {\n             pdrIt -\u003d numericSensorPdrs.size() + compactNumericSensorPdrs.size();\n             const auto pdr \u003d numericEffecterPdrs[pdrIt];\n             addNumericEffecter(pdr);\n         }\n         else\n         {\n             sensorCreationEvent.reset();\n             return;\n         }\n\n         sensorPdrIt++;\n         sensorCreationEvent-\u003eset_enabled(sdeventplus::source::Enabled::OneShot);\n      }",
+      "parentUuid": "1e797b09_653b9219",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4dea2003_7c72c3aa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
@@ -207,6 +225,24 @@
       "side": 1,
       "message": "Thank you @manojkiran.eda@gmail.com for your response. I will soon give a brief timing measure from our system.\n\n\u003e Well, are there no retries in place for your pldm stack? less than a 2-second with just one request is a little too restrictive. If retries are in place then you would not have this problem at all right ?\n\nWe do have `retries` scheme on Host side: 2 retries, 500ms each if response is not received from BMC. After totally 1.5s, Host will consider it as a timeout.\n\nTherefore, if the request is sent during the sensor creation task of BMC, when BMC finishes creating sensors (1.5s), BMC will process 3 requests of the same message content in the queue and respond to them, but it\u0027s late. BMC can still receive the event (actually 3 of them), but does not have method to filter out duplication, and Host screams out a timeout. Those are not desirable.",
       "parentUuid": "ccfdaa8b_3c4720ec",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac26d67_4d8577b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-03T10:35:52Z",
+      "side": 1,
+      "message": "Hi, to give an example tested on our system:\n\n* `parse...PDR` functions are not mentioned as they use coroutine\n\n* In `addNumericSensor`/`addCompactNumericSensor`, as they both use NumericSensor class so I take them as 1:\n\n - getSensorAuxiliaryNames: around **0.2ms -\u003e 1ms** (depending on where the name lies in the vector)\n\n - NumericSensor object construction: **1xms -\u003e 2xms**\n\n* In NumericSensor constructor:\n\n - getService (to throw if the object path already exists on D-Bus): around **10ms**\n\n - parsing threshold properties from PDR bitfields: around **0.3ms**\n - Association/Entity/Sensor.Value/Availability/Operational.Status/Threshold.Warning/Threshold.Critical interfaces (totally 7 interfaces): around **1ms each** to create interface and set necessary property values. Some sensor does not have threshold configurations, so it varies among sensors about the time needed to construct all D-Bus interfaces.\n\n\nTherefore, the most expensive part is NumericSensor object construction: **1x ms - 2x ms** (depending on sensor PDR characteristics and D-Bus traffic at the time).",
+      "parentUuid": "8db98dad_7bfcd736",
       "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
