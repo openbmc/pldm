@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7992bee7_6cafbe9a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-04T09:03:56Z",
+      "side": 1,
+      "message": "I added the unit-test in latest patch set version.",
+      "parentUuid": "017746af_d62861c9",
+      "range": {
+        "startLine": 737,
+        "startChar": 43,
+        "endLine": 737,
+        "endChar": 61
+      },
+      "revId": "5e9a588309f302687b72cd8a88e469eb2702714b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0829131a_7d68b4ac",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-03T09:34:20Z",
       "side": 1,
       "message": "const reference ?",
+      "range": {
+        "startLine": 738,
+        "startChar": 4,
+        "endLine": 738,
+        "endChar": 21
+      },
+      "revId": "5e9a588309f302687b72cd8a88e469eb2702714b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa699218_c90d4357",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-04T09:03:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0829131a_7d68b4ac",
       "range": {
         "startLine": 738,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ca27056_d36e1fb2",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-04T09:03:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37631f06_4934cfc4",
+      "range": {
+        "startLine": 753,
+        "startChar": 19,
+        "endLine": 753,
+        "endChar": 40
+      },
+      "revId": "5e9a588309f302687b72cd8a88e469eb2702714b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0f19992_67711cde",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-03-03T09:34:20Z",
       "side": 1,
       "message": "merge both of them together\n\n```\nif (!mctpInfo || !mctpInfoAvailTable[*mctpInfo])\n{\n    return std::nullopt;\n}\nreturn std::get\u003c0\u003e(*mctpInfo);\n\n```",
+      "range": {
+        "startLine": 761,
+        "startChar": 12,
+        "endLine": 769,
+        "endChar": 13
+      },
+      "revId": "5e9a588309f302687b72cd8a88e469eb2702714b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04809270_6cbcb7f0",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-04T09:03:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0f19992_67711cde",
       "range": {
         "startLine": 761,
         "startChar": 12,
