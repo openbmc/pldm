@@ -16,6 +16,24 @@
       "message": "How can other handler such as platform-mc/terminus-manager or platform-mc/manager call the `getConfigurations()` of ConfigurationDiscoveryHandler?\nI thought it ConfigurationDiscoveryHandler should be apart of requester/mctp_discovery_handler",
       "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03541e4f_e22721b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-04T02:14:28Z",
+      "side": 1,
+      "message": "Aren\u0027t they able to include and use it additionally?\nSince I didn\u0027t found `requester/mctp_discovery_handler`, assuming you\u0027re meaning `mctp_endpoint_discovery`. My understanding is which should only provide functionality of mctp event handling, configurations are optional for some of those.\nJust asking, I don\u0027t know too much about other types of managers, it\u0027s certainly able to be squashed into one if necessary.",
+      "parentUuid": "2349e9b9_d9f31a02",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
