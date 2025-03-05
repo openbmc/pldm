@@ -275,6 +275,15 @@ class Terminus
      */
     bool createInventoryPath(std::string tName);
 
+    /** @brief Get sensor names from Sensor Auxiliary Names PDRs
+     *
+     *  @param[in] sensorId - Sensor ID
+     *  @param[in] isEffecter - This is an effecter, not a sensor
+     *  @return vector of sensor name strings
+     *
+     */
+    std::vector<std::string> getSensorNames(const SensorId& sensorId);
+
     /* @brief The terminus's TID */
     pldm_tid_t tid;
 
