@@ -266,6 +266,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a17e9049_79a4398d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-05T10:49:20Z",
+      "side": 1,
+      "message": "Thanks @manojkiran.eda@gmail.com for your guidance.",
+      "parentUuid": "9043d87c_a9f048c1",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dea2003_7c72c3aa",
