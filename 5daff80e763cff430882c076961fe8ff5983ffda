@@ -250,6 +250,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9043d87c_a9f048c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-05T09:52:12Z",
+      "side": 1,
+      "message": "\u003e I changed to delete and create new defer event source each time addNumericSensor is called (latest PS), then events from Host could break in. It seems like with my old implementation, all defer events are dispatched in the same event loop before preparing again. I can\u0027t tell exactly what differentiate 2 implementations. Hope to hear your thoughts. Also, some tests are modified to adapt with new defer tasks, because sensors won\u0027t be added right after the PDRs are parsed.\n\nYes, even we had to delete and create new defer event source everytime. Even i have not debugged it enough to figure out that. But Thanks alot for all the effort that you have put in on this commit. The latest version seems a lot better when compared to where we have started.",
+      "parentUuid": "15aac04f_530262b6",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4dea2003_7c72c3aa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
