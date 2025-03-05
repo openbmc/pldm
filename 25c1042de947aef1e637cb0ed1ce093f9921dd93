@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "647398d0_aa74fab3",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-05T10:26:35Z",
+      "side": 1,
+      "message": "`SensorId`",
+      "revId": "25c1042de947aef1e637cb0ed1ce093f9921dd93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7c2df68_3849431d",
         "filename": "platform-mc/terminus.hpp",
         "patchSetId": 16
