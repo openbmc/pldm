@@ -391,7 +391,6 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr> Terminus::parseNumericSensorPDR(
 void Terminus::addNumericSensor(
     const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
 {
-    uint16_t sensorId = pdr->sensor_id;
     if (terminusName.empty())
     {
         lg2::error(
@@ -399,28 +398,19 @@ void Terminus::addNumericSensor(
             "TID", tid);
         return;
     }
-    std::string sensorName =
-        terminusName + "_" + "Sensor_" + std::to_string(pdr->sensor_id);
 
-    if (pdr->sensor_auxiliary_names_pdr)
+    uint16_t sensorId = pdr->sensor_id;
+    auto sensorNames = getSensorNames(sensorId, false);
+
+    if (sensorNames.empty())
     {
-        auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
-        if (sensorAuxiliaryNames)
-        {
-            const auto& [sensorId, sensorCnt, sensorNames] =
-                *sensorAuxiliaryNames;
-            if (sensorCnt == 1)
-            {
-                for (const auto& [languageTag, name] : sensorNames[0])
-                {
-                    if (languageTag == "en" && !name.empty())
-                    {
-                        sensorName = terminusName + "_" + name;
-                    }
-                }
-            }
-        }
+        lg2::error(
+            "Terminus ID {TID}: Failed to get name for Numeric Sensor {SID}",
+            "TID", tid, "SID", sensorId);
+        return;
     }
+
+    std::string sensorName = sensorNames.front();
 
     try
     {
@@ -505,7 +495,6 @@ std::shared_ptr<pldm_compact_numeric_sensor_pdr>
 void Terminus::addCompactNumericSensor(
     const std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr)
 {
-    uint16_t sensorId = pdr->sensor_id;
     if (terminusName.empty())
     {
         lg2::error(
@@ -513,24 +502,20 @@ void Terminus::addCompactNumericSensor(
             "TID", tid);
         return;
     }
-    std::string sensorName =
-        terminusName + "_" + "Sensor_" + std::to_string(pdr->sensor_id);
 
-    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
-    if (sensorAuxiliaryNames)
+    uint16_t sensorId = pdr->sensor_id;
+    auto sensorNames = getSensorNames(sensorId, false);
+
+    if (sensorNames.empty())
     {
-        const auto& [sensorId, sensorCnt, sensorNames] = *sensorAuxiliaryNames;
-        if (sensorCnt == 1)
-        {
-            for (const auto& [languageTag, name] : sensorNames[0])
-            {
-                if (languageTag == "en" && !name.empty())
-                {
-                    sensorName = terminusName + "_" + name;
-                }
-            }
-        }
+        lg2::error(
+            "Terminus ID {TID}: Failed to get name for Compact Numeric Sensor {SID}",
+            "TID", tid, "SID", sensorId);
+        return;
     }
+
+    // Currently support 1 sensor name only
+    std::string sensorName = sensorNames.front();
 
     try
     {
@@ -705,6 +690,50 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
         }
     }
+}
+
+std::vector<std::string> Terminus::getSensorNames(SensorId sensorId,
+                                                  bool isEffecter)
+{
+    std::vector<std::string> sensorNames;
+    std::string midFix = isEffecter ? "_Effecter_" : "_Sensor_";
+    std::string defaultName = terminusName + midFix + std::to_string(sensorId);
+    // To ensure there's always a default name at offset 0
+    sensorNames.emplace_back(defaultName);
+
+    auto sensorAuxiliaryNames = getSensorAuxiliaryNames(sensorId);
+    if (sensorAuxiliaryNames)
+    {
+        const auto& [ID, count, names] = *sensorAuxiliaryNames;
+        for (const unsigned int& i :
+             std::views::iota(0, static_cast<int>(count)))
+        {
+            auto sensorName = defaultName;
+            if (i > 0)
+            {
+                // Sensor name at offset 0 will be the default name
+                sensorName += "_" + std::to_string(i);
+            }
+
+            for (const auto& [languageTag, name] : names[i])
+            {
+                if (languageTag == "en" && !name.empty())
+                {
+                    sensorName = terminusName + "_" + name;
+                }
+            }
+
+            if (i >= sensorNames.size())
+            {
+                sensorNames.emplace_back(sensorName);
+            }
+            else
+            {
+                sensorNames[i] = sensorName;
+            }
+        }
+    }
+    return sensorNames;
 }
 
 } // namespace platform_mc
