@@ -52,6 +52,60 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "957e1d9d_690b18a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-05T04:32:19Z",
+      "side": 1,
+      "message": "Commit msg updated.",
+      "parentUuid": "00ce9ff1_f33e3e61",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92332344_fc86e976",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-05T04:32:19Z",
+      "side": 1,
+      "message": "Commit msg updated.",
+      "parentUuid": "64e0276c_26d85aad",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f33586d0_963136bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-05T04:32:19Z",
+      "side": 1,
+      "message": "Updated.",
+      "parentUuid": "f09a66cf_0731fd7f",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bc5cbd9_5779e5ab",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-02-25T11:20:25Z",
       "side": 1,
       "message": "I was thinking that with the help of coroutine based infrastructure, it does not matter how long it takes to construct..but the application will always be responsive enough during that time ? is my understanding wrong ?",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69dd21fe_a1b7e917",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-05T04:32:19Z",
+      "side": 1,
+      "message": "Commit msg updated.",
+      "parentUuid": "9bc5cbd9_5779e5ab",
       "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +226,24 @@
       "side": 1,
       "message": "UPDATE: I tried using defer for `addNextSensorFromPDRs()` as the below implementation, which modifies to my current patch set. Defer event source is set to Enabled::OneShot right after the callback is executed in order to add it to the queue again, cuz Defer is One-Shot by default. However, events from Host are still processed ONLY AFTER all the sensor objects are created. I don\u0027t know why host events couldn\u0027t intervene in, will investigate more to find out why.\n\n       terminus.hpp: private member: std::unique_ptr\u003csdeventplus::source::Defer\u003e sensorCreationEvent;\n       \n       ...\n       terminus.cpp:\n    \n       void Terminus::parseTerminusPDRs()\n       {\n          /*...parse PDRs to pdr structs */\n   \n          sensorCreationEvent \u003d std::make_unique\u003csdeventplus::source::Defer\u003e(\n             event, std::bind(std::mem_fn(\u0026Terminus::addNextSensorFromPDRs), this));\n       }\n\n      void Terminus::addNextSensorFromPDRs()\n      {\n          auto pdrIt \u003d sensorPdrIt;\n          if (pdrIt \u003c numericSensorPdrs.size())\n         {\n             const auto pdr \u003d numericSensorPdrs[pdrIt];\n             addNumericSensor(pdr);\n         }\n         else if (pdrIt \u003c numericSensorPdrs.size() + compactNumericSensorPdrs.size())\n         {\n             pdrIt -\u003d numericSensorPdrs.size();\n             const auto pdr \u003d compactNumericSensorPdrs[pdrIt];\n             addCompactNumericSensor(pdr);\n         }\n         else if (pdrIt \u003c numericSensorPdrs.size() + compactNumericSensorPdrs.size()\n             + numericEffecterPdrs.size())\n         {\n             pdrIt -\u003d numericSensorPdrs.size() + compactNumericSensorPdrs.size();\n             const auto pdr \u003d numericEffecterPdrs[pdrIt];\n             addNumericEffecter(pdr);\n         }\n         else\n         {\n             sensorCreationEvent.reset();\n             return;\n         }\n\n         sensorPdrIt++;\n         sensorCreationEvent-\u003eset_enabled(sdeventplus::source::Enabled::OneShot);\n      }",
       "parentUuid": "1e797b09_653b9219",
+      "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15aac04f_530262b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-05T04:32:19Z",
+      "side": 1,
+      "message": "I changed to delete and create new defer event source each time addNumericSensor is called (latest PS), then events from Host could break in. It seems like with my old implementation, all defer events are dispatched in the same event loop before preparing again. I can\u0027t tell exactly what differentiate 2 implementations. Hope to hear your thoughts. Also, some tests are modified to adapt with new defer tasks, because sensors won\u0027t be added right after the PDRs are parsed.",
+      "parentUuid": "c3271038_8982d1b0",
       "revId": "5daff80e763cff430882c076961fe8ff5983ffda",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
