@@ -22,6 +22,30 @@
       },
       "revId": "afac0d43f8a8529be7722d6e8e1d55966f2b4797",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06d1798d_310a7e75",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-06T04:42:31Z",
+      "side": 1,
+      "message": "`getSensorNames` already parses all the names in Sensor Aux Name PDR to that vector of string. Are you suggesting that we provide multiple names to the construction of Compact Numeric Sensor also?",
+      "parentUuid": "85a25317_1c90488a",
+      "range": {
+        "startLine": 518,
+        "startChar": 4,
+        "endLine": 518,
+        "endChar": 49
+      },
+      "revId": "afac0d43f8a8529be7722d6e8e1d55966f2b4797",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
