@@ -11,6 +11,9 @@
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
+#ifndef DISCOVERY_FRU_DATA
+#include <xyz/openbmc_project/Inventory/Item/Board/server.hpp>
+#endif
 
 #include <algorithm>
 #include <bitset>
@@ -35,6 +38,10 @@ using SensorName = std::string;
 using SensorAuxiliaryNames = std::tuple<
     SensorId, SensorCnt,
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
+#ifndef DISCOVERY_FRU_DATA
+using InventoryItemBoardIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board>;
+#endif
 
 /** @struct EntityKey
  *
@@ -305,8 +312,13 @@ class Terminus
     /** @brief Terminus name */
     EntityName terminusName{};
     /* @brief The pointer of inventory D-Bus interface for the terminus */
+#ifdef DISCOVERY_FRU_DATA
     std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
         nullptr;
+#else
+    /* @brief The pointer of iventory D-Bus interface for the terminus */
+    std::unique_ptr<InventoryItemBoardIntf> inventoryItemBoardInft = nullptr;
+#endif
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
