@@ -118,6 +118,30 @@
       },
       "revId": "afac0d43f8a8529be7722d6e8e1d55966f2b4797",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "891a089f_8fba8c38",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-06T08:26:05Z",
+      "side": 1,
+      "message": "It was my mistake to leave a comment on top of the code line. Remove to avoid confusion.",
+      "parentUuid": "ce8663b5_15b0c17b",
+      "range": {
+        "startLine": 518,
+        "startChar": 4,
+        "endLine": 518,
+        "endChar": 49
+      },
+      "revId": "afac0d43f8a8529be7722d6e8e1d55966f2b4797",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
