@@ -34,6 +34,41 @@
       "parentUuid": "2349e9b9_d9f31a02",
       "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a57cb3f4_1c817d9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-06T07:34:32Z",
+      "side": 1,
+      "message": "The patch set adds `configuration_discovery_handler` which is used to get the MCTP Endpoints from Entity-manager D-Bus interface.\nwhile\n`mctp_endpoint_discovery` will get the MCTP Endpoints from the MCTP D-Bus interface.\nBoth provide the list of the MCTP endpoints which should be discovery and manage by platform-mc and also fw-manager.\n\nSo I think `configuration_discovery_handler` should be implemented and call the fw-manager and platformManager as `mctp_endpoint_discovery`. https://github.com/openbmc/pldm/blob/68444190fe52407c05ab4f7220a7794ba3f0ad82/requester/mctp_endpoint_discovery.cpp#L365\n\nit should not be append to `std::initializer_list\u003cMctpDiscoveryHandlerIntf` as the current code.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/78417/8/pldmd/pldmd.cpp#352\n\nPlease let me know if I\u0027m wrong.",
+      "parentUuid": "03541e4f_e22721b7",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9711650d_76bd8556",
+        "filename": "requester/configuration_discovery_handler.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-06T07:34:32Z",
+      "side": 1,
+      "message": "Should we handle interfaceAdded/PropertyChanged signal for new MCTP endpoint from Entity-manager configuration D-Bus interface as we did for MCTP D-Bus interface?\nhttps://github.com/openbmc/pldm/blob/68444190fe52407c05ab4f7220a7794ba3f0ad82/requester/mctp_endpoint_discovery.cpp#L29",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
