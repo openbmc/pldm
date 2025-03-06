@@ -549,6 +549,7 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
 
 void recoverMctpEndpoint(const std::string& endpointObjPath)
 {
+#ifdef MCTP_RECOVERY
     auto& bus = DBusHandler::getBus();
     try
     {
@@ -566,6 +567,9 @@ void recoverMctpEndpoint(const std::string& endpointObjPath)
             "failed to make a D-Bus call to recover MCTP Endpoint, ERROR {ERR_EXCEP}",
             "ERR_EXCEP", e);
     }
+#else
+    [[maybe_unused]] auto& _endpointObjPath = endpointObjPath;
+#endif
 }
 
 uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,

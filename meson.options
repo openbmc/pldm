@@ -212,3 +212,11 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249,
 )
+
+## MCTP Recovery Option
+option(
+    'mctp-recovery',
+    type: 'feature',
+    description: '''Recovery in request timeout. Calls `.Recover` method on timeout to handle communication recovery''',
+    value: 'enabled',
+)
