@@ -212,3 +212,11 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249,
 )
+
+## Discovery FRU Data from Terminus Option
+option(
+    'discovery-fru-data-from-terminus',
+    type: 'feature',
+    description: 'Enable discovery of FRU data from terminus during the terminus discovery phase.',
+    value: 'enabled',
+)
