@@ -666,6 +666,7 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
     auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
                                                responseLen);
 
+#ifdef MCTP_RECOVERY
     if (rc == PLDM_ERROR_NOT_READY)
     {
         // Call Recover() to check enpoint's availability
@@ -677,6 +678,7 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
         pldm::utils::recoverMctpEndpoint(endpointObjPath);
         updateMctpEndpointAvailability(mctpInfo.value(), false);
     }
+#endif
 
     co_return rc;
 }
