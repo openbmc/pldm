@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85a25317_1c90488a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:37:27Z",
+      "side": 1,
+      "message": "can we make the change to handle multiple sensor names also? (even though we don\u0027t support now) since the `sensorNames` is a vector of string.",
+      "range": {
+        "startLine": 518,
+        "startChar": 4,
+        "endLine": 518,
+        "endChar": 49
+      },
+      "revId": "afac0d43f8a8529be7722d6e8e1d55966f2b4797",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
