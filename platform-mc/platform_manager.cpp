@@ -618,6 +618,7 @@ exec::task<int> PlatformManager::eventMessageSupported(
 exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
                                                            uint16_t* total)
 {
+#ifdef DISCOVERY_FRU_DATA
     Request request(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
     auto requestMsg = new (request.data()) pldm_msg;
@@ -680,6 +681,11 @@ exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
     }
 
     co_return rc;
+#else
+    [[maybe_unused]] auto _tid = tid;
+    [[maybe_unused]] auto _total = total;
+    co_return PLDM_SUCCESS;
+#endif
 }
 
 exec::task<int> PlatformManager::getFRURecordTable(
@@ -688,6 +694,7 @@ exec::task<int> PlatformManager::getFRURecordTable(
     uint8_t* transferFlag, size_t* responseCnt,
     std::vector<uint8_t>& recordData)
 {
+#ifdef DISCOVERY_FRU_DATA
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
     auto requestMsg = new (request.data()) pldm_msg;
 
@@ -745,11 +752,22 @@ exec::task<int> PlatformManager::getFRURecordTable(
     }
 
     co_return rc;
+#else
+    [[maybe_unused]] auto _tid = tid;
+    [[maybe_unused]] auto _dataTransferHndl = dataTransferHndl;
+    [[maybe_unused]] auto _transferOpFlag = transferOpFlag;
+    [[maybe_unused]] auto _nextDataTransferHndl = nextDataTransferHndl;
+    [[maybe_unused]] auto _transferFlag = transferFlag;
+    [[maybe_unused]] auto _responseCnt = responseCnt;
+    [[maybe_unused]] auto& _recordData = recordData;
+    co_return PLDM_SUCCESS;
+#endif
 }
 
 void PlatformManager::updateInventoryWithFru(
     pldm_tid_t tid, const uint8_t* fruData, const size_t fruLen)
 {
+#ifdef DISCOVERY_FRU_DATA
     if (tid == PLDM_TID_RESERVED || !termini.contains(tid) || !termini[tid])
     {
         lg2::error("Invalid terminus {TID}", "TID", tid);
@@ -757,12 +775,19 @@ void PlatformManager::updateInventoryWithFru(
     }
 
     termini[tid]->updateInventoryWithFru(fruData, fruLen);
+#else
+    [[maybe_unused]] auto _tid = tid;
+    [[maybe_unused]] auto _fruData = fruData;
+    [[maybe_unused]] auto _fruLen = fruLen;
+    return;
+#endif
 }
 
 exec::task<int> PlatformManager::getFRURecordTables(
     pldm_tid_t tid, const uint16_t& totalTableRecords,
     std::vector<uint8_t>& fruData)
 {
+#ifdef DISCOVERY_FRU_DATA
     if (!totalTableRecords)
     {
         lg2::info("Fru record table has 0 records");
@@ -818,6 +843,12 @@ exec::task<int> PlatformManager::getFRURecordTables(
     fruData = receivedFru;
 
     co_return PLDM_SUCCESS;
+#else
+    [[maybe_unused]] auto _tid = tid;
+    [[maybe_unused]] auto _totalTableRecords = totalTableRecords;
+    [[maybe_unused]] auto& _fruData = fruData;
+    co_return PLDM_SUCCESS;
+#endif
 }
 
 } // namespace platform_mc

@@ -102,9 +102,14 @@ bool Terminus::createInventoryPath(std::string tName)
     inventoryPath = "/xyz/openbmc_project/inventory/system/board/" + tName;
     try
     {
+#ifdef DISCOVERY_FRU_DATA
         inventoryItemBoardInft =
             std::make_unique<pldm::dbus_api::PldmEntityReq>(
                 utils::DBusHandler::getBus(), inventoryPath.c_str());
+#else
+        inventoryItemBoardInft = std::make_unique<InventoryItemBoardIntf>(
+            utils::DBusHandler::getBus(), inventoryPath.c_str());
+#endif
         return true;
     }
     catch (const sdbusplus::exception_t& e)
@@ -584,8 +589,9 @@ std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorId id)
  *  @param[in] p - pointer to each record of FRU record table
  *  @param[in] tableSize - FRU table size
  */
-static bool isTableEnd(const uint8_t* table, const uint8_t* p,
-                       const size_t tableSize)
+
+[[maybe_unused]] static bool isTableEnd(const uint8_t* table, const uint8_t* p,
+                                        const size_t tableSize)
 {
     auto offset = p - table;
     return (tableSize - offset) < sizeof(struct pldm_fru_record_data_format);
@@ -594,6 +600,7 @@ static bool isTableEnd(const uint8_t* table, const uint8_t* p,
 void Terminus::updateInventoryWithFru(const uint8_t* fruData,
                                       const size_t fruLen)
 {
+#ifdef DISCOVERY_FRU_DATA
     auto tmp = getTerminusName();
     if (!tmp || tmp.value().empty())
     {
@@ -705,6 +712,10 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
         }
     }
+#else
+    [[maybe_unused]] auto _fruData = fruData;
+    [[maybe_unused]] auto _fruLen = fruLen;
+#endif
 }
 
 } // namespace platform_mc
