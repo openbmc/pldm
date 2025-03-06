@@ -46,6 +46,30 @@
       },
       "revId": "afac0d43f8a8529be7722d6e8e1d55966f2b4797",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aedc441_71cdde31",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:54:08Z",
+      "side": 1,
+      "message": "correct, `getSensorNames` is returning you a vector of string names. but here we are just using the first name (sensorNames.front) correct? What if in future you have multiple names and we want to handle that here?",
+      "parentUuid": "06d1798d_310a7e75",
+      "range": {
+        "startLine": 518,
+        "startChar": 4,
+        "endLine": 518,
+        "endChar": 49
+      },
+      "revId": "afac0d43f8a8529be7722d6e8e1d55966f2b4797",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
