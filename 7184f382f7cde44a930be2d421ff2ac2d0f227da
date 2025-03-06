@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dfc13c8_8f81cea7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:52:06Z",
+      "side": 1,
+      "message": "Hi @chaul@amperecomputing.com, I had few comments on this patch.",
+      "revId": "7184f382f7cde44a930be2d421ff2ac2d0f227da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "022ad74c_98e071a0",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:52:06Z",
+      "side": 1,
+      "message": "should we make sure that `terminus` is not a NULL pointer before we deference it?",
+      "range": {
+        "startLine": 210,
+        "startChar": 7,
+        "endLine": 210,
+        "endChar": 56
+      },
+      "revId": "7184f382f7cde44a930be2d421ff2ac2d0f227da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ebf9beb_035c9013",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:52:06Z",
+      "side": 1,
+      "message": "this could lead to problems if tid is not valid. shouldn\u0027t we handle it?\n`if (roundRobinSensorItMap.find(tid) !\u003d roundRobinSensorItMap.end()) {\n    auto\u0026 sensorIt \u003d roundRobinSensorItMap[tid];\n} else {\n    // Handle error or unexpected case\n}`",
+      "range": {
+        "startLine": 212,
+        "startChar": 8,
+        "endLine": 212,
+        "endChar": 52
+      },
+      "revId": "7184f382f7cde44a930be2d421ff2ac2d0f227da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c7d4d54_75d37390",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:52:06Z",
+      "side": 1,
+      "message": "can we use const reference? `const auto\u0026 pdr`",
+      "range": {
+        "startLine": 246,
+        "startChar": 8,
+        "endLine": 246,
+        "endChar": 50
+      },
+      "revId": "7184f382f7cde44a930be2d421ff2ac2d0f227da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d96e701_08c59bca",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:52:06Z",
+      "side": 1,
+      "message": "same here as above",
+      "range": {
+        "startLine": 255,
+        "startChar": 8,
+        "endLine": 255,
+        "endChar": 57
+      },
+      "revId": "7184f382f7cde44a930be2d421ff2ac2d0f227da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b503bee_a0dee255",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-06T04:52:06Z",
+      "side": 1,
+      "message": "before we return here, shouldn\u0027t we increment the `sensorPdrIt` to point to next sensor PDR?",
+      "revId": "7184f382f7cde44a930be2d421ff2ac2d0f227da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
