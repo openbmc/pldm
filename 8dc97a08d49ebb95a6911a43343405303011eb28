@@ -55,6 +55,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "31200dd7_0de2bf53",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-07T03:12:26Z",
+      "side": 1,
+      "message": "Oh that makes sense. So do you think we should place [maybe_unused] right in the argument position of the function, thenn uder #else, we can log some info?",
+      "parentUuid": "1e016f40_30b258da",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3e184320_dccae193",
         "filename": "meson.options",
         "patchSetId": 3
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "I can modify this, but do you suggest adding more details to the description to explain the motivation? Or do you have any suggestions on how to modify it?\nThank you very much.",
       "parentUuid": "3e184320_dccae193",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6196ae9c_217f12eb",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-03-07T03:12:26Z",
+      "side": 1,
+      "message": "Yeah, I personally see it does not dictate enough what this config does. I expect it to at least quote some words from the commit that handles this call. Something like:\n\n\u003e Support handling the timeout error code returned from a communication to an endpoint by calling to the `.Recover` method under `au.com.codeconstruct.MCTP.Endpoint1` published by mctpd. This requests a check to the endpoint\u0027s availability and handles accordingly by continuing to communicate or removing the endpoint depending on the next behaviors of mctpd.\n\nYou can use your own words, but it should explain more than the current ones.",
+      "parentUuid": "bf3f2fe6_bd335552",
       "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
