@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1e016f40_30b258da",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-03-07T02:32:05Z",
+      "side": 1,
+      "message": "I am considering that if we wrap the whole recoverMctpEndpoint into #ifdef MCTP_RECOVERY, in the future, if new code calls recoverMctpEndpoint without the corresponding #ifdef, the code with MCTP_RECOVERY enabled by default will build successfully, but the code with MCTP_RECOVERY disabled by default will cause a compilation failure.",
+      "parentUuid": "df6c2687_45dc5009",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3e184320_dccae193",
         "filename": "meson.options",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2025-03-06T09:32:47Z",
       "side": 1,
       "message": "I think it should be `allow-mctp-endpoint-recovery`. And the description should be clearer.",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3f2fe6_bd335552",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-03-07T02:32:05Z",
+      "side": 1,
+      "message": "I can modify this, but do you suggest adding more details to the description to explain the motivation? Or do you have any suggestions on how to modify it?\nThank you very much.",
+      "parentUuid": "3e184320_dccae193",
       "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
