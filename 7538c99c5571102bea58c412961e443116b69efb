@@ -33,6 +33,24 @@
       "message": "If this option is required the option should be applied at these steps instead as current patch set https://github.com/openbmc/pldm/blob/68444190fe52407c05ab4f7220a7794ba3f0ad82/platform-mc/platform_manager.cpp#L27",
       "revId": "7538c99c5571102bea58c412961e443116b69efb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5e09edc_84285115",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T04:41:48Z",
+      "side": 1,
+      "message": "+1 , Agree with Thu on this.",
+      "parentUuid": "f19818f6_36292f22",
+      "revId": "7538c99c5571102bea58c412961e443116b69efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
