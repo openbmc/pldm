@@ -100,9 +100,11 @@ class HostPDRHandler
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
      *             PDRs that need to be fetched.
+     *  @param[in] eventDataOperation - The event data operation to be
+     *             performed.
      */
 
-    void fetchPDR(PDRRecordHandles&& recordHandles);
+    void fetchPDR(PDRRecordHandles&& recordHandles, uint8_t eventDataOperation);
 
     /** @brief Send a PLDM event to host firmware containing a list of record
      *  handles of PDRs that the host firmware has to fetch.
@@ -160,11 +162,6 @@ class HostPDRHandler
      *  @param[in] stateSensorPDRs - host state sensor PDRs
      */
     void setHostSensorState(const PDRList& stateSensorPDRs);
-
-    /** @brief whether we received PLDM_RECORDS_MODIFIED event data operation
-     *  from host
-     */
-    bool isHostPdrModified = false;
 
     /** @brief check whether Host is running when pldmd starts
      */
