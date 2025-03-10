@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "833b88c0_ab2796aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T10:13:21Z",
+      "side": 1,
+      "message": "code looks fine to me, just minor comments.",
+      "revId": "25e98a9555aaa8a1819dd737b0aba77bbdecbed5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827730df_9ba803e6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T10:13:21Z",
+      "side": 1,
+      "message": "pdr null check missing before rde-reference?",
+      "range": {
+        "startLine": 402,
+        "startChar": 20,
+        "endLine": 402,
+        "endChar": 23
+      },
+      "revId": "25e98a9555aaa8a1819dd737b0aba77bbdecbed5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d32c826_8048229a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T10:13:21Z",
+      "side": 1,
+      "message": "same here ?",
+      "range": {
+        "startLine": 506,
+        "startChar": 20,
+        "endLine": 506,
+        "endChar": 23
+      },
+      "revId": "25e98a9555aaa8a1819dd737b0aba77bbdecbed5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a16e7985_b5f7a63a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T10:13:21Z",
+      "side": 1,
+      "message": "can we use std::format instead ?",
+      "range": {
+        "startLine": 698,
+        "startChar": 7,
+        "endLine": 698,
+        "endChar": 61
+      },
+      "revId": "25e98a9555aaa8a1819dd737b0aba77bbdecbed5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b11db32_1dd4a308",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T10:13:21Z",
+      "side": 1,
+      "message": "use std::format here and below as well ?",
+      "range": {
+        "startLine": 716,
+        "startChar": 12,
+        "endLine": 716,
+        "endChar": 49
+      },
+      "revId": "25e98a9555aaa8a1819dd737b0aba77bbdecbed5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
