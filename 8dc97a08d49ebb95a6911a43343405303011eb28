@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad6b5afe_8546a882",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T04:05:51Z",
+      "side": 1,
+      "message": "can you explain a litte bit more on how applications like pldm could use this feature, and what is the guarantee that the recover works e.t.c, and in that case show should applications react ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 1,
+        "endLine": 10,
+        "endChar": 68
+      },
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "37516774_d255e852",
@@ -120,6 +143,24 @@
       "side": 1,
       "message": "Yeah, I personally see it does not dictate enough what this config does. I expect it to at least quote some words from the commit that handles this call. Something like:\n\n\u003e Support handling the timeout error code returned from a communication to an endpoint by calling to the `.Recover` method under `au.com.codeconstruct.MCTP.Endpoint1` published by mctpd. This requests a check to the endpoint\u0027s availability and handles accordingly by continuing to communicate or removing the endpoint depending on the next behaviors of mctpd.\n\nYou can use your own words, but it should explain more than the current ones.",
       "parentUuid": "bf3f2fe6_bd335552",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30118777_0aa9c7ca",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-10T04:05:51Z",
+      "side": 1,
+      "message": "Can you guys think why can someone specifically disable this feature ? I would expect that people would want this by default, right ? Trying to understand if this really needs to be a configurable option - if people are never going to disable it then , its not worth to give that flexibility to the user right ?",
+      "parentUuid": "6196ae9c_217f12eb",
       "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
