@@ -801,5 +801,74 @@ std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
     return ret;
 }
 
+std::string getBiosAttrValue(const std::string& dbusAttrName)
+{
+    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
+
+    std::string var1;
+    std::variant<std::string> var2, var3;
+
+    auto& bus = DBusHandler::getBus();
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(biosConfigPath,
+                                                             biosConfigIntf);
+        auto method = bus.new_method_call(service.c_str(), biosConfigPath,
+                                          biosConfigIntf, "GetAttribute");
+        method.append(dbusAttrName);
+        auto reply = bus.call(method, dbusTimeout);
+        reply.read(var1, var2, var3);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {
+        info(
+            "Error getting the bios attribute ERROR={ERR_EXCEP} ATTRIBUTE={BIOS_ATTR}",
+            "ERR_EXCEP", e, "BIOS_ATTR", dbusAttrName);
+        return {};
+    }
+
+    return std::get<std::string>(var2);
+}
+
+void setBiosAttr(const BiosAttributeList& biosAttrList)
+{
+    static constexpr auto SYSTEMD_PROPERTY_INTERFACE =
+        "org.freedesktop.DBus.Properties";
+    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
+
+    constexpr auto dbusAttrType =
+        "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
+    for (const auto& [dbusAttrName, biosAttrStr] : biosAttrList)
+    {
+        using PendingAttributesType = std::vector<std::pair<
+            std::string, std::tuple<std::string, std::variant<std::string>>>>;
+        PendingAttributesType pendingAttributes;
+        pendingAttributes.emplace_back(std::make_pair(
+            dbusAttrName, std::make_tuple(dbusAttrType, biosAttrStr)));
+
+        auto& bus = DBusHandler::getBus();
+        try
+        {
+            auto service = pldm::utils::DBusHandler().getService(
+                biosConfigPath, biosConfigIntf);
+            auto method =
+                bus.new_method_call(service.c_str(), biosConfigPath,
+                                    SYSTEMD_PROPERTY_INTERFACE, "Set");
+            method.append(
+                biosConfigIntf, "PendingAttributes",
+                std::variant<PendingAttributesType>(pendingAttributes));
+            bus.call_noreply(method, dbusTimeout);
+        }
+        catch (const sdbusplus::exception::SdBusError& e)
+        {
+            info(
+                "Error setting the bios attribute ERROR = {ERR_EXCEP} ATTRIBUTE= {DBUS_ATTR} ATTRIBUTE VALUE={BIOS_ATTR}",
+                "ERR_EXCEP", e, "DBUS_ATTR", dbusAttrName.c_str(), "BIOS_ATTR",
+                biosAttrStr.c_str());
+        }
+    }
+}
 } // namespace utils
 } // namespace pldm
