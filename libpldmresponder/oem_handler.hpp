@@ -124,6 +124,10 @@ class Handler : public CmdHandler
      * */
     virtual void setSurvTimer(uint8_t tid, bool value) = 0;
 
+    /** @brief Interface to perform OEM actions*/
+    virtual void modifyPDROemActions(uint16_t entityType,
+                                     uint16_t stateSetId) = 0;
+
     virtual ~Handler() = default;
 
   protected:
