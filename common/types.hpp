@@ -4,6 +4,7 @@
 
 #include <bitset>
 #include <cstdint>
+#include <functional>
 #include <map>
 #include <memory>
 #include <set>
@@ -233,5 +234,31 @@ using SensorInfo =
     std::tuple<EntityInfo, CompositeSensorStates, std::vector<StateSetId>>;
 
 } // namespace pdr
+
+namespace bios
+{
+
+using AttributeName = std::string;
+using AttributeType = std::string;
+using ReadonlyStatus = bool;
+using DisplayName = std::string;
+using Description = std::string;
+using MenuPath = std::string;
+using CurrentValue = std::variant<int64_t, std::string>;
+using DefaultValue = std::variant<int64_t, std::string>;
+using OptionString = std::string;
+using OptionValue = std::variant<int64_t, std::string>;
+using ValueDisplayName = std::string;
+using Option =
+    std::vector<std::tuple<OptionString, OptionValue, ValueDisplayName>>;
+using BIOSTableObj =
+    std::tuple<AttributeType, ReadonlyStatus, DisplayName, Description,
+               MenuPath, CurrentValue, DefaultValue, Option>;
+using BaseBIOSTable = std::map<AttributeName, BIOSTableObj>;
+using PendingObj = std::tuple<AttributeType, CurrentValue>;
+using PendingAttributes = std::map<AttributeName, PendingObj>;
+using Callback = std::function<void()>;
+
+} // namespace bios
 
 } // namespace pldm

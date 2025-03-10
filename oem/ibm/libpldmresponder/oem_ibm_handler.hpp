@@ -3,6 +3,7 @@
 #include "collect_slot_vpd.hpp"
 #include "common/utils.hpp"
 #include "inband_code_update.hpp"
+#include "libpldmresponder/bios_config.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
@@ -24,26 +25,11 @@ namespace responder
 {
 using ObjectPath = std::string;
 using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
+using namespace pldm::bios;
+using namespace pldm::utils;
+
 namespace oem_ibm_platform
 {
-using AttributeName = std::string;
-using AttributeType = std::string;
-using ReadonlyStatus = bool;
-using DisplayName = std::string;
-using Description = std::string;
-using MenuPath = std::string;
-using CurrentValue = std::variant<int64_t, std::string>;
-using DefaultValue = std::variant<int64_t, std::string>;
-using OptionString = std::string;
-using OptionValue = std::variant<int64_t, std::string>;
-using Option = std::vector<std::tuple<OptionString, OptionValue>>;
-using BIOSTableObj =
-    std::tuple<AttributeType, ReadonlyStatus, DisplayName, Description,
-               MenuPath, CurrentValue, DefaultValue, Option>;
-using BaseBIOSTable = std::map<AttributeName, BIOSTableObj>;
-using PendingObj = std::tuple<AttributeType, CurrentValue>;
-using PendingAttributes = std::map<AttributeName, PendingObj>;
-
 constexpr uint16_t ENTITY_INSTANCE_0 = 0;
 constexpr uint16_t ENTITY_INSTANCE_1 = 1;
 
@@ -454,6 +440,59 @@ int encodeEventMsg(uint8_t eventType, const std::vector<uint8_t>& eventDataVec,
                    std::vector<uint8_t>& requestMsg, uint8_t instanceId);
 
 } // namespace oem_ibm_platform
+
+namespace oem_ibm_bios
+{
+/** @brief The file where bootside data will be saved */
+constexpr auto bootSideDirPath = "/var/lib/pldm/bootSide";
+
+class Handler : public oem_bios::Handler
+{
+  public:
+    Handler() {}
+
+    void processOEMBaseBiosTable(const BaseBIOSTable& biosTable)
+    {
+        for (const auto& [attrName, biostabObj] : biosTable)
+        {
+            // The additional check to see if /var/lib/pldm/bootSide file exists
+            // is added to make sure we are doing the fw_boot_side setting after
+            // the base bios table is initialised.
+            if ((attrName == "fw_boot_side") && fs::exists(bootSideDirPath))
+            {
+                PendingAttributesList biosAttrList;
+
+                std::string nextBootSide =
+                    std::get<std::string>(std::get<5>(biostabObj));
+
+                std::string currNextBootSide;
+                auto attributeValue =
+                    getBiosAttrValue<std::string>("fw_boot_side");
+
+                if (attributeValue.has_value())
+                {
+                    currNextBootSide = attributeValue.value();
+                }
+                else
+                {
+                    info(
+                        "Boot side is not initialized yet, so setting default value");
+                    currNextBootSide = "Temp";
+                }
+
+                if (currNextBootSide != nextBootSide)
+                {
+                    biosAttrList.emplace_back(std::make_pair(
+                        attrName,
+                        std::make_tuple(EnumAttribute, nextBootSide)));
+                    setBiosAttr(biosAttrList);
+                }
+            }
+        }
+    }
+};
+
+} // namespace oem_ibm_bios
 
 } // namespace responder
 
