@@ -522,6 +522,10 @@ void BIOSConfig::updateBaseBIOSTableProperty()
         auto method = bus.new_method_call(service.c_str(), biosConfigPath,
                                           dbusProperties, "Set");
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
+        if (oemBiosHandler)
+        {
+            oemBiosHandler->processOEMBaseBiosTable(baseBIOSTableMaps);
+        }
         method.append(biosConfigInterface, biosConfigPropertyName, value);
         bus.call_noreply(method, dbusTimeout);
     }
