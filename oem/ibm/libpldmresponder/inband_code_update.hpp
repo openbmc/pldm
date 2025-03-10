@@ -19,6 +19,13 @@ static constexpr auto Tside = "T";
 static constexpr auto redundancyIntf =
     "xyz.openbmc_project.Software.RedundancyPriority";
 
+struct pldm_boot_side_data
+{
+    std::string current_boot_side;
+    std::string next_boot_side;
+    std::string running_version_object;
+};
+
 /** @class CodeUpdate
  *
  *  @brief This class performs the necessary operation in pldm for
@@ -194,6 +201,20 @@ class CodeUpdate
     /* @brief Method to process the bootside rename event, sends a boot side
      * rename event notification to host when code update is initiated*/
     void processRenameEvent();
+
+    /* @brief Method to write the bootside information into mapping
+     *        file which would be stored on bmc
+     * @param[in] pldmBootSideData - bootside information such as
+     *        current boot side and running version
+     */
+    void writeBootSideFile(const pldm_boot_side_data& pldmBootSideData);
+
+    /* @brief Method to read the mapping file containing bootside
+     *        which is stored on bmc and stores that information
+     *        in a structure
+     * @return[] - the structure which holds information regarding
+     *         bootside information */
+    pldm_boot_side_data readBootSideFile();
 
     virtual ~CodeUpdate() {}
 
