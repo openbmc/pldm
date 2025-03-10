@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a44f99f2_f7b602d4",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1002071
+      },
+      "writtenOn": "2025-03-10T19:22:56Z",
+      "side": 1,
+      "message": "The problem I see is that the new construcion will create a new object in the memory location ocupied by responseMsg. In this specific case, pldm_msg is a struct that have no constructor, so the memory will remain untouched, but if the pldm_msg struct have for example some default data then the memory will be overwritten.\n\nI\u0027ve created a short code test here to demonstrate the possible problem:\nhttps://godbolt.org/z/hTz568hG1",
+      "parentUuid": "38386247_d3bcfbb2",
+      "revId": "8bf2c0cc5001e68dc1f39734abb5c75e1cea617f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c3a23ba_cbc231b9",
         "filename": "pldmtool/pldm_bios_cmd.cpp",
         "patchSetId": 6
