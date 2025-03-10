@@ -4,7 +4,6 @@
 #include <libpldm/pldm_types.h>
 #include <linux/mctp.h>
 
-#include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
@@ -862,5 +861,49 @@ std::vector<pldm::pdr::SensorID> findSensorIds(
     return sensorIDs;
 }
 
+void setBiosAttr(const PendingAttributesList& biosAttrList)
+{
+    static constexpr auto SYSTEMD_PROPERTY_INTERFACE =
+        "org.freedesktop.DBus.Properties";
+    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosConfigIntf = "xyz.openbmc_project.BIOSConfig.Manager";
+
+    for (const auto& [attrName, biosAttrDetails] : biosAttrList)
+    {
+        auto& bus = DBusHandler::getBus();
+        try
+        {
+            auto service = pldm::utils::DBusHandler().getService(
+                biosConfigPath, biosConfigIntf);
+            auto method =
+                bus.new_method_call(service.c_str(), biosConfigPath,
+                                    SYSTEMD_PROPERTY_INTERFACE, "Set");
+            method.append(biosConfigIntf, "PendingAttributes",
+                          std::variant<PendingAttributesList>(biosAttrList));
+            bus.call_noreply(method, dbusTimeout);
+        }
+        catch (const sdbusplus::exception::SdBusError& e)
+        {
+            AttributeType attrType;
+            AttributeValue attrValue;
+            std::tie(attrType, attrValue) = biosAttrDetails;
+            if (attrType ==
+                "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Integer")
+            {
+                info(
+                    "Error setting the bios attribute ERROR = {ERR_EXCEP} ATTRIBUTE= {DBUS_ATTR} ATTRIBUTE VALUE={BIOS_ATTR}",
+                    "ERR_EXCEP", e, "DBUS_ATTR", attrName, "BIOS_ATTR",
+                    std::get<int64_t>(attrValue));
+            }
+            else
+            {
+                info(
+                    "Error setting the bios attribute ERROR = {ERR_EXCEP} ATTRIBUTE= {DBUS_ATTR} ATTRIBUTE VALUE={BIOS_ATTR}",
+                    "ERR_EXCEP", e, "DBUS_ATTR", attrName.c_str(), "BIOS_ATTR",
+                    std::get<std::string>(attrValue));
+            }
+        }
+    }
+}
 } // namespace utils
 } // namespace pldm

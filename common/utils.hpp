@@ -12,7 +12,9 @@
 #include <unistd.h>
 
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/BIOSConfig/Manager/common.hpp>
 #include <xyz/openbmc_project/Inventory/Manager/client.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
@@ -31,6 +33,8 @@ constexpr uint64_t dbusTimeout =
     std::chrono::duration_cast<std::chrono::microseconds>(
         std::chrono::seconds(DBUS_TIMEOUT))
         .count();
+
+PHOSPHOR_LOG2_USING;
 
 namespace pldm
 {
@@ -202,9 +206,20 @@ using GetAncestorsResponse =
 using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
+using AttributeName = std::string;
+using AttributeType = std::string;
+using AttributeValue = std::variant<std::string, int64_t>;
+
+using PendingAttributesList = std::vector<std::pair<
+    std::string, std::tuple<std::string, std::variant<std::string, int64_t>>>>;
+using BiosAttributeList =
+    std::vector<std::tuple<AttributeName, AttributeType, AttributeValue>>;
 
 using SensorPDR = std::vector<uint8_t>;
 using SensorPDRs = std::vector<SensorPDR>;
+
+constexpr std::string_view EnumAttribute =
+    "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
 
 /**
  * @brief The interface for DBusHandler
@@ -661,6 +676,56 @@ std::optional<std::string> fruFieldValuestring(const uint8_t* value,
  */
 std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
                                           const uint8_t& length);
+
+/** @brief Method to get the value from a bios attribute
+ *
+ *  @param[in] dbusAttrName - the bios attribute name from
+ *             which the value must be retrieved
+ *
+ *  @return the attribute value
+ */
+template <typename T>
+std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
+{
+    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
+    constexpr auto biosConfigIntf = sdbusplus::common::xyz::openbmc_project::
+        bios_config::Manager::interface;
+
+    std::string var1;
+    std::variant<std::string, int64_t> var2, var3;
+    auto& bus = DBusHandler::getBus();
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(biosConfigPath,
+                                                             biosConfigIntf);
+        auto method = bus.new_method_call(service.c_str(), biosConfigPath,
+                                          biosConfigIntf, "GetAttribute");
+        method.append(dbusAttrName);
+        auto reply = bus.call(method, dbusTimeout);
+        reply.read(var1, var2, var3);
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {
+        info(
+            "Error getting the bios attribute ERROR={ERR_EXCEP} ATTRIBUTE={BIOS_ATTR}",
+            "ERR_EXCEP", e, "BIOS_ATTR", dbusAttrName);
+        return std::nullopt;
+    }
+
+    if (auto ptr = std::get_if<T>(&var2))
+    {
+        return *ptr;
+    }
+    return std::nullopt;
+}
+
+/** @brief Method to set the specified bios attribute with
+ *         specified value
+ *
+ *  @param[in] PendingAttributesList - the list of bios attribute and values
+ *             to be set
+ */
+void setBiosAttr(const PendingAttributesList& biosAttrList);
 
 } // namespace utils
 } // namespace pldm
