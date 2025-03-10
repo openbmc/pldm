@@ -185,6 +185,26 @@ class Handler : public CmdHandler
 
 } // namespace oem_utils
 
+namespace oem_bios
+{
+using namespace pldm::utils;
+
+class Handler : public CmdHandler
+{
+  public:
+    Handler() {}
+
+    /** @brief Process BaseBiosTable and update the locally cached attributes
+     *  @param[in] biosTable - Bios table
+     */
+    virtual void processOEMBaseBiosTable(
+        const pldm::bios::BaseBIOSTable& biosTable) = 0;
+
+    virtual ~Handler() = default;
+};
+
+} // namespace oem_bios
+
 } // namespace responder
 
 } // namespace pldm
