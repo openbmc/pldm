@@ -139,12 +139,13 @@ void HostPDRHandler::setPresenceFrus()
     }
 }
 
-void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
+void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles,
+                              uint8_t eventDataOperation)
 {
     pdrRecordHandles.clear();
     modifiedPDRRecordHandles.clear();
 
-    if (isHostPdrModified)
+    if (PLDM_RECORDS_MODIFIED == eventDataOperation)
     {
         modifiedPDRRecordHandles = std::move(recordHandles);
     }
@@ -174,11 +175,9 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
         sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
     uint32_t recordHandle{};
-    if (!nextRecordHandle && (!modifiedPDRRecordHandles.empty()) &&
-        isHostPdrModified)
+    if (!nextRecordHandle && (!modifiedPDRRecordHandles.empty()))
     {
         recordHandle = modifiedPDRRecordHandles.front();
-        modifiedPDRRecordHandles.pop_front();
     }
     else if (!nextRecordHandle && (!pdrRecordHandles.empty()))
     {
@@ -625,12 +624,56 @@ void HostPDRHandler::processHostPDRs(
                 }
                 else
                 {
-                    rc = pldm_pdr_add(repo, pdr.data(), respCount, true,
-                                      pdrTerminusHandle, &rh);
-                    if (rc)
+                    if (!modifiedPDRRecordHandles.empty())
                     {
-                        // pldm_pdr_add() assert()ed on failure to add a PDR.
-                        throw std::runtime_error("Failed to add PDR");
+                        pldm_delete_by_record_handle(repo, rh, true);
+
+                        rc = pldm_pdr_add(repo, pdr.data(), respCount, true,
+                                          pdrTerminusHandle, &rh);
+                        if (rc)
+                        {
+                            throw std::runtime_error(
+                                "Failed to add PDR when modifiedPDRRecordHandles isn't empty.");
+                        }
+
+                        if ((pdrHdr->type == PLDM_STATE_EFFECTER_PDR) &&
+                            (oemPlatformHandler))
+                        {
+                            auto effecterPdr = reinterpret_cast<
+                                const pldm_state_effecter_pdr*>(pdr.data());
+                            auto entityType = effecterPdr->entity_type;
+                            auto statesPtr = effecterPdr->possible_states;
+                            auto compEffCount =
+                                effecterPdr->composite_effecter_count;
+
+                            while (compEffCount--)
+                            {
+                                auto state = reinterpret_cast<
+                                    const state_effecter_possible_states*>(
+                                    statesPtr);
+                                auto stateSetID = state->state_set_id;
+                                oemPlatformHandler->modifyPDROemActions(
+                                    entityType, stateSetID);
+
+                                if (compEffCount)
+                                {
+                                    statesPtr +=
+                                        sizeof(state_effecter_possible_states) +
+                                        state->possible_states_size - 1;
+                                }
+                            }
+                        }
+                        modifiedPDRRecordHandles.pop_front();
+                    }
+                    else
+                    {
+                        rc = pldm_pdr_add(repo, pdr.data(), respCount, true,
+                                          pdrTerminusHandle, &rh);
+                        if (rc)
+                        {
+                            throw std::runtime_error(
+                                "Failed to add PDR when modifiedPDRRecordHandles is empty.");
+                        }
                     }
                 }
             }
@@ -668,19 +711,10 @@ void HostPDRHandler::processHostPDRs(
     }
     else
     {
-        if (modifiedPDRRecordHandles.empty() && isHostPdrModified)
-        {
-            isHostPdrModified = false;
-        }
-        else
-        {
-            deferredFetchPDREvent =
-                std::make_unique<sdeventplus::source::Defer>(
-                    event,
-                    std::bind(
-                        std::mem_fn((&HostPDRHandler::_processFetchPDREvent)),
-                        this, nextRecordHandle, std::placeholders::_1));
-        }
+        deferredFetchPDREvent = std::make_unique<sdeventplus::source::Defer>(
+            event,
+            std::bind(std::mem_fn((&HostPDRHandler::_processFetchPDREvent)),
+                      this, nextRecordHandle, std::placeholders::_1));
     }
 }
 
@@ -702,10 +736,10 @@ void HostPDRHandler::_processFetchPDREvent(
         nextRecordHandle = this->pdrRecordHandles.front();
         this->pdrRecordHandles.pop_front();
     }
-    if (isHostPdrModified && (!this->modifiedPDRRecordHandles.empty()))
+    if (!this->modifiedPDRRecordHandles.empty())
     {
         nextRecordHandle = this->modifiedPDRRecordHandles.front();
-        this->modifiedPDRRecordHandles.pop_front();
+        //this->modifiedPDRRecordHandles.pop_front();
     }
     this->getHostPDR(nextRecordHandle);
 }
