@@ -307,7 +307,7 @@ int main(int argc, char** argv)
         platformConfigHandler.get(), &reqHandler, event, true,
         addOnEventHandlers);
 
-    auto biosHandler = std::make_unique<bios::Handler>(
+    auto biosHandler = std::make_unique<pldm::responder::bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
         platformConfigHandler.get(), requestPLDMServiceName);
 
@@ -326,7 +326,7 @@ int main(int argc, char** argv)
         &dbusHandler, pldmTransport.getEventSource(), hostEID, pdrRepo.get(),
         instanceIdDb, event, invoker, hostPDRHandler.get(),
         platformHandler.get(), fruHandler.get(), baseHandler.get(),
-        &reqHandler);
+        biosHandler.get(), &reqHandler);
 #endif
 
     invoker.registerHandler(PLDM_BIOS, std::move(biosHandler));

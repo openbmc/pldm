@@ -24,6 +24,7 @@ using namespace utils;
 namespace responder
 {
 using namespace oem_ibm_platform;
+using namespace oem_ibm_bios;
 
 /** @brief Directory where the lid files without a header are stored */
 auto lidDirPath = fs::path(LID_STAGING_DIR) / "lid";
@@ -40,9 +41,6 @@ constexpr auto tarImageName = "image.tar";
 /** @brief The file name of the hostfw image */
 constexpr auto hostfwImageName = "image-hostfw";
 
-/** @brief The filename of the file where bootside data will be saved */
-constexpr auto bootSideFileName = "bootSide";
-
 /** @brief The path to the code update tarball file */
 auto tarImagePath = fs::path(imageDirPath) / tarImageName;
 
@@ -58,9 +56,6 @@ constexpr auto bootSideAttrName = "fw_boot_side_current";
 
 /** @brief Next boot side */
 constexpr auto bootNextSideAttrName = "fw_boot_side";
-
-/** @brief The filepath of file where bootside data will be saved */
-auto bootSideDirPath = fs::path("/var/lib/pldm/") / bootSideFileName;
 
 std::string CodeUpdate::fetchCurrentBootSide()
 {
@@ -202,6 +197,7 @@ void CodeUpdate::setVersions()
     static constexpr auto activeObjPath =
         "/xyz/openbmc_project/software/active";
     static constexpr auto propIntf = "org.freedesktop.DBus.Properties";
+    static constexpr auto pathIntf = "xyz.openbmc_project.Common.FilePath";
 
     auto& bus = dBusIntf->getBus();
     try
@@ -215,6 +211,9 @@ void CodeUpdate::setVersions()
         reply.read(paths);
 
         runningVersion = std::get<std::vector<std::string>>(paths)[0];
+        auto runningPathPropValue = dBusIntf->getDbusPropertyVariant(
+            runningVersion.c_str(), "Path", pathIntf);
+        const auto& runningPath = std::get<std::string>(runningPathPropValue);
 
         auto method1 =
             bus.new_method_call(mapperService, activeObjPath, propIntf, "Get");
@@ -249,12 +248,13 @@ void CodeUpdate::setVersions()
             else
             {
                 info(
-                    "Boot side is not initialized yet, so setting default value");
+                    "Boot side is not initialized yet, so setting default value(Temp). Request was ignored to set the Boot side to {SIDE}",
+                    "SIDE", nextBootSideBiosValue);
                 nextBootSideBiosValue = "Temp";
             }
             pldmBootSideData.current_boot_side = nextBootSideBiosValue;
             pldmBootSideData.next_boot_side = nextBootSideBiosValue;
-            pldmBootSideData.running_version_object = runningVersion;
+            pldmBootSideData.running_version_object = runningPath;
 
             writeBootSideFile(pldmBootSideData);
             biosAttrList.emplace_back(std::make_pair(
@@ -270,11 +270,11 @@ void CodeUpdate::setVersions()
         else
         {
             pldm_boot_side_data pldmBootSideData = readBootSideFile();
-            if (pldmBootSideData.running_version_object != runningVersion)
+            if (pldmBootSideData.running_version_object != runningPath)
             {
                 info(
                     "BMC have booted with the new image runningPath={RUNN_PATH}",
-                    "RUNN_PATH", runningVersion.c_str());
+                    "RUNN_PATH", runningPath.c_str());
                 info("Previous Image was: {RUNN_VERS}", "RUNN_VERS",
                      pldmBootSideData.running_version_object);
                 auto current_boot_side =
@@ -282,7 +282,7 @@ void CodeUpdate::setVersions()
                                                                   : "Temp");
                 pldmBootSideData.current_boot_side = current_boot_side;
                 pldmBootSideData.next_boot_side = current_boot_side;
-                pldmBootSideData.running_version_object = runningVersion;
+                pldmBootSideData.running_version_object = runningPath;
                 writeBootSideFile(pldmBootSideData);
                 biosAttrList.emplace_back(std::make_pair(
                     bootSideAttrName,
@@ -551,6 +551,7 @@ pldm_boot_side_data CodeUpdate::readBootSideFile()
 void CodeUpdate::processPriorityChangeNotification(
     const DbusChangedProps& chProperties)
 {
+    error("Processing priority change notification");
     static constexpr auto propName = "Priority";
     const auto it = chProperties.find(propName);
     if (it == chProperties.end())
@@ -558,8 +559,31 @@ void CodeUpdate::processPriorityChangeNotification(
         return;
     }
     uint8_t newVal = std::get<uint8_t>(it->second);
-    nextBootSide = (newVal == 0) ? currBootSide
-                                 : ((currBootSide == Tside) ? Pside : Tside);
+
+    pldm_boot_side_data pldmBootSideData = readBootSideFile();
+    pldmBootSideData.next_boot_side =
+        (newVal == 0)
+            ? pldmBootSideData.current_boot_side
+            : ((pldmBootSideData.current_boot_side == "Temp") ? "Perm"
+                                                              : "Temp");
+    writeBootSideFile(pldmBootSideData);
+    nextBootSide = (pldmBootSideData.next_boot_side == "Temp" ? Tside : Pside);
+    std::string currNextBootSide;
+    auto attributeValue = getBiosAttrValue<std::string>(bootNextSideAttrName);
+    if (attributeValue.has_value())
+    {
+        currNextBootSide = attributeValue.value();
+    }
+
+    if (currNextBootSide == nextBootSide)
+    {
+        return;
+    }
+    PendingAttributesList biosAttrList;
+    biosAttrList.push_back(std::make_pair(
+        bootNextSideAttrName,
+        std::make_tuple(EnumAttribute, pldmBootSideData.next_boot_side)));
+    setBiosAttr(biosAttrList);
 }
 
 void CodeUpdate::setOemPlatformHandler(

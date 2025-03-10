@@ -92,6 +92,17 @@ class Handler : public CmdHandler
     Response setBIOSAttributeCurrentValue(const pldm_msg* request,
                                           size_t payloadLength);
 
+    pldm::responder::oem_bios::Handler* oemBiosHandler = nullptr;
+
+    /** @brief Set OEM bios handler
+     *
+     *  @param[in] oemBiosHandler - OEM Bios handler
+     */
+    inline void setOemBiosHandler(pldm::responder::oem_bios::Handler* handler)
+    {
+        biosConfig.setOemBiosHandler(handler);
+    }
+
   private:
     BIOSConfig biosConfig;
 };
