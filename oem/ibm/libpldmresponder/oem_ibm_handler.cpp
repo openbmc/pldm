@@ -462,7 +462,7 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     codeUpdate->setFirmwareUpdateSensor(sensorId);
     sensorId =
         findStateSensorId(repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                          ENTITY_INSTANCE_0, 0, PLDM_OEM_IBM_BOOT_SIDE_RENAME);
+                          ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_BOOT_SIDE_RENAME);
     codeUpdate->setBootSideRenameStateSensor(sensorId);
 }
 
