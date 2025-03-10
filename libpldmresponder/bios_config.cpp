@@ -522,6 +522,28 @@ void BIOSConfig::updateBaseBIOSTableProperty()
         auto method = bus.new_method_call(service.c_str(), biosConfigPath,
                                           dbusProperties, "Set");
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
+#ifdef OEM_IBM
+        const fs::path bootSideDirPath = "/var/lib/pldm/bootSide";
+        for (const auto& [attrName, biostabObj] : baseBIOSTableMaps)
+        {
+            // The additional check to see if /var/lib/pldm/bootSide file exists
+            // is added to make sure we are doing the fw_boot_side setting after
+            // the base bios table is initialised.
+            if ((attrName == "fw_boot_side") && fs::exists(bootSideDirPath))
+            {
+                BiosAttributeList biosAttrList;
+                std::string nextBootSide =
+                    std::get<std::string>(std::get<5>(biostabObj));
+                std::string currNextBootSide = getBiosAttrValue("fw_boot_side");
+                if (currNextBootSide != nextBootSide)
+                {
+                    biosAttrList.push_back(
+                        std::make_pair(attrName, nextBootSide));
+                    setBiosAttr(biosAttrList);
+                }
+            }
+        }
+#endif
         method.append(biosConfigInterface, biosConfigPropertyName, value);
         bus.call_noreply(method, dbusTimeout);
     }
