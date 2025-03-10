@@ -3,6 +3,7 @@
 #include "bios_attribute.hpp"
 #include "bios_table.hpp"
 #include "common/instance_id.hpp"
+#include "common/types.hpp"
 #include "oem_handler.hpp"
 #include "platform_config.hpp"
 #include "requester/handler.hpp"
@@ -12,7 +13,6 @@
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 
-#include <functional>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -38,27 +38,7 @@ enum class BoundType
     OneOf
 };
 
-using AttributeName = std::string;
-using AttributeType = std::string;
-using ReadonlyStatus = bool;
-using DisplayName = std::string;
-using Description = std::string;
-using MenuPath = std::string;
-using CurrentValue = std::variant<int64_t, std::string>;
-using DefaultValue = std::variant<int64_t, std::string>;
-using OptionString = std::string;
-using OptionValue = std::variant<int64_t, std::string>;
-using ValueDisplayName = std::string;
-using Option =
-    std::vector<std::tuple<OptionString, OptionValue, ValueDisplayName>>;
-using BIOSTableObj =
-    std::tuple<AttributeType, ReadonlyStatus, DisplayName, Description,
-               MenuPath, CurrentValue, DefaultValue, Option>;
-using BaseBIOSTable = std::map<AttributeName, BIOSTableObj>;
-
-using PendingObj = std::tuple<AttributeType, CurrentValue>;
-using PendingAttributes = std::map<AttributeName, PendingObj>;
-using Callback = std::function<void()>;
+using namespace pldm::bios;
 
 /** @class BIOSConfig
  *  @brief Manager BIOS Attributes
@@ -140,6 +120,15 @@ class BIOSConfig
      */
     void initBIOSAttributes(const std::string& sysType, bool registerService);
 
+    /** @brief Set OEM bios handler
+     *
+     *  @param[in] oemBiosHandler - OEM Bios handler
+     */
+    inline void setOemBiosHandler(pldm::responder::oem_bios::Handler* handler)
+    {
+        oemBiosHandler = handler;
+    }
+
   private:
     /** @enum Index into the fields in the BaseBIOSTable
      */
@@ -159,6 +148,7 @@ class BIOSConfig
     const fs::path tableDir;
     pldm::utils::DBusHandler* const dbusHandler;
     BaseBIOSTable baseBIOSTableMaps;
+    pldm::responder::oem_bios::Handler* oemBiosHandler = nullptr;
 
     /** @brief MCTP EID of host firmware */
     uint8_t eid;

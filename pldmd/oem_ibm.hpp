@@ -52,6 +52,7 @@ class OemIBM
      * @param[in] platformHandler - platformHandler handler
      * @param[in] fruHandler - fruHandler handler
      * @param[in] baseHandler - baseHandler handler
+     * @param[in] biosHandler - biosHandler handler
      * @param[in] reqHandler - reqHandler handler
      */
     explicit OemIBM(
@@ -62,6 +63,7 @@ class OemIBM
         responder::platform::Handler* platformHandler,
         responder::fru::Handler* fruHandler,
         responder::base::Handler* baseHandler,
+        responder::bios::Handler* biosHandler,
         pldm::requester::Handler<pldm::requester::Request>* reqHandler) :
         dBusIntf(dBusIntf), mctp_fd(mctp_fd), mctp_eid(mctp_eid), repo(repo),
         instanceIdDb(instanceIdDb), event(event), invoker(invoker),
@@ -72,6 +74,10 @@ class OemIBM
 
         createOemIbmFruHandler();
         oemIbmFruHandler->setIBMFruHandler(fruHandler);
+
+        createOemBiosHandler();
+        createOemIbmBiosHandler();
+        biosHandler->setOemBiosHandler(oemIbmBiosHandler.get());
 
         createCodeUpdate();
         createSlotHandler();
@@ -117,6 +123,13 @@ class OemIBM
         oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
             dBusIntf, codeUpdate.get(), slotHandler.get(), mctp_fd, mctp_eid,
             instanceIdDb, event, reqHandler);
+    }
+
+    /** @brief Method for creating oemIbmBiosHandler */
+    void createOemIbmBiosHandler()
+    {
+        oemIbmBiosHandler =
+            std::make_unique<responder::oem_ibm_bios::Handler>();
     }
 
     /** @brief Method for creating oemIbmPlatformHandler */
@@ -210,6 +223,9 @@ class OemIBM
 
     /** @brief oem IBM Fru handler*/
     pldm::responder::oem_ibm_fru::Handler* oemIbmFruHandler = nullptr;
+
+    /** @brief pointer to the oem IBM Bios handler*/
+    std::unique_ptr<responder::oem_bios::Handler> oemIbmBiosHandler{};
 
     std::unique_ptr<pldm::led::HostLampTest> hostLampTest;
 
