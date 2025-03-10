@@ -396,6 +396,57 @@ class GetPLDMCommands : public CommandInterface
     }
 };
 
+class SetTID : public CommandInterface
+{
+  public:
+    ~SetTID() = default;
+    SetTID() = delete;
+    SetTID(const SetTID&) = delete;
+    SetTID(SetTID&&) = default;
+    SetTID& operator=(const SetTID&) = delete;
+    SetTID& operator=(SetTID&&) = delete;
+
+    explicit SetTID(const char* type, const char* name, CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("-t,--tid", tid,
+                        "The TID to be set.\n"
+                        "Special value: 0x00, 0xFF = reserved. \n")
+            ->required();
+    }
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_SET_TID_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+        auto rc = encode_set_tid_req(instanceId, tid, request);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to encode_set_tid_req, rc = " << rc
+                      << std::endl;
+        }
+        return {rc, requestMsg};
+    }
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = pldm_completion_codes::PLDM_SUCCESS;
+        if (payloadLength != PLDM_SET_TID_RESP_BYTES)
+        {
+            completionCode = pldm_completion_codes::PLDM_ERROR_INVALID_LENGTH;
+        }
+        else
+        {
+            completionCode = responsePtr->payload[0];
+        }
+        ordered_json data;
+        data["completionCode"] = completionCode;
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint8_t tid;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto base = app.add_subcommand("base", "base type command");
@@ -418,6 +469,10 @@ void registerCommand(CLI::App& app)
         "GetPLDMCommands", "get supported commands of pldm type");
     commands.push_back(std::make_unique<GetPLDMCommands>(
         "base", "GetPLDMCommands", getPLDMCommands));
+
+    auto setTID = base->add_subcommand(
+        "SetTID", "set the Terminus ID (TID) for a PLDM Terminus.");
+    commands.push_back(std::make_unique<SetTID>("base", "SetTID", setTID));
 }
 
 } // namespace base
