@@ -522,6 +522,44 @@ void BIOSConfig::updateBaseBIOSTableProperty()
         auto method = bus.new_method_call(service.c_str(), biosConfigPath,
                                           dbusProperties, "Set");
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
+#ifdef OEM_IBM
+        const fs::path bootSideDirPath = "/var/lib/pldm/bootSide";
+        for (const auto& [attrName, biostabObj] : baseBIOSTableMaps)
+        {
+            // The additional check to see if /var/lib/pldm/bootSide file exists
+            // is added to make sure we are doing the fw_boot_side setting after
+            // the base bios table is initialised.
+            if ((attrName == "fw_boot_side") && fs::exists(bootSideDirPath))
+            {
+                PendingAttributesList biosAttrList;
+
+                std::string nextBootSide =
+                    std::get<std::string>(std::get<5>(biostabObj));
+
+                std::string currNextBootSide;
+                auto attributeValue =
+                    getBiosAttrValue<std::string>("fw_boot_side");
+
+                if (attributeValue.has_value())
+                {
+                    currNextBootSide = attributeValue.value();
+                }
+                else
+                {
+                    info(
+                        "Boot side is not initialized yet, so setting default value");
+                    currNextBootSide = "Temp";
+                }
+
+                if (currNextBootSide != nextBootSide)
+                {
+                    biosAttrList.emplace_back(std::make_pair(
+                        attrName,
+                        std::make_tuple(EnumAttribute, nextBootSide)));
+                }
+            }
+        }
+#endif
         method.append(biosConfigInterface, biosConfigPropertyName, value);
         bus.call_noreply(method, dbusTimeout);
     }
