@@ -88,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2e4b4b7_93575081",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-11T05:14:04Z",
+      "side": 1,
+      "message": "Thanks for the clarification!",
+      "parentUuid": "a44f99f2_f7b602d4",
+      "revId": "8bf2c0cc5001e68dc1f39734abb5c75e1cea617f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c3a23ba_cbc231b9",
@@ -105,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20711b8a_aa1e44a5",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-11T05:14:04Z",
+      "side": 1,
+      "message": "Resolving comments based on above comment",
+      "parentUuid": "4c3a23ba_cbc231b9",
+      "revId": "8bf2c0cc5001e68dc1f39734abb5c75e1cea617f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f4e628d_04d51d3c",
@@ -118,6 +154,24 @@
       "writtenOn": "2025-02-06T17:20:25Z",
       "side": 1,
       "message": "Data at `responseMsg.data()` is getting overwritten here",
+      "revId": "8bf2c0cc5001e68dc1f39734abb5c75e1cea617f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d336485b_646fc3b0",
+        "filename": "pldmtool/pldm_bios_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-11T05:14:04Z",
+      "side": 1,
+      "message": "Resolving comments based on above comment",
+      "parentUuid": "0f4e628d_04d51d3c",
       "revId": "8bf2c0cc5001e68dc1f39734abb5c75e1cea617f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
