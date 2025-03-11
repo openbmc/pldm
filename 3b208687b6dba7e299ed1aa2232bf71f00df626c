@@ -69,6 +69,23 @@
       "message": "Should we handle interfaceAdded/PropertyChanged signal for new MCTP endpoint from Entity-manager configuration D-Bus interface as we did for MCTP D-Bus interface?\nhttps://github.com/openbmc/pldm/blob/68444190fe52407c05ab4f7220a7794ba3f0ad82/requester/mctp_endpoint_discovery.cpp#L29",
       "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "762d21b8_ff5de875",
+        "filename": "requester/configuration_discovery_handler.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-03-11T05:51:03Z",
+      "side": 1,
+      "message": "This will not compile since we are not overriding getActiveEidByName\nhttps://github.com/openbmc/pldm/blob/master/requester/mctp_endpoint_discovery.hpp#L42",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
