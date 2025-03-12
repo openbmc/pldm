@@ -11,6 +11,8 @@
 #include <initializer_list>
 #include <vector>
 
+class TestMctpDiscovery;
+
 namespace pldm
 {
 
@@ -21,6 +23,12 @@ constexpr const char* EndpointUUID = "xyz.openbmc_project.Common.UUID";
 constexpr const char* MCTPPath = "/au/com/codeconstruct/mctp1";
 constexpr const char* MCTPInterfaceCC = "au.com.codeconstruct.MCTP.Endpoint1";
 constexpr const char* MCTPConnectivityProp = "Connectivity";
+constexpr const char* inventorySubtreePathStr =
+    "/xyz/openbmc_project/inventory/system";
+
+const std::vector<std::string> interfaceFilter = {
+    "xyz.openbmc_project.Configuration.MCTPI2CTarget",
+    "xyz.openbmc_project.Configuration.MCTPI3CTarget"};
 
 /** @class MctpDiscoveryHandlerIntf
  *
@@ -42,6 +50,8 @@ class MctpDiscoveryHandlerIntf
     virtual std::optional<mctp_eid_t> getActiveEidByName(
         const std::string& terminusName) = 0;
 
+    virtual void handleConfigurations(const Configurations& /*configurations*/)
+    {}
     virtual ~MctpDiscoveryHandlerIntf() {}
 };
 
@@ -156,6 +166,8 @@ class MctpDiscovery
     void removeFromExistingMctpInfos(MctpInfos& mctpInfos,
                                      MctpInfos& removedInfos);
 
+    friend class ::TestMctpDiscovery;
+
   private:
     /** @brief Get MCTP Endpoint D-Bus Properties in the
      *         `xyz.openbmc_project.MCTP.Endpoint` D-Bus interface
@@ -190,6 +202,39 @@ class MctpDiscovery
     Availability getEndpointConnectivityProp(const std::string& path);
 
     static constexpr uint8_t mctpTypePLDM = 1;
+
+    /** @brief Construct the MCTP reactor object path
+     *
+     *  @param[in] mctpInfo - information of discovered MCTP endpoint
+     *
+     *  @return the MCTP reactor object path
+     */
+    std::string constructMctpReactorObjectPath(const MctpInfo& mctpInfo);
+
+    /** @brief Search for associated configuration for the MctpInfo.
+     *
+     *  @param[in] mctpInfo - information of discovered MCTP endpoint
+     */
+    void searchConfigurationFor(const pldm::utils::DBusHandler& handler,
+                                MctpInfo& mctpInfo);
+
+    /** @brief Remove configuration associated with the removed MCTP endpoint.
+     *
+     *  @param[in] removedInfos - the removed MCTP endpoints
+     */
+    void removeConfigs(const MctpInfos& removedInfos);
+
+    /** @brief An internal helper function to get the name property from the
+     * properties
+     * @param[in] properties - the properties of the D-Bus object
+     * @return the name property
+     */
+    std::string getNameFromProperties(const utils::PropertyMap& properties);
+
+    /** @brief The configuration contains D-Bus path and the MCTP endpoint
+     * information.
+     */
+    Configurations configurations;
 };
 
 } // namespace pldm
