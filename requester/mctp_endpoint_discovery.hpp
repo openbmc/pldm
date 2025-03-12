@@ -34,6 +34,8 @@ class MctpDiscoveryHandlerIntf
     virtual void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) = 0;
     virtual void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                                 Availability availability) = 0;
+    virtual void handleConfigurations(const Configurations& /*configurations*/)
+    {}
     virtual ~MctpDiscoveryHandlerIntf() {}
 };
 
@@ -182,6 +184,23 @@ class MctpDiscovery
     Availability getEndpointConnectivityProp(const std::string& path);
 
     static constexpr uint8_t mctpTypePLDM = 1;
+
+    /** @brief Search for associated configuration for the MctpInfo.
+     *
+     *  @param[in] mctpInfo - information of discovered MCTP endpoint
+     */
+    void searchConfigurationFor(MctpInfo& mctpInfo);
+
+    /** @brief Remove configuration associated with the removed MCTP endpoint.
+     *
+     * @param[in] removedInfos - the removed MCTP endpoints
+     */
+    void removeConfigs(const MctpInfos& removedInfos);
+
+    /** @brief The configuration contains Dbus path and the MCTP endpoint
+     * information.
+     */
+    Configurations configurations;
 };
 
 } // namespace pldm
