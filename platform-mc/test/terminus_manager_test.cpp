@@ -159,7 +159,7 @@ TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -205,7 +205,7 @@ TEST_F(TerminusManagerTest, negativeDiscoverMctpTerminusTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(0, termini.size());
 
@@ -283,7 +283,7 @@ TEST_F(TerminusManagerTest, doesSupportTypeTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -470,7 +470,7 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
     EXPECT_EQ(true, termini.contains(1));
