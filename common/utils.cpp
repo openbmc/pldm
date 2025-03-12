@@ -408,6 +408,22 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
     return bus.call(method, dbusTimeout).unpack<PropertyValue>();
 }
 
+GetAssociatedSubTreeResponse DBusHandler::getAssociatedSubTree(
+    const sdbusplus::message::object_path& objectPath,
+    const sdbusplus::message::object_path& subtree, int depth,
+    const std::vector<std::string>& ifaceList) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, "GetAssociatedSubTree");
+    method.append(objectPath, subtree, depth, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+    GetAssociatedSubTreeResponse response;
+    reply.read(response);
+    return response;
+}
+
 ObjectValueTree DBusHandler::getManagedObj(const char* service,
                                            const char* rootPath)
 {
