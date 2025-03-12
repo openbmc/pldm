@@ -174,7 +174,7 @@ struct DBusMapping
 using PropertyValue =
     std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
                  uint64_t, double, std::string, std::vector<uint8_t>,
-                 std::vector<std::string>>;
+                 std::vector<uint64_t>, std::vector<std::string>>;
 using DbusProp = std::string;
 using DbusChangedProps = std::map<DbusProp, PropertyValue>;
 using DBusInterfaceAdded = std::vector<
@@ -194,6 +194,8 @@ using Interfaces = std::vector<std::string>;
 using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
 using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using GetSubTreePathsResponse = std::vector<std::string>;
+using GetAssociatedSubTreeResponse =
+    std::map<std::string, std::map<std::string, std::vector<std::string>>>;
 using GetAncestorsResponse =
     std::vector<std::pair<ObjectPath, MapperServiceMap>>;
 using PropertyMap = std::map<std::string, PropertyValue>;
@@ -232,6 +234,11 @@ class DBusHandlerInterface
     virtual PropertyMap getDbusPropertiesVariant(
         const char* serviceName, const char* objPath,
         const char* dbusInterface) const = 0;
+
+    virtual GetAssociatedSubTreeResponse getAssociatedSubTree(
+        const sdbusplus::message::object_path& objectPath,
+        const sdbusplus::message::object_path& subtree, int depth,
+        const std::vector<std::string>& ifaceList) const = 0;
 };
 
 /**
@@ -361,6 +368,19 @@ class DBusHandler : public DBusHandlerInterface
             getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
         return std::get<Property>(VariantValue);
     }
+
+    /** @brief Get the associated subtree from the mapper
+     *
+     * @param[in] path - The D-Bus object path
+     *
+     * @param[in] interface - The D-Bus interface
+     *
+     * @return GetAssociatedSubtreeResponse - The associated subtree
+     */
+    GetAssociatedSubTreeResponse getAssociatedSubTree(
+        const sdbusplus::message::object_path& objectPath,
+        const sdbusplus::message::object_path& subtree, int depth,
+        const std::vector<std::string>& ifaceList) const override;
 
     /** @brief Set Dbus property
      *
