@@ -38,8 +38,10 @@ using NetworkId = uint32_t;
  *         UUID : Endpoint UUID which is used to different the endpoints
  *         MctpMedium: Endpoint MCTP Medium info (Resersed)
  *         NetworkId: MCTP network index
+ *         name: Alias name of the endpoint, e.g. BMC, NIC, etc.
  */
-using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId>;
+using MctpInfo =
+    std::tuple<eid, UUID, MctpMedium, NetworkId, std::optional<std::string>>;
 
 /** @brief Type definition of MCTP endpoint D-Bus properties in
  *         xyz.openbmc_project.MCTP.Endpoint D-Bus interface.
@@ -79,15 +81,19 @@ using Interface = std::string;
 using Interfaces = std::vector<std::string>;
 using Property = std::string;
 using PropertyType = std::string;
-using Value =
-    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string, std::vector<uint8_t>>;
+using Value = std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
+                           int64_t, uint64_t, double, std::string,
+                           std::vector<uint8_t>, std::vector<uint64_t>>;
 
 using PropertyMap = std::map<Property, Value>;
 using InterfaceMap = std::map<Interface, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 
 } // namespace dbus
+
+/** @brief Binding of MCTP endpoint EID to Entity Manager's D-Bus object path
+ */
+using Configurations = std::map<dbus::ObjectPath, MctpInfo>;
 
 namespace fw_update
 {
