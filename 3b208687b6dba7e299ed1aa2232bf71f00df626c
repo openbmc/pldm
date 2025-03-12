@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c83f1b22_5609d6ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-12T07:44:31Z",
+      "side": 1,
+      "message": "Per [discussion] on discord, `configuration_discovery_handler` and `mctp_endpoint_discovery` are now integrated to one class, and will pass the configurations to managers via virtual function `handleConfigurations`.\n\n[discussion]: https://discord.com/channels/775381525260664832/778790638563885086/1348947684173545543",
+      "parentUuid": "a57cb3f4_1c817d9d",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9711650d_76bd8556",
@@ -71,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc8a1bc_b6743ee9",
+        "filename": "requester/configuration_discovery_handler.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-12T07:44:31Z",
+      "side": 1,
+      "message": "Refectored, marked as resolved since these two classes are now integrated.",
+      "parentUuid": "9711650d_76bd8556",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "762d21b8_ff5de875",
@@ -84,6 +120,24 @@
       "writtenOn": "2025-03-11T05:51:03Z",
       "side": 1,
       "message": "This will not compile since we are not overriding getActiveEidByName\nhttps://github.com/openbmc/pldm/blob/master/requester/mctp_endpoint_discovery.hpp#L42",
+      "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c12fa36_84518643",
+        "filename": "requester/configuration_discovery_handler.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-12T07:44:31Z",
+      "side": 1,
+      "message": "Fixed after refactored.",
+      "parentUuid": "762d21b8_ff5de875",
       "revId": "3b208687b6dba7e299ed1aa2232bf71f00df626c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
