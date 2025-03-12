@@ -6,6 +6,7 @@
 #include "dbus_impl_requester.hpp"
 #include "fw-update/manager.hpp"
 #include "invoker.hpp"
+#include "platform-mc/dbus_to_terminus_effecters.hpp"
 #include "platform-mc/manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
@@ -48,7 +49,6 @@ PHOSPHOR_LOG2_USING;
 #ifdef LIBPLDMRESPONDER
 #include "dbus_impl_pdr.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
-#include "host-bmc/dbus_to_terminus_effecters.hpp"
 #include "host-bmc/host_condition.hpp"
 #include "host-bmc/host_pdr_handler.hpp"
 #include "libpldmresponder/base.hpp"

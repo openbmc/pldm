@@ -8,6 +8,7 @@ test_src = declare_dependency(
         '../sensor_manager.cpp',
         '../numeric_sensor.cpp',
         '../event_manager.cpp',
+        '../dbus_to_terminus_effecters.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
     include_directories: ['../../requester', '../../pldmd'],
@@ -20,6 +21,7 @@ tests = [
     'sensor_manager_test',
     'numeric_sensor_test',
     'event_manager_test',
+    'dbus_to_terminus_effecter_test',
 ]
 
 foreach t : tests

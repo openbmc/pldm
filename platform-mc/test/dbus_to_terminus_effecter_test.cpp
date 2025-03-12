@@ -1,6 +1,6 @@
 #include "common/test/mocked_utils.hpp"
 #include "common/utils.hpp"
-#include "host-bmc/dbus_to_terminus_effecters.hpp"
+#include "platform-mc/dbus_to_terminus_effecters.hpp"
 
 #include <nlohmann/json.hpp>
 
