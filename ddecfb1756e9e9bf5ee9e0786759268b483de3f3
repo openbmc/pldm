@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2589ed54_465c71a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-12T09:04:47Z",
+      "side": 1,
+      "message": "For reviewers,\nThis MR will needs openssl as dependency to be available, therefore the feature has been made configurable by meson option, there is another [patch] for openbmc/openbmc for adding openssl as dependency.\n\n[patch]: https://gerrit.openbmc.org/c/openbmc/openbmc/+/78797",
+      "revId": "ddecfb1756e9e9bf5ee9e0786759268b483de3f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
