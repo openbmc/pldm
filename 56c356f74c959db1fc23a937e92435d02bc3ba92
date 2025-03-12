@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3480920_924132ff",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-12T10:29:49Z",
+      "side": 1,
+      "message": "Actually, we don\u0027t need add handleConfigurations. Because the purpose of adding code is adding new terminus name to `mctpInfos`, so that the `fw-manager` and `platform-manager` can use that name while handling the new MCTP EP.\n\nAfter this patch, we need update fw-manager and platform-manager to use that name in `mctpInfos` when the MCTP EP has name.\n\nThis also mean we don\u0027t need `configurations` variable, and `removeConfigs` functions.",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09be22e_f1dd0cb6",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-12T10:29:49Z",
+      "side": 1,
+      "message": "Does the name is mandatory in MCTP EP EM configuration?",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "525a9d62_373c90b2",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-12T10:29:49Z",
+      "side": 1,
+      "message": "Can we just return error? The terminus name can come from EM or Entity Aux name PDRs. So Missing name is acceptable I think.",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e63f4c5a_f242be46",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-12T10:29:49Z",
+      "side": 1,
+      "message": "Should we return here?",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ae3091a_cf7d5d17",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-12T10:29:49Z",
+      "side": 1,
+      "message": "Return here also.",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
