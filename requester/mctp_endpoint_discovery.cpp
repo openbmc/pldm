@@ -83,9 +83,11 @@ void MctpDiscovery::getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap)
             if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                 types.end())
             {
-                mctpInfoMap[MctpInfo(std::get<eid>(epProps), uuid, "",
-                                     std::get<NetworkId>(epProps))] =
-                    availability;
+                auto mctpInfo =
+                    MctpInfo(std::get<eid>(epProps), uuid, "",
+                             std::get<NetworkId>(epProps), std::nullopt);
+                searchConfigurationFor(pldm::utils::DBusHandler(), mctpInfo);
+                mctpInfoMap[std::move(mctpInfo)] = availability;
             }
         }
     }
@@ -231,7 +233,11 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                     info(
                         "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
                         "NETWORK", networkId, "EID", eid, "UUID", uuid);
-                    mctpInfos.emplace_back(MctpInfo(eid, uuid, "", networkId));
+                    auto mctpInfo =
+                        MctpInfo(eid, uuid, "", networkId, std::nullopt);
+                    searchConfigurationFor(pldm::utils::DBusHandler(),
+                                           mctpInfo);
+                    mctpInfos.emplace_back(std::move(mctpInfo));
                 }
             }
         }
@@ -316,7 +322,8 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             const UUID& uuid = getEndpointUUIDProp(service, objPath);
 
             MctpInfo mctpInfo(std::get<eid>(epProps), uuid, "",
-                              std::get<NetworkId>(epProps));
+                              std::get<NetworkId>(epProps), std::nullopt);
+            searchConfigurationFor(pldm::utils::DBusHandler(), mctpInfo);
             if (!std::ranges::contains(existingMctpInfos, mctpInfo))
             {
                 if (availability)
@@ -360,6 +367,7 @@ void MctpDiscovery::removeEndpoints(sdbusplus::message_t&)
     }
     removeFromExistingMctpInfos(mctpInfos, removedInfos);
     handleRemovedMctpEndpoints(removedInfos);
+    removeConfigs(removedInfos);
 }
 
 void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)
@@ -368,6 +376,7 @@ void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)
     {
         if (handler)
         {
+            handler->handleConfigurations(configurations);
             handler->handleMctpEndpoints(mctpInfos);
         }
     }
@@ -393,6 +402,107 @@ void MctpDiscovery::updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
         {
             handler->updateMctpEndpointAvailability(mctpInfo, availability);
         }
+    }
+}
+
+std::string MctpDiscovery::getNameFromProperties(
+    const utils::PropertyMap& properties)
+{
+    if (!properties.contains("Name"))
+    {
+        error("Missing name property");
+        return "";
+    }
+    return std::get<std::string>(properties.at("Name"));
+}
+
+std::string MctpDiscovery::constructMctpReactorObjectPath(
+    const MctpInfo& mctpInfo)
+{
+    const auto networkId = std::get<NetworkId>(mctpInfo);
+    const auto eid = std::get<pldm::eid>(mctpInfo);
+    return std::string{MCTPPath} + "/networks/" + std::to_string(networkId) +
+           "/endpoints/" + std::to_string(eid) + "/configured_by";
+}
+
+void MctpDiscovery::searchConfigurationFor(
+    const pldm::utils::DBusHandler& handler, MctpInfo& mctpInfo)
+{
+    const auto mctpReactorObjectPath = constructMctpReactorObjectPath(mctpInfo);
+    try
+    {
+        std::string associatedObjPath;
+        std::string associatedService;
+        std::string associatedInterface;
+        sdbusplus::message::object_path inventorySubtreePath(
+            inventorySubtreePathStr);
+
+        //"/{board or chassis type}/{board or chassis}/{device}"
+        auto constexpr subTreeDepth = 3;
+        auto response = handler.getAssociatedSubTree(
+            mctpReactorObjectPath, inventorySubtreePath, subTreeDepth,
+            interfaceFilter);
+        if (response.empty())
+        {
+            warning("No associated subtree found for path {PATH}", "PATH",
+                    mctpReactorObjectPath);
+            return;
+        }
+        // Assume the first entry is the one we want
+        auto subTree = response.begin();
+        associatedObjPath = subTree->first;
+        auto associatedServiceProp = subTree->second;
+        if (associatedServiceProp.empty())
+        {
+            warning("No associated service found for path {PATH}", "PATH",
+                    mctpReactorObjectPath);
+            return;
+        }
+        // Assume the first entry is the one we want
+        auto entry = associatedServiceProp.begin();
+        associatedService = entry->first;
+        auto dBusIntfList = entry->second;
+        auto associatedInterfaceItr = std::find_if(
+            dBusIntfList.begin(), dBusIntfList.end(), [](const auto& intf) {
+                return std::find(interfaceFilter.begin(), interfaceFilter.end(),
+                                 intf) != interfaceFilter.end();
+            });
+        if (associatedInterfaceItr == dBusIntfList.end())
+        {
+            error("No associated interface found for path {PATH}", "PATH",
+                  mctpReactorObjectPath);
+            return;
+        }
+        associatedInterface = *associatedInterfaceItr;
+        auto mctpTargetProperties = handler.getDbusPropertiesVariant(
+            associatedService.c_str(), associatedObjPath.c_str(),
+            associatedInterface.c_str());
+        auto name = getNameFromProperties(mctpTargetProperties);
+        if (!name.empty())
+        {
+            std::get<std::optional<std::string>>(mctpInfo) = name;
+        }
+        configurations.emplace(associatedObjPath, mctpInfo);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Error getting associated subtree for path {PATH}, error - {ERROR}",
+            "PATH", mctpReactorObjectPath, "ERROR", e);
+        return;
+    }
+}
+
+void MctpDiscovery::removeConfigs(const MctpInfos& removedInfos)
+{
+    for (const auto& mctpInfo : removedInfos)
+    {
+        auto eidToRemove = std::get<eid>(mctpInfo);
+        std::erase_if(configurations, [eidToRemove](const auto& config) {
+            auto& [__, mctpInfo] = config;
+            auto eidValue = std::get<eid>(mctpInfo);
+            return eidValue == eidToRemove;
+        });
     }
 }
 
