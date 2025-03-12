@@ -91,20 +91,20 @@ TEST_F(TerminusManagerTest, negativeMapTidTest)
     EXPECT_EQ(mappedTid3, std::nullopt);
 
     // map two mctpInfo with same EID but different network Id
-    pldm::MctpInfo m4(12, "", "", 1);
-    pldm::MctpInfo m5(12, "", "", 2);
+    pldm::MctpInfo m4(12, "", "", 1, std::nullopt);
+    pldm::MctpInfo m5(12, "", "", 2, std::nullopt);
     auto mappedTid4 = terminusManager.mapTid(m4);
     auto mappedTid5 = terminusManager.mapTid(m5);
     EXPECT_NE(mappedTid4.value(), mappedTid5.value());
 
     // map same mctpInfo twice
-    pldm::MctpInfo m6(12, "", "", 3);
+    pldm::MctpInfo m6(12, "", "", 3, std::nullopt);
     auto mappedTid6 = terminusManager.mapTid(m6);
     auto mappedTid6_1 = terminusManager.mapTid(m6);
     EXPECT_EQ(mappedTid6.value(), mappedTid6_1.value());
 
     // look up an unmapped MctpInfo to TID
-    pldm::MctpInfo m7(1, "", "", 0);
+    pldm::MctpInfo m7(1, "", "", 0, std::nullopt);
     auto mappedTid7 = terminusManager.toTid(m7);
     EXPECT_EQ(mappedTid7, std::nullopt);
 
@@ -159,7 +159,7 @@ TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -205,7 +205,7 @@ TEST_F(TerminusManagerTest, negativeDiscoverMctpTerminusTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(0, termini.size());
 
@@ -283,7 +283,7 @@ TEST_F(TerminusManagerTest, doesSupportTypeTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -470,7 +470,7 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1));
+    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
     EXPECT_EQ(true, termini.contains(1));
@@ -549,7 +549,7 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
 TEST_F(TerminusManagerTest, getActiveEidByNameTest)
 {
     // Add terminus
-    pldm::MctpInfo mctpInfo(10, "", "", 1);
+    pldm::MctpInfo mctpInfo(10, "", "", 1, std::nullopt);
     auto mappedTid = mockTerminusManager.mapTid(mctpInfo);
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
