@@ -1,9 +1,9 @@
 #include "numeric_sensor.hpp"
 
-#include "libpldm/platform.h"
-
 #include "common/utils.hpp"
 #include "requester/handler.hpp"
+
+#include <libpldm/platform.h>
 
 #include <limits>
 #include <regex>

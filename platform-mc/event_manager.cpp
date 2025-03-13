@@ -1,9 +1,9 @@
 #include "event_manager.hpp"
 
-#include "libpldm/platform.h"
-#include "libpldm/utils.h"
-
 #include "terminus_manager.hpp"
+
+#include <libpldm/platform.h>
+#include <libpldm/utils.h>
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>

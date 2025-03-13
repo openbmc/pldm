@@ -1,9 +1,9 @@
 #include "terminus.hpp"
 
-#include "libpldm/platform.h"
-
 #include "dbus_impl_fru.hpp"
 #include "terminus_manager.hpp"
+
+#include <libpldm/platform.h>
 
 #include <common/utils.hpp>
 

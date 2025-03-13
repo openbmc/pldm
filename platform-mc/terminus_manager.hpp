@@ -2,12 +2,12 @@
 
 #include "config.h"
 
-#include "libpldm/platform.h"
-#include "libpldm/pldm.h"
-
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "terminus.hpp"
+
+#include <libpldm/platform.h>
+#include <libpldm/pldm.h>
 
 #include <limits>
 #include <map>

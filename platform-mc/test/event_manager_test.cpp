@@ -1,7 +1,3 @@
-#include "libpldm/base.h"
-#include "libpldm/entity.h"
-#include "libpldm/platform.h"
-
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "mock_event_manager.hpp"
@@ -10,6 +6,10 @@
 #include "platform-mc/terminus_manager.hpp"
 #include "test/test_instance_id.hpp"
 #include "utils_test.hpp"
+
+#include <libpldm/base.h>
+#include <libpldm/entity.h>
+#include <libpldm/platform.h>
 
 #include <gtest/gtest.h>
 

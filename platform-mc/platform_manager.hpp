@@ -1,11 +1,11 @@
 #pragma once
 
-#include "libpldm/fru.h"
-#include "libpldm/platform.h"
-#include "libpldm/pldm.h"
-
 #include "terminus.hpp"
 #include "terminus_manager.hpp"
+
+#include <libpldm/fru.h>
+#include <libpldm/platform.h>
+#include <libpldm/pldm.h>
 
 #include <vector>
 
