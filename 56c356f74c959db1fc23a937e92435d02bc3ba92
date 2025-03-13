@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f78ea91_6f8a24ed",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-13T05:11:50Z",
+      "side": 1,
+      "message": "The `handleConfigurations` brings not only names but also D-Bus object paths to the managers (fw-manager will need it for exposing the association of the software entry, see also [pldm/73512] raised by myself and [code-update.md] composed by @paligill@gmail.com).\n\n[pldm/73512]: https://gerrit.openbmc.org/c/openbmc/pldm/+/73512/64/fw-update/inventory_item_manager.cpp#38\n[code-update.md]: https://github.com/openbmc/docs/blob/master/designs/code-update.md",
+      "parentUuid": "f3480920_924132ff",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b09be22e_f1dd0cb6",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 15
@@ -31,6 +49,24 @@
       "writtenOn": "2025-03-12T10:29:49Z",
       "side": 1,
       "message": "Does the name is mandatory in MCTP EP EM configuration?",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c47588_0dc7b4db",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-13T05:11:50Z",
+      "side": 1,
+      "message": "The EM schema treat it as a required value, but since we can also get the name in other way, it\u0027s ok to remove the expected mechanism, done.",
+      "parentUuid": "b09be22e_f1dd0cb6",
       "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e8f2214_e73dddcc",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-13T05:11:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "525a9d62_373c90b2",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e63f4c5a_f242be46",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93635856_96883003",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-13T05:11:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e63f4c5a_f242be46",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ae3091a_cf7d5d17",
@@ -82,6 +154,24 @@
       "writtenOn": "2025-03-12T10:29:49Z",
       "side": 1,
       "message": "Return here also.",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec43e60_e3531818",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-13T05:11:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ae3091a_cf7d5d17",
       "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
