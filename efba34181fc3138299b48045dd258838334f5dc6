@@ -70,6 +70,30 @@
       },
       "revId": "efba34181fc3138299b48045dd258838334f5dc6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30934fcb_85cac980",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-13T05:42:26Z",
+      "side": 1,
+      "message": "At least our project is experiencing this issue, we don\u0027t really know about the symptoms on other projects.\nMaking this configurable can evantually let users able to decide which directory pldmd to watch and avoid the potential conflicts.",
+      "parentUuid": "d3a20ae7_a78226f6",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 10
+      },
+      "revId": "efba34181fc3138299b48045dd258838334f5dc6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
