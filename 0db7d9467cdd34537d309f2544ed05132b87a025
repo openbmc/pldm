@@ -22,6 +22,30 @@
       },
       "revId": "0db7d9467cdd34537d309f2544ed05132b87a025",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d237a7e1_b26aaf25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-14T13:49:37Z",
+      "side": 1,
+      "message": "We have packages of size 140MB+ and were seeing improvements of ~25s after disabling this",
+      "parentUuid": "56f1f8d1_ad089f18",
+      "range": {
+        "startLine": 10,
+        "startChar": 45,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "0db7d9467cdd34537d309f2544ed05132b87a025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
