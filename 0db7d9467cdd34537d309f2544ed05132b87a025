@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56f1f8d1_ad089f18",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-14T10:52:48Z",
+      "side": 1,
+      "message": "It would be good if you can also share how much large the data is , and how much performance improvement that you have got ? \n\nWe use this on OEM file transfers and heve not seen really that much performance impacts.",
+      "range": {
+        "startLine": 10,
+        "startChar": 45,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "0db7d9467cdd34537d309f2544ed05132b87a025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
