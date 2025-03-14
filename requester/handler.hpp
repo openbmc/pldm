@@ -287,7 +287,14 @@ class Handler
         }
 
         /* try to send new request if the endpoint is free */
-        pollEndpointQueue(eid);
+        auto rc = pollEndpointQueue(eid);
+        if (rc != PLDM_SUCCESS)
+        {
+            lg2::error(
+                "Failed to process request queue for EID {EID}, response code {RC}.",
+                "EID", eid, "RC", rc);
+            return PLDM_ERROR;
+        }
 
         return PLDM_SUCCESS;
     }
