@@ -46,6 +46,30 @@
       },
       "revId": "0db7d9467cdd34537d309f2544ed05132b87a025",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78335ef6_4bb632e8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-03-14T19:30:26Z",
+      "side": 1,
+      "message": "Please add this detail to the commit message.",
+      "parentUuid": "d237a7e1_b26aaf25",
+      "range": {
+        "startLine": 10,
+        "startChar": 45,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "0db7d9467cdd34537d309f2544ed05132b87a025",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
