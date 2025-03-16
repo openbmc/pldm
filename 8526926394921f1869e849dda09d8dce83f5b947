@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5983fb9_8c93c358",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Can you link the related entity manager configuration to the commit message?",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b7eb799_6dd675cb",
+        "filename": "common/types.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "std::string -\u003e ObjectPath? (using ObjectPath \u003d std::string;)\n\n`using MctpEndpointConfig \u003d std::map\u003cstd::string, MctpInfo\u003e;`",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a55e23b6_5cc5756f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "When devices take a reset, MCTP endpoints drop off the network but the device is not removed. How are the two scenarios distinguished?",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd544f6a_195d88a0",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "Move to utils or add as member function of MctpDiscovery class?",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d02f6f1a_f205d63e",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "nit: `const auto eid`",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc3ba00b_6267d636",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "Where is this defined? Is it limited to only I2C \u0026 I3C?",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1cc95d4_1ceffd11",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "EM config for MCTP endpoint is optional, should this be an info or warning?",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b0d8903_82d35583",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "What is the purpose of this function?",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09f38a14_606ee6cc",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "nit: Dbus -\u003e D-Bus for consistency",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

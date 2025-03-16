@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b5d71b2d_9dfb65fd",
+        "filename": "common/types.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "nit: Alias\n\nCan you put an example of the alias name?",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3480920_924132ff",
         "filename": "requester/mctp_endpoint_discovery.cpp",
         "patchSetId": 15
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "The `handleConfigurations` brings not only names but also D-Bus object paths to the managers (fw-manager will need it for exposing the association of the software entry, see also [pldm/73512] raised by myself and [code-update.md] composed by @paligill@gmail.com).\n\n[pldm/73512]: https://gerrit.openbmc.org/c/openbmc/pldm/+/73512/64/fw-update/inventory_item_manager.cpp#38\n[code-update.md]: https://github.com/openbmc/docs/blob/master/designs/code-update.md",
       "parentUuid": "f3480920_924132ff",
+      "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3eebc3c6_868e7fb7",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-03-16T17:15:26Z",
+      "side": 1,
+      "message": "The configuration can be more than a name for the endpoint, but associated info regarding to the endpoint like the D-Bus object path.",
+      "parentUuid": "5f78ea91_6f8a24ed",
       "revId": "56c356f74c959db1fc23a937e92435d02bc3ba92",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
