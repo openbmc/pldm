@@ -11,6 +11,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/State/BMC/client.hpp>
+#include <xyz/openbmc_project/State/Host/common.hpp>
 
 PHOSPHOR_LOG2_USING;
 
@@ -861,6 +862,79 @@ void pldm::responder::oem_ibm_platform::Handler::setSurvTimer(uint8_t tid,
         startStopTimer(value);
         pldm::utils::reportError(
             "xyz.openbmc_project.PLDM.Error.setSurvTimer.RecvSurveillancePingFail");
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::handleBootTypesAtPowerOn()
+{
+    BiosAttributeList biosAttrList;
+    auto bootInitiator = getBiosAttrValue("pvm_boot_initiator_current");
+    std::string restartCause;
+    if (((bootInitiator != "HMC") || (bootInitiator != "Host")) &&
+        !bootInitiator.empty())
+    {
+        try
+        {
+            restartCause =
+                pldm::utils::DBusHandler().getDbusProperty<std::string>(
+                    "/xyz/openbmc_project/state/host0", "RestartCause",
+                    sdbusplus::common::xyz::openbmc_project::state::Host::
+                        interface);
+            setBootTypesBiosAttr(restartCause);
+        }
+        catch (const std::exception& e)
+        {
+            error(
+                "Failed to set the D-bus property for the Host restart reason ERROR={ERR}",
+                "ERR", e);
+        }
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::setBootTypesBiosAttr(
+    const std::string& restartCause)
+{
+    BiosAttributeList biosAttrList;
+    if (restartCause ==
+        "xyz.openbmc_project.State.Host.RestartCause.ScheduledPowerOn")
+    {
+        biosAttrList.push_back(std::make_pair("pvm_boot_initiator", "Host"));
+        setBiosAttr(biosAttrList);
+    }
+    else if (
+        (restartCause ==
+         "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyAlwaysOn") ||
+        (restartCause ==
+         "xyz.openbmc_project.State.Host.RestartCause.PowerPolicyPreviousState"))
+    {
+        biosAttrList.push_back(std::make_pair("pvm_boot_initiator", "Auto"));
+        setBiosAttr(biosAttrList);
+    }
+    else if (restartCause ==
+             "xyz.openbmc_project.State.Host.RestartCause.HostCrash")
+    {
+        biosAttrList.push_back(std::make_pair("pvm_boot_initiator", "Auto"));
+        biosAttrList.push_back(std::make_pair("pvm_boot_type", "ReIPL"));
+        setBiosAttr(biosAttrList);
+    }
+}
+
+void pldm::responder::oem_ibm_platform::Handler::handleBootTypesAtChassisOff()
+{
+    BiosAttributeList biosAttrList;
+    auto bootInitiator = getBiosAttrValue("pvm_boot_initiator");
+    auto bootType = getBiosAttrValue("pvm_boot_type");
+    if (bootInitiator.empty() || bootType.empty())
+    {
+        error(
+            "ERROR in fetching the pvm_boot_initiator and pvm_boot_type BIOS attribute values");
+        return;
+    }
+    else if (bootInitiator != "Host")
+    {
+        biosAttrList.push_back(std::make_pair("pvm_boot_initiator", "User"));
+        biosAttrList.push_back(std::make_pair("pvm_boot_type", "IPL"));
+        setBiosAttr(biosAttrList);
     }
 }
 

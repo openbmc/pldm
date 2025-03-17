@@ -122,7 +122,7 @@ class Handler : public oem_platform::Handler
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/chassis0",
                               "xyz.openbmc_project.State.Chassis"),
-            [](sdbusplus::message_t& msg) {
+            [this](sdbusplus::message_t& msg) {
                 pldm::utils::DbusChangedProps props{};
                 std::string intf;
                 msg.read(intf, props);
@@ -134,6 +134,7 @@ class Handler : public oem_platform::Handler
                     if (propVal ==
                         "xyz.openbmc_project.State.Chassis.PowerState.Off")
                     {
+                        handleBootTypesAtChassisOff();
                         static constexpr auto searchpath =
                             "/xyz/openbmc_project/inventory/system/chassis/motherboard";
                         int depth = 0;
@@ -362,6 +363,19 @@ class Handler : public oem_platform::Handler
      *                    running or not
      */
     void setSurvTimer(uint8_t tid, bool value);
+
+    /** @brief To handle the boot types bios attributes at power on*/
+    void handleBootTypesAtPowerOn();
+
+    /** @brief To handle the boot types bios attributes at shutdown*/
+    void handleBootTypesAtChassisOff();
+
+    /** @brief To set the boot types bios attributes based on the RestartCause
+     *  of host
+     *
+     *  @param[in] RestartCause - Host restart cause
+     */
+    void setBootTypesBiosAttr(const std::string& restartCause);
 
     ~Handler() = default;
 
