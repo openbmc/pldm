@@ -15,56 +15,141 @@ namespace pldm
 {
 namespace fw_update
 {
-void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
+exec::task<int> InventoryManager::sendRecvPldmMsgOverMctp(
+    mctp_eid_t eid, Request& request, const pldm_msg** responseMsg,
+    size_t* responseLen)
 {
-    for (const auto& eid : eids)
+    int rc = 0;
+    try
     {
-        try
-        {
-            sendQueryDeviceIdentifiersRequest(eid);
-        }
-        catch (const std::exception& e)
-        {
-            error(
-                "Failed to discover file descriptors for endpoint ID {EID} with {ERROR}",
-                "EID", eid, "ERROR", e);
-        }
+        std::tie(rc, *responseMsg, *responseLen) =
+            co_await handler.sendRecvMsg(eid, std::move(request));
     }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Send and Receive PLDM message over MCTP throw error - {ERROR}.",
+              "ERROR", e);
+        co_return PLDM_ERROR;
+    }
+    catch (const int& e)
+    {
+        error(
+            "Send and Receive PLDM message over MCTP throw int error - {ERROR}.",
+            "ERROR", e);
+        co_return PLDM_ERROR;
+    }
+
+    co_return rc;
 }
 
-void InventoryManager::sendQueryDeviceIdentifiersRequest(mctp_eid_t eid)
+void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
+{
+    queuedMctpEids.emplace(eids);
+
+    if (discoverFDsTaskHandle.has_value())
+    {
+        auto& [scope, rcOpt] = *discoverFDsTaskHandle;
+        if (!rcOpt.has_value())
+        {
+            return;
+        }
+        stdexec::sync_wait(scope.on_empty());
+        discoverFDsTaskHandle.reset();
+    }
+    auto& [scope, rcOpt] = discoverFDsTaskHandle.emplace();
+    scope.spawn(discoverFDsTask() |
+                    stdexec::then([&](int rc) { rcOpt.emplace(rc); }),
+                exec::default_task_context<void>(exec::inline_scheduler{}));
+}
+
+exec::task<int> InventoryManager::discoverFDsTask()
+{
+    while (!queuedMctpEids.empty())
+    {
+        const auto& eids = queuedMctpEids.front();
+        for (const auto& eid : eids)
+        {
+            co_await startFirmwareDiscoveryFlow(eid);
+        }
+        queuedMctpEids.pop();
+    }
+
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> InventoryManager::startFirmwareDiscoveryFlow(mctp_eid_t eid)
+{
+    uint8_t rc = 0;
+
+    rc = co_await queryDeviceIdentifiers(eid);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        descriptorMap.erase(eid);
+        error(
+            "Failed to execute the 'queryDeviceIdentifiers' function., EID={EID}, RC={RC} ",
+            "EID", eid, "RC", rc);
+        co_return rc;
+    }
+
+    rc = co_await getFirmwareParameters(eid);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        descriptorMap.erase(eid);
+        error("Failed to execute the 'getFirmwareParameters' function., "
+              "EID={EID}, RC={RC} ",
+              "EID", eid, "RC", rc);
+    }
+
+    co_return rc;
+}
+
+exec::task<int> InventoryManager::queryDeviceIdentifiers(mctp_eid_t eid)
 {
     auto instanceId = instanceIdDb.next(eid);
     Request requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES);
-    auto request = new (requestMsg.data()) pldm_msg;
+    auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
     auto rc = encode_query_device_identifiers_req(
         instanceId, PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES, request);
     if (rc)
     {
         instanceIdDb.free(eid, instanceId);
-        error(
-            "Failed to encode query device identifiers request for endpoint ID {EID} with response code {RC}",
-            "EID", eid, "RC", rc);
-        throw std::runtime_error(
-            "Failed to encode QueryDeviceIdentifiers request");
+        error("encode_query_device_identifiers_req failed, EID={EID}, RC={RC}",
+              "EID", eid, "RC", rc);
+        co_return rc;
     }
 
-    rc = handler.registerRequest(
-        eid, instanceId, PLDM_FWUP, PLDM_QUERY_DEVICE_IDENTIFIERS,
-        std::move(requestMsg),
-        std::bind_front(&InventoryManager::queryDeviceIdentifiers, this));
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+
+    rc = co_await sendRecvPldmMsgOverMctp(eid, requestMsg, &responseMsg,
+                                          &responseLen);
+
     if (rc)
     {
         error(
-            "Failed to send query device identifiers request for endpoint ID {EID} with response code {RC}",
+            "Failed to send QueryDeviceIdentifiers request, EID={EID}, RC={RC} ",
             "EID", eid, "RC", rc);
-        throw std::runtime_error(
-            "Failed to send QueryDeviceIdentifiers request");
+        co_return rc;
     }
+
+    rc = co_await parseQueryDeviceIdentifiersResponse(eid, responseMsg,
+                                                      responseLen);
+    if (rc)
+    {
+        error(
+            "Failed to execute the 'parseQueryDeviceIdentifiersResponse' function., EID={EID}, RC={RC} ",
+            "EID", eid, "RC", rc);
+
+        co_return rc;
+    }
+
+    co_return rc;
 }
 
-void InventoryManager::queryDeviceIdentifiers(
+exec::task<int> InventoryManager::parseQueryDeviceIdentifiersResponse(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
     if (response == nullptr || !respMsgLen)
@@ -72,7 +157,7 @@ void InventoryManager::queryDeviceIdentifiers(
         error(
             "No response received for query device identifiers for endpoint ID {EID}",
             "EID", eid);
-        return;
+        co_return PLDM_ERROR;
     }
 
     uint8_t completionCode = PLDM_SUCCESS;
@@ -88,7 +173,7 @@ void InventoryManager::queryDeviceIdentifiers(
         error(
             "Failed to decode query device identifiers response for endpoint ID {EID} and descriptor count {DESCRIPTOR_COUNT}, response code {RC}",
             "EID", eid, "DESCRIPTOR_COUNT", descriptorCount, "RC", rc);
-        return;
+        co_return PLDM_ERROR;
     }
 
     if (completionCode)
@@ -96,7 +181,7 @@ void InventoryManager::queryDeviceIdentifiers(
         error(
             "Failed to query device identifiers response for endpoint ID {EID}, completion code {CC}",
             "EID", eid, "CC", completionCode);
-        return;
+        co_return PLDM_ERROR;
     }
 
     Descriptors descriptors{};
@@ -114,7 +199,7 @@ void InventoryManager::queryDeviceIdentifiers(
                 "Failed to decode descriptor type {TYPE}, length {LENGTH} and value for endpoint ID {EID}, response code {RC}",
                 "TYPE", descriptorType, "LENGTH", deviceIdentifiersLen, "EID",
                 eid, "RC", rc);
-            return;
+            co_return PLDM_ERROR;
         }
 
         if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
@@ -138,7 +223,7 @@ void InventoryManager::queryDeviceIdentifiers(
                 error(
                     "Failed to decode vendor-defined descriptor value for endpoint ID {EID}, response code {RC}",
                     "EID", eid, "RC", rc);
-                return;
+                co_return PLDM_ERROR;
             }
 
             auto vendorDefinedDescriptorTitleStr =
@@ -161,39 +246,50 @@ void InventoryManager::queryDeviceIdentifiers(
 
     descriptorMap.emplace(eid, std::move(descriptors));
 
-    // Send GetFirmwareParameters request
-    sendGetFirmwareParametersRequest(eid);
+    co_return PLDM_SUCCESS;
 }
 
-void InventoryManager::sendQueryDownstreamDevicesRequest(mctp_eid_t eid)
+exec::task<int> InventoryManager::queryDownstreamDevices(mctp_eid_t eid)
 {
     Request requestMsg(sizeof(pldm_msg_hdr));
     auto instanceId = instanceIdDb.next(eid);
     auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_query_downstream_devices_req(instanceId, request);
+
     if (rc)
     {
         instanceIdDb.free(eid, instanceId);
-        error(
-            "Failed to encode query downstream devices request for endpoint ID EID {EID} with response code {RC}",
-            "EID", eid, "RC", rc);
-        throw std::runtime_error(
-            "Failed to encode query downstream devices request");
+        error("encode_query_downstream_devices_req failed, EID={EID}, RC={RC}",
+              "EID", eid, "RC", rc);
+        co_return rc;
     }
 
-    rc = handler.registerRequest(
-        eid, instanceId, PLDM_FWUP, PLDM_QUERY_DOWNSTREAM_DEVICES,
-        std::move(requestMsg),
-        std::bind_front(&InventoryManager::queryDownstreamDevices, this));
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+
+    rc = co_await sendRecvPldmMsgOverMctp(eid, requestMsg, &responseMsg,
+                                          &responseLen);
     if (rc)
     {
         error(
-            "Failed to send QueryDownstreamDevices request for endpoint ID {EID} with response code {RC}",
+            "Failed to send QueryDownstreamDevices request for endpoint ID {EID}, response code {RC}",
             "EID", eid, "RC", rc);
+        co_return rc;
     }
+
+    rc = co_await parseQueryDownstreamDevicesResponse(eid, responseMsg,
+                                                      responseLen);
+
+    if (rc)
+    {
+        error("parseQueryDownstreamDeviceResponse failed, EID={EID}, RC={RC} ",
+              "EID", eid, "RC", rc);
+    }
+
+    co_return rc;
 }
 
-void InventoryManager::queryDownstreamDevices(
+exec::task<int> InventoryManager::parseQueryDownstreamDevicesResponse(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
     if (!response || !respMsgLen)
@@ -201,7 +297,7 @@ void InventoryManager::queryDownstreamDevices(
         error(
             "No response received for QueryDownstreamDevices for endpoint ID {EID}",
             "EID", eid);
-        return;
+        co_return PLDM_ERROR;
     }
 
     pldm_query_downstream_devices_resp downstreamDevicesResp{};
@@ -212,7 +308,7 @@ void InventoryManager::queryDownstreamDevices(
         error(
             "Decoding QueryDownstreamDevices response failed for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
-        return;
+        co_return PLDM_ERROR;
     }
 
     switch (downstreamDevicesResp.completion_code)
@@ -225,33 +321,38 @@ void InventoryManager::queryDownstreamDevices(
              */
             info("Endpoint ID {EID} does not support QueryDownstreamDevices",
                  "EID", eid);
-            return;
+            co_return PLDM_ERROR;
         default:
             error(
                 "QueryDownstreamDevices response failed with error completion code for endpoint ID {EID} with completion code {CC}",
                 "EID", eid, "CC", downstreamDevicesResp.completion_code);
-            return;
+            co_return PLDM_ERROR;
     }
 
+    error("DownstreamDevicesResp.downstream_device_update_supported: {X}", "X",
+          downstreamDevicesResp.downstream_device_update_supported);
+    error("PLDM_FWUP_DOWNSTREAM_DEVICE_UPDATE_SUPPORTED: {X}", "X",
+          PLDM_FWUP_DOWNSTREAM_DEVICE_UPDATE_SUPPORTED);
+    error("PLDM_FWUP_DOWNSTREAM_DEVICE_UPDATE_NOT_SUPPORTED: {X}", "X",
+          PLDM_FWUP_DOWNSTREAM_DEVICE_UPDATE_NOT_SUPPORTED);
     switch (downstreamDevicesResp.downstream_device_update_supported)
     {
         case PLDM_FWUP_DOWNSTREAM_DEVICE_UPDATE_SUPPORTED:
+        {
             /** DataTransferHandle will be skipped when TransferOperationFlag is
              *  `GetFirstPart`. Use 0x0 as default by following example in
              *  Figure 9 in DSP0267 1.1.0
              */
-            try
-            {
-                sendQueryDownstreamIdentifiersRequest(eid, 0x0,
-                                                      PLDM_GET_FIRSTPART);
-            }
-            catch (const std::exception& e)
+            auto rc = co_await queryDownstreamIdentifiers(eid, 0x0,
+                                                          PLDM_GET_FIRSTPART);
+            if (rc)
             {
                 error(
-                    "Failed to send QueryDownstreamIdentifiers request for endpoint ID {EID} with {ERROR}",
-                    "EID", eid, "ERROR", e);
+                    "Failed to send QueryDownstreamIdentifiers request for endpoint ID {EID}",
+                    "EID", eid);
             }
             break;
+        }
         case PLDM_FWUP_DOWNSTREAM_DEVICE_UPDATE_NOT_SUPPORTED:
             /* The FDP does not support firmware updates but may report
              * inventory information on downstream devices.
@@ -265,11 +366,12 @@ void InventoryManager::queryDownstreamDevices(
                 "Unknown response of DownstreamDeviceUpdateSupported from endpoint ID {EID} with value {VALUE}",
                 "EID", eid, "VALUE",
                 downstreamDevicesResp.downstream_device_update_supported);
-            return;
+            co_return PLDM_ERROR;
     }
+    co_return PLDM_SUCCESS;
 }
 
-void InventoryManager::sendQueryDownstreamIdentifiersRequest(
+exec::task<int> InventoryManager::queryDownstreamIdentifiers(
     mctp_eid_t eid, uint32_t dataTransferHandle,
     enum transfer_op_flag transferOperationFlag)
 {
@@ -289,23 +391,35 @@ void InventoryManager::sendQueryDownstreamIdentifiersRequest(
         error(
             "Failed to encode query downstream identifiers request for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
-        throw std::runtime_error(
-            "Failed to encode query downstream identifiers request");
+        co_return rc;
     }
 
-    rc = handler.registerRequest(
-        eid, instanceId, PLDM_FWUP, PLDM_QUERY_DOWNSTREAM_IDENTIFIERS,
-        std::move(requestMsg),
-        std::bind_front(&InventoryManager::queryDownstreamIdentifiers, this));
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+
+    rc = co_await sendRecvPldmMsgOverMctp(eid, requestMsg, &responseMsg,
+                                          &responseLen);
     if (rc)
     {
         error(
             "Failed to send QueryDownstreamIdentifiers request for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
+        co_return rc;
     }
+
+    rc = co_await parseQueryDownstreamIdentifiersResponse(
+        eid, responseMsg, responseLen);
+
+    if (rc)
+    {
+        error(
+            "parseQueryDownstreamIdentifiersResponse failed, EID={EID}, RC={RC} ",
+            "EID", eid, "RC", rc);
+    }
+    co_return rc;
 }
 
-void InventoryManager::queryDownstreamIdentifiers(
+exec::task<int> InventoryManager::parseQueryDownstreamIdentifiersResponse(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
     if (!response || !respMsgLen)
@@ -314,7 +428,7 @@ void InventoryManager::queryDownstreamIdentifiers(
             "No response received for QueryDownstreamIdentifiers for endpoint ID {EID}",
             "EID", eid);
         descriptorMap.erase(eid);
-        return;
+        co_return PLDM_ERROR;
     }
 
     pldm_query_downstream_identifiers_resp downstreamIds{};
@@ -327,7 +441,7 @@ void InventoryManager::queryDownstreamIdentifiers(
         error(
             "Decoding QueryDownstreamIdentifiers response failed for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
-        return;
+        co_return PLDM_ERROR;
     }
 
     if (downstreamIds.completion_code)
@@ -335,7 +449,7 @@ void InventoryManager::queryDownstreamIdentifiers(
         error(
             "QueryDownstreamIdentifiers response failed with error completion code for endpoint ID {EID} with completion code {CC}",
             "EID", eid, "CC", unsigned(downstreamIds.completion_code));
-        return;
+        co_return PLDM_ERROR;
     }
 
     DownstreamDeviceInfo initialDownstreamDevices{};
@@ -383,7 +497,7 @@ void InventoryManager::queryDownstreamIdentifiers(
                     error(
                         "Decoding Vendor-defined descriptor value failed for endpoint ID {EID} with response code {RC}",
                         "EID", eid, "RC", rc);
-                    return;
+                    co_return PLDM_ERROR;
                 }
 
                 auto vendorDefinedDescriptorTitleStr =
@@ -403,7 +517,7 @@ void InventoryManager::queryDownstreamIdentifiers(
             error(
                 "Failed to decode downstream device descriptor for endpoint ID {EID} with response code {RC}",
                 "EID", eid, "RC", rc);
-            return;
+            co_return PLDM_ERROR;
         }
         downstreamDevices->emplace(dev.downstream_device_index, descriptors);
     }
@@ -412,7 +526,7 @@ void InventoryManager::queryDownstreamIdentifiers(
         error(
             "Failed to decode downstream devices from iterator for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
-        return;
+        co_return PLDM_ERROR;
     }
 
     switch (downstreamIds.transfer_flag)
@@ -422,10 +536,18 @@ void InventoryManager::queryDownstreamIdentifiers(
                 eid, std::move(initialDownstreamDevices));
             [[fallthrough]];
         case PLDM_MIDDLE:
-            sendQueryDownstreamIdentifiersRequest(
+        {
+            auto rc = co_await queryDownstreamIdentifiers(
                 eid, downstreamIds.next_data_transfer_handle,
                 PLDM_GET_NEXTPART);
+            if (rc)
+            {
+                error(
+                    "Failed to send QueryDownstreamIdentifiers request for endpoint ID {EID}",
+                    "EID", eid);
+            }
             break;
+        }
         case PLDM_START_AND_END:
             downstreamDescriptorMap.insert_or_assign(
                 eid, std::move(initialDownstreamDevices));
@@ -435,13 +557,23 @@ void InventoryManager::queryDownstreamIdentifiers(
              */
             [[fallthrough]];
         case PLDM_END:
-            sendGetDownstreamFirmwareParametersRequest(eid, 0x0,
-                                                       PLDM_GET_FIRSTPART);
+        {
+            auto rc = co_await getDownstreamFirmwareParameters(
+                eid, 0x0, PLDM_GET_FIRSTPART);
+            if (rc)
+            {
+                error(
+                    "Failed to send GetDownstreamFirmwareParameters request for endpoint ID {EID}",
+                    "EID", eid);
+            }
+
             break;
+        }
     }
+    co_return PLDM_SUCCESS;
 }
 
-void InventoryManager::sendGetDownstreamFirmwareParametersRequest(
+exec::task<int> InventoryManager::getDownstreamFirmwareParameters(
     mctp_eid_t eid, uint32_t dataTransferHandle,
     enum transfer_op_flag transferOperationFlag)
 {
@@ -460,24 +592,35 @@ void InventoryManager::sendGetDownstreamFirmwareParametersRequest(
         error(
             "Failed to encode query downstream firmware parameters request for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
-        throw std::runtime_error(
-            "Failed to encode query downstream firmware parameters request");
+        co_return rc;
     }
 
-    rc = handler.registerRequest(
-        eid, instanceId, PLDM_FWUP, PLDM_QUERY_DOWNSTREAM_FIRMWARE_PARAMETERS,
-        std::move(requestMsg),
-        std::bind_front(&InventoryManager::getDownstreamFirmwareParameters,
-                        this));
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+
+    rc = co_await sendRecvPldmMsgOverMctp(eid, requestMsg, &responseMsg,
+                                          &responseLen);
     if (rc)
     {
         error(
             "Failed to send QueryDownstreamFirmwareParameters request for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
+        co_return rc;
     }
+
+    rc = co_await parseGetDownstreamFirmwareParametersResponse(
+        eid, responseMsg, responseLen);
+
+    if (rc)
+    {
+        error(
+            "parseGetDownstreamFirmwareParametersResponse failed, EID={EID}, RC={RC} ",
+            "EID", eid, "RC", rc);
+    }
+    co_return rc;
 }
 
-void InventoryManager::getDownstreamFirmwareParameters(
+exec::task<int> InventoryManager::parseGetDownstreamFirmwareParametersResponse(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
     if (!response || !respMsgLen)
@@ -486,7 +629,7 @@ void InventoryManager::getDownstreamFirmwareParameters(
             "No response received for QueryDownstreamFirmwareParameters for endpoint ID {EID}",
             "EID", eid);
         descriptorMap.erase(eid);
-        return;
+        co_return PLDM_ERROR;
     }
 
     pldm_get_downstream_firmware_parameters_resp resp{};
@@ -501,7 +644,7 @@ void InventoryManager::getDownstreamFirmwareParameters(
         error(
             "Decoding QueryDownstreamFirmwareParameters response failed for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
-        return;
+        co_return PLDM_ERROR;
     }
 
     if (resp.completion_code)
@@ -509,7 +652,7 @@ void InventoryManager::getDownstreamFirmwareParameters(
         error(
             "QueryDownstreamFirmwareParameters response failed with error completion code for endpoint ID {EID} with completion code {CC}",
             "EID", eid, "CC", resp.completion_code);
-        return;
+        co_return PLDM_ERROR;
     }
 
     foreach_pldm_downstream_device_parameters_entry(params, entry, rc)
@@ -524,20 +667,29 @@ void InventoryManager::getDownstreamFirmwareParameters(
         error(
             "Failed to decode downstream device parameters from iterator for endpoint ID {EID} with response code {RC}",
             "EID", eid, "RC", rc);
-        return;
+        co_return PLDM_ERROR;
     }
 
     switch (resp.transfer_flag)
     {
         case PLDM_START:
         case PLDM_MIDDLE:
-            sendGetDownstreamFirmwareParametersRequest(
+        {
+            auto rc = co_await getDownstreamFirmwareParameters(
                 eid, resp.next_data_transfer_handle, PLDM_GET_NEXTPART);
+            if (rc)
+            {
+                error(
+                    "Failed to send GetDownstreamFirmwareParameters request for endpoint ID {EID}",
+                    "EID", eid);
+            }
             break;
+        }
     }
+    co_return PLDM_SUCCESS;
 }
 
-void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
+exec::task<int> InventoryManager::getFirmwareParameters(mctp_eid_t eid)
 {
     auto instanceId = instanceIdDb.next(eid);
     Request requestMsg(
@@ -551,22 +703,35 @@ void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
         error(
             "Failed to encode get firmware parameters req for endpoint ID {EID}, response code {RC}",
             "EID", eid, "RC", rc);
-        return;
+        co_return rc;
     }
 
-    rc = handler.registerRequest(
-        eid, instanceId, PLDM_FWUP, PLDM_GET_FIRMWARE_PARAMETERS,
-        std::move(requestMsg),
-        std::bind_front(&InventoryManager::getFirmwareParameters, this));
+    const pldm_msg* responseMsg = NULL;
+    size_t responseLen = 0;
+
+    rc = co_await sendRecvPldmMsgOverMctp(eid, requestMsg, &responseMsg,
+                                          &responseLen);
+
     if (rc)
     {
         error(
             "Failed to send get firmware parameters request for endpoint ID {EID}, response code {RC}",
             "EID", eid, "RC", rc);
+        co_return rc;
     }
+
+    rc = co_await parseGetFWParametersResponse(eid, responseMsg, responseLen);
+
+    if (rc)
+    {
+        error("parseGetFWParametersResponse failed, EID={EID}, RC={RC} ", "EID",
+              eid, "RC", rc);
+    }
+
+    co_return rc;
 }
 
-void InventoryManager::getFirmwareParameters(
+exec::task<int> InventoryManager::parseGetFWParametersResponse(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
     if (response == nullptr || !respMsgLen)
@@ -575,7 +740,7 @@ void InventoryManager::getFirmwareParameters(
             "No response received for get firmware parameters for endpoint ID {EID}",
             "EID", eid);
         descriptorMap.erase(eid);
-        return;
+        co_return PLDM_ERROR;
     }
 
     pldm_get_firmware_parameters_resp fwParams{};
@@ -591,7 +756,7 @@ void InventoryManager::getFirmwareParameters(
         error(
             "Failed to decode get firmware parameters response for endpoint ID {EID}, response code {RC}",
             "EID", eid, "RC", rc);
-        return;
+        co_return rc;
     }
 
     if (fwParams.completion_code)
@@ -600,7 +765,7 @@ void InventoryManager::getFirmwareParameters(
         error(
             "Failed to get firmware parameters response for endpoint ID {EID}, completion code {CC}",
             "EID", eid, "CC", fw_param_cc);
-        return;
+        co_return PLDM_ERROR;
     }
 
     auto compParamPtr = compParamTable.ptr;
@@ -620,7 +785,7 @@ void InventoryManager::getFirmwareParameters(
             error(
                 "Failed to decode component parameter table entry for endpoint ID {EID}, response code {RC}",
                 "EID", eid, "RC", rc);
-            return;
+            co_return PLDM_ERROR;
         }
 
         auto compClassification = compEntry.comp_classification;
@@ -634,6 +799,7 @@ void InventoryManager::getFirmwareParameters(
                              activeCompVerStr.length + pendingCompVerStr.length;
     }
     componentInfoMap.emplace(eid, std::move(componentInfo));
+    co_return PLDM_SUCCESS;
 }
 
 } // namespace fw_update

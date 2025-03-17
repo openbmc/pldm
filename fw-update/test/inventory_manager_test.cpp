@@ -1,5 +1,6 @@
 #include "common/utils.hpp"
 #include "fw-update/inventory_manager.hpp"
+#include "mock_inventory_manager.hpp"
 #include "requester/test/mock_request.hpp"
 #include "test/test_instance_id.hpp"
 
@@ -20,13 +21,29 @@ class InventoryManagerTest : public testing::Test
                    milliseconds(100)),
         inventoryManager(reqHandler, instanceIdDb, outDescriptorMap,
                          outDownstreamDescriptorMap, outComponentInfoMap)
-    {}
+    {
+        // Set up mock to return success for queryDownstreamIdentifiers
+        ON_CALL(inventoryManager,
+                queryDownstreamIdentifiers(testing::_, testing::_, testing::_))
+            .WillByDefault([](mctp_eid_t, uint32_t,
+                              enum transfer_op_flag) -> exec::task<int> {
+                co_return PLDM_SUCCESS;
+            });
+
+        // Set up mock to return success for getDownstreamFirmwareParameters
+        ON_CALL(inventoryManager, getDownstreamFirmwareParameters(
+                                      testing::_, testing::_, testing::_))
+            .WillByDefault([](mctp_eid_t, uint32_t,
+                              enum transfer_op_flag) -> exec::task<int> {
+                co_return PLDM_SUCCESS;
+            });
+    }
 
     int fd = -1;
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> reqHandler;
-    InventoryManager inventoryManager;
+    MockInventoryManager inventoryManager;
     DescriptorMap outDescriptorMap{};
     DownstreamDescriptorMap outDownstreamDescriptorMap{};
     ComponentInfoMap outComponentInfoMap{};
@@ -44,8 +61,9 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
             0x70, 0x65, 0x6e, 0x42, 0x4d, 0x43, 0x01, 0x02};
     auto responseMsg1 =
         reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp1.data());
-    inventoryManager.queryDeviceIdentifiers(1, responseMsg1,
-                                            respPayloadLength1);
+    auto co = inventoryManager.parseQueryDeviceIdentifiersResponse(
+        1, responseMsg1, respPayloadLength1);
+    stdexec::sync_wait(std::move(co));
 
     DescriptorMap descriptorMap1{
         {0x01,
@@ -69,8 +87,9 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
             0x43, 0x98, 0x00, 0xA0, 0x2F, 0x59, 0x9A, 0xCA, 0x02};
     auto responseMsg2 =
         reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp2.data());
-    inventoryManager.queryDeviceIdentifiers(2, responseMsg2,
-                                            respPayloadLength2);
+    auto co2 = inventoryManager.parseQueryDeviceIdentifiersResponse(
+        2, responseMsg2, respPayloadLength2);
+    stdexec::sync_wait(std::move(co2));
     DescriptorMap descriptorMap2{
         {0x01,
          {{PLDM_FWUP_IANA_ENTERPRISE_ID,
@@ -97,7 +116,9 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponseErrorCC)
         queryDeviceIdentifiersResp{0x00, 0x00, 0x00, 0x01};
     auto responseMsg =
         reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp.data());
-    inventoryManager.queryDeviceIdentifiers(1, responseMsg, respPayloadLength);
+    auto co = inventoryManager.parseQueryDeviceIdentifiersResponse(
+        1, responseMsg, respPayloadLength);
+    stdexec::sync_wait(std::move(co));
     EXPECT_EQ(outDescriptorMap.size(), 0);
 }
 
@@ -116,8 +137,16 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
             0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0xa0, 0x15};
     auto responseMsg = new (queryDownstreamIdentifiersResp.data()) pldm_msg;
 
-    inventoryManager.queryDownstreamIdentifiers(eid, responseMsg,
-                                                respPayloadLength);
+    queryDownstreamIdentifiersResp[8] = PLDM_START_AND_END;
+
+    // Expect the mock to be called with specific parameters
+    EXPECT_CALL(inventoryManager,
+                getDownstreamFirmwareParameters(eid, 0x0, PLDM_GET_FIRSTPART))
+        .Times(1);
+
+    auto co = inventoryManager.parseQueryDownstreamIdentifiersResponse(
+        eid, responseMsg, respPayloadLength);
+    stdexec::sync_wait(std::move(co));
 
     DownstreamDeviceInfo downstreamDevices = {
         {0,
@@ -140,8 +169,9 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
     const auto responseMsg =
         new (const_cast<unsigned char*>(queryDownstreamIdentifiersResp.data()))
             pldm_msg;
-    inventoryManager.queryDownstreamIdentifiers(1, responseMsg,
-                                                respPayloadLength);
+    auto co = inventoryManager.parseQueryDownstreamIdentifiersResponse(
+        1, responseMsg, respPayloadLength);
+    stdexec::sync_wait(std::move(co));
 
     ASSERT_EQ(outDownstreamDescriptorMap.size(), 0);
 }
@@ -176,7 +206,9 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
             0x30};
     auto responseMsg1 =
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp1.data());
-    inventoryManager.getFirmwareParameters(1, responseMsg1, respPayloadLength1);
+    auto co = inventoryManager.parseGetFWParametersResponse(
+        1, responseMsg1, respPayloadLength1);
+    stdexec::sync_wait(std::move(co));
 
     ComponentInfoMap componentInfoMap1{
         {1,
@@ -206,7 +238,9 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
             0x6f, 0x6d, 0x70, 0x33, 0x76, 0x34, 0x2e, 0x30};
     auto responseMsg2 =
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp2.data());
-    inventoryManager.getFirmwareParameters(2, responseMsg2, respPayloadLength2);
+    auto co2 = inventoryManager.parseGetFWParametersResponse(
+        2, responseMsg2, respPayloadLength2);
+    stdexec::sync_wait(std::move(co2));
 
     ComponentInfoMap componentInfoMap2{
         {1,
@@ -228,6 +262,8 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponseErrorCC)
         getFirmwareParametersResp{0x00, 0x00, 0x00, 0x01};
     auto responseMsg =
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp.data());
-    inventoryManager.getFirmwareParameters(1, responseMsg, respPayloadLength);
+    auto co = inventoryManager.parseGetFWParametersResponse(
+        1, responseMsg, respPayloadLength);
+    stdexec::sync_wait(std::move(co));
     EXPECT_EQ(outComponentInfoMap.size(), 0);
 }

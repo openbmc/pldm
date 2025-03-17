@@ -60,6 +60,7 @@ class InventoryManager
      *  @param[in] eids - MCTP endpoint ID of the FDs
      */
     void discoverFDs(const std::vector<mctp_eid_t>& eids);
+    exec::task<int> discoverFDsTask();
 
     /** @brief Handler for QueryDeviceIdentifiers command response
      *
@@ -71,8 +72,28 @@ class InventoryManager
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void queryDeviceIdentifiers(mctp_eid_t eid, const pldm_msg* response,
-                                size_t respMsgLen);
+    exec::task<int> parseQueryDeviceIdentifiersResponse(
+        mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
+
+    /** @brief Starts firmware discovery flow
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    exec::task<int> startFirmwareDiscoveryFlow(mctp_eid_t eid);
+
+    /** @brief Send QueryDeviceIdentifiers command request
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    exec::task<int> queryDeviceIdentifiers(mctp_eid_t eid);
+
+    /** @brief Send GetFirmwareParameters command request
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] messageError - message error
+     *  @param[in] resolution - recommended resolution
+     */
+    exec::task<int> getFirmwareParameters(mctp_eid_t eid);
 
     /** @brief Handler for QueryDownstreamDevices command response
      *
@@ -80,8 +101,8 @@ class InventoryManager
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void queryDownstreamDevices(mctp_eid_t eid, const pldm_msg* response,
-                                size_t respMsgLen);
+    exec::task<int> parseQueryDownstreamDevicesResponse(
+        mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
 
     /** @brief Handler for QueryDownstreamIdentifiers command response
      *
@@ -89,8 +110,8 @@ class InventoryManager
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void queryDownstreamIdentifiers(mctp_eid_t eid, const pldm_msg* response,
-                                    size_t respMsgLen);
+    exec::task<int> parseQueryDownstreamIdentifiersResponse(
+        mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
 
     /** @brief Handler for GetDownstreamFirmwareParameters command response
      *
@@ -98,7 +119,7 @@ class InventoryManager
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void getDownstreamFirmwareParameters(
+    exec::task<int> parseGetDownstreamFirmwareParametersResponse(
         mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
 
     /** @brief Handler for GetFirmwareParameters command response
@@ -109,24 +130,18 @@ class InventoryManager
      *  @param[in] eid - Remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
+     *
      */
-    void getFirmwareParameters(mctp_eid_t eid, const pldm_msg* response,
-                               size_t respMsgLen);
+    exec::task<int> parseGetFWParametersResponse(
+        mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
 
   private:
-    /**
-     * @brief Sends QueryDeviceIdentifiers request
-     *
-     * @param[in] eid - Remote MCTP endpoint
-     */
-    void sendQueryDeviceIdentifiersRequest(mctp_eid_t eid);
-
     /**
      * @brief Sends QueryDownstreamDevices request
      *
      * @param[in] eid - Remote MCTP endpoint
      */
-    void sendQueryDownstreamDevicesRequest(mctp_eid_t eid);
+    exec::task<int> queryDownstreamDevices(mctp_eid_t eid);
 
     /**
      * @brief Sends QueryDownstreamIdentifiers request
@@ -138,7 +153,7 @@ class InventoryManager
      * @param[in] dataTransferHandle - Data transfer handle
      * @param[in] transferOperationFlag - Transfer operation flag
      */
-    void sendQueryDownstreamIdentifiersRequest(
+    virtual exec::task<int> queryDownstreamIdentifiers(
         mctp_eid_t eid, uint32_t dataTransferHandle,
         enum transfer_op_flag transferOperationFlag);
 
@@ -149,15 +164,25 @@ class InventoryManager
      * @param[in] dataTransferHandle - Data transfer handle
      * @param[in] transferOperationFlag - Transfer operation flag
      */
-    void sendGetDownstreamFirmwareParametersRequest(
+    virtual exec::task<int> getDownstreamFirmwareParameters(
         mctp_eid_t eid, uint32_t dataTransferHandle,
         const enum transfer_op_flag transferOperationFlag);
 
-    /** @brief Send GetFirmwareParameters command request
+    /**
+     * @brief Sends a PLDM message over MCTP and receives the response.
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     * @param[in] eid - The MCTP endpoint ID to which the request is sent.
+     * @param[in] request - The PLDM request message to be sent.
+     * @param[out] responseMsg - Pointer to the received PLDM response message.
+     * @param[out] responseLen - Length of the received response message.
+     *
+     * @return A coroutine task that returns an integer indicating the result
+     *         of the operation. Returns PLDM_SUCCESS on success, PLDM_ERROR
+     * otherwise
      */
-    void sendGetFirmwareParametersRequest(mctp_eid_t eid);
+    exec::task<int> sendRecvPldmMsgOverMctp(mctp_eid_t eid, Request& request,
+                                            const pldm_msg** responseMsg,
+                                            size_t* responseLen);
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
@@ -173,6 +198,13 @@ class InventoryManager
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    /** @brief A queue of MctpEids to be discovered **/
+    std::queue<std::vector<mctp_eid_t>> queuedMctpEids{};
+
+    /** @brief coroutine handle of discoverFDsTask */
+    std::optional<std::pair<exec::async_scope, std::optional<int>>>
+        discoverFDsTaskHandle{};
 };
 
 } // namespace fw_update
