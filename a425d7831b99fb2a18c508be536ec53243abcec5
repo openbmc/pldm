@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0861b6f0_e1bd13df",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-17T04:05:53Z",
+      "side": 1,
+      "message": "no need to use the lg2 namespace.",
+      "range": {
+        "startLine": 293,
+        "startChar": 11,
+        "endLine": 293,
+        "endChar": 17
+      },
+      "revId": "a425d7831b99fb2a18c508be536ec53243abcec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7eea26e_a805bf32",
         "filename": "requester/handler.hpp",
         "patchSetId": 3
@@ -14,6 +37,24 @@
       "writtenOn": "2025-03-17T01:46:00Z",
       "side": 1,
       "message": "Let return `rc` directly.",
+      "revId": "a425d7831b99fb2a18c508be536ec53243abcec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b066862_94f2ce28",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-17T04:05:53Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a7eea26e_a805bf32",
       "revId": "a425d7831b99fb2a18c508be536ec53243abcec5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
