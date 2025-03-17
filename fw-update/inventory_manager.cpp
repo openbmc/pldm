@@ -21,7 +21,7 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
     {
         try
         {
-            sendQueryDeviceIdentifiersRequest(eid);
+            sendGetPLDMTypesRequest(eid);
         }
         catch (const std::exception& e)
         {
@@ -30,6 +30,74 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
                 "EID", eid, "ERROR", e);
         }
     }
+}
+
+void InventoryManager::sendGetPLDMTypesRequest(mctp_eid_t eid)
+{
+    auto instanceId = instanceIdDb.next(eid);
+    Request requestMsg(sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_REQ_BYTES);
+    auto request = new (requestMsg.data()) pldm_msg;
+    auto rc = encode_get_types_req(instanceId, request);
+    if (rc)
+    {
+        instanceIdDb.free(eid, instanceId);
+        error(
+            "Failed to encode GetPLDMTypes request for endpoint ID {EID}, response code {RC}.",
+            "EID", eid, "RC", rc);
+        throw std::runtime_error("Failed to encode GetPLDMTypes request");
+    }
+
+    rc = handler.registerRequest(
+        eid, instanceId, PLDM_BASE, PLDM_GET_PLDM_TYPES, std::move(requestMsg),
+        std::bind_front(&InventoryManager::getPLDMTypes, this));
+    if (rc)
+    {
+        error(
+            "Failed to send GetPLDMTypes request for endpoint ID {EID}, response code {RC} ",
+            "EID", eid, "RC", rc);
+        throw std::runtime_error("Failed to send GetPLDMTypes request");
+    }
+}
+
+void InventoryManager::getPLDMTypes(mctp_eid_t eid, const pldm_msg* response,
+                                    size_t respMsgLen)
+{
+    if (!response || !respMsgLen)
+    {
+        error("No response received for GetPLDMTypes for endpoint ID {EID}",
+              "EID", eid);
+        return;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint64_t supportedTypes = 0;
+    bitfield8_t* types = new (&supportedTypes) bitfield8_t;
+    auto rc =
+        decode_get_types_resp(response, respMsgLen, &completionCode, types);
+    if (rc)
+    {
+        error(
+            "Failed to decode GetPLDMTypes response for endpoint ID {EID} with response code {RC}",
+            "EID", eid, "RC", rc);
+        return;
+    }
+
+    if (completionCode)
+    {
+        error(
+            "Failed to get PLDM types for endpoint ID {EID}, completion code {CC}",
+            "EID", eid, "CC", completionCode);
+        return;
+    }
+
+    auto isType5Supported = supportedTypes & (1 << PLDM_FWUP);
+    if (!isType5Supported)
+    {
+        info("Eid {EID} does not support T5", "EID", eid);
+        return;
+    }
+
+    sendQueryDeviceIdentifiersRequest(eid);
 }
 
 void InventoryManager::sendQueryDeviceIdentifiersRequest(mctp_eid_t eid)
