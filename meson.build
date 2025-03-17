@@ -191,9 +191,9 @@ libpldm_dep = dependency(
     include_type: 'system',
 )
 
-if get_option('oem-ampere').allowed()
-    add_project_arguments('-DOEM_AMPERE', language: 'cpp')
-endif
+# if get_option('oem-ampere').allowed()
+#     add_project_arguments('-DOEM_AMPERE', language: 'cpp')
+# endif
 
 libpldmutils_headers = ['.']
 libpldmutils = library(
@@ -229,9 +229,9 @@ deps = [
 ]
 
 oem_files = []
-if get_option('oem-ampere').allowed()
-    subdir('oem/ampere')
-endif
+# if get_option('oem-ampere').allowed()
+#     subdir('oem/ampere')
+# endif
 
 if get_option('libpldmresponder').allowed()
     subdir('libpldmresponder')
