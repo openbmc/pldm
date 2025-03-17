@@ -363,6 +363,19 @@ class Handler : public oem_platform::Handler
      */
     void setSurvTimer(uint8_t tid, bool value);
 
+    /** @brief To handle the boot types bios attributes at power on*/
+    void handleBootTypesAtPowerOn();
+
+    /** @brief To handle the boot types bios attributes at shutdown*/
+    void handleBootTypesAtChassisOff();
+
+    /** @brief To set the boot types bios attributes based on the RestartCause
+     *  of host
+     *
+     *  @param[in] RestartCause - Host restart cause
+     */
+    void setBootTypesBiosAttr(const std::string& restartCause);
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
