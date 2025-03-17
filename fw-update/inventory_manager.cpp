@@ -77,9 +77,62 @@ exec::task<int> InventoryManager::discoverFDsTask()
     co_return PLDM_SUCCESS;
 }
 
+exec::task<int> InventoryManager::getPLDMTypes(mctp_eid_t eid,
+                                               uint64_t& supportedTypes)
+{
+    auto instanceId = instanceIdDb.next(eid);
+    Request request(sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_REQ_BYTES);
+    auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
+    auto rc = encode_get_types_req(instanceId, requestMsg);
+    if (rc)
+    {
+        error("encode_get_types_req failed, eid={EID} rc={RC}.", "EID", eid,
+              "RC", rc);
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+
+    rc = co_await sendRecvPldmMsgOverMctp(eid, request, &responseMsg,
+                                          &responseLen);
+    if (rc)
+    {
+        error("Failed to send GetPLDMTypes request, EID={EID}, RC={RC} ", "EID",
+              eid, "RC", rc);
+        co_return rc;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    bitfield8_t* types = reinterpret_cast<bitfield8_t*>(&supportedTypes);
+    rc =
+        decode_get_types_resp(responseMsg, responseLen, &completionCode, types);
+    if (rc)
+    {
+        error("decode_get_types_resp failed, eid={EID} rc={RC}.", "EID", eid,
+              "RC", rc);
+        co_return rc;
+    }
+    co_return completionCode;
+}
+
 exec::task<int> InventoryManager::startFirmwareDiscoveryFlow(mctp_eid_t eid)
 {
     uint8_t rc = 0;
+    uint64_t supportedTypes = 0;
+    rc = co_await getPLDMTypes(eid, supportedTypes);
+    if (rc)
+    {
+        error("getPLDMTypes failed, EID={EID} rc={RC}.", "EID", eid, "RC", rc);
+        co_return PLDM_ERROR;
+    }
+
+    auto isType5Supported = supportedTypes & (1 << PLDM_FWUP);
+    if (!isType5Supported)
+    {
+        info("Eid {EID} does not support T5", "EID", eid);
+        co_return PLDM_SUCCESS;
+    }
 
     rc = co_await queryDeviceIdentifiers(eid);
 

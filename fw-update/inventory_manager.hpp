@@ -75,6 +75,15 @@ class InventoryManager
     exec::task<int> parseQueryDeviceIdentifiersResponse(
         mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
 
+    /** @brief Send getPLDMTypes command to destination eid and then return the
+     *         value of supportedTypes.
+     *
+     *  @param[in] eid - Destination eid
+     *  @param[out] supportedTypes - Supported Types returned from eid
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getPLDMTypes(mctp_eid_t eid, uint64_t& supportedTypes);
+
     /** @brief Starts firmware discovery flow
      *
      *  @param[in] eid - Remote MCTP endpoint
