@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51d514cf_dce6a45a",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-18T06:20:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b30b71a8_0b92d476",
+      "revId": "7e74f2db1baa201baf0f6f6aca215037024b7c3a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7d88e60_9e36e76f",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-03-17T23:55:09Z",
       "side": 1,
       "message": "Avoid to include function name directly in the error message. Use the PLDM command such as below message for SetEventReceiver.\n`error(\n            \"Failed to encode request SetEventReceiver for terminus ID {TID}, error {RC} \",\n            \"TID\", tid, \"RC\", rc);`\n`eid\u003d{EID}` pattern is not recommended in the coding style in OpenBMC.\n\nChange the other error log also.",
+      "revId": "7e74f2db1baa201baf0f6f6aca215037024b7c3a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b395f91_34eb585e",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-18T06:20:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d7d88e60_9e36e76f",
       "revId": "7e74f2db1baa201baf0f6f6aca215037024b7c3a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
