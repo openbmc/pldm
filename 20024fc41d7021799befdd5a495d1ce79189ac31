@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc61bc7c_fc24a406",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-18T17:26:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8cb85188_677f9d74",
+      "revId": "20024fc41d7021799befdd5a495d1ce79189ac31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe93737b_0e6deb2a",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3acc6cd7_f3112fc3",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-18T17:26:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fe93737b_0e6deb2a",
+      "revId": "20024fc41d7021799befdd5a495d1ce79189ac31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97909e04_5998b7e9",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-03-18T07:16:22Z",
       "side": 1,
       "message": "Should be covered by https://gerrit.openbmc.org/c/openbmc/pldm/+/77630",
+      "revId": "20024fc41d7021799befdd5a495d1ce79189ac31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57d9b55e_c8b1bd4c",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-03-18T17:26:14Z",
+      "side": 1,
+      "message": "I\u0027ve rebased on top of the recent commits, this doesn\u0027t come up in the diff now",
+      "parentUuid": "97909e04_5998b7e9",
       "revId": "20024fc41d7021799befdd5a495d1ce79189ac31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
