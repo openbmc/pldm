@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65c03180_ee805fd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-18T00:08:41Z",
+      "side": 1,
+      "message": "What do you think if we refactors the fw-update code and platform-mc code to reuse the terminus discovery flow and the methods which is already implemented in the `platform-mc` code. In that case, `platform-mc` can construct the fw-update handler for the terminus support T5 (fw-update).\n\nI saw that the patch set is adding `sendRecvPldmMsgOverMctp` which is already implementing in `terminus-manager.hpp/cpp`. In the next patch set we call `GetPLDMTypes` to check the supported type of one PLDM terminus.\n\nThis is not mandatory, but it will be great if we can completely refactor the pldm code of `platform-mc` and `fw-update`.",
+      "revId": "ebab01c854665289ad351b19d656ea3e1f772573",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
