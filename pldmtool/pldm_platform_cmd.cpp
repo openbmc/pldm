@@ -74,6 +74,64 @@ std::vector<std::unique_ptr<CommandInterface>> commands;
 
 using ordered_json = nlohmann::ordered_json;
 
+class GetEventReceiver : public CommandInterface
+{
+  public:
+    ~GetEventReceiver() = default;
+    GetEventReceiver() = delete;
+    GetEventReceiver(const GetEventReceiver&) = delete;
+    GetEventReceiver(GetEventReceiver&&) = default;
+    GetEventReceiver& operator=(const GetEventReceiver&) = delete;
+    GetEventReceiver& operator=(GetEventReceiver&&) = delete;
+
+    explicit GetEventReceiver(const char* type, const char* name,
+                              CLI::App* app) : CommandInterface(type, name, app)
+    {}
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+        auto request = new (requestMsg.data()) pldm_msg;
+        auto rc =
+            encode_pldm_header_only(PLDM_REQUEST, instanceId, PLDM_PLATFORM,
+                                    PLDM_GET_EVENT_RECEIVER, request);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to encode_pldm_header_only, return code = "
+                      << rc << std::endl;
+        }
+        return {rc, requestMsg};
+    }
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        struct pldm_get_event_receiver_resp event_receiver_resp_data;
+        auto rc = decode_get_event_receiver_resp(responsePtr, payloadLength,
+                                                 &event_receiver_resp_data);
+        if (rc || event_receiver_resp_data.completion_code)
+        {
+            std::cerr << "Response Message Error: "
+                      << "return code=" << rc << ",completion code="
+                      << static_cast<int>(
+                             event_receiver_resp_data.completion_code)
+                      << std::endl;
+            return;
+        }
+        if (event_receiver_resp_data.transport_protocol_type !=
+            PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP)
+        {
+            std::cerr << "Unsupported response protocol type " << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        data["completionCode"] = event_receiver_resp_data.completion_code;
+        data["transportProtocolType"] =
+            event_receiver_resp_data.transport_protocol_type;
+        data["eventReceiverAddressInfo"] =
+            event_receiver_resp_data.event_receiver_address.mctp_eid;
+        pldmtool::helper::DisplayInJson(data);
+    }
+};
+
 class GetPDR : public CommandInterface
 {
   public:
@@ -2224,6 +2282,12 @@ void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
     platform->require_subcommand(1);
+
+    auto getEventReceiver = platform->add_subcommand(
+        "GetEventReceiver",
+        "Get the configured event receiver from a terminus");
+    commands.push_back(std::make_unique<GetEventReceiver>(
+        "platform", "getEventReceiver", getEventReceiver));
 
     auto getPDR =
         platform->add_subcommand("GetPDR", "get platform descriptor records");
