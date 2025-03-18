@@ -74,6 +74,63 @@ std::vector<std::unique_ptr<CommandInterface>> commands;
 
 using ordered_json = nlohmann::ordered_json;
 
+class GetEventReceiver : public CommandInterface
+{
+  public:
+    ~GetEventReceiver() = default;
+    GetEventReceiver() = delete;
+    GetEventReceiver(const GetEventReceiver&) = delete;
+    GetEventReceiver(GetEventReceiver&&) = default;
+    GetEventReceiver& operator=(const GetEventReceiver&) = delete;
+    GetEventReceiver& operator=(GetEventReceiver&&) = delete;
+
+    explicit GetEventReceiver(const char* type, const char* name,
+                              CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+    }
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+        auto rc = encode_pldm_header_only(
+            instanceId, request);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to encode_pldm_header_only, rc = " << rc
+                      << std::endl;
+        }
+        return {rc, requestMsg};
+    }
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode{};
+        auto rc = decode_get_event_receiver_resp(responsePtr,
+				   payloadLength,
+				   &transport_protocol_type,
+				   &event_receiver_address_info,
+				   &completionCode);
+        if (rc || completionCode)
+        {
+            std::cerr << "Failed to decode_get_event_receiver_resp: "
+                      << "rc=" << rc
+                      << ", cc=" << static_cast<unsigned>(completionCode)
+                      << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        data["completionCode"] = completionCode;
+        data["transportProtocolType"] = transport_protocol_type;
+        data["eventReceiverAddressInfo"] = event_receiver_address_info;
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint8_t transport_protocol_type=0;
+	uint8_t event_receiver_address_info=0;
+};
+
 class GetPDR : public CommandInterface
 {
   public:
@@ -2224,6 +2281,11 @@ void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
     platform->require_subcommand(1);
+
+    auto getEventReceiver = platform->add_subcommand(
+        "GetEventReceiver", "Get the configured event receiver from a terminus");
+    commands.push_back(std::make_unique<GetEventReceiver>(
+        "platform", "getEventReceiver", getEventReceiver));
 
     auto getPDR =
         platform->add_subcommand("GetPDR", "get platform descriptor records");
