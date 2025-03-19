@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a9aa27_b93fdc0c",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-19T07:56:28Z",
+      "side": 1,
+      "message": "This is causing ODR violation, since there\u0027re more than one [use cases] of this method but the definition is written in the header file.\n\n[use cases]: https://github.com/openbmc/pldm/blob/4bf3ed840f13c31720ffa7c255942f3836402f4f/platform-mc/terminus_manager.cpp#L423",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 66
+      },
+      "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
