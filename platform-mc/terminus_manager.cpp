@@ -186,6 +186,8 @@ TerminiMapper::iterator TerminusManager::findTerminusPtr(
 exec::task<int> TerminusManager::discoverMctpTerminusTask()
 {
     std::vector<pldm_tid_t> addedTids;
+    std::vector<MctpInfo> failedMctpInfos;
+
     while (!queuedMctpInfos.empty())
     {
         if (manager)
@@ -200,15 +202,29 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             if (it == termini.end())
             {
                 mctpInfoAvailTable[mctpInfo] = true;
-                co_await initMctpTerminus(mctpInfo);
+                auto rc = co_await initMctpTerminus(mctpInfo);
+                if (rc != PLDM_SUCCESS)
+                {
+                    lg2::error(
+                        "Failed to initialize terminus with EID {EID}, networkId {NETWORK}, response code {RC}.",
+                        "EID", std::get<0>(mctpInfo), "NETWORK",
+                        std::get<3>(mctpInfo), "RC", rc);
+                    failedMctpInfos.push_back(mctpInfo);
+                    mctpInfoAvailTable.erase(mctpInfo);
+                    continue;
+                }
             }
 
             /* Get TID of initialized terminus */
             auto tid = toTid(mctpInfo);
             if (!tid)
             {
+                lg2::error(
+                    "Failed to get TID for terminus with EID {EID}, networkId {NETWORK}.",
+                    "EID", std::get<0>(mctpInfo), "NETWORK",
+                    std::get<3>(mctpInfo));
                 mctpInfoAvailTable.erase(mctpInfo);
-                co_return PLDM_ERROR;
+                continue;
             }
             addedTids.push_back(tid.value());
         }
@@ -216,6 +232,11 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
         if (manager)
         {
             co_await manager->afterDiscoverTerminus();
+        }
+
+        if (!failedMctpInfos.empty())
+        {
+            co_return PLDM_ERROR;
         }
 
         queuedMctpInfos.pop();
