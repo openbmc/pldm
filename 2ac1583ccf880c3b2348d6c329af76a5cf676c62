@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9775fca_c40a9d97",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-20T10:55:02Z",
+      "side": 1,
+      "message": "can we declare it together",
+      "range": {
+        "startLine": 814,
+        "startChar": 4,
+        "endLine": 815,
+        "endChar": 35
+      },
+      "revId": "2ac1583ccf880c3b2348d6c329af76a5cf676c62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd4514e_aa4de771",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-20T10:55:02Z",
+      "side": 1,
+      "message": "biosConfigIntf ?",
+      "range": {
+        "startLine": 824,
+        "startChar": 12,
+        "endLine": 824,
+        "endChar": 52
+      },
+      "revId": "2ac1583ccf880c3b2348d6c329af76a5cf676c62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4db0efa3_56826344",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-03-20T10:55:02Z",
+      "side": 1,
+      "message": "if we fail to set one of the pending Attribute in the list here `biosAttrList` we will not set the remaining ones if we return here right?",
+      "range": {
+        "startLine": 872,
+        "startChar": 12,
+        "endLine": 876,
+        "endChar": 19
+      },
+      "revId": "2ac1583ccf880c3b2348d6c329af76a5cf676c62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
