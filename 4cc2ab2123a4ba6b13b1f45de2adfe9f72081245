@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae5be33_4fdfe6ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-24T01:47:57Z",
+      "side": 1,
+      "message": "Can you add `oem-ibm` prefix for this changing? The change in `libpldmresponder` but the code is added inside `OEM_IBM`.",
+      "revId": "4cc2ab2123a4ba6b13b1f45de2adfe9f72081245",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
