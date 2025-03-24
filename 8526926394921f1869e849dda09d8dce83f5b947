@@ -106,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6860d3a_f1558088",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-24T01:46:04Z",
+      "side": 1,
+      "message": "When the MCTP endpoints drop off, the communication between `pldmd` and the EP will be time out. `pldmd` will call `.Recover` process in MCTP Endpoint D-Bus interface to check the connection.\nIn this case, because the EP is reset, the `.Recover` will failed. The EP will be removed from MCTP D-Bus interface.\n`pldmd` watches the MCTP EP InterfaceRemoved D-Bus signal, then it will removes EP from managing list.\nSo when the EP is drop off, it will removed by `mctpd`, then `pldmd` will also remove it.",
+      "parentUuid": "2779cf7a_2ba6f1af",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd544f6a_195d88a0",
