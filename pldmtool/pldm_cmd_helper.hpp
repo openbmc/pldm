@@ -60,6 +60,15 @@ static inline void DisplayInJson(const ordered_json& data)
     std::cout << data.dump(4) << std::endl;
 }
 
+/**
+ * @brief Maps numeric PLDM completion codes to human-readable strings
+ *
+ * @param[in] completionCode - Numeric PLDM completion code returned in response
+ * @param[out] data - JSON object where the human-readable completion code
+ * string will be added under the key "CompletionCode"
+ */
+void fillCompletionCode(uint8_t completionCode, ordered_json& data);
+
 /** @brief MCTP socket read/receive
  *
  *  @param[in]  requestMsg - Request message to compare against loopback
