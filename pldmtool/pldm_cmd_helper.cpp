@@ -3,6 +3,7 @@
 #include "common/transport.hpp"
 #include "xyz/openbmc_project/Common/error.hpp"
 
+#include <libpldm/firmware_update.h>
 #include <libpldm/transport.h>
 #include <libpldm/transport/af-mctp.h>
 #include <libpldm/transport/mctp-demux.h>
@@ -20,6 +21,70 @@ namespace pldmtool
 {
 namespace helper
 {
+
+static const std::map<uint8_t, std::string> genericCompletionCodes{
+    {PLDM_SUCCESS, "SUCCESS"},
+    {PLDM_ERROR, "ERROR"},
+    {PLDM_ERROR_INVALID_DATA, "ERROR_INVALID_DATA"},
+    {PLDM_ERROR_INVALID_LENGTH, "ERROR_INVALID_LENGTH"},
+    {PLDM_ERROR_NOT_READY, "ERROR_NOT_READY"},
+    {PLDM_ERROR_UNSUPPORTED_PLDM_CMD, "ERROR_UNSUPPORTED_PLDM_CMD"},
+    {PLDM_ERROR_INVALID_PLDM_TYPE, "ERROR_INVALID_PLDM_TYPE"},
+    {PLDM_INVALID_TRANSFER_OPERATION_FLAG, "INVALID_TRANSFER_OPERATION_FLAG"}};
+
+static const std::map<uint8_t, std::string> fwupdateCompletionCodes{
+    {PLDM_FWUP_NOT_IN_UPDATE_MODE, "NOT_IN_UPDATE_MODE"},
+    {PLDM_FWUP_ALREADY_IN_UPDATE_MODE, "ALREADY_IN_UPDATE_MODE"},
+    {PLDM_FWUP_DATA_OUT_OF_RANGE, "DATA_OUT_OF_RANGE"},
+    {PLDM_FWUP_INVALID_TRANSFER_LENGTH, "INVALID_TRANSFER_LENGTH"},
+    {PLDM_FWUP_INVALID_STATE_FOR_COMMAND, "INVALID_STATE_FOR_COMMAND"},
+    {PLDM_FWUP_INCOMPLETE_UPDATE, "INCOMPLETE_UPDATE"},
+    {PLDM_FWUP_BUSY_IN_BACKGROUND, "BUSY_IN_BACKGROUND"},
+    {PLDM_FWUP_CANCEL_PENDING, "CANCEL_PENDING"},
+    {PLDM_FWUP_COMMAND_NOT_EXPECTED, "COMMAND_NOT_EXPECTED"},
+    {PLDM_FWUP_RETRY_REQUEST_FW_DATA, "RETRY_REQUEST_FW_DATA"},
+    {PLDM_FWUP_UNABLE_TO_INITIATE_UPDATE, "UNABLE_TO_INITIATE_UPDATE"},
+    {PLDM_FWUP_ACTIVATION_NOT_REQUIRED, "ACTIVATION_NOT_REQUIRED"},
+    {PLDM_FWUP_SELF_CONTAINED_ACTIVATION_NOT_PERMITTED,
+     "SELF_CONTAINED_ACTIVATION_NOT_PERMITTED"},
+    {PLDM_FWUP_NO_DEVICE_METADATA, "NO_DEVICE_METADATA"},
+    {PLDM_FWUP_RETRY_REQUEST_UPDATE, "RETRY_REQUEST_UPDATE"},
+    {PLDM_FWUP_NO_PACKAGE_DATA, "NO_PACKAGE_DATA"},
+    {PLDM_FWUP_INVALID_TRANSFER_HANDLE, "INVALID_TRANSFER_HANDLE"},
+    {PLDM_FWUP_INVALID_TRANSFER_OPERATION_FLAG,
+     "INVALID_TRANSFER_OPERATION_FLAG"},
+    {PLDM_FWUP_ACTIVATE_PENDING_IMAGE_NOT_PERMITTED,
+     "ACTIVATE_PENDING_IMAGE_NOT_PERMITTED"},
+    {PLDM_FWUP_PACKAGE_DATA_ERROR, "PACKAGE_DATA_ERROR"}};
+
+void fillCompletionCode(uint8_t completionCode, ordered_json& data,
+                        uint8_t pldmType)
+{
+    // Check generic completion codes first for all PLDM types
+    auto it = genericCompletionCodes.find(completionCode);
+    if (it != genericCompletionCodes.end())
+    {
+        data["CompletionCode"] = it->second;
+        return;
+    }
+
+    // If not a generic code, check type-specific codes
+    switch (pldmType)
+    {
+        case PLDM_FWUP:
+        {
+            auto typeIt = fwupdateCompletionCodes.find(completionCode);
+            if (typeIt != fwupdateCompletionCodes.end())
+            {
+                data["CompletionCode"] = typeIt->second;
+                return;
+            }
+            break;
+        }
+    }
+
+    data["CompletionCode"] = "UNKNOWN_COMPLETION_CODE";
+}
 
 void CommandInterface::exec()
 {
