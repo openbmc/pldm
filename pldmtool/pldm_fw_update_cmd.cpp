@@ -5,6 +5,8 @@
 
 #include <libpldm/firmware_update.h>
 
+#include <format>
+
 namespace pldmtool
 {
 
@@ -71,6 +73,35 @@ const std::map<DescriptorType, const char*> descriptorName{
     {PLDM_FWUP_PNP_PRODUCT_IDENTIFIER, "PnP Product Identifier"},
     {PLDM_FWUP_ACPI_PRODUCT_IDENTIFIER, "ACPI Product Identifier"},
     {PLDM_FWUP_VENDOR_DEFINED, "Vendor Defined"}};
+
+/*
+ * Convert PLDM Firmware String Type to uint8_t
+ *
+ *  @param[in]  compImgVerStrType - the component version string
+ *
+ *  @return - the component version string converted to a numeric value.
+ */
+uint8_t convertStringTypeToUInt8(std::string compImgVerStrType)
+{
+    static const std::map<std::string, pldm_firmware_update_string_type>
+        pldmFirmwareUpdateStringType{
+            {"UNKNOWN", PLDM_STR_TYPE_UNKNOWN},
+            {"ASCII", PLDM_STR_TYPE_ASCII},
+            {"UTF_8", PLDM_STR_TYPE_UTF_8},
+            {"UTF_16", PLDM_STR_TYPE_UTF_16},
+            {"UTF_16LE", PLDM_STR_TYPE_UTF_16LE},
+            {"UTF_16BE", PLDM_STR_TYPE_UTF_16BE},
+        };
+
+    if (pldmFirmwareUpdateStringType.contains(compImgVerStrType))
+    {
+        return pldmFirmwareUpdateStringType.at(compImgVerStrType);
+    }
+    else
+    {
+        return static_cast<uint8_t>(std::stoi(compImgVerStrType));
+    }
+}
 
 class GetStatus : public CommandInterface
 {
@@ -611,6 +642,155 @@ void QueryDeviceIdentifiers::parseResponseMsg(pldm_msg* responsePtr,
     pldmtool::helper::DisplayInJson(data);
 }
 
+class RequestUpdate : public CommandInterface
+{
+  public:
+    ~RequestUpdate() = default;
+    RequestUpdate() = delete;
+    RequestUpdate(const RequestUpdate&) = delete;
+    RequestUpdate(RequestUpdate&&) = delete;
+    RequestUpdate& operator=(const RequestUpdate&) = delete;
+    RequestUpdate& operator=(RequestUpdate&&) = delete;
+
+    explicit RequestUpdate(const char* type, const char* name, CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "--max_transfer_size", maxTransferSize,
+               "Specifies the maximum size, in bytes, of the variable payload allowed to\n"
+               "be requested by the FD via the RequestFirmwareData command that is contained\n"
+               "within a PLDM message. This value shall be equal to or greater than firmware update\n"
+               "baseline transfer size.")
+            ->required();
+
+        app->add_option(
+               "--num_comps", numComps,
+               "Specifies the number of components that will be passed to the FD during the update.\n"
+               "The FD can use this value to compare against the number of PassComponentTable\n"
+               "commands received.")
+            ->required();
+
+        app->add_option(
+               "--max_transfer_reqs", maxTransferReqs,
+               "Specifies the number of outstanding RequestFirmwareData commands that can be\n"
+               "sent by the FD. The minimum required value is '1' which the UA shall support.\n"
+               "It is optional for the UA to support a value higher than '1' for this field.")
+            ->required();
+
+        app->add_option(
+               "--package_data_length", packageDataLength,
+               "This field shall be set to the value contained within\n"
+               "the FirmwareDevicePackageDataLength field that was provided in\n"
+               "the firmware package header. If no firmware package data was\n"
+               "provided in the firmware update package then this length field\n"
+               "shall be set to 0x0000.")
+            ->required();
+
+        app->add_option(
+               "--comp_img_ver_str_type", compImgVerStrType,
+               "The type of string used in the ComponentImageSetVersionString\n"
+               "field. Possible values\n"
+               "{UNKNOWN->0, ASCII->1, UTF_8->2, UTF_16->3, UTF_16LE->4, UTF_16BE->5}\n"
+               "OR {0,1,2,3,4,5}")
+            ->required()
+            ->check([](const std::string& value) -> std::string {
+                static const std::set<std::string> validStrings{
+                    "UNKNOWN", "ASCII",    "UTF_8",
+                    "UTF_16",  "UTF_16LE", "UTF_16BE"};
+
+                if (validStrings.contains(value))
+                {
+                    return "";
+                }
+
+                try
+                {
+                    int intValue = std::stoi(value);
+                    if (intValue >= 0 && intValue <= 255)
+                    {
+                        return "";
+                    }
+                    return "Invalid value. Must be one of UNKNOWN, ASCII, UTF_8, UTF_16, UTF_16LE, UTF_16BE, or a number between 0 and 255";
+                }
+                catch (const std::exception&)
+                {
+                    return "Invalid value. Must be one of UNKNOWN, ASCII, UTF_8, UTF_16, UTF_16LE, UTF_16BE, or a number between 0 and 255";
+                }
+            });
+
+        app->add_option(
+               "--comp_img_ver_str_len", compImgVerStrLen,
+               "The length, in bytes, of the ComponentImageSetVersionString.")
+            ->required();
+
+        app->add_option(
+               "--comp_img_set_ver_str", compImgSetVerStr,
+               "Component Image Set version information, up to 255 bytes.")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        variable_field compImgSetVerStrInfo{};
+        compImgSetVerStrInfo.ptr =
+            reinterpret_cast<const uint8_t*>(compImgSetVerStr.data());
+        compImgSetVerStrInfo.length =
+            static_cast<uint8_t>(compImgSetVerStr.size());
+
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + sizeof(struct pldm_request_update_req) +
+            compImgSetVerStrInfo.length);
+
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_request_update_req(
+            instanceId, maxTransferSize, numComps, maxTransferReqs,
+            packageDataLength, convertStringTypeToUInt8(compImgVerStrType),
+            compImgVerStrLen, &compImgSetVerStrInfo, request,
+            sizeof(struct pldm_request_update_req) +
+                compImgSetVerStrInfo.length);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        uint16_t fdMetaDataLen = 0;
+        uint8_t fdWillSendPkgData = 0;
+
+        auto rc =
+            decode_request_update_resp(responsePtr, payloadLength, &cc,
+                                       &fdMetaDataLen, &fdWillSendPkgData);
+        if (rc)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            return;
+        }
+
+        ordered_json data;
+        fillCompletionCode(cc, data, PLDM_FWUP);
+
+        if (cc == PLDM_SUCCESS)
+        {
+            data["FirmwareDeviceMetaDataLength"] = fdMetaDataLen;
+            data["FDWillSendGetPackageDataCommand"] =
+                std::format("0x{:02X}", fdWillSendPkgData);
+        }
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint32_t maxTransferSize;
+    uint16_t numComps;
+    uint8_t maxTransferReqs;
+    uint16_t packageDataLength;
+    std::string compImgVerStrType;
+    uint8_t compImgVerStrLen;
+    std::string compImgSetVerStr;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -630,6 +810,11 @@ void registerCommand(CLI::App& app)
         "QueryDeviceIdentifiers", "To query device identifiers of the FD");
     commands.push_back(std::make_unique<QueryDeviceIdentifiers>(
         "fw_update", "QueryDeviceIdentifiers", queryDeviceIdentifiers));
+
+    auto requestUpdate = fwUpdate->add_subcommand(
+        "RequestUpdate", "To initiate a firmware update");
+    commands.push_back(std::make_unique<RequestUpdate>(
+        "fw_update", "RequestUpdate", requestUpdate));
 }
 
 } // namespace fw_update
