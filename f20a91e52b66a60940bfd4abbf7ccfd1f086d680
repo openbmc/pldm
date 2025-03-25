@@ -34,6 +34,24 @@
       "parentUuid": "4b32e6cc_0f811d0a",
       "revId": "f20a91e52b66a60940bfd4abbf7ccfd1f086d680",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "897f6fec_51436085",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-03-25T04:06:40Z",
+      "side": 1,
+      "message": "\u003e I updated the commit message.\n\u003e \n\u003e This is the reason:\n\u003e ```\n\u003e The `pldmd` will always create all available PLDM sensors from\n\u003e terminus PDRs if they include the sensor name and terminus name. But\n\u003e for pluggable PCIes cards such as NIC card, one PCIe slot can plug the\n\u003e NIC cards from different manufacture which can have different PDRs set.\n\u003e This causes the created PLDM sensors names can be different.\n\u003e \n\n\u003e But the PLDM sensors can be used by thermal control which should be\n\u003e independent with the plugged NIC cards. This requires solution to\n\u003e configure the unique PLDM sensors name for the different OEM PCIe cards\n\u003e which plugs to the same PCIe slot. This also requires the terminus Name\n\u003e black list to notify the `pldmd` which terminus it will not\n\u003e automatically create the PLDM sensors from PRDs.\n\u003e ```\n\u003e \n\nI still don\u0027t get why we need terminus blacklisting in this case . Thermal control code should ideally look at the PCIe Config space details like the vendor id, subsystem id e.t.c to decide if it\u0027s a hot card vs a normal card. The data provided by that card itself (maybe as part of its fru record table) should automatically drive the thermal management code. Why do pldm stack needs to have control ? This stack is supposed to be just acting translator. It should not decide which terminus it should blacklist for thermal control. (may be this logic should be in thermal control code ? perhaps ?)\n\n\u003e I think Meta also has the same solution which they use the sensor configuration file to create the PLDM sensors for NIC cards. The NIC cards can come from different OEM, but the created sensor name will be unique. So the thermal control can be applied regardless the installed  cards.\n\nis this a downstream code ? you are talking about ? or are there references to this ? that i can take a look at and try to understand the use case better ?\n\n\u003e In this case, the `pldmd` should not automatically create the PLDM sensors for those cards. and it should not use the sensors name and terminus name from PDRs but the sensor name and terminus name from the configuration file.",
+      "parentUuid": "33397aa4_fd39657c",
+      "revId": "f20a91e52b66a60940bfd4abbf7ccfd1f086d680",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
