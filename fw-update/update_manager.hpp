@@ -4,15 +4,23 @@
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
+#include "fw-update/update.hpp"
+#ifdef FW_UPDATE_INOTIFY_ENABLED
+#include "fw-update/watch.hpp"
+#endif
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
-#include "watch.hpp"
 
 #include <libpldm/base.h>
+
+#include <sdbusplus/async.hpp>
+#include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Software/Activation/server.hpp>
 
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <tuple>
 #include <unordered_map>
 
@@ -48,11 +56,17 @@ class UpdateManager
         const ComponentInfoMap& componentInfoMap) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
+#ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
               [this](std::string& packageFilePath) {
                   return this->processPackage(
                       std::filesystem::path(packageFilePath));
               }),
+#else
+        updater(std::make_unique<Update>(pldm::utils::DBusHandler::getBus(),
+                                         "/xyz/openbmc_project/software/pldm",
+                                         this)),
+#endif
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 
@@ -70,6 +84,25 @@ class UpdateManager
                            const pldm_msg* request, size_t reqMsgLen);
 
     int processPackage(const std::filesystem::path& packageFilePath);
+
+    /** @brief Process the firmware update package
+     *
+     *  @param[in] packageStream - Stream of the firmware update package
+     *  @param[in] packageSize - Size of the firmware update package
+     *
+     *  @return Object path of the created Software object
+     */
+    void processStream(std::istream& packageStream, uintmax_t packageSize);
+
+    /** @brief Defers processing the package stream
+     *
+     *  @param[in] packageStream - Stream of the firmware update package
+     *  @param[in] packageSize - Size of the firmware update package
+     *
+     *  @return Object path of the created Software object as a string
+     */
+    std::string processStreamDefer(std::istream& packageStream,
+                                   uintmax_t packageSize);
 
     void updateDeviceCompletion(mctp_eid_t eid, bool status);
 
@@ -91,20 +124,31 @@ class UpdateManager
         const DescriptorMap& descriptorMap,
         TotalComponentUpdates& totalNumComponentUpdates);
 
+    /** @brief Generate a unique software ID based on current timestamp
+     *
+     *  @return String representation of the current timestamp in seconds
+     */
+    static std::string getSwId();
+
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
     Event& event; //!< reference to PLDM daemon's main event loop
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
     InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
 
+    std::unique_ptr<Activation> activation;
+
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
+#ifdef FW_UPDATE_INOTIFY_ENABLED
     Watch watch;
+#else
+    std::unique_ptr<Update> updater;
+#endif
 
-    std::unique_ptr<Activation> activation;
     std::unique_ptr<ActivationProgress> activationProgress;
     std::string objPath;
 
@@ -128,6 +172,7 @@ class UpdateManager
      */
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
+    std::unique_ptr<sdeventplus::source::Defer> updateDeferHandler;
 };
 
 } // namespace fw_update
