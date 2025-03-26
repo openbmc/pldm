@@ -142,6 +142,11 @@ conf_data.set(
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 conf_data.set('UPDATE_TIMEOUT_SECONDS', get_option('update-timeout-seconds'))
 
+# Firmware update inotify option
+if get_option('fw-update-pkg-inotify').allowed()
+    conf_data.set('FW_UPDATE_INOTIFY_ENABLED', 1)
+endif
+
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(
@@ -242,18 +247,26 @@ if get_option('libpldmresponder').allowed()
     deps += [libpldmresponder_dep]
 endif
 
-executable(
-    'pldmd',
-    'pldmd/pldmd.cpp',
-    'pldmd/dbus_impl_pdr.cpp',
+fw_update_sources = [
     'fw-update/activation.cpp',
     'fw-update/inventory_manager.cpp',
     'fw-update/firmware_inventory_manager.cpp',
     'fw-update/firmware_inventory.cpp',
     'fw-update/package_parser.cpp',
     'fw-update/device_updater.cpp',
-    'fw-update/watch.cpp',
     'fw-update/update_manager.cpp',
+    'fw-update/update.cpp',
+]
+
+if get_option('fw-update-pkg-inotify').allowed()
+    fw_update_sources += 'fw-update/watch.cpp'
+endif
+
+executable(
+    'pldmd',
+    'pldmd/pldmd.cpp',
+    'pldmd/dbus_impl_pdr.cpp',
+    fw_update_sources,
     'platform-mc/dbus_impl_fru.cpp',
     'platform-mc/terminus_manager.cpp',
     'platform-mc/terminus.cpp',
