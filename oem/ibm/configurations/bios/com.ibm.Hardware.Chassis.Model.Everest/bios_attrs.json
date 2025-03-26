@@ -991,7 +991,7 @@
             "lower_bound": 0,
             "upper_bound": 9,
             "scalar_increment": 1,
-            "default_value": 9,
+            "default_value": 2,
             "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable dynamic I/O drawer attachment.",
             "display_name": "Dynamic I/O Drawer Attachment"
         },
@@ -1001,7 +1001,7 @@
             "lower_bound": 0,
             "upper_bound": 9,
             "scalar_increment": 1,
-            "default_value": 9,
+            "default_value": 2,
             "read_only": true,
             "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable dynamic I/O drawer attachment.",
             "display_name": "Dynamic I/O Drawer Attachment"
