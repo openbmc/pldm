@@ -5,6 +5,7 @@
 #include "package_parser.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <sdeventplus/source/event.hpp>
 
 #include <cassert>
 #include <cmath>
@@ -64,15 +65,61 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
 
     uintmax_t packageSize = package.tellg();
+
+     auto swId = std::to_string(
+        std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count());
+    objPath = swRootPath + swId;
+
+    fwPackageFilePath = packageFilePath;
+
+    try
+    {
+        processStream(package, packageSize);
+        return 0;
+    }
+    catch (sdbusplus::exception_t& e)
+    {
+        error("Exception occurred while processing the package: {ERROR}",
+              "ERROR", e);
+        package.close();
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+
+}
+
+std::string UpdateManager::processStreamDefer(std::istream& package,
+                                         uintmax_t packageSize)
+{
+     auto swId = std::to_string(
+        std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count());
+    objPath = swRootPath + swId;
+    processStreamDeferHandler = std::make_unique<sdeventplus::source::Defer>(
+        event, [this, &package, packageSize](sdeventplus::source::EventBase&) {
+            this->processStream(package, packageSize);
+        });
+
+    return objPath;
+}
+
+void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
+{
+    startTime = std::chrono::steady_clock::now();
     if (packageSize < sizeof(pldm_package_header_information))
     {
         error(
             "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
             "SIZE", packageSize, "PACKAGE_HEADER_INFO_SIZE",
             sizeof(pldm_package_header_information));
-        package.close();
-        std::filesystem::remove(packageFilePath);
-        return -1;
+        activation = std::make_unique<Activation>(
+            pldm::utils::DBusHandler::getBus(), objPath,
+            software::Activation::Activations::Invalid, this);
+        parser.reset();
+        throw sdbusplus::error::xyz::openbmc_project::software::update::InvalidImage();
     }
 
     package.seekg(0);
@@ -83,14 +130,11 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
-        package.close();
-        std::filesystem::remove(packageFilePath);
-        return -1;
+        activation = std::make_unique<Activation>(
+            pldm::utils::DBusHandler::getBus(), objPath,
+            software::Activation::Activations::Invalid, this);
+        parser.reset();
     }
-
-    // Populate object path with the hash of the package version
-    size_t versionHash = std::hash<std::string>{}(parser->pkgVersion);
-    objPath = swRootPath + std::to_string(versionHash);
 
     package.seekg(0);
     try
@@ -103,9 +147,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        package.close();
         parser.reset();
-        return -1;
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            InvalidImage();
     }
 
     auto deviceUpdaterInfos =
@@ -118,9 +162,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        package.close();
         parser.reset();
-        return 0;
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            Incompatible();
     }
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
@@ -138,14 +182,15 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
                 compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
     }
 
-    fwPackageFilePath = packageFilePath;
     activation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPath,
         software::Activation::Activations::Ready, this);
     activationProgress = std::make_unique<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPath);
 
-    return 0;
+#ifndef FW_UPDATE_INOTIFY_ENABLED
+    activation->activation(software::Activation::Activations::Activating);
+#endif
 }
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
@@ -261,7 +306,6 @@ void UpdateManager::clearActivationInfo()
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
     parser.reset();
-    package.close();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
     compUpdateCompletedCount = 0;
