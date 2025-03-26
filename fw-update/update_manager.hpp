@@ -4,15 +4,21 @@
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
+#include "fw-update/update.hpp"
+#include "fw-update/watch.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
-#include "watch.hpp"
 
 #include <libpldm/base.h>
+
+#include <sdbusplus/async.hpp>
+#include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Software/Activation/server.hpp>
 
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <tuple>
 #include <unordered_map>
 
@@ -54,7 +60,11 @@ class UpdateManager
                       std::filesystem::path(packageFilePath));
               }),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
-    {}
+    {
+        updater = std::make_unique<Update>(pldm::utils::DBusHandler::getBus(),
+                                       "/xyz/openbmc_project/software",
+                                       this);
+    }
 
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
@@ -70,6 +80,16 @@ class UpdateManager
                            const pldm_msg* request, size_t reqMsgLen);
 
     int processPackage(const std::filesystem::path& packageFilePath);
+
+    /** @brief Process the firmware update package
+     *
+     *  @param[in] packageStream - Stream of the firmware update package
+     *  @param[in] packageSize - Size of the firmware update package
+     *
+     *  @return Object path of the created Software object
+     */
+    std::string processStream(std::istream& packageStream,
+                              uintmax_t packageSize);
 
     void updateDeviceCompletion(mctp_eid_t eid, bool status);
 
@@ -97,6 +117,8 @@ class UpdateManager
     pldm::requester::Handler<pldm::requester::Request>& handler;
     InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
 
+    std::unique_ptr<Activation> activation;
+
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
@@ -104,8 +126,8 @@ class UpdateManager
     const ComponentInfoMap& componentInfoMap;
     Watch watch;
 
-    std::unique_ptr<Activation> activation;
     std::unique_ptr<ActivationProgress> activationProgress;
+    std::unique_ptr<Update> updater;
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
