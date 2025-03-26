@@ -75,6 +75,39 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         return -1;
     }
 
+    try
+    {
+        processStream(package, packageSize);
+        return 0;
+    }
+    catch (sdbusplus::exception_t& e)
+    {
+        error("Exception occurred while processing the package: {ERROR}",
+              "ERROR", e);
+        package.close();
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+
+}
+
+std::string UpdateManager::processStream(std::istream& package,
+                                         uintmax_t packageSize)
+{
+    startTime = std::chrono::steady_clock::now();
+    if (packageSize < sizeof(pldm_package_header_information))
+    {
+        error(
+            "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
+            "SIZE", packageSize, "PACKAGE_HEADER_INFO_SIZE",
+            sizeof(pldm_package_header_information));
+        if (activation)
+        {
+            activation->activation(software::Activation::Activations::Invalid);
+        }
+        throw sdbusplus::error::xyz::openbmc_project::software::update::InvalidImage();
+    }
+
     package.seekg(0);
     std::vector<uint8_t> packageHeader(packageSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
@@ -83,9 +116,11 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
-        package.close();
-        std::filesystem::remove(packageFilePath);
-        return -1;
+        if (activation)
+        {
+            activation->activation(software::Activation::Activations::Invalid);
+        }
+        throw sdbusplus::error::xyz::openbmc_project::software::update::InvalidImage();
     }
 
     // Populate object path with the hash of the package version
@@ -100,12 +135,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     catch (const std::exception& e)
     {
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        package.close();
         parser.reset();
-        return -1;
+        throw sdbusplus::error::xyz::openbmc_project::software::update::InvalidImage();
     }
 
     auto deviceUpdaterInfos =
@@ -115,12 +146,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     {
         error(
             "No matching devices found with the PLDM firmware update package");
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        package.close();
-        parser.reset();
-        return 0;
+        throw sdbusplus::error::xyz::openbmc_project::software::update::Incompatible();
     }
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
@@ -138,14 +164,17 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
                 compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
     }
 
-    fwPackageFilePath = packageFilePath;
     activation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPath,
         software::Activation::Activations::Ready, this);
     activationProgress = std::make_unique<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPath);
 
-    return 0;
+    #ifndef FW_UPDATE_INOTIFY_ENABLED
+    activation->activation(software::Activation::Activations::Activating);
+    #endif
+
+    return objPath;
 }
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
@@ -261,7 +290,6 @@ void UpdateManager::clearActivationInfo()
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
     parser.reset();
-    package.close();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
     compUpdateCompletedCount = 0;

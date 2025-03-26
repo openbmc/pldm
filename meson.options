@@ -223,3 +223,11 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249,
 )
+
+# Firmware Update configuration parameters
+option(
+    'fw-update-inotify',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable inotify-based firmware update package monitoring',
+)
