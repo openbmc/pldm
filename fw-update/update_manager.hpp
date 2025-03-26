@@ -6,13 +6,17 @@
 #include "fw-update/activation.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
-#include "watch.hpp"
 
 #include <libpldm/base.h>
+
+#include <sdbusplus/async.hpp>
+#include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Software/Activation/server.hpp>
 
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <tuple>
 #include <unordered_map>
 
@@ -48,8 +52,6 @@ class UpdateManager
         const ComponentInfoMap& componentInfoMap) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
-        watch(event.get(),
-              std::bind_front(&UpdateManager::processPackage, this)),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 
@@ -66,7 +68,15 @@ class UpdateManager
     Response handleRequest(mctp_eid_t eid, uint8_t command,
                            const pldm_msg* request, size_t reqMsgLen);
 
-    int processPackage(const std::filesystem::path& packageFilePath);
+    /** @brief Process the firmware update package
+     *
+     *  @param[in] packageStream - Stream of the firmware update package
+     *  @param[in] packageSize - Size of the firmware update package
+     *
+     *  @return 0 on success, -1 on failure
+     */
+    std::string processStream(std::istream& packageStream,
+                              uintmax_t packageSize);
 
     void updateDeviceCompletion(mctp_eid_t eid, bool status);
 
@@ -94,15 +104,16 @@ class UpdateManager
     pldm::requester::Handler<pldm::requester::Request>& handler;
     InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
 
+    std::unique_ptr<Activation> activation;
+
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
-    Watch watch;
 
-    std::unique_ptr<Activation> activation;
     std::unique_ptr<ActivationProgress> activationProgress;
+    std::unique_ptr<Update> updater;
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;

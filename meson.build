@@ -246,7 +246,6 @@ executable(
     'fw-update/inventory_manager.cpp',
     'fw-update/package_parser.cpp',
     'fw-update/device_updater.cpp',
-    'fw-update/watch.cpp',
     'fw-update/update_manager.cpp',
     'platform-mc/dbus_impl_fru.cpp',
     'platform-mc/terminus_manager.cpp',

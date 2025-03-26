@@ -4,6 +4,8 @@
 #include <xyz/openbmc_project/Object/Delete/server.hpp>
 #include <xyz/openbmc_project/Software/Activation/server.hpp>
 #include <xyz/openbmc_project/Software/ActivationProgress/server.hpp>
+#include <xyz/openbmc_project/Software/ApplyTime/server.hpp>
+#include <xyz/openbmc_project/Software/Update/server.hpp>
 
 #include <string>
 
@@ -21,6 +23,10 @@ using ActivationProgressIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Software::server::ActivationProgress>;
 using DeleteIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Object::server::Delete>;
+using UpdateIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Software::server::Update>;
+using ApplyTimeIntf =
+    sdbusplus::xyz::openbmc_project::Software::server::ApplyTime;
 
 /** @class ActivationProgress
  *
@@ -124,6 +130,38 @@ class Activation : public ActivationIntf
     const std::string objPath;
     UpdateManager* updateManager;
     std::unique_ptr<Delete> deleteImpl;
+};
+
+/** @class Update
+ *
+ *  Concrete implementation of xyz.openbmc_project.Software.Update D-Bus
+ *  interface
+ */
+class Update : public UpdateIntf
+{
+  public:
+    /** @brief Constructor
+     *
+     *  @param[in] bus - Bus to attach to
+     *  @param[in] objPath - D-Bus object path
+     *  @param[in] updateManager - Reference to FW update manager
+     */
+    Update(sdbusplus::bus::bus& bus, const std::string& path,
+           std::shared_ptr<UpdateManager> updateManager) :
+        UpdateIntf(bus, path.c_str()), updateManager(updateManager),
+        objPath(path)
+    {}
+
+    virtual sdbusplus::message::object_path startUpdate(
+        sdbusplus::message::unix_fd image,
+        ApplyTimeIntf::RequestedApplyTimes applyTime) override;
+
+    ~Update() noexcept override = default;
+
+  private:
+    std::shared_ptr<UpdateManager> updateManager;
+    const std::string objPath;
+    std::stringstream imageStream;
 };
 
 } // namespace fw_update
