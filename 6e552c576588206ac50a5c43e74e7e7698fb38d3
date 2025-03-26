@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc25df2_6f676ecf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-03-26T23:03:22Z",
+      "side": 1,
+      "message": "This needs to be updated to use inclusive terminology. It must be a block-list, not a black-list.\n\nhttps://moderationapi.com/glossary/allowlist-blocklist",
+      "revId": "6e552c576588206ac50a5c43e74e7e7698fb38d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
