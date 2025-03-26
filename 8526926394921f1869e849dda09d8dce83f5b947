@@ -124,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aff8b72e_b2763f7b",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-26T07:27:06Z",
+      "side": 1,
+      "message": "Thanks for the explanation! 😊",
+      "parentUuid": "d6860d3a_f1558088",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd544f6a_195d88a0",
@@ -295,6 +313,24 @@
       "side": 1,
       "message": "Managers will need this to receive the D-Bus object path of EM, a defult null implementation has been set since this is optional for some of the those.\n(or is it better to be passed via `MctpInfo`?)",
       "parentUuid": "9b0d8903_82d35583",
+      "revId": "8526926394921f1869e849dda09d8dce83f5b947",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9854c2f5_62539118",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-03-26T07:27:06Z",
+      "side": 1,
+      "message": "Marked as resolved, since the reason exists and there is no further opinions input.",
+      "parentUuid": "2fa288bf_3358d87b",
       "revId": "8526926394921f1869e849dda09d8dce83f5b947",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
