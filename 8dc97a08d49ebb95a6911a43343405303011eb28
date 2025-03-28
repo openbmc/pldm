@@ -181,6 +181,24 @@
       "parentUuid": "30118777_0aa9c7ca",
       "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f9f455c_8cb890f9",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-03-28T12:22:04Z",
+      "side": 1,
+      "message": "then please start a discussion on codeconstruct/mctp to prevent recovery for static EIDs. I don\u0027t think this should be a build-time option on mctpd",
+      "parentUuid": "3452f783_40fda971",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
