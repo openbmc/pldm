@@ -163,6 +163,24 @@
       "parentUuid": "6196ae9c_217f12eb",
       "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3452f783_40fda971",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-03-28T11:17:59Z",
+      "side": 1,
+      "message": "This is because the current `MCTP recovery` method is designed for `dynamic EID`, but in systems that already use a `static EID` architecture and are prone to `PLDM request timeouts`, calling the `MCTP recovery` method can cause unexpected changes to the EID, which in turn affects the system.",
+      "parentUuid": "30118777_0aa9c7ca",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
