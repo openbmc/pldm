@@ -199,6 +199,24 @@
       "parentUuid": "3452f783_40fda971",
       "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21b38552_63d4f7fc",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-03-28T14:41:45Z",
+      "side": 1,
+      "message": "Thank you for the suggestion.\nWe’ll focus on addressing the recovery method for static EIDs rather than making it a build-time option in mctpd.",
+      "parentUuid": "8f9f455c_8cb890f9",
+      "revId": "8dc97a08d49ebb95a6911a43343405303011eb28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
