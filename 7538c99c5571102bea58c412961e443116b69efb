@@ -69,6 +69,24 @@
       "parentUuid": "b5e09edc_84285115",
       "revId": "7538c99c5571102bea58c412961e443116b69efb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce87ac05_2d42360e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-03-31T02:47:43Z",
+      "side": 1,
+      "message": "\u003e The reason for this commit is that when the EM searches through all JSON files for the interface specified in the probe field to perform `Getsubtree`, it aims to find objects with that interface and execute `GetAll` to determine whether to probe the JSON config.\n\u003e \n\u003e Currently, even in situations where `terminus` does not support providing FRU information, there are still interfaces like `xyz.openbmc_project.Inventory.Decorator.Asset` under the PLDM inventory object.\n\nIf `pldmd` is still create the `xyz.openbmc_project.Inventory.Decorator.Asset` interface and inventory object when the terminus does not provide the FRU information then it should be a bug in pldm code.\n\nCan you confirm which service host the Fru interface of `bletchley_frontpanel`?\n\n\u003e \n\u003e If the JSON for EM in the system has probe conditions that use the same interface (for example, the current `entity-manager/configurations/meta/bletchley_frontpanel.json`), it will cause the EM to continuously attempt to perform `GetAll` operations on the PLDM inventory object. \n\u003e \n\u003e This can create additional burden on the system and delay the time it takes for EM to complete the `Interface Added` process.",
+      "parentUuid": "580ea421_15a5db5d",
+      "revId": "7538c99c5571102bea58c412961e443116b69efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
