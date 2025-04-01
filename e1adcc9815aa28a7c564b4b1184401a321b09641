@@ -16,6 +16,24 @@
       "message": "The original design is return Error at this step. So we should append `failedMctpInfos.push_back(mctpInfo);` to make sure the API will return error.",
       "revId": "e1adcc9815aa28a7c564b4b1184401a321b09641",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1e9a270_db0ebde4",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-04-01T10:16:57Z",
+      "side": 1,
+      "message": "Thanks for the reminder! It\u0027s been fixed.",
+      "parentUuid": "6609b207_96d5bb5e",
+      "revId": "e1adcc9815aa28a7c564b4b1184401a321b09641",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
