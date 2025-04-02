@@ -22,6 +22,126 @@
       },
       "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e706f83_3bfb329f",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T22:48:17Z",
+      "side": 1,
+      "message": "What is this??  We should not be catching (or throwing) integers.",
+      "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d03e146_1f4e127a",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T22:48:17Z",
+      "side": 1,
+      "message": "Isn\u0027t this a potential race condition?  You potentially have two threads interacting with this as if it were a global variable.",
+      "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6bb94ac_52027772",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T22:48:17Z",
+      "side": 1,
+      "message": "We really shouldn\u0027t be doing sync_wait.  That means this becomes a blocking point for all of the code.",
+      "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1d57a96_e5167389",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T22:48:17Z",
+      "side": 1,
+      "message": "Why is this a co-routine when there is no `co_await` in it?",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 16
+      },
+      "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e45bc2_e7040476",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T22:48:17Z",
+      "side": 1,
+      "message": "I don\u0027t know how `exec::` works here, but I\u0027d prefer we use `sdbusplus::async::task`.",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 63,
+        "endChar": 8
+      },
+      "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d485378b_9fdac6e8",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T22:48:17Z",
+      "side": 1,
+      "message": "co-routines taking a reference is almost always wrong.  How do you know the lifetime of the Request lasts through the end of the co-routine\u0027s execution?",
+      "range": {
+        "startLine": 183,
+        "startChar": 60,
+        "endLine": 183,
+        "endChar": 77
+      },
+      "revId": "02c5ba67e3eb1add279c17a52b8443beea276b54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
