@@ -89,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3001c67_7893d25e",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-02T18:54:20Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ll make changes for all the commands in the follow-up patches",
+      "parentUuid": "d6420347_27f6833c",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e0173b4_fae5cb00",
