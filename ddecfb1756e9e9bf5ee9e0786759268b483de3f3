@@ -16,6 +16,40 @@
       "message": "For reviewers,\nThis MR will needs openssl as dependency to be available, therefore the feature has been made configurable by meson option, there is another [patch] for openbmc/openbmc for adding openssl as dependency.\n\n[patch]: https://gerrit.openbmc.org/c/openbmc/openbmc/+/78797",
       "revId": "ddecfb1756e9e9bf5ee9e0786759268b483de3f3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66b15f3c_a990450f",
+        "filename": "fw-update/inventory_item_manager.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T19:52:01Z",
+      "side": 1,
+      "message": "I don\u0027t understand what the point of this is.  Why don\u0027t we use the same hash method that we use everywhere else (from std)??  Adding a dependency on openssl just to perform a single 8 character hash seems absurd at first glance.",
+      "revId": "ddecfb1756e9e9bf5ee9e0786759268b483de3f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7519db1f_0763d746",
+        "filename": "meson.options",
+        "patchSetId": 27
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T19:52:01Z",
+      "side": 1,
+      "message": "Why are we disabling by default?  That means we have _more_ code that isn\u0027t being tested in CI.",
+      "revId": "ddecfb1756e9e9bf5ee9e0786759268b483de3f3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
