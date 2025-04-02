@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a392e56_82e3ef8a",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-02T05:49:02Z",
+      "side": 1,
+      "message": "Having all error codes consolidated in a single map simplifies updating completion codes. Given that the error code enums are unique, do you see additional value in splitting them?",
+      "parentUuid": "c1b0fbac_321bcbce",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac967b61_905b5394",
         "filename": "pldmtool/pldm_cmd_helper.cpp",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2025-03-26T12:41:26Z",
       "side": 1,
       "message": "Updating the existing commands to use fillCompletionCode is in the scope of this commit or a followup commit?",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adb4dad2_b78abfca",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-02T05:49:02Z",
+      "side": 1,
+      "message": "Yes that will be a follow-up commit.",
+      "parentUuid": "ac967b61_905b5394",
       "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2025-03-26T12:41:26Z",
       "side": 1,
       "message": "Does this cover both PLDM T0 \u0026 PLDM T5 completion codes?",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d93a2d_21809ea0",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-02T05:49:02Z",
+      "side": 1,
+      "message": "Yes it will",
+      "parentUuid": "8e0173b4_fae5cb00",
       "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
