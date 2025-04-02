@@ -104,6 +104,24 @@
       "parentUuid": "97909e04_5998b7e9",
       "revId": "20024fc41d7021799befdd5a495d1ce79189ac31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe8bd00f_b41036ee",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-04-02T10:23:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57d9b55e_c8b1bd4c",
+      "revId": "20024fc41d7021799befdd5a495d1ce79189ac31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
