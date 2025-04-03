@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d53bbefd_9bd3817b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T08:25:37Z",
+      "side": 1,
+      "message": "Do we really need a vector to track failure? We don\u0027t seem to be actually consuming the entries of the vector other than as a count.",
+      "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ed132a_1feb6b46",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T08:25:37Z",
+      "side": 1,
+      "message": "How does the caller fetch this information?",
+      "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05476741_f7861da6",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T08:25:37Z",
+      "side": 1,
+      "message": "Should we fail only if none of the terminii can be discovered?",
+      "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
