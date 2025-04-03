@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "669ac68b_68794f59",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "How is this informtion useful for PLDM?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b84e4e_b9bccef2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "Testing details?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9feae88_ad3d408b",
+        "filename": "common/types.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "Can you add a \"using\" directive for Name?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98da2156_c37cd59d",
+        "filename": "common/utils.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "This doesn\u0027t look like a common utils definition. Move it to MCTP specific file?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b804b6c9_b1c97745",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "Can make this a constant elsewhere.",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a8a78b_f3c0b338",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "move inside block (try).",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d8c6691_67ad4f63",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "Is this copy needed?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d00470a7_b625ab14",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "avoid hardcoding here",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99303f3f_5c1e24ed",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "nit: avoid multiple calls to the same iterator (begin())",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70a52468_04a49e9b",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "Why do we really need the interface filter?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bced7afb_0642e930",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T07:35:26Z",
+      "side": 1,
+      "message": "Why would we selectively pick some properties?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
