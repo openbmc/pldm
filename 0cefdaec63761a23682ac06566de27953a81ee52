@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ab4b99_bd171c5e",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T06:41:27Z",
+      "side": 1,
+      "message": "static map?",
+      "revId": "0cefdaec63761a23682ac06566de27953a81ee52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3323f975_415d06e1",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T06:41:27Z",
+      "side": 1,
+      "message": "Dont we need to check the input? How do we know it\u0027s uint8?",
+      "revId": "0cefdaec63761a23682ac06566de27953a81ee52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb39f5d1_442508b7",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T06:41:27Z",
+      "side": 1,
+      "message": "Better to use https://en.cppreference.com/w/cpp/string/basic_string/stol",
+      "revId": "0cefdaec63761a23682ac06566de27953a81ee52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93747d3f_8c66206d",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-04-03T06:41:27Z",
+      "side": 1,
+      "message": "So this is used to just trigger an update, but subsequent progress and completion monitoring has to be done via other means? Can you add details to the commit msg?",
+      "revId": "0cefdaec63761a23682ac06566de27953a81ee52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
