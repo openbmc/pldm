@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "919e8abd_5f92dcc0",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-03T16:08:40Z",
+      "side": 1,
+      "message": "Updated the code to handle overlapping completion codes depending on the PLDM type.\n\nWill extend it for T2 as part of T2 command integration. One thing to note is in T2, completion codes can also overlap depending on the command.\n\ne.g PLDM_PLATFORM_INVALID_EFFECTER_ID \u003d 0x80,\nPLDM_PLATFORM_INVALID_SENSOR_ID \u003d 0x80,\nPLDM_PLATFORM_INVALID_DATA_TRANSFER_HANDLE \u003d 0x80,\nPLDM_PLATFORM_INVALID_PROTOCOL_TYPE \u003d 0x80,",
+      "parentUuid": "32161216_682ce56d",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac967b61_905b5394",
@@ -160,6 +178,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93a50bbc_b160d742",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-03T16:08:40Z",
+      "side": 1,
+      "message": "Only added helper utility in this patch, test results for each command would be attached in the subsequent patches, e.g. https://gerrit.openbmc.org/c/openbmc/pldm/+/79167/3?usp\u003drelated-change",
+      "parentUuid": "da68ced4_520e1efb",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e0173b4_fae5cb00",
@@ -208,6 +244,24 @@
       "writtenOn": "2025-04-03T06:31:38Z",
       "side": 1,
       "message": "Do we also show the numeric RC?",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d02fb3_23ee25c9",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-03T16:08:40Z",
+      "side": 1,
+      "message": "Using the verbose flag, we can always get the raw command response.\n\nFor example -\n\npldmtool fw_update RequestUpdate --max_transfer_size 32 --num_comps 2 --max_transfer_reqs 10 --package_data_length 10 --comp_img_ver_str_type ASCII --comp_img_ver_str_len 4 --comp_img_set_ver_str ver1 -m 0 -v\npldmtool: \u003c6\u003e Tx: 00 01 80 05 10 20 00 00 00 02 00 0a 0a 00 01 04 76 65 72 31\nSuccess in creating the socket : RC \u003d 5\nSuccess in connecting to socket : RC \u003d 0\nSuccess in sending message type as pldm to mctp demux daemon : RC \u003d 1\npldmtool: \u003c6\u003e Rx: 00 05 10 00 00 00 00\n{\n    \"CompletionCode\": \"SUCCESS\",\n    \"FirmwareDeviceMetaDataLength\": 0,\n    \"FDWillSendGetPackageDataCommend\": \"0x00\"\n}",
+      "parentUuid": "54dafbf2_e33f41f1",
       "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
