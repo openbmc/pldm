@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32161216_682ce56d",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-04-03T09:08:24Z",
+      "side": 1,
+      "message": "There are overlapping completion codes based on type. \nDSP0248 aka T2 - INVALID_SENSOR_ID \u003d 0x80\nDSP0267 aka T5 - NOT_IN_UPDATE_MODE \u003d 0x80",
+      "parentUuid": "6a392e56_82e3ef8a",
+      "revId": "44815bda7cff1f5ac2c4a2812aa61d69acc60840",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac967b61_905b5394",
         "filename": "pldmtool/pldm_cmd_helper.cpp",
         "patchSetId": 3
