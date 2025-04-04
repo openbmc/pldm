@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c5d5565_81b0d612",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-04-04T04:00:26Z",
+      "side": 1,
+      "message": "We should `default: data[\"CompletionCode\"] \u003d it-\u003esecond;` to handle other types gracefully.",
+      "revId": "cd84065ce4245cd0728f0faae43976f56e7a72a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "768425a9_e3ac4720",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-04-04T04:00:26Z",
+      "side": 1,
+      "message": "For readability, prefer to organise [in] parameters followed by [out] parameters.\n\n\u003cpldmType, completionCode, data\u003e",
+      "revId": "cd84065ce4245cd0728f0faae43976f56e7a72a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
