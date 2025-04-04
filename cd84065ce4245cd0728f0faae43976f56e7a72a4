@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f8dce5_d3ee98d5",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-04T04:44:10Z",
+      "side": 1,
+      "message": "Error codes from base spec is already taken care above, now if completion code is not found in the map-\u003e data[\"CompletionCode\"] \u003d \"UNKNOWN_COMPLETION_CODE\";\n\nExpectation is to use fillCompletionCode() for other types after adding the logic here, otherwise it will be marked as UNKNOWN_COMPLETION_CODE",
+      "parentUuid": "5c5d5565_81b0d612",
+      "revId": "cd84065ce4245cd0728f0faae43976f56e7a72a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "768425a9_e3ac4720",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-04-04T04:00:26Z",
       "side": 1,
       "message": "For readability, prefer to organise [in] parameters followed by [out] parameters.\n\n\u003cpldmType, completionCode, data\u003e",
+      "revId": "cd84065ce4245cd0728f0faae43976f56e7a72a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a9e5588_fffdd443",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-04T04:44:10Z",
+      "side": 1,
+      "message": "the data should be [in] and not [out] here. Corrected it.\nAlso, the default parameters must be trailing parameters, so pldmType can\u0027t be placed before non-default parameters (completionCode, data)",
+      "parentUuid": "768425a9_e3ac4720",
       "revId": "cd84065ce4245cd0728f0faae43976f56e7a72a4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
