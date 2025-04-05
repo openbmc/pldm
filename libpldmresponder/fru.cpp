@@ -364,7 +364,7 @@ void FruImpl::getFRUTable(Response& response)
     if (table.size())
     {
         tempTable = tableResize();
-        checksum = crc32(tempTable.data(), tempTable.size());
+        checksum = pldm_edac_crc32(tempTable.data(), tempTable.size());
     }
     response.resize(hdrSize + tempTable.size() + sizeof(checksum), 0);
     std::copy(tempTable.begin(), tempTable.end(), response.begin() + hdrSize);
@@ -381,7 +381,7 @@ void FruImpl::getFRURecordTableMetadata()
     if (table.size())
     {
         tempTable = tableResize();
-        checksum = crc32(tempTable.data(), tempTable.size());
+        checksum = pldm_edac_crc32(tempTable.data(), tempTable.size());
     }
 }
 
@@ -412,7 +412,7 @@ int FruImpl::getFRURecordByOption(
     }
 
     auto pads = pldm::utils::getNumPadBytes(recordTableSize);
-    crc32(fruData.data(), recordTableSize + pads);
+    pldm_edac_crc32(fruData.data(), recordTableSize + pads);
 
     auto iter = fruData.begin() + recordTableSize + pads;
     std::copy_n(reinterpret_cast<const uint8_t*>(&checksum), sizeof(checksum),

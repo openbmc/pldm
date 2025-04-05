@@ -116,7 +116,7 @@ FileTable::FileTable(const std::string& fileTableConfigPath)
     }
 
     // Calculate the checksum
-    checkSum = crc32(fileTable.data(), fileTable.size());
+    checkSum = pldm_edac_crc32(fileTable.data(), fileTable.size());
 }
 
 Table FileTable::operator()() const
