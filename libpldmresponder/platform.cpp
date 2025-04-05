@@ -11,7 +11,6 @@
 #include "platform_numeric_effecter.hpp"
 #include "platform_state_effecter.hpp"
 #include "platform_state_sensor.hpp"
-#include "pldmd/dbus_impl_requester.hpp"
 #include "pldmd/handler.hpp"
 #include "requester/handler.hpp"
 

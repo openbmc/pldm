@@ -1,7 +1,6 @@
 #pragma once
 
 #include "pldmd/dbus_impl_pdr.hpp"
-#include "pldmd/dbus_impl_requester.hpp"
 #include "requester/handler.hpp"
 
 #include <sdbusplus/server/object.hpp>

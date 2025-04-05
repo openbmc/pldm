@@ -6,7 +6,6 @@
 #include "../oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 #include "../oem/ibm/libpldmresponder/utils.hpp"
 #include "common/utils.hpp"
-#include "dbus_impl_requester.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
