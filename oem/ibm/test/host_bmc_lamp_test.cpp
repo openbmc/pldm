@@ -1,5 +1,4 @@
 #include "oem/ibm/host-bmc/host_lamp_test.hpp"
-#include "pldmd/dbus_impl_requester.hpp"
 #include "test/test_instance_id.hpp"
 
 #include <cstring>
