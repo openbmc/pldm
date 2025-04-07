@@ -143,20 +143,27 @@ class GetPLDMTypes : public CommandInterface
         std::vector<bitfield8_t> types(8);
         auto rc = decode_get_types_resp(responsePtr, payloadLength, &cc,
                                         types.data());
-        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        if (rc != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
                       << "rc=" << rc << ",cc=" << (int)cc << "\n";
             return;
         }
 
-        printPldmTypes(types);
+        ordered_json data;
+        fillCompletionCode(cc, data, PLDM_BASE);
+        if (cc == PLDM_SUCCESS)
+        {
+            printPLDMTypes(types, data);
+        }
+
+        pldmtool::helper::DisplayInJson(data);
     }
 
   private:
-    void printPldmTypes(std::vector<bitfield8_t>& types)
+    void printPLDMTypes(std::vector<bitfield8_t>& types, ordered_json& data)
     {
-        ordered_json data;
+        ordered_json jPldmTypes;
         ordered_json jarray;
         for (int i = 0; i < PLDM_MAX_TYPES; i++)
         {
@@ -170,11 +177,11 @@ class GetPLDMTypes : public CommandInterface
                 {
                     jarray["PLDM Type"] = it->first;
                     jarray["PLDM Type Code"] = i;
-                    data.emplace_back(jarray);
+                    jPldmTypes.emplace_back(jarray);
                 }
             }
         }
-        pldmtool::helper::DisplayInJson(data);
+        data["PLDMTypes"] = jPldmTypes;
     }
 };
 
@@ -214,23 +221,29 @@ class GetPLDMVersion : public CommandInterface
         auto rc =
             decode_get_version_resp(responsePtr, payloadLength, &cc,
                                     &transferHandle, &transferFlag, &version);
-        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        if (rc != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
                       << "rc=" << rc << ",cc=" << (int)cc << "\n";
             return;
         }
-        char buffer[16] = {0};
-        ver2str(&version, buffer, sizeof(buffer));
         ordered_json data;
-        auto it = std::find_if(
-            pldmTypes.begin(), pldmTypes.end(),
-            [&](const auto& typePair) { return typePair.second == pldmType; });
-
-        if (it != pldmTypes.end())
+        fillCompletionCode(cc, data, PLDM_BASE);
+        if (cc == PLDM_SUCCESS)
         {
-            data["Response"] = buffer;
+            char buffer[16] = {0};
+            ver2str(&version, buffer, sizeof(buffer));
+            auto it = std::find_if(pldmTypes.begin(), pldmTypes.end(),
+                                   [&](const auto& typePair) {
+                                       return typePair.second == pldmType;
+                                   });
+
+            if (it != pldmTypes.end())
+            {
+                data["Response"] = buffer;
+            }
         }
+
         pldmtool::helper::DisplayInJson(data);
     }
 
