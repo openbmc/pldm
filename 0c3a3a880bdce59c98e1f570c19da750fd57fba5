@@ -22,6 +22,30 @@
       },
       "revId": "0c3a3a880bdce59c98e1f570c19da750fd57fba5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30cc9896_07b29552",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-07T18:00:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "65d52861_7e70e6fc",
+      "range": {
+        "startLine": 71,
+        "startChar": 24,
+        "endLine": 71,
+        "endChar": 44
+      },
+      "revId": "0c3a3a880bdce59c98e1f570c19da750fd57fba5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
