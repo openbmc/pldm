@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "048c92ca_13bdde5a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-04-07T10:20:53Z",
+      "side": 1,
+      "message": "Currently, the content of the vector is indeed not being used; it is only utilized to determine failure and for potential future use.\nCould you please suggest how we might modify it?\nThank you very much for your advice!",
+      "parentUuid": "d53bbefd_9bd3817b",
+      "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55ed132a_1feb6b46",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c747b52_8882ea7e",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-04-07T10:20:53Z",
+      "side": 1,
+      "message": "I believe the caller currently does not specifically handle this information.\nOnly a PLDM ERROR return code is provided to the upper layer through [discoverMctpTerminus], and there is no differentiated handling for SUCCESS and ERROR.\n\n[discoverMctpTerminus]: https://github.com/openbmc/pldm/blob/f264c08d50359f68e90dfeb22c3b4cb62d198c66/platform-mc/terminus_manager.cpp#L157",
+      "parentUuid": "55ed132a_1feb6b46",
+      "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05476741_f7861da6",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-04-03T08:25:37Z",
       "side": 1,
       "message": "Should we fail only if none of the terminii can be discovered?",
+      "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "508b2efc_85d1538e",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-04-07T10:20:53Z",
+      "side": 1,
+      "message": "I am following the original approach, where an ERROR is determined if any terminus discovery fails.\nI believe this should be decided based on how PLDM ERRORs are handled.\nIf error handling is done on a per-mctpinfo basis, then I think an ERROR should be determined if any terminus discovery fails.\nBut currently, there is no handling in place for this aspect.",
+      "parentUuid": "05476741_f7861da6",
       "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
