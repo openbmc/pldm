@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65d52861_7e70e6fc",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-04-07T09:33:16Z",
+      "side": 1,
+      "message": "every PLDM command has a type, so we can remove the default value of 0, because it can get confusing with PLDM Type 0.",
+      "range": {
+        "startLine": 71,
+        "startChar": 24,
+        "endLine": 71,
+        "endChar": 44
+      },
+      "revId": "0c3a3a880bdce59c98e1f570c19da750fd57fba5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
