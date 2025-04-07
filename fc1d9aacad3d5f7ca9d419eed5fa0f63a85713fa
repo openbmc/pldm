@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05fb988c_fd905f91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-07T07:06:16Z",
+      "side": 1,
+      "message": "@andrew@codeconstruct.com.au - can you add below to the commit message, it would be beneficial to add some additional details in case if some one accidentally looks at this commit with not much of background on the problem.\n\nThe original design of the Requester D-Bus API lacked ergonomic considerations. While it offered allocation functionality, it did not provide a corresponding mechanism to release instance IDs. Additionally, the interface failed to address critical issues, such as handling instance ID cleanup in the event of application crashes, and allowed applications to specify timeouts that exceeded the limits defined by the PLDM specification. Consequently, pldmd was forced to monitor all PLDM traffic and implement workarounds to manage instance ID lifecycles on behalf of applications, effectively assuming the role of global instance ID manager.\n\nAdditionally, many applications duplicated PLDM logic—implementing their own retry mechanisms—and, in some cases, violated the PLDM specification by setting timeouts as high as 40 seconds.\n\nNow that all applications rely directly on the libpldm allocator, it makes sense to remove this legacy interface entirely to prevent any future usage.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 47
+      },
+      "revId": "fc1d9aacad3d5f7ca9d419eed5fa0f63a85713fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58733134_b28c4300",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-07T07:06:16Z",
+      "side": 1,
+      "message": "This has been on my radar as well 😊—appreciate you taking the initiative to start cleaning this up. Changes looks good to me.",
+      "revId": "fc1d9aacad3d5f7ca9d419eed5fa0f63a85713fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
