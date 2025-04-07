@@ -74,6 +74,13 @@ const std::map<DescriptorType, const char*> descriptorName{
     {PLDM_FWUP_ACPI_PRODUCT_IDENTIFIER, "ACPI Product Identifier"},
     {PLDM_FWUP_VENDOR_DEFINED, "Vendor Defined"}};
 
+const std::map<std::string, transfer_resp_flag> transferRespFlag{
+    {"START", PLDM_START},
+    {"MIDDLE", PLDM_MIDDLE},
+    {"END", PLDM_END},
+    {"STARTANDEND", PLDM_START_AND_END},
+};
+
 /*
  * Convert PLDM Firmware String Type to uint8_t
  *
@@ -791,6 +798,166 @@ class RequestUpdate : public CommandInterface
     std::string compImgSetVerStr;
 };
 
+class PassComponentTable : public CommandInterface
+{
+  public:
+    ~PassComponentTable() = default;
+    PassComponentTable() = delete;
+    PassComponentTable(const PassComponentTable&) = delete;
+    PassComponentTable(PassComponentTable&&) = delete;
+    PassComponentTable& operator=(const PassComponentTable&) = delete;
+    PassComponentTable& operator=(PassComponentTable&&) = delete;
+
+    explicit PassComponentTable(const char* type, const char* name,
+                                CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "--transfer_flag", transferFlag,
+               "The transfer flag that indicates what part of the Component Table\n"
+               "this request represents.\nPossible values\n"
+               "{Start = 0x1, Middle = 0x2, End = 0x4, StartAndEnd = 0x5}")
+            ->required()
+            ->transform(
+                CLI::CheckedTransformer(transferRespFlag, CLI::ignore_case));
+
+        app->add_option(
+               "--comp_classification", compClassification,
+               "Vendor specific component classification information.\n"
+               "Special values: 0x0000, 0xFFFF = reserved")
+            ->required();
+
+        app->add_option("--comp_identifier", compIdentifier,
+                        "FD vendor selected unique value "
+                        "to distinguish between component images")
+            ->required();
+
+        app->add_option("--comp_classification_idx", compClassificationIdx,
+                        "The component classification index which was obtained "
+                        "from the GetFirmwareParameters command to indicate \n"
+                        "which firmware component the information contained "
+                        "within this command is applicable for")
+            ->required();
+
+        app->add_option(
+               "--comp_compare_stamp", compCompareStamp,
+               "FD vendor selected value to use as a comparison value in determining if a firmware\n"
+               "component is down-level or up-level. For the same component identifier,\n"
+               "the greater of two component comparison stamps is considered up-level compared\n"
+               "to the other when performing an unsigned integer comparison")
+            ->required();
+
+        app->add_option(
+               "--comp_ver_str_type", compVerStrType,
+               "The type of strings used in the ComponentVersionString\n"
+               "Possible values\n"
+               "{UNKNOWN->0, ASCII->1, UTF_8->2, UTF_16->3, UTF_16LE->4, UTF_16BE->5}\n"
+               "OR {0,1,2,3,4,5}")
+            ->required()
+            ->check([](const std::string& value) -> std::string {
+                static const std::set<std::string> validStrings{
+                    "UNKNOWN", "ASCII",    "UTF_8",
+                    "UTF_16",  "UTF_16LE", "UTF_16BE"};
+
+                if (validStrings.contains(value))
+                {
+                    return "";
+                }
+
+                try
+                {
+                    int intValue = std::stoi(value);
+                    if (intValue >= 0 && intValue <= 255)
+                    {
+                        return "";
+                    }
+                    return "Invalid value. Must be one of UNKNOWN, ASCII, UTF_8, UTF_16, UTF_16LE, UTF_16BE, or a number between 0 and 255";
+                }
+                catch (const std::exception&)
+                {
+                    return "Invalid value. Must be one of UNKNOWN, ASCII, UTF_8, UTF_16, UTF_16LE, UTF_16BE, or a number between 0 and 255";
+                }
+            });
+
+        app->add_option("--comp_ver_str_len", compVerStrLen,
+                        "The length, in bytes, of the ComponentVersionString")
+            ->required();
+
+        app->add_option(
+               "--comp_ver_str", compVerStr,
+               "Firmware component version information up to 255 bytes. \n"
+               "Contains a variable type string describing the component version")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        variable_field compVerStrInfo{};
+        std::vector<uint8_t> compVerStrData(compVerStr.begin(),
+                                            compVerStr.end());
+        compVerStrInfo.ptr = compVerStrData.data();
+        compVerStrInfo.length = static_cast<uint8_t>(compVerStrData.size());
+
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) +
+            sizeof(struct pldm_pass_component_table_req) +
+            compVerStrInfo.length);
+
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_pass_component_table_req(
+            instanceId, transferFlag, compClassification, compIdentifier,
+            compClassificationIdx, compCompareStamp,
+            convertStringTypeToUInt8(compVerStrType), compVerStrInfo.length,
+            &compVerStrInfo, request,
+            sizeof(pldm_pass_component_table_req) + compVerStrInfo.length);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        uint8_t compResponse = 0;
+        uint8_t compResponseCode = 0;
+
+        auto rc = decode_pass_component_table_resp(
+            responsePtr, payloadLength, &cc, &compResponse, &compResponseCode);
+
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            return;
+        }
+
+        ordered_json data;
+        fillCompletionCode(cc, data, PLDM_FWUP);
+
+        if (cc == PLDM_SUCCESS)
+        {
+            data["ComponentResponse"] =
+                compResponse ? "Component may be updateable"
+                             : "Component can be updated";
+
+            data["ComponentResponseCode"] =
+                std::format("0x{:02X}", compResponseCode);
+        }
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint8_t transferFlag;
+    uint16_t compClassification;
+    uint16_t compIdentifier;
+    uint8_t compClassificationIdx;
+    uint32_t compCompareStamp;
+    std::string compVerStrType;
+    uint8_t compVerStrLen;
+    std::string compVerStr;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -815,6 +982,11 @@ void registerCommand(CLI::App& app)
         "RequestUpdate", "To initiate a firmware update");
     commands.push_back(std::make_unique<RequestUpdate>(
         "fw_update", "RequestUpdate", requestUpdate));
+
+    auto passCompTable = fwUpdate->add_subcommand("PassComponentTable",
+                                                  "To pass component table");
+    commands.push_back(std::make_unique<PassComponentTable>(
+        "fw_update", "PassComponentTable", passCompTable));
 }
 
 } // namespace fw_update
