@@ -123,6 +123,10 @@ class EventManager
     }
 
   protected:
+    int triggerNumericSensorThresholdEvent(
+        NumericSensor& sensor, uint8_t previousEventState,
+        uint8_t nextEventState, double value);
+
     /** @brief Helper method to process the PLDM Numeric sensor event class
      *
      *  @param[in] tid - tid where the event is from
