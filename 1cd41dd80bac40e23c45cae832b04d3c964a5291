@@ -34,6 +34,24 @@
       "parentUuid": "224c3e91_da979f0f",
       "revId": "1cd41dd80bac40e23c45cae832b04d3c964a5291",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "393e1454_2182d462",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-04-08T08:57:42Z",
+      "side": 1,
+      "message": "@thu@os.amperecomputing.com Also there is no standard completion code named COMMAND_NOT_EXPECTED in base completion code.",
+      "parentUuid": "ee0365db_a01ba971",
+      "revId": "1cd41dd80bac40e23c45cae832b04d3c964a5291",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
