@@ -191,6 +191,14 @@ class NumericSensor
                               pldm::utils::Direction direction, double rawValue,
                               bool newAlarm, bool assert);
 
+    /** @brief mark value as operating in normal range
+     *
+     * @param[in] rawValue - sensor raw value
+     *
+     * @return PLDM completion code
+     */
+    int triggerThresholdNormal(double rawValue);
+
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
 
