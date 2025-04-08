@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74e8c13c_ee54ddb1",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-08T13:28:11Z",
+      "side": 1,
+      "message": "why was this included ? \n\ndon\u0027t see this commit pulling anything from https://github.com/openbmc/libpldm/blob/main/include/libpldm/pldm.h\n\n\nseems like base.h is the one that has all the needed generic codes ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "1cd41dd80bac40e23c45cae832b04d3c964a5291",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "224c3e91_da979f0f",
         "filename": "pldmtool/pldm_cmd_helper.cpp",
         "patchSetId": 7
