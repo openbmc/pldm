@@ -135,6 +135,13 @@ using FirmwareDeviceIDRecord =
                FirmwareDevicePackageData>;
 using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
 
+using DownstreamDevicePackageData = std::vector<uint8_t>;
+using DownstreamDeviceIDRecord =
+    std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
+               ComponentImageSetVersion, Descriptors,
+               DownstreamDevicePackageData>;
+using DownstreamDeviceIDRecords = std::vector<DownstreamDeviceIDRecord>;
+
 // ComponentImageInformation
 using ComponentImageCount = uint16_t;
 using CompComparisonStamp = uint32_t;
