@@ -942,5 +942,23 @@ int NumericSensor::triggerThresholdEvent(
 
     return PLDM_SUCCESS;
 }
+
+int NumericSensor::triggerThresholdNormal(double rawValue)
+{
+    if (!valueIntf)
+    {
+        lg2::error(
+            "Failed to update thresholds sensor {NAME} D-Bus interfaces don't exist.",
+            "NAME", sensorName);
+        return PLDM_ERROR;
+    }
+
+    auto value = unitModifier(conversionFormula(rawValue));
+
+    lg2::info("Sensor {SENSOR} now operating in normal range. Value: {VALUE}",
+              "SENSOR", sensorName, "VALUE", value);
+    return PLDM_SUCCESS;
+}
+
 } // namespace platform_mc
 } // namespace pldm

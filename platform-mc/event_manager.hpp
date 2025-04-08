@@ -21,6 +21,13 @@ using HandlerFunc =
 using HandlerFuncs = std::vector<HandlerFunc>;
 using EventMap = std::map<EventType, HandlerFuncs>;
 
+using NumericSensorThresholdHandler = std::function<int(
+    pldm::utils::Level, pldm::utils::Direction direction, double, bool, bool)>;
+
+int triggerNumericSensorThresholdEvent(NumericSensorThresholdHandler handler,
+                                       uint8_t previousEventState,
+                                       uint8_t nextEventState, double value);
+
 /**
  * @brief EventManager
  *
