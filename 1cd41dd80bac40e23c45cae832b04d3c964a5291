@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "929e9e68_e06bc66f",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-08T18:41:54Z",
+      "side": 1,
+      "message": "yes it\u0027s not needed. I\u0027ve removed.\nbase.h was already included.",
+      "parentUuid": "74e8c13c_ee54ddb1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "1cd41dd80bac40e23c45cae832b04d3c964a5291",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "224c3e91_da979f0f",
