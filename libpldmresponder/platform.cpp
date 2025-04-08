@@ -565,25 +565,21 @@ int Handler::pldmPDRRepositoryChgEvent(
                 return rc;
             }
 
-            if (eventDataOperation == PLDM_RECORDS_ADDED ||
-                eventDataOperation == PLDM_RECORDS_MODIFIED)
+            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
             {
-                if (eventDataOperation == PLDM_RECORDS_MODIFIED)
-                {
-                    hostPDRHandler->isHostPdrModified = true;
-                }
+                hostPDRHandler->isHostPdrModified = true;
+            }
 
-                rc = getPDRRecordHandles(
-                    reinterpret_cast<const ChangeEntry*>(
-                        changeRecordData + dataOffset),
-                    changeRecordDataSize - dataOffset,
-                    static_cast<size_t>(numberOfChangeEntries),
-                    pdrRecordHandles);
+            rc = getPDRRecordHandles(
+                reinterpret_cast<const ChangeEntry*>(
+                    changeRecordData + dataOffset),
+                changeRecordDataSize - dataOffset,
+                static_cast<size_t>(numberOfChangeEntries), pdrRecordHandles);
 
-                if (rc != PLDM_SUCCESS)
-                {
-                    return rc;
-                }
+            if (rc != PLDM_SUCCESS)
+            {
+                error("Invalid data, no pdr handles found");
+                return rc;
             }
 
             changeRecordData +=
