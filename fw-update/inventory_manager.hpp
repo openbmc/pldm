@@ -74,6 +74,15 @@ class InventoryManager
     void queryDeviceIdentifiers(mctp_eid_t eid, const pldm_msg* response,
                                 size_t respMsgLen);
 
+    /** @brief Handler for GetPLDMTypes command response
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] response - PLDM response message
+     *  @param[in] respMsgLen - Response message length
+     */
+    void getPLDMTypes(mctp_eid_t eid, const pldm_msg* response,
+                      size_t respMsgLen);
+
     /** @brief Handler for QueryDownstreamDevices command response
      *
      *  @param[in] eid - Remote MCTP endpoint
@@ -114,6 +123,13 @@ class InventoryManager
                                size_t respMsgLen);
 
   private:
+    /**
+     * @brief Sends GetPLDMTypes request
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     */
+    void sendGetPLDMTypesRequest(mctp_eid_t eid);
+
     /**
      * @brief Sends QueryDeviceIdentifiers request
      *
