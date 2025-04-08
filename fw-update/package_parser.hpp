@@ -58,6 +58,16 @@ class PackageParser
         return fwDeviceIDRecords;
     }
 
+    /**
+     * @brief Retrieve the DS records
+     *
+     * @return A list of downstream device ID records
+     */
+    const DownstreamDeviceIDRecords& getDownstreamDeviceIDRecords() const
+    {
+        return downstreamDeviceIDRecords;
+    }
+
     /** @brief Get component image information from the package
      *
      *  @return Component image information if parsing the package is successful
@@ -79,6 +89,12 @@ class PackageParser
      *  @throws InternalFailure if parsing fails
      */
     void parseFDIdentificationArea();
+
+    /** @brief Parse the downstream device ID area
+     *
+     *  @throws InternalFailure if parsing fails
+     */
+    void parseDownstreamDeviceIdArea();
 
     /** @brief Parse the component image information area
      *
@@ -114,22 +130,23 @@ class PackageParser
     struct pldm_firmware_update_package_iter pkgIter;
 };
 
-/** @class PackageParserV1
+/** @class PackageParserGeneric
  *
- *  This class implements the package parser for the header format version 0x01
+ * A generic package parser that can handle multiple revisions of the
+ * PLDM firmware update package
  */
-class PackageParserV1 final : public PackageParser
+class PackageParserGeneric final : public PackageParser
 {
   public:
-    PackageParserV1() : PackageParser() {}
+    PackageParserGeneric() : PackageParser() {}
 
-    PackageParserV1(const PackageParserV1&) = delete;
-    PackageParserV1& operator=(const PackageParserV1&) = delete;
+    PackageParserGeneric(const PackageParserGeneric&) = delete;
+    PackageParserGeneric& operator=(const PackageParserGeneric&) = delete;
 
-    PackageParserV1(PackageParserV1&&) = default;
-    PackageParserV1& operator=(PackageParserV1&&) = default;
+    PackageParserGeneric(PackageParserGeneric&&) = default;
+    PackageParserGeneric& operator=(PackageParserGeneric&&) = default;
 
-    ~PackageParserV1() = default;
+    ~PackageParserGeneric() = default;
 
     void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize) override;
 };

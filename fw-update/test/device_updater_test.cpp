@@ -60,7 +60,7 @@ TEST_F(DeviceUpdaterTest, validatePackage)
     package.seekg(0);
     package.read(new (packageHeader.data()) char, pkgHeaderInfoSize);
 
-    parser = std::make_unique<PackageParserV1>();
+    parser = std::make_unique<PackageParserGeneric>();
 
     parser->parse(packageHeader, packageSize);
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();

@@ -90,7 +90,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     packageHeader.resize(pkgHeaderInfoSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
                  pkgHeaderInfoSize);
-    parser = std::make_unique<PackageParserV1>();
+    parser = std::make_unique<PackageParserGeneric>();
     try
     {
         parser->parse(packageHeader, packageSize);
