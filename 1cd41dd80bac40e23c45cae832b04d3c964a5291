@@ -16,6 +16,24 @@
       "message": "`COMMAND_NOT_EXPECTED` does not have enough info to identify this is fw update error. I think we should add `FWUP` prefix.",
       "revId": "1cd41dd80bac40e23c45cae832b04d3c964a5291",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee0365db_a01ba971",
+        "filename": "pldmtool/pldm_cmd_helper.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-08T04:40:34Z",
+      "side": 1,
+      "message": "These completion codes are specific to Type5 commands. The subcommand in pldmtool indicates the command type being triggered (fw_update in this case)\n\nAlso as per spec, completion code is COMMAND_NOT_EXPECTED, so a FWUP_ prefix is likely not needed.",
+      "parentUuid": "224c3e91_da979f0f",
+      "revId": "1cd41dd80bac40e23c45cae832b04d3c964a5291",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
