@@ -16,6 +16,24 @@
       "message": "Theoretically, this has no state and does not need to be a member function of EventManager. If I move it outside and make it take a callable, then I can unit test it for my heart\u0027s content.",
       "revId": "8bf0682c8f4769e1686a01ef4f5174099a2685a7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c76055ce_858282c5",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-04-08T22:06:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81b77d53_e3739cef",
+      "revId": "8bf0682c8f4769e1686a01ef4f5174099a2685a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
