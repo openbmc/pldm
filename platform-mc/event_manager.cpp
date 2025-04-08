@@ -106,6 +106,106 @@ int EventManager::handlePlatformEvent(
     return PLDM_ERROR;
 }
 
+int triggerNumericSensorThresholdEvent(NumericSensorThresholdHandler handler,
+                                       uint8_t previousEventState,
+                                       uint8_t nextEventState, double value)
+{
+    static const std::map<
+        uint8_t, std::tuple<pldm::utils::Level, pldm::utils::Direction>>
+        sensorEventMap = {
+            {PLDM_SENSOR_UPPERFATAL,
+             {pldm::utils::Level::CRITICAL, pldm::utils::Direction::HIGH}},
+            {PLDM_SENSOR_UPPERCRITICAL,
+             {pldm::utils::Level::CRITICAL, pldm::utils::Direction::HIGH}},
+            {PLDM_SENSOR_UPPERWARNING,
+             {pldm::utils::Level::WARNING, pldm::utils::Direction::HIGH}},
+            {PLDM_SENSOR_LOWERWARNING,
+             {pldm::utils::Level::WARNING, pldm::utils::Direction::LOW}},
+            {PLDM_SENSOR_LOWERCRITICAL,
+             {pldm::utils::Level::CRITICAL, pldm::utils::Direction::LOW}},
+            {PLDM_SENSOR_LOWERFATAL,
+             {pldm::utils::Level::CRITICAL, pldm::utils::Direction::LOW}},
+        };
+    static const std::array<uint8_t, 7> stateOrder = {
+        PLDM_SENSOR_LOWERFATAL,   PLDM_SENSOR_LOWERCRITICAL,
+        PLDM_SENSOR_LOWERWARNING, PLDM_SENSOR_NORMAL,
+        PLDM_SENSOR_UPPERWARNING, PLDM_SENSOR_UPPERCRITICAL,
+        PLDM_SENSOR_UPPERFATAL};
+    constexpr auto normalIt = stateOrder.begin() + 3;
+    const auto normalState = *normalIt;
+    auto prevIt =
+        std::find(stateOrder.begin(), stateOrder.end(), previousEventState);
+    if (prevIt == stateOrder.end())
+    {
+        return PLDM_ERROR;
+    }
+    auto nextIt =
+        std::find(stateOrder.begin(), stateOrder.end(), nextEventState);
+    if (nextIt == stateOrder.end())
+    {
+        return PLDM_ERROR;
+    }
+    if (prevIt == nextIt)
+    {
+        // Nothing to do. Return success early
+        return PLDM_SUCCESS;
+    }
+
+    // This is a rare condition. But if we are going wildy across the thresholds
+    // crossing PLDM_SENSOR_NORMAL (Example going from PLDM_SENSOR_LOWERFATAL to
+    // PLDM_SENSOR_UPPERFATAL in one event, then split it up into two)
+    if ((prevIt < normalIt && nextIt > normalIt) ||
+        (prevIt > normalIt && nextIt < normalIt))
+    {
+        int rc = triggerNumericSensorThresholdEvent(handler, *prevIt,
+                                                    normalState, value);
+        if (rc != PLDM_SUCCESS)
+        {
+            lg2::error("Error handling {PREV} to current for numeric sensor",
+                       "PREV", int(*prevIt));
+        }
+        return triggerNumericSensorThresholdEvent(handler, normalState, *nextIt,
+                                                  value);
+    }
+    bool goingUp = prevIt < nextIt;
+    bool gettingBetter = (prevIt < nextIt && prevIt < normalIt) ||
+                         (prevIt > nextIt && prevIt > normalIt);
+
+    for (auto currIt = prevIt; currIt != nextIt; goingUp ? ++currIt : --currIt)
+    {
+        if (currIt == normalIt)
+        {
+            continue;
+        }
+        const auto& event = sensorEventMap.at(*currIt);
+
+        if (gettingBetter)
+        {
+            if (currIt != prevIt)
+            {
+                // Just trigger an event in case it was missed before
+                // we deassert. The implementation of triggerThresholdEvent
+                // should just no-op if it is already triggered.
+                handler(std::get<0>(event), std::get<1>(event), value, true,
+                        true);
+            }
+            handler(std::get<0>(event), std::get<1>(event), value, false,
+                    false);
+        }
+        else
+        {
+            handler(std::get<0>(event), std::get<1>(event), value, true, true);
+        }
+    }
+    if (nextIt != normalIt)
+    {
+        const auto& event = sensorEventMap.at(*nextIt);
+        return handler(std::get<0>(event), std::get<1>(event), value, true,
+                       true);
+    }
+    return PLDM_SUCCESS;
+}
+
 int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
                                             const uint8_t* sensorData,
                                             size_t sensorDataLength)
@@ -148,202 +248,25 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
             "TID", tid, "SID", sensorId);
         return PLDM_ERROR;
     }
-
-    switch (previousEventState)
+    auto sensorHandler =
+        [&sensor](pldm::utils::Level level, pldm::utils::Direction direction,
+                  double rawValue, bool newAlarm, bool assert) {
+            return sensor->triggerThresholdEvent(level, direction, rawValue,
+                                                 newAlarm, assert);
+        };
+    rc = triggerNumericSensorThresholdEvent(sensorHandler, previousEventState,
+                                            eventState, value);
+    if (rc)
     {
-        case PLDM_SENSOR_UNKNOWN:
-        case PLDM_SENSOR_NORMAL:
-        {
-            switch (eventState)
-            {
-                case PLDM_SENSOR_UPPERFATAL:
-                case PLDM_SENSOR_UPPERCRITICAL:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::WARNING,
-                                                  pldm::utils::Direction::HIGH,
-                                                  value, true, true);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::CRITICAL,
-                        pldm::utils::Direction::HIGH, value, true, true);
-                }
-                case PLDM_SENSOR_UPPERWARNING:
-                {
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::HIGH, value, true, true);
-                }
-                case PLDM_SENSOR_NORMAL:
-                    break;
-                case PLDM_SENSOR_LOWERWARNING:
-                {
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::LOW, value, true, true);
-                }
-                case PLDM_SENSOR_LOWERCRITICAL:
-                case PLDM_SENSOR_LOWERFATAL:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::WARNING,
-                                                  pldm::utils::Direction::LOW,
-                                                  value, true, true);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::CRITICAL,
-                        pldm::utils::Direction::LOW, value, true, true);
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        case PLDM_SENSOR_LOWERWARNING:
-        {
-            switch (eventState)
-            {
-                case PLDM_SENSOR_UPPERFATAL:
-                case PLDM_SENSOR_UPPERCRITICAL:
-                    break;
-                case PLDM_SENSOR_UPPERWARNING:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::WARNING,
-                                                  pldm::utils::Direction::LOW,
-                                                  value, false, false);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::HIGH, value, true, true);
-                }
-                case PLDM_SENSOR_NORMAL:
-                {
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::LOW, value, false, false);
-                }
-                case PLDM_SENSOR_LOWERWARNING:
-                    break;
-                case PLDM_SENSOR_LOWERCRITICAL:
-                case PLDM_SENSOR_LOWERFATAL:
-                {
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::CRITICAL,
-                        pldm::utils::Direction::LOW, value, true, true);
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        case PLDM_SENSOR_LOWERCRITICAL:
-        case PLDM_SENSOR_LOWERFATAL:
-        {
-            switch (eventState)
-            {
-                case PLDM_SENSOR_UPPERFATAL:
-                case PLDM_SENSOR_UPPERCRITICAL:
-                case PLDM_SENSOR_UPPERWARNING:
-                    break;
-                case PLDM_SENSOR_NORMAL:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::CRITICAL,
-                                                  pldm::utils::Direction::LOW,
-                                                  value, false, false);
-                    sensor->triggerThresholdEvent(pldm::utils::Level::WARNING,
-                                                  pldm::utils::Direction::LOW,
-                                                  value, true, true);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::LOW, value, false, false);
-                }
-                case PLDM_SENSOR_LOWERWARNING:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::CRITICAL,
-                                                  pldm::utils::Direction::LOW,
-                                                  value, false, false);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::LOW, value, true, true);
-                }
-                case PLDM_SENSOR_LOWERCRITICAL:
-                case PLDM_SENSOR_LOWERFATAL:
-                default:
-                    break;
-            }
-            break;
-        }
-        case PLDM_SENSOR_UPPERFATAL:
-        case PLDM_SENSOR_UPPERCRITICAL:
-        {
-            switch (eventState)
-            {
-                case PLDM_SENSOR_UPPERFATAL:
-                case PLDM_SENSOR_UPPERCRITICAL:
-                    break;
-                case PLDM_SENSOR_UPPERWARNING:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::CRITICAL,
-                                                  pldm::utils::Direction::HIGH,
-                                                  value, false, false);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::HIGH, value, true, true);
-                }
-                case PLDM_SENSOR_NORMAL:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::CRITICAL,
-                                                  pldm::utils::Direction::HIGH,
-                                                  value, false, false);
-                    sensor->triggerThresholdEvent(pldm::utils::Level::WARNING,
-                                                  pldm::utils::Direction::HIGH,
-                                                  value, true, true);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::HIGH, value, false, false);
-                }
-                case PLDM_SENSOR_LOWERWARNING:
-                case PLDM_SENSOR_LOWERCRITICAL:
-                case PLDM_SENSOR_LOWERFATAL:
-                default:
-                    break;
-            }
-            break;
-        }
-        case PLDM_SENSOR_UPPERWARNING:
-        {
-            switch (eventState)
-            {
-                case PLDM_SENSOR_UPPERFATAL:
-                case PLDM_SENSOR_UPPERCRITICAL:
-                {
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::CRITICAL,
-                        pldm::utils::Direction::HIGH, value, true, true);
-                }
-                case PLDM_SENSOR_UPPERWARNING:
-                    break;
-                case PLDM_SENSOR_NORMAL:
-                {
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::HIGH, value, false, false);
-                }
-                case PLDM_SENSOR_LOWERWARNING:
-                {
-                    sensor->triggerThresholdEvent(pldm::utils::Level::WARNING,
-                                                  pldm::utils::Direction::HIGH,
-                                                  value, false, false);
-                    return sensor->triggerThresholdEvent(
-                        pldm::utils::Level::WARNING,
-                        pldm::utils::Direction::LOW, value, true, true);
-                }
-                case PLDM_SENSOR_LOWERCRITICAL:
-                case PLDM_SENSOR_LOWERFATAL:
-                default:
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
+        lg2::error(
+            "Terminus ID {TID} sensor {SID} threshold handling had errors",
+            "TID", tid, "SID", sensorId);
+        return rc;
     }
-
+    if (eventState == PLDM_SENSOR_NORMAL)
+    {
+        return sensor->triggerThresholdNormal(value);
+    }
     return PLDM_SUCCESS;
 }
 
