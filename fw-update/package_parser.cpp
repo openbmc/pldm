@@ -109,6 +109,70 @@ void PackageParser::parseFDIdentificationArea()
          fwDeviceIDRecords.size());
 }
 
+void PackageParser::parseDownstreamDeviceIdArea()
+{
+    pldm_downstream_device_id_record ddrec{};
+    int rc = 0;
+
+    foreach_pldm_downstream_device_id_record(this->pkgIter, ddrec, rc)
+    {
+        if (rc)
+        {
+            error("Failed to decode downstream device ID record, rc={RC}", "RC",
+                  rc);
+            throw InternalFailure();
+        }
+
+        auto deviceUpdateOptionFlags = ddrec.update_option_flags.value;
+
+        ApplicableComponents componentsList;
+
+        const size_t length = ddrec.applicable_components.bitmap.length;
+        const uint8_t* bitsPtr = ddrec.applicable_components.bitmap.ptr;
+        for (size_t b = 0; b < length; ++b)
+        {
+            std::bitset<8> bitsetByte(*(bitsPtr + b));
+            for (size_t bitPos = 0; bitPos < bitsetByte.size(); ++bitPos)
+            {
+                if (bitsetByte.test(bitPos))
+                {
+                    componentsList.emplace_back((b * 8) + bitPos);
+                }
+            }
+        }
+        auto compImageSetVersion =
+            utils::toString(ddrec.self_contained_activation_min_version_string);
+
+        Descriptors descriptors;
+        pldm_descriptor desc{};
+        int rcDesc = 0;
+        foreach_pldm_downstream_device_id_record_descriptor(this->pkgIter,
+                                                            ddrec, desc, rcDesc)
+        {
+            if (rcDesc)
+            {
+                error("Failed decoding DS record descriptor, rc = {RC}", "RC",
+                      rcDesc);
+                throw InternalFailure();
+            }
+            const auto* dataPtr =
+                static_cast<const uint8_t*>(desc.descriptor_data);
+            std::vector<uint8_t> descBytes(dataPtr,
+                                           dataPtr + desc.descriptor_length);
+
+            descriptors.emplace(desc.descriptor_type, std::move(descBytes));
+        }
+
+        auto dsDevPkgData = ddrec.package_data;
+
+        downstreamDeviceIDRecords.emplace_back(
+            deviceUpdateOptionFlags, std::move(componentsList),
+            std::move(compImageSetVersion), std::move(descriptors),
+            DownstreamDevicePackageData{
+                dsDevPkgData.ptr, dsDevPkgData.ptr + dsDevPkgData.length});
+    }
+}
+
 void PackageParser::parseCompImageInfoArea()
 {
     pldm_component_image_information_api compInfo{};
@@ -190,8 +254,8 @@ void PackageParser::validatePkgTotalSize(uintmax_t pkgSize)
     }
 }
 
-void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
-                            uintmax_t pkgSize)
+void PackageParserGeneric::parse(const std::vector<uint8_t>& pkgHdr,
+                                 uintmax_t pkgSize)
 {
     int rc = decode_pldm_firmware_update_package(pkgHdr.data(), pkgHdr.size(),
                                                  &this->pkgIter);
@@ -214,6 +278,7 @@ void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
     this->componentBitmapBitLength = hdr.component_bitmap_bit_length;
 
     parseFDIdentificationArea();
+    parseDownstreamDeviceIdArea();
     parseCompImageInfoArea();
     validatePkgTotalSize(pkgSize);
 }

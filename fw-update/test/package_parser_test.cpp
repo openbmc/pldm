@@ -30,9 +30,9 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
             fwPkgHdr.data());
     EXPECT_EQ(pkgHeaderInfo->package_header_size, fwPkgHdr.size());
 
-    auto parser = std::make_unique<PackageParserV1>();
+    auto parser = std::make_unique<PackageParserGeneric>();
     auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
+    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserGeneric).name());
 
     parser->parse(fwPkgHdr, pkgSize);
     EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
@@ -95,9 +95,9 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
         fwPkgHdr.data());
     EXPECT_EQ(pkgHeaderInfo->package_header_size, fwPkgHdr.size());
 
-    auto parser = std::make_unique<PackageParserV1>();
+    auto parser = std::make_unique<PackageParserGeneric>();
     auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
+    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserGeneric).name());
     EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
     EXPECT_EQ(parser->pkgVersion, pkgVersion);
 
@@ -166,9 +166,9 @@ TEST(PackageParser, InvalidPkgBadChecksum)
             fwPkgHdr.data());
     EXPECT_EQ(pkgHeaderInfo->package_header_size, fwPkgHdr.size());
 
-    auto parser = std::make_unique<PackageParserV1>();
+    auto parser = std::make_unique<PackageParserGeneric>();
     auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
+    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserGeneric).name());
 
     EXPECT_THROW(parser->parse(fwPkgHdr, pkgSize), std::exception);
 }
