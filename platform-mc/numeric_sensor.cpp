@@ -1051,5 +1051,6 @@ int NumericSensor::triggerThresholdEvent(
 
     return PLDM_SUCCESS;
 }
+
 } // namespace platform_mc
 } // namespace pldm
