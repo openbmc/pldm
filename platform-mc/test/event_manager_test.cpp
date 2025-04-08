@@ -503,3 +503,110 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
     // should finish immediately
     stdexec::sync_wait(eventManager.pollForPlatformEventTask(tid, 0x0000));
 }
+
+TEST(EventManagerNumericEventTest, HandleNormalToWarning)
+{
+    using namespace pldm::platform_mc;
+    unsigned int callCount = 0;
+    auto handle =
+        [&callCount](pldm::utils::Level level, pldm::utils::Direction direction,
+                     double rawValue, bool newAlarm, bool assert) {
+            callCount++;
+            EXPECT_EQ(rawValue, 10.0);
+            EXPECT_TRUE(newAlarm);
+            EXPECT_TRUE(assert);
+            EXPECT_EQ(level, pldm::utils::Level::WARNING);
+            EXPECT_EQ(direction, pldm::utils::Direction::HIGH);
+            EXPECT_EQ(callCount, 1);
+            return PLDM_SUCCESS;
+        };
+    int rc = triggerNumericSensorThresholdEvent(handle, PLDM_SENSOR_NORMAL,
+                                                PLDM_SENSOR_UPPERWARNING, 10.0);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(EventManagerNumericEventTest, HandleWarningToNormal)
+{
+    using namespace pldm::platform_mc;
+    unsigned int callCount = 0;
+    auto handle =
+        [&callCount](pldm::utils::Level level, pldm::utils::Direction direction,
+                     double rawValue, bool newAlarm, bool assert) {
+            callCount++;
+            EXPECT_EQ(rawValue, 4.0);
+            EXPECT_FALSE(newAlarm);
+            EXPECT_FALSE(assert);
+            EXPECT_EQ(level, pldm::utils::Level::WARNING);
+            EXPECT_EQ(direction, pldm::utils::Direction::HIGH);
+            EXPECT_EQ(callCount, 1);
+            return PLDM_SUCCESS;
+        };
+    int rc = triggerNumericSensorThresholdEvent(handle, PLDM_SENSOR_NORMAL,
+                                                PLDM_SENSOR_UPPERWARNING, 4.0);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(EventManagerNumericEventTest, HandleNormalToCritical)
+{
+    using namespace pldm::platform_mc;
+    unsigned int callCount = 0;
+    auto handle =
+        [&callCount](pldm::utils::Level level, pldm::utils::Direction direction,
+                     double rawValue, bool newAlarm, bool assert) {
+            callCount++;
+            EXPECT_EQ(rawValue, 10.0);
+            EXPECT_TRUE(newAlarm);
+            EXPECT_TRUE(assert);
+            if (callCount == 1)
+            {
+                EXPECT_EQ(level, pldm::utils::Level::WARNING);
+            }
+            else
+            {
+                EXPECT_EQ(level, pldm::utils::Level::CRITICAL);
+            }
+            EXPECT_EQ(direction, pldm::utils::Direction::HIGH);
+            EXPECT_LE(callCount, 2);
+            return PLDM_SUCCESS;
+        };
+    int rc = triggerNumericSensorThresholdEvent(
+        handle, PLDM_SENSOR_NORMAL, PLDM_SENSOR_UPPERCRITICAL, 10.0);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+}
+
+TEST(EventManagerNumericEventTest, HandleCriticalToNormal)
+{
+    using namespace pldm::platform_mc;
+    unsigned int callCount = 0;
+    auto handle =
+        [&callCount](pldm::utils::Level level, pldm::utils::Direction direction,
+                     double rawValue, bool newAlarm, bool assert) {
+            callCount++;
+            EXPECT_EQ(rawValue, 10.0);
+            if (callCount == 1)
+            {
+                // First deasserts critical
+                EXPECT_EQ(level, pldm::utils::Level::CRITICAL);
+                EXPECT_FALSE(newAlarm);
+                EXPECT_FALSE(assert);
+                else if (callCount == 2)
+                {
+                    // second  asserts warning just before deasserting it.
+                    EXPECT_TRUE(newAlarm);
+                    EXPECT_TRUE(assert);
+                    EXPECT_EQ(level, pldm::utils::Level::WARNING);
+                }
+                else
+                {
+                    EXPECT_FALSE(newAlarm);
+                    EXPECT_FALSE(assert);
+                    EXPECT_EQ(level, pldm::utils::Level::WARNING);
+                }
+                EXPECT_EQ(direction, pldm::utils::Direction::HIGH);
+                EXPECT_LE(callCount, 3);
+                return PLDM_SUCCESS;
+            };
+            int rc = triggerNumericSensorThresholdEvent(
+                handle, PLDM_SENSOR_NORMAL, PLDM_SENSOR_UPPERCRITICAL, 10.0);
+            ASSERT_EQ(rc, PLDM_SUCCESS);
+        }
