@@ -54,6 +54,7 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
     {
         return;
     }
+    bool effecterFound = false;
     const std::vector<Json> emptyJsonList{};
     auto entries = jsonData.value("entries", emptyJsonList);
     for (const auto& entry : entries)
@@ -62,7 +63,7 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
         pldm::pdr::EntityType entityType = entry.value("entityType", 0);
         pldm::pdr::StateSetId stateSetId = entry.value("stateSetId", 0);
 
-        bool effecterFound = getEffecterID(entityType, stateSetId);
+        effecterFound = getEffecterID(entityType, stateSetId);
         if (effecterFound)
         {
             auto rc = getSensorInfo(entityType, stateSetId);
@@ -79,6 +80,13 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
         {
             continue;
         }
+    }
+
+    if (!effecterFound)
+    {
+        error("Failed to get softOff Effecter Id");
+        hasError = true;
+        return;
     }
 
     // Matches on the pldm StateSensorEvent signal
