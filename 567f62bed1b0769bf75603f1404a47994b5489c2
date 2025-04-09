@@ -139,6 +139,24 @@
       "parentUuid": "02009669_36552175",
       "revId": "567f62bed1b0769bf75603f1404a47994b5489c2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5d2fb94_8d675ac6",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-04-09T10:12:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfb5933e_e165e31b",
+      "revId": "567f62bed1b0769bf75603f1404a47994b5489c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
