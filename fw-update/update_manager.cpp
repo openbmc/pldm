@@ -26,7 +26,7 @@ namespace software = sdbusplus::xyz::openbmc_project::Software::server;
 int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 {
     // If no devices discovered, take no action on the package.
-    if (!descriptorMap.size())
+    if (!descriptorMap.size() && !downstreamDescriptorMap.size())
     {
         return 0;
     }
@@ -123,9 +123,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         return -1;
     }
 
-    auto deviceUpdaterInfos =
-        associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
-                              totalNumComponentUpdates);
+    auto deviceUpdaterInfos = associatePkgToDevices(
+        parser->getFwDeviceIDRecords(), descriptorMap, downstreamDescriptorMap,
+        totalNumComponentUpdates);
     if (!deviceUpdaterInfos.size())
     {
         error(
@@ -166,6 +166,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const DescriptorMap& descriptorMap,
+    const DownstreamDescriptorMap& downstreamDescriptorMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
@@ -173,16 +174,42 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     {
         const auto& deviceIDDescriptors =
             std::get<Descriptors>(fwDeviceIDRecords[index]);
+        std::vector<Descriptor> deviceIDDescriptorsVec(
+            deviceIDDescriptors.begin(), deviceIDDescriptors.end());
+        std::sort(deviceIDDescriptorsVec.begin(), deviceIDDescriptorsVec.end());
         for (const auto& [eid, descriptors] : descriptorMap)
         {
-            if (std::includes(descriptors.begin(), descriptors.end(),
-                              deviceIDDescriptors.begin(),
-                              deviceIDDescriptors.end()))
+            std::vector<Descriptor> descriptorsVec(descriptors.begin(),
+                                                   descriptors.end());
+            std::sort(descriptorsVec.begin(), descriptorsVec.end());
+            if (std::includes(descriptorsVec.begin(), descriptorsVec.end(),
+                              deviceIDDescriptorsVec.begin(),
+                              deviceIDDescriptorsVec.end()))
             {
                 deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
                 const auto& applicableComponents =
                     std::get<ApplicableComponents>(fwDeviceIDRecords[index]);
                 totalNumComponentUpdates += applicableComponents.size();
+            }
+        }
+        for (const auto& [eid, downstreamDeviceInfo] : downstreamDescriptorMap)
+        {
+            for (const auto& [downstreamDeviceIndex, descriptors] :
+                 downstreamDeviceInfo)
+            {
+                std::vector<Descriptor> descriptorsVec(descriptors.begin(),
+                                                       descriptors.end());
+                std::sort(descriptorsVec.begin(), descriptorsVec.end());
+                if (std::includes(descriptorsVec.begin(), descriptorsVec.end(),
+                                  deviceIDDescriptorsVec.begin(),
+                                  deviceIDDescriptorsVec.end()))
+                {
+                    deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
+                    const auto& applicableComponents =
+                        std::get<ApplicableComponents>(
+                            fwDeviceIDRecords[index]);
+                    totalNumComponentUpdates += applicableComponents.size();
+                }
             }
         }
     }
