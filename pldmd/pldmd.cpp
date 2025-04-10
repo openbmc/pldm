@@ -347,7 +347,14 @@ int main(int argc, char** argv)
                      fwManager.get(), platformManager.get()});
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
-        if (!(revents & EPOLLIN))
+        if (revents & (POLLHUP | POLLERR))
+        {
+            warning("Transport Socket hang-up or error. IO Exiting.");
+            io.get_event().exit(0);
+            return;
+        }
+
+        else if (!(revents & EPOLLIN))
         {
             return;
         }
