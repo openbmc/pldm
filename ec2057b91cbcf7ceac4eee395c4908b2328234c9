@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84069201_055d3584",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-11T04:48:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7e35b07a_ba14cb37",
+      "range": {
+        "startLine": 9,
+        "startChar": 20,
+        "endLine": 9,
+        "endChar": 21
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b56b0b14_52987a55",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "628831e3_d009a59b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-11T04:48:40Z",
+      "side": 1,
+      "message": "yes, we started to see pldm crash intermittently when the BMC is going down on a reboot.\n\nWhen BMC is going down, there is a window where mctp-demux was already terminated, and pldm was still running - if pldm tries to send any message in that window that is leading to a crash.\n\nSure, the crash is actually coming from sd-event \u0026 glibc. I will post the back trace here.",
+      "parentUuid": "b56b0b14_52987a55",
+      "range": {
+        "startLine": 15,
+        "startChar": 25,
+        "endLine": 16,
+        "endChar": 54
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1eb40c74_be106ae0",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -60,6 +108,30 @@
       "writtenOn": "2025-04-11T03:57:08Z",
       "side": 1,
       "message": "Okay, however I\u0027m yet to be convinced there aren\u0027t other things that need fixing to improve robustness.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 63
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b343c82e_a3de523f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-11T04:48:40Z",
+      "side": 1,
+      "message": "yeah, sure. Even I was suspecting that there could be a something else that needs fixing (pldm/libpldm). Although this change fixes the crash, I was not 100 percent sure if that\u0027s the right way to fix, hence wanted your opinion.",
+      "parentUuid": "1eb40c74_be106ae0",
       "range": {
         "startLine": 21,
         "startChar": 0,
