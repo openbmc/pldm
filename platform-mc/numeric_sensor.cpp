@@ -215,10 +215,13 @@ NumericSensor::NumericSensor(
 
     bool hasCriticalThresholds = false;
     bool hasWarningThresholds = false;
+    bool hasFatalThresholds = false;
     double criticalHigh = std::numeric_limits<double>::quiet_NaN();
     double criticalLow = std::numeric_limits<double>::quiet_NaN();
     double warningHigh = std::numeric_limits<double>::quiet_NaN();
     double warningLow = std::numeric_limits<double>::quiet_NaN();
+    double fatalHigh = std::numeric_limits<double>::quiet_NaN();
+    double fatalLow = std::numeric_limits<double>::quiet_NaN();
 
     if (pdr->supported_thresholds.bits.bit0)
     {
@@ -246,6 +249,17 @@ NumericSensor::NumericSensor(
         hasCriticalThresholds = true;
         criticalLow =
             getRangeFieldValue(pdr->range_field_format, pdr->critical_low);
+    }
+    if (pdr->supported_thresholds.bits.bit2)
+    {
+        hasFatalThresholds = true;
+        fatalHigh =
+            getRangeFieldValue(pdr->range_field_format, pdr->fatal_high);
+    }
+    if (pdr->supported_thresholds.bits.bit5)
+    {
+        hasFatalThresholds = true;
+        fatalLow = getRangeFieldValue(pdr->range_field_format, pdr->fatal_low);
     }
 
     resolution = pdr->resolution;
@@ -373,6 +387,25 @@ NumericSensor::NumericSensor(
         thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
         thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
     }
+
+    if (hasFatalThresholds && !useMetricInterface)
+    {
+        try
+        {
+            thresholdHardShutdownIntf =
+                std::make_unique<ThresholdHardShutdownIntf>(bus, path.c_str());
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            lg2::error(
+                "Failed to create HardShutdown threshold interface for numeric sensor {PATH} error - {ERROR}",
+                "PATH", path, "ERROR", e);
+            throw sdbusplus::xyz::openbmc_project::Common::Error::
+                InvalidArgument();
+        }
+        thresholdHardShutdownIntf->hardShutdownHigh(unitModifier(fatalHigh));
+        thresholdHardShutdownIntf->hardShutdownLow(unitModifier(fatalLow));
+    }
 }
 
 NumericSensor::NumericSensor(
@@ -434,10 +467,13 @@ NumericSensor::NumericSensor(
     double minValue = std::numeric_limits<double>::quiet_NaN();
     bool hasWarningThresholds = false;
     bool hasCriticalThresholds = false;
+    bool hasFatalThresholds = false;
     double criticalHigh = std::numeric_limits<double>::quiet_NaN();
     double criticalLow = std::numeric_limits<double>::quiet_NaN();
     double warningHigh = std::numeric_limits<double>::quiet_NaN();
     double warningLow = std::numeric_limits<double>::quiet_NaN();
+    double fatalHigh = std::numeric_limits<double>::quiet_NaN();
+    double fatalLow = std::numeric_limits<double>::quiet_NaN();
 
     if (pdr->range_field_support.bits.bit0)
     {
@@ -460,6 +496,16 @@ NumericSensor::NumericSensor(
     {
         hasCriticalThresholds = true;
         criticalLow = pdr->critical_low;
+    }
+    if (pdr->range_field_support.bits.bit4)
+    {
+        hasFatalThresholds = true;
+        fatalHigh = pdr->fatal_high;
+    }
+    if (pdr->range_field_support.bits.bit5)
+    {
+        hasFatalThresholds = true;
+        fatalLow = pdr->fatal_low;
     }
 
     resolution = std::numeric_limits<double>::quiet_NaN();
@@ -583,6 +629,25 @@ NumericSensor::NumericSensor(
         }
         thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
         thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
+    }
+
+    if (hasFatalThresholds && !useMetricInterface)
+    {
+        try
+        {
+            thresholdHardShutdownIntf =
+                std::make_unique<ThresholdHardShutdownIntf>(bus, path.c_str());
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            lg2::error(
+                "Failed to create HardShutdown threshold interface for numeric sensor {PATH} error - {ERROR}",
+                "PATH", path, "ERROR", e);
+            throw sdbusplus::xyz::openbmc_project::Common::Error::
+                InvalidArgument();
+        }
+        thresholdHardShutdownIntf->hardShutdownHigh(unitModifier(fatalHigh));
+        thresholdHardShutdownIntf->hardShutdownLow(unitModifier(fatalLow));
     }
 }
 
@@ -816,6 +881,50 @@ void NumericSensor::updateThresholds()
             else
             {
                 thresholdCriticalIntf->criticalLowAlarmDeasserted(value);
+            }
+        }
+    }
+
+    if (thresholdHardShutdownIntf &&
+        std::isfinite(thresholdHardShutdownIntf->hardShutdownHigh()))
+    {
+        auto threshold = thresholdHardShutdownIntf->hardShutdownHigh();
+        auto alarm = thresholdHardShutdownIntf->hardShutdownAlarmHigh();
+        auto newAlarm =
+            checkThreshold(alarm, true, value, threshold, hysteresis);
+        if (alarm != newAlarm)
+        {
+            thresholdHardShutdownIntf->hardShutdownAlarmHigh(newAlarm);
+            if (newAlarm)
+            {
+                thresholdHardShutdownIntf->hardShutdownHighAlarmAsserted(value);
+            }
+            else
+            {
+                thresholdHardShutdownIntf->hardShutdownHighAlarmDeasserted(
+                    value);
+            }
+        }
+    }
+
+    if (thresholdHardShutdownIntf &&
+        std::isfinite(thresholdHardShutdownIntf->hardShutdownLow()))
+    {
+        auto threshold = thresholdHardShutdownIntf->hardShutdownLow();
+        auto alarm = thresholdHardShutdownIntf->hardShutdownAlarmLow();
+        auto newAlarm =
+            checkThreshold(alarm, false, value, threshold, hysteresis);
+        if (alarm != newAlarm)
+        {
+            thresholdHardShutdownIntf->hardShutdownAlarmLow(newAlarm);
+            if (newAlarm)
+            {
+                thresholdHardShutdownIntf->hardShutdownLowAlarmAsserted(value);
+            }
+            else
+            {
+                thresholdHardShutdownIntf->hardShutdownLowAlarmDeasserted(
+                    value);
             }
         }
     }
