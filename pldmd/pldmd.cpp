@@ -221,13 +221,14 @@ int main(int argc, char** argv)
     std::unique_ptr<platform_mc::Manager> platformManager =
         std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
 
+#ifdef LIBPLDMRESPONDER
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser =
             std::make_unique<pldm::host_effecters::HostEffecterParser>(
                 &instanceIdDb, pldmTransport.getEventSource(), pdrRepo.get(),
                 &dbusHandler, HOST_JSONS_DIR, &reqHandler,
                 platformManager.get());
-#ifdef LIBPLDMRESPONDER
+
     using namespace pldm::state_sensor;
     dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_entity_association_tree,
