@@ -329,6 +329,33 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     bf3.byte = 126;
     ASSERT_EQ(states->states[0].byte, bf3.byte);
 
+    // Test for effecter number 6, to turn off Real SAI led
+    auto record4 = pdr::getRecordByHandle(inRepo, 6, e);
+    ASSERT_NE(record4, nullptr);
+
+    pdr = reinterpret_cast<pldm_state_effecter_pdr*>(e.data);
+
+    ASSERT_EQ(pdr->hdr.record_handle, 6);
+    ASSERT_EQ(pdr->hdr.version, 1);
+    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdr->hdr.record_change_num, 0);
+    ASSERT_EQ(pdr->hdr.length, 16);
+    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_REAL_SAI);
+    ASSERT_EQ(pdr->entity_instance, 1);
+    ASSERT_EQ(pdr->container_id, 1);
+    ASSERT_EQ(pdr->effecter_semantic_id, 0);
+    ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr->has_description_pdr, false);
+    ASSERT_EQ(pdr->composite_effecter_count, 1);
+    states =
+        reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states);
+    ASSERT_EQ(states->state_set_id, PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS);
+    ASSERT_EQ(states->possible_states_size, 1);
+    bitfield8_t bf4{};
+    bf4.byte = 2;
+    ASSERT_EQ(states->states[0].byte, bf4.byte);
+
     pldm_pdr_destroy(inPDRRepo);
 }
 
@@ -355,14 +382,14 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
 
     pdr_utils::PdrEntry e;
 
-    // Test for sensor number 1, for current boot side state
-    auto record1 = pdr::getRecordByHandle(inRepo, 5, e);
+    // Test for sensor number 2, for current boot side state
+    auto record1 = pdr::getRecordByHandle(inRepo, 8, e);
     ASSERT_NE(record1, nullptr);
 
     pldm_state_sensor_pdr* pdr =
         reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 5);
+    ASSERT_EQ(pdr->hdr.record_handle, 8);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
@@ -382,13 +409,13 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     bf1.byte = 6;
     ASSERT_EQ(states->states[0].byte, bf1.byte);
 
-    // Test for sensor number 2, for next boot side state
-    auto record2 = pdr::getRecordByHandle(inRepo, 6, e);
+    // Test for sensor number 3, for next boot side state
+    auto record2 = pdr::getRecordByHandle(inRepo, 9, e);
     ASSERT_NE(record2, nullptr);
 
     pdr = reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 6);
+    ASSERT_EQ(pdr->hdr.record_handle, 9);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
@@ -408,13 +435,13 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     bf2.byte = 6;
     ASSERT_EQ(states->states[0].byte, bf2.byte);
 
-    // Test for sensor number 3, for firmware update state control
-    auto record3 = pdr::getRecordByHandle(inRepo, 7, e);
+    // Test for sensor number 4, for firmware update state control
+    auto record3 = pdr::getRecordByHandle(inRepo, 10, e);
     ASSERT_NE(record3, nullptr);
 
     pdr = reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 7);
+    ASSERT_EQ(pdr->hdr.record_handle, 10);
     ASSERT_EQ(pdr->hdr.version, 1);
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
@@ -433,6 +460,32 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     bitfield8_t bf3{};
     bf3.byte = 126;
     ASSERT_EQ(states->states[0].byte, bf3.byte);
+
+    // Test for sensor number 6, for Real SAI sensor states
+    auto record4 = pdr::getRecordByHandle(inRepo, 12, e);
+    ASSERT_NE(record4, nullptr);
+
+    pdr = reinterpret_cast<pldm_state_sensor_pdr*>(e.data);
+
+    ASSERT_EQ(pdr->hdr.record_handle, 12);
+    ASSERT_EQ(pdr->hdr.version, 1);
+    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
+    ASSERT_EQ(pdr->hdr.record_change_num, 0);
+    ASSERT_EQ(pdr->hdr.length, 14);
+    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_REAL_SAI);
+    ASSERT_EQ(pdr->entity_instance, 1);
+    ASSERT_EQ(pdr->container_id, 1);
+    ASSERT_EQ(pdr->sensor_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr->sensor_auxiliary_names_pdr, false);
+    ASSERT_EQ(pdr->composite_sensor_count, 1);
+    states =
+        reinterpret_cast<state_sensor_possible_states*>(pdr->possible_states);
+    ASSERT_EQ(states->state_set_id, PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS);
+    ASSERT_EQ(states->possible_states_size, 2);
+    bitfield8_t bf4{};
+    bf4.byte = 6;
+    ASSERT_EQ(states->states[0].byte, bf4.byte);
 
     pldm_pdr_destroy(inPDRRepo);
 }
