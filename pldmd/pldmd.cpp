@@ -174,14 +174,20 @@ void optionUsage(void)
 int main(int argc, char** argv)
 {
     bool verbose = false;
+    bool fwDebug = false;
     static struct option long_options[] = {
-        {"verbose", no_argument, nullptr, 'v'}, {nullptr, 0, nullptr, 0}};
+        {"verbose", no_argument, nullptr, 'v'},
+        {"fw-debug", no_argument, 0, 'd'},
+        {nullptr, 0, nullptr, 0}};
 
     auto argflag = getopt_long(argc, argv, "v", long_options, nullptr);
     switch (argflag)
     {
         case 'v':
             verbose = true;
+            break;
+        case 'd':
+            fwDebug = true;
             break;
         case -1:
             break;
@@ -341,7 +347,8 @@ int main(int argc, char** argv)
 #endif
 
     std::unique_ptr<fw_update::Manager> fwManager =
-        std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb,
+                                             fwDebug);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{

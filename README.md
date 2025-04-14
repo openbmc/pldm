@@ -67,6 +67,19 @@ echo 'PLDMD_ARGS="--verbose"' > /etc/default/pldmd
 systemctl restart pldmd
 ```
 
+### To enable firmware update debug logging
+
+pldm daemon accepts a command line argument `--fw-debug` or `-d` to enable
+detailed debug logging for firmware update operations. This includes logging of
+both outgoing (Tx) and incoming (Rx) PLDM messages with descriptive context
+about the firmware update operations being performed. It can be enabled by
+adding this option to the environment file that pldm service consumes.
+
+```bash
+echo 'PLDMD_ARGS="--fw-debug"' > /etc/default/pldmd
+systemctl restart pldmd
+```
+
 ### To disable pldm verbosity
 
 ```bash
