@@ -45,12 +45,13 @@ class UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
+        const ComponentInfoMap& componentInfoMap, bool fwDebug) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
         watch(event.get(),
               std::bind_front(&UpdateManager::processPackage, this)),
-        totalNumComponentUpdates(0), compUpdateCompletedCount(0)
+        totalNumComponentUpdates(0), compUpdateCompletedCount(0),
+        fwDebug(fwDebug)
     {}
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -124,7 +125,11 @@ class UpdateManager
      *         Applied) ActivationProgress is updated.
      */
     size_t compUpdateCompletedCount;
+
     decltype(std::chrono::steady_clock::now()) startTime;
+
+  public:
+    bool fwDebug;
 };
 
 } // namespace fw_update

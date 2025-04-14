@@ -169,6 +169,50 @@ class DeviceUpdater
     /** @brief Send ActivateFirmware command request */
     void sendActivateFirmwareRequest();
 
+    /**
+     * @brief Print debug logs for firmware update when firmware debug option is
+     enabled. This variant of printBuffer takes integer vector as an input
+     *
+     * @param[in] isTx - True if the buffer is an outgoing PLDM message, false
+     if the buffer is an incoming PLDM message
+     * @param[in] buffer - integer vector buffer to log
+     * @param[in] message - Message string for logging
+     * @param[in] fwDebug - firmware debug flag
+     */
+    inline void printBuffer(bool isTx, const std::vector<uint8_t>& buffer,
+                            const std::string& message, bool fwDebug)
+    {
+        if (fwDebug)
+        {
+            info("{INFO_MESSAGE}", "INFO_MESSAGE", message);
+            pldm::utils::printBuffer(isTx, buffer);
+        }
+    }
+
+    /**
+     * @brief Print debug logs for firmware update when firmware debug option is
+     * enabled. This variant of printBuffer takes pldm_msg* buffer as an input.
+     *
+     * @param[in] isTx - True if the buffer is an outgoing PLDM message, false
+     * if the buffer is an incoming PLDM message
+     * @param[in] buffer - pldm message buffer to log
+     * @param[in] bufferLen - pldm message buffer length
+     * @param[in] message - Message string for logging
+     * @param[in] fwDebug - firmware debug flag
+     */
+    inline void printBuffer(bool isTx, const pldm_msg* buffer, size_t bufferLen,
+                            const std::string& message, bool fwDebug)
+    {
+        if (fwDebug)
+        {
+            lg2::info("{INFO_MESSAGE}", "INFO_MESSAGE", message);
+            auto ptr = reinterpret_cast<const uint8_t*>(buffer);
+            auto outBuffer = std::vector<uint8_t>(
+                ptr, ptr + (sizeof(pldm_msg_hdr) + bufferLen));
+            pldm::utils::printBuffer(isTx, outBuffer);
+        }
+    }
+
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 

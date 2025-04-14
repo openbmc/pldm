@@ -55,6 +55,11 @@ void DeviceUpdater::startFwUpdateFlow()
             "EID", eid, "RC", rc);
     }
 
+    printBuffer(
+        pldm::utils::Tx, request,
+        ("Sending request update for endpoint ID " + std::to_string(eid)),
+        updateManager->fwDebug);
+
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_REQUEST_UPDATE, std::move(request),
         std::bind_front(&DeviceUpdater::requestUpdate, this));
@@ -77,6 +82,11 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
               "EID", eid);
         return;
     }
+
+    printBuffer(pldm::utils::Rx, response, respMsgLen,
+                ("Received response for request update from endpoint ID " +
+                 std::to_string(eid)),
+                updateManager->fwDebug);
 
     uint8_t completionCode = 0;
     uint16_t fdMetaDataLen = 0;
@@ -183,6 +193,12 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
             "EID", eid, "RC", rc);
     }
 
+    printBuffer(pldm::utils::Tx, request,
+                ("Sending pass component table request for endpoint ID " +
+                 std::to_string(eid) + ", and component index " +
+                 std::to_string(offset)),
+                updateManager->fwDebug);
+
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_PASS_COMPONENT_TABLE,
         std::move(request),
@@ -207,6 +223,12 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
             "EID", eid);
         return;
     }
+
+    printBuffer(
+        pldm::utils::Rx, response, respMsgLen,
+        ("Received response for pass component table from endpoint ID " +
+         std::to_string(eid)),
+        updateManager->fwDebug);
 
     uint8_t completionCode = 0;
     uint8_t compResponse = 0;
@@ -315,6 +337,11 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
             "EID", eid, "RC", rc);
     }
 
+    printBuffer(pldm::utils::Tx, request,
+                ("Sending update component request for endpoint ID " +
+                 std::to_string(eid) + ", and component index " +
+                 std::to_string(offset)),
+                updateManager->fwDebug);
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_UPDATE_COMPONENT, std::move(request),
         std::bind_front(&DeviceUpdater::updateComponent, this));
@@ -338,6 +365,11 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
             "EID", eid);
         return;
     }
+
+    printBuffer(pldm::utils::Rx, response, respMsgLen,
+                ("Received response for update component from endpoint ID " +
+                 std::to_string(eid)),
+                updateManager->fwDebug);
 
     uint8_t completionCode = 0;
     uint8_t compCompatibilityResp = 0;
@@ -397,8 +429,14 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     auto compOffset = std::get<5>(comp);
     auto compSize = std::get<6>(comp);
-    debug("Decoded fw request data at offset '{OFFSET}' and length '{LENGTH}' ",
-          "OFFSET", offset, "LENGTH", length);
+    if (updateManager && updateManager->fwDebug)
+    {
+        info(
+            "Decoded fw request data at offset '{OFFSET}' and length '{LENGTH}' for endpoint ID {EID} and Component index {COMPONENTINDEX}",
+            "OFFSET", offset, "LENGTH", length, "EID", eid, "COMPONENTINDEX",
+            componentIndex);
+    }
+
     if (length < PLDM_FWUP_BASELINE_TRANSFER_SIZE || length > maxTransferSize)
     {
         rc = encode_request_firmware_data_resp(
@@ -461,6 +499,11 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
 
+    printBuffer(
+        pldm::utils::Rx, request, payloadLength,
+        ("Received transfer complete from endpoint ID " + std::to_string(eid)),
+        updateManager->fwDebug);
+
     uint8_t transferResult = 0;
     auto rc =
         decode_transfer_complete_req(request, payloadLength, &transferResult);
@@ -520,6 +563,11 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
 
+    printBuffer(
+        pldm::utils::Rx, request, payloadLength,
+        ("Received verify complete from endpoint ID " + std::to_string(eid)),
+        updateManager->fwDebug);
+
     uint8_t verifyResult = 0;
     auto rc = decode_verify_complete_req(request, payloadLength, &verifyResult);
     if (rc)
@@ -577,6 +625,11 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
+
+    printBuffer(
+        pldm::utils::Rx, request, payloadLength,
+        ("Received apply complete from endpoint ID " + std::to_string(eid)),
+        updateManager->fwDebug);
 
     uint8_t applyResult = 0;
     bitfield16_t compActivationModification{};
@@ -667,6 +720,11 @@ void DeviceUpdater::sendActivateFirmwareRequest()
             "EID", eid, "RC", rc);
     }
 
+    printBuffer(pldm::utils::Tx, request,
+                ("Sending activate firmware request for endpoint ID " +
+                 std::to_string(eid)),
+                updateManager->fwDebug);
+
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_ACTIVATE_FIRMWARE, std::move(request),
         std::bind_front(&DeviceUpdater::activateFirmware, this));
@@ -689,6 +747,11 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
             "EID", eid);
         return;
     }
+
+    printBuffer(pldm::utils::Rx, response, respMsgLen,
+                ("Received response for activate firmware from endpoint ID " +
+                 std::to_string(eid)),
+                updateManager->fwDebug);
 
     uint8_t completionCode = 0;
     uint16_t estimatedTimeForActivation = 0;
