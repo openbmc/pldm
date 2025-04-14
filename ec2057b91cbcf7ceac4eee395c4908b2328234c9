@@ -95,6 +95,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e8a634_3285544d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-14T04:52:42Z",
+      "side": 1,
+      "message": "Here is the journal traces around the time of crash:\n\n```\nThu Mar 20 16:05:26 2025 p10bmc mctp-demux: astlpc: bmc: Binding state is 0x0: BMC inactive, Channel inactive, OBF cleared\nThu Mar 20 16:05:26 2025 p10bmc mctp-demux: mctp-demux-daemon: Received Terminated, quitting\nThu Mar 20 16:05:26 2025 p10bmc kernel: misc raw-kcs3: Clearing OBF with status write: 0x0\nThu Mar 20 16:05:26 2025 p10bmc pldmd: MCTP daemon closed the socket, IO exiting with response code \u0027-8\u0027\nThu Mar 20 16:05:26 2025 p10bmc pldmd: free(): corrupted unsorted chunks\nThu Mar 20 16:05:26 2025 p10bmc systemd: Stopping MCTP demultiplexer daemon...\nThu Mar 20 16:05:26 2025 p10bmc systemd: Stopping Phosphor PLDM Daemon...\nThu Mar 20 16:05:26 2025 p10bmc systemd: mctp-demux.service: Deactivated successfully.\nThu Mar 20 16:05:26 2025 p10bmc systemd: Stopped MCTP demultiplexer daemon.\n```\n\nand Here is the backtrace from ipkdbg:\n\n```\nProgram terminated with signal SIGABRT, Aborted.\n#0  __pthread_kill_implementation (threadid\u003d\u003coptimized out\u003e, signo\u003d6, no_tid\u003d\u003coptimized out\u003e) at pthread_kill.c:44\n\nwarning: 44\tpthread_kill.c: No such file or directory\n#0  __pthread_kill_implementation (threadid\u003d\u003coptimized out\u003e, signo\u003d6, no_tid\u003d\u003coptimized out\u003e) at pthread_kill.c:44\n#1  0x763c9344 in __GI_raise (sig\u003dsig@entry\u003d6) at /usr/src/debug/glibc/2.39+git/sysdeps/posix/raise.c:26\n#2  0x763b3f80 in __GI_abort () at abort.c:79\n#3  0x764026e4 in __libc_message_impl (fmt\u003d0x764e8050 \"%s\\n\") at /usr/src/debug/glibc/2.39+git/sysdeps/posix/libc_fatal.c:132\n#4  0x76419d8c in malloc_printerr (str\u003d\u003coptimized out\u003e) at malloc.c:5772\n#5  0x7641a950 in _int_free_create_chunk (av\u003d0x20, av@entry\u003d0x764f05fc \u003cmain_arena\u003e, p\u003d0x1000, p@entry\u003d0x1c7f898, size\u003d\u003coptimized out\u003e, size@entry\u003d152, nextchunk\u003dnextchunk@entry\u003d0x1c7f930, nextsize\u003dnextsize@entry\u003d32) at malloc.c:4735\n#6  0x7641bf94 in _int_free_merge_chunk (av\u003d0x764f05fc \u003cmain_arena\u003e, p\u003d0x1c7f898, size\u003d152) at malloc.c:4700\n#7  0x7641c298 in _int_free (av\u003d\u003coptimized out\u003e, p\u003d\u003coptimized out\u003e, have_lock\u003d\u003coptimized out\u003e, have_lock@entry\u003d0) at malloc.c:4646\n#8  0x7641ec20 in __GI___libc_free (mem\u003dmem@entry\u003d0x1c7f8a0) at malloc.c:3398\n#9  0x7681a3b8 in source_free (s\u003d0x1c7f8a0) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:1125\n#10 0x7681e6d8 in event_source_free (s\u003d\u003coptimized out\u003e) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:2590\n#11 sd_event_source_unref (p\u003d\u003coptimized out\u003e) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:2595\n#12 0x767eb624 in sd_bus_detach_event (bus\u003d\u003coptimized out\u003e) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-bus/sd-bus.c:3887\n#13 0x767e0888 in sd_bus_close (bus\u003d0x1bb4950) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-bus/sd-bus.c:1772\n#14 sd_bus_close (bus\u003d0x1bb4950) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-bus/sd-bus.c:1759\n#15 0x767eea30 in quit_callback (event\u003d\u003coptimized out\u003e, userdata\u003d0x1bb4950) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-bus/sd-bus.c:3726\n#16 0x76826288 in source_dispatch (s\u003ds@entry\u003d0x1c1d718) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:4227\n#17 0x7682697c in dispatch_exit (e\u003d0x1bb42c0) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:4349\n#18 sd_event_dispatch (e\u003d\u003coptimized out\u003e, e@entry\u003d0x1bb42c0) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:4801\n#19 0x768282c8 in sd_event_run (e\u003d\u003coptimized out\u003e, timeout\u003d\u003coptimized out\u003e) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:4869\n#20 0x76828558 in sd_event_loop (e\u003d\u003coptimized out\u003e) at /usr/src/debug/systemd/255.4/src/libsystemd/sd-event/sd-event.c:4891\n#21 0x7678f514 in sdeventplus::internal::SdEventImpl::sd_event_loop (event\u003d\u003coptimized out\u003e, this\u003d\u003coptimized out\u003e) at /usr/src/debug/sdeventplus/0.1+git/src/sdeventplus/internal/sdevent.cpp:86\n#22 sdeventplus::Event::loop (this\u003dthis@entry\u003d0x7ed298e0) at /usr/src/debug/sdeventplus/0.1+git/src/sdeventplus/event.cpp:81\n#23 0x004f904c in main (argc\u003d\u003coptimized out\u003e, argv\u003d\u003coptimized out\u003e) at /usr/src/debug/pldm/1.0+git/pldmd/pldmd.cpp:433\n```",
+      "parentUuid": "628831e3_d009a59b",
+      "range": {
+        "startLine": 15,
+        "startChar": 25,
+        "endLine": 16,
+        "endChar": 54
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1eb40c74_be106ae0",
