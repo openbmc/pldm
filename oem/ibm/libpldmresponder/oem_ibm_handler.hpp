@@ -11,6 +11,7 @@
 #include <libpldm/entity.h>
 #include <libpldm/oem/ibm/state_set.h>
 #include <libpldm/platform.h>
+#include <libpldm/state_set.h>
 
 #include <sdbusplus/bus/match.hpp>
 #include <sdeventplus/event.hpp>
@@ -145,6 +146,38 @@ class Handler : public oem_platform::Handler
                             }
                         }
                     }
+                }
+            });
+
+            platformSAIMatch = std::make_unique<sdbusplus::bus::match_t>(
+                pldm::utils::DBusHandler::getBus(),
+                propertiesChanged(
+                    "/xyz/openbmc_project/led/groups/partition_system_attention_indicator",
+                    "xyz.openbmc_project.Led.Group"),
+                [this](sdbusplus::message_t& msg) {
+                pldm::utils::DbusChangedProps props{};
+                std::string intf;
+                msg.read(intf, props);
+                const auto itr = props.find("Asserted");
+                if (itr != props.end())
+                {
+                    processSAIUpdate();
+                }
+            });
+
+            partitionSAIMatch = std::make_unique<sdbusplus::bus::match_t>(
+                pldm::utils::DBusHandler::getBus(),
+                propertiesChanged(
+                    "/xyz/openbmc_project/led/groups/platform_system_attention_indicator",
+                    "xyz.openbmc_project.Led.Group"),
+                [this](sdbusplus::message_t& msg) {
+                pldm::utils::DbusChangedProps props{};
+                std::string intf;
+                msg.read(intf, props);
+                const auto itr = props.find("Asserted");
+                if (itr != props.end())
+                {
+                    processSAIUpdate();
                 }
             });
     }
@@ -312,6 +345,19 @@ class Handler : public oem_platform::Handler
      */
     void setSurvTimer(uint8_t tid, bool value);
 
+    /** @brief To turn off Real SAI effecter*/
+    void turnOffRealSAIEffecter();
+
+    /** @brief Fetch Real SAI status based on the partition SAI and platform SAI
+     *  sensor states. Real SAI is turned on if any of the partition or platform
+     *  SAI turned on else Real SAI is turned off
+     *  @return Real SAI sensor state PLDM_SENSOR_WARNING/PLDM_SENSOR_NORMAL
+     */
+    uint8_t fetchRealSAIStatus();
+
+    /** @brief Method to process virtual platform/partition SAI update*/
+    void processSAIUpdate();
+
     ~Handler() = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
@@ -367,6 +413,15 @@ class Handler : public oem_platform::Handler
 
     /** @brief Timer used for monitoring surveillance pings from host */
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> timer;
+
+    /** @brief D-Bus Interface added signal match for virtual platform SAI */
+    std::unique_ptr<sdbusplus::bus::match_t> platformSAIMatch;
+
+    /** @brief D-Bus Interface added signal match for virtual partition SAI */
+    std::unique_ptr<sdbusplus::bus::match_t> partitionSAIMatch;
+
+    /** @brief Real SAI sensor id*/
+    uint16_t realSAISensorId;
 
     bool hostOff = true;
 
