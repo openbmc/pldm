@@ -28,28 +28,6 @@
                     ]
                 },
                 {
-                    "type": 24581,
-                    "instance": 1,
-                    "container": 1,
-                    "parent_entity_path": "/xyz/openbmc_project/inventory/system",
-                    "sensors": [
-                        {
-                            "set": {
-                                "id": 10,
-                                "size": 1,
-                                "states": [1, 2]
-                            },
-                            "dbus": {
-                                "path": "/xyz/openbmc_project/inventory/system",
-                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
-                                "property_name": "Functional",
-                                "property_type": "bool",
-                                "property_values": [true, false]
-                            }
-                        }
-                    ]
-                },
-                {
                     "entity_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/bmc",
                     "sensors": [
                         {
