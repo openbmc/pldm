@@ -148,6 +148,7 @@ using ComponentImageInfo =
                CompOptions, ReqCompActivationMethod, CompLocationOffset,
                CompSize, CompVersion>;
 using ComponentImageInfos = std::vector<ComponentImageInfo>;
+using ComponentUpdateStatusMap = std::map<size_t, bool>;
 
 enum class ComponentImageInfoPos : size_t
 {
