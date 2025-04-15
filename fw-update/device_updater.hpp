@@ -15,6 +15,12 @@ namespace pldm
 namespace fw_update
 {
 
+/** @brief Type alias for component update status tracking
+ *         Maps component index to its update completion status (true indicates
+ *         successful completion, false indicates cancellation)
+ */
+using ComponentUpdateStatusMap = std::map<size_t, bool>;
+
 class UpdateManager;
 
 /** @class DeviceUpdater
@@ -152,6 +158,15 @@ class DeviceUpdater
      */
     void activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                           size_t respMsgLen);
+    /**
+     * @brief Handler for CancelUpdateComponent command response
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] response - PLDM Response message
+     * @param[in] respMsgLen - Response message length
+     */
+    void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
+                               size_t respMsgLen);
 
   private:
     /** @brief Send PassComponentTable command request
@@ -168,6 +183,11 @@ class DeviceUpdater
 
     /** @brief Send ActivateFirmware command request */
     void sendActivateFirmwareRequest();
+
+    /**
+     * @brief Send cancel update component request
+     */
+    void sendCancelUpdateComponentRequest();
 
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
@@ -207,6 +227,12 @@ class DeviceUpdater
 
     /** @brief To send a PLDM request after the current command handling */
     std::unique_ptr<sdeventplus::source::Defer> pldmRequest;
+
+    /**
+     * @brief Map to hold component update status. True - success, False -
+     *        cancelled
+     */
+    ComponentUpdateStatusMap componentUpdateStatus;
 };
 
 } // namespace fw_update
