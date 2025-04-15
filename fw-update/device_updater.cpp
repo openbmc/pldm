@@ -77,6 +77,7 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
         // Handle error scenario
         error("No response received for request update for endpoint ID '{EID}'",
               "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -98,6 +99,7 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failure in request update response for endpoint ID '{EID}', completion code '{CC}'",
             "EID", eid, "CC", completionCode);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -209,6 +211,7 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
         error(
             "No response received for pass component table for endpoint ID '{EID}'",
             "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -233,6 +236,7 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to pass component table response for endpoint ID '{EID}', completion code '{CC}'",
             "EID", eid, "CC", completionCode);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
     // Handle ComponentResponseCode
@@ -342,6 +346,7 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
         error(
             "No response received for update component with endpoint ID {EID}",
             "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -368,6 +373,7 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
             "Failed to update request response for endpoint ID '{EID}', completion code '{CC}'",
             "EID", eid, "CC", completionCode);
         return;
+        updateManager->updateDeviceCompletion(eid, false);
     }
 }
 
@@ -504,6 +510,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
             "Failure in transfer of the component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' with transfer result - {RESULT}",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             transferResult);
+        updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = false;
         sendCancelUpdateComponentRequest();
     }
@@ -564,6 +571,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             "Failed to verify component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' with transfer result - '{RESULT}'",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             verifyResult);
+        updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = false;
         sendCancelUpdateComponentRequest();
     }
@@ -645,6 +653,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         error(
             "Failed to apply component endpoint ID '{EID}' and version '{COMPONENT_VERSION}', error - {ERROR}",
             "EID", eid, "COMPONENT_VERSION", compVersion, "ERROR", applyResult);
+        updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = false;
         sendCancelUpdateComponentRequest();
     }
@@ -703,6 +712,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "No response received for activate firmware for endpoint ID '{EID}'",
             "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
@@ -725,6 +735,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to activate firmware response for endpoint ID '{EID}', completion code '{CC}'",
             "EID", eid, "CC", completionCode);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
 
