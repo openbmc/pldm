@@ -398,14 +398,6 @@ class Handler
             /* try to send new request if the endpoint is free */
             pollEndpointQueue(eid);
         }
-        else
-        {
-            // Got a response for a PLDM request message not registered with the
-            // request handler, so freeing up the instance ID, this can be other
-            // OpenBMC applications relying on PLDM D-Bus apis like
-            // openpower-occ-control and softoff
-            instanceIdDb.free(key.eid, key.instanceId);
-        }
     }
 
     /** @brief Wrap registerRequest with coroutine API.
