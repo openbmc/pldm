@@ -152,6 +152,20 @@ class DeviceUpdater
      */
     void activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                           size_t respMsgLen);
+    /**
+     * @brief send cancel update component request
+     *
+     */
+    void sendCancelUpdateComponentRequest();
+    /**
+     * @brief Handler for CancelUpdateComponent command response
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] response - PLDM Response message
+     * @param[in] respMsgLen - Response message length
+     */
+    void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
+                               size_t respMsgLen);
 
   private:
     /** @brief Send PassComponentTable command request
@@ -251,6 +265,12 @@ class DeviceUpdater
 
     /** @brief To send a PLDM request after the current command handling */
     std::unique_ptr<sdeventplus::source::Defer> pldmRequest;
+
+    /**
+     * @brief Map to hold component update status. True - success, False -
+     *        cancelled
+     */
+    std::map<size_t, bool> componentUpdateStatus;
 };
 
 } // namespace fw_update
