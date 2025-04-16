@@ -104,6 +104,24 @@
       "parentUuid": "de8c6d30_534e684b",
       "revId": "b25b03d07f83f9fbfc3a6887a959d8809d3606e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b108b6e_49ef6a1e",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-16T10:21:58Z",
+      "side": 1,
+      "message": "Can we put fwDebug before descriptorMap to get the past the issue ?",
+      "parentUuid": "b0e8f3c0_a35ca172",
+      "revId": "b25b03d07f83f9fbfc3a6887a959d8809d3606e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
