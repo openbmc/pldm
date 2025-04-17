@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18d0070c_44f779dd",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-04-17T09:38:17Z",
+      "side": 1,
+      "message": "Are you talking about the deferred event or sending the activate fw request?",
+      "parentUuid": "d5f8c435_29fc303c",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d71cc644_27956b07",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2025-04-16T09:22:05Z",
       "side": 1,
       "message": "This doesn\u0027t look like the correct behavior- In this case, PLDM UA won\u0027t send UpdateComponent command for the other FD components if ApplyComplete failed for the first component.",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56927823_fa26a1ae",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-04-17T09:38:17Z",
+      "side": 1,
+      "message": "In case of failure in applyComplete, we have logic in cancelUpdateComponent() to send the UpdateComponent request to the next component",
+      "parentUuid": "d71cc644_27956b07",
       "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47b00382_84a6687c",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-04-17T09:38:17Z",
+      "side": 1,
+      "message": "Its present here because we might need to cancel during verify/transfer as well",
+      "parentUuid": "7cfe7848_f84d81ff",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc0523f2_a22dd6dc",
         "filename": "fw-update/device_updater.hpp",
         "patchSetId": 2
@@ -65,6 +119,24 @@
       "writtenOn": "2025-04-16T09:22:05Z",
       "side": 1,
       "message": "nit: send -\u003e Send",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d41354d9_2216b45f",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-04-17T09:38:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cc0523f2_a22dd6dc",
       "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -82,6 +154,24 @@
       "writtenOn": "2025-04-16T09:22:05Z",
       "side": 1,
       "message": "should this be a private method ?",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a4d607f_8358b260",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-04-17T09:38:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "aec6f9c8_53031ef6",
       "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
