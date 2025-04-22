@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d88d25ee_fb2dabec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "PLDM would need the associate information between software entry and hardwares, see also the [Code Update] document.\n\n[Code Update]: https://github.com/openbmc/docs/blob/master/designs/code-update.md#association",
+      "parentUuid": "669ac68b_68794f59",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7b84e4e_b9bccef2",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-04-03T07:35:26Z",
       "side": 1,
       "message": "Testing details?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "898f8fba_657813fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7b84e4e_b9bccef2",
       "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a09216fb_6e68342b",
+        "filename": "common/types.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9feae88_ad3d408b",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98da2156_c37cd59d",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-04-03T07:35:26Z",
       "side": 1,
       "message": "This doesn\u0027t look like a common utils definition. Move it to MCTP specific file?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d139064_20eb8d86",
+        "filename": "common/utils.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98da2156_c37cd59d",
       "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f3d7222_a6f48365",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b804b6c9_b1c97745",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06a8a78b_f3c0b338",
@@ -99,6 +189,24 @@
       "writtenOn": "2025-04-03T07:35:26Z",
       "side": 1,
       "message": "move inside block (try).",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c46dd4_97013719",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06a8a78b_f3c0b338",
       "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f01b1654_eaad76a3",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "No, revised to use reference instead.",
+      "parentUuid": "0d8c6691_67ad4f63",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d00470a7_b625ab14",
@@ -133,6 +259,24 @@
       "writtenOn": "2025-04-03T07:35:26Z",
       "side": 1,
       "message": "avoid hardcoding here",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4370fa00_9b777c86",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d00470a7_b625ab14",
       "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +298,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d5517d_a9ded357",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99303f3f_5c1e24ed",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70a52468_04a49e9b",
@@ -171,6 +333,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bb900b2_b7dc38c8",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "The other interfaces might not contain the information PLDM need, but have the property with the same name what PLDM is looking for, which might cause PLDM misuse them.",
+      "parentUuid": "70a52468_04a49e9b",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bced7afb_0642e930",
@@ -184,6 +364,24 @@
       "writtenOn": "2025-04-03T07:35:26Z",
       "side": 1,
       "message": "Why would we selectively pick some properties?",
+      "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfda7eaf_8a7ee38e",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-04-22T10:15:15Z",
+      "side": 1,
+      "message": "`Name` is the only property we\u0027re allowed to pick in PLDM level, the other properties might be lower-level protocol specific(e.g. `Bus`, `Address`), which we should not take it to avoid layer violation.",
+      "parentUuid": "bced7afb_0642e930",
       "revId": "f2203be3d2e8f37778906c5c73a1835aa3be18d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
