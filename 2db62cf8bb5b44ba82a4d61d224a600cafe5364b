@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbc3449e_201a0e36",
+        "filename": "common/utils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-04-23T10:07:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90dcd76f_68c1d482",
+      "revId": "2db62cf8bb5b44ba82a4d61d224a600cafe5364b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "700b0377_5c5d5737",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72960f73_30c13772",
+        "filename": "configurations/blackList.json",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-04-23T10:07:59Z",
+      "side": 1,
+      "message": "The format or the place which PLDM sensors are defined is still in discussing.",
+      "parentUuid": "236d28bc_194b61cf",
+      "revId": "2db62cf8bb5b44ba82a4d61d224a600cafe5364b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fb37165_acf32e8b",
@@ -65,6 +101,24 @@
       "writtenOn": "2025-04-03T15:06:27Z",
       "side": 1,
       "message": "Instead of the blocklist approach, why not have a configuration that says what the sensor names should be? Also, can this be an entity manager config which exposes names?",
+      "revId": "2db62cf8bb5b44ba82a4d61d224a600cafe5364b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09f3504_4eab6fda",
+        "filename": "configurations/blackList.json",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-04-23T10:07:59Z",
+      "side": 1,
+      "message": "It seems this is right solution.",
+      "parentUuid": "8fb37165_acf32e8b",
       "revId": "2db62cf8bb5b44ba82a4d61d224a600cafe5364b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
