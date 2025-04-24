@@ -46,6 +46,8 @@ using EventHandlers = std::vector<EventHandler>;
 using EventMap = std::map<EventType, EventHandlers>;
 using AssociatedEntityMap = std::map<DbusPath, pldm_entity>;
 
+using ChangeEntry = uint32_t;
+
 class Handler : public CmdHandler
 {
   public:
@@ -511,6 +513,17 @@ class Handler : public CmdHandler
 
     /** @brief Method for setEventreceiver */
     void setEventReceiver();
+
+    /* @brief Send a PLDM event to host firmware containing a list of record
+     *        handles of PDRs that the host firmware has to fetch.
+     *
+     * @param[in] pdrRecordHandles - list of PDR record handles
+     * @param[in] eventDataOps - event data operation for PDRRepositoryChgEvent
+     *                           as in DSP0248 SPEC
+     */
+    void sendPDRRepositoryChgEventbyPDRHandles(
+        std::vector<uint32_t>&& pdrRecordHandles,
+        std::vector<uint8_t>&& eventDataOps);
 
   private:
     uint8_t eid;
