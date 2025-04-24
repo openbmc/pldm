@@ -343,6 +343,70 @@ void FruImpl::populateRecords(
     }
 }
 
+void FruImpl::deleteFRURecord(uint16_t rsi)
+{
+    std::vector<uint8_t> updatedFruTbl;
+    size_t pos = 0;
+
+    while (pos < table.size())
+    {
+        // Ensure enough space for the record header
+        if ((table.size() - pos) < sizeof(struct pldm_fru_record_data_format))
+        {
+            // Log or handle corrupt/truncated record
+            info("Error: Incomplete FRU record header");
+            return;
+        }
+
+        auto recordSetSrc =
+            reinterpret_cast<const struct pldm_fru_record_data_format*>(
+                &table[pos]);
+
+        size_t recordLen = sizeof(struct pldm_fru_record_data_format) -
+                           sizeof(struct pldm_fru_record_tlv);
+
+        const struct pldm_fru_record_tlv* tlv = recordSetSrc->tlvs;
+
+        for (uint8_t i = 0; i < recordSetSrc->num_fru_fields; ++i)
+        {
+            if ((table.size() - pos) < (recordLen + sizeof(*tlv)))
+            {
+                info("Error: Incomplete TLV header");
+                return;
+            }
+
+            size_t len = sizeof(*tlv) - 1 + tlv->length;
+
+            if ((table.size() - pos) < (recordLen + len))
+            {
+                info("Error: Incomplete TLV data");
+                return;
+            }
+
+            recordLen += len;
+
+            // Advance to next tlv
+            tlv = reinterpret_cast<const struct pldm_fru_record_tlv*>(
+                reinterpret_cast<const uint8_t*>(tlv) + len);
+        }
+
+        if ((le16toh(recordSetSrc->record_set_id) != rsi && rsi != 0))
+        {
+            std::copy(table.begin() + pos, table.begin() + pos + recordLen,
+                      std::back_inserter(updatedFruTbl));
+        }
+        else
+        {
+            // Deleted record
+            numRecs--;
+        }
+
+        pos += recordLen;
+    }
+    // Replace the old table with the updated one
+    table = std::move(updatedFruTbl);
+}
+
 std::vector<uint8_t> FruImpl::tableResize()
 {
     std::vector<uint8_t> tempTable;
