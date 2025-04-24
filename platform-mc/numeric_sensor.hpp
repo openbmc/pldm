@@ -200,7 +200,7 @@ class NumericSensor
      *
      *  @return double - Lower HardShutdown threshold
      */
-    double getThresholdLowerHardShutdownl()
+    double getThresholdLowerHardShutdown()
     {
         if (thresholdHardShutdownIntf)
         {
@@ -211,6 +211,138 @@ class NumericSensor
             return std::numeric_limits<double>::quiet_NaN();
         }
     };
+
+    /** @brief Get threshold given level and direction
+     *
+     * @param[in] level - The threshold level (WARNING/CRITICAL/etc)
+     * @param[in] direction - The threshold direction (HIGH/LOW)
+     *
+     * @return double - The requested threshold.
+     */
+    double getThreshold(pldm::utils::Level level,
+                        pldm::utils::Direction direction)
+    {
+        if (direction != pldm::utils::Direction::HIGH &&
+            direction != pldm::utils::Direction::LOW)
+        {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+        switch (level)
+        {
+            case pldm::utils::Level::WARNING:
+                return direction == pldm::utils::Direction::HIGH
+                           ? getThresholdUpperWarning()
+                           : getThresholdLowerWarning();
+            case pldm::utils::Level::CRITICAL:
+                return direction == pldm::utils::Direction::HIGH
+                           ? getThresholdUpperCritical()
+                           : getThresholdLowerCritical();
+            case pldm::utils::Level::HARDSHUTDOWN:
+                return direction == pldm::utils::Direction::HIGH
+                           ? getThresholdUpperHardShutdown()
+                           : getThresholdLowerHardShutdown();
+            default:
+                break;
+        }
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+
+    /* @brief returns true if the given threshold at level/direction is defined.
+     *
+     * @param[in] level - The threshold level (WARNING/CRITICAL/etc)
+     * @param[in] direction - The threshold direction (HIGH/LOW)
+     *
+     * @return true if the threshold is valid
+     */
+    bool isThresholdValid(pldm::utils::Level level,
+                          pldm::utils::Direction direction)
+    {
+        return std::isfinite(getThreshold(level, direction));
+    }
+
+    /* @brief Get the alarm status of the given threshold
+     *
+     * @param[in] level - The threshold level (WARNING/CRITICAL/etc)
+     * @param[in] direction - The threshold direction (HIGH/LOW)
+     *
+     * @return true if the current alarm status is asserted.
+     */
+    bool getThresholdAlarm(pldm::utils::Level level,
+                           pldm::utils::Direction direction)
+    {
+        if (!isThresholdValid(level, direction))
+        {
+            return false;
+        }
+        switch (level)
+        {
+            case pldm::utils::Level::WARNING:
+                return direction == pldm::utils::Direction::HIGH
+                           ? thresholdWarningIntf->warningAlarmHigh()
+                           : thresholdWarningIntf->warningAlarmLow();
+            case pldm::utils::Level::CRITICAL:
+                return direction == pldm::utils::Direction::HIGH
+                           ? thresholdCriticalIntf->criticalAlarmHigh()
+                           : thresholdCriticalIntf->criticalAlarmLow();
+            case pldm::utils::Level::HARDSHUTDOWN:
+                return direction == pldm::utils::Direction::HIGH
+                           ? thresholdHardShutdownIntf->hardShutdownAlarmHigh()
+                           : thresholdHardShutdownIntf->hardShutdownAlarmLow();
+            default:
+                break;
+        }
+        return false;
+    }
+
+    /* @brief raises the alarm on the warning threshold
+     *
+     * @param[in] direction - The threshold direction (HIGH/LOW)
+     * @param[in] value - The current numeric sensor reading
+     * @param[in] asserted - true if we want to set the alarm, false
+     *                       if we want to clear it.
+     *
+     * @return PLDM_SUCCESS or a valid error code.
+     */
+    void setWarningThresholdAlarm(pldm::utils::Direction direction,
+                                  double value, bool asserted);
+
+    /* @brief raises the alarm on the critical threshold
+     *
+     * @param[in] direction - The threshold direction (HIGH/LOW)
+     * @param[in] value - The current numeric sensor reading
+     * @param[in] asserted - true if we want to set the alarm, false
+     *                       if we want to clear it.
+     *
+     * @return PLDM_SUCCESS or a valid error code.
+     */
+    void setCriticalThresholdAlarm(pldm::utils::Direction direction,
+                                   double value, bool asserted);
+
+    /* @brief raises the alarm on the hard-shutdown threshold
+     *
+     * @param[in] direction - The threshold direction (HIGH/LOW)
+     * @param[in] value - The current numeric sensor reading
+     * @param[in] asserted - true if we want to set the alarm, false
+     *                       if we want to clear it.
+     *
+     * @return PLDM_SUCCESS or a valid error code.
+     */
+    void setHardShutdownThresholdAlarm(pldm::utils::Direction direction,
+                                       double value, bool asserted);
+
+    /* @brief raises the alarm on the threshold
+     *
+     * @param[in] level - The threshold level (WARNING/CRITICAL/etc)
+     * @param[in] direction - The threshold direction (HIGH/LOW)
+     * @param[in] value - The current numeric sensor reading
+     * @param[in] asserted - true if we want to set the alarm, false
+     *                       if we want to clear it.
+     *
+     * @return PLDM_SUCCESS or a valid error code.
+     */
+    int setThresholdAlarm(pldm::utils::Level level,
+                          pldm::utils::Direction direction, double value,
+                          bool asserted);
 
     /** @brief Check if value is over threshold.
      *
