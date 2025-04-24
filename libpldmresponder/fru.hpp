@@ -4,6 +4,7 @@
 #include "libpldmresponder/pdr_utils.hpp"
 #include "oem_handler.hpp"
 #include "pldmd/handler.hpp"
+#include "requester/handler.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/pdr.h>
@@ -71,6 +72,14 @@ class FruImpl
         parser(configPath, fruMasterJsonPath), pdrRepo(pdrRepo),
         entityTree(entityTree), bmcEntityTree(bmcEntityTree)
     {}
+
+    /** @brief Set MCTP EID of the FRU Handler
+     *  @param[in] host_eid - the MCTP EID of the FRU Handler
+     */
+    void setEid(mctp_eid_t host_eid)
+    {
+        mctp_eid = host_eid;
+    }
 
     /** @brief Total length of the FRU table in bytes, this includes the pad
      *         bytes and the checksum.
