@@ -494,6 +494,138 @@ void FruImpl::sendPDRRepositoryChgEventbyPDRHandles(
     }
 }
 
+void FruImpl::removeIndividualFRU(const std::string& fruObjPath)
+{
+    uint16_t rsi = objectPathToRSIMap[fruObjPath];
+    if (!rsi)
+    {
+        info("No Pdrs to delete for the object path {PATH}", "PATH",
+             fruObjPath);
+        return;
+    }
+    pldm_entity removeEntity;
+    uint16_t terminusHdl{};
+    uint16_t entityType{};
+    uint16_t entityInsNum{};
+    uint16_t containerId{};
+    uint32_t updateRecordHdlBmc = 0;
+    uint32_t updateRecordHdlHost = 0;
+    uint32_t deleteRecordHdl = 0;
+    pldm_pdr_fru_record_find_by_rsi(pdrRepo, rsi, &terminusHdl, &entityType,
+                                    &entityInsNum, &containerId, false);
+    removeEntity.entity_type = entityType;
+    removeEntity.entity_instance_num = entityInsNum;
+    removeEntity.entity_container_id = containerId;
+
+    uint8_t bmcEventDataOps = -1;
+    uint8_t hostEventDataOps = -1;
+    auto removeBmcEntityRc =
+        pldm_entity_association_pdr_remove_contained_entity(
+            pdrRepo, &removeEntity, false, &updateRecordHdlBmc);
+    pldm::responder::pdr_utils::PdrEntry pdrEntry;
+    uint8_t* pdrData = nullptr;
+    auto record =
+        pldm_pdr_find_record(pdrRepo, updateRecordHdlBmc, &pdrData,
+                             &pdrEntry.size, &pdrEntry.handle.nextRecordHandle);
+    if (record)
+    {
+        error("Found BMC Record {REC}", "REC", updateRecordHdlBmc);
+    }
+    bmcEventDataOps = record ? PLDM_RECORDS_MODIFIED : PLDM_RECORDS_DELETED;
+
+    auto removeHostEntityRc =
+        pldm_entity_association_pdr_remove_contained_entity(
+            pdrRepo, &removeEntity, true, &updateRecordHdlHost);
+    record =
+        pldm_pdr_find_record(pdrRepo, updateRecordHdlHost, &pdrData,
+                             &pdrEntry.size, &pdrEntry.handle.nextRecordHandle);
+    if (record)
+    {
+        error("Found Host Record {REC}", "REC", updateRecordHdlHost);
+    }
+    hostEventDataOps = record ? PLDM_RECORDS_MODIFIED : PLDM_RECORDS_DELETED;
+
+    pldm_pdr_remove_fru_record_set_by_rsi(pdrRepo, rsi, false,
+                                          &deleteRecordHdl);
+
+    pldm_entity_association_tree_delete_node(entityTree, removeEntity);
+    pldm_entity_association_tree_delete_node(bmcEntityTree, removeEntity);
+
+    objectPathToRSIMap.erase(fruObjPath);
+    objToEntityNode.erase(fruObjPath);
+    info(
+        "Removing Individual FRU [ {FRU_OBJ_PATH} ] with entityid [ {ENTITY_TYPE}, {ENTITY_NUM}, {ENTITY_ID} ]",
+        "FRU_OBJ_PATH", fruObjPath, "ENTITY_TYPE",
+        static_cast<unsigned>(removeEntity.entity_type), "ENTITY_NUM",
+        static_cast<unsigned>(removeEntity.entity_instance_num), "ENTITY_ID",
+        static_cast<unsigned>(removeEntity.entity_container_id));
+    associatedEntityMap.erase(fruObjPath);
+
+    deleteFRURecord(rsi);
+
+    std::vector<ChangeEntry> handlesTobeDeleted;
+    if (deleteRecordHdl != 0)
+    {
+        handlesTobeDeleted.push_back(deleteRecordHdl);
+    }
+
+    std::vector<uint16_t> effecterIDs = findEffecterIds(
+        pdrRepo, 0 /*tid*/, removeEntity.entity_type,
+        removeEntity.entity_instance_num, removeEntity.entity_container_id);
+
+    for (const auto& ids : effecterIDs)
+    {
+        auto delEffecterHdl = pldm_delete_by_effecter_id(pdrRepo, ids, false);
+        effecterDbusObjMaps.erase(ids);
+        if (delEffecterHdl != 0)
+        {
+            handlesTobeDeleted.push_back(delEffecterHdl);
+        }
+    }
+    std::vector<uint16_t> sensorIDs = findSensorIds(
+        pdrRepo, 0 /*tid*/, removeEntity.entity_type,
+        removeEntity.entity_instance_num, removeEntity.entity_container_id);
+
+    for (const auto& ids : sensorIDs)
+    {
+        auto delSensorHdl = pldm_delete_by_sensor_id(pdrRepo, ids, false);
+        sensorDbusObjMaps.erase(ids);
+        if (delSensorHdl != 0)
+        {
+            handlesTobeDeleted.push_back(delSensorHdl);
+        }
+    }
+
+    // need to send both remote and local records. Phyp keeps track of bmc only
+    // records
+    std::vector<ChangeEntry> handlesTobeModified;
+    if (removeBmcEntityRc == 0 && updateRecordHdlBmc != 0)
+    {
+        (bmcEventDataOps == PLDM_RECORDS_DELETED)
+            ? handlesTobeDeleted.push_back(updateRecordHdlBmc)
+            : handlesTobeModified.push_back(updateRecordHdlBmc);
+    }
+    if (removeHostEntityRc == 0 && updateRecordHdlHost != 0)
+    {
+        (hostEventDataOps == PLDM_RECORDS_DELETED)
+            ? handlesTobeDeleted.push_back(updateRecordHdlHost)
+            : handlesTobeModified.push_back(updateRecordHdlHost);
+    }
+    // Adapter PDRs can have deleted records
+    if (!handlesTobeDeleted.empty())
+    {
+        sendPDRRepositoryChgEventbyPDRHandles(
+            std::move(handlesTobeDeleted),
+            std::vector<uint8_t>(1, PLDM_RECORDS_DELETED));
+    }
+    if (!handlesTobeModified.empty())
+    {
+        sendPDRRepositoryChgEventbyPDRHandles(
+            std::move(handlesTobeModified),
+            (std::vector<uint8_t>(1, PLDM_RECORDS_MODIFIED)));
+    }
+}
+
 std::vector<uint8_t> FruImpl::tableResize()
 {
     std::vector<uint8_t> tempTable;
