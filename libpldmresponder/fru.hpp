@@ -249,6 +249,13 @@ class FruImpl
                          const fru_parser::FruRecordInfos& recordInfos,
                          const pldm_entity& entity);
 
+    /** @brief Deletes a FRU record from record set table.
+     *  @param[in] rsi - the FRU Record Set Identifier
+     *
+     *  @return
+     */
+    void deleteFRURecord(uint16_t rsi);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
