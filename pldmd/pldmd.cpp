@@ -311,6 +311,8 @@ int main(int argc, char** argv)
         platformConfigHandler.get(), &reqHandler, event, true,
         addOnEventHandlers);
 
+    fruHandler->setPlatformHandler(platformHandler.get());
+
     auto biosHandler = std::make_unique<pldm::responder::bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
         platformConfigHandler.get(), requestPLDMServiceName);
