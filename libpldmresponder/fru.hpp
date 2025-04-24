@@ -1,9 +1,11 @@
 #pragma once
 
+#include "common/instance_id.hpp"
 #include "fru_parser.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "oem_handler.hpp"
 #include "pldmd/handler.hpp"
+#include "requester/handler.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/pdr.h>
@@ -14,6 +16,8 @@
 #include <string>
 #include <variant>
 #include <vector>
+
+using namespace pldm::utils;
 
 namespace pldm
 {
@@ -34,6 +38,8 @@ using ObjectPath = std::string;
 using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
 
 } // namespace dbus
+
+using ChangeEntry = uint32_t;
 
 /** @class FruImpl
  *
@@ -66,9 +72,13 @@ class FruImpl
     FruImpl(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree) :
+            pldm_entity_association_tree* bmcEntityTree,
+            pldm::InstanceIdDb& instanceIdDb,
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            uint8_t mctp_eid) :
         parser(configPath, fruMasterJsonPath), pdrRepo(pdrRepo),
-        entityTree(entityTree), bmcEntityTree(bmcEntityTree)
+        entityTree(entityTree), bmcEntityTree(bmcEntityTree),
+        instanceIdDb(instanceIdDb), handler(handler), mctp_eid(mctp_eid)
     {}
 
     /** @brief Total length of the FRU table in bytes, this includes the pad
@@ -233,6 +243,12 @@ class FruImpl
     pldm_entity_association_tree* bmcEntityTree;
     pldm::responder::oem_fru::Handler* oemFruHandler = nullptr;
     dbus::ObjectValueTree objects;
+    /** @brief reference to Instance ID database object, used to obtain PLDM
+     * instance IDs
+     */
+    pldm::InstanceIdDb& instanceIdDb;
+    pldm::requester::Handler<pldm::requester::Request>* handler;
+    uint8_t mctp_eid;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
@@ -254,6 +270,17 @@ class FruImpl
      */
     void deleteFRURecord(uint16_t rsi);
 
+    /* @brief Send a PLDM event to host firmware containing a list of record
+     *        handles of PDRs that the host firmware has to fetch.
+     *
+     * @param[in] pdrRecordHandles - list of PDR record handles
+     * @param[in] eventDataOps - event data operation for PDRRepositoryChgEvent
+     *                           as in DSP0248 SPEC
+     */
+    void sendPDRRepositoryChgEventbyPDRHandles(
+        std::vector<uint32_t>&& pdrRecordHandles,
+        std::vector<uint8_t>&& eventDataOps);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
@@ -268,8 +295,12 @@ class Handler : public CmdHandler
     Handler(const std::string& configPath,
             const std::filesystem::path& fruMasterJsonPath, pldm_pdr* pdrRepo,
             pldm_entity_association_tree* entityTree,
-            pldm_entity_association_tree* bmcEntityTree) :
-        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree)
+            pldm_entity_association_tree* bmcEntityTree,
+            pldm::InstanceIdDb& instanceIdDb,
+            pldm::requester::Handler<pldm::requester::Request>* handler,
+            uint8_t mctp_eid) :
+        impl(configPath, fruMasterJsonPath, pdrRepo, entityTree, bmcEntityTree,
+             instanceIdDb, handler, mctp_eid)
     {
         handlers.emplace(
             PLDM_GET_FRU_RECORD_TABLE_METADATA,
