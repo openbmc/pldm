@@ -1,6 +1,7 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/fru_parser.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <config.h>
 #include <libpldm/pdr.h>
@@ -115,9 +116,11 @@ TEST(FruImpl, updateAssociationTreeTest)
         uint8_t association_type;
     } test_pldm_entity_node;
 
+    TestInstanceIdDb instanceIdDb;
+
     pldm::responder::FruImpl mockedFruHandler(
         FRU_JSONS_DIR, "./fru_jsons/fru_master/fru_master.json", pdrRepo.get(),
-        entityTree.get(), bmcEntityTree.get());
+        entityTree.get(), bmcEntityTree.get(), instanceIdDb, nullptr, 0x9);
 
     pldm_entity systemEntity{0x2d01, 1, 0};
     pldm_entity chassisEntity{0x2d, 1, 1};
@@ -167,10 +170,12 @@ TEST(FruImpl, entityByObjectPath)
         bmcEntityTree(pldm_entity_association_tree_init(),
                       pldm_entity_association_tree_destroy);
 
+    TestInstanceIdDb instanceIdDb;
+
     InterfaceMap iface = {{"xyz.openbmc_project.Inventory.Item.Chassis", {}}};
     pldm::responder::FruImpl mockedFruHandler(
         FRU_JSONS_DIR, "./fru_jsons/fru_master/fru_master.json", pdrRepo.get(),
-        entityTree.get(), bmcEntityTree.get());
+        entityTree.get(), bmcEntityTree.get(), instanceIdDb, nullptr, 0x9);
 
     // Good path
     auto entityPtr = mockedFruHandler.getEntityByObjectPath(iface);
