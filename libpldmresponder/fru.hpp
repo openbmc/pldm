@@ -20,6 +20,10 @@ namespace pldm
 
 namespace responder
 {
+namespace platform
+{
+class Handler; // forward declaration
+}
 
 namespace dbus
 {
@@ -209,6 +213,11 @@ class FruImpl
         oemFruHandler = handler;
     }
 
+    inline void setPlatformHandler(pldm::responder::platform::Handler* handler)
+    {
+        platformHandler = handler;
+    }
+
   private:
     uint16_t nextRSI()
     {
@@ -234,6 +243,7 @@ class FruImpl
     pldm_entity_association_tree* bmcEntityTree;
     pldm::responder::oem_fru::Handler* oemFruHandler = nullptr;
     dbus::ObjectValueTree objects;
+    pldm::responder::platform::Handler* platformHandler = nullptr;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
@@ -255,6 +265,13 @@ class FruImpl
      *  @return
      */
     void deleteFRURecord(uint16_t rsi);
+
+    /** @brief Deletes a FRU record set PDR and it's associated PDRs after
+     *         a concurrent remove operation.
+     *  @param[in] fruObjectPath - the FRU object path
+     *  @return
+     */
+    void removeIndividualFRU(const std::string& fruObjPath);
 
     /** @brief Associate sensor/effecter to FRU entity
      */
@@ -360,6 +377,11 @@ class Handler : public CmdHandler
     void setOemFruHandler(pldm::responder::oem_fru::Handler* handler)
     {
         impl.setOemFruHandler(handler);
+    }
+
+    void setPlatformHandler(pldm::responder::platform::Handler* handler)
+    {
+        impl.setPlatformHandler(handler);
     }
 
     using Table = std::vector<uint8_t>;
