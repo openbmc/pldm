@@ -343,6 +343,50 @@ void FruImpl::populateRecords(
     }
 }
 
+void FruImpl::deleteFRURecord(uint16_t rsi)
+{
+    std::vector<uint8_t> updatedFruTbl;
+    const struct pldm_fru_record_data_format* recordSetSrc =
+        reinterpret_cast<const struct pldm_fru_record_data_format*>(
+            table.data());
+
+    const struct pldm_fru_record_tlv* tlv;
+    size_t pos = 0;
+
+    while ((table.size() > pos) && (recordSetSrc != nullptr))
+    {
+        size_t recordLen = sizeof(struct pldm_fru_record_data_format) -
+                           sizeof(struct pldm_fru_record_tlv);
+
+        tlv = recordSetSrc->tlvs;
+
+        for ([[maybe_unused]] const auto& i : std::views::iota(
+                 0, static_cast<int>(recordSetSrc->num_fru_fields)))
+        {
+            size_t len = sizeof(*tlv) - 1 + tlv->length;
+            recordLen += len;
+            tlv = reinterpret_cast<const struct pldm_fru_record_tlv*>(
+                (char*)tlv + len);
+        }
+        if ((recordSetSrc->record_set_id != htole16(rsi) && rsi != 0))
+        {
+            std::copy(table.begin() + pos, table.begin() + pos + recordLen,
+                      std::back_inserter(updatedFruTbl));
+        }
+        else
+        {
+            numRecs--;
+        }
+
+        pos += recordLen;
+        recordSetSrc =
+            reinterpret_cast<const struct pldm_fru_record_data_format*>(tlv);
+    }
+
+    table.clear();
+    table = std::move(updatedFruTbl);
+}
+
 std::vector<uint8_t> FruImpl::tableResize()
 {
     std::vector<uint8_t> tempTable;
