@@ -20,6 +20,10 @@ namespace pldm
 
 namespace responder
 {
+namespace platform
+{
+class Handler; // forward declaration
+}
 
 namespace dbus
 {
@@ -33,6 +37,7 @@ using InterfaceMap = std::map<Interface, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 using ObjectPath = std::string;
 using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
+using ObjectPathToRSIMap = std::map<ObjectPath, uint16_t>;
 
 } // namespace dbus
 
@@ -209,6 +214,11 @@ class FruImpl
         oemFruHandler = handler;
     }
 
+    inline void setPlatformHandler(pldm::responder::platform::Handler* handler)
+    {
+        platformHandler = handler;
+    }
+
   private:
     uint16_t nextRSI()
     {
@@ -234,8 +244,11 @@ class FruImpl
     pldm_entity_association_tree* bmcEntityTree;
     pldm::responder::oem_fru::Handler* oemFruHandler = nullptr;
     dbus::ObjectValueTree objects;
+    pldm::responder::platform::Handler* platformHandler = nullptr;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
+
+    dbus::ObjectPathToRSIMap objectPathToRSIMap{};
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
      *         updates the FRU table with the FRU records.
@@ -255,6 +268,13 @@ class FruImpl
      *  @return
      */
     void deleteFRURecord(uint16_t rsi);
+
+    /** @brief Deletes a FRU record set PDR and it's associated PDRs after
+     *         a concurrent remove operation.
+     *  @param[in] fruObjectPath - the FRU object path
+     *  @return
+     */
+    void removeIndividualFRU(const std::string& fruObjPath);
 
     /** @brief Associate sensor/effecter to FRU entity
      */
@@ -360,6 +380,11 @@ class Handler : public CmdHandler
     void setOemFruHandler(pldm::responder::oem_fru::Handler* handler)
     {
         impl.setOemFruHandler(handler);
+    }
+
+    void setPlatformHandler(pldm::responder::platform::Handler* handler)
+    {
+        impl.setPlatformHandler(handler);
     }
 
     using Table = std::vector<uint8_t>;
