@@ -281,6 +281,13 @@ class FruImpl
         std::vector<uint32_t>&& pdrRecordHandles,
         std::vector<uint8_t>&& eventDataOps);
 
+    /** @brief Deletes a FRU record set PDR and it's associated PDRs after
+     *         a concurrent remove operation.
+     *  @param[in] fruObjectPath - the FRU object path
+     *  @return
+     */
+    void removeIndividualFRU(const std::string& fruObjPath);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
