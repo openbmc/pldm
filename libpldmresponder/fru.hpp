@@ -254,6 +254,17 @@ class FruImpl
      */
     void deleteFRURecord(uint16_t rsi);
 
+    /* @brief Send a PLDM event to host firmware containing a list of record
+     *        handles of PDRs that the host firmware has to fetch.
+     *
+     * @param[in] pdrRecordHandles - list of PDR record handles
+     * @param[in] eventDataOps - event data operation for PDRRepositoryChgEvent
+     *                           as in DSP0248 SPEC
+     */
+    void sendPDRRepositoryChgEventbyPDRHandles(
+        std::vector<uint32_t>&& pdrRecordHandles,
+        std::vector<uint8_t>&& eventDataOps);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
