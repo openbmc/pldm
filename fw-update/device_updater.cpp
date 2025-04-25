@@ -403,6 +403,26 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     }
 }
 
+void DeviceUpdater::createRequestFwDataTimer()
+{
+    reqFwDataTimer = std::make_unique<sdbusplus::Timer>([this]() -> void {
+        if (updateManager->fwDebug)
+        {
+            lg2::error(
+                "Request firmware data timed out. No command received from FD within the expected time of {EXPECTEDTIME}s from endpoint ID {EID}, "
+                "component index {COMPONENTINDEX}",
+                "EID", eid, "COMPONENTINDEX", componentIndex, "EXPECTEDTIME",
+                updateTimeoutSeconds);
+        }
+
+        componentUpdateStatus[componentIndex] = false;
+        sendCancelUpdateComponentRequest();
+        updateManager->updateDeviceCompletion(eid, false);
+
+        return;
+    });
+}
+
 Response DeviceUpdater::requestFwData(const pldm_msg* request,
                                       size_t payloadLength)
 {
@@ -495,6 +515,27 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
+    if (!reqFwDataTimer)
+    {
+        if (offset != 0)
+        {
+            warning("First data request is not at offset 0");
+        }
+        createRequestFwDataTimer();
+    }
+
+    if (reqFwDataTimer)
+    {
+        reqFwDataTimer->start(std::chrono::seconds(updateTimeoutSeconds),
+                              false);
+    }
+    else
+    {
+        error(
+            "Failed to start timer for handling request firmware data for endpoint ID {EID}",
+            "EID", eid, "RC", rc);
+    }
+
     return response;
 }
 
@@ -509,6 +550,12 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
         pldm::utils::Rx, request, payloadLength,
         ("Received transfer complete from endpoint ID " + std::to_string(eid)),
         updateManager->fwDebug);
+
+    if (reqFwDataTimer)
+    {
+        reqFwDataTimer->stop();
+        reqFwDataTimer.reset();
+    }
 
     uint8_t transferResult = 0;
     auto rc =
