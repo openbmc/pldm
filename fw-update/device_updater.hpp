@@ -4,6 +4,7 @@
 #include "requester/handler.hpp"
 #include "requester/request.hpp"
 
+#include <sdbusplus/timer.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
@@ -189,6 +190,11 @@ class DeviceUpdater
      */
     void sendCancelUpdateComponentRequest();
 
+    /**
+     * @brief Create a timer to handle RequestFirmwareData timeout (UA_T2)
+     */
+    void createRequestFwDataTimer();
+
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 
@@ -233,6 +239,19 @@ class DeviceUpdater
      *        cancelled
      */
     ComponentUpdateStatusMap componentUpdateStatus;
+
+    /**
+     * @brief Timeout in seconds for the UA to cancel the component update if no
+     * command is received from the FD during component image transfer stage
+     *
+     */
+    static constexpr int updateTimeoutSeconds = UPDATE_TIMEOUT_SECONDS;
+
+    /**
+     * @brief Timer to handle RequestFirmwareData timeout(UA_T2)
+     *
+     */
+    std::unique_ptr<sdbusplus::Timer> reqFwDataTimer;
 };
 
 } // namespace fw_update
