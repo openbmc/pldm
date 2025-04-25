@@ -377,6 +377,15 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     }
 }
 
+void DeviceUpdater::createRequestFwDataTimer()
+{
+    reqFwDataTimer = std::make_unique<sdbusplus::Timer>([this]() -> void {
+        componentUpdateStatus[componentIndex] = false;
+        sendCancelUpdateComponentRequest();
+        updateManager->updateDeviceCompletion(eid, false);
+    });
+}
+
 Response DeviceUpdater::requestFwData(const pldm_msg* request,
                                       size_t payloadLength)
 {
@@ -463,6 +472,27 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
+    if (!reqFwDataTimer)
+    {
+        if (offset != 0)
+        {
+            warning("First data request is not at offset 0");
+        }
+        createRequestFwDataTimer();
+    }
+
+    if (reqFwDataTimer)
+    {
+        reqFwDataTimer->start(std::chrono::seconds(updateTimeoutSeconds),
+                              false);
+    }
+    else
+    {
+        error(
+            "Failed to start timer for handling request firmware data for endpoint ID {EID}",
+            "EID", eid, "RC", rc);
+    }
+
     return response;
 }
 
@@ -472,6 +502,12 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
+
+    if (reqFwDataTimer)
+    {
+        reqFwDataTimer->stop();
+        reqFwDataTimer.reset();
+    }
 
     uint8_t transferResult = 0;
     auto rc =
