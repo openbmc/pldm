@@ -137,6 +137,7 @@ conf_data.set(
     get_option('default-sensor-update-interval'),
 )
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
+conf_data.set('UPDATE_TIMEOUT_SECONDS', get_option('update-timeout-seconds'))
 
 configure_file(output: 'config.h', configuration: conf_data)
 
