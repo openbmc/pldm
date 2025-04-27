@@ -61,6 +61,59 @@ void registerCommand(CLI::App& app)
 }
 
 } // namespace raw
+
+namespace mctpRaw
+{
+
+using namespace pldmtool::helper;
+
+namespace
+{
+std::vector<std::unique_ptr<CommandInterface>> commands;
+}
+
+class MctpRawOp : public CommandInterface
+{
+  public:
+    ~MctpRawOp() = default;
+    MctpRawOp() = delete;
+    MctpRawOp(const MctpRawOp&) = delete;
+    MctpRawOp(MctpRawOp&&) = default;
+    MctpRawOp& operator=(const MctpRawOp&) = delete;
+    MctpRawOp& operator=(MctpRawOp&&) = delete;
+
+    explicit MctpRawOp(const char* type, const char* name, CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("-d,--data", rawData, "raw MCTP data")
+            ->required()
+            ->expected(-3);
+        app->add_flag("-p,--prealloc-tag", mctpPreAllocTag,
+                      "use pre-allocated MCTP tag for this request");
+    }
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+
+    {
+        return {PLDM_SUCCESS, rawData};
+    }
+
+    void parseResponseMsg(pldm_msg* /* responsePtr */,
+                          size_t /* payloadLength */) override
+    {}
+
+  private:
+    std::vector<uint8_t> rawData;
+};
+
+void registerCommand(CLI::App& app)
+{
+    auto mctpRaw = app.add_subcommand(
+        "mctpRaw", "send an MCTP raw request and print response");
+    commands.push_back(
+        std::make_unique<MctpRawOp>("mctpRaw", "mctpRaw", mctpRaw));
+}
+
+} // namespace mctpRaw
 } // namespace pldmtool
 
 int main(int argc, char** argv)
@@ -69,6 +122,7 @@ int main(int argc, char** argv)
     app.require_subcommand(1)->ignore_case();
 
     pldmtool::raw::registerCommand(app);
+    pldmtool::mctpRaw::registerCommand(app);
     pldmtool::base::registerCommand(app);
     pldmtool::bios::registerCommand(app);
     pldmtool::platform::registerCommand(app);
