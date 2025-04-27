@@ -7,7 +7,10 @@
 #include <libpldm/transport.h>
 #include <libpldm/transport/af-mctp.h>
 #include <libpldm/transport/mctp-demux.h>
+#include <linux/mctp.h>
 #include <poll.h>
+#include <string.h>
+#include <sys/ioctl.h>
 #include <systemd/sd-bus.h>
 
 #include <sdbusplus/server.hpp>
@@ -86,6 +89,149 @@ void fillCompletionCode(uint8_t completionCode, ordered_json& data,
     data["CompletionCode"] = "UNKNOWN_COMPLETION_CODE";
 }
 
+int mctpSockSendRecv(const uint8_t eid, const bool mctpPreAllocTag,
+                     const std::vector<uint8_t>& requestMsg,
+                     void** responseMessage, size_t* responseMessageSize)
+{
+    struct sockaddr_mctp_ext addr;
+    int sd;
+    int rc;
+    struct mctp_ioc_tag_ctl ctl = {
+        .peer_addr = eid,
+        .tag = 0,
+        .flags = 0,
+    };
+
+    // open AF_MCTP socket
+    sd = socket(AF_MCTP, SOCK_DGRAM, 0);
+    if (sd < 0)
+    {
+        rc = -errno;
+        std::cerr << "socket(AF_MCTP, SOCK_DGRAM, 0) failed. errnostr = "
+                  << strerror(errno) << "\n";
+        return rc;
+    }
+
+    // We want extended addressing on all received messages
+    int val = 1;
+    rc = setsockopt(sd, SOL_MCTP, MCTP_OPT_ADDR_EXT, &val, sizeof(val));
+    if (rc < 0)
+    {
+        rc = -errno;
+        std::cerr << "Kernel does not support MCTP extended addressing. errnostr = "
+                  << strerror(errno) << "\n";
+        close(sd);
+        return rc;
+    }
+
+    // prepare the request to be sent
+    memset(&addr, 0, sizeof(addr));
+    addr.smctp_base.smctp_family = AF_MCTP;
+    addr.smctp_base.smctp_network = 0;
+    addr.smctp_base.smctp_addr.s_addr = eid;
+    addr.smctp_base.smctp_type = requestMsg[0];
+    if (mctpPreAllocTag)
+    {
+        // preallocate a tag if needed
+        rc = ioctl(sd, SIOCMCTPALLOCTAG, &ctl);
+        if (rc)
+        {
+            rc = -errno;
+            std::cerr << "ioctl(SIOCMCTPALLOCTAG) failed. errnostr = "
+                      << strerror(errno) << "\n";
+            close(sd);
+            return rc;
+        }
+    } // preAllocTag
+
+    // send the MCTP message
+    addr.smctp_base.smctp_tag = MCTP_TAG_OWNER | ctl.tag;
+    rc = sendto(sd, &requestMsg[1], requestMsg.size() - 1, 0,
+                (struct sockaddr*)&addr, sizeof(struct sockaddr_mctp));
+    if (rc < 0)
+    {
+        rc = -errno;
+        std::cerr << "sendto(AF_MCTP) failed. errnostr = " << strerror(errno)
+                  << "\n";
+        close(sd);
+        return rc;
+    }
+
+    // wait for for the response from the MCTP Endpoint
+    // Instance ID expiration interval (MT4) - after which the instance ID
+    // will be reused. For PCIe binding this timeout is 5 seconds.
+    const int MCTP_INST_ID_EXPIRATION_INTERVAL_MT4 = 5;
+    struct pollfd pollfd;
+    pollfd.fd = sd;
+    pollfd.events = POLLIN;
+    rc = poll(&pollfd, 1, MCTP_INST_ID_EXPIRATION_INTERVAL_MT4 * 1000);
+    if (rc < 0)
+    {
+        std::cerr << "poll(AF_MCTP, 5000) failed. errnostr = "
+                  << strerror(errno)
+                  << "\n";
+        close(sd);
+        return rc;
+    }
+    else if (rc == 0)
+    {
+        // poll() timed out
+        std::cerr << "Timeout(5s): No response from the endpoint\n";
+        close(sd);
+        return rc;
+    }
+    else
+    {
+        // data on the socket
+        // take a PEEK at the socket to know how many bytes to read
+        int respLen = recvfrom(sd, NULL, 0, MSG_PEEK | MSG_TRUNC, NULL, 0);
+        if (respLen < 0)
+        {
+            rc = -errno;
+            std::cerr << "recvfrom(MSG_PEEK | MSG_TRUNC)failed. errnostr = "
+                      << strerror(errno) << "\n";
+            close(sd);
+            return rc;
+        }
+
+        // read the received data
+        struct sockaddr_mctp retAddr;
+        socklen_t addrlen;
+        memset(&retAddr, 0x0, sizeof(retAddr));
+        uint8_t* respBuf;
+        respBuf = (uint8_t*)malloc(respLen);
+        int rcvdByteCount = recvfrom(sd, respBuf, respLen, MSG_TRUNC,
+                                     (struct sockaddr*)&retAddr, &addrlen);
+        if (rcvdByteCount < 0)
+        {
+            rc = -errno;
+            std::cerr << "recvfrom(): DATA failed: " << strerror(errno) << "\n";
+            free(respBuf);
+            close(sd);
+            return rc;
+        }
+        if (mctpPreAllocTag)
+        {
+            // drop the preallocated msg tag
+            rc = ioctl(sd, SIOCMCTPDROPTAG, &ctl);
+            if (rc)
+            {
+                rc = -errno;
+                std::cerr << "ioctl(SIOCMCTPDROPTAG) failed. errnostr = "
+                          << strerror(errno) << "\n";
+                free(respBuf);
+                close(sd);
+                return rc;
+            }
+        }
+        *responseMessageSize = rcvdByteCount;
+        *responseMessage = (void*)respBuf;
+    }
+
+    close(sd);
+    return 0;
+}
+
 void CommandInterface::exec()
 {
     instanceId = instanceIdDb.next(mctp_eid);
@@ -117,7 +263,8 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
     // By default enable request/response msgs for pldmtool raw commands.
-    if (CommandInterface::pldmType == "raw")
+    if ((CommandInterface::pldmType == "raw") ||
+        (CommandInterface::pldmType == "mctpRaw"))
     {
         pldmVerbose = true;
     }
@@ -138,15 +285,31 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         void* responseMessage = nullptr;
         size_t responseMessageSize{};
 
-        rc =
-            pldmTransport.sendRecvMsg(tid, requestMsg.data(), requestMsg.size(),
-                                      responseMessage, responseMessageSize);
-        if (rc)
+        if (CommandInterface::pldmType != "mctpRaw")
         {
-            std::cerr << "[" << unsigned(retry) << "] pldm_send_recv error rc "
-                      << rc << std::endl;
-            retry++;
-            continue;
+            rc =
+                pldmTransport.sendRecvMsg(tid, requestMsg.data(), requestMsg.size(),
+                                          responseMessage, responseMessageSize);
+            if (rc)
+            {
+                std::cerr << "[" << unsigned(retry) << "] pldm_send_recv error rc "
+                          << rc << std::endl;
+                retry++;
+                continue;
+            }
+        }
+        else
+        {
+            rc = mctpSockSendRecv(mctp_eid, mctpPreAllocTag, requestMsg,
+                                  &responseMessage, &responseMessageSize);
+            if (rc)
+            {
+                std::cerr << "[" << unsigned(retry)
+                          << "] mctpSockSendRecv() error rc " << rc
+                          << std::endl;
+                retry++;
+                continue;
+            }
         }
 
         responseMsg.resize(responseMessageSize);
