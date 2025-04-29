@@ -16,6 +16,24 @@
       "message": "What happens when `cc !\u003d PLDM_SUCCESS`? The earlier code used to print an error trace. Shouldn\u0027t we keep the same and print the completion code value?",
       "revId": "ffbdde4a0ae7db9ea2d185c3746a763b68a0301b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c9bf01_6e8540d4",
+        "filename": "pldmtool/pldm_base_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-04-29T09:38:12Z",
+      "side": 1,
+      "message": "the method below is translating the cc into human readable completion code - \n```\nfillCompletionCode(cc, data, PLDM_BASE)\n```\nAnd the same would be printed in the response, so there\u0027s no change in the behaviour.\n\nAlso we can use verbose flag to get the raw Tx/Rx",
+      "parentUuid": "2f9ac659_75e46d88",
+      "revId": "ffbdde4a0ae7db9ea2d185c3746a763b68a0301b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
