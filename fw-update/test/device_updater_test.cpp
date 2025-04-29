@@ -37,6 +37,43 @@ class DeviceUpdaterTest : public testing::Test
     FirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
+
+    void SetUp() override
+    {
+        // Create test package with valid checksum
+        std::vector<uint8_t> packageHeader = createTestPackageHeader();
+        std::vector<uint8_t> payload = createTestPayload();
+        
+        // Calculate and add checksums
+        uint32_t headerChecksum = crc32(packageHeader.data(), packageHeader.size() - 8);
+        uint32_t payloadChecksum = crc32(payload.data(), payload.size());
+        payloadChecksum = ~payloadChecksum;
+        
+        // Add checksums to header
+        // ... code to add checksums ...
+        
+        // Create full package
+        std::vector<uint8_t> fullPackage = packageHeader;
+        fullPackage.insert(fullPackage.end(), payload.begin(), payload.end());
+        
+        // Write to test file
+        std::ofstream testPkg("./test_pkg", std::ios::binary);
+        testPkg.write(reinterpret_cast<const char*>(fullPackage.data()), 
+                      fullPackage.size());
+        testPkg.close();
+    }
+
+    std::vector<uint8_t> createTestPackageHeader()
+    {
+        // Create a valid package header with format revision 3
+        // ...
+    }
+
+    std::vector<uint8_t> createTestPayload()
+    {
+        // Create test payload data
+        // ...
+    }
 };
 
 TEST_F(DeviceUpdaterTest, validatePackage)

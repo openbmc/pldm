@@ -83,6 +83,18 @@ class PackageParser
     /** @brief Package version string */
     PackageVersion pkgVersion{};
 
+    /** @brief Validate the payload checksum of the firmware update package
+     *
+     * This function verifies the payload checksum of the package using the
+     * libpldm API. Only applicable for package format revision >= 3.
+     *
+     * @param[in] packageData - Pointer to the complete firmware update package
+     * @param[in] packageSize - Total size of the firmware update package
+     *
+     * @throws InternalFailure if checksum validation fails
+     */
+    void validatePayloadChecksum(const void* packageData, size_t packageSize);
+
   protected:
     /** @brief Parse the firmware device identification area
      *

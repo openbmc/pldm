@@ -254,6 +254,34 @@ void PackageParser::validatePkgTotalSize(uintmax_t pkgSize)
     }
 }
 
+void PackageParser::validatePayloadChecksum(const void* packageData, size_t packageSize)
+{
+    if (!packageData || packageSize == 0)
+    {
+        error("Invalid package data for checksum validation");
+        throw InternalFailure();
+    }
+
+    // Only validate checksum for package format revision >= 3
+    if (this->pkgIter.hdr.package_header_format_revision < 3)
+    {
+        info("Package format revision {} doesn't support payload checksum, skipping validation",
+             this->pkgIter.hdr.package_header_format_revision);
+        return;
+    }
+
+    info("Validating package payload checksum...");
+    int rc = verify_pldm_firmware_update_package_payload_checksum(packageData, packageSize);
+    
+    if (rc < 0)
+    {
+        error("Package payload checksum validation failed, rc={RC}", "RC", rc);
+        throw InternalFailure();
+    }
+    
+    info("Package payload checksum validation successful");
+}
+
 void PackageParserGeneric::parse(const std::vector<uint8_t>& pkgHdr,
                                  uintmax_t pkgSize)
 {
@@ -267,6 +295,12 @@ void PackageParserGeneric::parse(const std::vector<uint8_t>& pkgHdr,
     }
 
     auto& hdr = this->pkgIter.hdr;
+
+    // Validate payload checksum if the package data is available
+    if (this->pkgIter.package.ptr && this->pkgIter.package.length == pkgSize)
+    {
+        validatePayloadChecksum(this->pkgIter.package.ptr, pkgSize);
+    }
 
     if (hdr.package_version_string.ptr && hdr.package_version_string.length)
     {

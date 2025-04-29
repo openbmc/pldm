@@ -173,3 +173,54 @@ TEST(PackageParser, InvalidPkgBadChecksum)
 
     EXPECT_THROW(parser->parse(fwPkgHdr, pkgSize), std::exception);
 }
+
+TEST(PackageParser, ValidatePayloadChecksum)
+{
+    // Create a mock package with valid checksum
+    std::vector<uint8_t> packageHeader{
+        // UUID (PLDM_FWUP_HDR_IDENTIFIER_V3)
+        0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D, 0x49, 0x43, 
+        0x98, 0x00, 0xA0, 0x2F, 0x05, 0x9A, 0xCA, 0x03, // Format revision 3
+        // Rest of header
+        0x01, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x19, 0x0C, 0xE5, 0x07, 0x00, 
+        0x08, 0x00, 0x01, 0x0E
+    };
+    
+    // Add payload data
+    std::vector<uint8_t> payload(100, 0x5A);  // 100 bytes of 0x5A
+    
+    // Calculate header checksum
+    uint32_t headerChecksum = crc32(packageHeader.data(), packageHeader.size() - 8);
+    
+    // Calculate payload checksum
+    uint32_t payloadChecksum = crc32(payload.data(), payload.size());
+    payloadChecksum = ~payloadChecksum;  // Final step in CRC-32 calculation
+    
+    // Add checksums to header
+    packageHeader.push_back(headerChecksum & 0xFF);
+    packageHeader.push_back((headerChecksum >> 8) & 0xFF);
+    packageHeader.push_back((headerChecksum >> 16) & 0xFF);
+    packageHeader.push_back((headerChecksum >> 24) & 0xFF);
+    
+    packageHeader.push_back(payloadChecksum & 0xFF);
+    packageHeader.push_back((payloadChecksum >> 8) & 0xFF);
+    packageHeader.push_back((payloadChecksum >> 16) & 0xFF);
+    packageHeader.push_back((payloadChecksum >> 24) & 0xFF);
+    
+    // Create full package
+    std::vector<uint8_t> fullPackage = packageHeader;
+    fullPackage.insert(fullPackage.end(), payload.begin(), payload.end());
+    
+    auto parser = std::make_unique<PackageParserGeneric>();
+    
+    // This should not throw an exception
+    EXPECT_NO_THROW(parser->validatePayloadChecksum(fullPackage.data(), fullPackage.size()));
+    
+    // Now corrupt the payload and verify it fails
+    fullPackage[packageHeader.size()] = 0xFF;  // Change first byte of payload
+    
+    // This should throw an exception
+    EXPECT_THROW(parser->validatePayloadChecksum(fullPackage.data(), fullPackage.size()), 
+                 std::exception);
+}

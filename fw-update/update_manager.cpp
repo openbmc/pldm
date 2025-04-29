@@ -94,6 +94,15 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     try
     {
         parser->parse(packageHeader, packageSize);
+        
+        // Load the entire package for checksum validation if format revision >= 3
+        if (pkgHeaderInfo->package_header_format_revision >= 3)
+        {
+            std::vector<uint8_t> packageData(packageSize);
+            package.seekg(0);
+            package.read(reinterpret_cast<char*>(packageData.data()), packageSize);
+            parser->validatePayloadChecksum(packageData.data(), packageSize);
+        }
     }
     catch (const std::exception& e)
     {
