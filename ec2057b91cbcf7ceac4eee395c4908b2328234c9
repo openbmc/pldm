@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c8a120e_4f08f4af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-04-29T09:15:26Z",
+      "side": 1,
+      "message": "This back trace corresponds to IBM downstream fork, which is based on a little older version of master. \n\nHere is the link for the source : https://github.com/ibm-openbmc/pldm/blob/424d866fe97b20343e7733fcab462e0ea1035379/pldmd/pldmd.cpp#L433 ,it points to :\n\n```\n int returnCode \u003d event.loop();\n```\n\nDo you want this to be re-created on master pldm ?",
+      "parentUuid": "a4fc020d_43fb5b79",
+      "range": {
+        "startLine": 15,
+        "startChar": 25,
+        "endLine": 16,
+        "endChar": 54
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1eb40c74_be106ae0",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
