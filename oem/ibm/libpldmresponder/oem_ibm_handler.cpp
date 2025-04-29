@@ -66,6 +66,15 @@ int pldm::responder::oem_ibm_platform::Handler::
     }
     return rc;
 }
+int pldm::responder::oem_ibm_platform::Handler::
+    oemSetNumericEffecterValueHandler(
+        uint16_t /*entityType*/, uint16_t /*entityInstance*/,
+        uint16_t /*effecterSemanticId*/, uint8_t /*effecterDataSize*/,
+        uint8_t* /*effecterValue*/, real32_t /*effecterOffset*/,
+        real32_t /*effecterResolution*/, uint16_t /*effecterId*/)
+{
+    return PLDM_SUCCESS;
+}
 
 int pldm::responder::oem_ibm_platform::Handler::
     oemSetStateEffecterStatesHandler(

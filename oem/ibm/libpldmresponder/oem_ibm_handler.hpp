@@ -149,6 +149,12 @@ class Handler : public oem_platform::Handler
             });
     }
 
+    int oemSetNumericEffecterValueHandler(
+        uint16_t entityType, uint16_t entityInstance,
+        uint16_t effecterSemanticId, uint8_t effecterDataSize,
+        uint8_t* effecterValue, real32_t effecterOffset,
+        real32_t effecterResolution, uint16_t effecterId);
+
     int getOemStateSensorReadingsHandler(
         pldm::pdr::EntityType entityType,
         pldm::pdr::EntityInstance entityInstance,
