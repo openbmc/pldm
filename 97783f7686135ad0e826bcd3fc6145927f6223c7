@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "977bb8f6_34c2fc85",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-04-30T07:55:45Z",
+      "side": 1,
+      "message": "This seems like a good candidate for static API since it doesn\u0027t refer to any class vars? That way you can drop this from class private list as well.",
+      "revId": "97783f7686135ad0e826bcd3fc6145927f6223c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b67b998_2b9a2f61",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-04-30T07:55:45Z",
+      "side": 1,
+      "message": "This seems like a good candidate for static API since it doesn\u0027t refer to any class vars? That way you can drop this from class private list as well.",
+      "revId": "97783f7686135ad0e826bcd3fc6145927f6223c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
