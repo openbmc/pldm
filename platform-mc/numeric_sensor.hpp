@@ -294,6 +294,12 @@ class NumericSensor
         return false;
     }
 
+    /* @brief Returns true if at least one threshold alarm is set
+     *
+     * @return true if at least one threshold alarm is set
+     */
+    bool hasThresholdAlarm();
+
     /* @brief raises the alarm on the warning threshold
      *
      * @param[in] direction - The threshold direction (HIGH/LOW)
@@ -381,6 +387,31 @@ class NumericSensor
 
   private:
     /**
+     * @brief resolve and clear a log entry
+     *
+     * @param[inout] log - dbus path to log entry. The log will be resolve
+     *               and the optional reset.
+     */
+    void clearThresholdLog(std::optional<sdbusplus::message::object_path>& log);
+
+    /** @brief create a log entry that all sensor alarms have cleared and is now
+     *  operating in the normal operating range.
+     *
+     *  @param[in] value - The current sensor value in normal range.
+     */
+    void createNormalRangeLog(double value);
+
+    /**
+     *  @brief Create a threshold log for the given level/direction tuple.
+     *
+     *  @param[in] level - The level of the threshold.
+     *  @param[in] direction - The direction of the threshold.
+     *  @param[in] value - The current sensor value.
+     */
+    void createThresholdLog(pldm::utils::Level level,
+                            pldm::utils::Direction direction, double value);
+
+    /**
      * @brief Check sensor reading if any threshold has been crossed and update
      * Threshold interfaces accordingly
      */
@@ -431,6 +462,12 @@ class NumericSensor
     /** @brief A power-of-10 multiplier for baseUnit */
     int8_t baseUnitModifier;
     bool useMetricInterface = false;
+
+    /** @brief An internal mapping of thresholds and its associated log
+     * entry. */
+    std::map<std::tuple<pldm::utils::Level, pldm::utils::Direction>,
+             std::optional<sdbusplus::message::object_path>>
+        assertedLog;
 };
 } // namespace platform_mc
 } // namespace pldm
