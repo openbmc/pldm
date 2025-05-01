@@ -16,6 +16,16 @@
 using ::testing::_;
 using ::testing::Return;
 
+#if 0
+namespace pldm
+{
+namespace platform_mc
+{
+extern bool PLDM_THRESHOLD_LOGGING;
+}
+} // namespace pldm
+#endif
+
 class EventManagerTest : public testing::Test
 {
   protected:
@@ -27,7 +37,9 @@ class EventManagerTest : public testing::Test
         terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
         eventManager(terminusManager, termini),
         platformManager(terminusManager, termini, nullptr)
-    {}
+    {
+        // pldm::platform_mc::PLDM_THRESHOLD_LOGGING = false;
+    }
 
     PldmTransport* pldmTransport = nullptr;
     sdbusplus::bus_t& bus;
