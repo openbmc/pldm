@@ -5,6 +5,11 @@
 
 #include <libpldm/platform.h>
 
+#include <phosphor-logging/commit.hpp>
+#include <sdbusplus/asio/property.hpp>
+#include <xyz/openbmc_project/Logging/Entry/client.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/event.hpp>
+
 #include <limits>
 #include <regex>
 
@@ -14,6 +19,9 @@ namespace pldm
 {
 namespace platform_mc
 {
+
+// This allows code to cleanly iterate through all supported
+// threshold levels and directions.
 static const std::array<pldm::utils::Level, 3> allThresholdLevels = {
     pldm::utils::Level::WARNING, pldm::utils::Level::CRITICAL,
     pldm::utils::Level::HARDSHUTDOWN};
@@ -785,6 +793,20 @@ bool NumericSensor::checkThreshold(bool alarm, bool direction, double value,
     }
     return alarm;
 }
+
+bool NumericSensor::hasThresholdAlarm()
+{
+    bool alarm = false;
+    for (auto level : allThresholdLevels)
+    {
+        for (auto direction : allThresholdDirections)
+        {
+            alarm |= getThresholdAlarm(level, direction);
+        }
+    }
+    return alarm;
+}
+
 void NumericSensor::setWarningThresholdAlarm(pldm::utils::Direction direction,
                                              double value, bool newAlarm)
 {
@@ -902,7 +924,123 @@ int NumericSensor::setThresholdAlarm(pldm::utils::Level level,
         default:
             return PLDM_ERROR;
     }
+    if (newAlarm)
+    {
+        createThresholdLog(level, direction, value);
+    }
+    else
+    {
+        auto& log = assertedLog[{level, direction}];
+        if (log.has_value())
+        {
+            clearThresholdLog(log);
+        }
+        // If all alarms have cleared. Log normal range.
+        if (!hasThresholdAlarm())
+        {
+            createNormalRangeLog(value);
+        }
+    }
     return PLDM_SUCCESS;
+}
+
+void NumericSensor::clearThresholdLog(
+    std::optional<sdbusplus::message::object_path>& log)
+{
+    if (!log)
+    {
+        return;
+    }
+    try
+    {
+        lg2::resolve(*log);
+    }
+    catch (std::exception& ec)
+    {
+        lg2::error("Error trying to resolve: {LOG} : {ERROR}", "LOG", log->str,
+                   "ERROR", ec);
+    }
+    log.reset();
+}
+
+template <typename errorObj>
+auto logThresholdHelper(const std::string& sensorObjPath, double value,
+                        SensorUnit sensorUnit, double threshold)
+    -> std::optional<sdbusplus::message::object_path>
+{
+    try
+    {
+        return lg2::commit(
+            errorObj("SENSOR_NAME", sensorObjPath, "READING_VALUE", value,
+                     "UNITS", sensorUnit, "THRESHOLD_VALUE", threshold));
+    }
+    catch (std::exception& ec)
+    {
+        lg2::error("Unable to create log entry for {SENSOR} : {ERROR}",
+                   "SENSOR", sensorObjPath, "ERROR", ec);
+    }
+    return std::nullopt;
+}
+
+void NumericSensor::createThresholdLog(
+    pldm::utils::Level level, pldm::utils::Direction direction, double value)
+{
+    namespace Errors =
+        sdbusplus::error::xyz::openbmc_project::sensor::Threshold;
+    static const std::map<
+        std::tuple<pldm::utils::Level, pldm::utils::Direction>,
+        std::function<std::optional<sdbusplus::message::object_path>(
+            const std::string&, double, SensorUnit, double)>>
+        thresholdEventMap = {
+            {{pldm::utils::Level::WARNING, pldm::utils::Direction::HIGH},
+             &logThresholdHelper<Errors::ReadingAboveUpperWarningThreshold>},
+            {{pldm::utils::Level::WARNING, pldm::utils::Direction::LOW},
+             &logThresholdHelper<Errors::ReadingBelowLowerWarningThreshold>},
+            {{pldm::utils::Level::CRITICAL, pldm::utils::Direction::HIGH},
+             &logThresholdHelper<Errors::ReadingAboveUpperCriticalThreshold>},
+            {{pldm::utils::Level::CRITICAL, pldm::utils::Direction::LOW},
+             &logThresholdHelper<Errors::ReadingBelowLowerCriticalThreshold>},
+            {{pldm::utils::Level::HARDSHUTDOWN, pldm::utils::Direction::HIGH},
+             &logThresholdHelper<
+                 Errors::ReadingAboveUpperHardShutdownThreshold>},
+            {{pldm::utils::Level::HARDSHUTDOWN, pldm::utils::Direction::LOW},
+             &logThresholdHelper<
+                 Errors::ReadingBelowLowerHardShutdownThreshold>},
+        };
+
+    std::string sensorObjPath = sensorNameSpace + sensorName;
+    double threshold = getThreshold(level, direction);
+    try
+    {
+        auto log = thresholdEventMap.at(
+            {level, direction})(sensorObjPath, value, sensorUnit, threshold);
+        assertedLog[{level, direction}] = log;
+    }
+    catch (std::exception& ec)
+    {
+        lg2::error(
+            "Unable to create threshold log entry for {OBJPATH}: {ERROR}",
+            "OBJPATH", sensorObjPath, "ERROR", ec);
+    }
+}
+
+void NumericSensor::createNormalRangeLog(double value)
+{
+    namespace Events =
+        sdbusplus::event::xyz::openbmc_project::sensor::Threshold;
+    std::string objPath = sensorNameSpace + sensorName;
+    try
+    {
+        lg2::commit(Events::SensorReadingNormalRange(
+            "SENSOR_NAME", objPath, "READING_VALUE", value, "UNITS",
+            sensorUnit));
+    }
+    catch (std::exception& ec)
+    {
+        lg2::error(
+            "Unable to create SensorReadingNormalRange log entry for {OBJPATH}: {ERROR}",
+            "OBJPATH", objPath, "ERROR", ec);
+    }
 }
 
 void NumericSensor::updateThresholds()
