@@ -496,6 +496,16 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     return response;
 }
 
+void DeviceUpdater::createCompleteCommandsTimeoutTimer()
+{
+    completeCommandsTimeoutTimer =
+        std::make_unique<sdbusplus::Timer>([this]() -> void {
+            componentUpdateStatus[componentIndex] = false;
+            sendCancelUpdateComponentRequest();
+            updateManager->updateDeviceCompletion(eid, false);
+        });
+}
+
 Response DeviceUpdater::transferComplete(const pldm_msg* request,
                                          size_t payloadLength)
 {
@@ -550,6 +560,10 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
         componentUpdateStatus[componentIndex] = false;
         sendCancelUpdateComponentRequest();
     }
+
+    createCompleteCommandsTimeoutTimer();
+    completeCommandsTimeoutTimer->start(
+        std::chrono::seconds(completeCommandsTimeoutSeconds), false);
 
     rc = encode_transfer_complete_resp(request->hdr.instance_id, completionCode,
                                        responseMsg, sizeof(completionCode));
