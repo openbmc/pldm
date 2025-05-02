@@ -191,6 +191,11 @@ class DeviceUpdater
     void sendCancelUpdateComponentRequest();
 
     /**
+     * @brief Create a timer to handle complete commands timeout (UA_T6)
+     */
+    void createCompleteCommandsTimeoutTimer();
+
+    /**
      * @brief Create a timer to handle RequestFirmwareData timeout (UA_T2)
      */
     void createRequestFwDataTimer();
@@ -240,12 +245,23 @@ class DeviceUpdater
      */
     ComponentUpdateStatusMap componentUpdateStatus;
 
+    /* @brief Complete commands timout(UA_T6) in seconds. Default value is 600
+     *        as per the spec
+     */
+    auto static constexpr completeCommandsTimeoutSeconds = 600;
+
     /**
      * @brief Timeout in seconds for the UA to cancel the component update if no
      * command is received from the FD during component image transfer stage
      *
      */
     static constexpr int updateTimeoutSeconds = UPDATE_TIMEOUT_SECONDS;
+
+    /**
+     * @brief Timer to handle complete command timeout(UA_T6)
+     *
+     */
+    std::unique_ptr<sdbusplus::Timer> completeCommandsTimeoutTimer;
 
     /**
      * @brief Timer to handle RequestFirmwareData timeout(UA_T2)
