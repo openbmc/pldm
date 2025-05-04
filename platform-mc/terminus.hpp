@@ -276,6 +276,15 @@ class Terminus
      */
     bool createInventoryPath(std::string tName);
 
+    /** @brief Create the terminus inventory path to
+     *         /xyz/openbmc_project/software/.
+     *
+     *  @param[in] tName - the terminus name
+     *  @return true/false: True if there is no error in creating inventory path
+     *
+     */
+    bool createSoftwareInventoryPath(std::string tName);
+
     /** @brief Get sensor names from Sensor Auxiliary Names PDRs
      *
      *  @param[in] sensorId - Sensor ID
@@ -322,9 +331,14 @@ class Terminus
     /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
         nullptr;
+    /* @brief The pointer of software inventory D-Bus interface for the terminus */
+    std::unique_ptr<pldm::dbus_api::SoftwareInventory> softwareInventoryIntf =
+        nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
+    /* @brief Software Inventory D-Bus object path of the terminus */
+    std::string softwareInventoryPath;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
