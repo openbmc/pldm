@@ -57,5 +57,15 @@ std::vector<std::string> PldmEntityReq::names(std::vector<std::string> values)
     return compatibleserver::names(values);
 }
 
+std::string SoftwareInventory::version(std::string value)
+{
+    return versionserver::version(value, true);
+}
+
+versionserver::VersionPurpose SoftwareInventory::purpose(VersionPurpose value)
+{
+    return versionserver::purpose(value, true);
+}
+
 } // namespace dbus_api
 } // namespace pldm
