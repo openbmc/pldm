@@ -111,8 +111,41 @@ bool Terminus::createInventoryPath(std::string tName)
     catch (const sdbusplus::exception_t& e)
     {
         lg2::error(
-            "Failed to create Inventory Board interface for device {PATH}",
-            "PATH", inventoryPath);
+            "Failed to create Software Inventory interface for device {PATH}. Error: {ERROR}",
+            "PATH", softwareInventoryPath, "ERROR", e);
+    }
+
+    return false;
+}
+
+bool Terminus::createSoftwareInventoryPath(std::string tName)
+{
+    if (tName.empty())
+    {
+        return false;
+    }
+
+    /* inventory object is created */
+    if (softwareInventoryIntf)
+    {
+        return false;
+    }
+
+    softwareInventoryPath = "/xyz/openbmc_project/software/" + tName;
+    try
+    {
+        softwareInventoryIntf =
+            std::make_unique<pldm::dbus_api::SoftwareInventory>(
+                utils::DBusHandler::getBus(), softwareInventoryPath.c_str());
+        softwareInventoryIntf->purpose(
+            dbus_api::versionserver::VersionPurpose::Other);
+        return true;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Failed to create Software Inventory interface for device {PATH}. Error: {ERROR}",
+            "PATH", softwareInventoryPath, "ERROR", e);
     }
 
     return false;
@@ -222,6 +255,12 @@ void Terminus::parseTerminusPDRs()
     {
         lg2::error("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
                    tid, "PATH", inventoryPath);
+    }
+
+    if (createSoftwareInventoryPath(terminusName))
+    {
+        lg2::error("Terminus ID {TID}: Created Software Inventory path {PATH}.",
+                   "TID", tid, "PATH", softwareInventoryPath);
     }
 
     addNextSensorFromPDRs();
@@ -622,7 +661,14 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
 
     if (createInventoryPath(static_cast<std::string>(tmp.value())))
     {
-        lg2::info("Terminus ID {TID}: Created Inventory path.", "TID", tid);
+        lg2::info("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
+                  tid, "PATH", static_cast<std::string>(tmp.value()));
+    }
+
+    if (createSoftwareInventoryPath(static_cast<std::string>(tmp.value())))
+    {
+        lg2::info("Terminus ID {TID}: Created SoftwareInventory path {PATH}.",
+                  "TID", tid, "PATH", static_cast<std::string>(tmp.value()));
     }
 
     auto ptr = fruData;
@@ -698,6 +744,7 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
                     break;
                 case PLDM_FRU_FIELD_TYPE_VERSION:
                     inventoryItemBoardInft->version(fruField);
+                    softwareInventoryIntf->version(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
                     inventoryItemBoardInft->assetTag(fruField);

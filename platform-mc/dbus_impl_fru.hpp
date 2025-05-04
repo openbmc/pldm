@@ -8,6 +8,8 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Software/Version/server.hpp>
 
 #include <map>
 
@@ -26,12 +28,21 @@ using compatibleserver =
     sdbusplus::xyz::openbmc_project::Inventory::Decorator::server::Compatible;
 using boardserver =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Board;
+using versionserver =
+    sdbusplus::xyz::openbmc_project::Software::server::Version;
+using definitionsserver =
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions;
+using assetserver =
+    sdbusplus::xyz::openbmc_project::Inventory::Decorator::server::Asset;
 
 using AssetIntf = sdbusplus::server::object_t<assetserver>;
 using AssetTagIntf = sdbusplus::server::object_t<assettagserver>;
 using RevisionIntf = sdbusplus::server::object_t<revisionserver>;
 using CompatibleIntf = sdbusplus::server::object_t<compatibleserver>;
 using BoardIntf = sdbusplus::server::object_t<boardserver>;
+using VersionInterface = sdbusplus::server::object_t<versionserver>;
+using DefinitionsInterface = sdbusplus::server::object_t<definitionsserver>;
+using AssetInterface = sdbusplus::server::object_t<assetserver>;
 
 /** @class PldmEntityRequester
  *  @brief OpenBMC PLDM Inventory entity implementation.
@@ -90,6 +101,38 @@ class PldmEntityReq :
 
     /** @brief Set value of names in in Decorator.Compatible */
     std::vector<std::string> names(std::vector<std::string> values);
+};
+
+/** @class SoftwareInventory
+ *  @brief OpenBMC Software Inventory implementation.
+ *  @details Exposes PLDM firmware versions on DBus.
+ */
+class SoftwareInventory :
+    public VersionInterface,
+    public DefinitionsInterface,
+    public AssetInterface
+{
+  public:
+    SoftwareInventory() = delete;
+    SoftwareInventory(const SoftwareInventory&) = delete;
+    SoftwareInventory& operator=(const SoftwareInventory&) = delete;
+    SoftwareInventory(SoftwareInventory&&) = delete;
+    SoftwareInventory& operator=(SoftwareInventory&&) = delete;
+
+    /** @brief Constructor to put object onto bus at a dbus path.
+     *  @param[in] bus - Bus to attach to.
+     *  @param[in] path - Path to attach at.
+     */
+    SoftwareInventory(sdbusplus::bus_t& bus, const std::string& path) :
+        VersionInterface(bus, path.c_str()),
+        DefinitionsInterface(bus, path.c_str()),
+        AssetInterface(bus, path.c_str()) {};
+
+    /** @brief Set value of Purpose in Software.Version */
+    versionserver::VersionPurpose purpose(versionserver::VersionPurpose value);
+
+    /** @brief Set value of Version in Software.Version */
+    std::string version(std::string value);
 };
 
 } // namespace dbus_api
