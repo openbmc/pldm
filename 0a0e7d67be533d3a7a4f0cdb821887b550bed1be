@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d22a3ac6_ae816a0f",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-05T08:52:59Z",
+      "side": 1,
+      "message": "Please Use lg2 for error, warning message.",
+      "revId": "0a0e7d67be533d3a7a4f0cdb821887b550bed1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39f489b4_97864936",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-05T08:52:59Z",
+      "side": 1,
+      "message": "Use lg2 error.",
+      "revId": "0a0e7d67be533d3a7a4f0cdb821887b550bed1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
