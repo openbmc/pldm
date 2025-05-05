@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eeea4bb_924b36fe",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-05-05T02:32:14Z",
+      "side": 1,
+      "message": "Sounds good, will do in a seperate patch, since this MR has been merged.",
+      "parentUuid": "977bb8f6_34c2fc85",
+      "revId": "97783f7686135ad0e826bcd3fc6145927f6223c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b67b998_2b9a2f61",
@@ -65,6 +83,24 @@
       "writtenOn": "2025-04-30T07:55:45Z",
       "side": 1,
       "message": "This seems like a good candidate for static API since it doesn\u0027t refer to any class vars? That way you can drop this from class private list as well.",
+      "revId": "97783f7686135ad0e826bcd3fc6145927f6223c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfbb0476_33113ecd",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-05-05T02:32:14Z",
+      "side": 1,
+      "message": "As above, thanks Jagpal. 😄",
+      "parentUuid": "8b67b998_2b9a2f61",
       "revId": "97783f7686135ad0e826bcd3fc6145927f6223c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
