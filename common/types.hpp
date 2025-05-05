@@ -261,4 +261,26 @@ using Callback = std::function<void()>;
 
 } // namespace bios
 
+namespace file_transfer
+{
+using FileID = uint16_t;
+
+enum class FileClassification : uint8_t
+{
+    OEM = 0x00,
+    BootLog,
+    SerialTxFIFO,
+    SerialRxFIFO,
+    DiagnosticLog,
+    CrashDumpFile,
+    SecurityLog,
+    FRUDataFile,
+    TelemetryDataFile,
+    TelemetryDataLog,
+    OtherLog = 0xFD,
+    OtherFile = 0xFE,
+    FileDirectory = 0xFF,
+};
+} // namespace file_transfer
+
 } // namespace pldm
