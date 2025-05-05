@@ -739,8 +739,7 @@ std::vector<std::string> Terminus::getSensorNames(const SensorId& sensorId)
     }
 
     const auto& [id, sensorCount, nameMap] = *sensorAuxiliaryNames;
-    for (const unsigned int& i :
-         std::views::iota(0, static_cast<int>(sensorCount)))
+    for (const auto& i : std::views::iota(0, static_cast<int>(sensorCount)))
     {
         auto sensorName = defaultName;
         if (i > 0)
