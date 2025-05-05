@@ -158,7 +158,7 @@ std::optional<std::string> Handler::getSysSpecificJsonDir(
             if (std::find(dirNames.begin(), dirNames.end(), sysDir) !=
                 dirNames.end())
             {
-                return sysDir;
+                return std::string{sysDir}; // Return a copy of sysDir
             }
         }
     }
