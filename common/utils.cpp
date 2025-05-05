@@ -220,7 +220,7 @@ std::optional<std::vector<set_effecter_state_field>> parseEffecterData(
                                   ? PLDM_REQUEST_SET
                                   : PLDM_NO_CHANGE;
         set_effecter_state_field filed{set_request, effecterData[i * 2 + 1]};
-        stateField.emplace_back(std::move(filed));
+        stateField.emplace_back(filed);
     }
 
     return std::make_optional(std::move(stateField));
