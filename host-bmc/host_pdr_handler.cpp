@@ -456,7 +456,7 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs)
         {
             sensorEntry.terminusID = PLDM_TID_RESERVED;
         }
-        sensorMap.emplace(sensorEntry, std::move(sensorInfo));
+        sensorMap.emplace(sensorEntry, sensorInfo);
     }
 }
 

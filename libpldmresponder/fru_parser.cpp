@@ -143,7 +143,7 @@ void FruParser::setupFruRecordMap(const std::string& dirPath)
                 auto propType = dbus.value("property_type", "");
                 fieldInfo.emplace_back(
                     std::make_tuple(std::move(interface), std::move(property),
-                                    std::move(propType), std::move(fieldType)));
+                                    std::move(propType), fieldType));
             }
 
             FruRecordInfo fruInfo;
