@@ -71,7 +71,7 @@ void FruParser::setupDefaultDBusLookup(const fs::path& masterJsonPath)
     }
 
     Interfaces interfaces{};
-    for (auto [intf, entityType] : defIntfToEntityType)
+    for (const auto& [intf, entityType] : defIntfToEntityType)
     {
         intfToEntityType[intf] = entityType;
         interfaces.emplace(intf);
@@ -102,7 +102,7 @@ void FruParser::setupDefaultFruRecordMap()
              "string", 10},
         }};
 
-    for (auto [intf, entityType] : intfToEntityType)
+    for (const auto& [intf, entityType] : intfToEntityType)
     {
         recordMap[intf] = {generalRecordInfo};
     }
