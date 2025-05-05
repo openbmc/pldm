@@ -8,11 +8,15 @@
 #include <common/utils.hpp>
 
 #include <ranges>
+#include <regex>
 
 namespace pldm
 {
 namespace platform_mc
 {
+
+static const std::regex objPathAntiPattern("[^a-zA-Z0-9_/]+");
+static constexpr FileID virtualTopMostFileId = 0xFFFF;
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
                    sdeventplus::Event& event) :
@@ -191,6 +195,20 @@ void Terminus::parseTerminusPDRs()
                 entityAuxiliaryNamesTbl.emplace_back(std::move(entityNames));
                 break;
             }
+            case PLDM_FILE_DESCRIPTOR_PDR:
+            {
+                auto parsedPdr = parseFileDescriptorPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                fileDescriptorPdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             default:
             {
                 lg2::error("Unsupported PDR with type {TYPE} handle {HANDLE}",
@@ -220,6 +238,10 @@ void Terminus::parseTerminusPDRs()
                   tid, "PATH", inventoryPath);
     }
 
+    if (!fileDescriptorPdrs.empty())
+    {
+        buildFileHierarchy();
+    }
     addNextSensorFromPDRs();
 }
 
@@ -794,5 +816,176 @@ std::vector<std::string> Terminus::getSensorNames(const SensorID& sensorId)
     return sensorNames;
 }
 
+std::shared_ptr<pldm_platform_file_descriptor_pdr>
+    Terminus::parseFileDescriptorPDR(const std::vector<uint8_t>& pdrData)
+{
+    if (pdrData.empty())
+    {
+        lg2::error("Failed to parse File Descriptor PDR data of empty size.");
+        return nullptr;
+    }
+    const uint8_t* ptr = pdrData.data();
+    auto parsedPdr = std::make_shared<pldm_platform_file_descriptor_pdr>();
+    auto rc = decode_pldm_platform_file_descriptor_pdr(ptr, pdrData.size(),
+                                                       parsedPdr.get());
+    if (rc)
+    {
+        lg2::error("Failed to decode File Descriptor PDR data, error {RC}.",
+                   "RC", rc);
+        return nullptr;
+    }
+    return parsedPdr;
+}
+
+void Terminus::constructFilePathRecursive(
+    std::shared_ptr<FileInfoStruct> file,
+    const sdbusplus::message::object_path& basePath)
+{
+    if (!file)
+    {
+        lg2::error("FileInfoStruct object pointer is invalid for "
+                   "construction of a file path under {BASEPATH}.",
+                   "BASEPATH", basePath);
+        return;
+    }
+
+    if ((file->name).empty())
+    {
+        lg2::error("FileInfoStruct name is empty for "
+                   "construction of a file path under {BASEPATH}.",
+                   "BASEPATH", basePath);
+        return;
+    }
+
+    file->objPath = basePath;
+
+    std::string cleanName =
+        std::regex_replace(file->name, objPathAntiPattern, "_");
+    file->objPath /= cleanName;
+
+    if ((file->children).empty())
+    {
+        return;
+    }
+
+    for (auto& child : file->children)
+    {
+        constructFilePathRecursive(child, file->objPath);
+    }
+}
+
+void Terminus::buildFileHierarchy()
+{
+    if (terminusName.empty())
+    {
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip adding File Descriptor.",
+            "TID", tid);
+        return;
+    }
+
+    if (fileDescriptorPdrs.empty())
+    {
+        return;
+    }
+
+    /*
+     * DSP0248 v1.3.0 Table 108 – File Descriptor PDR specifies that the
+     * SuperiorDirectoryFileIdentifier field in the File Descriptor PDR is
+     * 0xFFFF when
+     * 1. If the EntityType is a Device File, then this PDR is not part of any
+     * hierarchy
+     * 2. If the EntityType is a Device File Directory, then this PDR is a top
+     * most element of the hierarchy.
+     *
+     * Therefore, 0xFFFF is chosen as the FileIdentifier of the top most
+     * element. But as FileIdentifier is unique only within a terminus, so the
+     * top most element should be the terminus itself. As a result, a virtual
+     * top most element aka the terminus will be constructed to the file info
+     * map, using 0xFFFF as its key and its parent. Any Device File Directory or
+     * Device File that has an 0xFFFF SuperiorDirectoryFileIdentifier will be
+     * placed right under this top most element in the hirerachy.
+     *
+     * The involvement of EAR in representing the hierarchy is not supported
+     * yet.
+     */
+    std::map<FileID, std::shared_ptr<FileInfoStruct>> fileInfoMap;
+    auto topMostInfo = std::make_shared<FileInfoStruct>(
+        FileInfoStruct{terminusName, virtualTopMostFileId, {}, nullptr, {}});
+    fileInfoMap.emplace(virtualTopMostFileId, std::move(topMostInfo));
+    // PASS 1: Construct initial file info
+    for (const auto& pdr : fileDescriptorPdrs)
+    {
+        if (pdr->file_name.length == 0)
+        {
+            lg2::error("Skipping addition of file identifier {ID} to file "
+                       "info map because of an 0 file name length.",
+                       "ID", pdr->file_identifier);
+            continue;
+        }
+        // Exclude the NULL terminator character at the end of ASCII string
+        std::string fileName((const char*)(pdr->file_name.ptr),
+                             pdr->file_name.length - 1);
+
+        if (fileName.empty())
+        {
+            lg2::error("Skipping addition of file identifier {ID} to file "
+                       "info map because of an empty file name.",
+                       "ID", pdr->file_identifier);
+            continue;
+        }
+        lg2::info("Adding file {FILE} to file info map.", "FILE", fileName);
+        auto fileInfo = std::make_shared<FileInfoStruct>(FileInfoStruct{
+            fileName, pdr->superior_directory_file_identifier, {}, pdr, {}});
+        fileInfoMap.emplace(pdr->file_identifier, std::move(fileInfo));
+    }
+
+    // PASS 2: Add children files to their parent info
+    for (const auto& file : fileInfoMap)
+    {
+        const auto& parentId = file.second->parentId;
+        // Avoid adding top most file as its child
+        if (fileInfoMap.contains(parentId) && (parentId != file.first))
+        {
+            fileInfoMap[parentId]->children.push_back(file.second);
+        }
+    }
+
+    // Recursively construct file hierarchy
+    const sdbusplus::message::object_path basePath(
+        "/xyz/openbmc_project/pldm/file/");
+    auto& topMostFile = fileInfoMap[virtualTopMostFileId];
+    constructFilePathRecursive(topMostFile, basePath);
+
+    for (const auto& file : fileInfoMap)
+    {
+        if (file.first == virtualTopMostFileId)
+        {
+            // Don't add the virtual top most file
+            continue;
+        }
+
+        const auto& fileInfo = file.second;
+
+        if (std::string(fileInfo->objPath).empty())
+        {
+            lg2::error("Skipping object creation of File Descriptor {NAME} "
+                       "because of an empty object path",
+                       "NAME", fileInfo->name);
+            continue;
+        }
+
+        if (static_cast<FileClassification>(
+                fileInfo->pdr->file_classification) ==
+            FileClassification::FileDirectory)
+        {
+            // Don't add directories
+            continue;
+        }
+
+        lg2::debug("Constructing file descriptor object {PATH}.", "PATH",
+                   file.second->objPath);
+    }
+}
 } // namespace platform_mc
 } // namespace pldm
