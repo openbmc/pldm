@@ -158,7 +158,17 @@ modernize-unary-static-assert,
 modernize-use-equals-delete,
 modernize-use-noexcept,
 modernize-use-transparent-functors,
-modernize-use-uncaught-exceptions'
+modernize-use-uncaught-exceptions,
+performance-faster-string-find,
+performance-inefficient-algorithm,
+performance-inefficient-string-concatenation,
+performance-inefficient-vector-operation,
+performance-move-constructor-init,
+performance-noexcept-destructor,
+performance-noexcept-move-constructor,
+performance-noexcept-swap,
+performance-trivially-destructible,
+performance-type-promotion-in-math-fn'
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'
