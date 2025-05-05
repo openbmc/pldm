@@ -8,6 +8,7 @@
 #include <common/utils.hpp>
 
 #include <ranges>
+#include <regex>
 
 namespace pldm
 {
@@ -191,6 +192,20 @@ void Terminus::parseTerminusPDRs()
                 entityAuxiliaryNamesTbl.emplace_back(std::move(entityNames));
                 break;
             }
+            case PLDM_FILE_DESCRIPTOR_PDR:
+            {
+                auto parsedPdr = parseFileDescriptorPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                fileDescriptorPdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             default:
             {
                 lg2::error("Unsupported PDR with type {TYPE} handle {HANDLE}",
@@ -224,6 +239,7 @@ void Terminus::parseTerminusPDRs()
                    tid, "PATH", inventoryPath);
     }
 
+    buildFileHierarchy();
     addNextSensorFromPDRs();
 }
 
@@ -776,5 +792,108 @@ std::vector<std::string> Terminus::getSensorNames(const SensorId& sensorId)
     return sensorNames;
 }
 
+std::shared_ptr<pldm_file_descriptor_pdr> Terminus::parseFileDescriptorPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    const uint8_t* ptr = pdrData.data();
+    auto parsedPdr = std::make_shared<pldm_file_descriptor_pdr>();
+    auto rc =
+        decode_pldm_file_descriptor_pdr(ptr, pdrData.size(), parsedPdr.get());
+    if (rc)
+    {
+        return nullptr;
+    }
+    return parsedPdr;
+}
+
+void Terminus::constructFilePathRecursive(
+    std::shared_ptr<FileInfoStruct> file,
+    const sdbusplus::message::object_path& basePath)
+{
+    file->objPath = basePath;
+    std::string cleanName =
+        std::regex_replace(file->name, std::regex("[^a-zA-Z0-9_/]+"), "_");
+    file->objPath /= cleanName;
+
+    if ((file->children).empty())
+    {
+        return;
+    }
+
+    for (auto& child : file->children)
+    {
+        constructFilePathRecursive(child, file->objPath);
+    }
+}
+
+void Terminus::buildFileHierarchy()
+{
+    if (terminusName.empty())
+    {
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip adding File Descriptor.",
+            "TID", tid);
+        return;
+    }
+
+    // Construct a virtual top most file to the file info map, use 0xffff as its
+    // key and its parent
+    std::map<uint16_t, std::shared_ptr<FileInfoStruct>> fileInfoMap;
+    const uint16_t topMostId = 0xffff;
+    auto topMostInfo = std::make_shared<FileInfoStruct>(
+        FileInfoStruct{terminusName, topMostId, {}, nullptr, {}});
+    fileInfoMap.emplace(topMostId, std::move(topMostInfo));
+    // PASS 1: Construct initial file info
+    for (const auto& pdr : fileDescriptorPdrs)
+    {
+        // Exclude the NULL terminator character at the end of ASCII string
+        std::string fileName((const char*)(pdr->file_name.ptr),
+                             pdr->file_name.length - 1);
+        lg2::debug("Adding file {FILE} to file info map.", "FILE", fileName);
+        auto fileInfo = std::make_shared<FileInfoStruct>(FileInfoStruct{
+            fileName, pdr->superior_directory_file_identifier, {}, pdr, {}});
+        fileInfoMap.emplace(pdr->file_identifier, std::move(fileInfo));
+    }
+
+    // PASS 2: Add children files to their parent info
+    for (const auto& file : fileInfoMap)
+    {
+        const auto& parentId = file.second->parentId;
+        // Avoid adding top most file as its child
+        if (fileInfoMap.contains(parentId) && (parentId != file.first))
+        {
+            fileInfoMap[parentId]->children.push_back(file.second);
+        }
+    }
+
+    // Recursively construct file hierarchy
+    const sdbusplus::message::object_path basePath(
+        "/xyz/openbmc_project/file/");
+    auto& topMostFile = fileInfoMap[topMostId];
+    topMostFile->objPath = basePath;
+    constructFilePathRecursive(topMostFile, topMostFile->objPath);
+
+    for (const auto& file : fileInfoMap)
+    {
+        if (file.first == topMostId)
+        {
+            // Don't add the virtual top most file
+            continue;
+        }
+
+        const auto& fileInfo = file.second;
+        if (static_cast<FileClassification>(
+                fileInfo->pdr->file_classification) ==
+            FileClassification::FileDirectory)
+        {
+            // Don't add directories
+            continue;
+        }
+
+        // TODO: Construct file descriptor D-Bus object
+        lg2::debug("Constructing file descriptor object {PATH}.", "PATH",
+                   file.second->objPath);
+    }
+}
 } // namespace platform_mc
 } // namespace pldm
