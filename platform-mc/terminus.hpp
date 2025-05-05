@@ -4,7 +4,6 @@
 #include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
-#include "terminus.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
@@ -25,6 +24,18 @@ namespace platform_mc
 {
 
 using namespace pldm::pdr;
+using namespace pldm::file_transfer;
+
+struct FileInfoStruct
+{
+    std::string name; //!< File name
+    FileID parentId;  //!< FileIdentifier of the parent file
+    sdbusplus::message::object_path objPath; //!< File object path
+    std::shared_ptr<pldm_platform_file_descriptor_pdr>
+        pdr;                                 //!< Pointer to file descriptor pdr
+    std::vector<std::shared_ptr<FileInfoStruct>>
+        children;                            //!< Vector of child files
+};
 
 /**
  * @brief Terminus
@@ -263,6 +274,28 @@ class Terminus
      */
     void addNextSensorFromPDRs();
 
+    /** @brief Parse the File Descriptor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *
+     *  @return pointer to File Descriptor info struct
+     */
+    std::shared_ptr<pldm_platform_file_descriptor_pdr> parseFileDescriptorPDR(
+        const std::vector<uint8_t>& pdrData);
+
+    /** @brief Recursively construct file object path for the file info map
+     *
+     *  @param[in] file - pointer to the current file in the file tree
+     *  @param[in] basePath - the parent object path of the current file
+     */
+    void constructFilePathRecursive(
+        std::shared_ptr<FileInfoStruct> file,
+        const sdbusplus::message::object_path& basePath);
+
+    /** @brief Build file info map for the terminus
+     */
+    void buildFileHierarchy();
+
     /* @brief The terminus's TID */
     pldm_tid_t tid;
 
@@ -314,6 +347,10 @@ class Terminus
     /** @brief Compact Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief File Descriptor PDR list */
+    std::vector<std::shared_ptr<pldm_platform_file_descriptor_pdr>>
+        fileDescriptorPdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;
