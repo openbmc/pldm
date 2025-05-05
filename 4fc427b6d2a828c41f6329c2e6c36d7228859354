@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7325173_7ebeff2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-05T08:54:42Z",
+      "side": 1,
+      "message": "LGTM, only have some comments.",
+      "revId": "4fc427b6d2a828c41f6329c2e6c36d7228859354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf43b573_b685ab2c",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-05T08:54:42Z",
+      "side": 1,
+      "message": "Should we add the error log although this error will never happen?\nThe same for nextIt.",
+      "revId": "4fc427b6d2a828c41f6329c2e6c36d7228859354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
