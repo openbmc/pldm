@@ -169,6 +169,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "685f07c6_1cd1b990",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-05-05T01:21:35Z",
+      "side": 1,
+      "message": "Well, I just wanted to the stack trace to make sense with respect to the source.",
+      "parentUuid": "1c8a120e_4f08f4af",
+      "range": {
+        "startLine": 15,
+        "startChar": 25,
+        "endLine": 16,
+        "endChar": 54
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1eb40c74_be106ae0",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
