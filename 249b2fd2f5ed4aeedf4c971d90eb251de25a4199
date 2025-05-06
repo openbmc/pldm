@@ -33,6 +33,24 @@
       "message": "Can we avoid to use anti-pattern in log message:\nhttps://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings",
       "revId": "249b2fd2f5ed4aeedf4c971d90eb251de25a4199",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3e9082c_3eac39d3",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-05-06T04:23:18Z",
+      "side": 1,
+      "message": "pldmtool is a CLI based utility, not a service/daemon. Using phosphor-logging for this tool would introduce unnecessary dependencies and could clutter the journal logs.\n\nAre there any existing examples in OpenBMC where phosphor-logging is used for CLI-based tools ?",
+      "parentUuid": "9a3b4893_ebf388ac",
+      "revId": "249b2fd2f5ed4aeedf4c971d90eb251de25a4199",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
