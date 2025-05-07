@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0711603_d4dd8975",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-07T05:58:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84069201_055d3584",
+      "range": {
+        "startLine": 9,
+        "startChar": 20,
+        "endLine": 9,
+        "endChar": 21
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b56b0b14_52987a55",
@@ -215,6 +239,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e8ffc21_ed38eabf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-07T05:58:59Z",
+      "side": 1,
+      "message": "Sure, done.",
+      "parentUuid": "3bfa11d8_7d0b6794",
+      "range": {
+        "startLine": 15,
+        "startChar": 25,
+        "endLine": 16,
+        "endChar": 54
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1eb40c74_be106ae0",
@@ -252,6 +300,30 @@
       "side": 1,
       "message": "yeah, sure. Even I was suspecting that there could be a something else that needs fixing (pldm/libpldm). Although this change fixes the crash, I was not 100 percent sure if that\u0027s the right way to fix, hence wanted your opinion.",
       "parentUuid": "1eb40c74_be106ae0",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 63
+      },
+      "revId": "ec2057b91cbcf7ceac4eee395c4908b2328234c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40d44b36_544c942c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-07T05:58:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b343c82e_a3de523f",
       "range": {
         "startLine": 21,
         "startChar": 0,
