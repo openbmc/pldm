@@ -109,7 +109,17 @@ uint16_t HostLampTest::getEffecterID()
 uint8_t HostLampTest::setHostStateEffecter(uint16_t effecterID)
 {
     constexpr uint8_t effecterCount = 1;
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(mctp_eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id in sendActivateFirmwareRequest: {ERROR}", "ERROR",
+                    e.what());
+        return PLDM_ERROR;
+    }
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(effecterID) + sizeof(effecterCount) +

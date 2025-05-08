@@ -19,7 +19,16 @@ namespace fw_update
 
 void DeviceUpdater::startFwUpdateFlow()
 {
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = updateManager->instanceIdDb.next(eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id in startFwUpdateFlow: {ERROR}", "ERROR",
+                   e.what());
+    }
     // NumberOfComponents
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -110,7 +119,16 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = updateManager->instanceIdDb.next(eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id in sendPassCompTableRequest: {ERROR}", "ERROR",
+                   e.what());
+    }
     // TransferFlag
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -257,7 +275,16 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = updateManager->instanceIdDb.next(eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id in sendUpdateComponentRequest: {ERROR}", "ERROR",
+                   e.what());
+    }
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[offset]];
@@ -651,7 +678,16 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
 void DeviceUpdater::sendActivateFirmwareRequest()
 {
     pldmRequest.reset();
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = updateManager->instanceIdDb.next(eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id in sendActivateFirmwareRequest: {ERROR}", "ERROR",
+                   e.what());
+    }
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = new (request.data()) pldm_msg;

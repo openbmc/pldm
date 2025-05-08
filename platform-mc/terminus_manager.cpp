@@ -442,7 +442,17 @@ exec::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
 
 exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
 {
-    auto instanceId = instanceIdDb.next(eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(eid);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to allocate instance id in getTidOverMctp: {ERROR}", "ERROR",
+                   e.what());
+        co_return PLDM_ERROR;
+    }
     Request request(sizeof(pldm_msg_hdr));
     auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_get_tid_req(instanceId, requestMsg);
@@ -488,7 +498,17 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
 
 exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
 {
-    auto instanceId = instanceIdDb.next(eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(eid);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to allocate instance id in setTidOverMctp: {ERROR}", "ERROR",
+                   e.what());
+        co_return PLDM_ERROR;
+    }
     Request request(sizeof(pldm_msg_hdr) + sizeof(pldm_set_tid_req));
     auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_set_tid_req(instanceId, tid, requestMsg);
@@ -662,7 +682,16 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
 
     auto eid = std::get<0>(mctpInfo.value());
     auto requestMsg = new (request.data()) pldm_msg;
-    requestMsg->hdr.instance_id = instanceIdDb.next(eid);
+    try
+    {
+        requestMsg->hdr.instance_id = instanceIdDb.next(eid);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to allocate instance id in sendRecvPldmMsg: {ERROR}", "ERROR", e.what());
+        co_return PLDM_ERROR_NOT_READY;
+    }
+
     auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
                                                responseLen);
 
