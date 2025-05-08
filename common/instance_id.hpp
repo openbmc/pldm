@@ -5,11 +5,58 @@
 #include <cerrno>
 #include <cstdint>
 #include <exception>
+#include <expected>
 #include <string>
 #include <system_error>
 
 namespace pldm
 {
+
+/**
+ * @class InstanceIdError
+ * @brief Implementation of PLDM instance id error handling
+ */
+class InstanceIdError : public std::exception
+{
+  public:
+    InstanceIdError(const InstanceIdError&) noexcept = default;
+    InstanceIdError(InstanceIdError&&) noexcept = default;
+    InstanceIdError& operator=(const InstanceIdError&) noexcept = default;
+    InstanceIdError& operator=(InstanceIdError&&) noexcept = default;
+    ~InstanceIdError() override = default;
+
+    explicit InstanceIdError(int rc) : rc_(rc), msg_(rcToMsg(rc)) {}
+    InstanceIdError(int rc, std::string m) : rc_(rc), msg_(std::move(m)) {}
+
+    int rc() const
+    {
+        return rc_;
+    }
+    const std::string& msg() const
+    {
+        return msg_;
+    }
+
+    static std::string rcToMsg(int rc)
+    {
+        switch (rc)
+        {
+            case -EAGAIN:
+                return "No free instance ids";
+            default:
+                return std::system_category().message(rc);
+        }
+    }
+
+    const char* what() const noexcept override
+    {
+        return msg_.c_str();
+    }
+
+  private:
+    int rc_;
+    std::string msg_;
+};
 
 /** @class InstanceId
  *  @brief Implementation of PLDM instance id as per DSP0240 v1.0.0
@@ -56,19 +103,14 @@ class InstanceIdDb
      *  @return - PLDM instance id or -EAGAIN if there are no available instance
      *            IDs
      */
-    uint8_t next(uint8_t tid)
+    std::expected<uint8_t, InstanceIdError> next(uint8_t tid)
     {
         uint8_t id;
         int rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
 
-        if (rc == -EAGAIN)
-        {
-            throw std::runtime_error("No free instance ids");
-        }
-
         if (rc)
         {
-            throw std::system_category().default_error_condition(rc);
+            return std::unexpected(InstanceIdError{rc});
         }
 
         return id;
