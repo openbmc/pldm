@@ -88,7 +88,23 @@ void fillCompletionCode(uint8_t completionCode, ordered_json& data,
 
 void CommandInterface::exec()
 {
-    instanceId = instanceIdDb.next(mctp_eid);
+    auto instanceIdResult = instanceIdDb.next(mctp_eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            std::cerr << "No free instance IDs for EID " << unsigned(mctp_eid)
+                      << std::endl;
+        }
+        else
+        {
+            std::cerr << "Failed to allocate instance id for EID "
+                      << unsigned(mctp_eid) << ", rc=" << rc << std::endl;
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {
