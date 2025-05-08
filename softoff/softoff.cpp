@@ -271,7 +271,6 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 {
     constexpr uint8_t effecterCount = 1;
     PldmTransport pldmTransport{};
-    uint8_t instanceID;
     uint8_t mctpEID;
 
     mctpEID = pldm::utils::readHostEID();
@@ -285,7 +284,22 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     auto request = new (requestMsg.data()) pldm_msg;
     set_effecter_state_field stateField{
         PLDM_REQUEST_SET, PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED};
-    instanceID = instanceIdDb.next(pldmTID);
+    auto instanceIdResult = instanceIdDb.next(pldmTID);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for TID {TID}", "TID", pldmTID);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for TID {TID}, rc={RC}",
+                       "TID", pldmTID, "RC", rc);
+        }
+        return rc;
+    }
+    auto instanceID = instanceIdResult.value();
     auto rc = encode_set_state_effecter_states_req(
         instanceID, effecterID, effecterCount, &stateField, request);
     if (rc != PLDM_SUCCESS)

@@ -61,7 +61,22 @@ int sendBiosAttributeUpdateEvent(
             "ERROR", e);
     }
 
-    auto instanceId = instanceIdDb->next(eid);
+    auto instanceIdResult = instanceIdDb->next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        return rc;
+    }
+    auto instanceId = instanceIdResult.value();
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(pldm_bios_attribute_update_event_req) -

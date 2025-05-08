@@ -19,7 +19,22 @@ namespace fw_update
 
 void DeviceUpdater::startFwUpdateFlow()
 {
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     // NumberOfComponents
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -110,7 +125,22 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     // TransferFlag
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -257,7 +287,22 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[offset]];
@@ -651,7 +696,22 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
 void DeviceUpdater::sendActivateFirmwareRequest()
 {
     pldmRequest.reset();
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = new (request.data()) pldm_msg;
