@@ -5,11 +5,66 @@
 #include <cerrno>
 #include <cstdint>
 #include <exception>
+#include <expected>
 #include <string>
 #include <system_error>
 
 namespace pldm
 {
+
+/**
+ * @class InstanceIdError
+ * @brief Exception for PLDM instance ID allocation and management errors.
+ */
+class InstanceIdError : public std::exception
+{
+  public:
+    InstanceIdError(const InstanceIdError&) = default;
+    InstanceIdError(InstanceIdError&&) noexcept = default;
+    InstanceIdError& operator=(const InstanceIdError&) = default;
+    InstanceIdError& operator=(InstanceIdError&&) noexcept = default;
+    ~InstanceIdError() noexcept override = default;
+
+    /** @brief Construct with an error code. */
+    explicit InstanceIdError(int rc) : rc_(rc), msg_(rcToMsg(rc)) {}
+
+    /** @brief Construct with an error code and message. */
+    InstanceIdError(int rc, std::string m) : rc_(rc), msg_(std::move(m)) {}
+
+    /** @brief Get the error code. */
+    int rc() const noexcept
+    {
+        return rc_;
+    }
+
+    /** @brief Get the error message. */
+    const std::string& msg() const noexcept
+    {
+        return msg_;
+    }
+
+    /** @brief Convert an error code to a message. */
+    static std::string rcToMsg(int rc)
+    {
+        switch (rc)
+        {
+            case -EAGAIN:
+                return "No free instance ids";
+            default:
+                return std::system_category().message(rc);
+        }
+    }
+
+    /** @brief Get the error message (for std::exception). */
+    const char* what() const noexcept override
+    {
+        return msg_.c_str();
+    }
+
+  private:
+    int rc_;
+    std::string msg_;
+};
 
 /** @class InstanceId
  *  @brief Implementation of PLDM instance id as per DSP0240 v1.0.0
@@ -53,22 +108,17 @@ class InstanceIdDb
 
     /** @brief Allocate an instance ID for the given terminus
      *  @param[in] tid - the terminus ID the instance ID is associated with
-     *  @return - PLDM instance id or -EAGAIN if there are no available instance
-     *            IDs
+     *  @return - PLDM instance id on success, or InstanceIdError if allocation
+     * fails
      */
-    uint8_t next(uint8_t tid)
+    std::expected<uint8_t, InstanceIdError> next(uint8_t tid)
     {
         uint8_t id;
         int rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
 
-        if (rc == -EAGAIN)
-        {
-            throw std::runtime_error("No free instance ids");
-        }
-
         if (rc)
         {
-            throw std::system_category().default_error_condition(rc);
+            return std::unexpected(InstanceIdError{rc});
         }
 
         return id;
