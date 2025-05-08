@@ -285,7 +285,17 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     auto request = new (requestMsg.data()) pldm_msg;
     set_effecter_state_field stateField{
         PLDM_REQUEST_SET, PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED};
-    instanceID = instanceIdDb.next(pldmTID);
+    try
+    {
+        instanceID = instanceIdDb.next(pldmTID);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to allocate instance id in sendActivateFirmwareRequest: {ERROR}",
+            "ERROR", e.what());
+        return PLDM_ERROR;
+    }
     auto rc = encode_set_state_effecter_states_req(
         instanceID, effecterID, effecterCount, &stateField, request);
     if (rc != PLDM_SUCCESS)
