@@ -61,7 +61,16 @@ int sendBiosAttributeUpdateEvent(
             "ERROR", e);
     }
 
-    auto instanceId = instanceIdDb->next(eid);
+    auto instanceIdResult = instanceIdDb->next(eid);
+    if (!instanceIdResult)
+    {
+        error(
+            "Failed to allocate instance id for EID {EID}: rc={RC}, msg={MSG}",
+            "EID", eid, "RC", instanceIdResult.error().rc(), "MSG",
+            instanceIdResult.error().msg());
+        return instanceIdResult.error().rc();
+    }
+    auto instanceId = instanceIdResult.value();
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(pldm_bios_attribute_update_event_req) -
