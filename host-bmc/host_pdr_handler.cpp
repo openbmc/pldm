@@ -189,7 +189,16 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     {
         recordHandle = nextRecordHandle;
     }
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(mctp_eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id: {ERROR}", "ERROR", e.what());
+        return;
+    }
 
     auto rc =
         encode_get_pdr_req(instanceId, recordHandle, 0, PLDM_GET_FIRSTPART,
@@ -386,7 +395,16 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
             "RC", rc);
         return;
     }
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(mctp_eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id: {ERROR}", "ERROR", e.what());
+        return;
+    }
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         actualSize);
@@ -713,7 +731,16 @@ void HostPDRHandler::_processFetchPDREvent(
 void HostPDRHandler::setHostFirmwareCondition()
 {
     responseReceived = false;
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(mctp_eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id: {ERROR}", "ERROR", e.what());
+        return;
+    }
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
@@ -785,7 +812,17 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                 sensorRearm.byte = 0;
                 uint8_t tid = std::get<0>(terminusInfo);
 
-                auto instanceId = instanceIdDb.next(mctp_eid);
+                uint8_t instanceId;
+                try
+                {
+                    instanceId = instanceIdDb.next(mctp_eid);
+                }
+                catch (const std::exception& e)
+                {
+                    error("Failed to allocate instance id: {ERROR}", "ERROR",
+                          e.what());
+                    return;
+                }
                 std::vector<uint8_t> requestMsg(
                     sizeof(pldm_msg_hdr) +
                     PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
@@ -927,7 +964,16 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 void HostPDRHandler::getFRURecordTableMetadataByRemote(
     const PDRList& fruRecordSetPDRs)
 {
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(mctp_eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id: {ERROR}", "ERROR", e.what());
+        return;
+    }
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
 
@@ -1004,8 +1050,16 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
         error("Failed to get fru record table");
         return;
     }
-
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(mctp_eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id: {ERROR}", "ERROR", e.what());
+        return;
+    }
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
 
