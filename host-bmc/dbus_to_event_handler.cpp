@@ -27,7 +27,16 @@ DbusToPLDMEvent::DbusToPLDMEvent(
 void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
                                    const std::vector<uint8_t>& eventDataVec)
 {
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    uint8_t instanceId;
+    try
+    {
+        instanceId = instanceIdDb.next(mctp_eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to allocate instance id: {ERROR}", "ERROR", e.what());
+        return;
+    }
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         eventDataVec.size());
