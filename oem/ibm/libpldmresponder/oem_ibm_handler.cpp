@@ -524,7 +524,22 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
     eventClass->sensor_offset = sensorOffset;
     eventClass->event_state = eventState;
     eventClass->previous_event_state = prevEventState;
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    auto instanceIdResult = instanceIdDb.next(mctp_eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", mctp_eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", mctp_eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceID = instanceIdResult.value();
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         sensorEventDataVec.size());

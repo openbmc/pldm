@@ -481,7 +481,22 @@ int HostEffecterParser::setTerminusNumericEffecter(
         }
     }
 
-    auto instanceId = instanceIdDb->next(mctpEid);
+    auto instanceIdResult = instanceIdDb->next(mctpEid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", mctpEid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", mctpEid, "RC", rc);
+        }
+        return rc;
+    }
+    auto instanceId = instanceIdResult.value();
     int rc = PLDM_ERROR;
     std::vector<uint8_t> requestMsg;
 
@@ -620,7 +635,22 @@ int HostEffecterParser::setHostStateEffecter(
     }
 
     uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
-    auto instanceId = instanceIdDb->next(mctpEid);
+    auto instanceIdResult = instanceIdDb->next(mctpEid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", mctpEid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", mctpEid, "RC", rc);
+        }
+        return rc;
+    }
+    auto instanceId = instanceIdResult.value();
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(effecterId) + sizeof(compEffCnt) +

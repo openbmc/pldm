@@ -34,7 +34,22 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
 
 void InventoryManager::sendQueryDeviceIdentifiersRequest(mctp_eid_t eid)
 {
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        throw;
+    }
+    auto instanceId = instanceIdResult.value();
     Request requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_QUERY_DEVICE_IDENTIFIERS_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
@@ -168,7 +183,22 @@ void InventoryManager::queryDeviceIdentifiers(
 void InventoryManager::sendQueryDownstreamDevicesRequest(mctp_eid_t eid)
 {
     Request requestMsg(sizeof(pldm_msg_hdr));
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        throw;
+    }
+    auto instanceId = instanceIdResult.value();
     auto request = new (requestMsg.data()) pldm_msg;
     auto rc = encode_query_downstream_devices_req(instanceId, request);
     if (rc)
@@ -273,7 +303,22 @@ void InventoryManager::sendQueryDownstreamIdentifiersRequest(
     mctp_eid_t eid, uint32_t dataTransferHandle,
     enum transfer_op_flag transferOperationFlag)
 {
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        throw;
+    }
+    auto instanceId = instanceIdResult.value();
     Request requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
@@ -447,7 +492,22 @@ void InventoryManager::sendGetDownstreamFirmwareParametersRequest(
 {
     Request requestMsg(sizeof(pldm_msg_hdr) +
                        PLDM_GET_DOWNSTREAM_FIRMWARE_PARAMETERS_REQ_BYTES);
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        throw;
+    }
+    auto instanceId = instanceIdResult.value();
     auto request = new (requestMsg.data()) pldm_msg;
     pldm_get_downstream_firmware_parameters_req requestParameters{
         dataTransferHandle, static_cast<uint8_t>(transferOperationFlag)};
@@ -539,7 +599,22 @@ void InventoryManager::getDownstreamFirmwareParameters(
 
 void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
 {
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     Request requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_FIRMWARE_PARAMETERS_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
