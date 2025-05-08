@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8453c6df_25a5ae10",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-08T06:41:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3ed0fa75_2dd13ecc",
+      "revId": "0a0e7d67be533d3a7a4f0cdb821887b550bed1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39f489b4_97864936",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-05-05T08:52:59Z",
       "side": 1,
       "message": "Use lg2 error.",
+      "revId": "0a0e7d67be533d3a7a4f0cdb821887b550bed1be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d7cf122_8895fe8c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-08T06:41:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "39f489b4_97864936",
       "revId": "0a0e7d67be533d3a7a4f0cdb821887b550bed1be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
