@@ -263,7 +263,14 @@ void UpdateManager::activatePackage()
     startTime = std::chrono::steady_clock::now();
     for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
     {
-        deviceUpdaterPtr->startFwUpdateFlow();
+        auto rc = deviceUpdaterPtr->startFwUpdateFlow();
+        if (rc)
+        {
+            error(
+                "Failed to start firmware update flow for endpoint ID {EID} with response code {RC}",
+                "EID", eid, "RC", rc);
+            continue;
+        }
     }
 }
 
