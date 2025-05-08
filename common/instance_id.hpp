@@ -5,6 +5,7 @@
 #include <cerrno>
 #include <cstdint>
 #include <exception>
+#include <expected>
 #include <string>
 #include <system_error>
 
@@ -56,19 +57,14 @@ class InstanceIdDb
      *  @return - PLDM instance id or -EAGAIN if there are no available instance
      *            IDs
      */
-    uint8_t next(uint8_t tid)
+    std::expected<uint8_t, int> next(uint8_t tid)
     {
         uint8_t id;
         int rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
 
-        if (rc == -EAGAIN)
-        {
-            throw std::runtime_error("No free instance ids");
-        }
-
         if (rc)
         {
-            throw std::system_category().default_error_condition(rc);
+            return std::unexpected(rc);
         }
 
         return id;

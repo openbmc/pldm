@@ -40,7 +40,22 @@ void DbusToFileHandler::sendNewFileAvailableCmd(uint64_t fileSize)
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
         return;
     }
-    auto instanceId = instanceIdDb->next(mctp_eid);
+    auto instanceIdResult = instanceIdDb->next(mctp_eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", mctp_eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", mctp_eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
@@ -252,7 +267,22 @@ void DbusToFileHandler::newFileAvailableSendToHost(
             "xyz.openbmc_project.bmc.pldm.InternalFailure");
         return;
     }
-    auto instanceId = instanceIdDb->next(mctp_eid);
+    auto instanceIdResult = instanceIdDb->next(mctp_eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", mctp_eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", mctp_eid, "RC", rc);
+        }
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_NEW_FILE_REQ_BYTES);
     auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());

@@ -109,7 +109,22 @@ uint16_t HostLampTest::getEffecterID()
 uint8_t HostLampTest::setHostStateEffecter(uint16_t effecterID)
 {
     constexpr uint8_t effecterCount = 1;
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    auto instanceIdResult = instanceIdDb.next(mctp_eid);
+    if (!instanceIdResult)
+    {
+        auto rc = instanceIdResult.error();
+        if (rc == -EAGAIN)
+        {
+            lg2::error("No free instance IDs for EID {EID}", "EID", mctp_eid);
+        }
+        else
+        {
+            lg2::error("Failed to allocate instance id for EID {EID}, rc={RC}",
+                       "EID", mctp_eid, "RC", rc);
+        }
+        return rc;
+    }
+    auto instanceId = instanceIdResult.value();
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(effecterID) + sizeof(effecterCount) +

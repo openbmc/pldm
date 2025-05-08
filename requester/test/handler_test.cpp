@@ -79,7 +79,9 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
     pldm::Request request{};
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdResult) << "Failed to alloc instanceId";
+    auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
@@ -102,7 +104,9 @@ TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
     pldm::Request request{};
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdResult) << "Failed to alloc instanceId";
+    auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
@@ -123,7 +127,9 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
         pldmTransport, event, instanceIdDb, false, seconds(2), 2,
         milliseconds(100));
     pldm::Request request{};
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdResult) << "Failed to alloc instanceId";
+    auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
@@ -133,7 +139,9 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Request requestNxt{};
-    auto instanceIdNxt = instanceIdDb.next(eid);
+    auto instanceIdNxtResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdNxtResult) << "Failed to alloc instanceId";
+    auto instanceIdNxt = instanceIdNxtResult.value();
     EXPECT_EQ(instanceIdNxt, 1);
     rc = reqHandler.registerRequest(
         eid, instanceIdNxt, 0, 0, std::move(requestNxt),
@@ -168,7 +176,9 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
 
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdResult) << "Failed to alloc instanceId";
+    auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
 
     scope.spawn(
@@ -214,7 +224,9 @@ TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
     Handler<NiceMock<MockRequest>> reqHandler(
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdResult) << "Failed to alloc instanceId";
+    auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
 
     bool stopped = false;
@@ -271,7 +283,9 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
     exec::async_scope scope;
     Handler<MockRequest> reqHandler(pldmTransport, event, instanceIdDb, false,
                                     seconds(1), 2, milliseconds(100));
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdResult) << "Failed to alloc instanceId";
+    auto instanceId = instanceIdResult.value();
 
     uint8_t expectedTid = 1;
 
