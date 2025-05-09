@@ -1,0 +1,10 @@
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Code-Review+1: P Arun Kumar Reddy <arunpapannagari23@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Tom Joseph <rushtotom@gmail.com>
+Submitted-at: Fri, 09 May 2025 06:10:58 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/79516
+Comments-Total: 3
+Comments-Unresolved: 1
+Project: openbmc/pldm
+Branch: refs/heads/master
