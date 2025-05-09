@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "860c0c72_c8eed2b4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-05-09T00:34:02Z",
+      "side": 1,
+      "message": "Where do we check that this isn\u0027t out of bounds of the underlying buffer?",
+      "range": {
+        "startLine": 665,
+        "startChar": 36,
+        "endLine": 667,
+        "endChar": 72
+      },
+      "revId": "5781e001b614f7d92b41b2ac1382be6d07450b3a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f7c0d9d_42ceffb2",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-05-09T00:34:02Z",
+      "side": 1,
+      "message": "Why is all this acceptable? What about handling of endianness? I feel that libpldm should be more helpful here.",
+      "range": {
+        "startLine": 647,
+        "startChar": 0,
+        "endLine": 669,
+        "endChar": 29
+      },
+      "revId": "5781e001b614f7d92b41b2ac1382be6d07450b3a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
