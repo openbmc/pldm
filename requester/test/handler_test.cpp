@@ -83,7 +83,9 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
-        std::bind_front(&HandlerTest::pldmResponseCallBack, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(eid, response, respMsgLen);
+        });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
@@ -104,7 +106,9 @@ TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
-        std::bind_front(&HandlerTest::pldmResponseCallBack, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(eid, response, respMsgLen);
+        });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     // Waiting for 500ms so that the instance ID expiry callback is invoked
@@ -123,7 +127,9 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
         eid, instanceId, 0, 0, std::move(request),
-        std::bind_front(&HandlerTest::pldmResponseCallBack, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(eid, response, respMsgLen);
+        });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Request requestNxt{};
@@ -131,7 +137,9 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     EXPECT_EQ(instanceIdNxt, 1);
     rc = reqHandler.registerRequest(
         eid, instanceIdNxt, 0, 0, std::move(requestNxt),
-        std::bind_front(&HandlerTest::pldmResponseCallBack, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(eid, response, respMsgLen);
+        });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
