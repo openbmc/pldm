@@ -49,7 +49,7 @@ class RequestRetryTimer
                                std::chrono::milliseconds timeout) :
 
         event(event), numRetries(numRetries), timeout(timeout),
-        timer(event.get(), std::bind_front(&RequestRetryTimer::callback, this))
+        timer(event.get(), [this] { this->callback(); })
     {}
 
     /** @brief Starts the request flow and arms the timer for request retries
