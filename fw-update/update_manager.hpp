@@ -49,7 +49,9 @@ class UpdateManager
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
         watch(event.get(),
-              std::bind_front(&UpdateManager::processPackage, this)),
+              [this](const std::filesystem::path& packageFilePath) {
+                  return this->processPackage(packageFilePath);
+              }),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 

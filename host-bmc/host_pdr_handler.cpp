@@ -205,7 +205,9 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     rc = handler->registerRequest(
         mctp_eid, instanceId, PLDM_PLATFORM, PLDM_GET_PDR,
         std::move(requestMsg),
-        std::bind_front(&HostPDRHandler::processHostPDRs, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->processHostPDRs(eid, response, respMsgLen);
+        });
     if (rc)
     {
         error(
