@@ -46,10 +46,14 @@ class UpdateManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap) :
-        event(event), handler(handler), instanceIdDb(instanceIdDb),
+        event(event),
+        handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
         watch(event.get(),
-              std::bind_front(&UpdateManager::processPackage, this)),
+              [this](std::string& packageFilePath) {
+                  return this->processPackage(
+                      std::filesystem::path(packageFilePath));
+              }),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 

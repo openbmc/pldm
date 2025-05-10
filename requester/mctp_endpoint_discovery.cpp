@@ -26,15 +26,16 @@ namespace pldm
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
     std::initializer_list<MctpDiscoveryHandlerIntf*> list) :
-    bus(bus), mctpEndpointAddedSignal(
-                  bus, interfacesAdded(MCTPPath),
-                  std::bind_front(&MctpDiscovery::discoverEndpoints, this)),
+    bus(bus),
+    mctpEndpointAddedSignal(
+        bus, interfacesAdded(MCTPPath),
+        [this](sdbusplus::message_t& msg) { this->discoverEndpoints(msg); }),
     mctpEndpointRemovedSignal(
         bus, interfacesRemoved(MCTPPath),
-        std::bind_front(&MctpDiscovery::removeEndpoints, this)),
+        [this](sdbusplus::message_t& msg) { this->removeEndpoints(msg); }),
     mctpEndpointPropChangedSignal(
         bus, propertiesChangedNamespace(MCTPPath, MCTPInterfaceCC),
-        std::bind_front(&MctpDiscovery::propertiesChangedCb, this)),
+        [this](sdbusplus::message_t& msg) { this->propertiesChangedCb(msg); }),
     handlers(list)
 {
     std::map<MctpInfo, Availability> currentMctpInfoMap;
