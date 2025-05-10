@@ -190,7 +190,9 @@ Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
     if (oemPlatformHandler)
     {
         survEvent = std::make_unique<sdeventplus::source::Defer>(
-            event, std::bind_front(&Handler::_processSetEventReceiver, this));
+            event, [this](sdeventplus::source::EventBase& source) {
+                this->_processSetEventReceiver(source);
+            });
     }
 
     return response;

@@ -57,7 +57,9 @@ void DeviceUpdater::startFwUpdateFlow()
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_REQUEST_UPDATE, std::move(request),
-        std::bind_front(&DeviceUpdater::requestUpdate, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->requestUpdate(eid, response, respMsgLen);
+        });
     if (rc)
     {
         // Handle error scenario
@@ -186,7 +188,9 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_PASS_COMPONENT_TABLE,
         std::move(request),
-        std::bind_front(&DeviceUpdater::passCompTable, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->passCompTable(eid, response, respMsgLen);
+        });
     if (rc)
     {
         // Handle error scenario
@@ -317,7 +321,9 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_UPDATE_COMPONENT, std::move(request),
-        std::bind_front(&DeviceUpdater::updateComponent, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->updateComponent(eid, response, respMsgLen);
+        });
     if (rc)
     {
         // Handle error scenario
@@ -669,7 +675,9 @@ void DeviceUpdater::sendActivateFirmwareRequest()
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_ACTIVATE_FIRMWARE, std::move(request),
-        std::bind_front(&DeviceUpdater::activateFirmware, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->activateFirmware(eid, response, respMsgLen);
+        });
     if (rc)
     {
         error(

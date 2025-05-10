@@ -53,7 +53,9 @@ void InventoryManager::sendQueryDeviceIdentifiersRequest(mctp_eid_t eid)
     rc = handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_QUERY_DEVICE_IDENTIFIERS,
         std::move(requestMsg),
-        std::bind_front(&InventoryManager::queryDeviceIdentifiers, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->queryDeviceIdentifiers(eid, response, respMsgLen);
+        });
     if (rc)
     {
         error(
@@ -184,7 +186,9 @@ void InventoryManager::sendQueryDownstreamDevicesRequest(mctp_eid_t eid)
     rc = handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_QUERY_DOWNSTREAM_DEVICES,
         std::move(requestMsg),
-        std::bind_front(&InventoryManager::queryDownstreamDevices, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->queryDownstreamDevices(eid, response, respMsgLen);
+        });
     if (rc)
     {
         error(
@@ -296,7 +300,9 @@ void InventoryManager::sendQueryDownstreamIdentifiersRequest(
     rc = handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_QUERY_DOWNSTREAM_IDENTIFIERS,
         std::move(requestMsg),
-        std::bind_front(&InventoryManager::queryDownstreamIdentifiers, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->queryDownstreamIdentifiers(eid, response, respMsgLen);
+        });
     if (rc)
     {
         error(
@@ -467,8 +473,9 @@ void InventoryManager::sendGetDownstreamFirmwareParametersRequest(
     rc = handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_QUERY_DOWNSTREAM_FIRMWARE_PARAMETERS,
         std::move(requestMsg),
-        std::bind_front(&InventoryManager::getDownstreamFirmwareParameters,
-                        this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->getDownstreamFirmwareParameters(eid, response, respMsgLen);
+        });
     if (rc)
     {
         error(
@@ -557,7 +564,9 @@ void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
     rc = handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_GET_FIRMWARE_PARAMETERS,
         std::move(requestMsg),
-        std::bind_front(&InventoryManager::getFirmwareParameters, this));
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->getFirmwareParameters(eid, response, respMsgLen);
+        });
     if (rc)
     {
         error(
