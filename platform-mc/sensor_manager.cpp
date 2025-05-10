@@ -39,8 +39,7 @@ void SensorManager::startPolling(pldm_tid_t tid)
     updateAvailableState(tid, true);
 
     sensorPollTimers[tid] = std::make_unique<sdbusplus::Timer>(
-        event.get(),
-        std::bind_front(&SensorManager::doSensorPolling, this, tid));
+        event.get(), [this, tid] { this->doSensorPolling(tid); });
 
     startSensorPollTimer(tid);
 }
