@@ -436,7 +436,10 @@ int main(int argc, char** argv)
 #endif
     stdplus::signal::block(SIGUSR1);
     sdeventplus::source::Signal sigUsr1(
-        event, SIGUSR1, std::bind_front(&interruptFlightRecorderCallBack));
+        event, SIGUSR1,
+        [](Signal& signal, const struct signalfd_siginfo* info) {
+            interruptFlightRecorderCallBack(signal, info);
+        });
     int returnCode = event.loop();
     if (returnCode)
     {
