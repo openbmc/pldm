@@ -3,12 +3,76 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "requester/handler.hpp"
+#include "xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp"
+
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/bus/match.hpp>
+#include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Common/UUID/server.hpp>
+#include <xyz/openbmc_project/Software/Version/server.hpp>
 
 namespace pldm
 {
 
 namespace fw_update
 {
+
+constexpr const char* EntityManagerPath =
+    "/xyz/openbmc_project/inventory";
+constexpr const char* EndpointUUID = "xyz.openbmc_project.Common.UUID";
+constexpr const char* EntityManagerPldmDeviceConfig = "xyz.openbmc_project.Configuration.PldmDevice";
+
+using versionserver =
+    sdbusplus::xyz::openbmc_project::Software::server::Version;
+using definitionsserver =
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions;
+using assetserver =
+    sdbusplus::xyz::openbmc_project::Inventory::Decorator::server::Asset;
+using uuidserver = sdbusplus::xyz::openbmc_project::Common::server::UUID;
+
+using VersionInterface = sdbusplus::server::object_t<versionserver>;
+using DefinitionsInterface = sdbusplus::server::object_t<definitionsserver>;
+using AssetInterface = sdbusplus::server::object_t<assetserver>;
+using UUIDInterface = sdbusplus::server::object_t<uuidserver>;
+
+/** @class SoftwareInventory
+ *  @brief OpenBMC Software Inventory implementation.
+ *  @details Exposes PLDM firmware versions on DBus.
+ */
+class SoftwareInventory :
+    public VersionInterface,
+    public DefinitionsInterface,
+    public AssetInterface,
+    public UUIDInterface
+{
+  public:
+    SoftwareInventory() = delete;
+    SoftwareInventory(const SoftwareInventory&) = delete;
+    SoftwareInventory& operator=(const SoftwareInventory&) = delete;
+    SoftwareInventory(SoftwareInventory&&) = delete;
+    SoftwareInventory& operator=(SoftwareInventory&&) = delete;
+
+    /** @brief Constructor to put object onto bus at a dbus path.
+     *  @param[in] bus - Bus to attach to.
+     *  @param[in] path - Path to attach at.
+     */
+    SoftwareInventory(sdbusplus::bus_t& bus, const std::string& path) :
+        VersionInterface(bus, path.c_str()),
+        DefinitionsInterface(bus, path.c_str()),
+        AssetInterface(bus, path.c_str()), UUIDInterface(bus, path.c_str()) {};
+
+    ~SoftwareInventory() = default;
+
+    /** @brief Set value of Purpose in Software.Version */
+    versionserver::VersionPurpose purpose(versionserver::VersionPurpose value);
+
+    /** @brief Set value of Version in Software.Version */
+    std::string version(std::string value);
+
+    /** @brief Set value of UUID in Common.UUID */
+    std::string uuid(std::string value);
+};
 
 /** @class InventoryManager
  *
@@ -44,11 +108,17 @@ class InventoryManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
-        ComponentInfoMap& componentInfoMap) :
+        ComponentInfoMap& componentInfoMap, sdbusplus::bus_t& bus) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
-        componentInfoMap(componentInfoMap)
+        componentInfoMap(componentInfoMap), bus(bus),
+        entityManagerItemAddedSignal(
+            bus,
+            sdbusplus::bus::match::rules::interfacesAdded(EntityManagerPath),
+            [this](sdbusplus::message_t& msg) {
+                this->entityManagerItemAddedCb(msg);
+            })
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
@@ -159,6 +229,63 @@ class InventoryManager
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
 
+    /** @brief Callback for when the interfacesAdded D-Bus
+     * signal is triggered for Entity Manager inventory items
+     *
+     *  @param[in] msg - Data associated with subscribed signal
+     */
+    void entityManagerItemAddedCb(sdbusplus::message_t& msg);
+
+    /** @brief Find UUID match in the existing software inventory
+     *
+     *  @param[in] UUID - UUID to find
+     *  @param[out] version - Version of the Object
+     *  @param[out] objectPath - Object path of the UUID
+     *  @return true if UUID is found, false otherwise
+     */
+    bool findUUIDInventoryMatch(std::string& UUID, std::string& version, std::string& objectPath);
+
+    /** @brief Add to software inventory
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] componentNumber - Component number
+     *  @param[in] activeCompVerStr - Active component version string
+     *  @param[in] pendingCompVerStr - Pending component version string
+     */
+    void addToSoftwareInventory(mctp_eid_t eid, int componentNumber,
+                                const std::string& activeCompVerStr,
+                                const std::string& pendingCompVerStr);
+
+    /** @brief Remove from software inventory
+     *
+     *  @param[in] objectPath - Object path of the UUID
+     */
+    void removeFromSoftwareInventory(std::string& objectPath);
+
+    /** @brief Get UUID from MCTP Endpoint Inventory
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[out] UUID - UUID of the FD
+     *  @return true if UUID is found, false otherwise
+     */
+    bool getUUID(mctp_eid_t eid, std::string& UUID);
+
+    /** @brief Get device name from Entity Manager Inventory
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] UUID - UUID of the FD
+     *  @param[out] deviceName - Device name
+     */
+    void getDeviceName(mctp_eid_t eid, const std::string& UUID,
+                       std::string& deviceName);
+
+    /** @brief Create software inventory path
+     *
+     *  @param[in] deviceName - Device name
+     *  @return true if software inventory path is created, false otherwise
+     */
+    bool createSoftwareInventoryPath(std::string deviceName);
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
 
@@ -173,6 +300,20 @@ class InventoryManager
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    utils::DBusHandler dbusHandler;
+
+    /** @brief The pointer of software inventory D-Bus interface for the
+     * terminus
+     */
+    std::map<std::string, std::unique_ptr<SoftwareInventory>>
+        softwareInventoryInterfaces;
+
+    /** @brief reference to the systemd bus */
+    sdbusplus::bus_t& bus;
+
+    /** @brief Used to watch for new Entity Manager config items */
+    sdbusplus::bus::match_t entityManagerItemAddedSignal;
 };
 
 } // namespace fw_update

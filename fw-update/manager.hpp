@@ -39,9 +39,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     explicit Manager(Event& event,
                      requester::Handler<requester::Request>& handler,
-                     pldm::InstanceIdDb& instanceIdDb) :
+                     pldm::InstanceIdDb& instanceIdDb, sdbusplus::bus_t& bus) :
         inventoryMgr(handler, instanceIdDb, descriptorMap,
-                     downstreamDescriptorMap, componentInfoMap),
+                     downstreamDescriptorMap, componentInfoMap, bus),
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap)
     {}
