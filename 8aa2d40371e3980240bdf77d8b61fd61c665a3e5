@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61624374_d1376323",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-12T05:00:03Z",
+      "side": 1,
+      "message": "is CI broken with these ? what do you mean by build fixes ? are you fixing some warnings in CI ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "8aa2d40371e3980240bdf77d8b61fd61c665a3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eca4ead_d5a6d671",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-12T05:00:03Z",
+      "side": 1,
+      "message": "I get why this is beneficial , but can you please use more words in descirbing why this change was made.",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 55
+      },
+      "revId": "8aa2d40371e3980240bdf77d8b61fd61c665a3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0de234f_34657114",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-12T05:00:03Z",
+      "side": 1,
+      "message": "I\u0027m fine with the changes. Could you please expand the commit message to include more details about the issues encountered and how this change addresses them?",
+      "revId": "8aa2d40371e3980240bdf77d8b61fd61c665a3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
