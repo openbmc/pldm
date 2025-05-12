@@ -46,6 +46,30 @@
       },
       "revId": "4febc9c7cdb332a4700c5ab419d894c6c138dda7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c802aaa_6d41e310",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-05-12T05:18:45Z",
+      "side": 1,
+      "message": "The bulk of PLDM T5 traffic is the Tx/Rx of RequestFirmwareData where PLDM FD downloads image from the BMC. With the number of PLDM devices we support on a platform, the total amount of data we transfer exceeds 140+ M, capturing MCTP traffic for this and adding it to BMC dump is not a feasible solution. \n\nSo printing Tx/Rx for the RequestFirmwareData without the actual data firmware data, gives decent debug capabilities on the BMC when PLDM firmware update is in progress and helped us triage issues where logs on the device has been insufficient.\n\nI agree with Manoj\u0027s concern in principle, there are platform specific needs where such flexibility is needed. Also unlike a feature flag where more forethought is needed, flag for debug tracing has minimal side effects.",
+      "parentUuid": "11e74599_5018005a",
+      "range": {
+        "startLine": 60,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 50
+      },
+      "revId": "4febc9c7cdb332a4700c5ab419d894c6c138dda7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
