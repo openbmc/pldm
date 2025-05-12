@@ -15,6 +15,17 @@ namespace pldm
 {
 namespace fw_update
 {
+
+std::string SoftwareInventory::version(std::string value)
+{
+    return versionserver::version(value, true);
+}
+
+versionserver::VersionPurpose SoftwareInventory::purpose(VersionPurpose value)
+{
+    return versionserver::purpose(value, true);
+}
+
 void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
 {
     for (const auto& eid : eids)
@@ -619,6 +630,7 @@ void InventoryManager::getFirmwareParameters(
     variable_field pendingCompVerStr{};
 
     ComponentInfo componentInfo{};
+    int componentNumber = 0;
     while (fwParams.comp_count-- && (compParamTableLen > 0))
     {
         auto rc = decode_get_firmware_parameters_resp_comp_entry(
@@ -641,10 +653,208 @@ void InventoryManager::getFirmwareParameters(
                         activeCompVerStr.length + pendingCompVerStr.length;
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
+
+        addToSoftwareInventory(
+            eid, componentNumber,
+            std::string(reinterpret_cast<const char*>(activeCompVerStr.ptr),
+                        activeCompVerStr.length),
+            std::string(reinterpret_cast<const char*>(pendingCompVerStr.ptr),
+                        pendingCompVerStr.length));
+        componentNumber++;
     }
     componentInfoMap.emplace(eid, std::move(componentInfo));
 }
 
+void InventoryManager::addToSoftwareInventory(
+    mctp_eid_t eid, int componentNumber, const std::string& activeCompVerStr,
+    [[maybe_unused]] const std::string& pendingCompVerStr)
+{
+    info("Finding device name for endpoint ID {EID}", "EID", eid);
+
+    std::string UUID = "";
+    std::string deviceName = "";
+    getUUID(eid, UUID);
+    getDeviceName(eid, UUID, deviceName);
+
+    if (componentNumber != 0)
+    {
+        deviceName += "_" + std::to_string(componentNumber);
+    }
+
+    info("Adding device {DEVICE} to software inventory", "DEVICE", deviceName);
+    std::string deviceObjectPath =
+        "/xyz/openbmc_project/software/" + deviceName;
+    if (createSoftwareInventoryPath(deviceObjectPath))
+    {
+        info("Created software inventory dbus object for device {DEVICE}",
+             "DEVICE", deviceObjectPath);
+    }
+
+    softwareInventoryInterfaces.at(deviceObjectPath)
+        ->purpose(versionserver::VersionPurpose::Other);
+    softwareInventoryInterfaces.at(deviceObjectPath)->version(activeCompVerStr);
+}
+
+bool InventoryManager::createSoftwareInventoryPath(std::string devicePath)
+{
+    if (devicePath.empty())
+    {
+        return false;
+    }
+
+    if (!softwareInventoryInterfaces.contains(devicePath))
+    {
+        try
+        {
+            std::unique_ptr<SoftwareInventory> newSoftwareInventoryInterface =
+                std::make_unique<SoftwareInventory>(
+                    utils::DBusHandler::getBus(), devicePath.c_str());
+            softwareInventoryInterfaces.emplace(
+                devicePath, std::move(newSoftwareInventoryInterface));
+            return true;
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            error(
+                "Failed to create Software Inventory interface for device {PATH}. Error: {ERROR}",
+                "PATH", devicePath, "ERROR", e);
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool InventoryManager::getUUID(mctp_eid_t eid, std::string& UUID)
+{
+    int depth = 10;
+    std::string MCTPEndpointInventoryPath = "/au/com/codeconstruct/mctp1/";
+    std::vector<std::string> ifaceList = {"xyz.openbmc_project.MCTP.Endpoint",
+                                          "xyz.openbmc_project.Common.UUID"};
+    utils::GetSubTreePathsResponse mctpEndpointObjectPaths;
+    utils::DBusHandler dbusHandler;
+    try
+    {
+        mctpEndpointObjectPaths = dbusHandler.getSubTreePaths(
+            MCTPEndpointInventoryPath, depth, ifaceList);
+    }
+    catch (const std::exception& e)
+    {
+        error("Error {ERROR} getting subtree paths for {PATH}", "PATH",
+              MCTPEndpointInventoryPath, "ERROR", e);
+        return false;
+    }
+
+    // finds matching EID and returns it's UUID
+    for (const auto& objectPath : mctpEndpointObjectPaths)
+    {
+        info("Checking for matching EID in path {PATH}", "PATH", objectPath);
+        uint8_t checkEID = 0;
+        try
+        {
+            checkEID = std::get<uint8_t>(dbusHandler.getDbusPropertyVariant(
+                objectPath.c_str(), "EID",
+                "xyz.openbmc_project.MCTP.Endpoint"));
+        }
+        catch (const std::exception& e)
+        {
+            error("Error {ERROR} getting EID from path {PATH}", "PATH",
+                  objectPath, "ERROR", e);
+            continue;
+        }
+
+        if (checkEID == eid)
+        {
+            info("Found matching EID {EID}", "EID", checkEID);
+            try
+            {
+                UUID = std::get<std::string>(dbusHandler.getDbusPropertyVariant(
+                    objectPath.c_str(), "UUID",
+                    "xyz.openbmc_project.Common.UUID"));
+            }
+            catch (const std::exception& e)
+            {
+                error("Error {ERROR} getting UUID from path {PATH}", "PATH",
+                      objectPath, "ERROR", e);
+                continue;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+void InventoryManager::getDeviceName(mctp_eid_t eid, const std::string& UUID,
+                                     std::string& deviceName)
+{
+    info("Checking Entity Manager for hardcoded Device Name for EID {EID}, UUID {UUID}",
+         "EID", eid, "UUID", UUID);
+
+    // get subtree paths for entity manager pldm devices
+    int depth = 10;
+    std::string inventoryPath = "/xyz/openbmc_project/inventory/system/board/";
+    std::vector<std::string> ifaceList = {
+        "xyz.openbmc_project.Configuration.PldmDevice",
+        "xyz.openbmc_project.Configuration.PldmDevice",
+        "xyz.openbmc_project.Configuration.PldmDevice"};
+    utils::GetSubTreePathsResponse objectPaths;
+    utils::DBusHandler dbusHandler;
+    try
+    {
+        objectPaths =
+            dbusHandler.getSubTreePaths(inventoryPath, depth, ifaceList);
+    }
+    catch (const std::exception& e)
+    {
+        error("Error getting subtree paths for {PATH}", "PATH", inventoryPath);
+        deviceName = "EID" + std::to_string(eid);
+        return;
+    }
+
+    // finds the fru data for the matching UUID
+    for (const auto& objectPath : objectPaths)
+    {
+        info("Checking path {PATH}", "PATH", objectPath);
+
+        std::string checkUUID = "";
+        try
+        {
+            checkUUID =
+                std::get<std::string>(dbusHandler.getDbusPropertyVariant(
+                    objectPath.c_str(), "UUID",
+                    "xyz.openbmc_project.Configuration.PldmDevice"));
+        }
+        catch (const std::exception& e)
+        {
+            error("Error getting UUID from path {PATH}", "PATH", objectPath);
+            continue;
+        }
+        info("Found UUID {UUID}", "UUID", UUID,
+
+        if (checkUUID == UUID)
+        {
+            info("Found matching UUID {UUID}", "UUID", checkUUID);
+            try
+            {
+                deviceName =
+                    std::get<std::string>(dbusHandler.getDbusPropertyVariant(
+                        objectPath.c_str(), "Name",
+                        "xyz.openbmc_project.Configuration.PldmDevice"));
+                return;
+            }
+            catch (const std::exception& e)
+            {
+                error("Error getting device name from path {PATH}", "PATH",
+                      objectPath);
+                continue;
+            }
+        }
+    }
+
+    deviceName = "EID" + std::to_string(eid);
+}
 } // namespace fw_update
 
 } // namespace pldm
