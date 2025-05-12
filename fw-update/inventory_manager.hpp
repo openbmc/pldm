@@ -3,12 +3,61 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "requester/handler.hpp"
+#include "xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp"
+
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Software/Version/server.hpp>
 
 namespace pldm
 {
 
 namespace fw_update
 {
+
+using versionserver =
+    sdbusplus::xyz::openbmc_project::Software::server::Version;
+using definitionsserver =
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions;
+using assetserver =
+    sdbusplus::xyz::openbmc_project::Inventory::Decorator::server::Asset;
+
+using VersionInterface = sdbusplus::server::object_t<versionserver>;
+using DefinitionsInterface = sdbusplus::server::object_t<definitionsserver>;
+using AssetInterface = sdbusplus::server::object_t<assetserver>;
+
+/** @class SoftwareInventory
+ *  @brief OpenBMC Software Inventory implementation.
+ *  @details Exposes PLDM firmware versions on DBus.
+ */
+class SoftwareInventory :
+    public VersionInterface,
+    public DefinitionsInterface,
+    public AssetInterface
+{
+  public:
+    SoftwareInventory() = delete;
+    SoftwareInventory(const SoftwareInventory&) = delete;
+    SoftwareInventory& operator=(const SoftwareInventory&) = delete;
+    SoftwareInventory(SoftwareInventory&&) = delete;
+    SoftwareInventory& operator=(SoftwareInventory&&) = delete;
+
+    /** @brief Constructor to put object onto bus at a dbus path.
+     *  @param[in] bus - Bus to attach to.
+     *  @param[in] path - Path to attach at.
+     */
+    SoftwareInventory(sdbusplus::bus_t& bus, const std::string& path) :
+        VersionInterface(bus, path.c_str()),
+        DefinitionsInterface(bus, path.c_str()),
+        AssetInterface(bus, path.c_str()) {};
+
+    /** @brief Set value of Purpose in Software.Version */
+    versionserver::VersionPurpose purpose(versionserver::VersionPurpose value);
+
+    /** @brief Set value of Version in Software.Version */
+    std::string version(std::string value);
+};
 
 /** @class InventoryManager
  *
@@ -159,6 +208,41 @@ class InventoryManager
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
 
+    /** @brief Add to software inventory
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] componentNumber - Component number
+     *  @param[in] activeCompVerStr - Active component version string
+     *  @param[in] pendingCompVerStr - Pending component version string
+     */
+    void addToSoftwareInventory(mctp_eid_t eid, int componentNumber,
+                                const std::string& activeCompVerStr,
+                                const std::string& pendingCompVerStr);
+
+    /** @brief Get UUID from MCTP Endpoint Inventory
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[out] UUID - UUID of the FD
+     *  @return true if UUID is found, false otherwise
+     */
+    bool getUUID(mctp_eid_t eid, std::string& UUID);
+
+    /** @brief Get device name from Entity Manager Inventory
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] UUID - UUID of the FD
+     *  @param[out] deviceName - Device name
+     */
+    void getDeviceName(mctp_eid_t eid, const std::string& UUID,
+                       std::string& deviceName);
+
+    /** @brief Create software inventory path
+     *
+     *  @param[in] deviceName - Device name
+     *  @return true if software inventory path is created, false otherwise
+     */
+    bool createSoftwareInventoryPath(std::string deviceName);
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
 
@@ -173,6 +257,14 @@ class InventoryManager
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    utils::DBusHandler dbusHandler;
+
+    /** @brief The pointer of software inventory D-Bus interface for the
+     * terminus
+     */
+    std::map<std::string, std::unique_ptr<SoftwareInventory>>
+        softwareInventoryInterfaces;
 };
 
 } // namespace fw_update
