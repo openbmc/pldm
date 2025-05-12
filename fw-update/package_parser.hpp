@@ -71,6 +71,16 @@ class PackageParser
         return fwDeviceIDRecords;
     }
 
+    /** @brief Get downstream device ID records from the package
+     *
+     *  @return if parsing the package is successful, return downstream device
+     * ID records
+     */
+    const DownstreamDeviceIDRecords& getDownstreamDeviceIDRecords() const
+    {
+        return downstreamDeviceIDRecords;
+    }
+
     /** @brief Get component image information from the package
      *
      *  @return if parsing the package is successful, return component image
@@ -98,9 +108,9 @@ class PackageParser
      *  @return On success return the offset which is the end of the firmware
      *          device identification area, on error throw exception.
      */
-    size_t parseFDIdentificationArea(DeviceIDRecordCount deviceIdRecCount,
-                                     const std::vector<uint8_t>& pkgHdr,
-                                     size_t offset);
+    virtual size_t parseFDIdentificationArea(
+        DeviceIDRecordCount deviceIdRecCount,
+        const std::vector<uint8_t>& pkgHdr, size_t offset);
 
     /** @brief Parse the component image information area
      *
@@ -129,6 +139,7 @@ class PackageParser
 
     /** @brief Firmware Device ID Records in the package */
     FirmwareDeviceIDRecords fwDeviceIDRecords;
+    DownstreamDeviceIDRecords downstreamDeviceIDRecords;
 
     /** @brief Component Image Information in the package */
     ComponentImageInfos componentImageInfos;
@@ -165,6 +176,38 @@ class PackageParserV1 final : public PackageParser
      *                                        matching device.
      */
     explicit PackageParserV1(
+        PackageHeaderSize pkgHeaderSize, const PackageVersion& pkgVersion,
+        ComponentBitmapBitLength componentBitmapBitLength) :
+        PackageParser(pkgHeaderSize, pkgVersion, componentBitmapBitLength)
+    {}
+
+    virtual void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize);
+};
+
+/** @class PackageParserV130
+ *
+ *  This class implements the package parser for the header format version 0x01
+ */
+class PackageParserV130 final : public PackageParser
+{
+  public:
+    PackageParserV130() = delete;
+    PackageParserV130(const PackageParserV130&) = delete;
+    PackageParserV130(PackageParserV130&&) = default;
+    PackageParserV130& operator=(const PackageParserV130&) = delete;
+    PackageParserV130& operator=(PackageParserV130&&) = delete;
+    ~PackageParserV130() = default;
+
+    /** @brief Constructor
+     *
+     *  @param[in] pkgHeaderSize - Size of package header section
+     *  @param[in] pkgVersion - Package version
+     *  @param[in] componentBitmapBitLength - The number of bits used to
+     *                                        represent the bitmap in the
+     *                                        ApplicableComponents field for a
+     *                                        matching device.
+     */
+    explicit PackageParserV130(
         PackageHeaderSize pkgHeaderSize, const PackageVersion& pkgVersion,
         ComponentBitmapBitLength componentBitmapBitLength) :
         PackageParser(pkgHeaderSize, pkgVersion, componentBitmapBitLength)

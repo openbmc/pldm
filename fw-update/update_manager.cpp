@@ -76,9 +76,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
 
     package.seekg(0);
-    std::vector<uint8_t> packageHeader(sizeof(pldm_package_header_information));
-    package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 sizeof(pldm_package_header_information));
+    std::vector<uint8_t> packageHeader(packageSize);
+    package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
 
     auto pkgHeaderInfo =
         reinterpret_cast<const pldm_package_header_information*>(
@@ -123,9 +122,10 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         return -1;
     }
 
-    auto deviceUpdaterInfos =
-        associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
-                              totalNumComponentUpdates);
+    auto deviceUpdaterInfos = associatePkgToDevices(
+        parser->getFwDeviceIDRecords(), parser->getDownstreamDeviceIDRecords(),
+        descriptorMap, downstreamDescriptorMap, totalNumComponentUpdates);
+
     if (!deviceUpdaterInfos.size())
     {
         error(
@@ -165,7 +165,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+    const DownstreamDeviceIDRecords& downstreamDeviceIDRecords,
     const DescriptorMap& descriptorMap,
+    const DownstreamDescriptorMap& downstreamDescriptorMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
@@ -173,11 +175,17 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     {
         const auto& deviceIDDescriptors =
             std::get<Descriptors>(fwDeviceIDRecords[index]);
+        std::vector<Descriptor> deviceIDDescriptorsVec(
+            deviceIDDescriptors.begin(), deviceIDDescriptors.end());
+        std::sort(deviceIDDescriptorsVec.begin(), deviceIDDescriptorsVec.end());
         for (const auto& [eid, descriptors] : descriptorMap)
         {
-            if (std::includes(descriptors.begin(), descriptors.end(),
-                              deviceIDDescriptors.begin(),
-                              deviceIDDescriptors.end()))
+            std::vector<Descriptor> descriptorsVec(descriptors.begin(),
+                                                   descriptors.end());
+            std::sort(descriptorsVec.begin(), descriptorsVec.end());
+            if (std::includes(descriptorsVec.begin(), descriptorsVec.end(),
+                              deviceIDDescriptorsVec.begin(),
+                              deviceIDDescriptorsVec.end()))
             {
                 deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
                 const auto& applicableComponents =
@@ -186,6 +194,37 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
             }
         }
     }
+    for (size_t index = 0; index < downstreamDeviceIDRecords.size(); ++index)
+    {
+        const auto& downstreamDeviceIDDescriptors =
+            std::get<Descriptors>(downstreamDeviceIDRecords[index]);
+        std::vector<Descriptor> downstreamDeviceIDDescriptorsVec(
+            downstreamDeviceIDDescriptors.begin(),
+            downstreamDeviceIDDescriptors.end());
+        std::sort(downstreamDeviceIDDescriptorsVec.begin(),
+                  downstreamDeviceIDDescriptorsVec.end());
+        for (const auto& [eid, downstreamDeviceInfo] : downstreamDescriptorMap)
+        {
+            for (const auto& [downstreamDeviceIndex, descriptors] :
+                 downstreamDeviceInfo)
+            {
+                std::vector<Descriptor> descriptorsVec(descriptors.begin(),
+                                                       descriptors.end());
+                std::sort(descriptorsVec.begin(), descriptorsVec.end());
+                if (std::includes(descriptorsVec.begin(), descriptorsVec.end(),
+                                  downstreamDeviceIDDescriptorsVec.begin(),
+                                  downstreamDeviceIDDescriptorsVec.end()))
+                {
+                    deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
+                    const auto& applicableComponents =
+                        std::get<ApplicableComponents>(
+                            downstreamDeviceIDRecords[index]);
+                    totalNumComponentUpdates += applicableComponents.size();
+                }
+            }
+        }
+    }
+
     return deviceUpdaterInfos;
 }
 

@@ -291,12 +291,317 @@ void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
     validatePkgTotalSize(pkgSize);
 }
 
+void PackageParserV130::parse(const std::vector<uint8_t>& pkgHdr,
+                              uintmax_t pkgSize)
+{
+    if (pkgHeaderSize != pkgHdr.size())
+    {
+        error("Invalid package header size '{PKG_HDR_SIZE}' ", "PKG_HDR_SIZE",
+              pkgHeaderSize);
+        throw InternalFailure();
+    }
+
+    pldm_package_header_information_v130 packageHeaderInfoData{};
+    pldm_firmware_device_id_record_v130_iter deviceIdRecIter{};
+    pldm_downstream_device_id_record_v130_iter downstreamDeviceIdRecIter{};
+    pldm_component_image_infornation_v130_iter compImageInfoIter{};
+    auto rc = decode_pldm_package_header_info_v130(
+        pkgHdr.data(), pkgHdr.size(), &packageHeaderInfoData, &deviceIdRecIter,
+        &downstreamDeviceIdRecIter, &compImageInfoIter);
+    if (rc)
+    {
+        error(
+            "Failed to decode PLDM package header information, response code '{RC}'",
+            "RC", rc);
+        throw InternalFailure();
+    }
+
+    pldm_firmware_device_id_record_v130 deviceIdRec;
+    variable_field descriptorData{};
+    pldm_descriptor_iter descriptorIter{};
+    descriptorIter.field = &descriptorData;
+
+    foreach_pldm_firmware_device_id_record_v130(
+        packageHeaderInfoData, deviceIdRecIter, deviceIdRec, descriptorIter, rc)
+    {
+        pldm_descriptor descriptorData{};
+        Descriptors descriptors{};
+        foreach_pldm_descriptor(descriptorIter, descriptorData, rc)
+        {
+            auto descriptorType = descriptorData.descriptor_type;
+            const auto descriptorDataPtr =
+                new (const_cast<void*>(descriptorData.descriptor_data))
+                    uint8_t[descriptorData.descriptor_length];
+            auto descriptorDataLength = descriptorData.descriptor_length;
+            if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
+            {
+                descriptors.emplace(
+                    descriptorType,
+                    DescriptorData{descriptorDataPtr,
+                                   descriptorDataPtr + descriptorDataLength});
+            }
+            else
+            {
+                uint8_t descTitleStrType = 0;
+                variable_field descTitleStr{};
+                variable_field vendorDefinedDescData{};
+                rc = decode_vendor_defined_descriptor_value(
+                    descriptorDataPtr, descriptorDataLength, &descTitleStrType,
+                    &descTitleStr, &vendorDefinedDescData);
+                if (rc)
+                {
+                    error(
+                        "Failed to decode vendor-defined descriptor value of type '{TYPE}' and  length '{LENGTH}', response code '{RC}'",
+                        "TYPE", descriptorType, "LENGTH",
+                        deviceIdRec.record_length, "RC", rc);
+                    throw InternalFailure();
+                }
+
+                descriptors.emplace(
+                    descriptorType,
+                    std::make_tuple(utils::toString(descTitleStr),
+                                    VendorDefinedDescriptorData{
+                                        vendorDefinedDescData.ptr,
+                                        vendorDefinedDescData.ptr +
+                                            vendorDefinedDescData.length}));
+            }
+        }
+        if (rc)
+        {
+            error("Failed to decode descriptor type, response code '{RC}'",
+                  "RC", rc);
+            throw InternalFailure();
+        }
+
+        DeviceUpdateOptionFlags deviceUpdateOptionFlags =
+            deviceIdRec.device_update_option_flags.value;
+        ApplicableComponents applicableComponents;
+        for (size_t varBitfieldIdx = 0;
+             varBitfieldIdx < deviceIdRec.applicable_components.length;
+             varBitfieldIdx++)
+        {
+            std::bitset<8> entry{
+                *(deviceIdRec.applicable_components.ptr + varBitfieldIdx)};
+            for (size_t idx = 0; idx < entry.size(); idx++)
+            {
+                if (entry[idx])
+                {
+                    applicableComponents.emplace_back(
+                        idx + (varBitfieldIdx * entry.size()));
+                }
+            }
+        }
+
+        const auto packageVersionStringPtr = new (
+            const_cast<void*>(deviceIdRec.component_image_set_version_string))
+            uint8_t[deviceIdRec.component_image_set_version_string_length];
+        const auto packageVersionStringLength =
+            deviceIdRec.component_image_set_version_string_length;
+        std::string compImageSetVersion(
+            packageVersionStringPtr,
+            packageVersionStringPtr + packageVersionStringLength);
+
+        const auto fwDevicePkgDataPtr =
+            new (const_cast<void*>(deviceIdRec.firmware_device_package_data))
+                uint8_t[deviceIdRec.firmware_device_package_data_length];
+        const auto fwDevicePkgDataLength =
+            deviceIdRec.firmware_device_package_data_length;
+
+        fwDeviceIDRecords.emplace_back(std::make_tuple(
+            deviceUpdateOptionFlags, applicableComponents,
+            std::move(compImageSetVersion), std::move(descriptors),
+            FirmwareDevicePackageData{
+                fwDevicePkgDataPtr,
+                fwDevicePkgDataPtr + fwDevicePkgDataLength}));
+    }
+    if (rc)
+    {
+        error(
+            "Failed to decode firmware device ID record, response code '{RC}'",
+            "RC", rc);
+        throw InternalFailure();
+    }
+    pldm_downstream_device_id_record_v130 downstreamDeviceIdRec;
+    foreach_pldm_downstream_device_id_record_v130(
+        packageHeaderInfoData, downstreamDeviceIdRecIter, downstreamDeviceIdRec,
+        descriptorIter, rc)
+    {
+        Descriptors descriptors{};
+        pldm_descriptor descriptorData{};
+        foreach_pldm_descriptor(descriptorIter, descriptorData, rc)
+        {
+            auto descriptorType = descriptorData.descriptor_type;
+            const auto descriptorDataPtr =
+                new (const_cast<void*>(descriptorData.descriptor_data))
+                    uint8_t[descriptorData.descriptor_length];
+            auto descriptorDataLength = descriptorData.descriptor_length;
+            if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
+            {
+                descriptors.emplace(
+                    descriptorType,
+                    DescriptorData{descriptorDataPtr,
+                                   descriptorDataPtr + descriptorDataLength});
+            }
+            else
+            {
+                uint8_t descTitleStrType = 0;
+                variable_field descTitleStr{};
+                variable_field vendorDefinedDescData{};
+
+                rc = decode_vendor_defined_descriptor_value(
+                    descriptorDataPtr, descriptorDataLength, &descTitleStrType,
+                    &descTitleStr, &vendorDefinedDescData);
+                if (rc)
+                {
+                    error(
+                        "Failed to decode vendor-defined descriptor value of type '{TYPE}' and  length '{LENGTH}', response code '{RC}'",
+                        "TYPE", descriptorType, "LENGTH",
+                        downstreamDeviceIdRec.downstream_device_record_length,
+                        "RC", rc);
+                    throw InternalFailure();
+                }
+
+                descriptors.emplace(
+                    descriptorType,
+                    std::make_tuple(utils::toString(descTitleStr),
+                                    VendorDefinedDescriptorData{
+                                        vendorDefinedDescData.ptr,
+                                        vendorDefinedDescData.ptr +
+                                            vendorDefinedDescData.length}));
+            }
+        }
+        if (rc)
+        {
+            error(
+                "Failed to decode downstream descriptor type, response code '{RC}'",
+                "RC", rc);
+            throw InternalFailure();
+        }
+
+        DeviceUpdateOptionFlags deviceUpdateOptionFlags =
+            downstreamDeviceIdRec.downstream_device_update_option_flags.value;
+        ApplicableComponents applicableComponents;
+        for (size_t varBitfieldIdx = 0;
+             varBitfieldIdx < deviceIdRec.applicable_components.length;
+             varBitfieldIdx++)
+        {
+            std::bitset<8> entry{
+                *(deviceIdRec.applicable_components.ptr + varBitfieldIdx)};
+            for (size_t idx = 0; idx < entry.size(); idx++)
+            {
+                if (entry[idx])
+                {
+                    applicableComponents.emplace_back(
+                        idx + (varBitfieldIdx * entry.size()));
+                }
+            }
+        }
+
+        const auto packageVersionStringPtr = new (const_cast<void*>(
+            downstreamDeviceIdRec
+                .downstream_device_self_contained_activation_min_version_string)) uint8_t
+            [downstreamDeviceIdRec
+                 .downstream_device_self_contained_activation_min_version_string_length];
+        const auto packageVersionStringLength =
+            downstreamDeviceIdRec
+                .downstream_device_self_contained_activation_min_version_string_length;
+
+        std::string compImageSetVersion(
+            packageVersionStringPtr,
+            packageVersionStringPtr + packageVersionStringLength);
+
+        const auto downstreamDevicePkgDataPtr = new (const_cast<void*>(
+            downstreamDeviceIdRec.downstream_device_package_data))
+            uint8_t[downstreamDeviceIdRec
+                        .downstream_device_package_data_length];
+        const auto downstreamDevicePkgDataLength =
+            downstreamDeviceIdRec.downstream_device_package_data_length;
+
+        downstreamDeviceIDRecords.emplace_back(std::make_tuple(
+            deviceUpdateOptionFlags, applicableComponents,
+            std::move(compImageSetVersion), std::move(descriptors),
+            FirmwareDevicePackageData{
+                downstreamDevicePkgDataPtr,
+                downstreamDevicePkgDataPtr + downstreamDevicePkgDataLength}));
+    }
+    if (rc)
+    {
+        error(
+            "Failed to decode downstream device ID record, response code '{RC}'",
+            "RC", rc);
+        throw InternalFailure();
+    }
+    pldm_component_image_information_v130 compImageInfo;
+    foreach_pldm_component_image_information_v130(compImageInfoIter,
+                                                  compImageInfo, rc)
+    {
+        CompClassification compClassification =
+            compImageInfo.component_classification;
+        CompIdentifier compIdentifier = compImageInfo.component_identifier;
+        CompComparisonStamp compComparisonTime =
+            compImageInfo.component_comparison_stamp;
+        CompOptions compOptions = compImageInfo.component_options.value;
+        ReqCompActivationMethod reqCompActivationMethod =
+            compImageInfo.requested_component_activation_method.value;
+        CompLocationOffset compLocationOffset =
+            compImageInfo.component_location_offset;
+        CompSize compSize = compImageInfo.component_size;
+
+        const auto compVersionStringPtr =
+            new (const_cast<void*>(compImageInfo.component_version_string))
+                uint8_t[compImageInfo.component_version_string_length];
+        const auto compVersionStringLength =
+            compImageInfo.component_version_string_length;
+        std::string compVersion(compVersionStringPtr,
+                                compVersionStringPtr + compVersionStringLength);
+        componentImageInfos.emplace_back(std::make_tuple(
+            compClassification, compIdentifier, compComparisonTime, compOptions,
+            reqCompActivationMethod, compLocationOffset, compSize,
+            std::move(compVersion)));
+    }
+    if (rc)
+    {
+        error(
+            "Failed to decode component image information, response code '{RC}'",
+            "RC", rc);
+        throw InternalFailure();
+    }
+    auto headerChecksum = packageHeaderInfoData.package_header_checksum;
+    auto payloadChecksum = packageHeaderInfoData.package_payload_checksum;
+    auto headerSize = packageHeaderInfoData.package_header_size;
+    auto calcHeaderChecksum = pldm_edac_crc32(
+        pkgHdr.data(),
+        headerSize - sizeof(headerChecksum) - sizeof(payloadChecksum));
+    if (calcHeaderChecksum != headerChecksum)
+    {
+        error(
+            "Failed to parse package header for calculated checksum '{CALCULATED_CHECKSUM}' and header checksum '{PACKAGE_HEADER_CHECKSUM}'",
+            "CALCULATED_CHECKSUM", calcHeaderChecksum,
+            "PACKAGE_HEADER_CHECKSUM", headerChecksum);
+        throw InternalFailure();
+    }
+    auto calcPayloadChecksum =
+        pldm_edac_crc32(pkgHdr.data() + headerSize, pkgSize - headerSize);
+    if (calcPayloadChecksum != payloadChecksum)
+    {
+        error(
+            "Failed to parse package payload for calculated checksum '{CALCULATED_CHECKSUM}' and payload checksum '{PACKAGE_HEADER_CHECKSUM}'",
+            "CALCULATED_CHECKSUM", calcPayloadChecksum,
+            "PACKAGE_HEADER_CHECKSUM", payloadChecksum);
+        throw InternalFailure();
+    }
+}
+
 std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgData)
 {
     constexpr std::array<uint8_t, PLDM_FWUP_UUID_LENGTH> hdrIdentifierv1{
         0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D, 0x49, 0x43,
         0x98, 0x00, 0xA0, 0x2F, 0x05, 0x9A, 0xCA, 0x02};
+    constexpr std::array<uint8_t, PLDM_FWUP_UUID_LENGTH> hdrIdentifierv130{
+        0x7B, 0x29, 0x1C, 0x99, 0x6D, 0xB6, 0x42, 0x08,
+        0x80, 0x1B, 0x02, 0x02, 0x6E, 0x46, 0x3C, 0x78};
     constexpr uint8_t pkgHdrVersion1 = 0x01;
+    constexpr uint8_t pkgHdrVersion130 = 0x04;
 
     pldm_package_header_information pkgHeader{};
     variable_field pkgVersion{};
@@ -318,6 +623,16 @@ std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgData)
         ComponentBitmapBitLength componentBitmapBitLength =
             pkgHeader.component_bitmap_bit_length;
         return std::make_unique<PackageParserV1>(
+            pkgHdrSize, utils::toString(pkgVersion), componentBitmapBitLength);
+    }
+    else if (std::equal(pkgHeader.uuid, pkgHeader.uuid + PLDM_FWUP_UUID_LENGTH,
+                        hdrIdentifierv130.begin(), hdrIdentifierv130.end()) &&
+             (pkgHeader.package_header_format_version == pkgHdrVersion130))
+    {
+        PackageHeaderSize pkgHdrSize = pkgHeader.package_header_size;
+        ComponentBitmapBitLength componentBitmapBitLength =
+            pkgHeader.component_bitmap_bit_length;
+        return std::make_unique<PackageParserV130>(
             pkgHdrSize, utils::toString(pkgVersion), componentBitmapBitLength);
     }
 

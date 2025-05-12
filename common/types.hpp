@@ -108,14 +108,16 @@ using VendorDefinedDescriptorTitle = std::string;
 using VendorDefinedDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorInfo =
     std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
-using Descriptors =
-    std::multimap<DescriptorType,
-                  std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+using DescriptorValue =
+    std::variant<DescriptorData, VendorDefinedDescriptorInfo>;
+using Descriptor = std::pair<DescriptorType, DescriptorValue>;
+using Descriptors = std::multimap<DescriptorType, DescriptorValue>;
 using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
     std::unordered_map<DownstreamDeviceIndex, Descriptors>;
 
 using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DownstreamDescriptorIndex = std::pair<eid, DownstreamDeviceIndex>;
 using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 
 // Component information
@@ -143,6 +145,11 @@ using FirmwareDeviceIDRecord =
                ComponentImageSetVersion, Descriptors,
                FirmwareDevicePackageData>;
 using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
+using DownstreamDeviceIDRecord =
+    std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
+               ComponentImageSetVersion, Descriptors,
+               FirmwareDevicePackageData>;
+using DownstreamDeviceIDRecords = std::vector<DownstreamDeviceIDRecord>;
 
 // ComponentImageInformation
 using ComponentImageCount = uint16_t;

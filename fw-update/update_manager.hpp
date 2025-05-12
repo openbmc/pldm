@@ -45,9 +45,13 @@ class UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
+        const DownstreamDescriptorMap& downstreamDescriptorMap,
         const ComponentInfoMap& componentInfoMap) :
-        event(event), handler(handler), instanceIdDb(instanceIdDb),
-        descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
+        event(event),
+        handler(handler), instanceIdDb(instanceIdDb),
+        descriptorMap(descriptorMap),
+        downstreamDescriptorMap(downstreamDescriptorMap),
+        componentInfoMap(componentInfoMap),
         watch(event.get(),
               std::bind_front(&UpdateManager::processPackage, this)),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
@@ -85,7 +89,9 @@ class UpdateManager
      */
     DeviceUpdaterInfos associatePkgToDevices(
         const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const DownstreamDeviceIDRecords& downstreamDeviceIDRecords,
         const DescriptorMap& descriptorMap,
+        const DownstreamDescriptorMap& downstreamDescriptorMap,
         TotalComponentUpdates& totalNumComponentUpdates);
 
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
@@ -97,6 +103,8 @@ class UpdateManager
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
+    /** @brief Downstream identifiers of the managed FDs */
+    const DownstreamDescriptorMap& downstreamDescriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
     Watch watch;
