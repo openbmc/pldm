@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6465558_d3863f46",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-05-12T17:16:43Z",
+      "side": 1,
+      "message": "Please follow the latest code update design https://github.com/openbmc/docs/blob/master/designs/code-update.md.",
+      "revId": "80e75c475b9857c47fe1ee8a2b719b4e6f60f632",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9852a421_bf1238b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-05-12T17:16:43Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Does this overlap with your effort ?",
+      "revId": "80e75c475b9857c47fe1ee8a2b719b4e6f60f632",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
