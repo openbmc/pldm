@@ -2,6 +2,8 @@
 
 #include <libpldm/instance-id.h>
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <cerrno>
 #include <cstdint>
 #include <exception>
@@ -10,6 +12,65 @@
 
 namespace pldm
 {
+
+class InstanceId
+{
+    pldm_instance_db* pldmInstanceIdDb = nullptr;
+    uint8_t tid_ = 0xff;
+    uint8_t iid_ = 0xff;
+
+  public:
+    InstanceId() = delete;
+    InstanceId(pldm_instance_db* db, uint8_t tid) :
+        pldmInstanceIdDb(db), tid_(tid)
+    {
+        int rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &iid_);
+
+        if (rc == -EAGAIN)
+        {
+            throw std::runtime_error("No free instance ids");
+        }
+
+        if (rc)
+        {
+            throw std::system_category().default_error_condition(rc);
+        }
+    }
+    InstanceId(const InstanceId& other) = delete;
+    InstanceId(InstanceId&& other)
+    {
+        iid_ = other.iid_;
+        tid_ = other.tid_;
+        other.iid_ = other.tid_ = 0xff;
+    }
+    InstanceId& operator=(const InstanceId& other) = delete;
+    InstanceId& operator=(InstanceId&& other)
+    {
+        iid_ = other.iid_;
+        tid_ = other.tid_;
+        other.iid_ = other.tid_ = 0xff;
+        return *this;
+    }
+    ~InstanceId()
+    {
+        if (iid_ != 0xff && tid_ != 0xff)
+        {
+            int rc = pldm_instance_id_free(pldmInstanceIdDb, tid_, iid_);
+            if (rc == -EINVAL)
+            {
+                lg2::error(
+                    "Instance ID {IID} for TID {TID} was not previously allocated",
+                    "IID", iid_, "TID", tid_);
+            }
+            else if (rc)
+            {
+                lg2::error(
+                    "Failed freeing Instance ID {IID} for TID {TID} with error: {ERROR}",
+                    "IID", iid_, "TID", tid_, "ERROR", rc);
+            }
+        }
+    }
+};
 
 /** @class InstanceId
  *  @brief Implementation of PLDM instance id as per DSP0240 v1.0.0
@@ -91,6 +152,10 @@ class InstanceIdDb
         {
             throw std::system_category().default_error_condition(rc);
         }
+    }
+    InstanceId get(uint8_t tid)
+    {
+        return InstanceId(pldmInstanceIdDb, tid);
     }
 
   private:
