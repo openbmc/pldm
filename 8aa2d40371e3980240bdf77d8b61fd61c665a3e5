@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66bdd650_ff21743c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-13T06:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95d8e442_cf5e4f03",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "8aa2d40371e3980240bdf77d8b61fd61c665a3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7eca4ead_d5a6d671",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Thank you very much for helping me modify the commit message.\nI apologize for the inconvenience, but I will need to continue working on this later today.\nIs there any other information or changes you need from me?",
       "parentUuid": "7eca4ead_d5a6d671",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 55
+      },
+      "revId": "8aa2d40371e3980240bdf77d8b61fd61c665a3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e461378_b5e640f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-13T06:31:29Z",
+      "side": 1,
+      "message": "nope, i figured that due to clang 20 ..we started to see the issues in CI. I have took the liberty to update the commit message. Will merge this right after the CI is passed as its a critical build fix.\n\nThank you for putting the patch together.",
+      "parentUuid": "accedcc9_445ac6dd",
       "range": {
         "startLine": 9,
         "startChar": 2,
