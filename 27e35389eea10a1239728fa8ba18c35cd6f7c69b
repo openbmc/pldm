@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c30a44f_8be12cbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-05-13T01:04:19Z",
+      "side": 1,
+      "message": "Hi @donalds@nvidia.com,\nLooks like we\u0027re tending for similar features, please have a look at [#73512], altough it is being outdated, but we\u0027re fixing it up.\nAlso, we can discuss if we need additional interfaces or properties there.\n\n[#73512]: https://gerrit.openbmc.org/c/openbmc/pldm/+/73512",
+      "revId": "27e35389eea10a1239728fa8ba18c35cd6f7c69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
