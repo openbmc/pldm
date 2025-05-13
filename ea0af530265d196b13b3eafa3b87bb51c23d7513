@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78cf6bb8_60a8e52b",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-05-13T18:38:31Z",
+      "side": 1,
+      "message": "Reiterating Patrick\u0027s comment here- We should not be catching (or throwing) integers.",
+      "revId": "ea0af530265d196b13b3eafa3b87bb51c23d7513",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46db5c44_85d00e9f",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-05-13T18:38:31Z",
+      "side": 1,
+      "message": "nit: Use nullptr for type-safety.",
+      "revId": "ea0af530265d196b13b3eafa3b87bb51c23d7513",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a2ae43_5afaf0a7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-05-13T18:38:31Z",
+      "side": 1,
+      "message": "Shall we return the response code here instead of generic PLDM_ERROR ?",
+      "revId": "ea0af530265d196b13b3eafa3b87bb51c23d7513",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86c960cf_e5733f10",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-05-13T18:38:31Z",
+      "side": 1,
+      "message": "Should we return the specific response code here as well instead of the generic PLDM_ERROR? \nSimilar changes should be made elsewhere in this patch to help callers(and the logs they generate) distinguish between a \u0027decode failed with RC\u0027 scenario and a generic error.",
+      "revId": "ea0af530265d196b13b3eafa3b87bb51c23d7513",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b19b2df_9ca52fca",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-05-13T18:38:31Z",
+      "side": 1,
+      "message": "nit: encoude -\u003e encode",
+      "revId": "ea0af530265d196b13b3eafa3b87bb51c23d7513",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9135d497_cda34560",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-05-13T18:38:31Z",
+      "side": 1,
+      "message": "Nit: Consider using \u0027Firmware\u0027 instead of \u0027FW\u0027 for consistency. (as all other methods use Firmware)",
+      "revId": "ea0af530265d196b13b3eafa3b87bb51c23d7513",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
