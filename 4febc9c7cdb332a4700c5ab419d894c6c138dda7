@@ -70,6 +70,30 @@
       },
       "revId": "4febc9c7cdb332a4700c5ab419d894c6c138dda7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2480c18_f7df4d09",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-13T04:06:31Z",
+      "side": 1,
+      "message": "\u003e From what I could see online Wireshark helps analyze the network traffic, but in the case of FW Update using large bundles (\u003e140M) the packets captured would make it hard to debug any FW Update failures for specific components. These logs would help speed up the debug process\n\nWireshark has the capability to dissect as big as 1G packet captures. It even has capabilities to split packet captures into multiple parts before it can be dissected using standard tools like `editcap`.\n\n\n\u003e capturing MCTP traffic for this and adding it to BMC dump is not a feasible solution.\n\nIf this needs to be captured as part of the BMC dump, can we not just add them as `INFO` messages written into the journal, rather than a new verbose option which under the cover puts things into the journal ? I still think we are complicating this more than it needs to be by putting this behind yet another verbose option.",
+      "parentUuid": "6c802aaa_6d41e310",
+      "range": {
+        "startLine": 60,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 50
+      },
+      "revId": "4febc9c7cdb332a4700c5ab419d894c6c138dda7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
