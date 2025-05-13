@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95d8e442_cf5e4f03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-13T06:25:48Z",
+      "side": 1,
+      "message": "Yes, I have followed the messages and made changes to all the places where the Gerrit OpenBMC CI validation failed.",
+      "parentUuid": "61624374_d1376323",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "8aa2d40371e3980240bdf77d8b61fd61c665a3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7eca4ead_d5a6d671",
         "filename": "/COMMIT_MSG",
         "patchSetId": 11
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-12T05:00:03Z",
       "side": 1,
       "message": "I get why this is beneficial , but can you please use more words in descirbing why this change was made.",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 55
+      },
+      "revId": "8aa2d40371e3980240bdf77d8b61fd61c665a3e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "accedcc9_445ac6dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-13T06:25:48Z",
+      "side": 1,
+      "message": "Thank you very much for helping me modify the commit message.\nI apologize for the inconvenience, but I will need to continue working on this later today.\nIs there any other information or changes you need from me?",
+      "parentUuid": "7eca4ead_d5a6d671",
       "range": {
         "startLine": 9,
         "startChar": 2,
