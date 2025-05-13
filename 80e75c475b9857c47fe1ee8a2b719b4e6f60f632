@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f574600_3a1f3619",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-05-13T01:05:13Z",
+      "side": 1,
+      "message": "Looks like...\nWe have `InventoryItemManager` doing similar things.\nLinks: https://gerrit.openbmc.org/c/openbmc/pldm/+/73512\n\nI\u0027ve bring comments to the new MR.",
+      "parentUuid": "f6465558_d3863f46",
+      "revId": "80e75c475b9857c47fe1ee8a2b719b4e6f60f632",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9852a421_bf1238b5",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
