@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55b9f0cf_ee32104a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-13T11:11:49Z",
+      "side": 1,
+      "message": "But you haven\u0027t actually added error handling.  You\u0027ve just caught the exception and blindly discarded it.",
+      "revId": "5bc025528a162caee3c880994717d4145d0ec316",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1d9744b_032fff80",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-13T11:11:49Z",
+      "side": 1,
+      "message": "If this pattern is _really_ something that needs to be copied as many times as you\u0027ve copied it, something is seriously wrong with the `instanceIdDb` API.  Let\u0027s fix that instead.",
+      "revId": "5bc025528a162caee3c880994717d4145d0ec316",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b93c35a_fcac8473",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-13T11:11:49Z",
+      "side": 1,
+      "message": "Don\u0027t use `what` for lg2 calls.",
+      "range": {
+        "startLine": 29,
+        "startChar": 66,
+        "endLine": 29,
+        "endChar": 75
+      },
+      "revId": "5bc025528a162caee3c880994717d4145d0ec316",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
