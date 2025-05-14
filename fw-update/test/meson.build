@@ -5,7 +5,11 @@ fw_update_test_src = declare_dependency(
         '../package_parser.cpp',
         '../device_updater.cpp',
         '../update_manager.cpp',
+        '../software_manager.cpp',
+        '../software_update.cpp',
+        '../device_dedicated_updater.cpp',
         '../../common/utils.cpp',
+        '../../requester/mctp_endpoint_discovery.cpp',
     ],
 )
 
