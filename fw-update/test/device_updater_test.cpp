@@ -27,8 +27,12 @@ class DeviceUpdaterTest : public testing::Test
                                    0x15, 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49,
                                    0xD6, 0x75}}},
             {}};
+        std::vector<uint8_t> compImage(1024);
+        package.seekg(139);
+        package.read(reinterpret_cast<char*>(compImage.data()), 1024);
+        package.seekg(0);
         compImageInfos = {
-            {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
+            {10, 100, 0xFFFFFFFF, 0, 0, compImage, "VersionString3"}};
         compInfo = {{std::make_pair(10, 100), 1}};
     }
 
@@ -42,34 +46,20 @@ class DeviceUpdaterTest : public testing::Test
 TEST_F(DeviceUpdaterTest, validatePackage)
 {
     constexpr uintmax_t testPkgSize = 1163;
+    package.seekg(0, std::ios::end);
     uintmax_t packageSize = package.tellg();
     EXPECT_EQ(packageSize, testPkgSize);
 
     package.seekg(0);
-    std::vector<uint8_t> packageHeader(sizeof(pldm_package_header_information));
-    package.read(new (packageHeader.data()) char,
-                 sizeof(pldm_package_header_information));
+    std::vector<uint8_t> packageData(testPkgSize);
+    package.read(new (packageData.data()) char, testPkgSize);
 
-    auto pkgHeaderInfo =
-        reinterpret_cast<const pldm_package_header_information*>(
-            packageHeader.data());
-    auto pkgHeaderInfoSize = sizeof(pldm_package_header_information) +
-                             pkgHeaderInfo->package_version_string_length;
-    packageHeader.clear();
-    packageHeader.resize(pkgHeaderInfoSize);
-    package.seekg(0);
-    package.read(new (packageHeader.data()) char, pkgHeaderInfoSize);
-
-    auto parser = parsePkgHeader(packageHeader);
-    EXPECT_NE(parser, nullptr);
+    auto parser = PackageParser{packageData};
 
     package.seekg(0);
-    packageHeader.resize(parser->pkgHeaderSize);
-    package.read(new (packageHeader.data()) char, parser->pkgHeaderSize);
 
-    parser->parse(packageHeader, packageSize);
-    const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
-    const auto& testPkgCompImageInfos = parser->getComponentImageInfos();
+    const auto& fwDeviceIDRecords = parser.getFwDeviceIDRecords();
+    const auto& testPkgCompImageInfos = parser.getComponentImageInfos();
 
     EXPECT_EQ(fwDeviceIDRecords.size(), 1);
     EXPECT_EQ(compImageInfos.size(), 1);
@@ -79,8 +69,8 @@ TEST_F(DeviceUpdaterTest, validatePackage)
 
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
