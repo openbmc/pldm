@@ -4,13 +4,21 @@
 #include "common/utils.hpp"
 #include "package_parser.hpp"
 
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+
 #include <phosphor-logging/lg2.hpp>
 
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <string>
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 PHOSPHOR_LOG2_USING;
 
@@ -39,9 +47,17 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         if (activation->activation() ==
             software::Activation::Activations::Activating)
         {
-            error(
-                "Activation of PLDM fw update package for version '{VERSION}' already in progress.",
-                "VERSION", parser->pkgVersion);
+            if (parser)
+            {
+                error(
+                    "Activation of PLDM fw update package for version '{VERSION}' already in progress.",
+                    "VERSION", parser->pkgVersion);
+            }
+            else
+            {
+                error(
+                    "Activation of PLDM fw update package already in progress.");
+            }
             std::filesystem::remove(packageFilePath);
             return -1;
         }
@@ -51,39 +67,68 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         }
     }
 
-    package.open(packageFilePath,
-                 std::ios::binary | std::ios::in | std::ios::ate);
-    if (!package.good())
+    packageFd = open(packageFilePath.c_str(), O_RDONLY);
+    if (packageFd < 0)
     {
         error(
             "Failed to open the PLDM fw update package file '{FILE}', error - {ERROR}.",
             "ERROR", errno, "FILE", packageFilePath);
-        package.close();
         std::filesystem::remove(packageFilePath);
         return -1;
     }
 
-    uintmax_t packageSize = package.tellg();
-    if (packageSize < sizeof(pldm_package_header_information))
+    struct stat st;
+    if (fstat(packageFd, &st) < 0)
     {
         error(
-            "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
-            "SIZE", packageSize, "PACKAGE_HEADER_INFO_SIZE",
-            sizeof(pldm_package_header_information));
-        package.close();
+            "Failed to get the PLDM fw update package file '{FILE}' size, error - {ERROR}.",
+            "ERROR", errno, "FILE", packageFilePath);
+        close(packageFd);
+        packageFd = -1;
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+    packageSize = st.st_size;
+
+    packageMap = static_cast<uint8_t*>(
+        mmap(nullptr, packageSize, PROT_READ, MAP_SHARED, packageFd, 0));
+    if (packageMap == MAP_FAILED)
+    {
+        error(
+            "Failed to map the PLDM fw update package file '{FILE}', error - {ERROR}.",
+            "ERROR", errno, "FILE", packageFilePath);
+        close(packageFd);
+        packageFd = -1;
         std::filesystem::remove(packageFilePath);
         return -1;
     }
 
-    package.seekg(0);
-    std::vector<uint8_t> packageHeader(packageSize);
-    package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
-
-    parser = parsePkgHeader(packageHeader);
+    try
+    {
+        parser = std::make_unique<PackageParser>(
+            std::span<const uint8_t>(packageMap, packageSize));
+    }
+    catch (const InternalFailure&)
+    {
+        error("Failed to parse the PLDM fw update package header");
+        munmap(packageMap, packageSize);
+        packageMap = nullptr;
+        packageSize = 0;
+        parser.reset();
+        close(packageFd);
+        packageFd = -1;
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
-        package.close();
+        munmap(packageMap, packageSize);
+        packageMap = nullptr;
+        packageSize = 0;
+        parser.reset();
+        close(packageFd);
+        packageFd = -1;
         std::filesystem::remove(packageFilePath);
         return -1;
     }
@@ -92,25 +137,10 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     size_t versionHash = std::hash<std::string>{}(parser->pkgVersion);
     objPath = swRootPath + std::to_string(versionHash);
 
-    package.seekg(0);
-    try
-    {
-        parser->parse(packageHeader, packageSize);
-    }
-    catch (const std::exception& e)
-    {
-        error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        package.close();
-        parser.reset();
-        return -1;
-    }
+    auto deviceUpdaterInfos = associatePkgToDevices(
+        parser->getFwDeviceIDRecords(), parser->getDownstreamDeviceIDRecords(),
+        descriptorMap, downstreamDescriptorMap, totalNumComponentUpdates);
 
-    auto deviceUpdaterInfos =
-        associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
-                              totalNumComponentUpdates);
     if (!deviceUpdaterInfos.size())
     {
         error(
@@ -118,24 +148,44 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        package.close();
+        munmap(packageMap, packageSize);
+        packageMap = nullptr;
+        packageSize = 0;
+        parser.reset();
+        close(packageFd);
+        packageFd = -1;
+        std::filesystem::remove(packageFilePath);
+        deviceUpdaterMap.clear();
+        deviceUpdateCompletionMap.clear();
+        totalNumComponentUpdates = 0;
+        compUpdateCompletedCount = 0;
         parser.reset();
         return 0;
     }
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
+    const auto& downstreamDeviceIDRecords =
+        parser->getDownstreamDeviceIDRecords();
     const auto& compImageInfos = parser->getComponentImageInfos();
 
     for (const auto& deviceUpdaterInfo : deviceUpdaterInfos)
     {
-        const auto& fwDeviceIDRecord =
-            fwDeviceIDRecords[deviceUpdaterInfo.second];
-        auto search = componentInfoMap.find(deviceUpdaterInfo.first);
+        auto [eid, isDownstream, offset] = deviceUpdaterInfo;
+
+        DeviceIDRecord deviceIDRecord;
+        if (isDownstream)
+        {
+            deviceIDRecord = downstreamDeviceIDRecords[offset];
+        }
+        else
+        {
+            deviceIDRecord = fwDeviceIDRecords[offset];
+        }
+        auto search = componentInfoMap.find(eid);
         deviceUpdaterMap.emplace(
-            deviceUpdaterInfo.first,
-            std::make_unique<DeviceUpdater>(
-                deviceUpdaterInfo.first, package, fwDeviceIDRecord,
-                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+            eid, std::make_unique<DeviceUpdater>(eid, deviceIDRecord,
+                                                 compImageInfos, search->second,
+                                                 MAXIMUM_TRANSFER_SIZE, this));
     }
 
     fwPackageFilePath = packageFilePath;
@@ -150,7 +200,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+    const DownstreamDeviceIDRecords& downstreamDeviceIDRecords,
     const DescriptorMap& descriptorMap,
+    const DownstreamDescriptorMap& downstreamDescriptorMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
@@ -158,19 +210,58 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     {
         const auto& deviceIDDescriptors =
             std::get<Descriptors>(fwDeviceIDRecords[index]);
+        std::vector<Descriptor> deviceIDDescriptorsVec(
+            deviceIDDescriptors.begin(), deviceIDDescriptors.end());
+        std::sort(deviceIDDescriptorsVec.begin(), deviceIDDescriptorsVec.end());
         for (const auto& [eid, descriptors] : descriptorMap)
         {
-            if (std::includes(descriptors.begin(), descriptors.end(),
-                              deviceIDDescriptors.begin(),
-                              deviceIDDescriptors.end()))
+            std::vector<Descriptor> descriptorsVec(descriptors.begin(),
+                                                   descriptors.end());
+            std::sort(descriptorsVec.begin(), descriptorsVec.end());
+            if (std::includes(descriptorsVec.begin(), descriptorsVec.end(),
+                              deviceIDDescriptorsVec.begin(),
+                              deviceIDDescriptorsVec.end()))
             {
-                deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
+                deviceUpdaterInfos.emplace_back(
+                    std::make_tuple(eid, false, index));
                 const auto& applicableComponents =
                     std::get<ApplicableComponents>(fwDeviceIDRecords[index]);
                 totalNumComponentUpdates += applicableComponents.size();
             }
         }
     }
+    for (size_t index = 0; index < downstreamDeviceIDRecords.size(); ++index)
+    {
+        const auto& downstreamDeviceIDDescriptors =
+            std::get<Descriptors>(downstreamDeviceIDRecords[index]);
+        std::vector<Descriptor> downstreamDeviceIDDescriptorsVec(
+            downstreamDeviceIDDescriptors.begin(),
+            downstreamDeviceIDDescriptors.end());
+        std::sort(downstreamDeviceIDDescriptorsVec.begin(),
+                  downstreamDeviceIDDescriptorsVec.end());
+        for (const auto& [eid, downstreamDeviceInfo] : downstreamDescriptorMap)
+        {
+            for (const auto& [downstreamDeviceIndex, descriptors] :
+                 downstreamDeviceInfo)
+            {
+                std::vector<Descriptor> descriptorsVec(descriptors.begin(),
+                                                       descriptors.end());
+                std::sort(descriptorsVec.begin(), descriptorsVec.end());
+                if (std::includes(descriptorsVec.begin(), descriptorsVec.end(),
+                                  downstreamDeviceIDDescriptorsVec.begin(),
+                                  downstreamDeviceIDDescriptorsVec.end()))
+                {
+                    deviceUpdaterInfos.emplace_back(
+                        std::make_tuple(eid, true, index));
+                    const auto& applicableComponents =
+                        std::get<ApplicableComponents>(
+                            downstreamDeviceIDRecords[index]);
+                    totalNumComponentUpdates += applicableComponents.size();
+                }
+            }
+        }
+    }
+
     return deviceUpdaterInfos;
 }
 
@@ -261,7 +352,14 @@ void UpdateManager::clearActivationInfo()
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
     parser.reset();
-    package.close();
+    munmap(packageMap, packageSize);
+    packageMap = nullptr;
+    packageSize = 0;
+    if (packageFd >= 0)
+    {
+        close(packageFd);
+        packageFd = -1;
+    }
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
     compUpdateCompletedCount = 0;
