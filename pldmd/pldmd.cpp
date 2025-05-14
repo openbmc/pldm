@@ -68,6 +68,8 @@ PHOSPHOR_LOG2_USING;
 #endif
 
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
+constexpr const char* PLDMFWManagerService =
+    "xyz.openbmc_project.PLDM.FWUpdateManager";
 
 using namespace pldm;
 using namespace sdeventplus;
@@ -173,6 +175,7 @@ void optionUsage(void)
 
 int main(int argc, char** argv)
 {
+    sdbusplus::async::context ctx;
     bool verbose = false;
     static struct option long_options[] = {
         {"verbose", no_argument, nullptr, 'v'}, {nullptr, 0, nullptr, 0}};
@@ -199,6 +202,8 @@ int main(int argc, char** argv)
     auto& bus = pldm::utils::DBusHandler::getBus();
     sdbusplus::server::manager_t objManager(bus,
                                             "/xyz/openbmc_project/software");
+    sdbusplus::server::manager_t asyncObjManager(ctx, 
+                                                 "/xyz/openbmc_project/software");
     sdbusplus::server::manager_t sensorObjManager(
         bus, "/xyz/openbmc_project/sensors");
 
@@ -341,7 +346,8 @@ int main(int argc, char** argv)
 #endif
 
     std::unique_ptr<fw_update::Manager> fwManager =
-        std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<fw_update::Manager>(ctx, event, reqHandler,
+                                             instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
@@ -435,6 +441,9 @@ int main(int argc, char** argv)
               PLDMService, "ERROR", e);
     }
 #endif
+    ctx.request_name(PLDMFWManagerService);
+    std::thread ctxThread([&] { ctx.run(); });
+
     IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
     if (hostPDRHandler)
