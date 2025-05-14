@@ -1,11 +1,16 @@
 #include "fw-update/package_parser.hpp"
 
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <typeinfo>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 using namespace pldm::fw_update;
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 void imageGenerate(std::vector<uint8_t>& image, size_t size)
 {
@@ -44,14 +49,10 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     imageGenerate(compImage, pkgImageSize);
     imageInsert(fwPkgHdr, compImage);
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
-    auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
-    EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
+    auto parser = PackageParser{fwPkgHdr};
+    EXPECT_EQ(parser.pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
-    auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
+    auto outfwDeviceIDRecords = parser.getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
          {0},
@@ -64,10 +65,22 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     };
     EXPECT_EQ(outfwDeviceIDRecords, fwDeviceIDRecords);
 
-    auto outCompImageInfos = parser->getComponentImageInfos();
-    ComponentImageInfos compImageInfos{
-        {10, 100, 0xFFFFFFFF, 0, 0, 139, 27, "VersionString3"}};
-    EXPECT_EQ(outCompImageInfos, compImageInfos);
+    auto outCompImageInfos = parser.getComponentImageInfos();
+    EXPECT_EQ(outCompImageInfos.size(), 1);
+    auto& outCompImageInfo = outCompImageInfos[0];
+    EXPECT_EQ(outCompImageInfo.component_classification, 10);
+    EXPECT_EQ(outCompImageInfo.component_identifier, 100);
+    EXPECT_EQ(outCompImageInfo.component_comparison_stamp, 0xFFFFFFFF);
+    EXPECT_EQ(outCompImageInfo.component_options.value, 0);
+    EXPECT_EQ(outCompImageInfo.requested_component_activation_method.value, 0);
+    auto outCompImage = CompImage{
+        outCompImageInfo.component_image.ptr,
+        outCompImageInfo.component_image.ptr + 
+        outCompImageInfo.component_image.length
+    }
+    EXPECT_EQ(outCompImage, compImage);
+    EXPECT_EQ(utils::toString(outCompImageInfo.component_version),
+              "VersionString3");
 }
 
 TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
@@ -96,11 +109,11 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
         0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x35, 0x0A, 0x00,
         0xC8, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x01, 0x00, 0x61, 0x01,
         0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x01, 0x0E, 0x56, 0x65, 0x72, 0x73,
-        0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x36, 0x10, 0x00,
+        0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x36, 0x0A, 0x00,
         0x2C, 0x01, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0x0C, 0x00, 0x7C, 0x01,
         0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x01, 0x0E, 0x56, 0x65, 0x72, 0x73,
-        0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x37, 0xF1, 0x90,
-        0x9C, 0x71};
+        0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x37, 0xE8, 0xEC,
+        0xED, 0x11};
 
     constexpr uintmax_t pkgSize = 407;
     constexpr uintmax_t pkgHeaderSize = 326;
@@ -113,14 +126,10 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     imageInsert(fwPkgHdr, compImage2);
     imageInsert(fwPkgHdr, compImage3);
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
-    auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
-    EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
+    auto parser = PackageParser{fwPkgHdr};
+    EXPECT_EQ(parser.pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
-    auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
+    auto outfwDeviceIDRecords = parser.getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
          {0, 1},
@@ -153,12 +162,50 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     };
     EXPECT_EQ(outfwDeviceIDRecords, fwDeviceIDRecords);
 
-    auto outCompImageInfos = parser->getComponentImageInfos();
-    ComponentImageInfos compImageInfos{
-        {10, 100, 0xFFFFFFFF, 0, 0, 326, 27, "VersionString5"},
-        {10, 200, 0xFFFFFFFF, 0, 1, 353, 27, "VersionString6"},
-        {16, 300, 0xFFFFFFFF, 1, 12, 380, 27, "VersionString7"}};
-    EXPECT_EQ(outCompImageInfos, compImageInfos);
+    auto outCompImageInfos = parser.getComponentImageInfos();
+    EXPACT_EQ(outCompImageInfos.size(), 3);
+    auto& outCompImageInfo1 = outCompImageInfos[0];
+    EXPECT_EQ(outCompImageInfo1.component_classification, 10);
+    EXPECT_EQ(outCompImageInfo1.component_identifier, 100);
+    EXPECT_EQ(outCompImageInfo1.component_comparison_stamp, 0xFFFFFFFF);
+    EXPECT_EQ(outCompImageInfo1.component_options.value, 0);
+    EXPECT_EQ(outCompImageInfo1.requested_component_activation_method.value, 0);
+    auto outCompImage1 = CompImage{
+        outCompImageInfo1.component_image.ptr,
+        outCompImageInfo1.component_image.ptr +
+        outCompImageInfo1.component_image.length
+    };
+    EXPECT_EQ(outCompImage1, compImage1);
+    EXPECT_EQ(utils::toString(outCompImageInfo1.component_version),
+              "VersionString5");
+    auto& outCompImageInfo2 = outCompImageInfos[1];
+    EXPECT_EQ(outCompImageInfo2.component_classification, 10);
+    EXPECT_EQ(outCompImageInfo2.component_identifier, 200);
+    EXPECT_EQ(outCompImageInfo2.component_comparison_stamp, 0xFFFFFFFF);
+    EXPECT_EQ(outCompImageInfo2.component_options.value, 0);
+    EXPECT_EQ(outCompImageInfo2.requested_component_activation_method.value, 1);
+    auto outCompImage2 = CompImage{
+        outCompImageInfo2.component_image.ptr,
+        outCompImageInfo2.component_image.ptr +
+        outCompImageInfo2.component_image.length
+    };
+    EXPECT_EQ(outCompImage2, compImage2);
+    EXPECT_EQ(utils::toString(outCompImageInfo2.component_version),
+              "VersionString6");
+    auto& outCompImageInfo3 = outCompImageInfos[2];
+    EXPECT_EQ(outCompImageInfo3.component_classification, 10);
+    EXPECT_EQ(outCompImageInfo3.component_identifier, 300);
+    EXPECT_EQ(outCompImageInfo3.component_comparison_stamp, 0xFFFFFFFF);
+    EXPECT_EQ(outCompImageInfo3.component_options.value, 1);
+    EXPECT_EQ(outCompImageInfo3.requested_component_activation_method.value, 12);
+    auto outCompImage3 = CompImage{
+        outCompImageInfo3.component_image.ptr,
+        outCompImageInfo3.component_image.ptr +
+        outCompImageInfo3.component_image.length
+    };
+    EXPECT_EQ(outCompImage3, compImage3);
+    EXPECT_EQ(utils::toString(outCompImageInfo3.component_version),
+              "VersionString7");
 }
 
 TEST(PackageParser, InvalidPkgHeaderInfoIncomplete)
@@ -166,9 +213,7 @@ TEST(PackageParser, InvalidPkgHeaderInfoIncomplete)
     std::vector<uint8_t> fwPkgHdr{0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D,
                                   0x49, 0x43, 0x98, 0x00, 0xA0, 0x2F,
                                   0x05, 0x9A, 0xCA, 0x02};
-
-    auto parser = parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
+    EXPECT_THROW(PackageParser{fwPkgHdr}, InternalFailure);
 }
 
 TEST(PackageParser, InvalidPkgNotSupportedHeaderFormat)
@@ -179,9 +224,7 @@ TEST(PackageParser, InvalidPkgNotSupportedHeaderFormat)
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x19, 0x0C, 0xE5,
         0x07, 0x00, 0x08, 0x00, 0x01, 0x0E, 0x56, 0x65, 0x72, 0x73,
         0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x31};
-
-    auto parser = parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
+    EXPECT_THROW(PackageParser{fwPkgHdr}, InternalFailure);
 }
 
 TEST(PackageParser, InvalidPkgBadChecksum)
@@ -206,5 +249,5 @@ TEST(PackageParser, InvalidPkgBadChecksum)
     std::vector<uint8_t> compImage;
     imageGenerate(compImage, pkgImageSize);
     imageInsert(fwPkgHdr, compImage);
-    EXPECT_EQ(parsePkgHeader(fwPkgHdr), nullptr);
+    EXPECT_THROW(PackageParser{fwPkgHdr}, InternalFailure);
 }
