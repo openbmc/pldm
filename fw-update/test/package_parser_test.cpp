@@ -1,11 +1,30 @@
 #include "fw-update/package_parser.hpp"
 
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <typeinfo>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 using namespace pldm::fw_update;
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+
+void imageGenerate(std::vector<uint8_t>& image, size_t size)
+{
+    for (size_t i = 1; i <= size; ++i)
+    {
+        image.push_back(static_cast<uint8_t>(i));
+    }
+}
+
+void imageInsert(std::vector<uint8_t>& fwPkgHdr, std::vector<uint8_t>& image)
+{
+    // Insert the image at the end of the package header
+    fwPkgHdr.insert(fwPkgHdr.end(), image.begin(), image.end());
+}
 
 TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
 {
@@ -24,15 +43,17 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
         0x6E, 0x67, 0x33, 0x4F, 0x96, 0xAE, 0x56};
 
     constexpr uintmax_t pkgSize = 166;
+    constexpr uintmax_t pkgHeaderSize = 139;
+    constexpr uintmax_t pkgImageSize = pkgSize - pkgHeaderSize;
+    std::vector<uint8_t> compImage;
+    imageGenerate(compImage, pkgImageSize);
+    imageInsert(fwPkgHdr, compImage);
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
-    auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
-    EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
+    auto parser = PackageParser{fwPkgHdr};
+    EXPECT_EQ(parser.pkgHeaderSize, pkgHeaderSize);
+    EXPECT_EQ(parser.pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
-    auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
+    auto outfwDeviceIDRecords = parser.getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
          {0},
@@ -45,9 +66,9 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     };
     EXPECT_EQ(outfwDeviceIDRecords, fwDeviceIDRecords);
 
-    auto outCompImageInfos = parser->getComponentImageInfos();
+    auto outCompImageInfos = parser.getComponentImageInfos();
     ComponentImageInfos compImageInfos{
-        {10, 100, 0xFFFFFFFF, 0, 0, 139, 27, "VersionString3"}};
+        {10, 100, 0xFFFFFFFF, 0, 0, std::move(compImage), "VersionString3"}};
     EXPECT_EQ(outCompImageInfos, compImageInfos);
 }
 
@@ -84,15 +105,21 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
         0x9C, 0x71};
 
     constexpr uintmax_t pkgSize = 407;
+    constexpr uintmax_t pkgHeaderSize = 326;
+    constexpr uintmax_t pkgImageSize = (pkgSize - pkgHeaderSize) / 3;
+    std::vector<uint8_t> compImage1, compImage2, compImage3;
+    imageGenerate(compImage1, pkgImageSize);
+    imageGenerate(compImage2, pkgImageSize);
+    imageGenerate(compImage3, pkgImageSize);
+    imageInsert(fwPkgHdr, compImage1);
+    imageInsert(fwPkgHdr, compImage2);
+    imageInsert(fwPkgHdr, compImage3);
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
-    auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
-    EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
+    auto parser = PackageParser{fwPkgHdr};
+    EXPECT_EQ(parser.pkgHeaderSize, pkgHeaderSize);
+    EXPECT_EQ(parser.pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
-    auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
+    auto outfwDeviceIDRecords = parser.getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
          {0, 1},
@@ -125,11 +152,11 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     };
     EXPECT_EQ(outfwDeviceIDRecords, fwDeviceIDRecords);
 
-    auto outCompImageInfos = parser->getComponentImageInfos();
+    auto outCompImageInfos = parser.getComponentImageInfos();
     ComponentImageInfos compImageInfos{
-        {10, 100, 0xFFFFFFFF, 0, 0, 326, 27, "VersionString5"},
-        {10, 200, 0xFFFFFFFF, 0, 1, 353, 27, "VersionString6"},
-        {16, 300, 0xFFFFFFFF, 1, 12, 380, 27, "VersionString7"}};
+        {10, 100, 0xFFFFFFFF, 0, 0, std::move(compImage1), "VersionString5"},
+        {10, 200, 0xFFFFFFFF, 0, 1, std::move(compImage2), "VersionString6"},
+        {16, 300, 0xFFFFFFFF, 1, 12, std::move(compImage3), "VersionString7"}};
     EXPECT_EQ(outCompImageInfos, compImageInfos);
 }
 
@@ -138,9 +165,7 @@ TEST(PackageParser, InvalidPkgHeaderInfoIncomplete)
     std::vector<uint8_t> fwPkgHdr{0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D,
                                   0x49, 0x43, 0x98, 0x00, 0xA0, 0x2F,
                                   0x05, 0x9A, 0xCA, 0x02};
-
-    auto parser = parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
+    EXPECT_THROW(PackageParser{fwPkgHdr}, InternalFailure);
 }
 
 TEST(PackageParser, InvalidPkgNotSupportedHeaderFormat)
@@ -151,9 +176,7 @@ TEST(PackageParser, InvalidPkgNotSupportedHeaderFormat)
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x19, 0x0C, 0xE5,
         0x07, 0x00, 0x08, 0x00, 0x01, 0x0E, 0x56, 0x65, 0x72, 0x73,
         0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x31};
-
-    auto parser = parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
+    EXPECT_THROW(PackageParser{fwPkgHdr}, InternalFailure);
 }
 
 TEST(PackageParser, InvalidPkgBadChecksum)
@@ -173,11 +196,11 @@ TEST(PackageParser, InvalidPkgBadChecksum)
         0x6E, 0x67, 0x33, 0x4F, 0x96, 0xAE, 0x57};
 
     constexpr uintmax_t pkgSize = 166;
+    constexpr uintmax_t pkgHeaderSize = 139;
+    constexpr uintmax_t pkgImageSize = pkgSize - pkgHeaderSize;
+    std::vector<uint8_t> compImage;
+    imageGenerate(compImage, pkgImageSize);
+    imageInsert(fwPkgHdr, compImage);
     constexpr std::string_view pkgVersion{"VersionString1"};
-    auto parser = parsePkgHeader(fwPkgHdr);
-    auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParserV1).name());
-    EXPECT_EQ(parser->pkgHeaderSize, fwPkgHdr.size());
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
-    EXPECT_THROW(parser->parse(fwPkgHdr, pkgSize), std::exception);
+    EXPECT_THROW(PackageParser{fwPkgHdr}, InternalFailure);
 }
