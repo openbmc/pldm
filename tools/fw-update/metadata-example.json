@@ -25,10 +25,12 @@
                     "VendorDefinedDescriptorData": "1234"
                 }
             ]
-        },
+        }
+    ],
+    "DownstreamDeviceIdentificationArea": [
         {
-            "DeviceUpdateOptionFlags": [],
-            "ComponentImageSetVersionString": "VersionString3",
+            "DownstreamDeviceUpdateOptionFlags": [],
+            "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString3",
             "ApplicableComponents": [0, 1, 2],
             "Descriptors": [
                 {
@@ -38,8 +40,8 @@
             ]
         },
         {
-            "DeviceUpdateOptionFlags": [],
-            "ComponentImageSetVersionString": "VersionString4",
+            "DownstreamDeviceUpdateOptionFlags": [],
+            "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString4",
             "ApplicableComponents": [0],
             "Descriptors": [
                 {
