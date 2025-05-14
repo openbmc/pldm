@@ -40,13 +40,28 @@ descriptor_type_name_length = {
     0x0002: ["UUID", 16],
     0x0003: ["PnP Vendor ID", 3],
     0x0004: ["ACPI Vendor ID", 4],
+    0x0005: ["IEEE Assigned Company ID", 3],
+    0x0006: ["SCSI Vendor ID", 8],
     0x0100: ["PCI Device ID", 2],
     0x0101: ["PCI Subsystem Vendor ID", 2],
     0x0102: ["PCI Subsystem ID", 2],
     0x0103: ["PCI Revision ID", 1],
     0x0104: ["PnP Product Identifier", 4],
     0x0105: ["ACPI Product Identifier", 4],
+    0x0106: ["ASCII Model Number (Long String)", 40],
+    0x0107: ["ASCII Model Number (Short String)", 10],
+    0x0108: ["SCSI Product ID", 16],
+    0x0109: ["UBM Controller Device Code", 4],
+    0x010A: ["IEEE EUI-64 ID", 8],
+    0x010B: ["PCI Revision ID Range", 2],
 }
+
+expected_package_format_versions = [
+    1,  # DSP0267 1.0.0
+    2,  # DSP0267 1.1.0
+    3,  # DSP0267 1.2.0
+    4,  # DSP0267 1.3.0
+]
 
 
 class ComponentOptions(enum.IntEnum):
@@ -211,7 +226,7 @@ def write_pkg_header_info(pldm_fw_up_pkg, metadata):
         pldm_fw_up_pkg, metadata
     )
     write_package_version_string(pldm_fw_up_pkg, metadata)
-    return component_bitmap_bit_length
+    return package_header_format_revision, component_bitmap_bit_length
 
 
 def get_applicable_components(device, components, component_bitmap_bit_length):
@@ -322,7 +337,10 @@ def prepare_record_descriptors(descriptors):
 
 
 def write_fw_device_identification_area(
-    pldm_fw_up_pkg, metadata, component_bitmap_bit_length
+    pldm_fw_up_pkg,
+    metadata,
+    package_header_format_revision,
+    component_bitmap_bit_length,
 ):
     """
     Write firmware device ID records into the PLDM package header
@@ -330,11 +348,12 @@ def write_fw_device_identification_area(
     This function writes the DeviceIDRecordCount and the
     FirmwareDeviceIDRecords into the firmware update package by processing the
     metadata JSON. Currently there is no support for optional
-    FirmwareDevicePackageData.
+    FirmwareDevicePackageData and ReferenceManifestData.
 
         Parameters:
             pldm_fw_up_pkg: PLDM FW update package
             metadata: metadata about PLDM FW update package
+            package_header_format_revision: Format Revision of the package
             component_bitmap_bit_length: length of the ComponentBitmapBitLength
     """
     # The spec limits the number of firmware device ID records to 255
@@ -385,6 +404,12 @@ def write_fw_device_identification_area(
         fw_device_pkg_data_length = 0
         record_length += 2
 
+        # Optional ReferenceManifestLength not supported now,
+        # ReferenceManifestLength is set to 0x00000000
+        reference_manifest_length = 0
+        if package_header_format_revision == 4:
+            record_length += 4
+
         # ApplicableComponents
         components = metadata["ComponentImageInformationArea"]
         applicable_components = get_applicable_components(
@@ -402,26 +427,242 @@ def write_fw_device_identification_area(
         )
         record_length += len(record_descriptors)
 
-        format_string = (
-            "<HBIBBH"
-            + str(applicable_components_bitfield_length)
-            + "s"
-            + str(len(component_image_set_version_string))
-            + "s"
-        )
-        pldm_fw_up_pkg.write(
-            struct.pack(
-                format_string,
-                record_length,
-                descriptor_count,
-                ba2int(device_update_option_flags),
-                component_image_set_version_string_type,
-                len(component_image_set_version_string),
-                fw_device_pkg_data_length,
-                applicable_components.tobytes(),
-                component_image_set_version_string.encode("ascii"),
+        if 1 <= package_header_format_revision <= 2:
+            format_string = (
+                "<HBIBBH"
+                + str(applicable_components_bitfield_length)
+                + "s"
+                + str(len(component_image_set_version_string))
+                + "s"
             )
+            pldm_fw_up_pkg.write(
+                struct.pack(
+                    format_string,
+                    record_length,
+                    descriptor_count,
+                    ba2int(device_update_option_flags),
+                    component_image_set_version_string_type,
+                    len(component_image_set_version_string),
+                    fw_device_pkg_data_length,
+                    applicable_components.tobytes(),
+                    component_image_set_version_string.encode("ascii"),
+                )
+            )
+        elif package_header_format_revision == 4:
+            format_string = (
+                "<HBIBBHI"
+                + str(applicable_components_bitfield_length)
+                + "s"
+                + str(len(component_image_set_version_string))
+                + "s"
+            )
+            pldm_fw_up_pkg.write(
+                struct.pack(
+                    format_string,
+                    record_length,
+                    descriptor_count,
+                    ba2int(device_update_option_flags),
+                    component_image_set_version_string_type,
+                    len(component_image_set_version_string),
+                    fw_device_pkg_data_length,
+                    reference_manifest_length,
+                    applicable_components.tobytes(),
+                    component_image_set_version_string.encode("ascii"),
+                )
+            )
+        pldm_fw_up_pkg.write(record_descriptors)
+
+
+def write_downstream_device_identification_area(
+    pldm_fw_up_pkg,
+    metadata,
+    package_header_format_revision,
+    component_bitmap_bit_length,
+):
+    """
+    Write downstream device ID records into the PLDM package header
+
+    This function writes the DownstreamDeviceIDRecordCount and the
+    DownstreamDeviceIDRecords into the firmware update package by processing the
+    metadata JSON. Currently there is no support for optional
+    DownstreamDevicePackageData and DownstreamDeviceReferenceManifestData.
+
+        Parameters:
+            pldm_fw_up_pkg: PLDM FW update package
+            metadata: metadata about PLDM FW update package
+            component_bitmap_bit_length: length of the ComponentBitmapBitLength
+    """
+    # The spec limits the number of firmware device ID records to 255
+    max_downstream_device_id_record_count = 255
+    # check if metadata["DownstreamDeviceIdentificationArea"] exists first
+    if "DownstreamDeviceIdentificationArea" not in metadata.keys():
+        downstream_device_id_record_count = 0
+        pldm_fw_up_pkg.write(
+            struct.pack("<B", downstream_device_id_record_count)
         )
+        return
+    downstream_devices = metadata["DownstreamDeviceIdentificationArea"]
+    downstream_device_id_record_count = len(downstream_devices)
+    if (
+        downstream_device_id_record_count
+        > max_downstream_device_id_record_count
+    ):
+        sys.exit(
+            "ERROR: there can be only upto 255 entries in the                "
+            " FirmwareDeviceIdentificationArea section"
+        )
+
+    # DeviceIDRecordCount
+    pldm_fw_up_pkg.write(struct.pack("<B", downstream_device_id_record_count))
+
+    for downstream_device in downstream_devices:
+        # RecordLength size
+        downstream_device_record_length = 2
+
+        # DescriptorCount
+        downstream_device_record_length += 1
+
+        # DownstreamDeviceUpdateOptionFlags
+        downstream_device_update_option_flags = bitarray(32, endian="little")
+        downstream_device_update_option_flags.setall(0)
+        # Continue component updates after failure
+        supported_downstream_device_update_option_flags = [0]
+        for option in downstream_device["DownstreamDeviceUpdateOptionFlags"]:
+            if option not in supported_downstream_device_update_option_flags:
+                sys.exit(
+                    "ERROR: unsupported DownstreamDeviceUpdateOptionFlag entry"
+                )
+            downstream_device_update_option_flags[option] = 1
+        downstream_device_record_length += 4
+
+        # ComponentImageSetVersionStringType supports only ASCII for now
+        downstream_device_self_contained_activation_min_version_string_type = (
+            string_types["ASCII"]
+        )
+        downstream_device_record_length += 1
+
+        if downstream_device_update_option_flags[0]:
+            # Downstream Device can support self-contained activation with minimal version level defined by
+            # DownstreamDeviceSelfContainedActivationMinVersion fields
+
+            downstream_device_self_contained_activation_min_version_string = (
+                downstream_device[
+                    "DownstreamDeviceSelfContainedActivationMinVersionString"
+                ]
+            )
+            check_string_length(
+                downstream_device_self_contained_activation_min_version_string
+            )
+            downstream_device_record_length += len(
+                downstream_device_self_contained_activation_min_version_string
+            )
+            downstream_device_self_contained_activation_min_version_comparison_stamp = downstream_device[
+                "DownstreamDeviceSelfContainedActivationMinVersionComparisonStamp"
+            ]
+            downstream_device_record_length += 1
+        else:
+            downstream_device_self_contained_activation_min_version_string_type = (
+                0
+            )
+            downstream_device_self_contained_activation_min_version_string = ""
+        # DownstreamDeviceSelfContainedActivationMinVersionStringLength
+        downstream_device_record_length += 1
+
+        # Optional DownstreamDevicePackageData not supported now,
+        # DownstreamDevicePackageDataLength is set to 0x0000
+        downstream_device_pkg_data_length = 0
+        downstream_device_record_length += 2
+
+        # Optional DownstreamDeviceReferenceManifestLength not supported now,
+        # DownstreamDeviceReferenceManifestLength is set to 0x00000000
+        downstream_device_reference_manifest_length = 0
+        if package_header_format_revision == 4:
+            downstream_device_record_length += 4
+
+        # ApplicableComponents
+        components = metadata["ComponentImageInformationArea"]
+        downstream_device_applicable_components = get_applicable_components(
+            downstream_device, components, component_bitmap_bit_length
+        )
+        downstream_device_applicable_components_bitfield_length = round(
+            len(downstream_device_applicable_components) / 8
+        )
+        downstream_device_record_length += (
+            downstream_device_applicable_components_bitfield_length
+        )
+
+        # RecordDescriptors
+        descriptors = downstream_device["Descriptors"]
+        record_descriptors, descriptor_count = prepare_record_descriptors(
+            descriptors
+        )
+        downstream_device_record_length += len(record_descriptors)
+        if package_header_format_revision == 2:
+            format_string = (
+                "<HBIBBH"
+                + str(downstream_device_applicable_components_bitfield_length)
+                + "s"
+                + str(
+                    len(
+                        downstream_device_self_contained_activation_min_version_string
+                    )
+                )
+                + "s"
+            )
+            pldm_fw_up_pkg.write(
+                struct.pack(
+                    format_string,
+                    downstream_device_record_length,
+                    descriptor_count,
+                    ba2int(downstream_device_update_option_flags),
+                    downstream_device_self_contained_activation_min_version_string_type,
+                    len(
+                        downstream_device_self_contained_activation_min_version_string
+                    ),
+                    downstream_device_pkg_data_length,
+                    downstream_device_applicable_components.tobytes(),
+                    downstream_device_self_contained_activation_min_version_string.encode(
+                        "ascii"
+                    ),
+                )
+            )
+        elif package_header_format_revision == 4:
+            format_string = (
+                "<HBIBBHI"
+                + str(downstream_device_applicable_components_bitfield_length)
+                + "s"
+                + str(
+                    len(
+                        downstream_device_self_contained_activation_min_version_string
+                    )
+                )
+                + "s"
+            )
+            pldm_fw_up_pkg.write(
+                struct.pack(
+                    format_string,
+                    downstream_device_record_length,
+                    descriptor_count,
+                    ba2int(downstream_device_update_option_flags),
+                    downstream_device_self_contained_activation_min_version_string_type,
+                    len(
+                        downstream_device_self_contained_activation_min_version_string
+                    ),
+                    downstream_device_pkg_data_length,
+                    downstream_device_reference_manifest_length,
+                    downstream_device_applicable_components.tobytes(),
+                    downstream_device_self_contained_activation_min_version_string.encode(
+                        "ascii"
+                    ),
+                )
+            )
+        if downstream_device_update_option_flags[0]:
+            pldm_fw_up_pkg.write(
+                struct.pack(
+                    "<I",
+                    downstream_device_self_contained_activation_min_version_comparison_stamp,
+                )
+            )
         pldm_fw_up_pkg.write(record_descriptors)
 
 
@@ -468,13 +709,15 @@ def get_component_comparison_stamp(component):
     return component_comparison_stamp
 
 
-def write_component_image_info_area(pldm_fw_up_pkg, metadata, image_files):
+def write_component_image_info_area(
+    pldm_fw_up_pkg, metadata, package_header_format_revision, image_files
+):
     """
     Write component image information area into the PLDM package header
 
     This function writes the ComponentImageCount and the
     ComponentImageInformation into the firmware update package by processing
-    the metadata JSON.
+    the metadata JSON. Currently, there is no support for ComponentOpaqueData.
 
     Parameters:
         pldm_fw_up_pkg: PLDM FW update package
@@ -562,10 +805,20 @@ def write_component_image_info_area(pldm_fw_up_pkg, metadata, image_files):
                 component_version_string.encode("ascii"),
             )
         )
+        if package_header_format_revision >= 3:
+            # ComponentOpaqueDataLength
+            component_opaque_data_length = 0
+            # ComponentOpaqueData
+            pldm_fw_up_pkg.write(
+                struct.pack("<I", component_opaque_data_length)
+            )
 
     index = 0
     pkg_header_checksum_size = 4
     start_offset = pldm_fw_up_pkg.tell() + pkg_header_checksum_size
+    if package_header_format_revision >= 4:
+        pkg_payload_checksum_size = 4
+        start_offset += pkg_payload_checksum_size
     # Update ComponentLocationOffset and ComponentSize for all the components
     for offset in component_location_offsets:
         file_size = os.stat(image_files[index]).st_size
@@ -589,7 +842,24 @@ def write_pkg_header_checksum(pldm_fw_up_pkg):
     pldm_fw_up_pkg.write(struct.pack("<I", package_header_checksum))
 
 
-def update_pkg_header_size(pldm_fw_up_pkg):
+def write_pkg_payload_checksum(pldm_fw_up_pkg, image_files):
+    """
+    Write PackagePayloadChecksum into the PLDM package header.
+
+        Parameters:
+            pldm_fw_up_pkg: PLDM FW update package
+            image_files: component images
+    """
+    pldm_fw_up_pkg.seek(0)
+    package_payload_checksum = 0
+    for image in image_files:
+        with open(image, "rb") as file:
+            package_payload_checksum += binascii.crc32(file.read())
+    pldm_fw_up_pkg.seek(0, os.SEEK_END)
+    pldm_fw_up_pkg.write(struct.pack("<I", package_payload_checksum))
+
+
+def update_pkg_header_size(pldm_fw_up_pkg, package_header_format_revision):
     """
     Update PackageHeader in the PLDM package header. The package header size
     which is the count of all bytes in the PLDM package header structure is
@@ -600,6 +870,9 @@ def update_pkg_header_size(pldm_fw_up_pkg):
     """
     pkg_header_checksum_size = 4
     file_size = pldm_fw_up_pkg.tell() + pkg_header_checksum_size
+    if package_header_format_revision == 4:
+        pkg_payload_checksum_size = 4
+        file_size += pkg_payload_checksum_size
     pkg_header_size_offset = 17
     # Seek past PackageHeaderIdentifier and PackageHeaderFormatRevision
     pldm_fw_up_pkg.seek(pkg_header_size_offset)
@@ -654,17 +927,42 @@ def main():
 
     try:
         with open(args.pldmfwuppkgname, "w+b") as pldm_fw_up_pkg:
-            component_bitmap_bit_length = write_pkg_header_info(
-                pldm_fw_up_pkg, metadata
+            package_header_format_revision, component_bitmap_bit_length = (
+                write_pkg_header_info(pldm_fw_up_pkg, metadata)
             )
+            if (
+                package_header_format_revision
+                not in expected_package_format_versions
+            ):
+                sys.exit(
+                    "ERROR: Unsupported package format version %d"
+                    % package_header_format_revision
+                )
             write_fw_device_identification_area(
-                pldm_fw_up_pkg, metadata, component_bitmap_bit_length
+                pldm_fw_up_pkg,
+                metadata,
+                package_header_format_revision,
+                component_bitmap_bit_length,
             )
+            if package_header_format_revision >= 2:
+                write_downstream_device_identification_area(
+                    pldm_fw_up_pkg,
+                    metadata,
+                    package_header_format_revision,
+                    component_bitmap_bit_length,
+                )
             write_component_image_info_area(
-                pldm_fw_up_pkg, metadata, image_files
+                pldm_fw_up_pkg,
+                metadata,
+                package_header_format_revision,
+                image_files,
             )
-            update_pkg_header_size(pldm_fw_up_pkg)
+            update_pkg_header_size(
+                pldm_fw_up_pkg, package_header_format_revision
+            )
             write_pkg_header_checksum(pldm_fw_up_pkg)
+            if package_header_format_revision >= 4:
+                write_pkg_payload_checksum(pldm_fw_up_pkg, image_files)
             append_component_images(pldm_fw_up_pkg, image_files)
             pldm_fw_up_pkg.close()
     except BaseException:
