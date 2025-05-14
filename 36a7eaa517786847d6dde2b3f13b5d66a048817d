@@ -16,6 +16,24 @@
       "message": "typo.",
       "revId": "36a7eaa517786847d6dde2b3f13b5d66a048817d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b86d1ea_cef2064f",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-05-14T01:23:44Z",
+      "side": 1,
+      "message": "Done, moved to a separate patch: [#80289]\n\n[#80289]: https://gerrit.openbmc.org/c/openbmc/pldm/+/80289",
+      "parentUuid": "922c398c_b00231aa",
+      "revId": "36a7eaa517786847d6dde2b3f13b5d66a048817d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
