@@ -35,8 +35,7 @@ class DeviceUpdater
     /** @brief Constructor
      *
      *  @param[in] eid - Endpoint ID of the firmware device
-     *  @param[in] package - File stream for firmware update package
-     *  @param[in] fwDeviceIDRecord - FirmwareDeviceIDRecord in the fw update
+     *  @param[in] deviceIDRecord - DeviceIDRecord in the fw update
      *                                package that matches this firmware device
      *  @param[in] compImageInfos - Component image information for all the
      *                              components in the fw update package
@@ -47,16 +46,11 @@ class DeviceUpdater
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
      */
-    explicit DeviceUpdater(mctp_eid_t eid, std::ifstream& package,
-                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+    explicit DeviceUpdater(mctp_eid_t eid, const DeviceIDRecord& deviceIDRecord,
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
                            uint32_t maxTransferSize,
-                           UpdateManager* updateManager) :
-        eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
-        compImageInfos(compImageInfos), compInfo(compInfo),
-        maxTransferSize(maxTransferSize), updateManager(updateManager)
-    {}
+                           UpdateManager* updateManager);
 
     /** @brief Start the firmware update flow for the FD
      *
@@ -172,13 +166,11 @@ class DeviceUpdater
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 
-    /** @brief File stream for firmware update package */
-    std::ifstream& package;
+    ApplicableComponents applicableComponents;
 
-    /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
-     *         firmware device
-     */
-    const FirmwareDeviceIDRecord& fwDeviceIDRecord;
+    FirmwareDevicePackageData fwDevicePkgData;
+
+    ComponentImageSetVersion compImageSetVersion;
 
     /** @brief Component image information for all the components in the fw
      *         update package
