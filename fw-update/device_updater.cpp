@@ -23,7 +23,7 @@ namespace fw_update
 DeviceUpdater::DeviceUpdater(
     mctp_eid_t eid, const DeviceIDRecord& deviceIDRecord,
     const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
-    uint32_t maxTransferSize, UpdateManager* updateManager) :
+    uint32_t maxTransferSize, UpdateManagerIntf* updateManager) :
     eid(eid), compImageInfos(compImageInfos), compInfo(compInfo),
     maxTransferSize(maxTransferSize), updateManager(updateManager)
 {
@@ -342,7 +342,6 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
             "Failed to encode update component req for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
     }
-
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_UPDATE_COMPONENT, std::move(request),
         [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
