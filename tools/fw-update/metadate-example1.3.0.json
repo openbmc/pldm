@@ -1,0 +1,104 @@
+{
+    "PackageHeaderInformation": {
+        "PackageHeaderIdentifier": "7B291C996DB64208801B02026E463C78",
+        "PackageHeaderFormatVersion": 4,
+        "PackageReleaseDateTime": "2023-12-13 00:00:00",
+        "PackageVersionString": "VersionString1"
+    },
+    "FirmwareDeviceIdentificationArea": [
+        {
+            "DeviceUpdateOptionFlags": [0],
+            "ComponentImageSetVersionString": "VersionString2",
+            "ApplicableComponents": [0, 1],
+            "ReferenceManifestData": "0102030405060708090A0B0C0D0E0F10",
+            "Descriptors": [
+                {
+                    "DescriptorType": 2,
+                    "DescriptorData": "1244D2648D7D4718A030FC8A56587D5B"
+                },
+                {
+                    "DescriptorType": 1,
+                    "DescriptorData": "47160000"
+                },
+                {
+                    "DescriptorType": 65535,
+                    "VendorDefinedDescriptorTitleString": "OpenBMC",
+                    "VendorDefinedDescriptorData": "1234"
+                }
+            ]
+        },
+        {
+            "DeviceUpdateOptionFlags": [],
+            "ComponentImageSetVersionString": "VersionString3",
+            "ApplicableComponents": [0, 1, 2],
+            "Descriptors": [
+                {
+                    "DescriptorType": 2,
+                    "DescriptorData": "1244D2648D7D4718A030FC8A56587D5C"
+                }
+            ]
+        },
+        {
+            "DeviceUpdateOptionFlags": [],
+            "ComponentImageSetVersionString": "VersionString4",
+            "ApplicableComponents": [0],
+            "Descriptors": [
+                {
+                    "DescriptorType": 2,
+                    "DescriptorData": "1244D2648D7D4718A030FC8A56587D5D"
+                }
+            ]
+        }
+    ],
+    "DownstreamDeviceIdentificationArea": [
+        {
+            "DownstreamDeviceUpdateOptionFlags": [],
+            "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString3",
+            "ApplicableComponents": [0, 1, 2],
+            "DownstreamDeviceReferenceManifestData": "AABBCCDDEEFF00112233445566778899",
+            "Descriptors": [
+                {
+                    "DescriptorType": 2,
+                    "DescriptorData": "1244D2648D7D4718A030FC8A56587D5C"
+                }
+            ]
+        },
+        {
+            "DownstreamDeviceUpdateOptionFlags": [],
+            "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString4",
+            "ApplicableComponents": [0],
+            "Descriptors": [
+                {
+                    "DescriptorType": 2,
+                    "DescriptorData": "1244D2648D7D4718A030FC8A56587D5D"
+                }
+            ]
+        }
+    ],
+    "ComponentImageInformationArea": [
+        {
+            "ComponentClassification": 10,
+            "ComponentIdentifier": 100,
+            "ComponentComparisonStamp": "0xFFFFFFFE",
+            "ComponentOptions": [1],
+            "RequestedComponentActivationMethod": [],
+            "ComponentVersionString": "VersionString5"
+        },
+        {
+            "ComponentClassification": 10,
+            "ComponentIdentifier": 200,
+            "ComponentComparisonStamp": "0x00000000",
+            "ComponentOptions": [],
+            "RequestedComponentActivationMethod": [0],
+            "ComponentVersionString": "VersionString6"
+        },
+        {
+            "ComponentClassification": 16,
+            "ComponentIdentifier": 300,
+            "ComponentComparisonStamp": "0x00000000",
+            "ComponentOptions": [0, 2],
+            "RequestedComponentActivationMethod": [2, 3],
+            "ComponentVersionString": "VersionString7"
+        }
+    ]
+}
