@@ -108,14 +108,16 @@ using VendorDefinedDescriptorTitle = std::string;
 using VendorDefinedDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorInfo =
     std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
-using Descriptors =
-    std::multimap<DescriptorType,
-                  std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+using DescriptorValue =
+    std::variant<DescriptorData, VendorDefinedDescriptorInfo>;
+using Descriptor = std::pair<DescriptorType, DescriptorValue>;
+using Descriptors = std::multimap<DescriptorType, DescriptorValue>;
 using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
     std::unordered_map<DownstreamDeviceIndex, Descriptors>;
 
 using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DownstreamDescriptorIndex = std::pair<eid, DownstreamDeviceIndex>;
 using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 
 // Component information
@@ -137,25 +139,35 @@ using DeviceIDRecordCount = uint8_t;
 using DeviceUpdateOptionFlags = std::bitset<32>;
 using ApplicableComponents = std::vector<size_t>;
 using ComponentImageSetVersion = std::string;
+using SelfContainedActivationMinVersionComparisonStamp =
+    std::optional<uint32_t>;
+using SelfContainedActivationMinVersion = std::optional<std::string>;
 using FirmwareDevicePackageData = std::vector<uint8_t>;
 using FirmwareDeviceIDRecord =
     std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
                ComponentImageSetVersion, Descriptors,
                FirmwareDevicePackageData>;
 using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
+using DownstreamDeviceIDRecord =
+    std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
+               SelfContainedActivationMinVersion,
+               SelfContainedActivationMinVersionComparisonStamp, Descriptors,
+               FirmwareDevicePackageData>;
+using DownstreamDeviceIDRecords = std::vector<DownstreamDeviceIDRecord>;
+using DeviceIDRecord =
+    std::variant<FirmwareDeviceIDRecord, DownstreamDeviceIDRecord>;
+using DeviceIDRecords = std::vector<DeviceIDRecord>;
 
 // ComponentImageInformation
 using ComponentImageCount = uint16_t;
 using CompComparisonStamp = uint32_t;
 using CompOptions = std::bitset<16>;
 using ReqCompActivationMethod = std::bitset<16>;
-using CompLocationOffset = uint32_t;
-using CompSize = uint32_t;
 using CompVersion = std::string;
+using CompImage = std::vector<uint8_t>;
 using ComponentImageInfo =
     std::tuple<CompClassification, CompIdentifier, CompComparisonStamp,
-               CompOptions, ReqCompActivationMethod, CompLocationOffset,
-               CompSize, CompVersion>;
+               CompOptions, ReqCompActivationMethod, CompImage, CompVersion>;
 using ComponentImageInfos = std::vector<ComponentImageInfo>;
 
 enum class ComponentImageInfoPos : size_t
@@ -165,9 +177,8 @@ enum class ComponentImageInfoPos : size_t
     CompComparisonStampPos = 2,
     CompOptionsPos = 3,
     ReqCompActivationMethodPos = 4,
-    CompLocationOffsetPos = 5,
-    CompSizePos = 6,
-    CompVersionPos = 7,
+    CompImagePos = 5,
+    CompVersionPos = 6,
 };
 
 } // namespace fw_update
