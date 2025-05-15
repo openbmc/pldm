@@ -8,6 +8,42 @@
 
 using namespace pldm::utils;
 
+TEST(GetNumPadBytesTest, NoPaddingNeeded)
+{
+    EXPECT_EQ(getNumPadBytes(0), 0);
+    EXPECT_EQ(getNumPadBytes(4), 0);
+    EXPECT_EQ(getNumPadBytes(8), 0);
+    EXPECT_EQ(getNumPadBytes(12), 0);
+}
+
+TEST(GetNumPadBytesTest, OneBytePadding)
+{
+    EXPECT_EQ(getNumPadBytes(3), 1);
+    EXPECT_EQ(getNumPadBytes(7), 1);
+    EXPECT_EQ(getNumPadBytes(11), 1);
+}
+
+TEST(GetNumPadBytesTest, TwoBytesPadding)
+{
+    EXPECT_EQ(getNumPadBytes(2), 2);
+    EXPECT_EQ(getNumPadBytes(6), 2);
+    EXPECT_EQ(getNumPadBytes(10), 2);
+}
+
+TEST(GetNumPadBytesTest, ThreeBytesPadding)
+{
+    EXPECT_EQ(getNumPadBytes(1), 3);
+    EXPECT_EQ(getNumPadBytes(5), 3);
+    EXPECT_EQ(getNumPadBytes(9), 3);
+}
+
+TEST(GetNumPadBytesTest, LargeValues)
+{
+    EXPECT_EQ(getNumPadBytes(1001), 3);
+    EXPECT_EQ(getNumPadBytes(1024), 0);
+    EXPECT_EQ(getNumPadBytes(65535), 1);
+}
+
 TEST(GetInventoryObjects, testForEmptyObject)
 {
     ObjectValueTree result =
