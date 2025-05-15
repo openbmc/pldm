@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee43e35_b80584d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-15T06:48:25Z",
+      "side": 1,
+      "message": "Sorry, I have already rewritten the commit.",
+      "parentUuid": "55b9f0cf_ee32104a",
+      "revId": "5bc025528a162caee3c880994717d4145d0ec316",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1d9744b_032fff80",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cbd7e7ea_5d0ba8c2",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-15T06:48:25Z",
+      "side": 1,
+      "message": "I\u0027ve updated `InstanceIdDb::next()` to return a `std::expected\u003cuint8_t, int\u003e`.\nDoes this solution address your concerns, or would you recommend a different approach?\nThanks in advance for your feedback.",
+      "parentUuid": "e1d9744b_032fff80",
+      "revId": "5bc025528a162caee3c880994717d4145d0ec316",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b93c35a_fcac8473",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 7
@@ -48,6 +84,30 @@
       "writtenOn": "2025-05-13T11:11:49Z",
       "side": 1,
       "message": "Don\u0027t use `what` for lg2 calls.",
+      "range": {
+        "startLine": 29,
+        "startChar": 66,
+        "endLine": 29,
+        "endChar": 75
+      },
+      "revId": "5bc025528a162caee3c880994717d4145d0ec316",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "661fe972_7a3c3379",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-15T06:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b93c35a_fcac8473",
       "range": {
         "startLine": 29,
         "startChar": 66,
