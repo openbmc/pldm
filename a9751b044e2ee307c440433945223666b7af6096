@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4b948d8_1ac37d1e",
+        "filename": "common/instance_id.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-15T11:13:39Z",
+      "side": 1,
+      "message": "expected\u003cint-type, int-type\u003e feels very unnatural to me.  @andrew@codeconstruct.com.au - opinions?",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 31
+      },
+      "revId": "a9751b044e2ee307c440433945223666b7af6096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517a92b4_c3fecbfb",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-15T11:13:39Z",
+      "side": 1,
+      "message": "We still have a blob of almost 10 lines of code that have to be duplicated though?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "a9751b044e2ee307c440433945223666b7af6096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8d822d6_41b49a56",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-15T11:13:39Z",
+      "side": 1,
+      "message": "Uh... what are we throwing?",
+      "revId": "a9751b044e2ee307c440433945223666b7af6096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
