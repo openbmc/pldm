@@ -52,6 +52,24 @@
       "parentUuid": "5f1423a1_3660862a",
       "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75687b43_c9b925ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-15T11:09:09Z",
+      "side": 1,
+      "message": "\u003e As far as I can tell, many of the patches mentioned there have either been abandoned or are in the process of being reconsidered.\n\nThey were abandoned because the consensus was to enable a very minimal set of checks as a POC and roll that out to all the repositories.  Then we would add individual checks as we got further consensus.\n\n\u003e You mentioned these checks being \"garbage for BMC code\" and that they make it more difficult to upgrade Clang.  I’d really appreciate it if you could elaborate on the specific challenges you\u0027ve encountered.\n\nI\u0027m not going to go through every single option.  This is why we wanted them added in common code reviews.  Some of the clang-tidy options we\u0027ve found to not be stable and/or bugproof on its own.\n\nbugprone-unchecked-optional-access \u003c-- yesterday I had to fix spurious warnings introduced by clang-20 on this one. https://gerrit.openbmc.org/c/openbmc/dbus-sensors/+/80322\n\nbugprone-no-escape, \u003c-- totally not relevant for BMC work.\n\nbugprone-lambda-function-name \u003c-- potentially breaks macros from other libraries.\n\nA bunch of the clang-analyzer ones introduced in the next commit are for very specific environments which are not OpenBMC.\n\nmodernize-use-transparent-functors \u003c-- probably needs SafeMode?\n\nAll of the \"cert\" ones that got enabled here are actually aliases for other checks.  Do we want to use the \"cert\" alias or the more readable check?  \"cert-dcl37-c\" \u003d\u003d \"bugprone-reserved-identifier\".  To me the later is far more understandable at quick glance.  And, enabling this likely breaks our usage of stdexec in sdbusplus, so we can\u0027t roll this one out everywhere.\n\n\u003e Do you want us \u0026 everyone to just use \n\nThe consensus was that the docs one would be the maximal set of accepted checks across the projects, yes.  ie. A repository could use less than the ones enabled there but shouldn\u0027t be enabling other checks.",
+      "parentUuid": "876f73c6_ca6d4e78",
+      "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
