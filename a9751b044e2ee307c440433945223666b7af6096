@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "507a3539_da3b5da1",
+        "filename": "common/instance_id.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-05-15T23:59:17Z",
+      "side": 1,
+      "message": "Yeaah, it doesn\u0027t seem great... having the error type inherit from `std::exception` would be better to eliminate subsequent type confusion.",
+      "parentUuid": "d4b948d8_1ac37d1e",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 31
+      },
+      "revId": "a9751b044e2ee307c440433945223666b7af6096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "517a92b4_c3fecbfb",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 11
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-15T11:13:39Z",
       "side": 1,
       "message": "We still have a blob of almost 10 lines of code that have to be duplicated though?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "a9751b044e2ee307c440433945223666b7af6096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b21a2d4_690f4c25",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-05-15T23:59:17Z",
+      "side": 1,
+      "message": "I\u0027m not convinced this 10-line blob is even the behaviour we want - the caller can\u0027t know that the update process failed to start. Should we propagate the failure?",
+      "parentUuid": "517a92b4_c3fecbfb",
       "range": {
         "startLine": 23,
         "startChar": 0,
