@@ -16,6 +16,24 @@
       "message": "WHY ARE WE MAKING OUR OWN CLANG-TIDY FILES!?  There is on-going work both posted to the mailing list and underway in docs to make a standardized clang-tidy.  Most of these checks are absolute garbage for BMC code and just make it harder and harder for us to upgrade clang.",
       "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f1423a1_3660862a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-15T05:54:11Z",
+      "side": 1,
+      "message": "I understand your concern, and I agree that having a consistent, OpenBMC-specific clang-tidy configuration for both C and C++ is important. Are you referring to the email thread from Jayanth (https://lore.kernel.org/openbmc/CACkAXSo87MHi-+A2ZWLijejAdxfK89suaZC+4AN\u003d+UnwZr2afg@mail.gmail.com/)? As far as I can tell, many of the patches mentioned there have either been abandoned or are in the process of being reconsidered.\n\nIt seems that as a community, we\u0027re still in the process of evaluating what a common, practical clang-tidy configuration for OpenBMC should look like. Personally, I\u0027m very much in favor of arriving at a shared standard that works well for everyone.\n\nRegarding this particular commit: the CERT C and C++ Coding Standards are intended to help identify insecure coding practices and avoid undefined behaviors. From that standpoint, I thought enabling some of these checks could be beneficial in catching potential issues during code review. That said, I’m curious to better understand your concerns. You mentioned these checks being \"garbage for BMC code\" and that they make it more difficult to upgrade Clang. I’d really appreciate it if you could elaborate on the specific challenges you\u0027ve encountered. If these checks are adding unnecessary overhead or creating friction in the development process, I\u0027m happy to work with you on refining the approach so that it aligns better with our project needs.",
+      "parentUuid": "ff894df7_d3ff5929",
+      "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
