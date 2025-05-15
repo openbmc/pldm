@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "336cef48_0d3c50a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-05-15T05:32:56Z",
+      "side": 1,
+      "message": "Please be aware that this MR have unmerged libpldm dependencies, do not merge this commit before all the dependencies are merged.\n\nPrerequisites: libpldm/[#80255]\n\n[#80255]: https://gerrit.openbmc.org/c/openbmc/libpldm/+/80255",
+      "revId": "c5008288eb462056c0a47cc30a9e2da28ae58c4c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
