@@ -34,6 +34,24 @@
       "parentUuid": "ff894df7_d3ff5929",
       "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "876f73c6_ca6d4e78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-15T06:09:50Z",
+      "side": 1,
+      "message": "Do you want us \u0026 everyone to just use https://github.com/openbmc/docs/blob/master/style/cpp/.clang-tidy ?",
+      "parentUuid": "5f1423a1_3660862a",
+      "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
