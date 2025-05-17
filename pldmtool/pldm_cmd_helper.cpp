@@ -89,7 +89,8 @@ void fillCompletionCode(uint8_t completionCode, ordered_json& data,
     data["CompletionCode"] = "UNKNOWN_COMPLETION_CODE";
 }
 
-int mctpSockSendRecv(const uint8_t eid, const bool mctpPreAllocTag,
+int mctpSockSendRecv(const uint8_t mctpNetworkId, const uint8_t eid,
+                     const bool mctpPreAllocTag,
                      const std::vector<uint8_t>& requestMsg,
                      void** responseMessage, size_t* responseMessageSize)
 {
@@ -118,8 +119,9 @@ int mctpSockSendRecv(const uint8_t eid, const bool mctpPreAllocTag,
     if (rc < 0)
     {
         rc = -errno;
-        std::cerr << "Kernel does not support MCTP extended addressing. errnostr = "
-                  << strerror(errno) << "\n";
+        std::cerr
+            << "Kernel does not support MCTP extended addressing. errnostr = "
+            << strerror(errno) << "\n";
         close(sd);
         return rc;
     }
@@ -127,7 +129,7 @@ int mctpSockSendRecv(const uint8_t eid, const bool mctpPreAllocTag,
     // prepare the request to be sent
     memset(&addr, 0, sizeof(addr));
     addr.smctp_base.smctp_family = AF_MCTP;
-    addr.smctp_base.smctp_network = 0;
+    addr.smctp_base.smctp_network = mctpNetworkId;
     addr.smctp_base.smctp_addr.s_addr = eid;
     addr.smctp_base.smctp_type = requestMsg[0];
     if (mctpPreAllocTag)
@@ -168,8 +170,7 @@ int mctpSockSendRecv(const uint8_t eid, const bool mctpPreAllocTag,
     if (rc < 0)
     {
         std::cerr << "poll(AF_MCTP, 5000) failed. errnostr = "
-                  << strerror(errno)
-                  << "\n";
+                  << strerror(errno) << "\n";
         close(sd);
         return rc;
     }
@@ -196,7 +197,7 @@ int mctpSockSendRecv(const uint8_t eid, const bool mctpPreAllocTag,
 
         // read the received data
         struct sockaddr_mctp retAddr;
-        socklen_t addrlen;
+        socklen_t addrlen = sizeof(retAddr);
         memset(&retAddr, 0x0, sizeof(retAddr));
         uint8_t* respBuf;
         respBuf = (uint8_t*)malloc(respLen);
@@ -287,21 +288,22 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
 
         if (CommandInterface::pldmType != "mctpRaw")
         {
-            rc =
-                pldmTransport.sendRecvMsg(tid, requestMsg.data(), requestMsg.size(),
-                                          responseMessage, responseMessageSize);
+            rc = pldmTransport.sendRecvMsg(tid, requestMsg.data(),
+                                           requestMsg.size(), responseMessage,
+                                           responseMessageSize);
             if (rc)
             {
-                std::cerr << "[" << unsigned(retry) << "] pldm_send_recv error rc "
-                          << rc << std::endl;
+                std::cerr << "[" << unsigned(retry)
+                          << "] pldm_send_recv error rc " << rc << std::endl;
                 retry++;
                 continue;
             }
         }
         else
         {
-            rc = mctpSockSendRecv(mctp_eid, mctpPreAllocTag, requestMsg,
-                                  &responseMessage, &responseMessageSize);
+            rc = mctpSockSendRecv(mctpNetworkId, mctp_eid, mctpPreAllocTag,
+                                  requestMsg, &responseMessage,
+                                  &responseMessageSize);
             if (rc)
             {
                 std::cerr << "[" << unsigned(retry)
