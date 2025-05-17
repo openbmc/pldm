@@ -85,6 +85,8 @@ class MctpRawOp : public CommandInterface
     explicit MctpRawOp(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
     {
+        app->add_option("-e,--network-id", mctpNetworkId, "MCTP NetworkId")
+            ->required();
         app->add_option("-d,--data", rawData, "raw MCTP data")
             ->required()
             ->expected(-3);
