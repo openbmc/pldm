@@ -16,6 +16,40 @@
       "message": "Check commit message `efefcter` -\u003e `effecter`.\nWhat is the different between the OEM Numberic effecter and others numeric effecter?",
       "revId": "3809698d9b3c637d59a866c27e0dcf1705719a68",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d718000_4d49a423",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-19T02:58:50Z",
+      "side": 1,
+      "message": "The patch set add OemNumericEffecter support but function oemSetNumericEffecterValueHandler return True. Is this function is handled in different patch set?",
+      "revId": "3809698d9b3c637d59a866c27e0dcf1705719a68",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b945013_e0932f98",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-19T02:58:50Z",
+      "side": 1,
+      "message": "The function is not only used for check the OEM type of EffecterID but also get the effecter info if it is OEM type. Can we use the function name match with it functional?",
+      "revId": "3809698d9b3c637d59a866c27e0dcf1705719a68",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
