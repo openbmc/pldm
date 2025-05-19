@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d989ee6a_b4d6b4e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-19T02:34:55Z",
+      "side": 1,
+      "message": "Check commit message `efefcter` -\u003e `effecter`.\nWhat is the different between the OEM Numberic effecter and others numeric effecter?",
+      "revId": "3809698d9b3c637d59a866c27e0dcf1705719a68",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
