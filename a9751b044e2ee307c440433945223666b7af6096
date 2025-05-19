@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88f2164d_7a8cefc4",
+        "filename": "common/instance_id.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-05-19T17:21:24Z",
+      "side": 1,
+      "message": "Yes. So, in cases where throwing an exception is a better thing to do (Most update logic) then you can just throw returnedThing;",
+      "parentUuid": "3136a238_4c9083ab",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 31
+      },
+      "revId": "a9751b044e2ee307c440433945223666b7af6096",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "517a92b4_c3fecbfb",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 11
