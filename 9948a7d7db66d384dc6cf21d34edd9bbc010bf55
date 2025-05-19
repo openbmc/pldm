@@ -70,6 +70,24 @@
       "parentUuid": "876f73c6_ca6d4e78",
       "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42f9f448_da106ee3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-19T02:15:50Z",
+      "side": 1,
+      "message": "Thanks for the clarification — this all makes a lot more sense now.\n\nI hadn’t realized how messy things had gotten around this lately. Given the current direction and consensus, I’m going ahead and reverting the .clang-tidy in pldm to match the version from docs (https://gerrit.openbmc.org/c/openbmc/pldm/+/80410).\n\nWe definitely don’t want to diverge from the rest of the community, and maintaining a separate file here just adds unnecessary overhead. Aligning with the shared baseline will make things simpler and easier to manage moving forward.\n\nThanks again for the context!\n\n@pavithra - With the above in context, this will impact the clang check patches that you already have in review. If you think any of these changes makes sense to the community in general, then would suggest you to push them to docs and get a consensus before we pull that change in here.",
+      "parentUuid": "75687b43_c9b925ee",
+      "revId": "9948a7d7db66d384dc6cf21d34edd9bbc010bf55",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
