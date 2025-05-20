@@ -16,6 +16,24 @@
       "message": "Use for (const auto\u0026 i :\n             std::views::iota(0, static_cast\u003cint\u003e(recordSetSrc-\u003enum_fru_fields)))",
       "revId": "665401bd45d856590d160cd5cb37b0fafdba888e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43b89e30_c39a935a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-05-20T06:07:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "819509eb_653eb1d1",
+      "revId": "665401bd45d856590d160cd5cb37b0fafdba888e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
