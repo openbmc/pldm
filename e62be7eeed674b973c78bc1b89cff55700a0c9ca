@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06cd2bb5_afc29f4c",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-05-20T06:07:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e21ff42_e8879892",
+      "revId": "e62be7eeed674b973c78bc1b89cff55700a0c9ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "856747ab_66d3e911",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-05-05T08:12:09Z",
       "side": 1,
       "message": "Can we add on API in libresponder/Fru to allow the caller set the hostEID instead of append the Class construction?\nAs this code https://gerrit.openbmc.org/c/openbmc/pldm/+/78490/1/libpldmresponder/bios.hpp",
+      "revId": "e62be7eeed674b973c78bc1b89cff55700a0c9ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bec2c07_eec30b53",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-05-20T06:07:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "856747ab_66d3e911",
       "revId": "e62be7eeed674b973c78bc1b89cff55700a0c9ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

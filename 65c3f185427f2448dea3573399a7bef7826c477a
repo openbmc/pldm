@@ -16,6 +16,24 @@
       "message": "The anti-pattern is `rc \u003d {RC}`. You can check others code in platform-mc.",
       "revId": "65c3f185427f2448dea3573399a7bef7826c477a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3411b272_586d35b7",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-05-20T06:07:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a41d1220_d3e7448a",
+      "revId": "65c3f185427f2448dea3573399a7bef7826c477a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
