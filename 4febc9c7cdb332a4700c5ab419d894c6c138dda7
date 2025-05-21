@@ -94,6 +94,30 @@
       },
       "revId": "4febc9c7cdb332a4700c5ab419d894c6c138dda7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9c9c30e_634c44bf",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-05-21T01:58:49Z",
+      "side": 1,
+      "message": "I also disagree with adding such logs. I agree that a pcap/Wireshark is a much more concise approach. You don\u0027t have to capture all traffic on an interface, you can be selective. See e.g. [tcpdump](https://www.tcpdump.org/manpages/tcpdump.1.html)\u0027s filter expressions and [pcap-filter](https://www.tcpdump.org/manpages/pcap-filter.7.html). There might be some work required to make filter expressions more ergonomic for MCTP, but in the worst case you have the `byte` directive...",
+      "parentUuid": "d2480c18_f7df4d09",
+      "range": {
+        "startLine": 60,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 50
+      },
+      "revId": "4febc9c7cdb332a4700c5ab419d894c6c138dda7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
