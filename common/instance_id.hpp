@@ -2,6 +2,9 @@
 
 #include <libpldm/instance-id.h>
 
+#include <chrono>
+#include <mutex>
+#include <condition_variable>
 #include <cerrno>
 #include <cstdint>
 #include <exception>
@@ -53,24 +56,34 @@ class InstanceIdDb
 
     /** @brief Allocate an instance ID for the given terminus
      *  @param[in] tid - the terminus ID the instance ID is associated with
+     *  @param[in] timeout - [optional] If non-zero the function will block
+     *                       for the provided timeout till a instance Id
+     *                       is available
      *  @return - PLDM instance id or -EAGAIN if there are no available instance
      *            IDs
      */
-    uint8_t next(uint8_t tid)
+    uint8_t next(uint8_t tid, uint32_t timeout = 0)
     {
-        uint8_t id;
-        int rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
+        std::unique_lock<std::mutex> lk(dbMutex);
+        auto timeout_sec = std::chrono::seconds(timeout);
+        uint8_t id = 0xff;
+        int rc = 0;
+        bool done = dbEvent.wait_for(lk, timeout_sec, [&]() {
+            return pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id) == 0;
+        });
+        if (!done || id == 0xff) {
+            // Try to allocate again just one more time.
+            rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
+            if (rc == -EAGAIN)
+            {
+                throw std::runtime_error("No free instance ids");
+            }
 
-        if (rc == -EAGAIN)
-        {
-            throw std::runtime_error("No free instance ids");
+            if (rc)
+            {
+                throw std::system_category().default_error_condition(rc);
+            }
         }
-
-        if (rc)
-        {
-            throw std::system_category().default_error_condition(rc);
-        }
-
         return id;
     }
 
@@ -91,10 +104,13 @@ class InstanceIdDb
         {
             throw std::system_category().default_error_condition(rc);
         }
+        dbEvent.notify_all();
     }
 
   private:
     pldm_instance_db* pldmInstanceIdDb = nullptr;
+    std::mutex dbMutex{};
+    std::condition_variable dbEvent{};
 };
 
 } // namespace pldm
