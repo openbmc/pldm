@@ -108,6 +108,10 @@ if get_option('oem-ibm').allowed()
 endif
 conf_data.set('RESPONSE_TIME_OUT', get_option('response-time-out'))
 conf_data.set(
+    'INSTANCEID_ALLOCATION_TIME_OUT',
+    get_option('instance-id-allocation-time-out'),
+)
+conf_data.set(
     'FLIGHT_RECORDER_MAX_ENTRIES',
     get_option('flightrecorder-max-entries'),
 )
