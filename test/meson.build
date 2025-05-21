@@ -1,7 +1,7 @@
 pldmd_inc = include_directories('../')
 test_src = declare_dependency(include_directories: pldmd_inc)
 
-tests = ['pldmd_registration_test']
+tests = ['pldmd_registration_test', 'instance_id_test']
 
 foreach t : tests
     test(
