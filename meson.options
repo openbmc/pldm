@@ -68,6 +68,18 @@ option(
                     message in milliseconds''',
 )
 
+# Default instance ID allocation timeout. Set to 0 to disable blocking instance
+# ID allocation by default.
+option(
+    'instance-id-allocation-time-out',
+    type: 'integer',
+    min: 0,
+    max: 600,
+    value: 0,
+    description: '''The amount of time by default a instance ID allocation need
+                    to wait before returning error to the caller in milliseconds''',
+)
+
 # Bios Attributes option
 option(
     'system-specific-bios-json',

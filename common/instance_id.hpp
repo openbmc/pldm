@@ -1,13 +1,17 @@
 #pragma once
 
+#include <config.h>
 #include <libpldm/instance-id.h>
 
 #include <phosphor-logging/lg2.hpp>
 
 #include <cerrno>
+#include <chrono>
+#include <condition_variable>
 #include <cstdint>
 #include <exception>
 #include <expected>
+#include <mutex>
 #include <string>
 #include <system_error>
 
@@ -92,13 +96,30 @@ class InstanceIdDb
      *
      *  @param[in] path - instance ID database path
      */
-    InstanceIdDb(const std::string& path)
+    InstanceIdDb(const std::string& path) : dbPath(path)
     {
         int rc = pldm_instance_db_init(&pldmInstanceIdDb, path.c_str());
         if (rc)
         {
             throw std::system_category().default_error_condition(rc);
         }
+    }
+    InstanceIdDb(const InstanceIdDb& other)
+    {
+        dbPath = other.dbPath;
+        int rc =
+            dbPath ? pldm_instance_db_init(&pldmInstanceIdDb, (*dbPath).c_str())
+                   : pldm_instance_db_init_default(&pldmInstanceIdDb);
+        if (rc)
+        {
+            throw std::system_category().default_error_condition(rc);
+        }
+    }
+    InstanceIdDb(InstanceIdDb&& other) noexcept
+    {
+        dbPath = std::move(other.dbPath);
+        pldmInstanceIdDb = other.pldmInstanceIdDb;
+        other.pldmInstanceIdDb = nullptr;
     }
 
     ~InstanceIdDb()
@@ -115,21 +136,35 @@ class InstanceIdDb
 
     /** @brief Allocate an instance ID for the given terminus
      *  @param[in] tid - the terminus ID the instance ID is associated with
+     *  @param[in] timeout - [optional] If non-zero the function will block
+     *                       for the provided timeout till a instance Id
+     *                       is available
      *  @return - PLDM instance id on success, or InstanceIdError on failure
      */
-    std::expected<uint8_t, InstanceIdError> next(uint8_t tid)
+    std::expected<uint8_t, InstanceIdError> next(
+        uint8_t tid, uint32_t timeoutMs = INSTANCEID_ALLOCATION_TIME_OUT)
     {
-        uint8_t id = 0;
-        int rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
-
-        if (rc)
+        std::unique_lock<std::mutex> lk(dbMutex);
+        auto timeout = std::chrono::system_clock::now() +
+                       std::chrono::milliseconds(timeoutMs);
+        uint8_t id = 0xff;
+        int rc = 0;
+        bool done = dbEvent.wait_until(lk, timeout, [&]() {
+            return pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id) == 0;
+        });
+        if (!done || id == 0xff)
         {
-            std::string msg =
-                "Failed to allocate instance ID for EID " +
-                std::to_string(tid) + ": " + InstanceIdError::rcToMsg(rc);
-            error("Instance ID allocation failed for EID {EID}: {MSG}", "EID",
-                  tid, "MSG", msg);
-            return std::unexpected(InstanceIdError{rc, std::move(msg)});
+            // Try to allocate again just one more time.
+            rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
+            if (rc)
+            {
+                std::string msg =
+                    "Failed to allocate instance ID for EID " +
+                    std::to_string(tid) + ": " + InstanceIdError::rcToMsg(rc);
+                error("Instance ID allocation failed for EID {EID}: {MSG}",
+                      "EID", tid, "MSG", msg);
+                return std::unexpected(InstanceIdError{rc, std::move(msg)});
+            }
         }
 
         return id;
@@ -152,10 +187,14 @@ class InstanceIdDb
         {
             throw std::system_category().default_error_condition(rc);
         }
+        dbEvent.notify_all();
     }
 
   private:
+    std::optional<std::string> dbPath{};
     pldm_instance_db* pldmInstanceIdDb = nullptr;
+    std::mutex dbMutex{};
+    std::condition_variable dbEvent{};
 };
 
 } // namespace pldm
