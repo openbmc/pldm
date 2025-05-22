@@ -150,6 +150,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6db55e55_1d419c4e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-22T10:04:07Z",
+      "side": 1,
+      "message": "Because those methods (`sendActivateFirmwareRequest`, `sendUpdateComponentRequest`, `sendPassCompTableRequest`) are all invoked via a void callback, my current “return int” approach only lets me log and exit the callback—it still can’t bubble the error code back up.\nIs it acceptable to leave it like this, or would you prefer that I revert to throwing an `InstanceIdError` inside the callback (and catch it in the top-level)?\nAlso, if it still needs to be propagated upwards, to which level should it be expected to propagate?\"",
+      "parentUuid": "e578ed2c_5a5c287c",
+      "revId": "29960d4b165b2e3214e25b9e8bd8b59425debb7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "568a4114_eb221190",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 18
