@@ -16,6 +16,24 @@
       "message": "Can we use new instead of `reinterpret_cast`?",
       "revId": "f94c8c022025ee31fd145cdbd2001c9e60e193f6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cbd3864_5202e64c",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-05-22T10:15:30Z",
+      "side": 1,
+      "message": "no @thu@os.amperecomputing.com, Using placement new with a const type (i.e., trying to construct an object into a const memory location) is usually problematic and generally not allowed, because placement new implies that you\u0027re about to write to the specified memory address, which contradicts the idea of const.",
+      "parentUuid": "8e07f92c_5cfba797",
+      "revId": "f94c8c022025ee31fd145cdbd2001c9e60e193f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
