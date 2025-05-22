@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bec25ad3_767b4f76",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-22T12:34:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e4df5d3_5caa272f",
+      "revId": "0b4aa5cc4bbd87776f01e2776dae80ebe80d715a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55ed132a_1feb6b46",
