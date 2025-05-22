@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e07f92c_5cfba797",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-22T09:09:47Z",
+      "side": 1,
+      "message": "Can we use new instead of `reinterpret_cast`?",
+      "revId": "f94c8c022025ee31fd145cdbd2001c9e60e193f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
