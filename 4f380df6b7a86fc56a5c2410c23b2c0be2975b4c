@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06fd15aa_80592af1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-27T10:21:36Z",
+      "side": 1,
+      "message": "@Amitash – I agree with the idea that clients like `pldmd` should have the ability to retry fetching instance IDs when they fail to retrieve one initially. However, I’m trying to understand how the PLDM stack would determine when to invoke this API. Specifically, which commands do we classify as critical and worth retrying, and which ones are not? Would it make sense to build a common infrastructure that allows this retry logic to be integrated into each command with minimal disruption to the existing codebase? Additionally, would introducing this as a compile-time flag be a viable approach—so that teams can opt-in if needed?\n\nIt would also be helpful to see how this functionality is actually being consumed within the codebase. Are you planning to showcase an example or integration point? That would give us better visibility into how this feature is intended to be leveraged.",
+      "revId": "4f380df6b7a86fc56a5c2410c23b2c0be2975b4c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
