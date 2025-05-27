@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "6a983d25_382a6e5a",
         "filename": "pldmd/pldm_fru_parser.cpp",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "dont see why we have to copy the input FRU table all over again.",
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "0bf9b991_9d6c5d30",
         "filename": "pldmd/pldm_fru_parser.cpp",
@@ -31,10 +32,10 @@
       "side": 1,
       "message": "Instead of having so many branches, you can make a table/map",
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "04056be8_547deb47",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -54,10 +55,10 @@
         "endChar": 19
       },
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "d5b1aeb9_029027f9",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -77,10 +78,10 @@
         "endChar": 21
       },
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "562bf396_4fb454ff",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -100,10 +101,10 @@
         "endChar": 41
       },
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "ab4a5e37_478cf24b",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -117,10 +118,10 @@
       "side": 1,
       "message": "Don\u0027t expect T to be constructed at this stage.",
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "5969db28_8f8ba620",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -134,10 +135,10 @@
       "side": 1,
       "message": "remove",
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "dc11650b_df4b7844",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -157,10 +158,10 @@
         "endChar": 46
       },
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "22579150_ec836ecf",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -180,10 +181,10 @@
         "endChar": 78
       },
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "2efe0d21_34e7c40f",
         "filename": "pldmd/pldm_fru_parser.hpp",
@@ -203,10 +204,10 @@
         "endChar": 45
       },
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "edd6deed_be46043a",
         "filename": "test/pldm_fru_parser_test.cpp",
@@ -226,8 +227,8 @@
         "endChar": 23
       },
       "revId": "796fde87bb060c4bd8c94f49980e92688a3d8804",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
-  ]
+  ],
+  "submitRequirementResults": []
 }
