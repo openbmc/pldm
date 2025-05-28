@@ -39,7 +39,7 @@ Watch::Watch(sd_event* loop, std::function<int(std::string&)> imageCallback) :
             "inotify_init1 failed, errno="s + std::strerror(error));
     }
 
-    wd = inotify_add_watch(fd, "/tmp/images", IN_CLOSE_WRITE);
+    wd = inotify_add_watch(fd, "/tmp/images", IN_CLOSE_WRITE | IN_MOVED_TO);
     if (-1 == wd)
     {
         auto error = errno;
@@ -90,7 +90,8 @@ int Watch::callback(sd_event_source* /* s */, int fd, uint32_t revents,
     while (offset < bytes)
     {
         auto event = reinterpret_cast<inotify_event*>(&buffer[offset]);
-        if ((event->mask & IN_CLOSE_WRITE) && !(event->mask & IN_ISDIR))
+        if (((event->mask & IN_CLOSE_WRITE) || (event->mask & IN_MOVED_TO)) &&
+            !(event->mask & IN_ISDIR))
         {
             auto tarballPath = std::string{"/tmp/images"} + '/' + event->name;
             auto rc = static_cast<Watch*>(userdata)->imageCallback(tarballPath);
