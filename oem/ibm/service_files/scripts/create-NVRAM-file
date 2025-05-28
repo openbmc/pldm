@@ -1,7 +1,36 @@
 #!/bin/sh
+mkdir -p /var/lib/phosphor-software-manager/hostfw/nvram
+NVRAM=/var/lib/phosphor-software-manager/hostfw/nvram/PHYP-NVRAM
+BACKUP=/var/lib/pldm/PHYP-NVRAM
+SIZE=$((1024 * 145408))
 
-if [ -f /var/lib/pldm/PHYP-NVRAM ]; then
-    mv /var/lib/pldm/PHYP-NVRAM /var/lib/phosphor-software-manager/hostfw/nvram/PHYP-NVRAM;
+if [ ! -f "$NVRAM" ]; then
+    echo "NVRAM file not found"
+    NEED_CREATE=true
+elif [ "$(stat -c%s "$NVRAM")" -ne "$SIZE" ]; then
+    CURRENT_SIZE=$(stat -c%s "$NVRAM")
+    echo "Invalid NVRAM size: $CURRENT_SIZE bytes, recreating NVRAM file"
+    rm -f "$NVRAM"
+    NEED_CREATE=true
 else
-    truncate -s $((1024 * 145408)) /var/lib/phosphor-software-manager/hostfw/nvram/PHYP-NVRAM
+    CURRENT_SIZE=$(stat -c%s "$NVRAM")
+    echo "NVRAM file found with correct size: $CURRENT_SIZE bytes"
+    NEED_CREATE=false
+fi
+
+if $NEED_CREATE; then
+    if [ -f "$BACKUP" ]; then
+        BACKUP_SIZE=$(stat -c%s "$BACKUP")
+        if [ "$BACKUP_SIZE" -eq "$SIZE" ]; then
+            echo "Backup file size valid ($BACKUP_SIZE bytes), moving to NVRAM path"
+            mv "$BACKUP" "$NVRAM"
+        else
+            echo "Backup file size invalid ($BACKUP_SIZE bytes), deleting backup"
+            rm -f "$BACKUP"
+            truncate -s "$SIZE" "$NVRAM"
+        fi
+    else
+        echo "Backup file not found, creating new NVRAM file"
+        truncate -s "$SIZE" "$NVRAM"
+    fi
 fi

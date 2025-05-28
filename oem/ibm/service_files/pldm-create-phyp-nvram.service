@@ -4,7 +4,6 @@ Wants=obmc-vpnor-updatesymlinks.service
 After=obmc-vpnor-updatesymlinks.service
 Wants=obmc-flash-bios-init.service
 After=obmc-flash-bios-init.service
-ConditionPathExists=!/var/lib/phosphor-software-manager/hostfw/nvram/PHYP-NVRAM
 
 [Service]
 ExecStart=/usr/bin/create-NVRAM-file
