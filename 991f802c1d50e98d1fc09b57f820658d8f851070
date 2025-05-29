@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4267ec0a_29c65bfb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-29T10:50:40Z",
+      "side": 1,
+      "message": "please elaborate more on this, people outside in community might not know what this really means.",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39e4e9d1_b044bec5",
         "filename": "libpldmresponder/fru.cpp",
         "patchSetId": 5
@@ -32,6 +55,75 @@
       "side": 1,
       "message": "no @thu@os.amperecomputing.com, Using placement new with a const type (i.e., trying to construct an object into a const memory location) is usually problematic and generally not allowed, because placement new implies that you\u0027re about to write to the specified memory address, which contradicts the idea of const.",
       "parentUuid": "39e4e9d1_b044bec5",
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "540f16de_ef8d8b9e",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-29T10:50:40Z",
+      "side": 1,
+      "message": "shouldn\u0027t we ensure that we have space in table for getting another tlv ? \n\n`if (table.size() - pos \u003c recordLen + tlvLen)` and bail out as error ?",
+      "range": {
+        "startLine": 368,
+        "startChar": 11,
+        "endLine": 369,
+        "endChar": 34
+      },
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ddc3818_3c3c7176",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-29T10:50:40Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be other way round ?\n\n`if ((le16toh(recordSetSrc-\u003erecord_set_id) !\u003d rsi \u0026\u0026 rsi !\u003d 0))`\n\ncomparing `record_set_id` in little-endian format with `rsi`, which is likely in host format. Using htole16() here flips rsi to little-endian before comparing it to a value that\u0027s already in LE — that doesn\u0027t make sense. You should convert the LE field to host format before comparing.",
+      "range": {
+        "startLine": 371,
+        "startChar": 8,
+        "endLine": 371,
+        "endChar": 70
+      },
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fec33a88_7b902a51",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-29T10:50:40Z",
+      "side": 1,
+      "message": "shouldn\u0027t we ensure that we have another record before we do this ? \n\n`if (table.size() - pos \u003c sizeof(struct pldm_fru_record_data_format))` ? then bail out ?",
+      "range": {
+        "startLine": 382,
+        "startChar": 8,
+        "endLine": 383,
+        "endChar": 76
+      },
       "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
