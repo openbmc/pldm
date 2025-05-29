@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0df01e68_9db316eb",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-05-29T06:43:41Z",
+      "side": 1,
+      "message": "Yes, this is unnecessary since we don\u0027t use the Map again. I\u0027ve removed the changes",
+      "parentUuid": "9fd052fd_75d7685b",
+      "range": {
+        "startLine": 675,
+        "startChar": 0,
+        "endLine": 675,
+        "endChar": 57
+      },
+      "revId": "9cf0bb9ebe1e19fcf8ee21e7e0ff4b3aeb91b044",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72e447e7_16501db7",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-05-12T06:27:34Z",
       "side": 1,
       "message": "Does this patch introduce support for multiple components update for a device? If so we need to update the commit message.",
+      "revId": "9cf0bb9ebe1e19fcf8ee21e7e0ff4b3aeb91b044",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "764dcb18_622547f2",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-05-29T06:43:41Z",
+      "side": 1,
+      "message": "No, the support for updating multiple components is already present",
+      "parentUuid": "72e447e7_16501db7",
       "revId": "9cf0bb9ebe1e19fcf8ee21e7e0ff4b3aeb91b044",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76217c85_d173abd2",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-05-29T06:43:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bcc249fa_7705f849",
+      "revId": "9cf0bb9ebe1e19fcf8ee21e7e0ff4b3aeb91b044",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "267d258e_abd5d4ba",
@@ -71,6 +131,24 @@
       "writtenOn": "2025-05-12T06:27:34Z",
       "side": 1,
       "message": "type alias for code readability, also improve the description to include when a component update is marked failed, if there are multiple conditions.\n\nDoes `False` indicate component update failed or it is cancelled?",
+      "revId": "9cf0bb9ebe1e19fcf8ee21e7e0ff4b3aeb91b044",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee362e43_679d7873",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-05-29T06:43:41Z",
+      "side": 1,
+      "message": "Ack I\u0027ve added the type alis\nFalse is for when the update is cancelled. I\u0027ve improved the doxygen comment to reflect the same",
+      "parentUuid": "267d258e_abd5d4ba",
       "revId": "9cf0bb9ebe1e19fcf8ee21e7e0ff4b3aeb91b044",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
