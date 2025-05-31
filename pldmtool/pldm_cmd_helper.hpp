@@ -9,7 +9,6 @@
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
 #include <linux/mctp.h>
-#include <string.h>
 #include <sys/ioctl.h>
 #include <sys/poll.h>
 #include <sys/socket.h>

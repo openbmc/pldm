@@ -9,13 +9,13 @@
 #include <libpldm/transport/mctp-demux.h>
 #include <linux/mctp.h>
 #include <poll.h>
-#include <string.h>
 #include <sys/ioctl.h>
 #include <systemd/sd-bus.h>
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
+#include <cstring>
 #include <exception>
 
 using namespace pldm::utils;
