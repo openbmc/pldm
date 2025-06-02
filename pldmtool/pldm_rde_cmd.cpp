@@ -109,6 +109,74 @@ class NegotiateRedfishParameters : public CommandInterface
     bitfield16_t featureSupport;
 };
 
+class NegotiateMediumParameters : public CommandInterface
+{
+  public:
+    ~NegotiateMediumParameters() = default;
+    NegotiateMediumParameters() = delete;
+    NegotiateMediumParameters(const NegotiateMediumParameters&) = delete;
+    NegotiateMediumParameters(NegotiateMediumParameters&&) = default;
+    NegotiateMediumParameters& operator=(const NegotiateMediumParameters&) =
+        delete;
+    NegotiateMediumParameters& operator=(NegotiateMediumParameters&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit NegotiateMediumParameters(const char* type, const char* name,
+                                       CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-t, --transfersize", mcMaximumTransferSize,
+               "An indication of the maximum amount of data"
+               "the MC can support for a single message transfer."
+               "This value represents the size of the PLDM header and PLDM payload;"
+               "medium specific header information shall not be included in this calculation."
+               "All MC implementations shall support a transfer size of at least 64 bytes.")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) +
+            PLDM_RDE_NEGOTIATE_MEDIUM_PARAMETERS_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_negotiate_medium_parameters_req(
+            instanceId, mcMaximumTransferSize, request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodedCompletionCode;
+        uint32_t decodedDeviceMaximumTransferSize;
+
+        auto rc = decode_negotiate_medium_parameters_resp(
+            responsePtr, payloadLength, &decodedCompletionCode,
+            &decodedDeviceMaximumTransferSize);
+
+        if (rc != PLDM_SUCCESS || decodedCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodedCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        data["DeviceMaximumTransferChunkSizeBytes"] =
+            decodedDeviceMaximumTransferSize;
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint32_t mcMaximumTransferSize;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -117,6 +185,11 @@ void registerCommand(CLI::App& app)
         "NegotiateRedfishParameters", "Negotiate Redfish Parameters");
     commands.push_back(std::make_unique<NegotiateRedfishParameters>(
         "rde", "NegotiateRedfishParameters", negotiateRedfishParameters));
+
+    auto negotiateMediumParameters = rde->add_subcommand(
+        "NegotiateMediumParameters", "Negotiate Medium Parameters");
+    commands.push_back(std::make_unique<NegotiateMediumParameters>(
+        "rde", "NegotiateMediumParameters", negotiateMediumParameters));
 }
 
 } // namespace rde
