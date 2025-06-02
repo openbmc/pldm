@@ -177,6 +177,73 @@ class NegotiateMediumParameters : public CommandInterface
     uint32_t mcMaximumTransferSize;
 };
 
+class GetSchemaDictionary : public CommandInterface
+{
+  public:
+    ~GetSchemaDictionary() = default;
+    GetSchemaDictionary() = delete;
+    GetSchemaDictionary(const GetSchemaDictionary&) = delete;
+    GetSchemaDictionary(GetSchemaDictionary&&) = default;
+    GetSchemaDictionary& operator=(const GetSchemaDictionary&) = delete;
+    GetSchemaDictionary& operator=(GetSchemaDictionary&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit GetSchemaDictionary(const char* type, const char* name,
+                                 CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-r, --resourceid", resourceID,
+               "The ResourceID of any resource in the Redfish Resource PDR"
+               "from which to retrieve the dictionary")
+            ->required();
+        app->add_option("-s, --schemaclass", schemaClass,
+                        "The class of schema being requested")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_SCHEMA_DICTIONARY_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_get_schema_dictionary_req(
+            instanceId, resourceID, schemaClass,
+            PLDM_RDE_SCHEMA_DICTIONARY_REQ_BYTES, request);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodeCompletionCode;
+        uint8_t decodeDictionaryFormat;
+        uint32_t decodeTransferHandle;
+
+        auto rc = decode_get_schema_dictionary_resp(
+            responsePtr, payloadLength, &decodeCompletionCode,
+            &decodeDictionaryFormat, &decodeTransferHandle);
+        if (rc != PLDM_SUCCESS || decodeCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodeCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        data["DictionaryFormat"] = decodeDictionaryFormat;
+        data["TransferHandle"] = decodeTransferHandle;
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint32_t resourceID;
+    uint8_t schemaClass;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -190,6 +257,11 @@ void registerCommand(CLI::App& app)
         "NegotiateMediumParameters", "Negotiate Medium Parameters");
     commands.push_back(std::make_unique<NegotiateMediumParameters>(
         "rde", "NegotiateMediumParameters", negotiateMediumParameters));
+
+    auto getSchemaDictionary =
+        rde->add_subcommand("GetSchemaDictionary", "Get Schema Dictionary");
+    commands.push_back(std::make_unique<GetSchemaDictionary>(
+        "rde", "GetSchemaDictionary", getSchemaDictionary));
 }
 
 } // namespace rde
