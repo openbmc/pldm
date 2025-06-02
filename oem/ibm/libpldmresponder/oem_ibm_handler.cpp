@@ -773,8 +773,8 @@ int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
             pldm::utils::DBusHandler().getDbusPropertyVariant(
                 bmcPath.str.c_str(), "CurrentBMCState", BMC::interface);
 
-        if (std::get<std::string>(propertyValue) ==
-            "xyz.openbmc_project.State.BMC.BMCState.NotReady")
+        if (std::get<std::string>(propertyValue) !=
+            "xyz.openbmc_project.State.BMC.BMCState.Ready")
         {
             error("GetPDR : PLDM stack is not ready for PDR exchange");
             return PLDM_ERROR_NOT_READY;
