@@ -130,6 +130,7 @@ int main(int argc, char** argv)
     pldmtool::platform::registerCommand(app);
     pldmtool::fru::registerCommand(app);
     pldmtool::fw_update::registerCommand(app);
+    pldmtool::rde::registerCommand(app);
 
 #ifdef OEM_IBM
     pldmtool::oem_ibm::registerCommand(app);
