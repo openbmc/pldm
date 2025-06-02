@@ -282,8 +282,11 @@ void DbusToFileHandler::newFileAvailableSendToHost(
             error(
                 "Failed to decode new file available response for vmi or remote terminus returned error, response code '{RC}' and completion code '{CC}'",
                 "RC", rc, "CC", completionCode);
-            pldm::utils::reportError(
-                "xyz.openbmc_project.PLDM.Error.DecodeNewFileResponseFail");
+            if (rc)
+            {
+                pldm::utils::reportError(
+                    "xyz.openbmc_project.PLDM.Error.DecodeNewFileResponseFail");
+            }
         }
     };
     rc = handler->registerRequest(
