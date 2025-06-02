@@ -7,6 +7,7 @@ sources = [
     'pldm_bios_cmd.cpp',
     'pldm_fru_cmd.cpp',
     'pldm_fw_update_cmd.cpp',
+    'pldm_rde_cmd.cpp',
     'pldmtool.cpp',
 ]
 
