@@ -244,6 +244,85 @@ class GetSchemaDictionary : public CommandInterface
     uint8_t schemaClass;
 };
 
+class GetSchemaURI : public CommandInterface
+{
+  public:
+    ~GetSchemaURI() = default;
+    GetSchemaURI() = delete;
+    GetSchemaURI(const GetSchemaURI&) = delete;
+    GetSchemaURI(GetSchemaURI&&) = default;
+    GetSchemaURI& operator=(const GetSchemaURI&) = delete;
+    GetSchemaURI& operator=(GetSchemaURI&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit GetSchemaURI(const char* type, const char* name, CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("-r, --resourceid", resourceID,
+                        "The ResourceID of a resource in a Redfish Resource PDR"
+                        "from which to retrieve the URI")
+            ->required();
+        app->add_option("-s, --schemaclass", schemaClass,
+                        "The class of schema being requested")
+            ->required();
+        app->add_option("-o, --oemextensionnumber", oemExtensionNumber,
+                        "Shall be zero for a standard DMTF-published schema,"
+                        "or the one-based OEM extension to a standard schema")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_SCHEMA_URI_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_get_schema_uri_req(instanceId, resourceID, schemaClass,
+                                            oemExtensionNumber, request);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodeCompletionCode;
+        uint8_t decodeStringFragmentCount;
+        size_t actual_uri_len = 0;
+        uint8_t buffer[sizeof(struct pldm_rde_varstring) +
+                       PLDM_RDE_SCHEMA_URI_RESP_MAX_VAR_BYTES];
+        pldm_rde_varstring* decodeSchemaURI =
+            (struct pldm_rde_varstring*)buffer;
+
+        auto rc = decode_get_schema_uri_resp(
+            responsePtr, &decodeCompletionCode, &decodeStringFragmentCount,
+            decodeSchemaURI, payloadLength, &actual_uri_len);
+
+        if (rc != PLDM_SUCCESS || decodeCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodeCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        std::stringstream dt;
+        dt << decodeSchemaURI->string_data;
+
+        data["StringFragmentCount"] = decodeStringFragmentCount;
+        data["SchemaURI.format"] = decodeSchemaURI->string_format;
+        data["SchemaURI.length"] = decodeSchemaURI->string_length_bytes;
+        data["SchemaURI"] = dt.str();
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint32_t resourceID;
+    uint8_t schemaClass;
+    uint8_t oemExtensionNumber;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -262,6 +341,10 @@ void registerCommand(CLI::App& app)
         rde->add_subcommand("GetSchemaDictionary", "Get Schema Dictionary");
     commands.push_back(std::make_unique<GetSchemaDictionary>(
         "rde", "GetSchemaDictionary", getSchemaDictionary));
+
+    auto getSchemaURI = rde->add_subcommand("GetSchemaURI", "Get Schema URI");
+    commands.push_back(
+        std::make_unique<GetSchemaURI>("rde", "GetSchemaURI", getSchemaURI));
 }
 
 } // namespace rde
