@@ -607,7 +607,9 @@ void InventoryManager::getDownstreamFirmwareParameters(
                 downstreamDeviceNameMap.at(softwareIdentifier),
                 utils::toString(activeCompVerStr),
                 downstreamDescriptorMap[eid][downstreamDeviceIndex],
-                componentInfoMap[eid]);
+                componentInfoMap[eid],
+                std::bind(&InventoryManager::sendQueryDownstreamDevicesRequest,
+                          this, eid));
         }
         else
         {
@@ -841,7 +843,11 @@ void InventoryManager::getFirmwareParameters(
 
             softwareManager.createSoftwareEntry(
                 SoftwareIdentifier(eid, compIdentifier), componentName,
-                componentVersion, descriptorMap[eid], componentInfo);
+                componentVersion, descriptorMap[eid], componentInfo,
+                [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
         }
     }
     else
