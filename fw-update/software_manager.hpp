@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/types.hpp"
+#include "condition_collector.hpp"
 #include "device_dedicated_updater.hpp"
 
 namespace pldm::fw_update
@@ -15,7 +16,8 @@ class SoftwareManager
     SoftwareManager(Event& event,
                     pldm::requester::Handler<pldm::requester::Request>& handler,
                     InstanceIdDb& instanceIdDb) :
-        event(event), handler(handler), instanceIdDb(instanceIdDb)
+        event(event), handler(handler), instanceIdDb(instanceIdDb),
+        conditionCollector(JSON_CONDITION_FILE_PATH)
     {}
     SoftwareManager(const SoftwareManager&) = delete;
     SoftwareManager(SoftwareManager&&) = delete;
@@ -26,7 +28,8 @@ class SoftwareManager
     void createSoftwareEntry(
         const SoftwareIdentifier& softwareIdentifier,
         const SoftwareName& softwareName, const std::string& activeVersion,
-        const Descriptors& descriptors, const ComponentInfo& componentInfo);
+        const Descriptors& descriptors, const ComponentInfo& componentInfo,
+        std::function<void()> taskCompletionCallback);
 
     void removeSoftwareEntryByEid(const mctp_eid_t& eid);
 
@@ -48,6 +51,8 @@ class SoftwareManager
 
     std::map<SoftwareIdentifier, std::unique_ptr<DeviceDedicatedUpdater>>
         softwareMap;
+
+    ConditionCollector conditionCollector;
 };
 
 } // namespace pldm::fw_update
