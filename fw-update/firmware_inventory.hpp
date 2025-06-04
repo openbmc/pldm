@@ -54,7 +54,10 @@ class FirmwareInventory
         const std::string& associatedEndpoint, const Descriptors& descriptors,
         const ComponentInfo& componentInfo,
         AggregateUpdateManager& updateManager,
-        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
+        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr);
     ~FirmwareInventory();
 
   private:
@@ -89,6 +92,12 @@ class FirmwareInventory
      * @brief Reference to the aggregate update manager
      */
     AggregateUpdateManager& updateManager;
+
+    std::string preConditionPath;
+    std::string postConditionPath;
+    std::string conditionArg;
+
+    std::function<void()> taskCompletionCallback;
 };
 
 } // namespace pldm::fw_update
