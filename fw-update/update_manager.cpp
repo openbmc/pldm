@@ -312,14 +312,20 @@ void UpdateManager::clearActivationInfo()
     package.close();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
-    compUpdateCompletedCount = 0;
 }
 
 void UpdateManager::updateActivationProgress()
 {
-    compUpdateCompletedCount++;
-    auto progressPercent = static_cast<uint8_t>(std::floor(
-        (100 * compUpdateCompletedCount) / totalNumComponentUpdates));
+    if (totalNumComponentUpdates == 0)
+    {
+        return;
+    }
+    auto progressPercent = 0;
+    for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
+    {
+        progressPercent += deviceUpdaterPtr->getProgress();
+    }
+    progressPercent = std::ceil(progressPercent / totalNumComponentUpdates);
     activationProgress->progress(progressPercent);
 }
 
