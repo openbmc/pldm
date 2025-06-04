@@ -59,6 +59,13 @@ class DeviceUpdater
      */
     void startFwUpdateFlow();
 
+    /** @brief Send GetStatus request to the FD
+     *
+     *  This function is called to send GetStatus request to the FD.
+     *  It is used to check the status of the firmware update flow.
+     */
+    void sendGetStatusRequest();
+
     /** @brief Handler for RequestUpdate command response
      *
      *  The response of the RequestUpdate is processed and if the response
@@ -70,6 +77,16 @@ class DeviceUpdater
      */
     void requestUpdate(mctp_eid_t eid, const pldm_msg* response,
                        size_t respMsgLen);
+
+    /** @brief Handler for GetStatus command response
+     *  *  The response of the GetStatus is processed and if the response
+     *  indicates that the firmware update flow is still in progress, continue
+     *  with the next step in the firmware update flow.
+     *  *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] response - PLDM response message
+     *  @param[in] respMsgLen - Response message length
+     */
+    void getStatus(mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
 
     /** @brief Handler for PassComponentTable command response
      *
@@ -147,6 +164,8 @@ class DeviceUpdater
     void activateFirmware(mctp_eid_t eid, const pldm_msg* response,
                           size_t respMsgLen);
 
+    uint8_t getProgress() const;
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -196,6 +215,8 @@ class DeviceUpdater
      *         PassComponentTable
      */
     size_t componentIndex = 0;
+
+    uint8_t progressValue = 0;
 
     /** @brief To send a PLDM request after the current command handling */
     std::unique_ptr<sdeventplus::source::Defer> pldmRequest;
