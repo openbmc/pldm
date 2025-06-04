@@ -90,7 +90,7 @@ class UpdateManager : public UpdateManagerBase
                   return this->processPackage(
                       std::filesystem::path(packageFilePath));
               }),
-        totalNumComponentUpdates(0), compUpdateCompletedCount(0)
+        totalNumComponentUpdates(0)
     {}
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -154,12 +154,6 @@ class UpdateManager : public UpdateManagerBase
      */
     size_t totalNumComponentUpdates;
 
-    /** @brief FW update package can contain updates for multiple firmware
-     *         devices and each device can have multiple components. Once
-     *         each component is updated (Transfer completed, Verified and
-     *         Applied) ActivationProgress is updated.
-     */
-    size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
 };
 
