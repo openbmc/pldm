@@ -169,6 +169,8 @@ class DeviceUpdater
     void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
                                size_t respMsgLen);
 
+    uint8_t getProgress() const;
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -230,6 +232,8 @@ class DeviceUpdater
      *         PassComponentTable
      */
     size_t componentIndex = 0;
+
+    uint8_t progressValue = 0;
 
     /** @brief To send a PLDM request after the current command handling */
     std::unique_ptr<sdeventplus::source::Defer> pldmRequest;
