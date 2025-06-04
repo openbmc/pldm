@@ -2,6 +2,7 @@
 
 #include "activation.hpp"
 #include "common/utils.hpp"
+#include "condition_executor.hpp"
 #include "package_parser.hpp"
 
 #include <fcntl.h>
@@ -89,6 +90,12 @@ int ItemBasedUpdateManager::processPackage()
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     activation->activation(software::Activation::Activations::Ready);
+    if (!preConditionPath.empty())
+    {
+        ConditionExecutor(pldm::utils::DBusHandler::getBus(), preConditionPath,
+                          conditionArg)
+            .executeAndWait();
+    }
     activationProgress = std::make_unique<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPath);
     activation->activation(software::Activation::Activations::Activating);
@@ -157,6 +164,12 @@ std::optional<DeviceIDRecordOffset>
 void ItemBasedUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/,
                                                     bool /*status*/)
 {
+    if (!postConditionPath.empty())
+    {
+        ConditionExecutor(pldm::utils::DBusHandler::getBus(), postConditionPath,
+                          conditionArg)
+            .executeAndWait();
+    }
     progressPercentage = 100;
     updateActivationProgress();
     munmap(packageData.data(), packageData.size());
@@ -166,6 +179,10 @@ void ItemBasedUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/,
         std::chrono::duration<double, std::milli>(endTime - startTime).count();
     info("Firmware update time: {DURATION}ms", "DURATION", dur);
     activation->activation(software::Activation::Activations::Active);
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
+    }
     return;
 }
 

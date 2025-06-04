@@ -38,14 +38,20 @@ class ItemBasedUpdateManager : public UpdateManagerBase
         mctp_eid_t eid, Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const std::string& objPath,
-        const Descriptors& descriptors, const ComponentInfo& componentInfo) :
+        const Descriptors& descriptors, const ComponentInfo& componentInfo,
+        const ConditionPaths& conditionPaths = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb), eid(eid),
         objPath(objPath), descriptors(descriptors),
         componentInfo(componentInfo),
         update(pldm::utils::DBusHandler::getBus(), objPath, this),
         activation(std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Active, this))
+            software::Activation::Activations::Active, this)),
+        preConditionPath(conditionPaths.first),
+        postConditionPath(conditionPaths.second), conditionArg(conditionArg),
+        taskCompletionCallback(std::move(taskCompletionCallback))
     {}
 
     /**
@@ -160,6 +166,12 @@ class ItemBasedUpdateManager : public UpdateManagerBase
      * @brief The defer handler for processing package
      */
     std::unique_ptr<sdeventplus::source::Defer> deferHandler;
+
+    std::string preConditionPath;
+    std::string postConditionPath;
+    std::string conditionArg;
+
+    std::function<void()> taskCompletionCallback;
 
     friend class ItemBasedUpdate;
 };
