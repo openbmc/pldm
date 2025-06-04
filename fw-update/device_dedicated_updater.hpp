@@ -2,6 +2,7 @@
 
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
+#include "condition_executor.hpp"
 #include "device_updater.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
@@ -67,7 +68,10 @@ class DeviceDedicatedUpdater : public UpdateManagerIntf
         const std::string& softwarePath, const std::string& softwareVersion,
         const std::string& associatedEndpoint, const Descriptors& descriptors,
         const ComponentInfo& componentInfo,
-        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
+        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr);
 
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
@@ -133,6 +137,12 @@ class DeviceDedicatedUpdater : public UpdateManagerIntf
     std::unique_ptr<sdbusplus::Timer> initUpdateEvent;
 
     const std::chrono::seconds initUpdateInterval = std::chrono::seconds(1);
+
+    std::string preConditionPath;
+    std::string postConditionPath;
+    std::string conditionArg;
+
+    std::function<void()> taskCompletionCallback;
 
     friend class SoftwareUpdate;
 };
