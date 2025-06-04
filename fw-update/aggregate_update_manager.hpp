@@ -87,10 +87,13 @@ class AggregateUpdateManager : public UpdateManager
      * software identifier
      * @param[in] updateObjPath - The D-Bus object path for the update manager
      */
-    void createUpdateManager(const SoftwareIdentifier& softwareIdentifier,
-                             const Descriptors& descriptors,
-                             const ComponentInfo& componentInfo,
-                             const std::string& updateObjPath)
+    void createUpdateManager(
+        const SoftwareIdentifier& softwareIdentifier,
+        const Descriptors& descriptors, const ComponentInfo& componentInfo,
+        const std::string& updateObjPath,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr)
     {
         auto eid = softwareIdentifier.first;
 
@@ -103,7 +106,8 @@ class AggregateUpdateManager : public UpdateManager
             std::make_shared<ItemBasedUpdateManager>(
                 eid, event, handler, instanceIdDb, updateObjPath,
                 *descriptorMap[softwareIdentifier],
-                *componentInfoMap[softwareIdentifier]);
+                *componentInfoMap[softwareIdentifier], conditionPathPair,
+                conditionArg, std::move(taskCompletionCallback));
     }
 
     /**

@@ -13,7 +13,8 @@ namespace pldm::fw_update
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo)
+    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    std::function<void()> taskCompletionCallback)
 {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -38,11 +39,15 @@ void FirmwareInventoryManager::createFirmwareEntry(
         std::format("/xyz/openbmc_project/software/{}_{}_{}", boardName,
                     softwareName, utils::generateSwId());
 
+    auto conditions = conditionCollector.conditions(softwareName);
+
     softwareMap.insert_or_assign(
         softwareIdentifier,
         std::make_unique<FirmwareInventory>(
             softwareIdentifier, softwarePath, activeVersion, *boardPath,
-            descriptors, componentInfo, updateManager));
+            descriptors, componentInfo, updateManager,
+            SoftwareVersionPurpose::Unknown, conditions, boardName,
+            std::move(taskCompletionCallback)));
 }
 
 void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
