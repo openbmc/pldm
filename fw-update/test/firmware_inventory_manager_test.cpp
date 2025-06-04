@@ -88,7 +88,7 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
 
     inventoryManager.createFirmwareEntry(
         softwareIdentifier, softwareName, firmwareVersion, firmwareDescriptors,
-        firmwareComponentInfo);
+        firmwareComponentInfo, nullptr);
     ASSERT_TRUE(inventoryManager.getSoftwareMap().contains(softwareIdentifier));
 
     auto inventoryIt =

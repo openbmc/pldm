@@ -698,7 +698,11 @@ void InventoryManager::getFirmwareParameters(
             const auto& [_, componentVersion] = componentVersions[0];
             firmwareInventoryManager.createFirmwareEntry(
                 SoftwareIdentifier(eid, 0), firmwareDeviceNameMap.at(eid),
-                componentVersion, descriptorMap[eid], componentInfo);
+                componentVersion, descriptorMap[eid], componentInfo,
+                [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
         }
         else
         {
@@ -711,7 +715,11 @@ void InventoryManager::getFirmwareParameters(
 
                 firmwareInventoryManager.createFirmwareEntry(
                     SoftwareIdentifier(eid, compIdentifier), componentName,
-                    componentVersion, descriptorMap[eid], componentInfo);
+                    componentVersion, descriptorMap[eid], componentInfo,
+                    [this, eid]() {
+                        this->sendQueryDeviceIdentifiersRequest(eid);
+                        this->sendQueryDownstreamDevicesRequest(eid);
+                    });
             }
         }
     }
