@@ -1,6 +1,7 @@
 #include "device_dedicated_updater.hpp"
 
 #include "common/utils.hpp"
+#include "condition_executor.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 
@@ -19,7 +20,9 @@ DeviceDedicatedUpdater::DeviceDedicatedUpdater(
     InstanceIdDb& instanceIdDb, pldm::eid eid, const std::string& softwarePath,
     const std::string& softwareVersion, const std::string& associatedEndpoint,
     const Descriptors& descriptors, const ComponentInfo& componentInfo,
-    SoftwareVersionPurpose purpose) :
+    SoftwareVersionPurpose purpose, const ConditionPaths& conditionPaths,
+    const std::string& conditionArg,
+    std::function<void()> taskCompletionCallback) :
     UpdateManagerIntf(event, handler, instanceIdDb), event(event), eid(eid),
     softwarePath(softwarePath),
     activation(std::make_unique<SoftwareActivation>(
@@ -31,7 +34,10 @@ DeviceDedicatedUpdater::DeviceDedicatedUpdater(
                                           SoftwareVersion::action::defer_emit)),
     updateInterface(
         std::make_unique<SoftwareUpdate>(this->bus, this->softwarePath, *this)),
-    descriptors(descriptors), componentInfo(componentInfo)
+    descriptors(descriptors), componentInfo(componentInfo),
+    preConditionPath(conditionPaths.first),
+    postConditionPath(conditionPaths.second), conditionArg(conditionArg),
+    taskCompletionCallback(std::move(taskCompletionCallback))
 {
     this->association->associations(
         {{"running", "ran_on", associatedEndpoint.c_str()}});
@@ -110,6 +116,10 @@ void DeviceDedicatedUpdater::initUpdate(sdbusplus::message::unix_fd /*image*/,
     blocksTransition = std::make_unique<SoftwareActivationBlocksTransition>(
         bus, softwarePath.c_str());
     activation->activation(SoftwareActivation::Activations::Activating);
+    if (!preConditionPath.empty())
+    {
+        ConditionExecutor(bus, preConditionPath, conditionArg).executeAndWait();
+    }
     deviceUpdater->startFwUpdateFlow();
     return;
 }
@@ -216,6 +226,11 @@ std::optional<DeviceUpdaterInfo> DeviceDedicatedUpdater::validatePackage()
 void DeviceDedicatedUpdater::updateDeviceCompletion(mctp_eid_t /*eid*/,
                                                     bool status)
 {
+    if (!postConditionPath.empty())
+    {
+        ConditionExecutor(bus, postConditionPath, conditionArg)
+            .executeAndWait();
+    }
     if (activationProgress)
     {
         activationProgress->progress(
@@ -233,10 +248,17 @@ void DeviceDedicatedUpdater::updateDeviceCompletion(mctp_eid_t /*eid*/,
         handleUpdateFailure();
         error("Firmware update failed for EID {EID}", "EID", eid);
     }
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
+    }
 }
 void DeviceDedicatedUpdater::updateActivationProgress()
 {
-    // TODO: Implement logic to update activation progress
+    if (activationProgress)
+    {
+        activationProgress->progress(deviceUpdater->getProgress());
+    }
 }
 
 Response DeviceDedicatedUpdater::handleRequest(
@@ -245,16 +267,25 @@ Response DeviceDedicatedUpdater::handleRequest(
     auto response = Response{sizeof(pldm_msg_hdr), 0};
     if (deviceUpdater)
     {
+        Response ret;
         switch (command)
         {
             case PLDM_REQUEST_FIRMWARE_DATA:
-                return deviceUpdater->requestFwData(request, reqMsgLen);
+                ret = deviceUpdater->requestFwData(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             case PLDM_TRANSFER_COMPLETE:
-                return deviceUpdater->transferComplete(request, reqMsgLen);
+                ret = deviceUpdater->transferComplete(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             case PLDM_VERIFY_COMPLETE:
-                return deviceUpdater->verifyComplete(request, reqMsgLen);
+                ret = deviceUpdater->verifyComplete(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             case PLDM_APPLY_COMPLETE:
-                return deviceUpdater->applyComplete(request, reqMsgLen);
+                ret = deviceUpdater->applyComplete(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             default:
                 auto ptr = new (response.data()) pldm_msg;
                 auto rc = encode_cc_only_resp(
