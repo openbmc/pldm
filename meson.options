@@ -136,6 +136,13 @@ option(
 )
 
 option(
+    'update-platform',
+    type: 'string',
+    value: '',
+    description: 'To specify what platform to do fw update',
+)
+
+option(
     'update-timeout-seconds',
     type: 'integer',
     min: 60,
