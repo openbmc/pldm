@@ -510,7 +510,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
             "Failed to start timer for handling request firmware data for endpoint ID {EID}",
             "EID", eid, "RC", rc);
     }
-
+    progressValue = offset * 33 / compImageSize;
     return response;
 }
 
@@ -577,7 +577,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
             "EID", eid, "RC", rc);
         return response;
     }
-
+    progressValue = 33;
     return response;
 }
 
@@ -637,7 +637,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             "EID", eid, "RC", rc);
         return response;
     }
-
+    progressValue = 66;
     return response;
 }
 
@@ -718,7 +718,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
             "EID", eid, "RC", rc);
         return response;
     }
-
+    progressValue = 99;
     return response;
 }
 
@@ -902,6 +902,11 @@ void DeviceUpdater::cancelUpdateComponent(
                       componentIndex));
     }
     return;
+}
+
+uint8_t DeviceUpdater::getProgress() const
+{
+    return progressValue;
 }
 
 } // namespace fw_update

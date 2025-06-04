@@ -224,6 +224,11 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
 
 void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
 {
+    if(activationProgress)
+    {
+        activationProgress->progress(status
+            ? 100 : 0); // Update the progress to 100% if successful, else 0%
+    }
     deviceUpdateCompletionMap.emplace(eid, status);
     if (deviceUpdateCompletionMap.size() == deviceUpdaterMap.size())
     {
@@ -253,22 +258,31 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
     Response response(sizeof(pldm_msg), 0);
     if (deviceUpdaterMap.contains(eid))
     {
+        Response ret;
         auto search = deviceUpdaterMap.find(eid);
         if (command == PLDM_REQUEST_FIRMWARE_DATA)
         {
-            return search->second->requestFwData(request, reqMsgLen);
+            ret = search->second->requestFwData(request, reqMsgLen);
+            updateActivationProgress();
+            return ret;
         }
         else if (command == PLDM_TRANSFER_COMPLETE)
         {
-            return search->second->transferComplete(request, reqMsgLen);
+            ret = search->second->transferComplete(request, reqMsgLen);
+            updateActivationProgress();
+            return ret;
         }
         else if (command == PLDM_VERIFY_COMPLETE)
         {
-            return search->second->verifyComplete(request, reqMsgLen);
+            ret = search->second->verifyComplete(request, reqMsgLen);
+            updateActivationProgress();
+            return ret;
         }
         else if (command == PLDM_APPLY_COMPLETE)
         {
-            return search->second->applyComplete(request, reqMsgLen);
+            ret = search->second->applyComplete(request, reqMsgLen);
+            updateActivationProgress();
+            return ret;
         }
         else
         {
@@ -312,14 +326,20 @@ void UpdateManager::clearActivationInfo()
     package.close();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
-    compUpdateCompletedCount = 0;
 }
 
 void UpdateManager::updateActivationProgress()
 {
-    compUpdateCompletedCount++;
-    auto progressPercent = static_cast<uint8_t>(std::floor(
-        (100 * compUpdateCompletedCount) / totalNumComponentUpdates));
+    if (totalNumComponentUpdates == 0)
+    {
+        return;
+    }
+    auto progressPercent = 0;
+    for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
+    {
+        progressPercent += deviceUpdaterPtr->getProgress();
+    }
+    progressPercent = std::ceil(progressPercent / totalNumComponentUpdates);
     activationProgress->progress(progressPercent);
 }
 
