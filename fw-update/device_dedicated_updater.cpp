@@ -221,7 +221,10 @@ void DeviceDedicatedUpdater::updateDeviceCompletion(mctp_eid_t /*eid*/,
 }
 void DeviceDedicatedUpdater::updateActivationProgress()
 {
-    // TODO: Implement logic to update activation progress
+    if (activationProgress)
+    {
+        activationProgress->progress(deviceUpdater->getProgress());
+    }
 }
 
 Response DeviceDedicatedUpdater::handleRequest(
@@ -230,16 +233,25 @@ Response DeviceDedicatedUpdater::handleRequest(
     auto response = Response{sizeof(pldm_msg_hdr), 0};
     if (deviceUpdater)
     {
+        Response ret;
         switch (command)
         {
             case PLDM_REQUEST_FIRMWARE_DATA:
-                return deviceUpdater->requestFwData(request, reqMsgLen);
+                ret = deviceUpdater->requestFwData(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             case PLDM_TRANSFER_COMPLETE:
-                return deviceUpdater->transferComplete(request, reqMsgLen);
+                ret = deviceUpdater->transferComplete(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             case PLDM_VERIFY_COMPLETE:
-                return deviceUpdater->verifyComplete(request, reqMsgLen);
+                ret = deviceUpdater->verifyComplete(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             case PLDM_APPLY_COMPLETE:
-                return deviceUpdater->applyComplete(request, reqMsgLen);
+                ret = deviceUpdater->applyComplete(request, reqMsgLen);
+                updateActivationProgress();
+                return ret;
             default:
                 auto ptr = new (response.data()) pldm_msg;
                 auto rc = encode_cc_only_resp(
