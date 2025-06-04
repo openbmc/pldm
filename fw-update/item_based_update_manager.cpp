@@ -178,25 +178,23 @@ Response ItemBasedUpdateManager::handleRequest(
     {
         if (command == PLDM_REQUEST_FIRMWARE_DATA)
         {
-            return deviceUpdater->requestFwData(request, reqMsgLen);
+            response = deviceUpdater->requestFwData(request, reqMsgLen);
+            updateActivationProgress();
         }
         else if (command == PLDM_TRANSFER_COMPLETE)
         {
-            auto ret = deviceUpdater->transferComplete(request, reqMsgLen);
-            progressPercentage = 33;
-            return ret;
+            response = deviceUpdater->transferComplete(request, reqMsgLen);
+            updateActivationProgress();
         }
         else if (command == PLDM_VERIFY_COMPLETE)
         {
-            auto ret = deviceUpdater->verifyComplete(request, reqMsgLen);
-            progressPercentage = 66;
-            return ret;
+            response = deviceUpdater->verifyComplete(request, reqMsgLen);
+            updateActivationProgress();
         }
         else if (command == PLDM_APPLY_COMPLETE)
         {
-            auto ret = deviceUpdater->applyComplete(request, reqMsgLen);
-            progressPercentage = 99;
-            return ret;
+            response = deviceUpdater->applyComplete(request, reqMsgLen);
+            updateActivationProgress();
         }
         else
         {
@@ -233,7 +231,7 @@ void ItemBasedUpdateManager::clearActivationInfo()
 
 void ItemBasedUpdateManager::updateActivationProgress()
 {
-    activationProgress->progress(progressPercentage);
+    activationProgress->progress(deviceUpdater->getProgress());
 }
 
 } // namespace pldm::fw_update
