@@ -13,7 +13,8 @@ namespace pldm::fw_update
 void SoftwareManager::createSoftwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo)
+    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    std::function<void()> taskCompletionCallback)
 {
     debug(
         "SoftwareManager::createSoftwareEntry called: EID={EID}, CompID={COMP_ID}, Name={NAME}, Version={VER}",
@@ -53,11 +54,18 @@ void SoftwareManager::createSoftwareEntry(
 
     info("Creating software object at path: {PATH}", "PATH", softwarePath);
 
+    
+    auto conditions = conditionCollector.conditions(softwareName);
+
+    softwareMap.erase(softwareIdentifier);
+
     softwareMap.insert_or_assign(
         softwareIdentifier,
         std::make_unique<DeviceDedicatedUpdater>(
             event, handler, instanceIdDb, eid, softwarePath, activeVersion,
-            boardPath, descriptors, componentInfo));
+            boardPath, descriptors, componentInfo,
+            SoftwareVersionPurpose::Unknown, conditions, boardName,
+            std::move(taskCompletionCallback)));
 }
 
 void SoftwareManager::removeSoftwareEntryByEid(const mctp_eid_t& eid)

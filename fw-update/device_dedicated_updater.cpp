@@ -1,6 +1,7 @@
 #include "device_dedicated_updater.hpp"
 
 #include "common/utils.hpp"
+#include "condition_executor.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 
@@ -19,7 +20,9 @@ DeviceDedicatedUpdater::DeviceDedicatedUpdater(
     InstanceIdDb& instanceIdDb, pldm::eid eid, const std::string& softwarePath,
     const std::string& softwareVersion, const std::string& associatedEndpoint,
     const Descriptors& descriptors, const ComponentInfo& componentInfo,
-    SoftwareVersionPurpose purpose) :
+    SoftwareVersionPurpose purpose, const ConditionPaths& conditionPaths,
+    const std::string& conditionArg,
+    std::function<void()> taskCompletionCallback) :
     UpdateManagerIntf(event, handler, instanceIdDb), event(event), eid(eid),
     softwarePath(softwarePath),
     activation(std::make_unique<SoftwareActivation>(
@@ -31,7 +34,10 @@ DeviceDedicatedUpdater::DeviceDedicatedUpdater(
                                           SoftwareVersion::action::defer_emit)),
     updateInterface(
         std::make_unique<SoftwareUpdate>(this->bus, this->softwarePath, *this)),
-    descriptors(descriptors), componentInfo(componentInfo)
+    descriptors(descriptors), componentInfo(componentInfo),
+    preConditionPath(conditionPaths.first),
+    postConditionPath(conditionPaths.second), conditionArg(conditionArg),
+    taskCompletionCallback(std::move(taskCompletionCallback))
 {
     this->association->associations(
         {{"running", "ran_on", associatedEndpoint.c_str()}});
@@ -110,6 +116,10 @@ void DeviceDedicatedUpdater::initUpdate(sdbusplus::message::unix_fd /*image*/,
     blocksTransition = std::make_unique<SoftwareActivationBlocksTransition>(
         bus, softwarePath.c_str());
     activation->activation(SoftwareActivation::Activations::Activating);
+    if (!preConditionPath.empty())
+    {
+        ConditionExecutor(bus, preConditionPath, conditionArg).executeAndWait();
+    }
     deviceUpdater->startFwUpdateFlow();
     return;
 }
@@ -216,6 +226,11 @@ std::optional<DeviceUpdaterInfo> DeviceDedicatedUpdater::validatePackage()
 void DeviceDedicatedUpdater::updateDeviceCompletion(mctp_eid_t /*eid*/,
                                                     bool status)
 {
+    if (!postConditionPath.empty())
+    {
+        ConditionExecutor(bus, postConditionPath, conditionArg)
+            .executeAndWait();
+    }
     if (activationProgress)
     {
         activationProgress->progress(
@@ -232,6 +247,10 @@ void DeviceDedicatedUpdater::updateDeviceCompletion(mctp_eid_t /*eid*/,
     {
         handleUpdateFailure();
         error("Firmware update failed for EID {EID}", "EID", eid);
+    }
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
     }
 }
 void DeviceDedicatedUpdater::updateActivationProgress()
