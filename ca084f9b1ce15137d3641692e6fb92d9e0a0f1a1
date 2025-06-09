@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9f60d99_a8c0bc5f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 92
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "Can we decouple the integration of the new libpldm package parsing APIs from the switch to the StartUpdate API, so that it can be pushed independently without waiting for Andrew\u0027s libpldm patches to be merged?",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d78e89e6_33f5ac7b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 92
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "Please update the commit message to mention the use of the StartUpdate D-Bus method.\n\nAlso please add the test results.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ad79f49_e9a829dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 92
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "Hi Unive, thanks for the patch.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fe55cfa_976f102a",
+        "filename": "fw-update/device_dedicated_updater.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "The method doesn\u0027t invalidate the update but rather reacts to an already detected failed update.\nShould we rename it for clarity ? how about handleUpdateFailure() or clearActivationInfo() ?",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9edc31a8_15b2a948",
+        "filename": "fw-update/device_dedicated_updater.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "Should we not cleanup `blocksTransition`, `activationProgress` and `isUpdateInProgress` for the failed case? \nhow about calling the already defined updateInvalidRoutine() instead ?",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d72ced95_6e99ae19",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "nit: the comments are unnecessary as the code is self- understood.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dd8249a_2df64ff6",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "Just a suggestion — shall we decouple the firmware inventory changes from the StartUpdate implementation, if it doesn\u0027t require significant rework? \nThe inventory changes can go in first.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d991a6_b693b7a1",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "Just to clarify—if the EM config is not present, will the software objects still be created with the default name? Have you had a chance to test this scenario?",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f28db2aa_cddf7f9d",
+        "filename": "fw-update/software_update.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "We now have two PLDM update paths — the legacy inotify-based flow and the new StartUpdate D-Bus method.\n\nDo we plan to keep both, or should we replace the new flow with the the inotify-based flow to reduce code duplication and maintenance overhead?\n\n++ @deepak.kodihalli.83@gmail.com @rushtotom@gmail.com",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ec3840e_27b9bf97",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-09T07:26:44Z",
+      "side": 1,
+      "message": "Do we really need an extra thread and service? Can\u0027t we use the existing event loop instead? PLDM daemon typically is single-thread app, driving all I/O through the main sd_event loop provided by systemd.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
