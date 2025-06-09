@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5972768e_91571869",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-06-09T14:33:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4267ec0a_29c65bfb",
+      "range": {
+        "startLine": 11,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39e4e9d1_b044bec5",
@@ -82,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd25d43_69f20815",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-06-09T14:33:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "540f16de_ef8d8b9e",
+      "range": {
+        "startLine": 368,
+        "startChar": 11,
+        "endLine": 369,
+        "endChar": 34
+      },
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ddc3818_3c3c7176",
@@ -105,6 +153,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ecb0f98_c32aff60",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-06-09T14:33:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7ddc3818_3c3c7176",
+      "range": {
+        "startLine": 371,
+        "startChar": 8,
+        "endLine": 371,
+        "endChar": 70
+      },
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fec33a88_7b902a51",
@@ -118,6 +190,30 @@
       "writtenOn": "2025-05-29T10:50:40Z",
       "side": 1,
       "message": "shouldn\u0027t we ensure that we have another record before we do this ? \n\n`if (table.size() - pos \u003c sizeof(struct pldm_fru_record_data_format))` ? then bail out ?",
+      "range": {
+        "startLine": 382,
+        "startChar": 8,
+        "endLine": 383,
+        "endChar": 76
+      },
+      "revId": "991f802c1d50e98d1fc09b57f820658d8f851070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fdc9419_d222bb60",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-06-09T14:33:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fec33a88_7b902a51",
       "range": {
         "startLine": 382,
         "startChar": 8,
