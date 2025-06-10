@@ -2,6 +2,7 @@
 
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
+#include "condition_executor.hpp"
 #include "device_updater.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
@@ -22,10 +23,7 @@
 #include <tuple>
 #include <unordered_map>
 
-namespace pldm
-{
-
-namespace fw_update
+namespace pldm::fw_update
 {
 
 class DeviceDedicatedUpdater;
@@ -70,7 +68,10 @@ class DeviceDedicatedUpdater : public UpdateManagerIntf
         const std::string& softwarePath, const std::string& softwareVersion,
         const std::string& associatedEndpoint, const Descriptors& descriptors,
         const ComponentInfo& componentInfo,
-        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
+        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr);
 
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
@@ -128,9 +129,14 @@ class DeviceDedicatedUpdater : public UpdateManagerIntf
 
     bool isUpdateInProgress = false;
 
+    std::string preConditionPath;
+    std::string postConditionPath;
+    std::string conditionArg;
+
+    std::function<void()> taskCompletionCallback;
+
     friend class SoftwareUpdate;
 };
 
-} // namespace fw_update
-
-} // namespace pldm
+} // namespace pldm::fw_update
+                              
