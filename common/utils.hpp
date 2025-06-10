@@ -394,6 +394,40 @@ class DBusHandler : public DBusHandlerInterface
     void setDbusProperty(const DBusMapping& dBusMap,
                          const PropertyValue& value) const override;
 
+    /** @brief The template function to set Dbus property in Inventory manager
+     *         through NOTIFY call, to persist the data after reboot.  
+     *
+     *  @param[in] dBusMap - Object path, property name, interface and property
+     *                       type for the D-Bus object
+     *  @param[in] value - The value to be set
+     *
+     *  @throw sdbusplus::exception_t when it fails
+     */
+    template <typename Type>
+    void setInventoryPropertyToPersist(const DBusMapping& dBusMap,
+                                  const Type& value) const
+    {
+        auto& bus = getBus();
+        auto service =
+            getService(dBusMap.objectPath.c_str(), dBusMap.interface.c_str());
+        ObjectValueTree objectValueTree;
+        InterfaceMap interfaceMap;
+        PropertyMap propertyMap;
+        propertyMap.emplace(dBusMap.propertyName.c_str(), value);
+        std::string objPath = dBusMap.objectPath.c_str();
+        std::string toReplace("/xyz/openbmc_project/inventory/system");
+        size_t pos = objPath.find(toReplace);
+        objPath.replace(pos, toReplace.length(), "/system");
+        interfaceMap.emplace(dBusMap.interface.c_str(), propertyMap);
+        objectValueTree.emplace(std::move(objPath),
+                std::move(interfaceMap));
+        auto method = bus.new_method_call(
+                service.c_str(), "/xyz/openbmc_project/inventory",
+                "xyz.openbmc_project.Inventory.Manager", "Notify");
+        method.append(std::move(objectValueTree));
+        bus.call_noreply(method, dbusTimeout);
+    }
+
     /** @brief This function retrieves the properties of an object managed
      *         by the specified D-Bus service located at the given object path.
      *
