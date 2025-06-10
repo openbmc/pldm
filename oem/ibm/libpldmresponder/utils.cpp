@@ -247,11 +247,10 @@ int pldm::responder::oem_ibm_utils::Handler::setCoreCount(
                         pldm::utils::DBusMapping dbusMapping{
                             objectPath, cpuInterface[0], "CoreCount",
                             "uint16_t"};
-                        pldm::utils::PropertyValue value =
-                            static_cast<uint16_t>(coreCount);
                         try
                         {
-                            dBusIntf->setDbusProperty(dbusMapping, value);
+                            dBusIntf->setInventoryPropertyToPersist<uint16_t>(
+                                dbusMapping, coreCount);
                         }
                         catch (const std::exception& e)
                         {
