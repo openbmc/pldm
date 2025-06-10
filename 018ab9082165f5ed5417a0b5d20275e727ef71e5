@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6055b7ec_f896c08b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-10T06:10:53Z",
+      "side": 1,
+      "message": "how is this tested ? can you also please include the testing logs here.",
+      "revId": "018ab9082165f5ed5417a0b5d20275e727ef71e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a52f6779_7257b11d",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-10T06:10:53Z",
+      "side": 1,
+      "message": "nit: new line here.",
+      "revId": "018ab9082165f5ed5417a0b5d20275e727ef71e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
