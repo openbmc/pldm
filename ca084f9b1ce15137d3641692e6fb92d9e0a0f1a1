@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a1fec2e_504f820f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 92
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "Andrew\u0027s patches include support for parsing PLDM packages for downstream devices (supported since DSP0267 v1.1.0), which make this patch in spec compilance, if we decoupe these, there will be out of a formal way to support update downstream devices, since v1.0.0 packages doesen\u0027t have fields for downstream devices.\n\nHow do you think with decoupling support downstream devices from others?",
+      "parentUuid": "e9f60d99_a8c0bc5f",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d78e89e6_33f5ac7b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 92
@@ -31,6 +49,24 @@
       "writtenOn": "2025-06-09T07:26:44Z",
       "side": 1,
       "message": "Please update the commit message to mention the use of the StartUpdate D-Bus method.\n\nAlso please add the test results.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c6ff60_7fa7f056",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 92
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d78e89e6_33f5ac7b",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2025-06-09T07:26:44Z",
       "side": 1,
       "message": "Hi Unive, thanks for the patch.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc99aef_ec0aeb01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 92
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "Hi Rajeev, thanks for reviewing.",
+      "parentUuid": "6ad79f49_e9a829dd",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a52a9f5_3f81b7d2",
+        "filename": "fw-update/device_dedicated_updater.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7fe55cfa_976f102a",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9edc31a8_15b2a948",
         "filename": "fw-update/device_dedicated_updater.cpp",
         "patchSetId": 92
@@ -82,6 +154,24 @@
       "writtenOn": "2025-06-09T07:26:44Z",
       "side": 1,
       "message": "Should we not cleanup `blocksTransition`, `activationProgress` and `isUpdateInProgress` for the failed case? \nhow about calling the already defined updateInvalidRoutine() instead ?",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1a80649_fe0c0bfd",
+        "filename": "fw-update/device_dedicated_updater.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9edc31a8_15b2a948",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -105,6 +195,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9c999c8_1bd7ed04",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d72ced95_6e99ae19",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4dd8249a_2df64ff6",
         "filename": "fw-update/inventory_manager.hpp",
         "patchSetId": 92
@@ -116,6 +224,24 @@
       "writtenOn": "2025-06-09T07:26:44Z",
       "side": 1,
       "message": "Just a suggestion — shall we decouple the firmware inventory changes from the StartUpdate implementation, if it doesn\u0027t require significant rework? \nThe inventory changes can go in first.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce805196_02263bff",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "Sounds reachable,\n@paligill@gmail.com How do you think with breaking this patch?",
+      "parentUuid": "4dd8249a_2df64ff6",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -139,6 +265,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42ea792f_ce6680ed",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "If EM dosen\u0027t expose anything, the software entry won\u0027t be created (the code flow won\u0027t reach here).\nIf only name is not provided, will try to use the name provided from device/downstream device identifier.\nIf both of those are not provided, sofwareName will become `Firmware_Device_\u003ceid\u003e` or `Downstream_Debvice_\u003cdownstream_device_index\u003e`.",
+      "parentUuid": "10d991a6_b693b7a1",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f28db2aa_cddf7f9d",
         "filename": "fw-update/software_update.cpp",
         "patchSetId": 92
@@ -156,6 +300,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09fbcc1a_d8ab7bf7",
+        "filename": "fw-update/software_update.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "At least keeping a conversion period will be need if we are deprecating the lagacy flow eventually.",
+      "parentUuid": "f28db2aa_cddf7f9d",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ec3840e_27b9bf97",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 92
@@ -167,6 +329,24 @@
       "writtenOn": "2025-06-09T07:26:44Z",
       "side": 1,
       "message": "Do we really need an extra thread and service? Can\u0027t we use the existing event loop instead? PLDM daemon typically is single-thread app, driving all I/O through the main sd_event loop provided by systemd.",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33764561_37884a6f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-11T10:31:02Z",
+      "side": 1,
+      "message": "I didn\u0027t find a graceful way to perform a `sdbusplus::async::context` in a existing event loop, but I believe it\u0027s a necessary thing for using any async server binding.\nWould be appriciate if there is any example .",
+      "parentUuid": "7ec3840e_27b9bf97",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
