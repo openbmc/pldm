@@ -59,6 +59,10 @@ PHOSPHOR_LOG2_USING;
 #include "xyz/openbmc_project/PLDM/Event/server.hpp"
 #endif
 
+#ifdef OEM_META
+#include "oem/meta/oem_meta.hpp"
+#endif
+
 #ifdef OEM_IBM
 #include "oem_ibm.hpp"
 #endif
@@ -321,6 +325,10 @@ int main(int argc, char** argv)
         biosHandler.get(), platformManager.get(), &reqHandler);
 #endif
 
+#ifdef OEM_META
+    pldm::oem_meta::OemMETA oemMETA(&dbusHandler,invoker, platformHandler.get());
+#endif
+
 #ifdef OEM_IBM
     pldm::oem_ibm::OemIBM oemIBM(
         &dbusHandler, pldmTransport.getEventSource(), hostEID, pdrRepo.get(),
@@ -345,7 +353,8 @@ int main(int argc, char** argv)
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
-                     fwManager.get(), platformManager.get()});
+                     fwManager.get(), platformManager.get(),
+                     oemMETA.getMctpConfigurationHandler()});
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (revents & (POLLHUP | POLLERR))
