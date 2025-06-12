@@ -125,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9503834_792a7986",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 92
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-12T16:06:44Z",
+      "side": 1,
+      "message": "marking it unresolved for now.",
+      "parentUuid": "2eb53113_8ea49fc4",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fe55cfa_976f102a",
         "filename": "fw-update/device_dedicated_updater.cpp",
         "patchSetId": 92
