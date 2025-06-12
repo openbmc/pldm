@@ -283,6 +283,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f4cbd99f_6b599648",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-12T16:53:50Z",
+      "side": 1,
+      "message": "+1 for smaller commits doign one thing.\n\nhttps://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#organizing-commits",
+      "parentUuid": "ce805196_02263bff",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "10d991a6_b693b7a1",
         "filename": "fw-update/software_manager.cpp",
         "patchSetId": 92
