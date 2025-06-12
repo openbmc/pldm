@@ -106,6 +106,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eb53113_8ea49fc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 92
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-12T16:05:35Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com I tried integrating this patch, but I do see pldmd crashes at the service start up.\n```\nMar 11 19:07:50 gb200nvl-hmc pldmd[6244]: Successfully initialized platform manager\nMar 11 19:07:56 gb200nvl-hmc pldmd[6244]: terminate called after throwing an instance of \u0027sdbusplus::exception::SdBusError\u0027\nMar 11 19:07:56 gb200nvl-hmc pldmd[6244]:   what():  sd_bus_process discard: org.freedesktop.DBus.Error.InconsistentMessage: Bad message\nMar 11 19:07:57 gb200nvl-hmc systemd[1]: pldmd.service: Main process exited, code\u003ddumped, status\u003d6/ABRT\nMar 11 19:07:57 gb200nvl-hmc systemd[1]: pldmd.service: Failed with result \u0027core-dump\u0027.\nMar 11 19:07:58 gb200nvl-hmc systemd[1]: pldmd.service: Scheduled restart job, restart counter is at 1.\n```\nCould you please confirm if this patch was integrated and tested ?",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fe55cfa_976f102a",
@@ -277,6 +294,24 @@
       "side": 1,
       "message": "If EM dosen\u0027t expose anything, the software entry won\u0027t be created (the code flow won\u0027t reach here).\nIf only name is not provided, will try to use the name provided from device/downstream device identifier.\nIf both of those are not provided, sofwareName will become `Firmware_Device_\u003ceid\u003e` or `Downstream_Debvice_\u003cdownstream_device_index\u003e`.",
       "parentUuid": "10d991a6_b693b7a1",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a1f756d_d1a47660",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-12T16:05:35Z",
+      "side": 1,
+      "message": "If EM doesn\u0027t expose anything, we should still create the software object with the default_name + eid + version_hash.",
+      "parentUuid": "42ea792f_ce6680ed",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
