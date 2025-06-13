@@ -194,6 +194,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d816e92_8e14aaf6",
+        "filename": "fw-update/device_dedicated_updater.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-13T11:39:09Z",
+      "side": 1,
+      "message": "Marked as resolved, since the change is splited out from this patch.",
+      "parentUuid": "7a52a9f5_3f81b7d2",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9edc31a8_15b2a948",
@@ -229,6 +247,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b175656c_63aeaef9",
+        "filename": "fw-update/device_dedicated_updater.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-13T11:39:09Z",
+      "side": 1,
+      "message": "Marked as resolved, since the change is splited out from this patch.",
+      "parentUuid": "b1a80649_fe0c0bfd",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d72ced95_6e99ae19",
@@ -260,6 +296,24 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "d72ced95_6e99ae19",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c1e74b_181fd6cc",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-13T11:39:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9c999c8_1bd7ed04",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -331,6 +385,24 @@
       "side": 1,
       "message": "Acked, I\u0027ll split it.",
       "parentUuid": "f4cbd99f_6b599648",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa3007cb_8e12d14c",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-13T11:39:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "056e3c69_9c07ec61",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
