@@ -143,6 +143,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d49fc6fa_7b010544",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 92
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-13T09:24:25Z",
+      "side": 1,
+      "message": "Tested fine on Yosemite 4, my speculation is this is cause by multiple event loop, since I\u0027m experiencing the similar issue on the following modification.\n\n@paligill@gmail.com I\u0027m now getting stuck on making `sdeventplus` and `sdbusplus::async` things work simultaneously, do you have any opinions for this?\nOtherwise I prefer to switch back to sync server binding at this stage.",
+      "parentUuid": "b9503834_792a7986",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fe55cfa_976f102a",
         "filename": "fw-update/device_dedicated_updater.cpp",
         "patchSetId": 92
@@ -301,6 +319,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "056e3c69_9c07ec61",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-13T09:24:25Z",
+      "side": 1,
+      "message": "Acked, I\u0027ll split it.",
+      "parentUuid": "f4cbd99f_6b599648",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "10d991a6_b693b7a1",
         "filename": "fw-update/software_manager.cpp",
         "patchSetId": 92
@@ -348,6 +384,24 @@
       "side": 1,
       "message": "If EM doesn\u0027t expose anything, we should still create the software object with the default_name + eid + version_hash.",
       "parentUuid": "42ea792f_ce6680ed",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e16dc36_ae687073",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-13T09:24:25Z",
+      "side": 1,
+      "message": "That doesn\u0027t in line with the [purposed flow], we expect any device has have an association to EM or other service exposing `/xyz/openbmc_project/inventory/system/...` path here.\n\n[purposed flow]: https://github.com/openbmc/docs/blob/master/designs/code-update.md#proposed-end-to-end-flow",
+      "parentUuid": "5a1f756d_d1a47660",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
