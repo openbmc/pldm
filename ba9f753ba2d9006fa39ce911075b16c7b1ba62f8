@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963c1a3d_05c8e58f",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-06-13T02:13:03Z",
+      "side": 1,
+      "message": "This isn\u0027t right - `completionCode` is not written between its initialisation and this test.\n\nI think you rather want to test `event_receive_resp_data.completion_code`?",
+      "range": {
+        "startLine": 110,
+        "startChar": 15,
+        "endLine": 110,
+        "endChar": 32
+      },
+      "revId": "ba9f753ba2d9006fa39ce911075b16c7b1ba62f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98a28a11_e9f4293c",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-06-13T02:13:03Z",
+      "side": 1,
+      "message": "The grammar here doesn\u0027t seem quite right, can you rework it?\n\nAlso, it\u0027s not a failure to decode if `rc` is 0 but `event_receiver_resp_data.completion_code` is not `PLDM_SUCCESS` - that\u0027s a failure on the part of the command semantics at the terminus.",
+      "range": {
+        "startLine": 112,
+        "startChar": 26,
+        "endLine": 112,
+        "endChar": 66
+      },
+      "revId": "ba9f753ba2d9006fa39ce911075b16c7b1ba62f8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
