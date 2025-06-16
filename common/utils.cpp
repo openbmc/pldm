@@ -817,5 +817,51 @@ std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
     return ret;
 }
 
+SensorPDRs getStateSensorPDRsByType(uint16_t entityType, const pldm_pdr* repo)
+{
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record = nullptr;
+    SensorPDRs pdrs;
+
+    if (repo)
+    {
+        while ((record = pldm_pdr_find_record_by_type(
+                    repo, PLDM_STATE_SENSOR_PDR, record, &outData, &size)))
+        {
+            auto pdr = new (outData) pldm_state_sensor_pdr;
+            if (pdr && pdr->entity_type == entityType)
+            {
+                pdrs.emplace_back(outData, outData + size);
+            }
+        }
+    }
+
+    return pdrs;
+}
+
+std::vector<pldm::pdr::SensorID> findSensorIds(
+    const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
+    uint16_t containerId)
+{
+    std::vector<uint16_t> sensorIDs;
+    auto pdrs = getStateSensorPDRsByType(entityType, pdrRepo);
+
+    for (const auto& pdr : pdrs)
+    {
+        auto sensorPdr =
+            reinterpret_cast<const pldm_state_sensor_pdr*>(pdr.data());
+
+        if (sensorPdr && sensorPdr->entity_type == entityType &&
+            sensorPdr->entity_instance == entityInstance &&
+            sensorPdr->container_id == containerId)
+        {
+            sensorIDs.emplace_back(sensorPdr->sensor_id);
+        }
+    }
+
+    return sensorIDs;
+}
+
 } // namespace utils
 } // namespace pldm
