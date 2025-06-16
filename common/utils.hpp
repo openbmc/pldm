@@ -203,6 +203,9 @@ using PropertyMap = std::map<std::string, PropertyValue>;
 using InterfaceMap = std::map<std::string, PropertyMap>;
 using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 
+using SensorPDR = std::vector<uint8_t>;
+using SensorPDRs = std::vector<SensorPDR>;
+
 /**
  * @brief The interface for DBusHandler
  */
@@ -510,6 +513,28 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
 uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                              uint16_t entityInstance, uint16_t containerId,
                              uint16_t stateSetId, bool localOrRemote);
+
+/** @brief Method to find all state sensor PDRs by type
+ *
+ *  @param[in] entityType - the entity type
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ *
+ *  @return vector of vector of all state sensor PDRs
+ */
+SensorPDRs getStateSensorPDRsByType(uint16_t entityType, const pldm_pdr* repo);
+
+/** @brief method to find sensor IDs based on the pldm_entity
+ *
+ *  @param[in] pdrRepo - opaque pointer acting as a PDR repo handle
+ *  @param[in] entityType - the entity type
+ *  @param[in] entityInstance - the entity instance number
+ *  @param[in] containerId - the container ID
+ *
+ *  @return vector of all sensor IDs
+ */
+std::vector<pldm::pdr::SensorID> findSensorIds(
+    const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
+    uint16_t containerId);
 
 /** @brief Emit the sensor event signal
  *
