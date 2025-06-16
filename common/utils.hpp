@@ -511,6 +511,20 @@ uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                              uint16_t entityInstance, uint16_t containerId,
                              uint16_t stateSetId, bool localOrRemote);
 
+/** @brief method to find sensor IDs based on the pldm_entity
+ *
+ *  @param[in] pdrRepo - opaque pointer acting as a PDR repo handle
+ *  @param[in] tid - terminus ID
+ *  @param[in] entityType - the entity type
+ *  @param[in] entityInstance - the entity instance number
+ *  @param[in] containerId - the container ID
+ *
+ *  @return vector of all sensor IDs
+ */
+std::vector<pldm::pdr::SensorID> findSensorIds(
+    const pldm_pdr* pdrRepo, uint8_t /*tid*/, uint16_t entityType,
+    uint16_t entityInstance, uint16_t containerId);
+
 /** @brief Emit the sensor event signal
  *
  *	@param[in] tid - the terminus id
