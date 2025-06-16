@@ -76,20 +76,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
 
     package.seekg(0);
-    std::vector<uint8_t> packageHeader(sizeof(pldm_package_header_information));
+    std::vector<uint8_t> packageHeader(packageSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 sizeof(pldm_package_header_information));
-
-    auto pkgHeaderInfo =
-        reinterpret_cast<const pldm_package_header_information*>(
-            packageHeader.data());
-    auto pkgHeaderInfoSize = sizeof(pldm_package_header_information) +
-                             pkgHeaderInfo->package_version_string_length;
-    packageHeader.clear();
-    packageHeader.resize(pkgHeaderInfoSize);
-    package.seekg(0);
-    package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 pkgHeaderInfoSize);
+                 packageSize);
 
     parser = parsePkgHeader(packageHeader);
     if (parser == nullptr)
@@ -105,9 +94,6 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     objPath = swRootPath + std::to_string(versionHash);
 
     package.seekg(0);
-    packageHeader.resize(parser->pkgHeaderSize);
-    package.read(reinterpret_cast<char*>(packageHeader.data()),
-                 parser->pkgHeaderSize);
     try
     {
         parser->parse(packageHeader, packageSize);

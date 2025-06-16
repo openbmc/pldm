@@ -7,6 +7,21 @@
 
 using namespace pldm::fw_update;
 
+void imageGenerate(std::vector<uint8_t>& image, size_t size)
+{
+    for (size_t i = 1; i <= size; ++i)
+    {
+        image.push_back(static_cast<uint8_t>(i));
+    }
+}
+
+void imageInsert(std::vector<uint8_t>& fwPkgHdr, std::vector<uint8_t>& image)
+{
+    // Insert the image at the end of the package header
+    fwPkgHdr.insert(fwPkgHdr.end(), image.begin(), image.end());
+}
+
+
 TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
 {
     std::vector<uint8_t> fwPkgHdr{
@@ -24,6 +39,11 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
         0x6E, 0x67, 0x33, 0x4F, 0x96, 0xAE, 0x56};
 
     constexpr uintmax_t pkgSize = 166;
+    constexpr uintmax_t pkgHeaderSize = 139;
+    constexpr uintmax_t pkgImageSize = pkgSize - pkgHeaderSize;
+    std::vector<uint8_t> compImage;
+    imageGenerate(compImage, pkgImageSize);
+    imageInsert(fwPkgHdr, compImage);
     constexpr std::string_view pkgVersion{"VersionString1"};
     auto parser = parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
@@ -84,6 +104,15 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
         0x9C, 0x71};
 
     constexpr uintmax_t pkgSize = 407;
+    constexpr uintmax_t pkgHeaderSize = 326;
+    constexpr uintmax_t pkgImageSize = (pkgSize - pkgHeaderSize) / 3;
+    std::vector<uint8_t> compImage1, compImage2, compImage3;
+    imageGenerate(compImage1, pkgImageSize);
+    imageGenerate(compImage2, pkgImageSize);
+    imageGenerate(compImage3, pkgImageSize);
+    imageInsert(fwPkgHdr, compImage1);
+    imageInsert(fwPkgHdr, compImage2);
+    imageInsert(fwPkgHdr, compImage3);
     constexpr std::string_view pkgVersion{"VersionString1"};
     auto parser = parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
@@ -173,6 +202,11 @@ TEST(PackageParser, InvalidPkgBadChecksum)
         0x6E, 0x67, 0x33, 0x4F, 0x96, 0xAE, 0x57};
 
     constexpr uintmax_t pkgSize = 166;
+    constexpr uintmax_t pkgHeaderSize = 139;
+    constexpr uintmax_t pkgImageSize = pkgSize - pkgHeaderSize;
+    std::vector<uint8_t> compImage;
+    imageGenerate(compImage, pkgImageSize);
+    imageInsert(fwPkgHdr, compImage);
     constexpr std::string_view pkgVersion{"VersionString1"};
     auto parser = parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
