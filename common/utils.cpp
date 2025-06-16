@@ -817,5 +817,91 @@ std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
     return ret;
 }
 
+std::vector<std::vector<pldm::pdr::Pdr_t>> getStateSensorPDRsByType(
+    uint8_t /*tid*/, uint16_t entityType, const pldm_pdr* repo)
+{
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record{};
+    std::vector<std::vector<uint8_t>> pdrs;
+    do
+    {
+        record = pldm_pdr_find_record_by_type(repo, PLDM_STATE_SENSOR_PDR,
+                                              record, &outData, &size);
+
+        if (record)
+        {
+            auto pdr = reinterpret_cast<pldm_state_sensor_pdr*>(outData);
+            if (pdr)
+            {
+                auto compositeSensorCount = pdr->composite_sensor_count;
+                auto possible_states_start = pdr->possible_states;
+
+                for (auto sensors = 0x00; sensors < compositeSensorCount;
+                     sensors++)
+                {
+                    auto possibleStates =
+                        reinterpret_cast<state_sensor_possible_states*>(
+                            possible_states_start);
+                    auto setId = possibleStates->state_set_id;
+                    auto possibleStateSize =
+                        possibleStates->possible_states_size;
+
+                    if (pdr->entity_type == entityType)
+                    {
+                        std::vector<uint8_t> sensor_pdr(&outData[0],
+                                                        &outData[size]);
+                        pdrs.emplace_back(std::move(sensor_pdr));
+                        break;
+                    }
+                    possible_states_start += possibleStateSize + sizeof(setId) +
+                                             sizeof(possibleStateSize);
+                }
+            }
+        }
+
+    } while (record);
+
+    return pdrs;
+}
+
+std::vector<pldm::pdr::SensorID> findSensorIds(
+    const pldm_pdr* pdrRepo, uint8_t tid, uint16_t entityType,
+    uint16_t entityInstance, uint16_t containerId)
+{
+    std::vector<uint16_t> sensorIDs;
+
+    auto pdrs = getStateSensorPDRsByType(tid, entityType, pdrRepo);
+    for (const auto& pdr : pdrs)
+    {
+        auto sensorPdr =
+            reinterpret_cast<const pldm_state_sensor_pdr*>(pdr.data());
+        if (sensorPdr)
+        {
+            auto compositeSensorCount = sensorPdr->composite_sensor_count;
+            auto possible_states_start = sensorPdr->possible_states;
+
+            for (auto sensors = 0x00; sensors < compositeSensorCount; sensors++)
+            {
+                auto possibleStates =
+                    reinterpret_cast<const state_sensor_possible_states*>(
+                        possible_states_start);
+                auto possibleStateSize = possibleStates->possible_states_size;
+                if (entityType == sensorPdr->entity_type &&
+                    entityInstance == sensorPdr->entity_instance &&
+                    containerId == sensorPdr->container_id)
+                {
+                    uint16_t id = sensorPdr->sensor_id;
+                    sensorIDs.emplace_back(std::move(id));
+                }
+                possible_states_start +=
+                    possibleStateSize + sizeof(possibleStates->state_set_id) +
+                    sizeof(possibleStateSize);
+            }
+        }
+    }
+    return sensorIDs;
+}
+
 } // namespace utils
 } // namespace pldm
