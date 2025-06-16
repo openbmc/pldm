@@ -69,6 +69,30 @@
       },
       "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e8102a_dbaf8255",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-06-16T06:07:30Z",
+      "side": 1,
+      "message": "If possible, I would appreciate clear guidance and examples to help me resolve the issue of avoiding core dumps when the pldmd instance ID is exhausted.\nThank you very much!",
+      "parentUuid": "592e381d_4daee1a3",
+      "range": {
+        "startLine": 22,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 47
+      },
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
