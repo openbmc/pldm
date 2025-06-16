@@ -187,6 +187,7 @@ using CompositeCount = uint8_t;
 using SensorOffset = uint8_t;
 using EventState = uint8_t;
 using TerminusValidity = uint8_t;
+using Pdr_t = uint8_t;
 
 //!< Subset of the State Set that is supported by a effecter/sensor
 using PossibleStates = std::set<uint8_t>;
