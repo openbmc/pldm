@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bcd15c2_38653390",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 92
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-17T05:16:06Z",
+      "side": 1,
+      "message": "Marked as resolved for now",
+      "parentUuid": "1a1fec2e_504f820f",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d78e89e6_33f5ac7b",
@@ -474,6 +492,24 @@
       "side": 1,
       "message": "That doesn\u0027t in line with the [purposed flow], we expect any device has have an association to EM or other service exposing `/xyz/openbmc_project/inventory/system/...` path here.\n\n[purposed flow]: https://github.com/openbmc/docs/blob/master/designs/code-update.md#proposed-end-to-end-flow",
       "parentUuid": "5a1f756d_d1a47660",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4537f5fe_d5f16a25",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-17T05:16:06Z",
+      "side": 1,
+      "message": "Marked as resolved for now.",
+      "parentUuid": "9e16dc36_ae687073",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

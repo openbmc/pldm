@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dce2525a_2f0effbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 97
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-17T05:16:06Z",
+      "side": 1,
+      "message": "I\u0027ve just closed some of the comments, but these can be re-opened anytime if needed.",
+      "revId": "87911eca0e9a59f509e7639eb1168ae56814ba2f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
