@@ -15,19 +15,69 @@ namespace pldm
 {
 namespace fw_update
 {
-void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
+void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
-    for (const auto& eid : eids)
+    for (const auto& mctpInfo : mctpInfos)
     {
+        auto eid = std::get<pldm::eid>(mctpInfo);
         try
         {
+            refreshInventoryPath(mctpInfo);
             sendQueryDeviceIdentifiersRequest(eid);
+            sendQueryDownstreamDevicesRequest(eid);
         }
         catch (const std::exception& e)
         {
             error(
                 "Failed to discover file descriptors for endpoint ID {EID} with {ERROR}",
                 "EID", eid, "ERROR", e);
+        }
+    }
+}
+
+void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
+{
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        auto eid = std::get<pldm::eid>(mctpInfo);
+        firmwareDeviceNameMap.erase(eid);
+        descriptorMap.erase(eid);
+        downstreamDescriptorMap.erase(eid);
+        componentInfoMap.erase(eid);
+        for (auto it = downstreamDeviceNameMap.begin();
+             it != downstreamDeviceNameMap.end();)
+        {
+            const auto& [downstreamId, _] = *it;
+            const auto& [itEid, __] = downstreamId;
+            if (itEid == eid)
+            {
+                it = downstreamDeviceNameMap.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+        softwareManager.removeSoftwareEntryByEid(eid);
+    }
+}
+
+void InventoryManager::updateConfigurations(
+    const Configurations& configurations)
+{
+    this->configurations = configurations;
+}
+
+void InventoryManager::refreshInventoryPath(const MctpInfo& mctpInfo)
+{
+    const auto eid = std::get<pldm::eid>(mctpInfo);
+
+    for (const auto& [configDbusPath, mctpInfo] : configurations)
+    {
+        if (std::get<pldm::eid>(mctpInfo) == eid)
+        {
+            softwareManager.refreshInventoryPath(eid, configDbusPath);
+            break;
         }
     }
 }
@@ -161,7 +211,8 @@ void InventoryManager::queryDeviceIdentifiers(
         deviceIdentifiersLen -= nextDescriptorOffset;
     }
 
-    descriptorMap.emplace(eid, std::move(descriptors));
+    updateFirmwareDeviceName(eid, descriptors);
+    descriptorMap.insert_or_assign(eid, std::move(descriptors));
 
     // Send GetFirmwareParameters request
     sendGetFirmwareParametersRequest(eid);
@@ -412,6 +463,8 @@ void InventoryManager::queryDownstreamIdentifiers(
             return;
         }
         downstreamDevices->emplace(dev.downstream_device_index, descriptors);
+        updateDownstreamDeviceName(eid, dev.downstream_device_index,
+                                   descriptors);
     }
     if (rc)
     {
@@ -521,10 +574,27 @@ void InventoryManager::getDownstreamFirmwareParameters(
 
     foreach_pldm_downstream_device_parameters_entry(params, entry, rc)
     {
-        // Reserved for upcoming use
-        [[maybe_unused]] variable_field activeCompVerStr{
+        variable_field activeCompVerStr{
             reinterpret_cast<const uint8_t*>(entry.active_comp_ver_str),
             entry.active_comp_ver_str_len};
+        DownstreamDeviceIndex downstreamDeviceIndex =
+            entry.downstream_device_index;
+        SoftwareIdentifier softwareIdentifier(eid, downstreamDeviceIndex);
+        if (downstreamDeviceNameMap.contains(softwareIdentifier))
+        {
+            softwareManager.createSoftwareEntry(
+                softwareIdentifier,
+                downstreamDeviceNameMap.at(softwareIdentifier),
+                utils::toString(activeCompVerStr),
+                downstreamDescriptorMap[eid][downstreamDeviceIndex],
+                componentInfoMap[eid]);
+        }
+        else
+        {
+            error(
+                "Downstream device name not found for endpoint ID {EID} and downstream device index {INDEX}",
+                "EID", eid, "INDEX", downstreamDeviceIndex);
+        }
     }
     if (rc)
     {
@@ -542,6 +612,77 @@ void InventoryManager::getDownstreamFirmwareParameters(
                 eid, resp.next_data_transfer_handle, PLDM_GET_NEXTPART);
             break;
     }
+}
+
+void InventoryManager::updateDownstreamDeviceName(
+    const eid& eid, const DownstreamDeviceIndex& downstreamDeviceIndex,
+    const Descriptors& descriptors)
+{
+    SoftwareName softwareName = obtainDeviceNameFromDescriptors(descriptors);
+
+    if (softwareName.empty())
+    {
+        softwareName = "Downstream_Device_" +
+                       std::to_string(downstreamDeviceIndex);
+    }
+
+    downstreamDeviceNameMap.insert_or_assign(
+        std::make_tuple(eid, downstreamDeviceIndex), softwareName);
+}
+
+SoftwareName InventoryManager::obtainDeviceNameFromDescriptors(
+    const Descriptors& descriptors)
+{
+    SoftwareName softwareName{};
+    for (const auto& [descriptorType, descriptorData] : descriptors)
+    {
+        if (descriptorType == PLDM_FWUP_VENDOR_DEFINED)
+        {
+            auto vendorInfo =
+                std::get<VendorDefinedDescriptorInfo>(descriptorData);
+            auto title = std::get<VendorDefinedDescriptorTitle>(vendorInfo);
+            if (title == "OpenBMC.Name")
+            {
+                auto deviceNameData =
+                    std::get<VendorDefinedDescriptorData>(vendorInfo);
+                softwareName =
+                    std::string(reinterpret_cast<char*>(deviceNameData.data()),
+                                deviceNameData.size());
+            }
+        }
+    }
+
+    return softwareName;
+}
+
+void InventoryManager::updateFirmwareDeviceName(const pldm::eid& eid,
+                                                const Descriptors& descriptors)
+{
+    SoftwareName firmwareDeviceName;
+    for (const auto& [_, mctpInfo] : configurations)
+    {
+        if (std::get<pldm::eid>(mctpInfo) == eid)
+        {
+            auto nameOption = std::get<std::optional<std::string>>(mctpInfo);
+            if (nameOption)
+            {
+                firmwareDeviceName = *nameOption;
+            }
+            break;
+        }
+    }
+
+    if (firmwareDeviceName.empty())
+    {
+        firmwareDeviceName = obtainDeviceNameFromDescriptors(descriptors);
+    }
+
+    if (firmwareDeviceName.empty())
+    {
+        firmwareDeviceName = "Firmware_Device_" + std::to_string(eid);
+    }
+
+    firmwareDeviceNameMap.insert_or_assign(eid, firmwareDeviceName);
 }
 
 void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
@@ -642,7 +783,28 @@ void InventoryManager::getFirmwareParameters(
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
     }
-    componentInfoMap.emplace(eid, std::move(componentInfo));
+
+    if (firmwareDeviceNameMap.contains(eid))
+    {
+        softwareManager.createSoftwareEntry(
+            SoftwareIdentifier(eid, 0), firmwareDeviceNameMap.at(eid),
+            utils::toString(activeCompImageSetVerStr), descriptorMap[eid],
+            componentInfo);
+    }
+    else
+    {
+        error(
+            "Failed to get firmware parameters response for endpoint ID '{EID}', firmware device name not found",
+            "EID", eid);
+    }
+
+    componentInfoMap.insert_or_assign(eid, std::move(componentInfo));
+}
+
+Response InventoryManager::handleRequest(
+    mctp_eid_t eid, Command command, const pldm_msg* request, size_t reqMsgLen)
+{
+    return softwareManager.handleRequest(eid, command, request, reqMsgLen);
 }
 
 } // namespace fw_update
