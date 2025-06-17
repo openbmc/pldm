@@ -40,7 +40,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     explicit Manager(Event& event,
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
-        inventoryMgr(handler, instanceIdDb, descriptorMap,
+        inventoryMgr(event, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap),
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       downstreamDescriptorMap, componentInfoMap)
@@ -51,15 +51,14 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of discovered MCTP endpoints
      */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos)
+    void handleMctpEndpoints(const MctpInfos& mctpInfos) override
     {
-        std::vector<mctp_eid_t> eids;
-        for (const auto& mctpInfo : mctpInfos)
-        {
-            eids.emplace_back(std::get<mctp_eid_t>(mctpInfo));
-        }
+        inventoryMgr.discoverFDs(mctpInfos);
+    }
 
-        inventoryMgr.discoverFDs(eids);
+    void handleConfigurations(const Configurations& configurations) override
+    {
+        inventoryMgr.updateConfigurations(configurations);
     }
 
     /** @brief Helper function to invoke registered handlers for
@@ -67,9 +66,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos&)
+    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) override
     {
-        return;
+        inventoryMgr.removeFDs(mctpInfos);
     }
 
     /** @brief Helper function to invoke registered handlers for
@@ -78,7 +77,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] mctpInfo - information of the target endpoint
      *  @param[in] availability - new availability status
      */
-    void updateMctpEndpointAvailability(const MctpInfo&, Availability)
+    void updateMctpEndpointAvailability(const MctpInfo&, Availability) override
     {
         return;
     }
@@ -95,7 +94,14 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     Response handleRequest(mctp_eid_t eid, Command command,
                            const pldm_msg* request, size_t reqMsgLen)
     {
-        return updateManager.handleRequest(eid, command, request, reqMsgLen);
+        auto response =
+            updateManager.handleRequest(eid, command, request, reqMsgLen);
+        auto responseMsg = new (response.data()) pldm_msg;
+        if (responseMsg->payload[0] != PLDM_FWUP_COMMAND_NOT_EXPECTED)
+        {
+            return response;
+        }
+        return inventoryMgr.handleRequest(eid, command, request, reqMsgLen);
     }
 
     /** @brief Get Active EIDs.
@@ -103,7 +109,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] addr - MCTP address of terminus
      *  @param[in] terminiNames - MCTP terminus name
      */
-    std::optional<mctp_eid_t> getActiveEidByName(const std::string&)
+    std::optional<mctp_eid_t> getActiveEidByName(const std::string&) override
     {
         return std::nullopt;
     }

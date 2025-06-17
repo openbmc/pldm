@@ -834,9 +834,7 @@ void DeviceUpdater::cancelUpdateComponent(
             completionCode);
         return;
     }
-
-    const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+    
     // Check if this is the last component being cancelled
     if (componentIndex == applicableComponents.size() - 1)
     {
