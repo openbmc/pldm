@@ -246,6 +246,8 @@ executable(
     'pldmd/dbus_impl_pdr.cpp',
     'fw-update/activation.cpp',
     'fw-update/inventory_manager.cpp',
+    'fw-update/software_manager.cpp',
+    'fw-update/device_dedicated_updater.cpp',
     'fw-update/package_parser.cpp',
     'fw-update/device_updater.cpp',
     'fw-update/watch.cpp',
