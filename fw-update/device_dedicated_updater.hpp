@@ -1,0 +1,115 @@
+#pragma once
+
+#include "common/instance_id.hpp"
+#include "common/types.hpp"
+#include "device_updater.hpp"
+#include "package_parser.hpp"
+#include "requester/handler.hpp"
+
+#include <libpldm/base.h>
+
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Software/Activation/server.hpp>
+#include <xyz/openbmc_project/Software/ActivationBlocksTransition/server.hpp>
+#include <xyz/openbmc_project/Software/ActivationProgress/server.hpp>
+#include <xyz/openbmc_project/Software/Version/server.hpp>
+
+#include <chrono>
+#include <filesystem>
+#include <fstream>
+#include <tuple>
+#include <unordered_map>
+
+namespace pldm::fw_update
+{
+
+class DeviceDedicatedUpdater;
+
+using SoftwareActivationProgress =
+    sdbusplus::server::object_t<
+        sdbusplus::xyz::openbmc_project::Software::server::ActivationProgress>;
+using SoftwareActivationBlocksTransition =
+    sdbusplus::server::object_t<
+        sdbusplus::xyz::openbmc_project::Software::server::ActivationBlocksTransition>;
+using SoftwareActivation =
+    sdbusplus::server::object_t<
+        sdbusplus::xyz::openbmc_project::Software::server::Activation>;
+using SoftwareVersion =
+    sdbusplus::server::object_t<sdbusplus::xyz::openbmc_project::Software::server::Version>;
+using SoftwareAssociationDefinitions =
+    sdbusplus::server::object_t<
+        sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
+
+using SoftwareVersionPurpose = SoftwareVersion::VersionPurpose;
+
+using namespace sdeventplus;
+using namespace sdeventplus::source;
+using namespace pldm;
+using Context = sdbusplus::async::context;
+
+class DeviceDedicatedUpdater
+{
+  public:
+    DeviceDedicatedUpdater() = delete;
+    DeviceDedicatedUpdater(const DeviceDedicatedUpdater&) = delete;
+    DeviceDedicatedUpdater(DeviceDedicatedUpdater&&) = delete;
+    DeviceDedicatedUpdater& operator=(const DeviceDedicatedUpdater&) = delete;
+    DeviceDedicatedUpdater& operator=(DeviceDedicatedUpdater&&) = delete;
+    ~DeviceDedicatedUpdater() = default;
+
+    explicit DeviceDedicatedUpdater(
+        Event& /*event*/,
+        pldm::requester::Handler<pldm::requester::Request>& /*handler*/,
+        InstanceIdDb& instanceIdDb, pldm::eid eid,
+        const std::string& softwarePath, const std::string& softwareVersion,
+        const std::string& associatedEndpoint, const Descriptors& descriptors,
+        const ComponentInfo& componentInfo,
+        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
+
+    /** @brief Handle PLDM request for the commands in the FW update
+     *         specification
+     *
+     *  @param[in] command - PLDM command code
+     *  @param[in] request - PLDM request message
+     *  @param[in] requestLen - PLDM request message length
+     *
+     *  @return PLDM response message
+     */
+    Response handleRequest(uint8_t command, const pldm_msg* request,
+                           size_t reqMsgLen);
+
+  private:
+    sdbusplus::bus_t& bus = utils::DBusHandler::getBus();
+
+    pldm::eid eid;
+
+    std::string softwarePath;
+
+    DeviceIDRecord deviceIDRecord;
+
+    std::optional<std::vector<uint8_t>> packageData;
+
+    std::unique_ptr<PackageParser> parser;
+
+    std::unique_ptr<DeviceUpdater> deviceUpdater;
+
+    std::unique_ptr<SoftwareActivation> activation;
+
+    std::unique_ptr<SoftwareActivationProgress> activationProgress;
+
+    std::unique_ptr<SoftwareActivationBlocksTransition> blocksTransition;
+
+    std::unique_ptr<SoftwareAssociationDefinitions> association;
+
+    std::unique_ptr<SoftwareVersion> version;
+
+    const Descriptors& descriptors;
+
+    ComponentInfo componentInfo;
+
+    bool isUpdateInProgress = false;
+
+    friend class SoftwareUpdate;
+};
+
+} // namespace pldm::fw_update
