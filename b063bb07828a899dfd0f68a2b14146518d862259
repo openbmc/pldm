@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a335c33d_17a7c2bc",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-06-17T06:14:32Z",
+      "side": 1,
+      "message": "can we use placement new operator here?",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 70
+      },
+      "revId": "b063bb07828a899dfd0f68a2b14146518d862259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
