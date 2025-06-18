@@ -20,6 +20,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d68dc133_a6d5e098",
+        "filename": "common/types.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-06-18T01:28:22Z",
+      "side": 1,
+      "message": "The new libpldm APIs alleviate the need for the libpldm consumer to do pointer arithmetic. The libpldm implementation resolves the component image in memory. There shouldn\u0027t be a need for the raw offset value.",
+      "parentUuid": "781850be_4116b18a",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b337a4a_12dd29fb",
+        "filename": "common/types.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-06-18T01:28:22Z",
+      "side": 1,
+      "message": "Why are we doing this anyway? Why not use the struct provided by libpldm?",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66232bb3_1c8f7207",
         "filename": "fw-update/package_parser.cpp",
         "patchSetId": 28
@@ -37,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9297cb4f_f3aaf811",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-06-18T01:28:22Z",
+      "side": 1,
+      "message": "It\u0027s doing a [placement new](https://en.cppreference.com/w/cpp/language/new.html#Placement_new), but I don\u0027t think this use of it is correct. We don\u0027t want to construct an array in-place over the top of the data that\u0027s already populated? Just cast it as necessary?",
+      "parentUuid": "66232bb3_1c8f7207",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "440e65ca_14f2bcd1",
         "filename": "fw-update/package_parser.hpp",
         "patchSetId": 28
@@ -48,6 +101,24 @@
       "writtenOn": "2025-06-17T17:54:46Z",
       "side": 1,
       "message": "You are dropping PackageParserV1, don\u0027t we want the code to be backwards compatible or the new additions will automatically take care of them?",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1355137_50f5f47a",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-06-18T01:28:22Z",
+      "side": 1,
+      "message": "Parsing of various format revisions now handled by libpldm directly.",
+      "parentUuid": "440e65ca_14f2bcd1",
       "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
