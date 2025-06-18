@@ -29,6 +29,9 @@
 #include <sdeventplus/source/io.hpp>
 #include <sdeventplus/source/signal.hpp>
 #include <stdplus/signal.hpp>
+#include <sdbusplus/async/context.hpp>
+#include <sdbusplus/async/fdio.hpp>
+#include <sdbusplus/event.hpp>
 
 #include <cstdio>
 #include <cstdlib>
@@ -85,12 +88,11 @@ void interruptFlightRecorderCallBack(Signal& /*signal*/,
     FlightRecorder::GetInstance().playRecorder();
 }
 
-void requestPLDMServiceName()
+void requestPLDMServiceName(sdbusplus::async::context& ctx)
 {
     try
     {
-        auto& bus = pldm::utils::DBusHandler::getBus();
-        bus.request_name(PLDMService);
+        ctx.request_name(PLDMService);
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -171,6 +173,77 @@ void optionUsage(void)
     info(" [--verbose] - would enable verbosity");
 }
 
+sdbusplus::async::task<int> handleEventIO(sdbusplus::async::context& ctx,
+    bool verbose, Invoker& invoker, requester::Handler<requester::Request>& reqHandler,
+    std::unique_ptr<fw_update::Manager>& fwManager, PldmTransport& pldmTransport, pldm_tid_t TID)
+{
+    while(true)
+    {
+        info("Waiting for PLDM request for TID '{TID}'",
+             "TID", TID);
+        sdbusplus::async::fdio fdioInstance{ctx, pldmTransport.getEventSource()};
+        co_await fdioInstance.next();
+        info("Received PLDM request for TID '{TID}'",
+             "TID", TID);
+        int returnCode = 0;
+        void* requestMsg;
+        size_t recvDataLength;
+        returnCode = pldmTransport.recvMsg(TID, requestMsg, recvDataLength);
+        
+        if (returnCode == PLDM_REQUESTER_SUCCESS)
+        {
+            std::vector<uint8_t> requestMsgVec(
+                static_cast<uint8_t*>(requestMsg),
+                static_cast<uint8_t*>(requestMsg) + recvDataLength);
+            FlightRecorder::GetInstance().saveRecord(requestMsgVec, false);
+            if (verbose)
+            {
+                printBuffer(Rx, requestMsgVec);
+            }
+
+            // process message and send response
+            auto response = processRxMsg(requestMsgVec, invoker, reqHandler,
+                                         fwManager.get(), TID);
+            if (response.has_value())
+            {
+                FlightRecorder::GetInstance().saveRecord(*response, true);
+                if (verbose)
+                {
+                    printBuffer(Tx, *response);
+                }
+
+                returnCode = pldmTransport.sendMsg(TID, (*response).data(),
+                                                   (*response).size());
+                if (returnCode != PLDM_REQUESTER_SUCCESS)
+                {
+                    warning(
+                        "Failed to send pldmTransport message for TID '{TID}', response code '{RETURN_CODE}'",
+                        "TID", TID, "RETURN_CODE", returnCode);
+                }
+            }
+        }
+        else if (returnCode == PLDM_REQUESTER_RECV_FAIL)
+        {
+            // MCTP daemon has closed the socket this daemon is connected to.
+            // This may or may not be an error scenario, in either case the
+            // recovery mechanism for this daemon is to restart, and hence exit
+            // the event loop, that will cause this daemon to exit with a
+            // failure code.
+            error(
+                "MCTP daemon closed the socket, IO exiting with response code '{RC}'",
+                "RC", returnCode);
+            co_return EXIT_FAILURE;
+        }
+        else
+        {
+            warning(
+                "Failed to receive PLDM request for pldmTransport, response code '{RETURN_CODE}'",
+                "RETURN_CODE", returnCode);
+        }
+        free(requestMsg);
+    }
+}
+
 int main(int argc, char** argv)
 {
     bool verbose = false;
@@ -195,16 +268,19 @@ int main(int argc, char** argv)
      * and use the correct TIDs */
     pldm_tid_t TID = hostEID;
     PldmTransport pldmTransport{};
+
+    [[maybe_unused]] sdbusplus::async::context ctx;
+    [[maybe_unused]] auto& aEvent = sdbusplus::async::details::context_friend::get_event_loop(ctx);
     auto event = Event::get_default();
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    sdbusplus::server::manager_t objManager(bus,
+    // auto& bus = pldm::utils::DBusHandler::getBus();
+    sdbusplus::server::manager_t objManager(ctx,
                                             "/xyz/openbmc_project/software");
     sdbusplus::server::manager_t sensorObjManager(
-        bus, "/xyz/openbmc_project/sensors");
+        ctx, "/xyz/openbmc_project/sensors");
 
     InstanceIdDb instanceIdDb;
     sdbusplus::server::manager_t inventoryManager(
-        bus, "/xyz/openbmc_project/inventory");
+        ctx, "/xyz/openbmc_project/inventory");
 
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
@@ -223,7 +299,7 @@ int main(int argc, char** argv)
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
-    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
+    dbus_api::Host dbusImplHost(ctx, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_entity_association_tree,
                     decltype(&pldm_entity_association_tree_destroy)>
         entityTree(pldm_entity_association_tree_init(),
@@ -309,7 +385,8 @@ int main(int argc, char** argv)
 
     auto biosHandler = std::make_unique<bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
-        platformConfigHandler.get(), requestPLDMServiceName);
+        platformConfigHandler.get(), std::bind(requestPLDMServiceName,
+                                               std::ref(ctx)));
 
     auto baseHandler = std::make_unique<base::Handler>(event);
 
@@ -334,9 +411,9 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
     invoker.registerHandler(PLDM_BASE, std::move(baseHandler));
 
-    dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
+    dbus_api::Pdr dbusImplPdr(ctx, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
-        bus, "/xyz/openbmc_project/pldm");
+        ctx, "/xyz/openbmc_project/pldm");
 
 #endif
 
@@ -344,90 +421,90 @@ int main(int argc, char** argv)
         std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
-            bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
+            ctx, std::initializer_list<MctpDiscoveryHandlerIntf*>{
                      fwManager.get(), platformManager.get()});
-    auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
-                     TID](IO& io, int fd, uint32_t revents) mutable {
-        if (revents & (POLLHUP | POLLERR))
-        {
-            warning("Transport Socket hang-up or error. IO Exiting.");
-            io.get_event().exit(0);
-            return;
-        }
+    // auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
+    //                  TID](IO& io, int fd, uint32_t revents) mutable {
+    //     if (revents & (POLLHUP | POLLERR))
+    //     {
+    //         warning("Transport Socket hang-up or error. IO Exiting.");
+    //         io.get_event().exit(0);
+    //         return;
+    //     }
 
-        else if (!(revents & EPOLLIN))
-        {
-            return;
-        }
-        if (fd < 0)
-        {
-            return;
-        }
+    //     else if (!(revents & EPOLLIN))
+    //     {
+    //         return;
+    //     }
+    //     if (fd < 0)
+    //     {
+    //         return;
+    //     }
 
-        int returnCode = 0;
-        void* requestMsg;
-        size_t recvDataLength;
-        returnCode = pldmTransport.recvMsg(TID, requestMsg, recvDataLength);
+    //     int returnCode = 0;
+    //     void* requestMsg;
+    //     size_t recvDataLength;
+    //     returnCode = pldmTransport.recvMsg(TID, requestMsg, recvDataLength);
 
-        if (returnCode == PLDM_REQUESTER_SUCCESS)
-        {
-            std::vector<uint8_t> requestMsgVec(
-                static_cast<uint8_t*>(requestMsg),
-                static_cast<uint8_t*>(requestMsg) + recvDataLength);
-            FlightRecorder::GetInstance().saveRecord(requestMsgVec, false);
-            if (verbose)
-            {
-                printBuffer(Rx, requestMsgVec);
-            }
-            // process message and send response
-            auto response = processRxMsg(requestMsgVec, invoker, reqHandler,
-                                         fwManager.get(), TID);
-            if (response.has_value())
-            {
-                FlightRecorder::GetInstance().saveRecord(*response, true);
-                if (verbose)
-                {
-                    printBuffer(Tx, *response);
-                }
+    //     if (returnCode == PLDM_REQUESTER_SUCCESS)
+    //     {
+    //         std::vector<uint8_t> requestMsgVec(
+    //             static_cast<uint8_t*>(requestMsg),
+    //             static_cast<uint8_t*>(requestMsg) + recvDataLength);
+    //         FlightRecorder::GetInstance().saveRecord(requestMsgVec, false);
+    //         if (verbose)
+    //         {
+    //             printBuffer(Rx, requestMsgVec);
+    //         }
+    //         // process message and send response
+    //         auto response = processRxMsg(requestMsgVec, invoker, reqHandler,
+    //                                      fwManager.get(), TID);
+    //         if (response.has_value())
+    //         {
+    //             FlightRecorder::GetInstance().saveRecord(*response, true);
+    //             if (verbose)
+    //             {
+    //                 printBuffer(Tx, *response);
+    //             }
 
-                returnCode = pldmTransport.sendMsg(TID, (*response).data(),
-                                                   (*response).size());
-                if (returnCode != PLDM_REQUESTER_SUCCESS)
-                {
-                    warning(
-                        "Failed to send pldmTransport message for TID '{TID}', response code '{RETURN_CODE}'",
-                        "TID", TID, "RETURN_CODE", returnCode);
-                }
-            }
-        }
-        // TODO check that we get here if mctp-demux dies?
-        else if (returnCode == PLDM_REQUESTER_RECV_FAIL)
-        {
-            // MCTP daemon has closed the socket this daemon is connected to.
-            // This may or may not be an error scenario, in either case the
-            // recovery mechanism for this daemon is to restart, and hence exit
-            // the event loop, that will cause this daemon to exit with a
-            // failure code.
-            error(
-                "MCTP daemon closed the socket, IO exiting with response code '{RC}'",
-                "RC", returnCode);
-            io.get_event().exit(0);
-        }
-        else
-        {
-            warning(
-                "Failed to receive PLDM request for pldmTransport, response code '{RETURN_CODE}'",
-                "RETURN_CODE", returnCode);
-        }
-        /* Free requestMsg after using */
-        free(requestMsg);
-    };
+    //             returnCode = pldmTransport.sendMsg(TID, (*response).data(),
+    //                                                (*response).size());
+    //             if (returnCode != PLDM_REQUESTER_SUCCESS)
+    //             {
+    //                 warning(
+    //                     "Failed to send pldmTransport message for TID '{TID}', response code '{RETURN_CODE}'",
+    //                     "TID", TID, "RETURN_CODE", returnCode);
+    //             }
+    //         }
+    //     }
+    //     // TODO check that we get here if mctp-demux dies?
+    //     else if (returnCode == PLDM_REQUESTER_RECV_FAIL)
+    //     {
+    //         // MCTP daemon has closed the socket this daemon is connected to.
+    //         // This may or may not be an error scenario, in either case the
+    //         // recovery mechanism for this daemon is to restart, and hence exit
+    //         // the event loop, that will cause this daemon to exit with a
+    //         // failure code.
+    //         error(
+    //             "MCTP daemon closed the socket, IO exiting with response code '{RC}'",
+    //             "RC", returnCode);
+    //         io.get_event().exit(0);
+    //     }
+    //     else
+    //     {
+    //         warning(
+    //             "Failed to receive PLDM request for pldmTransport, response code '{RETURN_CODE}'",
+    //             "RETURN_CODE", returnCode);
+    //     }
+    //     /* Free requestMsg after using */
+    //     free(requestMsg);
+    // };
 
-    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+    // ctx.get_bus().attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 #ifndef SYSTEM_SPECIFIC_BIOS_JSON
     try
     {
-        bus.request_name(PLDMService);
+        ctx.request_name(PLDMService);
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -435,7 +512,14 @@ int main(int argc, char** argv)
               PLDMService, "ERROR", e);
     }
 #endif
-    IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
+    int exitCode = 0;
+    ctx.spawn([&]() -> sdbusplus::async::task<> {
+        exitCode = co_await handleEventIO(
+            ctx, verbose,
+            invoker, reqHandler, fwManager, pldmTransport, TID);
+        co_return;
+    }());
+    // IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
     if (hostPDRHandler)
     {
@@ -448,11 +532,12 @@ int main(int argc, char** argv)
         [](Signal& signal, const struct signalfd_siginfo* info) {
             interruptFlightRecorderCallBack(signal, info);
         });
-    int returnCode = event.loop();
-    if (returnCode)
-    {
-        exit(EXIT_FAILURE);
-    }
+    // int returnCode = event.loop();
+    ctx.run();
+    // if (returnCode)
+    // {
+    //     exit(EXIT_FAILURE);
+    // }
 
-    exit(EXIT_SUCCESS);
+    // exit(EXIT_SUCCESS);
 }
