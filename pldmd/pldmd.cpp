@@ -29,6 +29,7 @@
 #include <sdeventplus/source/io.hpp>
 #include <sdeventplus/source/signal.hpp>
 #include <stdplus/signal.hpp>
+#include <sdbusplus/event.hpp>
 
 #include <cstdio>
 #include <cstdlib>
@@ -85,12 +86,11 @@ void interruptFlightRecorderCallBack(Signal& /*signal*/,
     FlightRecorder::GetInstance().playRecorder();
 }
 
-void requestPLDMServiceName()
+void requestPLDMServiceName(Context& ctx)
 {
     try
     {
-        auto& bus = pldm::utils::DBusHandler::getBus();
-        bus.request_name(PLDMService);
+        ctx.request_name(PLDMService);
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -195,16 +195,17 @@ int main(int argc, char** argv)
      * and use the correct TIDs */
     pldm_tid_t TID = hostEID;
     PldmTransport pldmTransport{};
-    auto event = Event::get_default();
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    sdbusplus::server::manager_t objManager(bus,
+
+    Context ctx;
+    auto event = Event{sdbusplus::async::details::context_friend::get_event_loop(ctx).get()};
+    sdbusplus::server::manager_t objManager(ctx,
                                             "/xyz/openbmc_project/software");
     sdbusplus::server::manager_t sensorObjManager(
-        bus, "/xyz/openbmc_project/sensors");
+        ctx, "/xyz/openbmc_project/sensors");
 
     InstanceIdDb instanceIdDb;
     sdbusplus::server::manager_t inventoryManager(
-        bus, "/xyz/openbmc_project/inventory");
+        ctx, "/xyz/openbmc_project/inventory");
 
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
@@ -219,11 +220,11 @@ int main(int argc, char** argv)
     DBusHandler dbusHandler;
 
     std::unique_ptr<platform_mc::Manager> platformManager =
-        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<platform_mc::Manager>(ctx, event, reqHandler, instanceIdDb);
 
 #ifdef LIBPLDMRESPONDER
     using namespace pldm::state_sensor;
-    dbus_api::Host dbusImplHost(bus, "/xyz/openbmc_project/pldm");
+    dbus_api::Host dbusImplHost(ctx, "/xyz/openbmc_project/pldm");
     std::unique_ptr<pldm_entity_association_tree,
                     decltype(&pldm_entity_association_tree_destroy)>
         entityTree(pldm_entity_association_tree_init(),
@@ -309,7 +310,8 @@ int main(int argc, char** argv)
 
     auto biosHandler = std::make_unique<bios::Handler>(
         pldmTransport.getEventSource(), hostEID, &instanceIdDb, &reqHandler,
-        platformConfigHandler.get(), requestPLDMServiceName);
+        platformConfigHandler.get(), std::bind(requestPLDMServiceName,
+                                               std::ref(ctx)));
 
     auto baseHandler = std::make_unique<base::Handler>(event);
 
@@ -334,9 +336,9 @@ int main(int argc, char** argv)
     invoker.registerHandler(PLDM_FRU, std::move(fruHandler));
     invoker.registerHandler(PLDM_BASE, std::move(baseHandler));
 
-    dbus_api::Pdr dbusImplPdr(bus, "/xyz/openbmc_project/pldm", pdrRepo.get());
+    dbus_api::Pdr dbusImplPdr(ctx, "/xyz/openbmc_project/pldm", pdrRepo.get());
     sdbusplus::xyz::openbmc_project::PLDM::server::Event dbusImplEvent(
-        bus, "/xyz/openbmc_project/pldm");
+        ctx, "/xyz/openbmc_project/pldm");
 
 #endif
 
@@ -344,7 +346,7 @@ int main(int argc, char** argv)
         std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
-            bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
+            ctx, std::initializer_list<MctpDiscoveryHandlerIntf*>{
                      fwManager.get(), platformManager.get()});
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
@@ -423,11 +425,11 @@ int main(int argc, char** argv)
         free(requestMsg);
     };
 
-    bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+    ctx.get_bus().attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 #ifndef SYSTEM_SPECIFIC_BIOS_JSON
     try
     {
-        bus.request_name(PLDMService);
+        ctx.request_name(PLDMService);
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -448,11 +450,7 @@ int main(int argc, char** argv)
         [](Signal& signal, const struct signalfd_siginfo* info) {
             interruptFlightRecorderCallBack(signal, info);
         });
-    int returnCode = event.loop();
-    if (returnCode)
-    {
-        exit(EXIT_FAILURE);
-    }
+    ctx.run();
 
     exit(EXIT_SUCCESS);
 }

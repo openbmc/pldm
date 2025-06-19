@@ -20,7 +20,7 @@ inline bool NumericSensor::createInventoryPath(
     const uint16_t entityType, const uint16_t entityInstanceNum,
     const uint16_t containerId)
 {
-    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto& bus = ctx.get_bus();
     std::string invPath = associationPath + "/" + sensorName;
     try
     {
@@ -153,9 +153,9 @@ void NumericSensor::setSensorUnit(uint8_t baseUnit)
 }
 
 NumericSensor::NumericSensor(
-    const pldm_tid_t tid, const bool sensorDisabled,
+    Context& ctx, const pldm_tid_t tid, const bool sensorDisabled,
     std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr, std::string& sensorName,
-    std::string& associationPath) : tid(tid), sensorName(sensorName)
+    std::string& associationPath) : tid(tid), sensorName(sensorName), ctx(ctx)
 {
     if (!pdr)
     {
@@ -190,7 +190,7 @@ NumericSensor::NumericSensor(
         /* The sensor object path is not created */
     }
 
-    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto& bus = ctx.get_bus();
     try
     {
         associationDefinitionsIntf =
@@ -409,10 +409,10 @@ NumericSensor::NumericSensor(
 }
 
 NumericSensor::NumericSensor(
-    const pldm_tid_t tid, const bool sensorDisabled,
+    Context& ctx, const pldm_tid_t tid, const bool sensorDisabled,
     std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr,
     std::string& sensorName, std::string& associationPath) :
-    tid(tid), sensorName(sensorName)
+    tid(tid), sensorName(sensorName), ctx(ctx)
 {
     if (!pdr)
     {
@@ -447,7 +447,7 @@ NumericSensor::NumericSensor(
         /* The sensor object path is not created */
     }
 
-    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto& bus = ctx.get_bus();
     try
     {
         associationDefinitionsIntf =

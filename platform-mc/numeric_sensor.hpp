@@ -58,11 +58,11 @@ using EntityIntf = sdbusplus::server::object_t<
 class NumericSensor
 {
   public:
-    NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
+    NumericSensor(Context& ctx, const pldm_tid_t tid, const bool sensorDisabled,
                   std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr,
                   std::string& sensorName, std::string& associationPath);
 
-    NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
+    NumericSensor(Context& ctx, const pldm_tid_t tid, const bool sensorDisabled,
                   std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr,
                   std::string& sensorName, std::string& associationPath);
 
@@ -248,6 +248,7 @@ class NumericSensor
     SensorUnit sensorUnit;
 
   private:
+    Context& ctx;
     /**
      * @brief Check sensor reading if any threshold has been crossed and update
      * Threshold interfaces accordingly

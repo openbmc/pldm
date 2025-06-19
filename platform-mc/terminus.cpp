@@ -14,10 +14,10 @@ namespace pldm
 namespace platform_mc
 {
 
-Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
+Terminus::Terminus(Context& ctx, pldm_tid_t tid, uint64_t supportedTypes,
                    sdeventplus::Event& event) :
     initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
-    synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
+    synchronyConfigurationSupported(0), pollEvent(false), ctx(ctx), tid(tid),
     supportedTypes(supportedTypes), event(event)
 {}
 
@@ -105,7 +105,7 @@ bool Terminus::createInventoryPath(std::string tName)
     {
         inventoryItemBoardInft =
             std::make_unique<pldm::dbus_api::PldmEntityReq>(
-                utils::DBusHandler::getBus(), inventoryPath.c_str());
+                ctx, inventoryPath.c_str());
         return true;
     }
     catch (const sdbusplus::exception_t& e)
@@ -444,7 +444,7 @@ void Terminus::addNumericSensor(
     try
     {
         auto sensor = std::make_shared<NumericSensor>(
-            tid, true, pdr, sensorName, inventoryPath);
+            ctx, tid, true, pdr, sensorName, inventoryPath);
         lg2::info("Created NumericSensor {NAME}", "NAME", sensorName);
         numericSensors.emplace_back(sensor);
     }
@@ -550,7 +550,7 @@ void Terminus::addCompactNumericSensor(
     try
     {
         auto sensor = std::make_shared<NumericSensor>(
-            tid, true, pdr, sensorName, inventoryPath);
+            ctx, tid, true, pdr, sensorName, inventoryPath);
         lg2::info("Created Compact NumericSensor {NAME}", "NAME", sensorName);
         numericSensors.emplace_back(sensor);
     }

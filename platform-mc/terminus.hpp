@@ -68,7 +68,7 @@ using EntityAuxiliaryNames = std::tuple<EntityKey, AuxiliaryNames>;
 class Terminus
 {
   public:
-    Terminus(pldm_tid_t tid, uint64_t supportedPLDMTypes,
+    Terminus(Context& ctx, pldm_tid_t tid, uint64_t supportedPLDMTypes,
              sdeventplus::Event& event);
 
     /** @brief Check if the terminus supports the PLDM type message
@@ -204,6 +204,7 @@ class Terminus
     std::shared_ptr<NumericSensor> getSensorObject(SensorId id);
 
   private:
+    Context& ctx;
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
      *  @return terminus name in string option

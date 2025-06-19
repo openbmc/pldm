@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdbusplus/message/types.hpp>
+#include <sdbusplus/async/context.hpp>
 
 #include <bitset>
 #include <cstdint>
@@ -21,6 +22,7 @@ using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
 using MCTPMsgTypes = std::vector<uint8_t>;
 using Command = uint8_t;
+using Context = sdbusplus::async::context;
 
 /** @brief MCTP Endpoint Medium type in string
  *         Reserved for future purpose
@@ -169,6 +171,8 @@ using ComponentImageInfo =
     std::tuple<CompClassification, CompIdentifier, CompComparisonStamp,
                CompOptions, ReqCompActivationMethod, CompImage, CompVersion>;
 using ComponentImageInfos = std::vector<ComponentImageInfo>;
+
+using Context = sdbusplus::async::context;
 
 enum class ComponentImageInfoPos : size_t
 {

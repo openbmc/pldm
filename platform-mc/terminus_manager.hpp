@@ -52,10 +52,10 @@ class TerminusManager
     virtual ~TerminusManager() = default;
 
     explicit TerminusManager(
-        sdeventplus::Event& event, RequesterHandler& handler,
+        Context& ctx, sdeventplus::Event& event, RequesterHandler& handler,
         pldm::InstanceIdDb& instanceIdDb, TerminiMapper& termini,
         Manager* manager, mctp_eid_t localEid) :
-        handler(handler), instanceIdDb(instanceIdDb), termini(termini),
+        ctx(ctx), handler(handler), instanceIdDb(instanceIdDb), termini(termini),
         tidPool(tidPoolSize, false), manager(manager), localEid(localEid),
         event(event)
     {
@@ -182,6 +182,9 @@ class TerminusManager
         const std::string& terminusName);
 
   private:
+    /** @brief Reference to the async context */
+    Context& ctx;
+    
     /** @brief Find the terminus object pointer in termini list.
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
