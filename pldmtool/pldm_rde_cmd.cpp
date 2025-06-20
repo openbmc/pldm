@@ -323,6 +323,74 @@ class GetSchemaURI : public CommandInterface
     uint8_t oemExtensionNumber;
 };
 
+class GetResourceETag : public CommandInterface
+{
+  public:
+    ~GetResourceETag() = default;
+    GetResourceETag() = delete;
+    GetResourceETag(const GetResourceETag&) = delete;
+    GetResourceETag(GetResourceETag&&) = default;
+    GetResourceETag& operator=(const GetResourceETag&) = delete;
+    GetResourceETag& operator=(GetResourceETag&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit GetResourceETag(const char* type, const char* name,
+                             CLI::App* app) : CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-r, --resourceid", resourceID,
+               "The ResourceID of a resource in the the Redfish Resource PDR"
+               "for the instance from which to get an ETag digest; or 0xFFFF FFFF"
+               "to get a global digest of all resource-based data within the RDE Device")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_GET_RESOURCE_ETAG_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_get_resource_etag_req(instanceId, resourceID, request);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodeCompletionCode;
+        const uint32_t etagMaxSize = 1024;
+
+        // TODO: Decide proper size for the buffer
+        uint8_t buffer[sizeof(struct pldm_rde_varstring) + etagMaxSize];
+        pldm_rde_varstring* decodeEtag = (struct pldm_rde_varstring*)buffer;
+
+        auto rc = decode_get_resource_etag_resp(
+            responsePtr, payloadLength, &decodeCompletionCode, decodeEtag);
+
+        if (rc != PLDM_SUCCESS || decodeCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodeCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        std::stringstream dt;
+        dt << decodeEtag->string_data;
+
+        data["ETag.format"] = decodeEtag->string_format;
+        data["ETag.length"] = decodeEtag->string_length_bytes;
+        data["ETag"] = dt.str();
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint32_t resourceID;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -345,6 +413,11 @@ void registerCommand(CLI::App& app)
     auto getSchemaURI = rde->add_subcommand("GetSchemaURI", "Get Schema URI");
     commands.push_back(
         std::make_unique<GetSchemaURI>("rde", "GetSchemaURI", getSchemaURI));
+
+    auto getResourceETag =
+        rde->add_subcommand("GetResourceETag", "Get Resource ETag");
+    commands.push_back(std::make_unique<GetResourceETag>(
+        "rde", "GetResourceETag", getResourceETag));
 }
 
 } // namespace rde
