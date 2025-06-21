@@ -553,6 +553,7 @@ class GetPDR : public CommandInterface
         {PLDM_PDR_ENTITY_ASSOCIATION, "Entity Association PDR"},
         {PLDM_ENTITY_AUXILIARY_NAMES_PDR, "Entity Auxiliary Names PDR"},
         {PLDM_REDFISH_RESOURCE_PDR, "Redfish Resource PDR"},
+        {PLDM_REDFISH_ACTION_PDR, "Redfish Action PDR"},
         {PLDM_OEM_ENTITY_ID_PDR, "OEM Entity ID PDR"},
         {PLDM_INTERRUPT_ASSOCIATION_PDR, "Interrupt Association PDR"},
         {PLDM_EVENT_LOG_PDR, "PLDM Event Log PDR"},
@@ -661,6 +662,7 @@ class GetPDR : public CommandInterface
         {"entityassociation", PLDM_PDR_ENTITY_ASSOCIATION},
         {"frurecord", PLDM_PDR_FRU_RECORD_SET},
         {"redfishresource", PLDM_REDFISH_RESOURCE_PDR},
+        {"redfishaction", PLDM_REDFISH_ACTION_PDR},
         // Add other types
     };
 
@@ -1525,6 +1527,55 @@ class GetPDR : public CommandInterface
         return std::string(version_buffer, rc);
     }
 
+    void printRedfishActionPDR(const uint8_t* data, const uint16_t data_length,
+                               ordered_json& output)
+    {
+        struct pldm_redfish_action_pdr pdr;
+        int rc =
+            decode_redfish_action_pdr_data(data, (size_t)data_length, &pdr);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to get redfish action PDR" << std::endl;
+            return;
+        }
+
+        output["ActionPDRIndex"] = pdr.action_pdr_index;
+        output["RelatedResourceCount"] = pdr.related_resrc_count;
+
+        for (auto [i, resId] :
+             std::views::iota(0u,
+                              static_cast<unsigned>(pdr.related_resrc_count)) |
+                 std::views::transform([&](size_t i) {
+                     return std::pair{i, pdr.related_resrc_id[i]};
+                 }))
+        {
+            output.emplace("*RelatedResourceID[" + std::to_string(i) + "]",
+                           resId);
+        }
+
+        output["ActionCount"] = pdr.action_count;
+
+        for (auto [i, act] :
+             std::views::iota(0u, static_cast<unsigned>(pdr.action_count)) |
+                 std::views::transform([&](size_t i) {
+                     return std::pair{i, pdr.action[i]};
+                 }))
+        {
+            output.emplace("ActionNameLengthBytes[" + std::to_string(i) + "]",
+                           act->name_length_bytes);
+            output.emplace(
+                "ActionName[" + std::to_string(i) + "]",
+                getRdeResourceName(act->name, act->name_length_bytes));
+            output.emplace("ActionPathLengthBytes[" + std::to_string(i) + "]",
+                           act->path_length_bytes);
+            output.emplace(
+                "ActionPath[" + std::to_string(i) + "]",
+                getRdeResourceName(act->path, act->path_length_bytes));
+        }
+
+        free_redfish_action_pdr_data(&pdr);
+    }
+
     void printRedfishResourcePDR(const uint8_t* data, const uint16_t dataLength,
                                  ordered_json& output)
     {
@@ -1677,6 +1728,9 @@ class GetPDR : public CommandInterface
                 break;
             case PLDM_REDFISH_RESOURCE_PDR:
                 printRedfishResourcePDR(data, respCnt, output);
+                break;
+            case PLDM_REDFISH_ACTION_PDR:
+                printRedfishActionPDR(data, respCnt, output);
                 break;
             default:
                 break;
