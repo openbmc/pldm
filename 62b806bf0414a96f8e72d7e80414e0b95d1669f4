@@ -22,6 +22,30 @@
       },
       "revId": "62b806bf0414a96f8e72d7e80414e0b95d1669f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2572976_c5b4156e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-22T16:01:19Z",
+      "side": 1,
+      "message": "Phosphor Inventory Manager expects the relative object path to update the property through \"Notify\" method. The object path is relative to /xyz/openbmc_project/inventory, so sending the object path by removing /xyz/openbmc_project/inventory.",
+      "parentUuid": "e0f699e9_6de6b2f5",
+      "range": {
+        "startLine": 418,
+        "startChar": 0,
+        "endLine": 420,
+        "endChar": 60
+      },
+      "revId": "62b806bf0414a96f8e72d7e80414e0b95d1669f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
