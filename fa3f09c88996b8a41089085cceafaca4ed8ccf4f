@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f697d15c_a749ff4a",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002071
+      },
+      "writtenOn": "2025-06-22T14:49:57Z",
+      "side": 1,
+      "message": "Thanks for the review @thu@os.amperecomputing.com I did not find this antipatern neither in the pldm docs repo or the phosphor-logging.\nCan you point to a source that explains this antipatern, please?",
+      "parentUuid": "46e403c9_c88e78ea",
+      "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01b7125b_6e4e0300",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 13
