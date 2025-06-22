@@ -191,6 +191,20 @@ void Terminus::parseTerminusPDRs()
                 entityAuxiliaryNamesTbl.emplace_back(std::move(entityNames));
                 break;
             }
+            case PLDM_REDFISH_RESOURCE_PDR:
+            {
+                auto parsedPdr = parseRedfishResourcePDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                redfishResourcePdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             default:
             {
                 lg2::error("Unsupported PDR with type {TYPE} handle {HANDLE}",
@@ -410,6 +424,20 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr> Terminus::parseNumericSensorPDR(
     const uint8_t* ptr = pdr.data();
     auto parsedPdr = std::make_shared<pldm_numeric_sensor_value_pdr>();
     auto rc = decode_numeric_sensor_pdr_data(ptr, pdr.size(), parsedPdr.get());
+    if (rc)
+    {
+        return nullptr;
+    }
+    return parsedPdr;
+}
+
+std::shared_ptr<pldm_redfish_resource_pdr> Terminus::parseRedfishResourcePDR(
+    const std::vector<uint8_t>& pdr)
+{
+    const uint8_t* ptr = pdr.data();
+    auto parsedPdr = std::make_shared<pldm_redfish_resource_pdr>();
+    auto rc =
+        decode_redfish_resource_pdr_data(ptr, pdr.size(), parsedPdr.get());
     if (rc)
     {
         return nullptr;
