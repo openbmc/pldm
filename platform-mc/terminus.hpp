@@ -243,6 +243,14 @@ class Terminus
     std::shared_ptr<EntityAuxiliaryNames> parseEntityAuxiliaryNamesPDR(
         const std::vector<uint8_t>& pdrData);
 
+    /** @brief Parse the redfish resource PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to redfish resource info struct
+     */
+    std::shared_ptr<pldm_redfish_resource_pdr> parseRedfishResourcePDR(
+        const std::vector<uint8_t>& pdrData);
+
     /** @brief Construct the NumericSensor sensor class for the compact numeric
      *         PLDM sensor.
      *
@@ -341,6 +349,10 @@ class Terminus
     /** @brief Compact Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief Redfish Resource PDR list */
+    std::vector<std::shared_ptr<pldm_redfish_resource_pdr>>
+        redfishResourcePdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorId sensorPdrIt = 0;
