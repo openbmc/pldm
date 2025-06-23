@@ -81,6 +81,12 @@ const std::map<std::string, transfer_resp_flag> transferRespFlag{
     {"STARTANDEND", PLDM_START_AND_END},
 };
 
+const std::map<const char*, pldm_self_contained_activation_req>
+    pldmSelfContainedActivation{
+        {"False", PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS},
+        {"True", PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS},
+    };
+
 /*
  * Convert PLDM Firmware String Type to uint8_t
  *
@@ -1148,6 +1154,69 @@ class UpdateComponent : public CommandInterface
     std::string componentVersionString;
 };
 
+class ActivateFirmware : public CommandInterface
+{
+  public:
+    ~ActivateFirmware() = default;
+    ActivateFirmware() = delete;
+    ActivateFirmware(const ActivateFirmware&) = delete;
+    ActivateFirmware(ActivateFirmware&&) = delete;
+    ActivateFirmware& operator=(const ActivateFirmware&) = delete;
+    ActivateFirmware& operator=(ActivateFirmware&&) = delete;
+
+    explicit ActivateFirmware(const char* type, const char* name,
+                              CLI::App* app) : CommandInterface(type, name, app)
+    {
+        app->add_option("--self_contained_activation_request",
+                        selfContainedActivRequest,
+                        "Self contained activation request")
+            ->required()
+            ->transform(CLI::CheckedTransformer(pldmSelfContainedActivation,
+                                                CLI::ignore_case));
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+        auto request = new (requestMsg.data()) pldm_msg;
+        auto rc = encode_activate_firmware_req(
+            instanceId, selfContainedActivRequest, request,
+            sizeof(pldm_activate_firmware_req));
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        uint16_t estimatedTimeForActivation = 0;
+
+        auto rc = decode_activate_firmware_resp(responsePtr, payloadLength, &cc,
+                                                &estimatedTimeForActivation);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Parsing ActivateFirmware response failed: "
+                      << "rc=" << rc << ",cc=" << static_cast<int>(cc) << "\n";
+            return;
+        }
+
+        ordered_json data;
+
+        fillCompletionCode(cc, data, PLDM_FWUP);
+
+        if (cc == PLDM_SUCCESS)
+        {
+            data["EstimatedTimeForSelfContainedActivation"] =
+                std::to_string(estimatedTimeForActivation) + "s";
+        }
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    bool8_t selfContainedActivRequest;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -1182,6 +1251,11 @@ void registerCommand(CLI::App& app)
         "UpdateComponent", "To request updating a specific firmware component");
     commands.push_back(std::make_unique<UpdateComponent>(
         "fw_update", "UpdateComponent", updateComp));
+
+    auto activateFirmware =
+        fwUpdate->add_subcommand("ActivateFirmware", "To activate firmware");
+    commands.push_back(std::make_unique<ActivateFirmware>(
+        "fw_update", "ActivateFirmware", activateFirmware));
 }
 
 } // namespace fw_update
