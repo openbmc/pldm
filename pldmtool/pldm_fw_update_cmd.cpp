@@ -958,6 +958,157 @@ class PassComponentTable : public CommandInterface
     std::string compVerStr;
 };
 
+class UpdateComponent : public CommandInterface
+{
+  public:
+    ~UpdateComponent() = default;
+    UpdateComponent() = delete;
+    UpdateComponent(const UpdateComponent&) = delete;
+    UpdateComponent(UpdateComponent&&) = delete;
+    UpdateComponent& operator=(const UpdateComponent&) = delete;
+    UpdateComponent& operator=(UpdateComponent&&) = delete;
+
+    explicit UpdateComponent(const char* type, const char* name,
+                             CLI::App* app) : CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "--comp_classification", compClassification,
+               "Classification value provided by the firmware package header information for\n"
+               "the component to be transferred.\n"
+               "Special values: 0x0000, 0xFFFF = reserved")
+            ->required();
+
+        app->add_option(
+               "--comp_identifier", compIdentifier,
+               "FD vendor selected unique value to distinguish between component images")
+            ->required();
+
+        app->add_option(
+               "--comp_classification_idx", compClassificationIdx,
+               "The component classification index which was obtained from the GetFirmwareParameters\n"
+               "command to indicate which firmware component the information contained within this\n"
+               "command is applicable for")
+            ->required();
+
+        app->add_option(
+               "--comp_compare_stamp", compCompareStamp,
+               "FD vendor selected value to use as a comparison value in determining if a firmware\n"
+               "component is down-level or up-level. For the same component identifier, the greater\n"
+               "of two component comparison stamps is considered up-level compared to the other\n"
+               "when performing an unsigned integer comparison")
+            ->required();
+
+        app->add_option("--comp_img_size", compImgSize,
+                        "Size in bytes of the component image")
+            ->required();
+
+        app->add_option(
+               "--update_option_flags", strUpdateOptionFlags,
+               "32 bits field, where each non-reserved bit represents an update option that can be\n"
+               "requested by the UA to be enabled for the transfer of this component image.\n"
+               "[0] – Request Force Update of component")
+            ->required();
+
+        app->add_option(
+               "--comp_ver_str_type", compVerStrType,
+               "The type of strings used in the ComponentVersionString field\n"
+               "Possible values\n"
+               "{UNKNOWN->0, ASCII->1, UTF_8->2, UTF_16->3, UTF_16LE->4, UTF_16BE->5}\n"
+               "OR {0,1,2,3,4,5}")
+            ->required();
+
+        app->add_option("--comp_ver_str_len", compVerStrLen,
+                        "The length, in bytes, of the ComponentVersionString")
+            ->required();
+
+        app->add_option(
+               "--comp_ver_str", compVerStr,
+               "Firmware component version information up to 255 bytes.\n"
+               "Contains a variable type string describing the component version")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        variable_field compVerStrInfo{};
+
+        compVerStrInfo.ptr =
+            reinterpret_cast<const uint8_t*>(compVerStr.data());
+        compVerStrInfo.length = static_cast<uint8_t>(compVerStr.size());
+
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + sizeof(struct pldm_update_component_req) +
+            compVerStrInfo.length);
+        auto request = reinterpret_cast<pldm_msg*>(requestMsg.data());
+
+        bitfield32_t updateOptionFlags;
+        sscanf(strUpdateOptionFlags.c_str(), "%x", &updateOptionFlags.value);
+
+        auto rc = encode_update_component_req(
+            instanceId, compClassification, compIdentifier,
+            compClassificationIdx, compCompareStamp, compImgSize,
+            updateOptionFlags, convertStringTypeToUInt8(compVerStrType),
+            compVerStrLen, &compVerStrInfo, request,
+            sizeof(pldm_update_component_req) + compVerStrInfo.length);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        uint8_t compCompatibilityResp = 0;
+        uint8_t compCompatibilityRespCode = 0;
+        bitfield32_t updateOptionFlagsEnabled{};
+        uint16_t timeBeforeReqFWData = 0;
+
+        auto rc = decode_update_component_resp(
+            responsePtr, payloadLength, &cc, &compCompatibilityResp,
+            &compCompatibilityRespCode, &updateOptionFlagsEnabled,
+            &timeBeforeReqFWData);
+
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+            return;
+        }
+
+        ordered_json data;
+        fillCompletionCode(cc, data, PLDM_FWUP);
+
+        if (cc == PLDM_SUCCESS)
+        {
+            // --> possible value:
+            // 0 – Component can be updated,
+            // 1 – Component will not be updated
+            data["ComponentCompatibilityResponse"] =
+                compCompatibilityResp ? "Component will not be updated"
+                                      : "Component can be updated";
+
+            data["ComponentCompatibilityResponseCode"] =
+                std::format("0x{:02X}", compCompatibilityRespCode);
+            data["UpdateOptionFlagsEnabled"] =
+                std::to_string(updateOptionFlagsEnabled.value);
+            data["EstimatedTimeBeforeSendingRequestFirmwareData"] =
+                std::to_string(timeBeforeReqFWData) + "s";
+        }
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint16_t compClassification;
+    uint16_t compIdentifier;
+    uint8_t compClassificationIdx;
+    uint32_t compCompareStamp;
+    uint32_t compImgSize;
+    std::string strUpdateOptionFlags;
+    std::string compVerStrType;
+    uint8_t compVerStrLen;
+    std::string compVerStr;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -987,6 +1138,11 @@ void registerCommand(CLI::App& app)
                                                   "To pass component table");
     commands.push_back(std::make_unique<PassComponentTable>(
         "fw_update", "PassComponentTable", passCompTable));
+
+    auto updateComp = fwUpdate->add_subcommand(
+        "UpdateComponent", "To request updating a specific firmware component");
+    commands.push_back(std::make_unique<UpdateComponent>(
+        "fw_update", "UpdateComponent", updateComp));
 }
 
 } // namespace fw_update
