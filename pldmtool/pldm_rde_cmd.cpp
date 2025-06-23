@@ -391,6 +391,106 @@ class GetResourceETag : public CommandInterface
     uint32_t resourceID;
 };
 
+class RDEMultipartReceive : public CommandInterface
+{
+  public:
+    ~RDEMultipartReceive() = default;
+    RDEMultipartReceive() = delete;
+    RDEMultipartReceive(const RDEMultipartReceive&) = delete;
+    RDEMultipartReceive(RDEMultipartReceive&&) = default;
+    RDEMultipartReceive& operator=(const RDEMultipartReceive&) = delete;
+    RDEMultipartReceive& operator=(RDEMultipartReceive&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit RDEMultipartReceive(const char* type, const char* name,
+                                 CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-d, --dataTransferHandle", dataTransferHandle,
+               "A handle to uniquely identify the chunk of data to be retrieved."
+               "If TransferOperation below is XFER_FIRST_PART and the OperationID")
+            ->required();
+
+        app->add_option("-o, --operationID", operationID,
+                        "Identification number for this Operation.")
+            ->required();
+
+        app->add_option(
+               "-t, --transferOperation", transferOperation,
+               "The portion of data requested for the transfer: "
+               "value: { XFER_FIRST_PART = 0, XFER_NEXT_PART = 1, XFER_ABORT = 2 }")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_MULTIPART_RECEIVE_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_rde_multipart_receive_req(
+            instanceId, dataTransferHandle, operationID, transferOperation,
+            request);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodeCompletionCode;
+        uint8_t decodeTransferFlag;
+        uint32_t decodeNextDataTransferHandle;
+        uint32_t decodeDataLengthBytes;
+        uint32_t decodeDataIntegrityChecksum = 0;
+        // TODO: Max size to be updated
+        constexpr uint32_t rdeMultipartDataMaxSize = 1024;
+        uint8_t decodeData[rdeMultipartDataMaxSize];
+
+        auto rc = decode_rde_multipart_receive_resp(
+            responsePtr, payloadLength, &decodeCompletionCode,
+            &decodeTransferFlag, &decodeNextDataTransferHandle,
+            &decodeDataLengthBytes, decodeData, &decodeDataIntegrityChecksum);
+
+        if (rc != PLDM_SUCCESS || decodeCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodeCompletionCode
+                      << std::endl;
+            return;
+        }
+        uint32_t dataOnlyLen = decodeDataLengthBytes;
+
+        if (decodeTransferFlag == PLDM_RDE_END ||
+            decodeTransferFlag == PLDM_RDE_START_AND_END)
+        {
+            dataOnlyLen -= sizeof(decodeDataIntegrityChecksum);
+        }
+        ordered_json data;
+        std::stringstream dt;
+
+        // Format data bytes to display in json
+        for (uint32_t i = 0; i < dataOnlyLen; i++)
+        {
+            dt << " 0x" << std::hex << std::setfill('0') << std::setw(2)
+               << static_cast<int>(decodeData[i]);
+        }
+
+        data["TransferFlag"] = decodeTransferFlag;
+        data["NextDataTransferHandle"] = decodeNextDataTransferHandle;
+        data["DataLengthBytes"] = decodeDataLengthBytes;
+        data["Data"] = dt.str();
+        data["DataIntegrityChecksum"] = decodeDataIntegrityChecksum;
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint32_t dataTransferHandle;
+    rde_op_id operationID;
+    uint8_t transferOperation;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -418,6 +518,11 @@ void registerCommand(CLI::App& app)
         rde->add_subcommand("GetResourceETag", "Get Resource ETag");
     commands.push_back(std::make_unique<GetResourceETag>(
         "rde", "GetResourceETag", getResourceETag));
+
+    auto rdeMultipartReceive =
+        rde->add_subcommand("RDEMultipartReceive", "RDE Multipart Receive");
+    commands.push_back(std::make_unique<RDEMultipartReceive>(
+        "rde", "RDEMultipartReceive", rdeMultipartReceive));
 }
 
 } // namespace rde
