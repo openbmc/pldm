@@ -491,6 +491,103 @@ class RDEMultipartReceive : public CommandInterface
     uint8_t transferOperation;
 };
 
+class RDEMultipartSend : public CommandInterface
+{
+  public:
+    ~RDEMultipartSend() = default;
+    RDEMultipartSend() = delete;
+    RDEMultipartSend(const RDEMultipartSend&) = delete;
+    RDEMultipartSend(RDEMultipartSend&&) = default;
+    RDEMultipartSend& operator=(const RDEMultipartSend&) = delete;
+    RDEMultipartSend& operator=(RDEMultipartSend&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit RDEMultipartSend(const char* type, const char* name,
+                              CLI::App* app) : CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-t, --dataTransferHandle", dataTransferHandle,
+               "A handle to uniquely identify the chunk of data to be retrieved."
+               "If TransferOperation below is XFER_FIRST_PART and the OperationID")
+            ->required();
+
+        app->add_option("-o, --operationID", operationID,
+                        "Identification number for this Operation.")
+            ->required();
+
+        app->add_option(
+               "-f, --transferFlag", transferFlag,
+               "An indication of current progress within the transfer."
+               "value: { START = 0, MIDDLE = 1, END = 2, START_AND_END = 3 }")
+            ->required();
+        app->add_option(
+               "-z, --nextDataTransferHandle", nextDataTransferHandle,
+               "The handle for the next chunk of data for this transfer;"
+               "zero (0x00000000) if no further data.")
+            ->required();
+        app->add_option(
+               "-l, --dataLengthBytes", dataLengthBytes,
+               "The portion of data requested for the transfer: "
+               "value: { XFER_FIRST_PART = 0, XFER_NEXT_PART = 1, XFER_ABORT = 2 }")
+            ->required();
+        app->add_option("-d, --data", data, "The current chunk of data bytes")
+            ->required();
+        app->add_option(
+               "-c, --dataIntegrityChecksum", dataIntegrityChecksum,
+               "32-bit CRC for the entirety of data (all parts concatenated together,"
+               "excluding this checksum). Shallbe omitted for non-final chunks "
+               "(TransferFlag ≠ END or START_AND_END) in the transfer. The "
+               "DataIntegrityChecksum shall not be split across multiple chunks.")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_MULTIPART_SEND_REQ_FIXED_BYTES +
+            dataLengthBytes);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_rde_multipart_send_req(
+            instanceId, dataTransferHandle, operationID, transferFlag,
+            nextDataTransferHandle, dataLengthBytes, data.data(),
+            dataIntegrityChecksum, request);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodedCompletionCode;
+        uint8_t decodedtransferOperation;
+
+        auto rc = decode_rde_multipart_send_resp(
+            responsePtr, payloadLength, &decodedCompletionCode,
+            &decodedtransferOperation);
+
+        if (rc != PLDM_SUCCESS || decodedCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodedCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json jsonData;
+        jsonData["TransferOperation"] = decodedtransferOperation;
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint32_t dataTransferHandle;
+    rde_op_id operationID;
+    uint8_t transferFlag;
+    uint32_t nextDataTransferHandle;
+    uint32_t dataLengthBytes;
+    std::vector<uint8_t> data;
+    uint32_t dataIntegrityChecksum = 0;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -523,6 +620,11 @@ void registerCommand(CLI::App& app)
         rde->add_subcommand("RDEMultipartReceive", "RDE Multipart Receive");
     commands.push_back(std::make_unique<RDEMultipartReceive>(
         "rde", "RDEMultipartReceive", rdeMultipartReceive));
+
+    auto rdeMultipartSend =
+        rde->add_subcommand("RDEMultipartSend", "RDE Multipart Send");
+    commands.push_back(std::make_unique<RDEMultipartSend>(
+        "rde", "RDEMultipartSend", rdeMultipartSend));
 }
 
 } // namespace rde
