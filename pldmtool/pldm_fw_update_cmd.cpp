@@ -1254,6 +1254,63 @@ class CancelUpdateComponent : public CommandInterface
         ordered_json data;
 
         fillCompletionCode(cc, data, PLDM_FWUP);
+
+        pldmtool::helper::DisplayInJson(data);
+    }
+};
+
+class CancelUpdate : public CommandInterface
+{
+  public:
+    ~CancelUpdate() = default;
+    CancelUpdate() = delete;
+    CancelUpdate(const CancelUpdate&) = delete;
+    CancelUpdate(CancelUpdate&&) = delete;
+    CancelUpdate& operator=(const CancelUpdate&) = delete;
+    CancelUpdate& operator=(CancelUpdate&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+        auto request = new (requestMsg.data()) pldm_msg;
+        auto rc = encode_cancel_update_req(instanceId, request,
+                                           PLDM_CANCEL_UPDATE_REQ_BYTES);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        bool8_t nonFunctioningComponentIndication;
+        bitfield64_t nonFunctioningComponentBitmap{0};
+        auto rc = decode_cancel_update_resp(responsePtr, payloadLength, &cc,
+                                            &nonFunctioningComponentIndication,
+                                            &nonFunctioningComponentBitmap);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Parsing CancelUpdate response failed: "
+                      << "rc=" << rc << ",cc=" << static_cast<int>(cc) << "\n";
+            return;
+        }
+
+        ordered_json data;
+        fillCompletionCode(cc, data, PLDM_FWUP);
+
+        if (cc == PLDM_SUCCESS)
+        {
+            data["NonFunctioningComponentIndication"] =
+                nonFunctioningComponentIndication ? "True" : "False";
+
+            if (nonFunctioningComponentIndication)
+            {
+                data["NonFunctioningComponentBitmap"] =
+                    std::to_string(nonFunctioningComponentBitmap.value);
+            }
+        }
+
         pldmtool::helper::DisplayInJson(data);
     }
 };
@@ -1302,6 +1359,11 @@ void registerCommand(CLI::App& app)
         "CancelUpdateComponent", "To cancel component update");
     commands.push_back(std::make_unique<CancelUpdateComponent>(
         "fw_update", "CancelUpdateComponent", cancelUpdateComp));
+
+    auto cancelUpdate =
+        fwUpdate->add_subcommand("CancelUpdate", "To cancel update");
+    commands.push_back(std::make_unique<CancelUpdate>(
+        "fw_update", "CancelUpdate", cancelUpdate));
 }
 
 } // namespace fw_update
