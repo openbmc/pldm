@@ -139,6 +139,7 @@ class Handler
      *  @param[in] responseTimeOut - time to wait between each retry
      */
     explicit Handler(
+        Context& ctx,
         PldmTransport* pldmTransport, sdeventplus::Event& event,
         pldm::InstanceIdDb& instanceIdDb, bool verbose,
         std::chrono::seconds instanceIdExpiryInterval =
@@ -146,7 +147,7 @@ class Handler
         uint8_t numRetries = static_cast<uint8_t>(NUMBER_OF_REQUEST_RETRIES),
         std::chrono::milliseconds responseTimeOut =
             std::chrono::milliseconds(RESPONSE_TIME_OUT)) :
-        pldmTransport(pldmTransport), event(event), instanceIdDb(instanceIdDb),
+        ctx(ctx), pldmTransport(pldmTransport), event(event), instanceIdDb(instanceIdDb),
         verbose(verbose), instanceIdExpiryInterval(instanceIdExpiryInterval),
         numRetries(numRetries), responseTimeOut(responseTimeOut)
     {}
@@ -174,8 +175,8 @@ class Handler
             responseHandler(eid, nullptr, 0);
             this->removeRequestContainer.emplace(
                 key,
-                std::make_unique<sdeventplus::source::Defer>(
-                    event, std::bind(&Handler::removeRequestEntry, this, key)));
+                std::make_unique<pldm::utils::Defer>(
+                    ctx, std::bind(&Handler::removeRequestEntry, this, key)));
             endpointMessageQueues[eid]->activeRequest = false;
 
             /* try to send new request if the endpoint is free */
@@ -410,6 +411,7 @@ class Handler
         mctp_eid_t eid, pldm::Request&& request);
 
   private:
+    Context& ctx;
     PldmTransport* pldmTransport; //!< PLDM transport object
     sdeventplus::Event& event; //!< reference to PLDM daemon's main event loop
     pldm::InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
@@ -438,7 +440,7 @@ class Handler
     /** @brief Container to store information about the request entries to be
      *         removed after the instance ID timer expires
      */
-    std::unordered_map<RequestKey, std::unique_ptr<sdeventplus::source::Defer>,
+    std::unordered_map<RequestKey, std::unique_ptr<pldm::utils::Defer>,
                        RequestKeyHasher>
         removeRequestContainer;
 

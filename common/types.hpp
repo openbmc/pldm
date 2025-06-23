@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sdbusplus/message/types.hpp>
-#include <sdbusplus/async/context.hpp>
+#include <sdbusplus/async.hpp>
 
 #include <bitset>
 #include <cstdint>

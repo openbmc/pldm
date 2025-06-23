@@ -333,7 +333,7 @@ class Terminus
     sdeventplus::Event& event;
 
     /** @brief The event source to defer sensor creation tasks to event loop*/
-    std::unique_ptr<sdeventplus::source::Defer> sensorCreationEvent;
+    std::unique_ptr<pldm::utils::Defer> sensorCreationEvent;
 
     /** @brief Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_numeric_sensor_value_pdr>>

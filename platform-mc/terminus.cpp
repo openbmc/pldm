@@ -245,8 +245,8 @@ void Terminus::addNextSensorFromPDRs()
     {
         const auto& pdr = numericSensorPdrs[pdrIt];
         // Defer adding the next Numeric Sensor
-        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
-            event,
+        sensorCreationEvent = std::make_unique<pldm::utils::Defer>(
+            ctx,
             std::bind(std::mem_fn(&Terminus::addNumericSensor), this, pdr));
     }
     else if (pdrIt < numericSensorPdrs.size() + compactNumericSensorPdrs.size())
@@ -254,9 +254,9 @@ void Terminus::addNextSensorFromPDRs()
         pdrIt -= numericSensorPdrs.size();
         const auto& pdr = compactNumericSensorPdrs[pdrIt];
         // Defer adding the next Compact Numeric Sensor
-        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
-            event, std::bind(std::mem_fn(&Terminus::addCompactNumericSensor),
-                             this, pdr));
+        sensorCreationEvent = std::make_unique<pldm::utils::Defer>(
+            ctx, std::bind(std::mem_fn(&Terminus::addCompactNumericSensor),
+                           this, pdr));
     }
     else
     {

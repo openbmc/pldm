@@ -637,5 +637,43 @@ std::optional<std::string> fruFieldValuestring(const uint8_t* value,
 std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
                                           const uint8_t& length);
 
+struct Defer : public sdbusplus::async::details::context_friend
+{
+    Defer(sdbusplus::async::context& ctx, std::function<void()>&& callback) :
+        callback(std::move(callback))
+    {
+        source = get_event_loop(ctx).add_defer(&Defer::handler, this);
+    }
+    private:
+    static int handler(sd_event_source* /*source*/,
+                               void* userdata)
+    {
+        auto& self = *static_cast<Defer*>(userdata);
+        self.callback();
+        return 0; // Return 0 to indicate success
+    }
+    sdbusplus::event_source_t source; //!< Event source for deferred execution
+    std::function<void()> callback; //!< Callback function to be called
+};
+
+struct IO : public sdbusplus::async::details::context_friend
+{
+    IO(sdbusplus::async::context& ctx, int fd, uint32_t events, std::function<void(int, uint32_t)>&& callback) :
+        callback(std::move(callback))
+    {
+        source = get_event_loop(ctx).add_io(fd, events, &utils::IO::handler, this);
+    }
+  private:
+    static int handler(sd_event_source* /*source*/, int fd, uint32_t revents,
+                       void* userdata)
+    {
+        auto& self = *static_cast<IO*>(userdata);
+        self.callback(fd, revents);
+        return 0; // Return 0 to indicate success
+    }
+    sdbusplus::event_source_t source; //!< Event source for IO operations
+    std::function<void(int, uint32_t)> callback; //!< Callback function
+};
+
 } // namespace utils
 } // namespace pldm

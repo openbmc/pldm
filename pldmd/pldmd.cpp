@@ -208,7 +208,7 @@ int main(int argc, char** argv)
         ctx, "/xyz/openbmc_project/inventory");
 
     Invoker invoker{};
-    requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
+    requester::Handler<requester::Request> reqHandler(ctx, &pldmTransport, event,
                                                       instanceIdDb, verbose);
 
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
@@ -348,12 +348,12 @@ int main(int argc, char** argv)
         std::make_unique<MctpDiscovery>(
             ctx, std::initializer_list<MctpDiscoveryHandlerIntf*>{
                      fwManager.get(), platformManager.get()});
-    auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
-                     TID](IO& io, int fd, uint32_t revents) mutable {
+    auto callback = [&ctx, verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
+                     TID](int fd, uint32_t revents) mutable {
         if (revents & (POLLHUP | POLLERR))
         {
             warning("Transport Socket hang-up or error. IO Exiting.");
-            io.get_event().exit(0);
+            ctx.request_stop();
             return;
         }
 
@@ -413,7 +413,7 @@ int main(int argc, char** argv)
             error(
                 "MCTP daemon closed the socket, IO exiting with response code '{RC}'",
                 "RC", returnCode);
-            io.get_event().exit(0);
+            ctx.request_stop();
         }
         else
         {
@@ -425,7 +425,7 @@ int main(int argc, char** argv)
         free(requestMsg);
     };
 
-    ctx.get_bus().attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
+    //ctx.get_bus().attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 #ifndef SYSTEM_SPECIFIC_BIOS_JSON
     try
     {
@@ -437,7 +437,7 @@ int main(int argc, char** argv)
               PLDMService, "ERROR", e);
     }
 #endif
-    IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
+    pldm::utils::IO io(ctx, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
     if (hostPDRHandler)
     {
