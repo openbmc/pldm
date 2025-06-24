@@ -588,6 +588,67 @@ class RDEMultipartSend : public CommandInterface
     uint32_t dataIntegrityChecksum = 0;
 };
 
+class RDEOperationComplete : public CommandInterface
+{
+  public:
+    ~RDEOperationComplete() = default;
+    RDEOperationComplete() = delete;
+    RDEOperationComplete(const RDEOperationComplete&) = delete;
+    RDEOperationComplete(RDEOperationComplete&&) = default;
+    RDEOperationComplete& operator=(const RDEOperationComplete&) = delete;
+    RDEOperationComplete& operator=(RDEOperationComplete&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit RDEOperationComplete(const char* type, const char* name,
+                                  CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-r, --resourceid", resourceID,
+               "The ResourceID of a resource in the the Redfish Resource PDR")
+            ->required();
+
+        app->add_option(
+               "-i, --operationID", operationID,
+               "Identification number for this Operation; must match "
+               "the one used for all commands relating to this Operation.")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_OPERATION_COMPLETE_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_rde_operation_complete_req(instanceId, resourceID,
+                                                    operationID, request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodedCompletionCode;
+
+        auto rc = decode_rde_operation_complete_resp(responsePtr, payloadLength,
+                                                     &decodedCompletionCode);
+
+        if (rc != PLDM_SUCCESS || decodedCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodedCompletionCode
+                      << std::endl;
+            return;
+        }
+    }
+
+  private:
+    uint32_t resourceID;
+    rde_op_id operationID;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -625,6 +686,11 @@ void registerCommand(CLI::App& app)
         rde->add_subcommand("RDEMultipartSend", "RDE Multipart Send");
     commands.push_back(std::make_unique<RDEMultipartSend>(
         "rde", "RDEMultipartSend", rdeMultipartSend));
+
+    auto rdeOperationComplete =
+        rde->add_subcommand("RDEOperationComplete", "RDE Operation Complete");
+    commands.push_back(std::make_unique<RDEOperationComplete>(
+        "rde", "RDEOperationComplete", rdeOperationComplete));
 }
 
 } // namespace rde
