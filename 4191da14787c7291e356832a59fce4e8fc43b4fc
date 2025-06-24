@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eddce102_35d341e0",
+        "filename": "common/types.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-24T08:02:37Z",
+      "side": 1,
+      "message": "Thanks for explanation! 😊\nMark as resolved.",
+      "parentUuid": "d68dc133_a6d5e098",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b337a4a_12dd29fb",
@@ -49,6 +67,24 @@
       "writtenOn": "2025-06-18T01:28:22Z",
       "side": 1,
       "message": "Why are we doing this anyway? Why not use the struct provided by libpldm?",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ddcd1f8_b009c804",
+        "filename": "common/types.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-24T08:02:37Z",
+      "side": 1,
+      "message": "Removed enum and using struct provided by pldm.",
+      "parentUuid": "4b337a4a_12dd29fb",
       "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -88,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6989bbd2_036c01d1",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-24T08:02:37Z",
+      "side": 1,
+      "message": "Done, using static_cast directly.",
+      "parentUuid": "9297cb4f_f3aaf811",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "440e65ca_14f2bcd1",
@@ -119,6 +173,24 @@
       "side": 1,
       "message": "Parsing of various format revisions now handled by libpldm directly.",
       "parentUuid": "440e65ca_14f2bcd1",
+      "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b0417b_e106731a",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-06-24T08:02:37Z",
+      "side": 1,
+      "message": "Thanks for explanation! 😊\nMark as resolved.",
+      "parentUuid": "d1355137_50f5f47a",
       "revId": "4191da14787c7291e356832a59fce4e8fc43b4fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
