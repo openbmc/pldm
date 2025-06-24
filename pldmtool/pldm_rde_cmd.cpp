@@ -649,6 +649,113 @@ class RDEOperationComplete : public CommandInterface
     rde_op_id operationID;
 };
 
+class RDEOperationStatus : public CommandInterface
+{
+  public:
+    ~RDEOperationStatus() = default;
+    RDEOperationStatus() = delete;
+    RDEOperationStatus(const RDEOperationStatus&) = delete;
+    RDEOperationStatus(RDEOperationStatus&&) = default;
+    RDEOperationStatus& operator=(const RDEOperationStatus&) = delete;
+    RDEOperationStatus& operator=(RDEOperationStatus&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit RDEOperationStatus(const char* type, const char* name,
+                                CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-r, --resourceid", resourceID,
+               "The ResourceID of a resource in the the Redfish Resource PDR")
+            ->required();
+
+        app->add_option(
+               "-i, --operationID", operationID,
+               "Identification number for this Operation; must match "
+               "the one used for all commands relating to this Operation.")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_OPERATION_STATUS_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_rde_operation_status_req(instanceId, resourceID,
+                                                  operationID, request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodedCompletionCode;
+        uint8_t decodedOperationStatus;
+        uint8_t decodedCompletionPercentage;
+        uint32_t decodedCompletionTimeSeconds;
+        bitfield8_t decodedOperationExecutionFlags;
+        uint32_t decodedResultTransferHandle;
+        bitfield8_t decodedPermissionFlags;
+        uint32_t decodedResponsePayloadLength;
+        const uint32_t etagMaxSize = 1024;
+
+        // TODO: Decide proper size for the buffer
+        uint8_t buffer[sizeof(struct pldm_rde_varstring) + etagMaxSize];
+        pldm_rde_varstring* decodedEtag = (struct pldm_rde_varstring*)buffer;
+
+        // TODO: Max size to be updated
+        constexpr uint32_t responsePayloadMaxSize = 1024;
+        uint8_t decodedResponsePayload[responsePayloadMaxSize];
+
+        auto rc = decode_rde_operation_init_resp(
+            responsePtr, payloadLength, &decodedCompletionCode,
+            &decodedOperationStatus, &decodedCompletionPercentage,
+            &decodedCompletionTimeSeconds, &decodedOperationExecutionFlags,
+            &decodedResultTransferHandle, &decodedPermissionFlags,
+            &decodedResponsePayloadLength, decodedEtag, decodedResponsePayload);
+
+        if (rc != PLDM_SUCCESS || decodedCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodedCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json jsonData;
+
+        std::stringstream dt;
+        dt << decodedEtag->string_data;
+
+        jsonData["OperationStatus"] = decodedOperationStatus;
+        jsonData["CompletionPercentage"] = decodedCompletionPercentage;
+        jsonData["CompletionTimeSeconds"] = decodedCompletionTimeSeconds;
+        jsonData["OperationExecutionFlags"] =
+            decodedOperationExecutionFlags.byte;
+        jsonData["ResultTransferHandle"] = decodedResultTransferHandle;
+        jsonData["PermissionFlags"] = decodedPermissionFlags.byte;
+        jsonData["ResponsePayloadLength"] = decodedResponsePayloadLength;
+        jsonData["OperationStatus"] = decodedOperationStatus;
+
+        jsonData["ETag.format"] = decodedEtag->string_format;
+        jsonData["ETag.length"] = decodedEtag->string_length_bytes;
+        jsonData["ETag"] = dt.str();
+        if (decodedResponsePayloadLength > 0)
+        {
+            std::stringstream p;
+            p << decodedResponsePayload;
+            jsonData["ResponsePayload"] = p.str();
+        }
+        pldmtool::helper::DisplayInJson(jsonData);
+    }
+
+  private:
+    uint32_t resourceID;
+    rde_op_id operationID;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -691,6 +798,11 @@ void registerCommand(CLI::App& app)
         rde->add_subcommand("RDEOperationComplete", "RDE Operation Complete");
     commands.push_back(std::make_unique<RDEOperationComplete>(
         "rde", "RDEOperationComplete", rdeOperationComplete));
+
+    auto rdeOperationStatus =
+        rde->add_subcommand("RDEOperationStatus", "RDE Operation Status");
+    commands.push_back(std::make_unique<RDEOperationStatus>(
+        "rde", "RDEOperationStatus", rdeOperationStatus));
 }
 
 } // namespace rde
