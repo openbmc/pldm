@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c74abe2_7ae66375",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T10:18:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8aecc428_cc3ba071",
+      "range": {
+        "startLine": 508,
+        "startChar": 0,
+        "endLine": 508,
+        "endChar": 19
+      },
+      "revId": "92910ee852ebb40ce5ac4b372200f81e952f3e32",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a87f0026_a52fd911",
@@ -58,6 +82,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d7db70_2c00ff51",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T10:18:22Z",
+      "side": 1,
+      "message": "We would need to overwrite the older timer since this needs to be done for each component",
+      "parentUuid": "a87f0026_a52fd911",
+      "revId": "92910ee852ebb40ce5ac4b372200f81e952f3e32",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2ea2d65_56e3fe82",
@@ -71,6 +113,24 @@
       "writtenOn": "2025-06-19T12:10:57Z",
       "side": 1,
       "message": "Where are we stopping the timer? We should stop and reset it in case of success or subsequent commands failure.",
+      "revId": "92910ee852ebb40ce5ac4b372200f81e952f3e32",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab594822_335fbe60",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T10:18:22Z",
+      "side": 1,
+      "message": "The destructor takes care of resetting the pointer after the update is compolete",
+      "parentUuid": "e2ea2d65_56e3fe82",
       "revId": "92910ee852ebb40ce5ac4b372200f81e952f3e32",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
