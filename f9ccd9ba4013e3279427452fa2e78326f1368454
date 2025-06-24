@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28251f25_6b99e3b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:49:53Z",
+      "side": 1,
+      "message": "Please add the test results.",
+      "revId": "f9ccd9ba4013e3279427452fa2e78326f1368454",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f7c45cc_4a84e140",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:49:53Z",
+      "side": 1,
+      "message": "nit: Please use placement new instead of reinterpret_cast",
+      "revId": "f9ccd9ba4013e3279427452fa2e78326f1368454",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d5474d1_4b1e9aed",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:49:53Z",
+      "side": 1,
+      "message": "nit: how about showing boolean (true/false) instead of string in the output json.",
+      "range": {
+        "startLine": 1299,
+        "startChar": 52,
+        "endLine": 1299,
+        "endChar": 68
+      },
+      "revId": "f9ccd9ba4013e3279427452fa2e78326f1368454",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
