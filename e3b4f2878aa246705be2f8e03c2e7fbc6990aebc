@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cbf8971_a2421d61",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T04:44:24Z",
+      "side": 1,
+      "message": "I\u0027ve removed the code",
+      "parentUuid": "18d0070c_44f779dd",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d71cc644_27956b07",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "In case of failure in applyComplete, we have logic in cancelUpdateComponent() to send the UpdateComponent request to the next component",
       "parentUuid": "d71cc644_27956b07",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38e3de4a_0472ec88",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T04:44:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56927823_fa26a1ae",
       "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +156,24 @@
       "side": 1,
       "message": "The commit message could include the high level business logic like CancelUpdate is all components failed vs ActivateFirmware is one component succeeded etc.",
       "parentUuid": "47b00382_84a6687c",
+      "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a135fcd7_389fbff7",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T04:44:24Z",
+      "side": 1,
+      "message": "Ack I\u0027ve updated the commit message",
+      "parentUuid": "cf65d123_e8e2270e",
       "revId": "e3b4f2878aa246705be2f8e03c2e7fbc6990aebc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
