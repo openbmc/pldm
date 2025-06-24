@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83609329_a2403e5e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:51:03Z",
+      "side": 1,
+      "message": "Please add the test results ?",
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "050d19f0_c52382e9",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:51:03Z",
+      "side": 1,
+      "message": "Duplicate -\u003e component_version_string_type is already defined above",
+      "range": {
+        "startLine": 1044,
+        "startChar": 0,
+        "endLine": 1051,
+        "endChar": 0
+      },
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb983547_f43068b2",
         "filename": "pldmtool/pldm_fw_update_cmd.cpp",
         "patchSetId": 2
@@ -14,6 +54,23 @@
       "writtenOn": "2025-06-24T05:21:06Z",
       "side": 1,
       "message": "nit: Please use placement new instead of reinterpret_cast",
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5b947e2_d5ceead4",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:51:03Z",
+      "side": 1,
+      "message": "How about adding a return value check for sscanf() ?",
       "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
