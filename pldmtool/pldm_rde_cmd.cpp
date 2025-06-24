@@ -756,6 +756,75 @@ class RDEOperationStatus : public CommandInterface
     rde_op_id operationID;
 };
 
+class RDEOperationEnumerate : public CommandInterface
+{
+  public:
+    ~RDEOperationEnumerate() = default;
+    RDEOperationEnumerate() = delete;
+    RDEOperationEnumerate(const RDEOperationEnumerate&) = delete;
+    RDEOperationEnumerate(RDEOperationEnumerate&&) = default;
+    RDEOperationEnumerate& operator=(const RDEOperationEnumerate&) = delete;
+    RDEOperationEnumerate& operator=(RDEOperationEnumerate&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit RDEOperationEnumerate(const char* type, const char* name,
+                                   CLI::App* app) :
+        CommandInterface(type, name, app)
+    {}
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_rde_operation_enumerate_req(instanceId, request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodedCompletionCode;
+        uint16_t decodedOperationCount;
+        // TODO: Decide proper size for the buffer
+        const uint32_t maxOperations = 100;
+
+        uint8_t buffer[sizeof(struct pldm_rde_varstring) * maxOperations];
+        struct pldm_rde_op_entry* decodedOperations =
+            (struct pldm_rde_op_entry*)buffer;
+
+        auto rc = decode_rde_operation_enumerate_resp(
+            responsePtr, payloadLength, &decodedCompletionCode,
+            &decodedOperationCount, decodedOperations);
+
+        if (rc != PLDM_SUCCESS || decodedCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodedCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json jsonData;
+
+        jsonData["OperationCount"] = decodedOperationCount;
+
+        for (int i = 0; i < decodedOperationCount; i++)
+        {
+            std::string operationIndex = "[" + std::to_string(i) + "]";
+            jsonData["ResourceID" + operationIndex] =
+                decodedOperations[i].resource_id;
+            jsonData["CompletionPercentage" + operationIndex] =
+                decodedOperations[i].operation_id;
+            jsonData["CompletionPercentage" + operationIndex] =
+                decodedOperations[i].operation_type;
+        }
+
+        pldmtool::helper::DisplayInJson(jsonData);
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
@@ -803,6 +872,11 @@ void registerCommand(CLI::App& app)
         rde->add_subcommand("RDEOperationStatus", "RDE Operation Status");
     commands.push_back(std::make_unique<RDEOperationStatus>(
         "rde", "RDEOperationStatus", rdeOperationStatus));
+
+    auto rdeOperationEnumerate =
+        rde->add_subcommand("RDEOperationEnumerate", "RDE Operation Enumerate");
+    commands.push_back(std::make_unique<RDEOperationEnumerate>(
+        "rde", "RDEOperationEnumerate", rdeOperationEnumerate));
 }
 
 } // namespace rde
