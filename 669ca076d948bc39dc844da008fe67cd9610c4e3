@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b10cb8f_8615910e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T07:49:35Z",
+      "side": 1,
+      "message": "Suppose there are two components to update, update was successful on 1st component but it failed for second component.\n\ncancelledUpdates would be 1 \n\napplicableComponents.size() - 1 \u003d 2-1 \u003d 1\n\nThis condition would be false in that case, and UA will not send activate firmware request.\nCorrect me if I am wrong here",
+      "parentUuid": "8f7f2a07_21493f55",
+      "range": {
+        "startLine": 809,
+        "startChar": 59,
+        "endLine": 809,
+        "endChar": 62
+      },
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8d934e7d_e2ae1b0d",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 6
@@ -132,6 +156,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a132aca9_24055e3c",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T07:49:35Z",
+      "side": 1,
+      "message": "But then we are calling updateDeviceCompletion again in activateFirmware and marking it as true.\nSo we are not actually marking it failed for partial updates here.",
+      "parentUuid": "dcc13ba1_40862624",
+      "range": {
+        "startLine": 817,
+        "startChar": 8,
+        "endLine": 817,
+        "endChar": 58
+      },
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1a505ae_8c8e9fcf",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 6
@@ -161,6 +209,24 @@
       "side": 1,
       "message": "I don\u0027t think it matters what the default value is since we\u0027re setting it to the correct value in the failed scenarios",
       "parentUuid": "a1a505ae_8c8e9fcf",
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a3ee80c_6eec8f36",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T07:49:35Z",
+      "side": 1,
+      "message": "We could have avoided setting it to false in the case of failure, and only set it true for the success cases.",
+      "parentUuid": "8385df16_89a10739",
       "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
