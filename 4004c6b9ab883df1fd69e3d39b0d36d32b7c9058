@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f998788c_4e35e717",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T04:50:49Z",
+      "side": 1,
+      "message": "Other than the one comment, this patch looks good to me.",
+      "revId": "4004c6b9ab883df1fd69e3d39b0d36d32b7c9058",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28146d52_482d3166",
