@@ -109,6 +109,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c72a152_c7566fa7",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T08:05:27Z",
+      "side": 1,
+      "message": "Ack, I\u0027ve updated the logic to make it more straightforward",
+      "parentUuid": "3b10cb8f_8615910e",
+      "range": {
+        "startLine": 809,
+        "startChar": 59,
+        "endLine": 809,
+        "endChar": 62
+      },
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8d934e7d_e2ae1b0d",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 6
@@ -178,6 +202,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f92c15_ae1ff395",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T08:05:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a132aca9_24055e3c",
+      "range": {
+        "startLine": 817,
+        "startChar": 8,
+        "endLine": 817,
+        "endChar": 58
+      },
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1a505ae_8c8e9fcf",
@@ -227,6 +275,24 @@
       "side": 1,
       "message": "We could have avoided setting it to false in the case of failure, and only set it true for the success cases.",
       "parentUuid": "8385df16_89a10739",
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2097dad_8bb18678",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T08:05:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9a3ee80c_6eec8f36",
       "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
