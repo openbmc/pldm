@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d492d26_dd3d1e3d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:50:19Z",
+      "side": 1,
+      "message": "Please add test results.",
+      "revId": "511ef73092560ccacabe2e1f66e9f533c2249019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4f3ac0_5b43a597",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-06-24T08:50:19Z",
+      "side": 1,
+      "message": "nit: Please use placement new instead of reinterpret_cast",
+      "revId": "511ef73092560ccacabe2e1f66e9f533c2249019",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
