@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "288598b4_eb4881d4",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T07:25:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "20b85a14_300d1d30",
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29a3c156_6787c560",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-06-24T07:02:44Z",
       "side": 1,
       "message": "why `-1` ?\nShouldn\u0027t it be `if (cancelledUpdates !\u003d applicableComponents.size())`?",
+      "range": {
+        "startLine": 809,
+        "startChar": 59,
+        "endLine": 809,
+        "endChar": 62
+      },
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f7f2a07_21493f55",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T07:25:21Z",
+      "side": 1,
+      "message": "The `-1` is to indicate that we\u0027re checking if there were any successful component updates not including the current component",
+      "parentUuid": "29a3c156_6787c560",
       "range": {
         "startLine": 809,
         "startChar": 59,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcc13ba1_40862624",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 817,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T07:25:21Z",
+      "side": 1,
+      "message": "The update for the device will still be marked as failed even if one of the components has a successful update",
+      "parentUuid": "8d934e7d_e2ae1b0d",
+      "range": {
+        "startLine": 817,
+        "startChar": 8,
+        "endLine": 817,
+        "endChar": 58
+      },
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1a505ae_8c8e9fcf",
@@ -77,6 +143,24 @@
       "writtenOn": "2025-06-24T07:02:44Z",
       "side": 1,
       "message": "preset it to false instead, it should be marked to true only on success",
+      "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8385df16_89a10739",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-24T07:25:21Z",
+      "side": 1,
+      "message": "I don\u0027t think it matters what the default value is since we\u0027re setting it to the correct value in the failed scenarios",
+      "parentUuid": "a1a505ae_8c8e9fcf",
       "revId": "669ca076d948bc39dc844da008fe67cd9610c4e3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
