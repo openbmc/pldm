@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a342d0ad_bbcce453",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-24T06:12:21Z",
+      "side": 1,
+      "message": "These traces are helpful in good path as well as bad path. I could not find any other way to provide this information. I am open to take suggestion on this.",
+      "parentUuid": "7a6c3ee1_52dfef43",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 35
+      },
+      "revId": "f4d10e93602ce86404d007664e495aa1aba221f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8a716835_1452473f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2024-09-05T02:16:40Z",
       "side": 1,
       "message": "It seems these traces is for debugging. Do we really need them in the upstream code?",
+      "revId": "f4d10e93602ce86404d007664e495aa1aba221f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6743096_99db0ff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-24T06:12:21Z",
+      "side": 1,
+      "message": "Those traces will convey the details about PDR exchange happened with the remote terminus. This information helps developer to map the sequence of operation during Host Power on.",
+      "parentUuid": "8a716835_1452473f",
       "revId": "f4d10e93602ce86404d007664e495aa1aba221f2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
