@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "080d56c8_2c4f8d3d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T09:23:46Z",
+      "side": 1,
+      "message": "can you also explain what is UA ? and what is UA_T2 before any of this ?",
+      "range": {
+        "startLine": 11,
+        "startChar": 44,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "da48ca87dfb219ff7bd3093c3e4455d6c128a758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4f8eee6_3a21f77a",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T09:23:46Z",
+      "side": 1,
+      "message": "probably worth to make this an integer option with a min and max, and set it to min (with a rationale), so that other companies could tweak if they want to ?",
+      "range": {
+        "startLine": 242,
+        "startChar": 4,
+        "endLine": 242,
+        "endChar": 52
+      },
+      "revId": "da48ca87dfb219ff7bd3093c3e4455d6c128a758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
