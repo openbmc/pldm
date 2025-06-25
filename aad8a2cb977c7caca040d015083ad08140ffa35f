@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59229a41_91165033",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T10:24:28Z",
+      "side": 1,
+      "message": "what i meant was , something along these lines : \n\n```\ntemplate \u003ctypename T\u003e\nstd::expected\u003cT, int\u003e GetInstanceID(const std::expected\u003cT, InstanceIdError\u003e\u0026 result)\n{\n    if (!result)\n    {\n        const auto\u0026 err \u003d result.error();\n        std::cerr \u003c\u003c \"Failed to allocate instance ID: rc\u003d\"\n                  \u003c\u003c err.rc() \u003c\u003c \", msg\u003d\" \u003c\u003c err.msg() \u003c\u003c \u0027\\n\u0027;\n        return std::unexpected(err.rc());\n    }\n    return result.value();\n}\n\n```\n\nand it could be used like this ? \n\n```\nauto instanceIdResult \u003d GetInstanceID(updateManager-\u003einstanceIdDb.next(eid));\nif (!instanceIdResult)\n    return instanceIdResult.error();\n```\n\ndoes it make sense ? (this sort of thing will reduce the repeated pattern all over the patch)",
+      "parentUuid": "b2e8102a_dbaf8255",
+      "range": {
+        "startLine": 22,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 47
+      },
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94614f62_e647f2f7",
         "filename": "softoff/softoff.cpp",
         "patchSetId": 27
