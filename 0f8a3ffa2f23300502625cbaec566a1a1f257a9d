@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a6928d_c1c5e1c9",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "85d6b3b9_0cf78160",
+      "range": {
+        "startLine": 739,
+        "startChar": 4,
+        "endLine": 739,
+        "endChar": 66
+      },
+      "revId": "0f8a3ffa2f23300502625cbaec566a1a1f257a9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffeac07f_221a29bb",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-25T09:17:08Z",
       "side": 1,
       "message": "recently @eric.yang.wiwynn@gmail.com has fixed the build for clang- 20 and removed bind_front with lambda expression - please follow the same pattern as mentioned in https://github.com/openbmc/pldm/commit/70eca96bebade89aceab0762e3615b816e29fba7",
+      "range": {
+        "startLine": 755,
+        "startChar": 7,
+        "endLine": 755,
+        "endChar": 68
+      },
+      "revId": "0f8a3ffa2f23300502625cbaec566a1a1f257a9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c4acb14_dc705d8f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ffeac07f_221a29bb",
       "range": {
         "startLine": 755,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46751667_704a567f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "deed19a7_1d8cfb33",
+      "range": {
+        "startLine": 803,
+        "startChar": 16,
+        "endLine": 803,
+        "endChar": 41
+      },
+      "revId": "0f8a3ffa2f23300502625cbaec566a1a1f257a9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97c3ca0d_0883175e",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-06-25T09:17:08Z",
       "side": 1,
       "message": "similar comments as above",
+      "range": {
+        "startLine": 811,
+        "startChar": 20,
+        "endLine": 812,
+        "endChar": 35
+      },
+      "revId": "0f8a3ffa2f23300502625cbaec566a1a1f257a9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b6769f3_6bf7ffbd",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:07Z",
+      "side": 1,
+      "message": "This is std::bind and not std::bind_front, so I don\u0027t think the change is required here",
+      "parentUuid": "97c3ca0d_0883175e",
       "range": {
         "startLine": 811,
         "startChar": 20,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da70f537_42389962",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:07Z",
+      "side": 1,
+      "message": "Same as above",
+      "parentUuid": "d7d761db_eb8ecbbb",
+      "range": {
+        "startLine": 825,
+        "startChar": 12,
+        "endLine": 826,
+        "endChar": 37
+      },
+      "revId": "0f8a3ffa2f23300502625cbaec566a1a1f257a9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3336c44b_0f284349",
@@ -129,6 +249,30 @@
       "writtenOn": "2025-06-25T09:17:08Z",
       "side": 1,
       "message": "define this as a using statement - so that it will be clear on what each type is meant to do ?",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 27
+      },
+      "revId": "0f8a3ffa2f23300502625cbaec566a1a1f257a9d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fc141e8_a718c4d8",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3336c44b_0f284349",
       "range": {
         "startLine": 229,
         "startChar": 4,
