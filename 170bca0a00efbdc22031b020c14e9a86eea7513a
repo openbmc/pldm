@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a19b765_648653fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T08:57:26Z",
+      "side": 1,
+      "message": "nit: how does `Improve logging in PDR exchange path` sound ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "170bca0a00efbdc22031b020c14e9a86eea7513a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e38b059_bb7bbf8e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T08:57:26Z",
+      "side": 1,
+      "message": "per lg2 docs:\n\n```\nThe APIs can handle (and format appropriately) any data of the following types: signed or unsigned integers, floating point numbers, booleans, strings (C-strings, std::strings, or std::string_views), std::filesystem::paths, sdbusplus enums and object_paths, generic enumerations (as numbers), exceptions, and pointers. The APIs will also allow arbitrary type formatting for any type which has a to_string function defined.\n\n```\n\nif we support boolean..do we need to convert it to unsigned again ?",
+      "range": {
+        "startLine": 564,
+        "startChar": 37,
+        "endLine": 564,
+        "endChar": 62
+      },
+      "revId": "170bca0a00efbdc22031b020c14e9a86eea7513a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27ca1c8a_3b2c170a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T08:57:26Z",
+      "side": 1,
+      "message": "what\u0027s this number ? is it an OEM thing ? if so we should not put in the common code.",
+      "range": {
+        "startLine": 656,
+        "startChar": 55,
+        "endLine": 656,
+        "endChar": 65
+      },
+      "revId": "170bca0a00efbdc22031b020c14e9a86eea7513a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
