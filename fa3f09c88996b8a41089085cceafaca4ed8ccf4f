@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e703a592_67ff8ebc",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T09:32:27Z",
+      "side": 1,
+      "message": "I think it\u0027s all about writing logs that are human-readable. (https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings). Even though the anti-pattern talks about lg2, its better to write logs which does not have acronyms.",
+      "parentUuid": "f697d15c_a749ff4a",
+      "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01b7125b_6e4e0300",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 13
@@ -66,6 +84,24 @@
       "writtenOn": "2025-06-21T07:17:52Z",
       "side": 1,
       "message": "Change to use c++ type casting.",
+      "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d99c46aa_231b476f",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-25T09:32:27Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "9e94d8b7_f11d3eed",
       "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
