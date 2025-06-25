@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f254f910_64b78135",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-25T07:46:18Z",
+      "side": 1,
+      "message": "can we use operator new?",
+      "range": {
+        "startLine": 834,
+        "startChar": 7,
+        "endLine": 834,
+        "endChar": 73
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67c3cdf1_eb135ec7",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-25T07:46:18Z",
+      "side": 1,
+      "message": "This seems to be redundant as the API is created to find the sensor pdrs for the given entity type. For every match of entity type with state sensor pdr inspite being composite(more than one state set id) PDR it will be added only once. \nDo we really need the traverse for CompositeSensorCount here??",
+      "range": {
+        "startLine": 840,
+        "startChar": 8,
+        "endLine": 849,
+        "endChar": 0
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f62a74d5_4b08b668",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-25T07:46:18Z",
+      "side": 1,
+      "message": "Can we move this check to line 837??",
+      "range": {
+        "startLine": 850,
+        "startChar": 18,
+        "endLine": 850,
+        "endChar": 55
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fad5c5d_0c0bbff2",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-25T07:46:18Z",
+      "side": 1,
+      "message": "Seems redundant",
+      "range": {
+        "startLine": 881,
+        "startChar": 11,
+        "endLine": 889,
+        "endChar": 78
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8376583a_28e5fe21",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-25T07:46:18Z",
+      "side": 1,
+      "message": "This function could return vector of state sensor pdrs. Any reason why vector of vector is chosen",
+      "range": {
+        "startLine": 522,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 42
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
