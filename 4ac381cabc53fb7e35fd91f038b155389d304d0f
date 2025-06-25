@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd22e086_0f3ab2fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-06-25T22:59:36Z",
+      "side": 1,
+      "message": "We formally support log filtering in phosphor-logging now. I was considering making it easier for platforms to turn this off. That is one direction we can go in: \n\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/81041/1/tools/phosphor-logging/sensor-thresholds-eventfilter.json",
+      "parentUuid": "71993c6d_858a5f9f",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69b7c805_7db19f5b",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-06-21T09:38:50Z",
       "side": 1,
       "message": "I think we should not add variable in code for unit-test purpose.",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11b8fc9e_e23a6885",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-06-25T22:59:36Z",
+      "side": 1,
+      "message": "Sorry. I could not find another way to keep the unit tests happy and not expect services. I am open to suggestions.",
+      "parentUuid": "69b7c805_7db19f5b",
       "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e69e538_236aa24d",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-06-25T22:59:36Z",
+      "side": 1,
+      "message": "we return early and dont print anything if alarm \u003d\u003d newAlarm (line 913).",
+      "parentUuid": "7fbf9c91_9f83f54e",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51aeef5f_fcdbab40",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 21
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5e370c0_0ed1e637",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-06-25T22:59:36Z",
+      "side": 1,
+      "message": "Its createThresholdLog which will call lg2::commit(). lg2::commit will create a new phospor-logging entry and I have noticed that it also creates a journal entry.",
+      "parentUuid": "51aeef5f_fcdbab40",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "75641ac6_edee1e3c",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 21
@@ -82,6 +154,24 @@
       "writtenOn": "2025-06-21T09:38:50Z",
       "side": 1,
       "message": "When `createThresholdLog(level, direction, value);` is not called what will be the value of `assertedLog[{level, direction}];`?",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef73efa1_86ee953e",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-06-25T22:59:36Z",
+      "side": 1,
+      "message": "the map\u003c\u003e\u0027s [] operator would create a default if there is no value for the provided key. Since the default constructor for the value/std::optional is std::nullopt, the subsequent log.has_value() would return false.",
+      "parentUuid": "75641ac6_edee1e3c",
       "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
