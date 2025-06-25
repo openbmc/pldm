@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b52130_a50294a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:02Z",
+      "side": 1,
+      "message": "UA_T2 is part of the `Timing Specification` in the PLDM FW Update Specification. \n\nUA is the update agent which orchestrates the firmware update to the devices",
+      "parentUuid": "080d56c8_2c4f8d3d",
+      "range": {
+        "startLine": 11,
+        "startChar": 44,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "da48ca87dfb219ff7bd3093c3e4455d6c128a758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4f8eee6_3a21f77a",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-25T09:23:46Z",
       "side": 1,
       "message": "probably worth to make this an integer option with a min and max, and set it to min (with a rationale), so that other companies could tweak if they want to ?",
+      "range": {
+        "startLine": 242,
+        "startChar": 4,
+        "endLine": 242,
+        "endChar": 52
+      },
+      "revId": "da48ca87dfb219ff7bd3093c3e4455d6c128a758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5048ce_e6774c3e",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-06-25T10:18:02Z",
+      "side": 1,
+      "message": "Ack, I\u0027ve added a meson option to address this. I\u0027ve set it to 60s as the min based on the PLDM spec",
+      "parentUuid": "f4f8eee6_3a21f77a",
       "range": {
         "startLine": 242,
         "startChar": 4,
