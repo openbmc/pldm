@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c022d574_3497ce66",
+        "filename": "common/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-25T17:59:43Z",
+      "side": 1,
+      "message": "Do not ever use a \"details\" namespace outside of the repository where it is defined.  If you want this code to go into sdbusplus, please contribute it there.",
+      "range": {
+        "startLine": 640,
+        "startChar": 40,
+        "endLine": 640,
+        "endChar": 47
+      },
+      "revId": "6ae76be9fd6337d5cef48422e98a0ddb27a33998",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e5bfd86_9a29cded",
+        "filename": "common/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-25T17:59:43Z",
+      "side": 1,
+      "message": "I don\u0027t really know what a \"defer\" is, but it sounds like the same thing as running something like `ctx.spawn(stdexec::just() | stdexec::then(callback))` .  You\u0027re just trying to run a function \"later\"?  Put it in to the async context.",
+      "revId": "6ae76be9fd6337d5cef48422e98a0ddb27a33998",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1f533cf_7e3a3edc",
+        "filename": "common/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-25T17:59:43Z",
+      "side": 1,
+      "message": "One issue is that the \"handler\" will end up being called from an internal thread in the sdbusplus context, rather than the async worker thread.\n\nAre we able to convert these into real async operations?",
+      "revId": "6ae76be9fd6337d5cef48422e98a0ddb27a33998",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459e64e1_7b8afcbd",
+        "filename": "common/utils.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-25T17:59:43Z",
+      "side": 1,
+      "message": "We already have sd-event handling for file descriptors in sdbusplus.  We shouldn\u0027t need a new one here.",
+      "range": {
+        "startLine": 661,
+        "startChar": 39,
+        "endLine": 661,
+        "endChar": 45
+      },
+      "revId": "6ae76be9fd6337d5cef48422e98a0ddb27a33998",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
