@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04d866f2_9727bc2b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-26T04:06:59Z",
+      "side": 1,
+      "message": "can you put this in the commit message as well please ?",
+      "parentUuid": "d5b52130_a50294a4",
+      "range": {
+        "startLine": 11,
+        "startChar": 44,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "da48ca87dfb219ff7bd3093c3e4455d6c128a758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4f8eee6_3a21f77a",
         "filename": "fw-update/device_updater.hpp",
         "patchSetId": 7
