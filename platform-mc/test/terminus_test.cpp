@@ -1,19 +1,43 @@
 #include "common/utils.hpp"
+#include "mock_terminus_manager.hpp"
 #include "platform-mc/dbus_impl_fru.hpp"
+#include "platform-mc/numeric_sensor.hpp"
 #include "platform-mc/terminus.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <libpldm/entity.h>
 
 #include <sdbusplus/bus.hpp>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+using namespace ::testing;
+
+class TerminusTest : public testing::Test
+{
+  protected:
+    TerminusTest() :
+        event(sdeventplus::Event::get_default()), instanceIdDb(),
+        reqHandler(pldmTransport, event, instanceIdDb, false,
+                   std::chrono::seconds(1), 2, std::chrono::milliseconds(100)),
+        mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr)
+    {}
+
+    PldmTransport* pldmTransport = nullptr;
+    sdeventplus::Event event;
+    TestInstanceIdDb instanceIdDb;
+    pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    pldm::platform_mc::MockTerminusManager mockTerminusManager;
+    std::map<pldm_tid_t, std::shared_ptr<pldm::platform_mc::Terminus>> termini;
+};
 
 TEST(TerminusTest, supportedTypeTest)
 {
-    auto event = sdeventplus::Event::get_default();
-    auto t1 = pldm::platform_mc::Terminus(1, 1 << PLDM_BASE, event);
+    auto t1 = pldm::platform_mc::Terminus(1, 1 << PLDM_BASE, event,
+                                          mockTerminusManager);
     auto t2 = pldm::platform_mc::Terminus(
-        2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
 
     EXPECT_EQ(true, t1.doesSupportType(PLDM_BASE));
     EXPECT_EQ(false, t1.doesSupportType(PLDM_PLATFORM));
@@ -23,18 +47,17 @@ TEST(TerminusTest, supportedTypeTest)
 
 TEST(TerminusTest, getTidTest)
 {
-    auto event = sdeventplus::Event::get_default();
     const pldm_tid_t tid = 1;
-    auto t1 = pldm::platform_mc::Terminus(tid, 1 << PLDM_BASE, event);
+    auto t1 = pldm::platform_mc::Terminus(tid, 1 << PLDM_BASE, event,
+                                          mockTerminusManager);
 
     EXPECT_EQ(tid, t1.getTid());
 }
 
 TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
 {
-    auto event = sdeventplus::Event::get_default();
     auto t1 = pldm::platform_mc::Terminus(
-        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     std::vector<uint8_t> pdr1{
         0x0,
         0x0,
@@ -116,9 +139,8 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
 
 TEST(TerminusTest, parseSensorAuxiliaryMultiNamesPDRTest)
 {
-    auto event = sdeventplus::Event::get_default();
     auto t1 = pldm::platform_mc::Terminus(
-        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     std::vector<uint8_t> pdr1{
         0x0,
         0x0,
@@ -236,9 +258,8 @@ TEST(TerminusTest, parseSensorAuxiliaryMultiNamesPDRTest)
 
 TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
 {
-    auto event = sdeventplus::Event::get_default();
     auto t1 = pldm::platform_mc::Terminus(
-        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     std::vector<uint8_t> pdr1{
         0x0,
         0x0,
@@ -407,9 +428,8 @@ TEST(TerminusTest, createPldmEntityTest)
 
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
 {
-    auto event = sdeventplus::Event::get_default();
     auto t1 = pldm::platform_mc::Terminus(
-        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     std::vector<uint8_t> pdr1{
         0x1, 0x0, 0x0,
         0x0,                             // record handle
