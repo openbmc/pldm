@@ -2,6 +2,7 @@
 
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
+#include "file_descriptor.hpp"
 #include "numeric_sensor.hpp"
 
 #include <libpldm/fru.h>
@@ -20,6 +21,8 @@ namespace pldm
 {
 namespace platform_mc
 {
+
+class TerminusManager;
 
 using namespace pldm::pdr;
 using namespace pldm::file_transfer;
@@ -45,7 +48,7 @@ class Terminus
 {
   public:
     Terminus(pldm_tid_t tid, uint64_t supportedPLDMTypes,
-             sdeventplus::Event& event);
+             sdeventplus::Event& event, TerminusManager& terminusManager);
 
     /** @brief Check if the terminus supports the PLDM type message
      *
@@ -163,6 +166,9 @@ class Terminus
 
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
+
+    /** @brief A list of File Descriptors */
+    std::vector<std::shared_ptr<FileDescriptor>> fileDescriptors{};
 
     /** @brief The flag indicates that the terminus FIFO contains a large
      *         message that will require a multipart transfer via the
@@ -376,6 +382,9 @@ class Terminus
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;
+
+    /** @brief TerminusManager reference object */
+    TerminusManager& terminusManager;
 };
 } // namespace platform_mc
 } // namespace pldm
