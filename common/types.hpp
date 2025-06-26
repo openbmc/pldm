@@ -233,6 +233,8 @@ using SensorInfo =
 namespace file_transfer
 {
 using FileID = uint16_t;
+using FD = uint16_t;
+using Checksum = uint32_t;
 
 enum class FileClassification : uint8_t
 {
