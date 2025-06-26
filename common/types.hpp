@@ -242,6 +242,8 @@ using TransferFlag = uint8_t;
 using Checksum = uint32_t;
 using Interval = uint32_t;
 using PartSize = uint16_t;
+using FileSize = uint32_t;
+using FDCount = uint8_t;
 
 enum class FileClassification : uint8_t
 {
