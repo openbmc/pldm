@@ -548,7 +548,7 @@ TEST_F(TerminusManagerTest, getActiveEidByNameTest)
     auto mappedTid = mockTerminusManager.mapTid(mctpInfo);
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     auto terminus = termini[tid];
 
     auto mappedTid1 = terminusManager.mapTid(mctpInfo);
