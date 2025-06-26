@@ -264,6 +264,7 @@ using Callback = std::function<void()>;
 namespace file_transfer
 {
 using FileID = uint16_t;
+using CRC32Type = uint32_t;
 
 enum class FileClassification : uint8_t
 {
