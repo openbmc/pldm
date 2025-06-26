@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ced43f1_e9ae0adf",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002071
+      },
+      "writtenOn": "2025-06-26T06:29:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e703a592_67ff8ebc",
+      "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01b7125b_6e4e0300",
@@ -67,6 +85,24 @@
       "writtenOn": "2025-06-21T07:17:52Z",
       "side": 1,
       "message": "Don\u0027t use `Anti-pattern` when prints message.",
+      "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0912fc5_c0b93838",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1002071
+      },
+      "writtenOn": "2025-06-26T06:29:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "01b7125b_6e4e0300",
       "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -102,6 +138,24 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "9e94d8b7_f11d3eed",
+      "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abfadbde_591ee56a",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1002071
+      },
+      "writtenOn": "2025-06-26T06:29:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d99c46aa_231b476f",
       "revId": "fa3f09c88996b8a41089085cceafaca4ed8ccf4f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
