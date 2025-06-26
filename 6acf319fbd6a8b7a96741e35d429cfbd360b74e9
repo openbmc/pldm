@@ -73,6 +73,23 @@
       "message": "How about adding a return value check for sscanf() ?",
       "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a49b748d_66226b91",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1109,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-06-26T07:21:34Z",
+      "side": 1,
+      "message": "There is some discussion happening here regarding anti-patterns - can we address the same here throughout the chain of commits - https://gerrit.openbmc.org/c/openbmc/pldm/+/78997/13..15/pldmtool/pldm_platform_cmd.cpp#b99",
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
