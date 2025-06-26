@@ -384,6 +384,20 @@ class NumericSensor
         return false;
     }
 
+    /** @brief Get the current value of the sensor on D-Bus
+     *
+     *  @return The current sensor's value on D-Bus
+     */
+
+    double getSensorValue(void)
+    {
+        if (useMetricInterface)
+        {
+            return metricIntf->value();
+        }
+        return valueIntf->value();
+    }
+
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
 
