@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62d9d260_bffbfbba",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-06-26T07:17:32Z",
+      "side": 1,
+      "message": "Can we have the min and max set, and set it to min? similar to this - https://gerrit.openbmc.org/c/openbmc/pldm/+/79997/7..10/fw-update/device_updater.hpp#b242",
+      "range": {
+        "startLine": 251,
+        "startChar": 4,
+        "endLine": 251,
+        "endChar": 63
+      },
+      "revId": "95524e31d2b7bfcc1846030e46fda12d8aa0e14c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
