@@ -8,6 +8,8 @@ test_src = declare_dependency(
         '../sensor_manager.cpp',
         '../numeric_sensor.cpp',
         '../event_manager.cpp',
+        '../file_descriptor.cpp',
+        '../file_cmds.cpp',
         '../dbus_to_terminus_effecters.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
