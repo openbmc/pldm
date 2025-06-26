@@ -197,6 +197,9 @@ int main(int argc, char** argv)
 
     InstanceIdDb instanceIdDb;
 
+    sdbusplus::server::manager_t fileManager(bus,
+                                             "/xyz/openbmc_project/pldm/file");
+
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
                                                       instanceIdDb, verbose);
