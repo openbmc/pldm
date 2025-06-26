@@ -16,10 +16,12 @@ namespace platform_mc
 {
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
-                   sdeventplus::Event& event) :
+                   sdeventplus::Event& event,
+                   TerminusManager& terminusManager) :
     initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
     synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
-    supportedTypes(supportedTypes), event(event)
+    supportedTypes(supportedTypes), event(event),
+    terminusManager(terminusManager)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)
@@ -913,9 +915,21 @@ void Terminus::buildFileHierarchy()
             continue;
         }
 
-        // TODO: Construct file descriptor D-Bus object
-        lg2::debug("Constructing file descriptor object {PATH}.", "PATH",
-                   file.second->objPath);
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        try
+        {
+            auto fileObject = std::make_shared<FileDescriptor>(
+                bus, fileInfo->objPath, tid, false, fileInfo->pdr,
+                terminusManager);
+            lg2::info("Created File Descriptor object {NAME}", "NAME",
+                      fileInfo->name);
+            fileDescriptors.emplace_back(std::move(fileObject));
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            lg2::error("Failed to create FileDescriptor {NAME}. error - {ERR}",
+                       "NAME", fileInfo->name, "ERR", e);
+        }
     }
 }
 } // namespace platform_mc
