@@ -233,6 +233,15 @@ using SensorInfo =
 namespace file_transfer
 {
 using FileID = uint16_t;
+using FD = uint16_t;
+using TransferCtx = uint32_t;
+using TransferOp = uint8_t;
+using TransferHandle = uint32_t;
+using SectionOffset = uint32_t;
+using TransferFlag = uint8_t;
+using Checksum = uint32_t;
+using Interval = uint32_t;
+using PartSize = uint16_t;
 
 enum class FileClassification : uint8_t
 {
