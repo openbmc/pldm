@@ -206,6 +206,9 @@ int main(int argc, char** argv)
     sdbusplus::server::manager_t inventoryManager(
         bus, "/xyz/openbmc_project/inventory");
 
+    sdbusplus::server::manager_t fileManager(
+        bus, "/xyz/openbmc_project/file");
+
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
                                                       instanceIdDb, verbose);
