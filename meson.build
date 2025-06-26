@@ -302,6 +302,7 @@ executable(
     'platform-mc/sensor_manager.cpp',
     'platform-mc/numeric_sensor.cpp',
     'platform-mc/event_manager.cpp',
+    'platform-mc/file_cmds.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
     oem_files,
     'requester/mctp_endpoint_discovery.cpp',
