@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd1c9235_c141662b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-27T05:26:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a19b765_648653fc",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "170bca0a00efbdc22031b020c14e9a86eea7513a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e38b059_bb7bbf8e",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-25T08:57:26Z",
       "side": 1,
       "message": "per lg2 docs:\n\n```\nThe APIs can handle (and format appropriately) any data of the following types: signed or unsigned integers, floating point numbers, booleans, strings (C-strings, std::strings, or std::string_views), std::filesystem::paths, sdbusplus enums and object_paths, generic enumerations (as numbers), exceptions, and pointers. The APIs will also allow arbitrary type formatting for any type which has a to_string function defined.\n\n```\n\nif we support boolean..do we need to convert it to unsigned again ?",
+      "range": {
+        "startLine": 564,
+        "startChar": 37,
+        "endLine": 564,
+        "endChar": 62
+      },
+      "revId": "170bca0a00efbdc22031b020c14e9a86eea7513a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64c5ad4e_3db471d3",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-27T05:26:35Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5e38b059_bb7bbf8e",
       "range": {
         "startLine": 564,
         "startChar": 37,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc48afc2_1439be4a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-27T05:26:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27ca1c8a_3b2c170a",
+      "range": {
+        "startLine": 656,
+        "startChar": 55,
+        "endLine": 656,
+        "endChar": 65
+      },
+      "revId": "170bca0a00efbdc22031b020c14e9a86eea7513a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36bb8464_897b53d0",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-06-26T05:04:15Z",
       "side": 1,
       "message": "this casting is also not needed",
+      "range": {
+        "startLine": 570,
+        "startChar": 29,
+        "endLine": 570,
+        "endChar": 41
+      },
+      "revId": "170bca0a00efbdc22031b020c14e9a86eea7513a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cbfbbe3_15cc095e",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-06-27T05:26:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36bb8464_897b53d0",
       "range": {
         "startLine": 570,
         "startChar": 29,
