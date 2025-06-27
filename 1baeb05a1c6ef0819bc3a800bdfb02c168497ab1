@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "506640c0_dcdea81e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-06-27T05:51:59Z",
+      "side": 1,
+      "message": "Its confusing, please re-write this, to capture details like a kernel panic or a bmc reboot during the middle of NVRAM file creation would lead to corrupted sizes and hence there is a need to also validate the file size before we can use it.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 46
+      },
+      "revId": "1baeb05a1c6ef0819bc3a800bdfb02c168497ab1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
