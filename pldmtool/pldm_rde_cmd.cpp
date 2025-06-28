@@ -588,6 +588,178 @@ class RDEMultipartSend : public CommandInterface
     uint32_t dataIntegrityChecksum = 0;
 };
 
+class RDEOperationInit : public CommandInterface
+{
+  public:
+    ~RDEOperationInit() = default;
+    RDEOperationInit() = delete;
+    RDEOperationInit(const RDEOperationInit&) = delete;
+    RDEOperationInit(RDEOperationInit&&) = default;
+    RDEOperationInit& operator=(const RDEOperationInit&) = delete;
+    RDEOperationInit& operator=(RDEOperationInit&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    explicit RDEOperationInit(const char* type, const char* name,
+                              CLI::App* app) : CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-r, --resourceid", resourceID,
+               "The ResourceID of a resource in the the Redfish Resource PDR")
+            ->required();
+
+        app->add_option(
+               "-i, --operationID", operationID,
+               "Identification number for this Operation; must match "
+               "the one used for all commands relating to this Operation.")
+            ->required();
+
+        app->add_option(
+               "-o, --operationType", operationType,
+               "The type of Redfish Operation being performed. "
+               "values: { OPERATION_HEAD = 0; OPERATION_READ = 1; "
+               "OPERATION_CREATE = 2; OPERATION_DELETE = 3; OPERATION_UPDATE = 4;"
+               "OPERATION_REPLACE = 5; OPERATION_ACTION = 6 }")
+            ->required();
+
+        app->add_option("-f, --operationFlags", operationFlags.byte,
+                        "Flags associated with this Operation")
+            ->required();
+
+        app->add_option(
+               "-d, --sendDataTransferHandle", sendDataTransferHandle,
+               "Handle to be used with the first RDEMultipartSend command transferring BEJ "
+               "formatted data for the operation. If no data is to be sent for this operation "
+               "or if the request payload fits entirely within this request message, then it "
+               "shall be zero (0x00000000).")
+            ->required();
+
+        app->add_option(
+               "-l, --operationLocatorLength", operationLocatorLength,
+               "Length in bytes of the OperationLocator for this Operation. This field shall be "
+               "zero (0x00) if the locator_valid bit in the OperationFlags field above is set to "
+               "0b or if the OperationType field above is not one of OPERATION_UPDATE and "
+               "OPERATION_ACTION.")
+            ->required();
+
+        app->add_option(
+               "-z, --requestPayloadLength", requestPayloadLength,
+               "Length in bytes of the request payload in this message.")
+            ->required();
+
+        app->add_option(
+               "-b, --operationLocator", operationLocator,
+               "BEJ locator indicating where the new Operation is to take place within the resource "
+               "specified in ResourceID. May not be supported for all Operations. This field shall be"
+               " omitted if the OperationLocatorLength field above is set to zero.")
+            ->required();
+
+        app->add_option(
+               "-p, --requestPayload", requestPayload,
+               "The request payload. The format of this parameter shall be null (consisting of zero bytes)"
+               "if the RequestPayloadLength above is zero;")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_RDE_OPERATION_INIT_REQ_FIXED_BYTES +
+            operationLocatorLength + requestPayloadLength);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_rde_operation_init_req(
+            instanceId, resourceID, operationID, operationType, &operationFlags,
+            sendDataTransferHandle, operationLocatorLength,
+            requestPayloadLength, operationLocator.data(),
+            requestPayload.data(), request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t decodedCompletionCode;
+        uint8_t decodedOperationStatus;
+        uint8_t decodedCompletionPercentage;
+        uint32_t decodedCompletionTimeSeconds;
+        bitfield8_t decodedOperationExecutionFlags;
+        uint32_t decodedResultTransferHandle;
+        bitfield8_t decodedPermissionFlags;
+        uint32_t decodedResponsePayloadLength;
+        const uint32_t etagMaxSize = 1024;
+
+        // TODO: Decide proper size for the buffer
+        uint8_t buffer[sizeof(struct pldm_rde_varstring) + etagMaxSize];
+        pldm_rde_varstring* decodedEtag = (struct pldm_rde_varstring*)buffer;
+
+        // TODO: Max size to be updated
+        constexpr uint32_t responsePayloadMaxSize = 1024;
+        uint8_t decodedResponsePayload[responsePayloadMaxSize];
+
+        auto rc = decode_rde_operation_init_resp(
+            responsePtr, payloadLength, &decodedCompletionCode,
+            &decodedOperationStatus, &decodedCompletionPercentage,
+            &decodedCompletionTimeSeconds, &decodedOperationExecutionFlags,
+            &decodedResultTransferHandle, &decodedPermissionFlags,
+            &decodedResponsePayloadLength, decodedEtag, decodedResponsePayload);
+
+        if (rc != PLDM_SUCCESS || decodedCompletionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)decodedCompletionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json jsonData;
+
+        std::stringstream dt;
+        dt << decodedEtag->string_data;
+
+        jsonData["OperationStatus"] = decodedOperationStatus;
+        jsonData["CompletionPercentage"] = decodedCompletionPercentage;
+        jsonData["CompletionTimeSeconds"] = decodedCompletionTimeSeconds;
+        jsonData["OperationExecutionFlags"] =
+            decodedOperationExecutionFlags.byte;
+        jsonData["ResultTransferHandle"] = decodedResultTransferHandle;
+        jsonData["PermissionFlags"] = decodedPermissionFlags.byte;
+        jsonData["ResponsePayloadLength"] = decodedResponsePayloadLength;
+        jsonData["OperationStatus"] = decodedOperationStatus;
+
+        jsonData["ETag.format"] = decodedEtag->string_format;
+        jsonData["ETag.length"] = decodedEtag->string_length_bytes;
+        jsonData["ETag"] = dt.str();
+
+        std::stringstream p;
+        if (decodedResponsePayloadLength > 0)
+        {
+            for (size_t i = 0; i < decodedResponsePayloadLength; i++)
+            {
+                p << " 0x" << std::hex << std::setfill('0') << std::setw(2)
+                  << static_cast<int>(decodedResponsePayload[i]);
+            }
+            jsonData["ResponsePayload"] = p.str();
+        }
+        else
+            jsonData["ResponsePayload"] = 0;
+
+        pldmtool::helper::DisplayInJson(jsonData);
+    }
+
+  private:
+    uint32_t resourceID;
+    rde_op_id operationID;
+    uint8_t operationType;
+    bitfield8_t operationFlags;
+    uint32_t sendDataTransferHandle;
+    uint8_t operationLocatorLength;
+    uint32_t requestPayloadLength;
+
+    std::vector<uint8_t> operationLocator;
+    std::vector<uint8_t> requestPayload;
+};
+
 class RDEOperationComplete : public CommandInterface
 {
   public:
@@ -755,6 +927,11 @@ void registerCommand(CLI::App& app)
         rde->add_subcommand("RDEMultipartSend", "RDE Multipart Send");
     commands.push_back(std::make_unique<RDEMultipartSend>(
         "rde", "RDEMultipartSend", rdeMultipartSend));
+
+    auto rdeOperationInit =
+        rde->add_subcommand("RDEOperationInit", "RDE Operation Init");
+    commands.push_back(std::make_unique<RDEOperationInit>(
+        "rde", "RDEOperationInit", rdeOperationInit));
 
     auto rdeOperationComplete =
         rde->add_subcommand("RDEOperationComplete", "RDE Operation Complete");
