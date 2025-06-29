@@ -814,6 +814,10 @@ class RDEOperationComplete : public CommandInterface
                       << std::endl;
             return;
         }
+        ordered_json jsonData;
+        jsonData["CompletionCode"] = decodedCompletionCode;
+
+        pldmtool::helper::DisplayInJson(jsonData);
     }
 
   private:
