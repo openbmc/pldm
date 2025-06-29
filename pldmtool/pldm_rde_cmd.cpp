@@ -43,17 +43,11 @@ class NegotiateRedfishParameters : public CommandInterface
                                         CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-c, --concurrency", concurrencySupport,
-               "The maximum number of concurrent outstanding Operations"
-               "the MC can support for this RDE Device"
-               "Must be > 0; a value of 1 indicates no support for concurrency."
-               "A value of 255 (0xFF) shall be interpreted to indicate"
-               "that no such limit exists")
+        app->add_option("-c, --concurrency", concurrencySupport,
+                        "Max number of concurrent operations")
             ->required();
         app->add_option("-f, --feature", featureSupport.value,
-                        "Operations and functionality supported by the MC;"
-                        "for each, 1b indicates supported, 0b not:")
+                        "Bitmask representing supported MC operations")
             ->required();
     }
 
@@ -126,13 +120,8 @@ class NegotiateMediumParameters : public CommandInterface
                                        CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-t, --transfersize", mcMaximumTransferSize,
-               "An indication of the maximum amount of data"
-               "the MC can support for a single message transfer."
-               "This value represents the size of the PLDM header and PLDM payload;"
-               "medium specific header information shall not be included in this calculation."
-               "All MC implementations shall support a transfer size of at least 64 bytes.")
+        app->add_option("-t, --transfersize", mcMaximumTransferSize,
+                        "Maximum transfer size in bytes")
             ->required();
     }
 
@@ -193,13 +182,9 @@ class GetSchemaDictionary : public CommandInterface
                                  CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-r, --resourceid", resourceID,
-               "The ResourceID of any resource in the Redfish Resource PDR"
-               "from which to retrieve the dictionary")
+        app->add_option("-r, --resourceid", resourceID, "Resource ID")
             ->required();
-        app->add_option("-s, --schemaclass", schemaClass,
-                        "The class of schema being requested")
+        app->add_option("-s, --schemaclass", schemaClass, "Schema class value")
             ->required();
     }
 
@@ -259,16 +244,12 @@ class GetSchemaURI : public CommandInterface
     explicit GetSchemaURI(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option("-r, --resourceid", resourceID,
-                        "The ResourceID of a resource in a Redfish Resource PDR"
-                        "from which to retrieve the URI")
+        app->add_option("-r, --resourceid", resourceID, "Resource ID")
             ->required();
-        app->add_option("-s, --schemaclass", schemaClass,
-                        "The class of schema being requested")
+        app->add_option("-s, --schemaclass", schemaClass, "Schema class value")
             ->required();
         app->add_option("-o, --oemextensionnumber", oemExtensionNumber,
-                        "Shall be zero for a standard DMTF-published schema,"
-                        "or the one-based OEM extension to a standard schema")
+                        "OEM extension number")
             ->required();
     }
 
@@ -338,11 +319,7 @@ class GetResourceETag : public CommandInterface
     explicit GetResourceETag(const char* type, const char* name,
                              CLI::App* app) : CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-r, --resourceid", resourceID,
-               "The ResourceID of a resource in the the Redfish Resource PDR"
-               "for the instance from which to get an ETag digest; or 0xFFFF FFFF"
-               "to get a global digest of all resource-based data within the RDE Device")
+        app->add_option("-r, --resourceid", resourceID, "Resource ID")
             ->required();
     }
 
@@ -407,20 +384,15 @@ class RDEMultipartReceive : public CommandInterface
                                  CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-d, --dataTransferHandle", dataTransferHandle,
-               "A handle to uniquely identify the chunk of data to be retrieved."
-               "If TransferOperation below is XFER_FIRST_PART and the OperationID")
+        app->add_option("-d, --dataTransferHandle", dataTransferHandle,
+                        "Transfer handle ID")
             ->required();
 
-        app->add_option("-o, --operationID", operationID,
-                        "Identification number for this Operation.")
+        app->add_option("-o, --operationID", operationID, "Operation ID")
             ->required();
 
-        app->add_option(
-               "-t, --transferOperation", transferOperation,
-               "The portion of data requested for the transfer: "
-               "value: { XFER_FIRST_PART = 0, XFER_NEXT_PART = 1, XFER_ABORT = 2 }")
+        app->add_option("-t, --transferOperation", transferOperation,
+                        "Transfer phase: {0=First, 1=Next, 2=Abort}")
             ->required();
     }
 
@@ -506,39 +478,27 @@ class RDEMultipartSend : public CommandInterface
     explicit RDEMultipartSend(const char* type, const char* name,
                               CLI::App* app) : CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-t, --dataTransferHandle", dataTransferHandle,
-               "A handle to uniquely identify the chunk of data to be retrieved."
-               "If TransferOperation below is XFER_FIRST_PART and the OperationID")
+        app->add_option("-t, --dataTransferHandle", dataTransferHandle,
+                        "Transfer handle")
             ->required();
 
-        app->add_option("-o, --operationID", operationID,
-                        "Identification number for this Operation.")
+        app->add_option("-o, --operationID", operationID, "Operation ID")
             ->required();
 
         app->add_option(
                "-f, --transferFlag", transferFlag,
-               "An indication of current progress within the transfer."
-               "value: { START = 0, MIDDLE = 1, END = 2, START_AND_END = 3 }")
+               "Transfer stage: {0=Start, 1=Middle, 2=End, 3=StartAndEnd}")
             ->required();
-        app->add_option(
-               "-z, --nextDataTransferHandle", nextDataTransferHandle,
-               "The handle for the next chunk of data for this transfer;"
-               "zero (0x00000000) if no further data.")
+        app->add_option("-z, --nextDataTransferHandle", nextDataTransferHandle,
+                        "Next chunk handle or 0")
             ->required();
-        app->add_option(
-               "-l, --dataLengthBytes", dataLengthBytes,
-               "The portion of data requested for the transfer: "
-               "value: { XFER_FIRST_PART = 0, XFER_NEXT_PART = 1, XFER_ABORT = 2 }")
+        app->add_option("-l, --dataLengthBytes", dataLengthBytes,
+                        "Length of data in bytes")
             ->required();
         app->add_option("-d, --data", data, "The current chunk of data bytes")
             ->required();
-        app->add_option(
-               "-c, --dataIntegrityChecksum", dataIntegrityChecksum,
-               "32-bit CRC for the entirety of data (all parts concatenated together,"
-               "excluding this checksum). Shallbe omitted for non-final chunks "
-               "(TransferFlag ≠ END or START_AND_END) in the transfer. The "
-               "DataIntegrityChecksum shall not be split across multiple chunks.")
+        app->add_option("-c, --dataIntegrityChecksum", dataIntegrityChecksum,
+                        "32-bit CRC")
             ->required();
     }
 
@@ -603,61 +563,38 @@ class RDEOperationInit : public CommandInterface
     explicit RDEOperationInit(const char* type, const char* name,
                               CLI::App* app) : CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-r, --resourceid", resourceID,
-               "The ResourceID of a resource in the the Redfish Resource PDR")
+        app->add_option("-r, --resourceid", resourceID, "Resource ID")
             ->required();
 
-        app->add_option(
-               "-i, --operationID", operationID,
-               "Identification number for this Operation; must match "
-               "the one used for all commands relating to this Operation.")
+        app->add_option("-i, --operationID", operationID, "Operation ID")
             ->required();
 
-        app->add_option(
-               "-o, --operationType", operationType,
-               "The type of Redfish Operation being performed. "
-               "values: { OPERATION_HEAD = 0; OPERATION_READ = 1; "
-               "OPERATION_CREATE = 2; OPERATION_DELETE = 3; OPERATION_UPDATE = 4;"
-               "OPERATION_REPLACE = 5; OPERATION_ACTION = 6 }")
+        app->add_option("-o, --operationType", operationType,
+                        "Type of Redfish Operation")
             ->required();
 
         app->add_option("-f, --operationFlags", operationFlags.byte,
                         "Flags associated with this Operation")
             ->required();
 
-        app->add_option(
-               "-d, --sendDataTransferHandle", sendDataTransferHandle,
-               "Handle to be used with the first RDEMultipartSend command transferring BEJ "
-               "formatted data for the operation. If no data is to be sent for this operation "
-               "or if the request payload fits entirely within this request message, then it "
-               "shall be zero (0x00000000).")
+        app->add_option("-d, --sendDataTransferHandle", sendDataTransferHandle,
+                        "Handle for BEJ payload transfer")
             ->required();
 
-        app->add_option(
-               "-l, --operationLocatorLength", operationLocatorLength,
-               "Length in bytes of the OperationLocator for this Operation. This field shall be "
-               "zero (0x00) if the locator_valid bit in the OperationFlags field above is set to "
-               "0b or if the OperationType field above is not one of OPERATION_UPDATE and "
-               "OPERATION_ACTION.")
+        app->add_option("-l, --operationLocatorLength", operationLocatorLength,
+                        "Length in bytes of the OperationLocator")
             ->required();
 
-        app->add_option(
-               "-z, --requestPayloadLength", requestPayloadLength,
-               "Length in bytes of the request payload in this message.")
+        app->add_option("-z, --requestPayloadLength", requestPayloadLength,
+                        "Length in bytes of the request payload")
             ->required();
 
-        app->add_option(
-               "-b, --operationLocator", operationLocator,
-               "BEJ locator indicating where the new Operation is to take place within the resource "
-               "specified in ResourceID. May not be supported for all Operations. This field shall be"
-               " omitted if the OperationLocatorLength field above is set to zero.")
+        app->add_option("-b, --operationLocator", operationLocator,
+                        "BEJ locator")
             ->required();
 
-        app->add_option(
-               "-p, --requestPayload", requestPayload,
-               "The request payload. The format of this parameter shall be null (consisting of zero bytes)"
-               "if the RequestPayloadLength above is zero;")
+        app->add_option("-p, --requestPayload", requestPayload,
+                        "The request payload")
             ->required();
     }
 
@@ -776,15 +713,10 @@ class RDEOperationComplete : public CommandInterface
                                   CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-r, --resourceid", resourceID,
-               "The ResourceID of a resource in the the Redfish Resource PDR")
+        app->add_option("-r, --resourceid", resourceID, "Resource ID")
             ->required();
 
-        app->add_option(
-               "-i, --operationID", operationID,
-               "Identification number for this Operation; must match "
-               "the one used for all commands relating to this Operation.")
+        app->add_option("-i, --operationID", operationID, "Operation ID")
             ->required();
     }
 
@@ -841,15 +773,10 @@ class RDEOperationStatus : public CommandInterface
                                 CLI::App* app) :
         CommandInterface(type, name, app)
     {
-        app->add_option(
-               "-r, --resourceid", resourceID,
-               "The ResourceID of a resource in the the Redfish Resource PDR")
+        app->add_option("-r, --resourceid", resourceID, "Resource ID")
             ->required();
 
-        app->add_option(
-               "-i, --operationID", operationID,
-               "Identification number for this Operation; must match "
-               "the one used for all commands relating to this Operation.")
+        app->add_option("-i, --operationID", operationID, "Operation ID")
             ->required();
     }
 
@@ -1013,6 +940,12 @@ void registerCommand(CLI::App& app)
 {
     auto rde = app.add_subcommand("rde", "rde type command");
     rde->require_subcommand(1);
+
+    // Add footer with spec version and reference
+    rde->footer(
+        "Supported RDE Spec Version: DSP0218 v1.2.0\n"
+        "Reference: https://www.dmtf.org/sites/default/files/standards/documents/DSP0218_1.2.0.pdf");
+
     auto negotiateRedfishParameters = rde->add_subcommand(
         "NegotiateRedfishParameters", "Negotiate Redfish Parameters");
     commands.push_back(std::make_unique<NegotiateRedfishParameters>(
