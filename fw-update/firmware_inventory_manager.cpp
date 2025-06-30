@@ -31,8 +31,7 @@ void FirmwareInventoryManager::createFirmwareEntry(
 
     if (!boardPath)
     {
-        error("Failed to get board path for EID {EID}", "EID", eid);
-        return;
+        boardPath = "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     }
     const auto boardName = boardPath->filename().string();
     const auto softwarePath =
