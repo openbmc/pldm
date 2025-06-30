@@ -1,0 +1,9 @@
+Code-Review+2: Tom Joseph <rushtotom@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Rajeev Ranjan <ranjan.rajeev1609@gmail.com>
+Submitted-by: Tom Joseph <rushtotom@gmail.com>
+Submitted-at: Mon, 30 Jun 2025 19:08:20 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/81316
+Comments-Total: 6
+Project: openbmc/pldm
+Branch: refs/heads/master
