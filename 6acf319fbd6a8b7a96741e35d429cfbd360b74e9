@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e77ebe3_83ad5d75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-30T18:07:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "83609329_a2403e5e",
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "050d19f0_c52382e9",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-06-24T08:51:03Z",
       "side": 1,
       "message": "Duplicate -\u003e component_version_string_type is already defined above",
+      "range": {
+        "startLine": 1044,
+        "startChar": 0,
+        "endLine": 1051,
+        "endChar": 0
+      },
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75531e3a_34d4049b",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-30T18:07:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "050d19f0_c52382e9",
       "range": {
         "startLine": 1044,
         "startChar": 0,
@@ -75,6 +117,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57ddbf4e_ee962775",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-30T18:07:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f5b947e2_d5ceead4",
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a49b748d_66226b91",
@@ -88,6 +148,24 @@
       "writtenOn": "2025-06-26T07:21:34Z",
       "side": 1,
       "message": "There is some discussion happening here regarding anti-patterns - can we address the same here throughout the chain of commits - https://gerrit.openbmc.org/c/openbmc/pldm/+/78997/13..15/pldmtool/pldm_platform_cmd.cpp#b99",
+      "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e943d87_baf060b9",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1109,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-30T18:07:17Z",
+      "side": 1,
+      "message": "I read it as about making human readable, will improve the message.",
+      "parentUuid": "a49b748d_66226b91",
       "revId": "6acf319fbd6a8b7a96741e35d429cfbd360b74e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
