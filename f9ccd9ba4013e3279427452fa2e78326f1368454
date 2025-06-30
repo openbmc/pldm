@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd138810_4c858d45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-30T18:08:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "28251f25_6b99e3b2",
+      "revId": "f9ccd9ba4013e3279427452fa2e78326f1368454",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f7c45cc_4a84e140",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "373a40ac_def92207",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-30T18:08:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8f7c45cc_4a84e140",
+      "revId": "f9ccd9ba4013e3279427452fa2e78326f1368454",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d5474d1_4b1e9aed",
@@ -48,6 +84,30 @@
       "writtenOn": "2025-06-24T08:49:53Z",
       "side": 1,
       "message": "nit: how about showing boolean (true/false) instead of string in the output json.",
+      "range": {
+        "startLine": 1299,
+        "startChar": 52,
+        "endLine": 1299,
+        "endChar": 68
+      },
+      "revId": "f9ccd9ba4013e3279427452fa2e78326f1368454",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7676517_2e7df009",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-06-30T18:08:54Z",
+      "side": 1,
+      "message": "String is better readable option than boolean.",
+      "parentUuid": "6d5474d1_4b1e9aed",
       "range": {
         "startLine": 1299,
         "startChar": 52,
