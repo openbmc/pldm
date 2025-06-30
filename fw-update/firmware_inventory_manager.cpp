@@ -20,19 +20,21 @@ void FirmwareInventoryManager::createFirmwareEntry(
     unsigned seed = ts.tv_nsec ^ getpid();
     srandom(seed);
 
+    // Determine the inventory board path for this EID.  If Entity-Manager
+    // has provided a mapping, use it; otherwise fall back to a default
+    // placeholder path so that a software object can still be created.
+
+    std::optional<std::filesystem::path> boardPath;
+
     auto& eid = softwareIdentifier.first;
     const auto inventoryPath = getInventoryPath(eid);
-    if (!inventoryPath)
+    if (inventoryPath)
     {
-        error("No inventory path found for EID {EID}", "EID", eid);
-        return;
+        boardPath = getBoardPath(*dbusHandler, *inventoryPath);
     }
-    auto boardPath = getBoardPath(*dbusHandler, *inventoryPath);
-
-    if (!boardPath)
+    else
     {
-        error("Failed to get board path for EID {EID}", "EID", eid);
-        return;
+        boardPath = "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     }
     const auto boardName = boardPath->filename().string();
     const auto softwarePath =
