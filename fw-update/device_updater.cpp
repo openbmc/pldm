@@ -17,9 +17,18 @@ namespace pldm
 namespace fw_update
 {
 
-void DeviceUpdater::startFwUpdateFlow()
+int DeviceUpdater::startFwUpdateFlow()
 {
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        error(
+            "Failed to allocate instance id for EID {EID}: rc={RC}, msg={MSG}",
+            "EID", eid, "RC", instanceIdResult.error().rc(), "MSG",
+            instanceIdResult.error().msg());
+        return instanceIdResult.error().rc();
+    }
+    auto instanceId = instanceIdResult.value();
     // NumberOfComponents
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -53,6 +62,7 @@ void DeviceUpdater::startFwUpdateFlow()
         error(
             "Failed to encode request update request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
 
     rc = updateManager->handler.registerRequest(
@@ -66,7 +76,10 @@ void DeviceUpdater::startFwUpdateFlow()
         error(
             "Failed to send request update for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
+
+    return PLDM_SUCCESS;
 }
 
 void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
@@ -104,17 +117,35 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
     }
 
     // Optional fields DeviceMetaData and GetPackageData not handled
-    pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-        updateManager->event,
-        std::bind(&DeviceUpdater::sendPassCompTableRequest, this,
-                  componentIndex));
+    pldmRequest = std::make_unique<
+        sdeventplus::source::
+            Defer>(updateManager->event, [this](
+                                             sdeventplus::source::EventBase&) {
+        int rc = this->sendPassCompTableRequest(this->componentIndex);
+        if (rc)
+        {
+            error(
+                "Failed to send pass component table request for endpoint ID '{EID}', response code '{RC}'",
+                "EID", this->eid, "RC", rc);
+            return;
+        }
+    });
 }
 
-void DeviceUpdater::sendPassCompTableRequest(size_t offset)
+int DeviceUpdater::sendPassCompTableRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        error(
+            "Failed to allocate instance id for EID {EID}: rc={RC}, msg={MSG}",
+            "EID", eid, "RC", instanceIdResult.error().rc(), "MSG",
+            instanceIdResult.error().msg());
+        return instanceIdResult.error().rc();
+    }
+    auto instanceId = instanceIdResult.value();
     // TransferFlag
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -157,6 +188,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         error(
             "Failed to find component classification '{CLASSIFICATION}' and identifier '{IDENTIFIER}'",
             "CLASSIFICATION", compClassification, "IDENTIFIER", compIdentifier);
+        return PLDM_ERROR;
     }
     // ComponentComparisonStamp
     CompComparisonStamp compComparisonStamp = std::get<static_cast<size_t>(
@@ -185,6 +217,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         error(
             "Failed to encode pass component table req for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
 
     rc = updateManager->handler.registerRequest(
@@ -199,7 +232,10 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         error(
             "Failed to send pass component table request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
+
+    return PLDM_SUCCESS;
 }
 
 void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
@@ -246,26 +282,54 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
     if (componentIndex == applicableComponents.size() - 1)
     {
         componentIndex = 0;
-        pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-            updateManager->event,
-            std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                      componentIndex));
+        pldmRequest = std::make_unique<
+            sdeventplus::source::
+                Defer>(updateManager->event, [this](sdeventplus::source::
+                                                        EventBase&) {
+            int rc = this->sendActivateFirmwareRequest();
+            if (rc)
+            {
+                error(
+                    "Failed to send ActivateFirmware request for endpoint ID '{EID}', error code '{RC}'",
+                    "EID", this->eid, "RC", rc);
+                return;
+            }
+        });
     }
     else
     {
         componentIndex++;
-        pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-            updateManager->event,
-            std::bind(&DeviceUpdater::sendPassCompTableRequest, this,
-                      componentIndex));
+        pldmRequest = std::make_unique<
+            sdeventplus::source::
+                Defer>(updateManager->event, [this, idx = componentIndex](
+                                                 sdeventplus::source::
+                                                     EventBase&) {
+            int rc = this->sendUpdateComponentRequest(idx);
+            if (rc)
+            {
+                error(
+                    "Failed to send UpdateComponent request for endpoint ID '{EID}', component index '{INDEX}', error code '{RC}'",
+                    "EID", this->eid, "INDEX", idx, "RC", rc);
+                return;
+            }
+        });
     }
 }
 
-void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
+int DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        error(
+            "Failed to allocate instance id for EID {EID}: rc={RC}, msg={MSG}",
+            "EID", eid, "RC", instanceIdResult.error().rc(), "MSG",
+            instanceIdResult.error().msg());
+        return instanceIdResult.error().rc();
+    }
+    auto instanceId = instanceIdResult.value();
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[offset]];
@@ -290,6 +354,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         error(
             "Failed to find component classification '{CLASSIFICATION}' and identifier '{IDENTIFIER}'",
             "CLASSIFICATION", compClassification, "IDENTIFIER", compIdentifier);
+        return PLDM_ERROR;
     }
 
     // UpdateOptionFlags
@@ -321,6 +386,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         error(
             "Failed to encode update component req for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
 
     rc = updateManager->handler.registerRequest(
@@ -334,7 +400,10 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         error(
             "Failed to send update request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
+
+    return PLDM_SUCCESS;
 }
 
 void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
@@ -704,13 +773,58 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         return response;
     }
 
+    if (componentIndex == applicableComponents.size() - 1)
+    {
+        componentIndex = 0;
+        pldmRequest = std::make_unique<
+            sdeventplus::source::
+                Defer>(updateManager->event, [this](sdeventplus::source::
+                                                        EventBase&) {
+            int rc = this->sendActivateFirmwareRequest();
+            if (rc)
+            {
+                error(
+                    "Failed to send ActivateFirmware request for endpoint ID '{EID}', error code '{RC}'",
+                    "EID", this->eid, "RC", rc);
+                return;
+            }
+        });
+    }
+    else
+    {
+        componentIndex++;
+        pldmRequest = std::make_unique<
+            sdeventplus::source::
+                Defer>(updateManager->event, [this, idx = componentIndex](
+                                                 sdeventplus::source::
+                                                     EventBase&) {
+            int rc = this->sendUpdateComponentRequest(idx);
+            if (rc)
+            {
+                error(
+                    "Failed to send UpdateComponent request for endpoint ID '{EID}', component index '{INDEX}', error code '{RC}'",
+                    "EID", this->eid, "INDEX", idx, "RC", rc);
+                return;
+            }
+        });
+    }
+
     return response;
 }
 
-void DeviceUpdater::sendActivateFirmwareRequest()
+int DeviceUpdater::sendActivateFirmwareRequest()
 {
     pldmRequest.reset();
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        error(
+            "Failed to allocate instance id for EID {EID}: rc={RC}, msg={MSG}",
+            "EID", eid, "RC", instanceIdResult.error().rc(), "MSG",
+            instanceIdResult.error().msg());
+        return instanceIdResult.error().rc();
+    }
+    auto instanceId = instanceIdResult.value();
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = new (request.data()) pldm_msg;
@@ -724,6 +838,7 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         error(
             "Failed to encode activate firmware req for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
 
     rc = updateManager->handler.registerRequest(
@@ -736,7 +851,10 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         error(
             "Failed to send activate firmware request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return rc;
     }
+
+    return PLDM_SUCCESS;
 }
 
 void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,

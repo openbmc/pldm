@@ -89,7 +89,15 @@ void fillCompletionCode(uint8_t completionCode, ordered_json& data,
 
 void CommandInterface::exec()
 {
-    instanceId = instanceIdDb.next(mctp_eid);
+    auto instanceIdResult = instanceIdDb.next(mctp_eid);
+    if (!instanceIdResult)
+    {
+        std::cerr << "Failed to allocate instance id for EID " << mctp_eid
+                  << ": rc = " << instanceIdResult.error().rc()
+                  << ", msg = " << instanceIdResult.error().msg() << "\n";
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {
