@@ -15,32 +15,49 @@ void SoftwareManager::createSoftwareEntry(
     const SoftwareName& softwareName, const std::string& activeVersion,
     const Descriptors& descriptors, const ComponentInfo& componentInfo)
 {
+    debug(
+        "SoftwareManager::createSoftwareEntry called: EID={EID}, CompID={COMP_ID}, Name={NAME}, Version={VER}",
+        "EID", softwareIdentifier.first, "COMP_ID", softwareIdentifier.second,
+        "NAME", softwareName, "VER", activeVersion);
+
+    // Determine the inventory board path for this EID.  If Entity-Manager
+    // has provided a mapping, use it; otherwise fall back to a default
+    // placeholder path so that a software object can still be created.
+
+    std::string boardPath;
+
     auto& eid = softwareIdentifier.first;
     if (inventoryPathMap.contains(eid))
     {
         const auto inventoryPath = inventoryPathMap.at(eid);
-        const auto boardPath = getBoardPath(inventoryPath);
+        boardPath = getBoardPath(inventoryPath);
         if (boardPath.empty())
         {
             error("Failed to get board path for EID {EID}", "EID", eid);
             return;
         }
-        const auto boardName = boardPath.substr(boardPath.rfind('/') + 1);
-        const auto boardDeviceName = boardName + "_" + softwareName;
-        const auto softwarePath =
-            "/xyz/openbmc_project/software/" + boardDeviceName + "_" +
-            getVersionId(activeVersion);
-
-        softwareMap.insert_or_assign(
-            softwareIdentifier,
-            std::make_unique<DeviceDedicatedUpdater>(
-                ctx, event, handler, instanceIdDb, eid, softwarePath,
-                activeVersion, boardPath, descriptors, componentInfo));
+        info("Using board path from inventoryPathMap: {PATH}", "PATH",
+             boardPath);
     }
     else
     {
-        error("EID {EID} not found in inventory path map", "EID", eid);
+        // Fallback when no Entity-Manager binding exists.
+        boardPath = "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     }
+
+    const auto boardName = boardPath.substr(boardPath.rfind('/') + 1);
+    const auto boardDeviceName = boardName + "_" + softwareName;
+    const auto softwarePath =
+        "/xyz/openbmc_project/software/" + boardDeviceName + "_" +
+        getVersionId(activeVersion);
+
+    info("Creating software object at path: {PATH}", "PATH", softwarePath);
+
+    softwareMap.insert_or_assign(
+        softwareIdentifier,
+        std::make_unique<DeviceDedicatedUpdater>(
+            event, handler, instanceIdDb, eid, softwarePath, activeVersion,
+            boardPath, descriptors, componentInfo));
 }
 
 void SoftwareManager::removeSoftwareEntryByEid(const mctp_eid_t& eid)
