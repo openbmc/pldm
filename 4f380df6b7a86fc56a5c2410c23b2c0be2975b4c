@@ -16,6 +16,24 @@
       "message": "@Amitash – I agree with the idea that clients like `pldmd` should have the ability to retry fetching instance IDs when they fail to retrieve one initially. However, I’m trying to understand how the PLDM stack would determine when to invoke this API. Specifically, which commands do we classify as critical and worth retrying, and which ones are not? Would it make sense to build a common infrastructure that allows this retry logic to be integrated into each command with minimal disruption to the existing codebase? Additionally, would introducing this as a compile-time flag be a viable approach—so that teams can opt-in if needed?\n\nIt would also be helpful to see how this functionality is actually being consumed within the codebase. Are you planning to showcase an example or integration point? That would give us better visibility into how this feature is intended to be leveraged.",
       "revId": "4f380df6b7a86fc56a5c2410c23b2c0be2975b4c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aec6d881_456b6fd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-06-30T17:44:17Z",
+      "side": 1,
+      "message": "Thanks for the comment and sorry about the delayed response. I quickly threw this together as an example of potential path forward. I also see https://gerrit.openbmc.org/c/openbmc/pldm/+/80090 which provides a way for clients to handle errors. So, I am deferring my change to build on top of that and use it as a guide to determine which were the critical callers and which have the luxury of retry. One thing I consider as critical is any logic which is doing early endpoint initialization.",
+      "parentUuid": "06fd15aa_80592af1",
+      "revId": "4f380df6b7a86fc56a5c2410c23b2c0be2975b4c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
