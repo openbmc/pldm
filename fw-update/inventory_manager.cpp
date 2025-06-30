@@ -671,23 +671,28 @@ void InventoryManager::getFirmwareParameters(
         componentInfo.emplace(
             std::make_pair(compClassification, compIdentifier),
             compEntry.comp_classification_index);
+
+        if (firmwareDeviceNameMap.contains(eid) and descriptorMap.contains(eid))
+        {
+            auto componentName = firmwareDeviceNameMap.at(eid) + "_Component_" +
+                                 std::to_string(compIdentifier);
+
+            firmwareInventoryManager.createFirmwareEntry(
+                SoftwareIdentifier(eid, compIdentifier), componentName,
+                utils::toString(activeCompVerStr), descriptorMap.at(eid),
+                componentInfo);
+        }
+        else
+        {
+            error(
+                "Firmware device name or descriptor map not found for endpoint ID {EID}",
+                "EID", eid);
+        }
+
         compParamPtr += sizeof(pldm_component_parameter_entry) +
                         activeCompVerStr.length + pendingCompVerStr.length;
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
-    }
-
-    if (firmwareDeviceNameMap.contains(eid))
-    {
-        firmwareInventoryManager.createFirmwareEntry(
-            SoftwareIdentifier(eid, 0), firmwareDeviceNameMap.at(eid),
-            utils::toString(activeCompImageSetVerStr), descriptorMap[eid],
-            componentInfo);
-    }
-    else
-    {
-        error("Firmware device name not found for endpoint ID {EID}", "EID",
-              eid);
     }
 
     componentInfoMap.insert_or_assign(eid, std::move(componentInfo));
