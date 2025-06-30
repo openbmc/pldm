@@ -784,6 +784,7 @@ void InventoryManager::getFirmwareParameters(
     variable_field pendingCompVerStr{};
 
     ComponentInfo componentInfo{};
+    std::vector<std::tuple<uint16_t, std::string>> componentVersions;
     while (fwParams.comp_count-- && (compParamTableLen > 0))
     {
         auto rc = decode_get_firmware_parameters_resp_comp_entry(
@@ -802,6 +803,11 @@ void InventoryManager::getFirmwareParameters(
         componentInfo.emplace(
             std::make_pair(compClassification, compIdentifier),
             compEntry.comp_classification_index);
+
+        auto versionStr = utils::toString(activeCompVerStr);
+        componentVersions.push_back(
+            std::make_tuple(compIdentifier, versionStr));
+
         compParamPtr += sizeof(pldm_component_parameter_entry) +
                         activeCompVerStr.length + pendingCompVerStr.length;
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
@@ -810,10 +816,23 @@ void InventoryManager::getFirmwareParameters(
 
     if (firmwareDeviceNameMap.contains(eid))
     {
-        softwareManager.createSoftwareEntry(
-            SoftwareIdentifier(eid, 0), firmwareDeviceNameMap.at(eid),
-            utils::toString(activeCompImageSetVerStr), descriptorMap[eid],
-            componentInfo);
+        if (!descriptorMap.contains(eid))
+        {
+            error(
+                "Cannot create software entries for EID {EID}: descriptorMap not populated",
+                "EID", eid);
+            return;
+        }
+
+        for (const auto& [compIdentifier, componentVersion] : componentVersions)
+        {
+            auto componentName = firmwareDeviceNameMap.at(eid) + "_Component_" +
+                                 std::to_string(compIdentifier);
+
+            softwareManager.createSoftwareEntry(
+                SoftwareIdentifier(eid, compIdentifier), componentName,
+                componentVersion, descriptorMap[eid], componentInfo);
+        }
     }
     else
     {
