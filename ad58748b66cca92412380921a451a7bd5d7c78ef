@@ -22,6 +22,30 @@
       },
       "revId": "ad58748b66cca92412380921a451a7bd5d7c78ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5416f90_8c3f6c04",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-01T10:21:04Z",
+      "side": 1,
+      "message": "I don\u0027t think so - I have addressed this - https://gerrit.openbmc.org/c/openbmc/pldm/+/79877/5..9/libpldmresponder/fru.cpp#b371",
+      "parentUuid": "f3fda9ab_449c6c9d",
+      "range": {
+        "startLine": 393,
+        "startChar": 13,
+        "endLine": 393,
+        "endChar": 14
+      },
+      "revId": "ad58748b66cca92412380921a451a7bd5d7c78ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
