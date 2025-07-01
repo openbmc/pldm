@@ -70,7 +70,7 @@ class DeviceUpdater
      *  To start the update flow RequestUpdate command is sent to the FD.
      *
      */
-    void startFwUpdateFlow();
+    int startFwUpdateFlow();
 
     /** @brief Handler for RequestUpdate command response
      *
@@ -174,16 +174,16 @@ class DeviceUpdater
      *
      *  @param[in] compOffset - component offset in compImageInfos
      */
-    void sendPassCompTableRequest(size_t offset);
+    int sendPassCompTableRequest(size_t offset);
 
     /** @brief Send UpdateComponent command request
      *
      *  @param[in] compOffset - component offset in compImageInfos
      */
-    void sendUpdateComponentRequest(size_t offset);
+    int sendUpdateComponentRequest(size_t offset);
 
     /** @brief Send ActivateFirmware command request */
-    void sendActivateFirmwareRequest();
+    int sendActivateFirmwareRequest();
 
     /**
      * @brief Send cancel update component request

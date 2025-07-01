@@ -30,8 +30,7 @@ static const std::map<uint8_t, std::string> genericCompletionCodes{
     {PLDM_ERROR_NOT_READY, "ERROR_NOT_READY"},
     {PLDM_ERROR_UNSUPPORTED_PLDM_CMD, "ERROR_UNSUPPORTED_PLDM_CMD"},
     {PLDM_ERROR_INVALID_PLDM_TYPE, "ERROR_INVALID_PLDM_TYPE"},
-    {PLDM_ERROR_UNEXPECTED_TRANSFER_FLAG_OPERATION,
-     "ERROR_UNEXPECTED_TRANSFER_FLAG_OPERATION"}};
+    {PLDM_INVALID_TRANSFER_OPERATION_FLAG, "INVALID_TRANSFER_OPERATION_FLAG"}};
 
 static const std::map<uint8_t, std::string> fwupdateCompletionCodes{
     {PLDM_FWUP_NOT_IN_UPDATE_MODE, "NOT_IN_UPDATE_MODE"},
@@ -89,7 +88,13 @@ void fillCompletionCode(uint8_t completionCode, ordered_json& data,
 
 void CommandInterface::exec()
 {
-    instanceId = instanceIdDb.next(mctp_eid);
+    auto instanceIdOpt =
+        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid), mctp_eid);
+    if (!instanceIdOpt)
+    {
+        return;
+    }
+    auto instanceId = *instanceIdOpt;
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {
