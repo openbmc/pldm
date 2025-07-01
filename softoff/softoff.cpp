@@ -271,7 +271,6 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 {
     constexpr uint8_t effecterCount = 1;
     PldmTransport pldmTransport{};
-    uint8_t instanceID;
     uint8_t mctpEID;
 
     mctpEID = pldm::utils::readHostEID();
@@ -285,7 +284,13 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     auto request = new (requestMsg.data()) pldm_msg;
     set_effecter_state_field stateField{
         PLDM_REQUEST_SET, PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED};
-    instanceID = instanceIdDb.next(pldmTID);
+    auto instanceIdOpt =
+        pldm::utils::getInstanceId(instanceIdDb.next(pldmTID), pldmTID);
+    if (!instanceIdOpt)
+    {
+        return PLDM_ERROR;
+    }
+    auto instanceID = *instanceIdOpt;
     auto rc = encode_set_state_effecter_states_req(
         instanceID, effecterID, effecterCount, &stateField, request);
     if (rc != PLDM_SUCCESS)
