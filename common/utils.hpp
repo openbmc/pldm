@@ -1,5 +1,6 @@
 #pragma once
 
+#include "instance_id.hpp"
 #include "types.hpp"
 
 #include <libpldm/base.h>
@@ -20,6 +21,7 @@
 #include <cstdint>
 #include <deque>
 #include <exception>
+#include <expected>
 #include <filesystem>
 #include <iostream>
 #include <map>
@@ -164,6 +166,34 @@ T decimalToBcd(T decimal)
     return bcd;
 }
 
+/**
+ * @brief Helper function to unwrap std::expected and handle errors for
+ * InstanceId allocation.
+ *
+ * This function takes a std::expected result from instance ID allocation,
+ * logs the error if present, and returns an optional value.
+ * If allocation fails, logs the error and returns std::nullopt.
+ *
+ * @param[in] result - The std::expected<T, InstanceIdError> result from
+ * InstanceIdDb::next().
+ * @return std::optional<T> - The instance ID on success, or std::nullopt on
+ * error.
+ */
+template <typename T>
+std::optional<T> getInstanceId(
+    const std::expected<T, pldm::InstanceIdError>& result, uint8_t eid)
+{
+    if (!result)
+    {
+        const auto& err = result.error();
+        std::cerr << "Failed to allocate instance ID for EID "
+                  << static_cast<int>(eid) << ": rc=" << err.rc()
+                  << ", msg=" << err.msg() << std::endl;
+        return std::nullopt;
+    }
+    return result.value();
+}
+
 struct DBusMapping
 {
     std::string objectPath;   //!< D-Bus object path
@@ -240,6 +270,10 @@ class DBusHandlerInterface
         const sdbusplus::message::object_path& objectPath,
         const sdbusplus::message::object_path& subtree, int depth,
         const std::vector<std::string>& ifaceList) const = 0;
+
+    virtual PropertyMap getAll(const std::string& service,
+                               const std::string& objPath,
+                               const std::string& dbusInterface) const = 0;
 };
 
 /**
@@ -345,6 +379,9 @@ class DBusHandler : public DBusHandlerInterface
     PropertyMap getDbusPropertiesVariant(
         const char* serviceName, const char* objPath,
         const char* dbusInterface) const override;
+
+    PropertyMap getAll(const std::string& service, const std::string& objPath,
+                       const std::string& dbusInterface) const override;
 
     /** @brief The template function to get property from the requested dbus
      *         path

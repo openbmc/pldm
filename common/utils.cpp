@@ -434,6 +434,14 @@ ObjectValueTree DBusHandler::getManagedObj(const char* service,
     return bus.call(method).unpack<ObjectValueTree>();
 }
 
+PropertyMap DBusHandler::getAll(const std::string& service,
+                                const std::string& objPath,
+                                const std::string& dbusInterface) const
+{
+    return getDbusPropertiesVariant(service.c_str(), objPath.c_str(),
+                                    dbusInterface.c_str());
+}
+
 PropertyMap DBusHandler::getDbusPropertiesVariant(
     const char* serviceName, const char* objPath,
     const char* dbusInterface) const
