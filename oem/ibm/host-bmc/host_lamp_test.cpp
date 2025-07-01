@@ -109,7 +109,13 @@ uint16_t HostLampTest::getEffecterID()
 uint8_t HostLampTest::setHostStateEffecter(uint16_t effecterID)
 {
     constexpr uint8_t effecterCount = 1;
-    auto instanceId = instanceIdDb.next(mctp_eid);
+    auto instanceIdOpt =
+        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid), mctp_eid);
+    if (!instanceIdOpt)
+    {
+        return PLDM_ERROR;
+    }
+    auto instanceId = *instanceIdOpt;
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(effecterID) + sizeof(effecterCount) +
