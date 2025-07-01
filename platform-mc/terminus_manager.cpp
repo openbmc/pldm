@@ -442,7 +442,13 @@ exec::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
 
 exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
 {
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdOpt =
+        pldm::utils::getInstanceId(instanceIdDb.next(eid), eid);
+    if (!instanceIdOpt)
+    {
+        co_return PLDM_ERROR;
+    }
+    auto instanceId = *instanceIdOpt;
     Request request(sizeof(pldm_msg_hdr));
     auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_get_tid_req(instanceId, requestMsg);
@@ -488,7 +494,13 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
 
 exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
 {
-    auto instanceId = instanceIdDb.next(eid);
+    auto instanceIdOpt =
+        pldm::utils::getInstanceId(instanceIdDb.next(eid), eid);
+    if (!instanceIdOpt)
+    {
+        co_return PLDM_ERROR;
+    }
+    auto instanceId = *instanceIdOpt;
     Request request(sizeof(pldm_msg_hdr) + sizeof(pldm_set_tid_req));
     auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_set_tid_req(instanceId, tid, requestMsg);
@@ -662,7 +674,13 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
 
     auto eid = std::get<0>(mctpInfo.value());
     auto requestMsg = new (request.data()) pldm_msg;
-    requestMsg->hdr.instance_id = instanceIdDb.next(eid);
+    auto instanceIdOpt =
+        pldm::utils::getInstanceId(instanceIdDb.next(eid), eid);
+    if (!instanceIdOpt)
+    {
+        co_return PLDM_ERROR;
+    }
+    requestMsg->hdr.instance_id = *instanceIdOpt;
     auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
                                                responseLen);
 
