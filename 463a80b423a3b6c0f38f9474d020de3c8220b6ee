@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ad741aa_bd445b07",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-07-01T18:38:37Z",
+      "side": 1,
+      "message": "@patrick@stwcx.xyz Unive is already making a call to details namespace here.",
+      "revId": "463a80b423a3b6c0f38f9474d020de3c8220b6ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
