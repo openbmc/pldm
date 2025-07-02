@@ -16,6 +16,24 @@
       "message": "@patrick@stwcx.xyz Unive is already making a call to details namespace here.",
       "revId": "463a80b423a3b6c0f38f9474d020de3c8220b6ee",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3169f02_3b972186",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-02T01:33:53Z",
+      "side": 1,
+      "message": "This is because I\u0027m preserving the rest of the `sd_event` use cases which aren\u0027t migrate yet (do these causing errors?), it will be removed once all the use cases is migrated.",
+      "parentUuid": "7ad741aa_bd445b07",
+      "revId": "463a80b423a3b6c0f38f9474d020de3c8220b6ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
