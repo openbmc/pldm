@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0198eb1_9a840a0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "Can we separate these code to small commits?\n\nI saw these code supports many functions such as:\n+ event handler\n+ OEM File transfer\n+ Configuration discovery\n\nAlthough this is META OEM code but I think it is better to have goods commit history so we can see which is supported in which commits.",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e602f0b_dc702e23",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "Can we also use `enum class`?",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f7d96f_b78ea742",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "Should we check size of eventData before use to prevent overflow?",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "151996b9_60059623",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "Can we separate create new function for the long code?\nOne function for each `RecordType::`?\n\nIt will be great if this 8xx lines functions can be split in to small ones.",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6318529_e6cb92b0",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "its better to write logs which does not have acronyms.\nrc\u003d{RC} is anti-pattern, Can we avoid to use that format?",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cbdc3b3_d1c376ab",
+        "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "Please add method description.\nCan you also check the others method and add the description if does not have?",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b00b284_82ecf31b",
+        "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "These code is duplicated in many *.hpp file. Can we create default method for this function?",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0850db87_75ec68c3",
+        "filename": "oem/meta/libpldmresponder/file_io_type_power_control.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "size\u003d{SIZE} is anti-pattern. https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings\n`size\u003d{SIZE}` -\u003e `size {SIZE}`\nThe same comment for others output logs.",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60c55d3f_c81681e2",
+        "filename": "oem/meta/libpldmresponder/file_io_type_power_control.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:09:49Z",
+      "side": 1,
+      "message": "With lg2 don\u0027t need `e.what()` just `e`.",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
