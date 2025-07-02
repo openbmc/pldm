@@ -101,6 +101,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44154e93_8f30534b",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T07:54:52Z",
+      "side": 1,
+      "message": "The most simple way is just `return;` when `if (!instanceIdResult)` or in the error case. Then you can add other commit to return error code.",
+      "parentUuid": "9d885105_5b9090da",
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab21c9bf_0637d326",
