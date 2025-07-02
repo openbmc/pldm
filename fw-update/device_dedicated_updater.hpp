@@ -5,6 +5,8 @@
 #include "device_updater.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
+#include "software_update.hpp"
+#include "update_manager.hpp"
 
 #include <libpldm/base.h>
 
@@ -20,10 +22,14 @@
 #include <tuple>
 #include <unordered_map>
 
-namespace pldm::fw_update
+namespace pldm
+{
+
+namespace fw_update
 {
 
 class DeviceDedicatedUpdater;
+class SoftwareUpdate;
 
 using SoftwareActivationProgress = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Software::server::ActivationProgress>;
@@ -44,7 +50,7 @@ using namespace sdeventplus::source;
 using namespace pldm;
 using Context = sdbusplus::async::context;
 
-class DeviceDedicatedUpdater
+class DeviceDedicatedUpdater : public UpdateManagerIntf
 {
   public:
     DeviceDedicatedUpdater() = delete;
@@ -55,8 +61,8 @@ class DeviceDedicatedUpdater
     ~DeviceDedicatedUpdater() = default;
 
     explicit DeviceDedicatedUpdater(
-        Event& /*event*/,
-        pldm::requester::Handler<pldm::requester::Request>& /*handler*/,
+        Event& event,
+        pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, pldm::eid eid,
         const std::string& softwarePath, const std::string& softwareVersion,
         const std::string& associatedEndpoint, const Descriptors& descriptors,
@@ -75,8 +81,24 @@ class DeviceDedicatedUpdater
     Response handleRequest(uint8_t command, const pldm_msg* request,
                            size_t reqMsgLen);
 
+    void updateActivationProgress() override;
+    void updateDeviceCompletion(mctp_eid_t eid, bool status) override;
+    void sendInitUpdateEvent(
+        sdbusplus::message::unix_fd image,
+        RequestedApplyTimes applyTime = RequestedApplyTimes::Immediate);
+
   private:
+    void initUpdate(sdbusplus::message::unix_fd image,
+                    RequestedApplyTimes applyTime);
+    int processPackageData();
+
+    void updateInvalidRoutine();
+
+    std::optional<DeviceUpdaterInfo> validatePackage();
+
     sdbusplus::bus_t& bus = utils::DBusHandler::getBus();
+
+    Event& event;
 
     pldm::eid eid;
 
@@ -100,13 +122,21 @@ class DeviceDedicatedUpdater
 
     std::unique_ptr<SoftwareVersion> version;
 
+    std::unique_ptr<SoftwareUpdate> updateInterface;
+
     const Descriptors& descriptors;
 
     ComponentInfo componentInfo;
 
     bool isUpdateInProgress = false;
 
+    std::unique_ptr<sdbusplus::Timer> initUpdateEvent;
+
+    const std::chrono::seconds initUpdateInterval = std::chrono::seconds(1);
+
     friend class SoftwareUpdate;
 };
 
-} // namespace pldm::fw_update
+} // namespace fw_update
+
+} // namespace pldm
