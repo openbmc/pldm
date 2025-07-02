@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ab339b_6a5a4857",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-02T12:33:10Z",
+      "side": 1,
+      "message": "Hi Rajeev, thanks for the fix! this is what I miss out, since our use cases only carry one component image per package.",
+      "revId": "fd5bc02db43a898e1a7580cb8cd6fc0f6f51e1e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
