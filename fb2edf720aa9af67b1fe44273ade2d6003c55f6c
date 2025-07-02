@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dcbe930_eeffe293",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:21:16Z",
+      "side": 1,
+      "message": "Seem like no one except IBM use `host-bmc`. Can we add `oem-ibm` in commit title?",
+      "revId": "fb2edf720aa9af67b1fe44273ade2d6003c55f6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79b6928c_3c00ebf2",
+        "filename": "host-bmc/utils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T13:21:16Z",
+      "side": 1,
+      "message": "Anti-pattern in lg2. type \u003d {ENTITY_TYP} -\u003e type {ENTITY_TYP}. The same for others",
+      "revId": "fb2edf720aa9af67b1fe44273ade2d6003c55f6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
