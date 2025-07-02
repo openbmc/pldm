@@ -23,7 +23,7 @@ namespace fw_update
 DeviceUpdater::DeviceUpdater(
     mctp_eid_t eid, const DeviceIDRecord& deviceIDRecord,
     const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
-    uint32_t maxTransferSize, UpdateManager* updateManager) :
+    uint32_t maxTransferSize, UpdateManagerIntf* updateManager) :
     eid(eid), compImageInfos(compImageInfos), compInfo(compInfo),
     maxTransferSize(maxTransferSize), updateManager(updateManager)
 {
