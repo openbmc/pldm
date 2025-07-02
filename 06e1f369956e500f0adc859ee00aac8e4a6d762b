@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58c20e4c_545fbf77",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-07-02T15:44:57Z",
+      "side": 1,
+      "message": "nit: Anti-pattern log",
+      "revId": "06e1f369956e500f0adc859ee00aac8e4a6d762b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
