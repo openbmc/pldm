@@ -137,6 +137,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b896141_8cb3109d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T09:42:37Z",
+      "side": 1,
+      "message": "\u003e So, my current handling in `DeviceUpdater` and `InventoryManager` should already comply with the simple return approach.\n\nSound great.\n\n\u003e For other parts, I am also returning or co_returning `PLDM_ERROR` directly in error cases.\n\u003e Would you recommend adding TODO comments in all such places and addressing them in separate commits, or is there any other change you would suggest here?\n\nAbout todo, I don\u0027t think we need. Just add new commit to change APIs as you did in the old code on top this patch set.\n\n\u003e Thank you for your feedback.",
+      "parentUuid": "7823fdb2_0bb90c15",
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab21c9bf_0637d326",
