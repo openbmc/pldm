@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f614058_198f83e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-02T12:39:36Z",
+      "side": 1,
+      "message": "Hi Rajeev, thanks for the changes, maybe we can add these two fixes to topic `dsp0267_v130_ci` for passing CI, since the libpldm API is not stabilized yet.",
+      "revId": "efcc2b11ed519e8d7f2296ef3806ef270fff45c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
