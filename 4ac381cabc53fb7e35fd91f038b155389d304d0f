@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67bb42da_f71a92d0",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T10:39:49Z",
+      "side": 1,
+      "message": "I tried to removed PLDM_THRESHOLD_LOGGING and run unit-test locally. I don\u0027t see the build error.",
+      "parentUuid": "11b8fc9e_e23a6885",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fbf9c91_9f83f54e",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 21
@@ -279,6 +297,23 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "11380216_d81e9f0b",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7886ba33_65cb5cb4",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 970,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T10:39:49Z",
+      "side": 1,
+      "message": "Can we update code like this?\n```\nvoid NumericSensor::clearThresholdLog(\n    std::optional\u003csdbusplus::message::object_path\u003e\u0026 log)\n{\n    if (!log)\n    {\n        return;\n    }\n\n    try\n    {\n        lg2::resolve(*log);\n    }\n    catch (std::exception\u0026 ec)\n    {\n        lg2::error(\"Error trying to resolve: {LOG} : {ERROR}\", \"LOG\", log-\u003estr,\n                   \"ERROR\", ec);\n    }\n    log.reset();\n}\n```",
       "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
