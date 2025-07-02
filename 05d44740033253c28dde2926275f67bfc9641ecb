@@ -16,6 +16,24 @@
       "message": "I\u0027ve updated the messages with the last feedback, however I have a concern that we are not defining a proper \"standard\" way of doing things in the tool.\n\nShall I push a separate commit that fixes all other existing occurrences of ill formed error messages ( the one\u0027s that use rc\u003dX, cc\u003dX), or are we going to maintain the inconsistency in the tool?\n\nSame with the C++ casting style or the placement new vs struct casting.",
       "revId": "05d44740033253c28dde2926275f67bfc9641ecb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22d7de34_967668e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-02T09:37:15Z",
+      "side": 1,
+      "message": "sure, please feel free to do so.",
+      "parentUuid": "346de590_43b6585b",
+      "revId": "05d44740033253c28dde2926275f67bfc9641ecb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
