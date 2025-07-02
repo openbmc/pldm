@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76d97052_4f73837b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T08:09:07Z",
+      "side": 1,
+      "message": "Beside phosphor-logging,  phosphor-sel-logger is also used to monitor the threshold alarm to create SEL log.\nSo create filter in phosphor-logging is not enough I think.",
+      "parentUuid": "dd22e086_0f3ab2fb",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69b7c805_7db19f5b",
@@ -106,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18125f7b_c9ceb178",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T08:09:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8e69e538_236aa24d",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51aeef5f_fcdbab40",
@@ -143,6 +179,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a764cabe_51d551cc",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T08:09:07Z",
+      "side": 1,
+      "message": "Can you point out the code? In `createThresholdLog` I only see `lg2::error` bug not lg2::commit().",
+      "parentUuid": "d5e370c0_0ed1e637",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "75641ac6_edee1e3c",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 21
@@ -172,6 +226,24 @@
       "side": 1,
       "message": "the map\u003c\u003e\u0027s [] operator would create a default if there is no value for the provided key. Since the default constructor for the value/std::optional is std::nullopt, the subsequent log.has_value() would return false.",
       "parentUuid": "75641ac6_edee1e3c",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5640c5fd_26c38cfb",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-02T08:09:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ef73efa1_86ee953e",
       "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
