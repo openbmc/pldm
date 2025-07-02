@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4bfb414_9d0e5211",
+        "filename": "common/instance_id.hpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-07-02T07:27:53Z",
+      "side": 1,
+      "message": "I noticed that `#include \u003csystem_error\u003e` and `#include \u003ccerrno\u003e` are already present, so I believe there is no need to include them again.",
+      "parentUuid": "92531bd4_20c0025f",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 19
+      },
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73a0fec1_f21c1f3b",
@@ -55,6 +79,24 @@
       "side": 1,
       "message": "However, if I modify `instanceIdDb.next`, it will inevitably affect the way errors are handled in the DeviceUpdater part.\nCould you please advise me on how to handle this to avoid the issue of blindly discarded errors mentioned earlier?\nThank you very much!",
       "parentUuid": "73a0fec1_f21c1f3b",
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d885105_5b9090da",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-07-02T07:27:53Z",
+      "side": 1,
+      "message": "For now, in `DeviceUpdater` and `InventoryManager`, I am handling errors by returning early and adding a TODO comment. Is this approach acceptable?",
+      "parentUuid": "0f849020_8e4521cd",
       "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -178,6 +220,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89de1723_ef2d899c",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-07-02T07:27:53Z",
+      "side": 1,
+      "message": "Hi @manojkiran.eda@gmail.com\n\nI made a slight change from your original suggestion.\nInstead of returning only the error code (rc) from `getInstanceId`, I now have `InstanceIdDb::next()` construct a complete `InstanceIdError` (including a detailed error message) at the source.\nThen, `getInstanceId` template function simply logs the error and propagates the full InstanceIdError object upward, rather than just returning the error code.\n\nThis approach gives more flexibility to the caller:\nthey can choose to handle the error code, access the full error message, or even throw the `InstanceIdError` further up the call stack, as needed.\n\nLet me know if you have any concerns with this approach.",
+      "parentUuid": "8c2aaa03_c1dcd2e2",
+      "range": {
+        "startLine": 22,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 47
+      },
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94614f62_e647f2f7",
@@ -209,6 +275,24 @@
       "side": 1,
       "message": "I will check it again",
       "parentUuid": "94614f62_e647f2f7",
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71ab2b37_c1c7e009",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-07-02T07:27:53Z",
+      "side": 1,
+      "message": "Since using lg2 in `utils.hpp` seems to require modifying the meson build files, I am currently still using `std::cerr` for error messages.\nDo you think this is acceptable, or should I switch to using lg2 for logging?",
+      "parentUuid": "26362ec3_a43cf097",
       "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
