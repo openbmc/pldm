@@ -6,6 +6,7 @@ fw_update_test_src = declare_dependency(
         '../device_updater.cpp',
         '../update_manager.cpp',
         '../software_manager.cpp',
+        '../software_update.cpp',
         '../device_dedicated_updater.cpp',
         '../watch.cpp',
         '../../common/utils.cpp',
