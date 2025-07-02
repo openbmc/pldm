@@ -980,7 +980,12 @@ void Handler::setEventReceiver()
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_SET_EVENT_RECEIVER_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
-    auto instanceId = instanceIdDb->next(eid);
+    auto instanceIdResult = pldm::utils::getInstanceId(instanceIdDb->next(eid));
+    if (!instanceIdResult)
+    {
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     uint8_t eventMessageGlobalEnable =
         PLDM_EVENT_MESSAGE_GLOBAL_ENABLE_ASYNC_KEEP_ALIVE;
     uint8_t transportProtocolType = PLDM_TRANSPORT_PROTOCOL_TYPE_MCTP;
