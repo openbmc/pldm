@@ -19,7 +19,18 @@ namespace fw_update
 
 void DeviceUpdater::startFwUpdateFlow()
 {
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult =
+        pldm::utils::getInstanceId(updateManager->instanceIdDb.next(eid));
+    if (!instanceIdResult)
+    {
+        // TODO: Errors from instanceIdDb.next() are currently handled by early
+        // return.
+        //       This temporarily suppresses error propagation and may silently
+        //       discard failures. The error handling here should be refactored
+        //       to propagate and handle errors explicitly.
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     // NumberOfComponents
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -114,7 +125,18 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult =
+        pldm::utils::getInstanceId(updateManager->instanceIdDb.next(eid));
+    if (!instanceIdResult)
+    {
+        // TODO: Errors from instanceIdDb.next() are currently handled by early
+        // return.
+        //       This temporarily suppresses error propagation and may silently
+        //       discard failures. The error handling here should be refactored
+        //       to propagate and handle errors explicitly.
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     // TransferFlag
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -265,7 +287,18 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 {
     pldmRequest.reset();
 
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+    auto instanceIdResult =
+        pldm::utils::getInstanceId(updateManager->instanceIdDb.next(eid));
+    if (!instanceIdResult)
+    {
+        // TODO: Errors from instanceIdDb.next() are currently handled by early
+        // return.
+        //       This temporarily suppresses error propagation and may silently
+        //       discard failures. The error handling here should be refactored
+        //       to propagate and handle errors explicitly.
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[offset]];
@@ -710,7 +743,19 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
 void DeviceUpdater::sendActivateFirmwareRequest()
 {
     pldmRequest.reset();
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+
+    auto instanceIdResult =
+        pldm::utils::getInstanceId(updateManager->instanceIdDb.next(eid));
+    if (!instanceIdResult)
+    {
+        // TODO: Errors from instanceIdDb.next() are currently handled by early
+        // return.
+        //       This temporarily suppresses error propagation and may silently
+        //       discard failures. The error handling here should be refactored
+        //       to propagate and handle errors explicitly.
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     Request request(
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = new (request.data()) pldm_msg;
@@ -781,7 +826,19 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
 void DeviceUpdater::sendCancelUpdateComponentRequest()
 {
     pldmRequest.reset();
-    auto instanceId = updateManager->instanceIdDb.next(eid);
+
+    auto instanceIdResult =
+        pldm::utils::getInstanceId(updateManager->instanceIdDb.next(eid));
+    if (!instanceIdResult)
+    {
+        // TODO: Errors from instanceIdDb.next() are currently handled by early
+        // return.
+        //       This temporarily suppresses error propagation and may silently
+        //       discard failures. The error handling here should be refactored
+        //       to propagate and handle errors explicitly.
+        return;
+    }
+    auto instanceId = instanceIdResult.value();
     Request request(sizeof(pldm_msg_hdr));
     auto requestMsg = new (request.data()) pldm_msg;
 
