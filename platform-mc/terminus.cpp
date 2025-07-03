@@ -329,10 +329,13 @@ std::shared_ptr<SensorAuxiliaryNames> Terminus::parseSensorAuxiliaryNamesPDR(
             std::transform(u16NameString.cbegin(), u16NameString.cend(),
                            u16NameString.begin(),
                            [](uint16_t utf16) { return be16toh(utf16); });
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
             std::string nameString =
                 std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
                                      char16_t>{}
                     .to_bytes(u16NameString);
+#pragma GCC diagnostic pop
             nameStrings.emplace_back(std::make_pair(
                 nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
         }
@@ -390,9 +393,12 @@ std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(
         std::transform(u16NameString.cbegin(), u16NameString.cend(),
                        u16NameString.begin(),
                        [](uint16_t utf16) { return be16toh(utf16); });
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         std::string nameString =
             std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}
                 .to_bytes(u16NameString);
+#pragma GCC diagnostic pop
         nameStrings.emplace_back(std::make_pair(
             nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
     }
