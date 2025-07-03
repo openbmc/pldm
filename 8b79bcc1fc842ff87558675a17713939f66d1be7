@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "579cec1f_fc79fc18",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-03T13:29:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f254f910_64b78135",
+      "range": {
+        "startLine": 834,
+        "startChar": 7,
+        "endLine": 834,
+        "endChar": 73
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67c3cdf1_eb135ec7",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-25T07:46:18Z",
       "side": 1,
       "message": "This seems to be redundant as the API is created to find the sensor pdrs for the given entity type. For every match of entity type with state sensor pdr inspite being composite(more than one state set id) PDR it will be added only once. \nDo we really need the traverse for CompositeSensorCount here??",
+      "range": {
+        "startLine": 840,
+        "startChar": 8,
+        "endLine": 849,
+        "endChar": 0
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a64376d9_1f550925",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-03T13:29:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "67c3cdf1_eb135ec7",
       "range": {
         "startLine": 840,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f0e710f_9d597f1f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-03T13:29:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f62a74d5_4b08b668",
+      "range": {
+        "startLine": 850,
+        "startChar": 18,
+        "endLine": 850,
+        "endChar": 55
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fad5c5d_0c0bbff2",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f350747_d314dcc4",
+        "filename": "common/utils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-03T13:29:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7fad5c5d_0c0bbff2",
+      "range": {
+        "startLine": 881,
+        "startChar": 11,
+        "endLine": 889,
+        "endChar": 78
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8376583a_28e5fe21",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-06-25T07:46:18Z",
       "side": 1,
       "message": "This function could return vector of state sensor pdrs. Any reason why vector of vector is chosen",
+      "range": {
+        "startLine": 522,
+        "startChar": 0,
+        "endLine": 522,
+        "endChar": 42
+      },
+      "revId": "8b79bcc1fc842ff87558675a17713939f66d1be7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "806eb229_f6cee857",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-03T13:29:26Z",
+      "side": 1,
+      "message": "yes, std::vector\u003cpldm::pdr::Pdr_t\u003e — a single PDR.\nstd::vector\u003cstd::vector\u003cpldm::pdr::Pdr_t\u003e\u003e — a list of PDRs.\nThis should return a vector of PDR blobs (each a std::vector\u003cuint8_t\u003e)\nThat is why we chose a vector of vectors.",
+      "parentUuid": "8376583a_28e5fe21",
       "range": {
         "startLine": 522,
         "startChar": 0,
