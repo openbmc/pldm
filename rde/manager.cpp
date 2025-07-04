@@ -1,0 +1,110 @@
+#include "manager.hpp"
+
+#include <phosphor-logging/lg2.hpp>
+#include <sdbusplus/bus/match.hpp>
+#include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/PLDM/Event/server.hpp>
+
+#include <future>
+#include <iomanip>
+#include <iostream>
+
+PHOSPHOR_LOG2_USING;
+
+namespace pldm::rde
+{
+Manager::Manager(sdbusplus::bus::bus& bus, pldm::InstanceIdDb* instanceIdDb,
+                 pldm::requester::Handler<pldm::requester::Request>* handler) :
+    sdbusplus::server::object::object<
+        sdbusplus::xyz::openbmc_project::RDE::server::Manager>(
+        bus, std::string(RDEManagerObjectPath).c_str()),
+    instanceIdDb_(instanceIdDb), handler_(handler), bus_(bus)
+{}
+
+void Manager::handleMctpEndpoints(const std::vector<MctpInfo>& mctpInfos)
+{
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        const eid devEID = std::get<0>(mctpInfo);
+        const UUID& devUUID = std::get<1>(mctpInfo);
+
+        info("RDE: Handling device UUID:{UUID} EID:{EID}", "UUID", devUUID,
+             "EID", static_cast<int>(devEID));
+
+        // Skip if already registered
+        if (signalMatches_.count(devEID))
+            continue;
+
+        auto match = std::make_unique<sdbusplus::bus::match_t>(
+            bus_,
+            sdbusplus::bus::match::rules::type::signal() +
+                sdbusplus::bus::match::rules::member("DiscoveryComplete") +
+                sdbusplus::bus::match::rules::interface(
+                    "xyz.openbmc_project.PLDM.Event") +
+                sdbusplus::bus::match::rules::path("/xyz/openbmc_project/pldm"),
+            [this, devEID, devUUID](sdbusplus::message::message& msg) {
+                uint8_t signalTid = 0;
+                std::vector<std::vector<uint8_t>> pdrPayloads;
+                msg.read(signalTid, pdrPayloads);
+
+                info("RDE: Call back device UUID:{UUID} EID:{EID} TID: {TID}",
+                     "UUID", devUUID, "EID", static_cast<int>(devEID), "TID",
+                     static_cast<int>(signalTid));
+
+                if (!eidMap_.count(devEID))
+                {
+                    this->createDeviceDbusObject(devEID, devUUID, signalTid,
+                                                 pdrPayloads);
+
+                    // Remove match if one-time use
+                    signalMatches_.erase(devEID);
+                }
+            });
+
+        signalMatches_[devEID] = std::move(match);
+    }
+}
+
+void Manager::createDeviceDbusObject(eid /*devEID*/, const UUID& /*devUUID*/,
+                                     pldm_tid_t /*tid*/,
+                                     const PdrPayloadList& /*pdrPayloads*/)
+{}
+
+DeviceContext* Manager::getDeviceContext(eid devEID)
+{
+    auto it = eidMap_.find(devEID);
+    if (it != eidMap_.end())
+    {
+        return &(it->second);
+    }
+    return nullptr;
+}
+
+ObjectPath Manager::startRedfishOperation(
+    uint32_t /*operationID*/,
+    sdbusplus::common::xyz::openbmc_project::rde::Common::OperationType
+    /*operationType*/,
+    std::string /*targetURI*/, std::string /*deviceUUID*/, uint8_t /*eid*/,
+    std::string /*payload*/, PayloadFormatType /*payloadFormat*/,
+    EncodingFormatType /*encodingFormat*/, std::string /*sessionId*/)
+{
+    // TODO: Implement Redfish operation logic
+    ObjectPath objPath{"/xyz/openbmc_project/RDE/OperationTask/1"};
+    return objPath;
+}
+
+std::map<std::string, std::map<std::string, std::variant<int64_t, std::string>>>
+    Manager::getDeviceSchemaInfo(std::string /*deviceUUID*/)
+{
+    // TODO: Implement schema info retrieval
+    return {};
+}
+
+std::vector<OperationType> Manager::getSupportedOperations(
+    std::string /*deviceUUID*/)
+{
+    // TODO: Implement supported operations retrieval
+    return {};
+}
+
+} // namespace pldm::rde
