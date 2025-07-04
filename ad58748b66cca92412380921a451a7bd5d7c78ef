@@ -46,6 +46,30 @@
       },
       "revId": "ad58748b66cca92412380921a451a7bd5d7c78ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11e5bb9b_10d31b0b",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-07-04T04:29:58Z",
+      "side": 1,
+      "message": "@manojkiran.eda@gmail.com Libpldm takes care of conversion of recordSetId to little endian. And rsi is the local variable so it will be in little endian format only.\nDo you still think we need the conversion here?",
+      "parentUuid": "e5416f90_8c3f6c04",
+      "range": {
+        "startLine": 393,
+        "startChar": 13,
+        "endLine": 393,
+        "endChar": 14
+      },
+      "revId": "ad58748b66cca92412380921a451a7bd5d7c78ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
