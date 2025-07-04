@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7903478_696a827c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 50
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-04T05:21:22Z",
+      "side": 1,
+      "message": "I think we should either use mmap here or load only header to memory while parsing the pacakge but with this component_image.ptr would be invalid",
+      "parentUuid": "e1f423cb_59ccede5",
+      "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a61eb029_8985d84e",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 50
@@ -31,6 +49,23 @@
       "writtenOn": "2025-07-03T07:51:55Z",
       "side": 1,
       "message": "Why do we want to make an additional copy here ? \nI think we should switch back to file streaming where chunks of data were read on demand",
+      "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e34be39d_6571c8bf",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-04T05:21:22Z",
+      "side": 1,
+      "message": "Should we have a meson option to set the maximum package format\nrevision supported ? the default value can be 4 which could be DEFINE_PLDM_PACKAGE_FORMAT_PIN_FR04H.",
       "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
