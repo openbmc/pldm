@@ -258,6 +258,7 @@ executable(
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
     'rde/dictionary.cpp',
+    'rde/dictionary_manager.cpp',
     'rde/manager.cpp',
     oem_files,
     'requester/mctp_endpoint_discovery.cpp',
