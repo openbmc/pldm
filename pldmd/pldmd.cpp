@@ -7,6 +7,7 @@
 #include "invoker.hpp"
 #include "platform-mc/dbus_to_terminus_effecters.hpp"
 #include "platform-mc/manager.hpp"
+#include "rde/manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
@@ -339,12 +340,15 @@ int main(int argc, char** argv)
 
 #endif
 
+    std::unique_ptr<pldm::rde::Manager> rdeManager =
+        std::make_unique<pldm::rde::Manager>(bus, &instanceIdDb, &reqHandler);
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
-                     fwManager.get(), platformManager.get()});
+                     fwManager.get(), platformManager.get(), rdeManager.get()});
+
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (!(revents & EPOLLIN))
