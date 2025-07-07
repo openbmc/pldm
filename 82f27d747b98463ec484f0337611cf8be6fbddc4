@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c98df4b8_80dce596",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 50
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T09:02:41Z",
+      "side": 1,
+      "message": "Acked, use the pointer provided from libpldm instead, which can avoid copies.",
+      "parentUuid": "c7903478_696a827c",
+      "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a61eb029_8985d84e",
@@ -53,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "620aed5a_13839060",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T09:02:41Z",
+      "side": 1,
+      "message": "Acked, use the pointer provided from libpldm instead, which can avoid copies.",
+      "parentUuid": "a61eb029_8985d84e",
+      "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e34be39d_6571c8bf",
@@ -66,6 +102,24 @@
       "writtenOn": "2025-07-04T05:21:22Z",
       "side": 1,
       "message": "Should we have a meson option to set the maximum package format\nrevision supported ? the default value can be 4 which could be DEFINE_PLDM_PACKAGE_FORMAT_PIN_FR04H.",
+      "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a4c4ca6_d9f626eb",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T09:02:41Z",
+      "side": 1,
+      "message": "Done.\n```\noption(\n    \u0027pldm-max-package-version\u0027,\n    type: \u0027integer\u0027,\n    value: \u00274\u0027,\n    description: \u0027Maximum supported version of parsing pldm package\u0027,\n)\n```",
+      "parentUuid": "e34be39d_6571c8bf",
       "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
