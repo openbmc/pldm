@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787feec1_820a1f1d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-07-07T10:36:40Z",
+      "side": 1,
+      "message": "nit: Rename the variable in the loop. The input argument is already called `mctpInfo`",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f500718f_c50c54d9",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-07-07T10:36:40Z",
+      "side": 1,
+      "message": "nit: Can we return early here?",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ea63fcd_7c136799",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-07-07T10:36:40Z",
+      "side": 1,
+      "message": "nit: Passing eid by const reference is unecessary",
+      "range": {
+        "startLine": 658,
+        "startChar": 60,
+        "endLine": 658,
+        "endChar": 63
+      },
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f16a1986_4a520136",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-07-07T10:36:40Z",
+      "side": 1,
+      "message": "I feel like this error message is misleading, it doesn\u0027t look to be related to whether a response was received for getFWParams",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55eb7219_ac2e1be0",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-07-07T10:36:40Z",
+      "side": 1,
+      "message": "Logging like this is an anti pattern according to https://github.com/openbmc/docs/blob/master/anti-patterns.md",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a91c0f6_9ffadbb3",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-07-07T10:36:40Z",
+      "side": 1,
+      "message": "The message is incorrect if response.size is 0",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
