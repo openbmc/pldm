@@ -91,6 +91,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5b916586_258247e0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 92
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Marked as resolved, since the `startUpdate` implementation is split out from this patch.\nTest result added.",
+      "parentUuid": "46c6ff60_7fa7f056",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6ad79f49_e9a829dd",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 92
@@ -173,6 +191,24 @@
       "side": 1,
       "message": "Tested fine on Yosemite 4, my speculation is this is cause by multiple event loop, since I\u0027m experiencing the similar issue on the following modification.\n\n@paligill@gmail.com I\u0027m now getting stuck on making `sdeventplus` and `sdbusplus::async` things work simultaneously, do you have any opinions for this?\nOtherwise I prefer to switch back to sync server binding at this stage.",
       "parentUuid": "b9503834_792a7986",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01dba00c_19942da6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 92
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Switching back to sync server binding, marked as resolved.",
+      "parentUuid": "d49fc6fa_7b010544",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -532,6 +568,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5239a4ec_c6c25d7c",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Fixed in following patch on the chain: [#81506]\n\n[#81506]: https://gerrit.openbmc.org/c/openbmc/pldm/+/81506",
+      "parentUuid": "422be433_d26cdede",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f28db2aa_cddf7f9d",
@@ -616,6 +670,24 @@
       "side": 1,
       "message": "I didn\u0027t find a graceful way to perform a `sdbusplus::async::context` in a existing event loop, but I believe it\u0027s a necessary thing for using any async server binding.\nWould be appriciate if there is any example .",
       "parentUuid": "7ec3840e_27b9bf97",
+      "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6773e1da_00f99685",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 92
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Switching back to sync server binding, marked as resolved.",
+      "parentUuid": "33764561_37884a6f",
       "revId": "ca084f9b1ce15137d3641692e6fb92d9e0a0f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

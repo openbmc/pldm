@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24caafc8_4a3e8d92",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "787feec1_820a1f1d",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f500718f_c50c54d9",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-07-07T10:36:40Z",
       "side": 1,
       "message": "nit: Can we return early here?",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7f98703_a98c2be7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f500718f_c50c54d9",
       "revId": "d119442164ed569a09e7fd754746502b5922316e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +94,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67fa98df_d07796b3",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ea63fcd_7c136799",
+      "range": {
+        "startLine": 658,
+        "startChar": 60,
+        "endLine": 658,
+        "endChar": 63
+      },
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f16a1986_4a520136",
@@ -71,6 +131,24 @@
       "writtenOn": "2025-07-07T10:36:40Z",
       "side": 1,
       "message": "I feel like this error message is misleading, it doesn\u0027t look to be related to whether a response was received for getFWParams",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b041abee_0b83cfd4",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f16a1986_4a520136",
       "revId": "d119442164ed569a09e7fd754746502b5922316e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -92,6 +170,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2896865_75cf7194",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55eb7219_ac2e1be0",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a91c0f6_9ffadbb3",
@@ -105,6 +201,24 @@
       "writtenOn": "2025-07-07T10:36:40Z",
       "side": 1,
       "message": "The message is incorrect if response.size is 0",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b2ec16_36431233",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-07-07T14:08:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6a91c0f6_9ffadbb3",
       "revId": "d119442164ed569a09e7fd754746502b5922316e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
