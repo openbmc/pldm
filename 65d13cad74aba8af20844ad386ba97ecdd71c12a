@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0e8c4ed_782afe11",
+        "filename": "common/instance_id.hpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-07T05:46:18Z",
+      "side": 1,
+      "message": "nit : spacing.",
+      "range": {
+        "startLine": 115,
+        "startChar": 7,
+        "endLine": 115,
+        "endChar": 12
+      },
+      "revId": "65d13cad74aba8af20844ad386ba97ecdd71c12a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

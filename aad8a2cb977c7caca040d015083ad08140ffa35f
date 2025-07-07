@@ -316,6 +316,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d2e3c15_4aaaeacc",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-07T05:46:18Z",
+      "side": 1,
+      "message": "Yes, this sounds a lot better \u0026 cleaner than where we began.",
+      "parentUuid": "89de1723_ef2d899c",
+      "range": {
+        "startLine": 22,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 47
+      },
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94614f62_e647f2f7",
