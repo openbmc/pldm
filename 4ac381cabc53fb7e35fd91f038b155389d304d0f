@@ -354,6 +354,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eda7a6e_49f0dc72",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 970,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-07-07T21:40:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7886ba33_65cb5cb4",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a194696_34f98a35",
