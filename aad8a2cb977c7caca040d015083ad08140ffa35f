@@ -155,6 +155,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ee8f2f7_e96be18b",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-07-07T05:04:32Z",
+      "side": 1,
+      "message": "I have removed all the TODO comments as suggested.\nDoes this meet your expectations?\nPlease let me know if there are any other areas you think need to be modified.\nThank you very much for your feedback!",
+      "parentUuid": "3b896141_8cb3109d",
+      "revId": "aad8a2cb977c7caca040d015083ad08140ffa35f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab21c9bf_0637d326",
