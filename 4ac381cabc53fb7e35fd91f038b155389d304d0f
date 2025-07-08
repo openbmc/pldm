@@ -125,6 +125,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3ecea7c_14637ecf",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-08T01:19:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e43fff95_08b786f1",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fbf9c91_9f83f54e",
@@ -245,6 +263,24 @@
       "side": 1,
       "message": "Sorry, that part of the code is a bit obtuse.\n```\n        auto log \u003d thresholdEventMap.at(\n            {level, direction})(sensorObjPath, value, sensorUnit, threshold);\n```\ncalls one of the functions defined in line 999 which maps {level,direction} to a function. Each of the functions, is an implementation of the template logThresholdHelper(). And thats the one calling lg2::commit().\n\nThat avoids me from repeating the same code with different exceptions from sdbusplus::error::xyz::openbmc_project::sensor::Threshold\n\nI should throw some comments there.",
       "parentUuid": "a764cabe_51d551cc",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "739d4ba2_bcd0fcca",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-07-08T01:19:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d7d2089c_0e87d59d",
       "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
