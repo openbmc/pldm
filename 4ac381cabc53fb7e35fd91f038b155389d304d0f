@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b8aa810d_afde5b44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-07-08T03:57:30Z",
+      "side": 1,
+      "message": "There are two paths to take.\n(1) For folks who want the old phosphor-sel-logger logs, they can install filters like https://gerrit.openbmc.org/c/openbmc/phosphor-logging/+/81041/1/tools/phosphor-logging/sensor-thresholds-eventfilter.json to remove all the new logs from services. While I am clearly for the new logs, I can sympathize platform owners who have their products in prod and might not have the luxury to control the tooling above BMC.\n\n(2) For folks who want the new logs, they can go ahead and remove \"log-threshold\" from phosphor-sel-logger PACKAGECONFIG\n```\nPACKAGECONFIG:remove \u003d \"log-threshold\"\n```\nThis is what I decided to go with for the platforms I support.\n\nI am not fully against adding a compile time option; probably have it on by default?",
+      "parentUuid": "e2b73396_f6dbed3b",
+      "revId": "4ac381cabc53fb7e35fd91f038b155389d304d0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "69b7c805_7db19f5b",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 21
