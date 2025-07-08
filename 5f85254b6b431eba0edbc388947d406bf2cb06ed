@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "699f601e_c2f802f6",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-08T06:31:40Z",
+      "side": 1,
+      "message": "Can we add the doxygen for these?",
+      "range": {
+        "startLine": 389,
+        "startChar": 4,
+        "endLine": 393,
+        "endChar": 7
+      },
+      "revId": "5f85254b6b431eba0edbc388947d406bf2cb06ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
