@@ -268,7 +268,7 @@ executable(
 
 if get_option('systemd').allowed()
     systemd_system_unit_dir = dependency('systemd').get_variable(
-        'systemdsystemunitdir',
+        'systemd_system_unit_dir',
     )
     filesystem.copyfile(
         'pldmd/service_files/pldmd.service',
