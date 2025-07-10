@@ -714,8 +714,7 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
     if (functional && available)
     {
         newValue = unitModifier(conversionFormula(value));
-        if (newValue != curValue &&
-            (std::isfinite(newValue) || std::isfinite(curValue)))
+        if (std::isfinite(newValue) || std::isfinite(curValue))
         {
             if (!useMetricInterface)
             {
