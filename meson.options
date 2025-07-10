@@ -190,6 +190,14 @@ option(
     value: 'enabled',
 )
 
+## OEM META Options
+option(
+    'oem-meta',
+    type: 'feature',
+    description: 'Enable META OEM PLDM',
+    value: 'enabled',
+)
+
 ## Default Sensor Update Interval Options
 option(
     'default-sensor-update-interval',
