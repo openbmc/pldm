@@ -2,6 +2,8 @@
 
 #include "common/utils.hpp"
 #include "utils.hpp"
+#include "libpldmresponder/platform.hpp"
+#include "oem/meta/event/oem_event_manager.hpp"
 
 namespace pldm::oem_meta
 {
@@ -25,14 +27,22 @@ class OemMETA
   public:
     /** @brief Constucts OemMETA object
      *  @param[in] dBusIntf - D-Bus handler
+		 *  @param[in] platformHandler - platformHandler handler
      */
-    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler);
+		explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler,
+                     pldm::responder::platform::Handler* platformHandler);
 
     /** @brief return pointer to ConfigurationDiscoveryHandler for mctp endpoint
      *         discovery
      *  @param[out] pointer to ConfigurationDiscoveryHandler
      */
     ConfigurationDiscoveryHandler* getMctpConfigurationHandler() const;
+
+  private:
+    void registerOemEventHandler(
+        pldm::responder::platform::Handler* platformHandler);
+
+    std::unique_ptr<oem_meta::OemEventManager> oemEventManager{};
 };
 
 } // namespace pldm::oem_meta
