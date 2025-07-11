@@ -56,14 +56,15 @@ void ConfigurationDiscoveryHandler::searchConfigurationFor(MctpInfo mctpInfo)
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("{FUNC}: Failed to getSubtree with MCTPEndpoint, error={ERROR}",
-              "FUNC", std::string(__func__), "ERROR", e.what());
+        error(
+            "{FUNC}: Failed to getSubtree with MCTPEndpoint, error code: {ERROR}",
+            "FUNC", std::string(__func__), "ERROR", e);
         return;
     }
     catch (const std::exception& e)
     {
-        error("{FUNC}: Unpredicted error occured, error={ERROR}", "FUNC",
-              std::string(__func__), "ERROR", e.what());
+        error("{FUNC}: Unpredicted error occured, error code: {ERROR}", "FUNC",
+              std::string(__func__), "ERROR", e);
         return;
     }
 }
@@ -98,22 +99,22 @@ void ConfigurationDiscoveryHandler::appendConfigIfEidMatch(
         catch (const sdbusplus::exception_t& e)
         {
             error(
-                "{FUNC}: Failed to getAll of interface={INTERFACE} in path={PATH}, error={ERROR}",
+                "{FUNC}: Failed to getAll of interface {INTERFACE} in path {PATH}, error {ERROR}",
                 "FUNC", std::string(__func__), "INTERFACE",
-                mctpEndpointInterface, "PATH", configPath, "ERROR", e.what());
+                mctpEndpointInterface, "PATH", configPath, "ERROR", e);
             return;
         }
         catch (const NoSuchPropertiesException& e)
         {
-            error("{FUNC}: Insufficient properties in {PATH}, error={ERROR}",
-                  "FUNC", std::string(__func__), "PATH", configPath, "ERROR",
-                  e.what());
+            error(
+                "{FUNC}: Insufficient properties in {PATH} with error {ERROR}",
+                "FUNC", std::string(__func__), "PATH", configPath, "ERROR", e);
             return;
         }
         catch (const std::exception& e)
         {
-            error("{FUNC}: Unpredicted error occured, error={ERROR}", "FUNC",
-                  std::string(__func__), "ERROR", e.what());
+            error("{FUNC}: Unpredicted error {ERROR} occured", "FUNC",
+                  std::string(__func__), "ERROR", e);
             return;
         }
     }

@@ -96,8 +96,9 @@ std::string OemEventManager::getSlotNumberString(
             }
             catch (const sdbusplus::exception_t& e)
             {
-                lg2::error("{FUNC}: Failed to call GetAncestors, ERROR={ERROR}",
-                           "FUNC", std::string(__func__), "ERROR", e.what());
+                lg2::error(
+                    "{FUNC}: Failed to call GetAncestors with error code {ERROR}",
+                    "FUNC", std::string(__func__), "ERROR", e);
                 return slotNumber; // return "Unknown";
             }
 
@@ -111,8 +112,9 @@ std::string OemEventManager::getSlotNumberString(
             }
             catch (const sdbusplus::exception_t& e)
             {
-                lg2::error("{FUNC}: Failed to execute Dbus call, ERROR={ERROR}",
-                           "FUNC", std::string(__func__), "ERROR", e.what());
+                lg2::error(
+                    "{FUNC}: Failed to execute Dbus call with error code {ERROR}",
+                    "FUNC", std::string(__func__), "ERROR", e);
                 return slotNumber; // return "Unknown"
             }
         }
