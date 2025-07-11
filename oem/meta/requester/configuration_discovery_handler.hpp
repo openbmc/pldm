@@ -1,21 +1,13 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "oem/meta/utils.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 
 #include <stdexcept>
 
 namespace pldm::requester::oem_meta
 {
-
-struct MctpEndpoint
-{
-    uint64_t address;
-    uint64_t EndpointId;
-    uint64_t bus;
-    std::string name;
-    std::optional<std::string> iana;
-};
 
 class ConfigurationDiscoveryHandler : public MctpDiscoveryHandlerIntf
 {
@@ -65,7 +57,7 @@ class ConfigurationDiscoveryHandler : public MctpDiscoveryHandlerIntf
      *
      *  @return The configurations.
      */
-    std::map<std::string, MctpEndpoint>& getConfigurations();
+    std::map<std::string, pldm::utils::oem_meta::MctpEndpoint>& getConfigurations();
 
   private:
     /** @brief Search for associated configuration for the MctpInfo.
@@ -91,7 +83,7 @@ class ConfigurationDiscoveryHandler : public MctpDiscoveryHandlerIntf
      *
      *  @return Parsed MctpEndpoint object.
      */
-    MctpEndpoint parseMctpEndpointFromResponse(
+		pldm::utils::oem_meta::MctpEndpoint parseMctpEndpointFromResponse(
         const pldm::utils::PropertyMap& response);
 
     /** @brief Append to configuration if the MctpEndpoint's EID matches
@@ -102,7 +94,7 @@ class ConfigurationDiscoveryHandler : public MctpDiscoveryHandlerIntf
      *  @param[in] endpoint - The configuration's MctpEndpoint information.
      */
     void appendIfEidMatch(uint8_t targetEid, const std::string& configPath,
-                          const MctpEndpoint& endpoint);
+                          const pldm::utils::oem_meta::MctpEndpoint& endpoint);
 
     /** @brief Remove configuration associated with the removed MCTP endpoint.
      *
@@ -113,7 +105,7 @@ class ConfigurationDiscoveryHandler : public MctpDiscoveryHandlerIntf
     /** @brief The configuration contains Dbus path and the MCTP endpoint
      * information.
      */
-    std::map<std::string /*configDbusPath*/, MctpEndpoint> configurations;
+    std::map<std::string /*configDbusPath*/, pldm::utils::oem_meta::MctpEndpoint> configurations;
 
     /** @brief D-Bus Interface object*/
     const pldm::utils::DBusHandler* dBusIntf;
