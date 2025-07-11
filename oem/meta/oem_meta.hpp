@@ -1,5 +1,7 @@
 #pragma once
 
+#include "event/oem_event_manager.hpp"
+#include "libpldmresponder/platform.hpp"
 #include "requester/configuration_discovery_handler.hpp"
 
 namespace pldm
@@ -28,15 +30,21 @@ class OemMETA
      * @param[in] dBusIntf - D-Bus handler
      */
 
-    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler);
+    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler,
+                     pldm::responder::platform::Handler* platformHandler);
 
     pldm::requester::oem_meta::ConfigurationDiscoveryHandler*
         getMctpConfigurationHandler() const;
 
   private:
+    void registerOemEventHandler(
+        pldm::responder::platform::Handler* platformHandler);
+
     /** @brief MCTP configurations handler*/
     std::shared_ptr<pldm::requester::oem_meta::ConfigurationDiscoveryHandler>
         configurationDiscovery{};
+
+    std::shared_ptr<oem_meta::OemEventManager> oemEventManager{};
 };
 
 } // namespace oem_meta
