@@ -27,7 +27,7 @@ void ConfigurationDiscoveryHandler::handleRemovedMctpEndpoints(
     }
 }
 
-std::map<std::string, MctpEndpoint>&
+std::map<std::string, pldm::oem_meta::MctpEndpoint>&
     ConfigurationDiscoveryHandler::getConfigurations()
 {
     return configurations;
@@ -119,8 +119,9 @@ void ConfigurationDiscoveryHandler::appendConfigIfEidMatch(
     }
 }
 
-MctpEndpoint ConfigurationDiscoveryHandler::parseMctpEndpointFromResponse(
-    const pldm::utils::PropertyMap& response)
+pldm::oem_meta::MctpEndpoint
+    ConfigurationDiscoveryHandler::parseMctpEndpointFromResponse(
+        const pldm::utils::PropertyMap& response)
 {
     if (response.contains("Address") && response.contains("Bus") &&
         response.contains("EndpointId") && response.contains("Name"))
@@ -140,10 +141,12 @@ MctpEndpoint ConfigurationDiscoveryHandler::parseMctpEndpointFromResponse(
         if (response.contains("IANA"))
         {
             auto iana = std::get<std::string>(response.at("IANA"));
-            return MctpEndpoint{address, eid, bus, componentName, iana};
+            return pldm::oem_meta::MctpEndpoint{address, eid, bus,
+                                                componentName, iana};
         }
 
-        return MctpEndpoint{address, eid, bus, componentName, std::nullopt};
+        return pldm::oem_meta::MctpEndpoint{address, eid, bus, componentName,
+                                            std::nullopt};
     }
     else
     {
@@ -163,7 +166,7 @@ MctpEndpoint ConfigurationDiscoveryHandler::parseMctpEndpointFromResponse(
 
 void ConfigurationDiscoveryHandler::appendIfEidMatch(
     uint8_t targetEid, const std::string& configPath,
-    const MctpEndpoint& endpoint)
+    const pldm::oem_meta::MctpEndpoint& endpoint)
 {
     if (endpoint.EndpointId == targetEid)
     {
