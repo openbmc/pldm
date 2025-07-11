@@ -27,13 +27,7 @@ DbusToPLDMEvent::DbusToPLDMEvent(
 void DbusToPLDMEvent::sendEventMsg(uint8_t eventType,
                                    const std::vector<uint8_t>& eventDataVec)
 {
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb.next(mctp_eid);
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         eventDataVec.size());

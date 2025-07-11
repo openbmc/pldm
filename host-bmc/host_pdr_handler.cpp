@@ -189,13 +189,7 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     {
         recordHandle = nextRecordHandle;
     }
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb.next(mctp_eid);
 
     auto rc =
         encode_get_pdr_req(instanceId, recordHandle, 0, PLDM_GET_FIRSTPART,
@@ -394,13 +388,7 @@ void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
             "RC", rc);
         return;
     }
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb.next(mctp_eid);
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         actualSize);
@@ -727,13 +715,7 @@ void HostPDRHandler::_processFetchPDREvent(
 void HostPDRHandler::setHostFirmwareCondition()
 {
     responseReceived = false;
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb.next(mctp_eid);
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
@@ -805,13 +787,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                 sensorRearm.byte = 0;
                 uint8_t tid = std::get<0>(terminusInfo);
 
-                auto instanceIdResult =
-                    pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-                if (!instanceIdResult)
-                {
-                    return;
-                }
-                auto instanceId = instanceIdResult.value();
+                auto instanceId = instanceIdDb.next(mctp_eid);
                 std::vector<uint8_t> requestMsg(
                     sizeof(pldm_msg_hdr) +
                     PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
@@ -953,13 +929,7 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 void HostPDRHandler::getFRURecordTableMetadataByRemote(
     const PDRList& fruRecordSetPDRs)
 {
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb.next(mctp_eid);
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
 
@@ -1037,13 +1007,7 @@ void HostPDRHandler::getFRURecordTableByRemote(const PDRList& fruRecordSetPDRs,
         return;
     }
 
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb.next(mctp_eid);
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_REQ_BYTES);
 

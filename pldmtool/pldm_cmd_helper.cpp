@@ -89,13 +89,7 @@ void fillCompletionCode(uint8_t completionCode, ordered_json& data,
 
 void CommandInterface::exec()
 {
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    instanceId = instanceIdDb.next(mctp_eid);
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {

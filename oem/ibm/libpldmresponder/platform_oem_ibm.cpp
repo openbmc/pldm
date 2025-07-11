@@ -61,12 +61,7 @@ int sendBiosAttributeUpdateEvent(
             "ERROR", e);
     }
 
-    auto instanceIdResult = pldm::utils::getInstanceId(instanceIdDb->next(eid));
-    if (!instanceIdResult)
-    {
-        return PLDM_ERROR;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb->next(eid);
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(pldm_bios_attribute_update_event_req) -

@@ -524,13 +524,7 @@ void pldm::responder::oem_ibm_platform::Handler::sendStateSensorEvent(
     eventClass->sensor_offset = sensorOffset;
     eventClass->event_state = eventState;
     eventClass->previous_event_state = prevEventState;
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb.next(mctp_eid));
-    if (!instanceIdResult)
-    {
-        return;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb.next(mctp_eid);
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + PLDM_PLATFORM_EVENT_MESSAGE_MIN_REQ_BYTES +
         sensorEventDataVec.size());

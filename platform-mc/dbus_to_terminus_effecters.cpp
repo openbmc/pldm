@@ -481,13 +481,7 @@ int HostEffecterParser::setTerminusNumericEffecter(
         }
     }
 
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb->next(mctpEid));
-    if (!instanceIdResult)
-    {
-        return PLDM_ERROR;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb->next(mctpEid);
     int rc = PLDM_ERROR;
     std::vector<uint8_t> requestMsg;
 
@@ -626,13 +620,7 @@ int HostEffecterParser::setHostStateEffecter(
     }
 
     uint8_t& compEffCnt = hostEffecterInfo[effecterInfoIndex].compEffecterCnt;
-    auto instanceIdResult =
-        pldm::utils::getInstanceId(instanceIdDb->next(mctpEid));
-    if (!instanceIdResult)
-    {
-        return PLDM_ERROR;
-    }
-    auto instanceId = instanceIdResult.value();
+    auto instanceId = instanceIdDb->next(mctpEid);
 
     std::vector<uint8_t> requestMsg(
         sizeof(pldm_msg_hdr) + sizeof(effecterId) + sizeof(compEffCnt) +
