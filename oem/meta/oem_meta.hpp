@@ -1,3 +1,5 @@
+#include "libpldmresponder/platform.hpp"
+#include "oem/meta/event/oem_event_manager.hpp"
 #include "oem/meta/requester/configuration_discovery_handler.hpp"
 
 namespace pldm
@@ -29,11 +31,16 @@ class OemMETA
      * @param[in] platformManager - MC Platform manager
      */
 
-    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler)
+    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler,
+                     pldm::responder::platform::Handler* platformHandler)
     {
         configurationDiscovery = std::make_shared<
             pldm::requester::oem_meta::ConfigurationDiscoveryHandler>(
             dbusHandler);
+
+        oemEventManager =
+            std::make_shared<oem_meta::OemEventManager>(configurationDiscovery);
+        registerOemEventHandler(platformHandler);
     }
 
     pldm::requester::oem_meta::ConfigurationDiscoveryHandler*
@@ -43,9 +50,25 @@ class OemMETA
     }
 
   private:
+    void registerOemEventHandler(
+        pldm::responder::platform::Handler* platformHandler)
+    {
+        platformHandler->registerEventHandlers(
+            PLDM_OEM_EVENT_CLASS_0xFB,
+            {[this](const pldm_msg* request, size_t payloadLength,
+                    uint8_t formatVersion, uint8_t tid,
+                    size_t eventDataOffset) {
+                return this->oemEventManager->handleOemEvent(
+                    request, payloadLength, formatVersion, tid,
+                    eventDataOffset);
+            }});
+    }
+
     /** @brief MCTP configurations handler*/
     std::shared_ptr<pldm::requester::oem_meta::ConfigurationDiscoveryHandler>
         configurationDiscovery{};
+
+    std::shared_ptr<oem_meta::OemEventManager> oemEventManager{};
 };
 
 } // namespace oem_meta
