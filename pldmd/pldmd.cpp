@@ -59,6 +59,10 @@ PHOSPHOR_LOG2_USING;
 #include "xyz/openbmc_project/PLDM/Event/server.hpp"
 #endif
 
+#ifdef OEM_META
+#include "oem/meta/oem_meta.hpp"
+#endif
+
 #ifdef OEM_IBM
 #include "oem_ibm.hpp"
 #endif
@@ -319,6 +323,10 @@ int main(int argc, char** argv)
         instanceIdDb, event, invoker, hostPDRHandler.get(),
         platformHandler.get(), fruHandler.get(), baseHandler.get(),
         biosHandler.get(), platformManager.get(), &reqHandler);
+#endif
+
+#ifdef OEM_META
+    pldm::oem_meta::OemMETA oemMETA(platformHandler.get());
 #endif
 
 #ifdef OEM_IBM
