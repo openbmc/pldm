@@ -1,6 +1,8 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "libpldmresponder/platform.hpp"
+#include "oem/meta/event/oem_event_manager.hpp"
 #include "utils.hpp"
 
 namespace pldm::oem_meta
@@ -25,13 +27,21 @@ class OemMETA
   public:
     /** @brief Constucts OemMETA object
      *  @param[in] dBusIntf - D-Bus handler
+     *  @param[in] platformHandler - platformHandler handler
      */
-    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler);
+    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler,
+                     pldm::responder::platform::Handler* platformHandler);
 
   private:
     /** @brief D-Bus handler
      */
     const pldm::utils::DBusHandler* dbusHandler;
+
+  private:
+    void registerOemEventHandler(
+        pldm::responder::platform::Handler* platformHandler);
+
+    std::unique_ptr<oem_meta::OemEventManager> oemEventManager{};
 };
 
 } // namespace pldm::oem_meta
