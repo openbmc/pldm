@@ -1,6 +1,8 @@
 #include "libpldmresponder/platform.hpp"
 #include "oem/meta/event/oem_event_manager.hpp"
+#include "oem/meta/libpldmresponder/file_io.hpp"
 #include "oem/meta/requester/configuration_discovery_handler.hpp"
+#include "pldmd/invoker.hpp"
 
 namespace pldm
 {
@@ -32,11 +34,17 @@ class OemMETA
      */
 
     explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler,
-                     pldm::responder::platform::Handler* platformHandler)
+                     pldm::responder::Invoker& invoker,
+                     pldm::responder::platform::Handler* platformHandler) : invoker(invoker)
     {
         configurationDiscovery = std::make_shared<
             pldm::requester::oem_meta::ConfigurationDiscoveryHandler>(
             dbusHandler);
+
+        fileIOHandler =
+            std::make_unique<pldm::responder::oem_meta::FileIOHandler>(
+                configurationDiscovery, dbusHandler);
+        registerHandler();
 
         oemEventManager =
             std::make_shared<oem_meta::OemEventManager>(configurationDiscovery);
@@ -50,6 +58,11 @@ class OemMETA
     }
 
   private:
+    void registerHandler()
+    {
+        invoker.registerHandler(PLDM_OEM, std::move(fileIOHandler));
+    }
+
     void registerOemEventHandler(
         pldm::responder::platform::Handler* platformHandler)
     {
@@ -64,9 +77,15 @@ class OemMETA
             }});
     }
 
+    /** @brief Object to the invoker class*/
+    pldm::responder::Invoker& invoker;
+
     /** @brief MCTP configurations handler*/
     std::shared_ptr<pldm::requester::oem_meta::ConfigurationDiscoveryHandler>
         configurationDiscovery{};
+
+    std::unique_ptr<pldm::responder::oem_meta::FileIOHandler> fileIOHandler =
+        nullptr;
 
     std::shared_ptr<oem_meta::OemEventManager> oemEventManager{};
 };
