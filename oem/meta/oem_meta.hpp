@@ -1,6 +1,8 @@
 #pragma once
 
 #include "common/utils.hpp"
+#include "libpldmresponder/platform.hpp"
+#include "oem/meta/event/oem_event_manager.hpp"
 #include "utils.hpp"
 
 namespace pldm::oem_meta
@@ -21,6 +23,18 @@ class OemMETA
     OemMETA& operator=(const OemMETA&) = delete;
     OemMETA(OemMETA&&) = delete;
     OemMETA& operator=(OemMETA&&) = delete;
+
+  public:
+    /** @brief Constucts OemMETA object
+     *  @param[in] platformHandler - platformHandler handler
+     */
+    explicit OemMETA(pldm::responder::platform::Handler* platformHandler);
+
+  private:
+    void registerOemEventHandler(
+        pldm::responder::platform::Handler* platformHandler);
+
+    std::unique_ptr<oem_meta::OemEventManager> oemEventManager{};
 };
 
 } // namespace pldm::oem_meta

@@ -1,1 +1,3 @@
-oem_files += files('utils.cpp')
+oem_files += files('oem_meta.cpp', 'utils.cpp')
+
+subdir('event')
