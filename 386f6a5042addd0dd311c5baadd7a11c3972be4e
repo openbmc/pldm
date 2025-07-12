@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "065b89b3_03dd3197",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e602f0b_dc702e23",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80f7d96f_b78ea742",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26149e48_bf601ec0",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "The eventData pointer and payload length are obtained directly from libpldm. I don\u0027t think there\u0027s a way to check the size at this point, and this validation should be handled by libpldm itself.",
+      "parentUuid": "80f7d96f_b78ea742",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "151996b9_60059623",
@@ -65,6 +101,24 @@
       "writtenOn": "2025-07-02T13:09:49Z",
       "side": 1,
       "message": "Can we separate create new function for the long code?\nOne function for each `RecordType::`?\n\nIt will be great if this 8xx lines functions can be split in to small ones.",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c923659_6da397c2",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "151996b9_60059623",
       "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -88,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e2667c4_01e07077",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "I don\u0027t fully understand why rc\u003d{RC} is anti-pattern after reading the document you provided below, but I made some changes based on your comment.",
+      "parentUuid": "c6318529_e6cb92b0",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6cbdc3b3_d1c376ab",
         "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.hpp",
         "patchSetId": 36
@@ -99,6 +171,24 @@
       "writtenOn": "2025-07-02T13:09:49Z",
       "side": 1,
       "message": "Please add method description.\nCan you also check the others method and add the description if does not have?",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cbd9bd5_b3395149",
+        "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cbdc3b3_d1c376ab",
       "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -116,6 +206,24 @@
       "writtenOn": "2025-07-02T13:09:49Z",
       "side": 1,
       "message": "These code is duplicated in many *.hpp file. Can we create default method for this function?",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "636401d6_05d0aeab",
+        "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "Done. I\u0027m not sure why the member functions in the base class FileHandler were originally set as pure virtual. Now they\u0027re just virtual, so we don\u0027t need to reimplement the default behavior every time we inherit from it.",
+      "parentUuid": "9b00b284_82ecf31b",
       "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -139,6 +247,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5fb7452c_e04709c1",
+        "filename": "oem/meta/libpldmresponder/file_io_type_power_control.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "Same as shown above.",
+      "parentUuid": "0850db87_75ec68c3",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "60c55d3f_c81681e2",
         "filename": "oem/meta/libpldmresponder/file_io_type_power_control.cpp",
         "patchSetId": 36
@@ -150,6 +276,24 @@
       "writtenOn": "2025-07-02T13:09:49Z",
       "side": 1,
       "message": "With lg2 don\u0027t need `e.what()` just `e`.",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c301081_ff6ae411",
+        "filename": "oem/meta/libpldmresponder/file_io_type_power_control.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-12T09:25:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60c55d3f_c81681e2",
       "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
