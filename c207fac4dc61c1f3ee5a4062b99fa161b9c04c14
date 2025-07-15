@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dca51c37_7ebd975a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-15T11:06:39Z",
+      "side": 1,
+      "message": "these are error right ? not info ? this and every where else ?",
+      "range": {
+        "startLine": 357,
+        "startChar": 12,
+        "endLine": 357,
+        "endChar": 17
+      },
+      "revId": "c207fac4dc61c1f3ee5a4062b99fa161b9c04c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
