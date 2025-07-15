@@ -308,7 +308,8 @@ class GetPLDMCommands : public CommandInterface
         app->add_option(
             "-d,--data", inputVersion,
             "Set PLDM type version. Which is got from GetPLDMVersion\n"
-            "eg: version 1.1.0 then data will be `0xf1 0xf1 0xf0 0x00`");
+            "eg: version 1.1.0 then data will be `0x00 0xF0 0xF1 0xF1`\n"
+            "(format: alpha update minor major)");
     }
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
