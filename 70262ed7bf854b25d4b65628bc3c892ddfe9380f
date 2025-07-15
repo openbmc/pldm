@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "882ca7c8_95f7669c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 48
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-07-15T01:04:17Z",
+      "side": 1,
+      "message": "We should keep this work, but throw the original exception type from the call-sites that can\u0027t yet be fixed.",
+      "revId": "70262ed7bf854b25d4b65628bc3c892ddfe9380f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
