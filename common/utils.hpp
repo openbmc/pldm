@@ -1,5 +1,6 @@
 #pragma once
 
+#include "instance_id.hpp"
 #include "types.hpp"
 
 #include <libpldm/base.h>
@@ -22,6 +23,7 @@
 #include <cstdint>
 #include <deque>
 #include <exception>
+#include <expected>
 #include <filesystem>
 #include <iostream>
 #include <map>
