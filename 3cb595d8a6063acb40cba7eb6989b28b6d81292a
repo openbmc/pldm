@@ -16,6 +16,23 @@
       "message": "I think removing check `newValue \u003d\u003d curValue` is the correct way to cover the issue.\nThe purpose of checking `NewValue \u003d\u003d curValue` is corrected. Maybe you can update code to cover the fail case which you mentions.",
       "revId": "3cb595d8a6063acb40cba7eb6989b28b6d81292a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1662b2b_62633f78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-07-15T09:09:32Z",
+      "side": 1,
+      "message": "pat",
+      "revId": "3cb595d8a6063acb40cba7eb6989b28b6d81292a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
