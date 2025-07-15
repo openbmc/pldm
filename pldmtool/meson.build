@@ -14,6 +14,8 @@ if get_option('oem-ibm').allowed()
     sources += ['oem/ibm/pldm_oem_ibm.cpp']
 endif
 
+phosphor_logging_dep = dependency('phosphor-logging')
+
 executable(
     'pldmtool',
     sources,
@@ -26,6 +28,7 @@ executable(
         nlohmann_json_dep,
         phosphor_dbus_interfaces,
         sdbusplus,
+        phosphor_logging_dep,
     ],
     install: true,
     install_dir: get_option('bindir'),
