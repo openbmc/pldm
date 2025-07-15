@@ -41,7 +41,7 @@ Alternatively, source an OpenBMC ARM/x86 SDK.
 To build the PLDM project, follow these steps:
 
 ```bash
-meson setup build && ninja -C build
+meson setup build && meson compile -C build
 ```
 
 ### To run unit tests
@@ -49,7 +49,7 @@ meson setup build && ninja -C build
 The simplest way of running the tests is as described by the meson man page:
 
 ```bash
-meson setup builddir && meson setup test -C builddir
+meson test -C build
 ```
 
 Alternatively, tests can be run in the OpenBMC CI docker container using
