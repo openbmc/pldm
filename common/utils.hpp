@@ -1,5 +1,6 @@
 #pragma once
 
+#include "instance_id.hpp"
 #include "types.hpp"
 
 #include <libpldm/base.h>
@@ -22,6 +23,7 @@
 #include <cstdint>
 #include <deque>
 #include <exception>
+#include <expected>
 #include <filesystem>
 #include <iostream>
 #include <map>
@@ -166,6 +168,27 @@ T decimalToBcd(T decimal)
     }
 
     return bcd;
+}
+
+/**
+ * @brief Unwraps the result of InstanceId allocation and logs errors.
+ *
+ * Logs errors if present, but always returns the original result so the caller
+ * can choose to handle the error (return, throw, etc).
+ *
+ * @tparam T - InstanceId value type.
+ * @param[in] result - The result from InstanceIdDb::next().
+ * @return The original result (value or error).
+ */
+template <typename T>
+std::expected<T, pldm::InstanceIdError> getInstanceId(
+    const std::expected<T, pldm::InstanceIdError>& result)
+{
+    if (!result)
+    {
+        error("{MSG}", "MSG", result.error().msg());
+    }
+    return result;
 }
 
 struct DBusMapping
