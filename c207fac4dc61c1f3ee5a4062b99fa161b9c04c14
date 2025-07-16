@@ -22,6 +22,30 @@
       },
       "revId": "c207fac4dc61c1f3ee5a4062b99fa161b9c04c14",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7591ffe_f86144f8",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-16T06:46:21Z",
+      "side": 1,
+      "message": "Done changed it to error, I thought we could keep it as info.",
+      "parentUuid": "dca51c37_7ebd975a",
+      "range": {
+        "startLine": 357,
+        "startChar": 12,
+        "endLine": 357,
+        "endChar": 17
+      },
+      "revId": "c207fac4dc61c1f3ee5a4062b99fa161b9c04c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
