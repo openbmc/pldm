@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a66c805_d022d74b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-16T06:59:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe2ce95b_4a0a4f13",
+      "range": {
+        "startLine": 820,
+        "startChar": 0,
+        "endLine": 820,
+        "endChar": 42
+      },
+      "revId": "d476003a2d2bc14f3fe9dc1f4a00c5ea55ead113",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d70bccf6_c2c1f9e9",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-07-15T11:04:49Z",
       "side": 1,
       "message": "why tid is needed ? when we are not using",
+      "range": {
+        "startLine": 821,
+        "startChar": 4,
+        "endLine": 821,
+        "endChar": 19
+      },
+      "revId": "d476003a2d2bc14f3fe9dc1f4a00c5ea55ead113",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1175673b_71f4b99f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-16T06:59:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d70bccf6_c2c1f9e9",
       "range": {
         "startLine": 821,
         "startChar": 4,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a93f5298_79a542fd",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-16T06:59:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b12c1f7c_1736ce34",
+      "revId": "d476003a2d2bc14f3fe9dc1f4a00c5ea55ead113",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a83bc099_4ae3ce96",
@@ -87,6 +153,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10428b1e_8b2b905c",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-16T06:59:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a83bc099_4ae3ce96",
+      "range": {
+        "startLine": 826,
+        "startChar": 4,
+        "endLine": 826,
+        "endChar": 37
+      },
+      "revId": "d476003a2d2bc14f3fe9dc1f4a00c5ea55ead113",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e616dd03_d1b33dc2",
@@ -100,6 +190,30 @@
       "writtenOn": "2025-07-15T11:04:49Z",
       "side": 1,
       "message": "merge these two into one single statement.",
+      "range": {
+        "startLine": 834,
+        "startChar": 12,
+        "endLine": 835,
+        "endChar": 53
+      },
+      "revId": "d476003a2d2bc14f3fe9dc1f4a00c5ea55ead113",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a01bb50_a1f545c7",
+        "filename": "common/utils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-07-16T06:59:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e616dd03_d1b33dc2",
       "range": {
         "startLine": 834,
         "startChar": 12,
