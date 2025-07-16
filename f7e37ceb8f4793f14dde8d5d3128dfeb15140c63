@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b9f3c82_1f7a7ea6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-07-16T07:59:06Z",
+      "side": 1,
+      "message": "I have updated the code so that, in places where functions with a void return type previously just returned (as in [Gerrit 80090] ), I now throw `pldm::InstanceIdError(instanceIdResult.error())` instead.\nThe reason I am not simply throwing `instanceIdResult.error()` is because the CI requires exceptions to be thrown as anonymous temporaries.\n\nFor non-void functions, the behavior remains the same as in [Gerrit 80090]: errors are handled by returning an error code (such as `PLDM_ERROR`) rather than throwing exceptions.\nThis avoids previous issues where an uncaught exception due to instance ID allocation failure could cause a pldmd core dump.\n\nFor the remaining areas in void functions where the thrown exception is not yet caught, I am considering introducing a function template to avoid code duplication while still allowing proper exception handling.\n\nShould these related changes be included in this patch, or submitted as a separate commit?\n\n[Gerrit 80090]: https://gerrit.openbmc.org/c/openbmc/pldm/+/80090",
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
