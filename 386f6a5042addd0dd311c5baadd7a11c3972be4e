@@ -160,6 +160,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f30f338e_d3cf2734",
+        "filename": "oem/meta/libpldmresponder/file_io.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-07-16T04:04:09Z",
+      "side": 1,
+      "message": "As in replace `rc\u003d{RC}` with `return code\u003d{RC}` or `error code \u003d {RC}`. Dont make the log consumer guess what rc is.",
+      "parentUuid": "9e2667c4_01e07077",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6cbdc3b3_d1c376ab",
         "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.hpp",
         "patchSetId": 36
@@ -259,6 +277,24 @@
       "side": 1,
       "message": "Same as shown above.",
       "parentUuid": "0850db87_75ec68c3",
+      "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e338df_2b1b6a67",
+        "filename": "oem/meta/libpldmresponder/file_io_type_power_control.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-07-16T04:04:09Z",
+      "side": 1,
+      "message": "Replace the error with `Invalid incoming data for controlling power, data size {SIZE} bytes`. or something like that. In general the \"anti-pattern\" here is to make sure that the consumer of the error messages dont need to have access to the source code to understand what that means.",
+      "parentUuid": "5fb7452c_e04709c1",
       "revId": "386f6a5042addd0dd311c5baadd7a11c3972be4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
