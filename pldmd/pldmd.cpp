@@ -67,6 +67,10 @@ PHOSPHOR_LOG2_USING;
 #include "oem/ampere/oem_ampere.hpp"
 #endif
 
+#ifdef OEM_META
+#include "oem/meta/oem_meta.hpp"
+#endif
+
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
 using namespace pldm;
@@ -326,6 +330,14 @@ int main(int argc, char** argv)
         &dbusHandler, pldmTransport.getEventSource(), hostEID, pdrRepo.get(),
         instanceIdDb, event, invoker, hostPDRHandler.get(),
         platformHandler.get(), fruHandler.get(), baseHandler.get(),
+        &reqHandler);
+#endif
+
+#ifdef OEM_META
+    pldm::oem_meta::OemMeta oemMeta(
+        &dbusHandler, pldmTransport.getEventSource(), pdrRepo.get(),
+        instanceIdDb, event, invoker, hostPDRHandler.get(),
+        platformHandler.get(), baseHandler.get(), platformManager.get(),
         &reqHandler);
 #endif
 
