@@ -23,6 +23,7 @@ inline constexpr std::string_view RDEManagerObjectPath{
     "/xyz/openbmc_project/RDE/Manager"};
 inline constexpr std::string_view DeviceObjectPath{
     "/xyz/openbmc_project/RDE/Device"};
+inline constexpr std::string_view DeviceServiceName{"xyz.openbmc_project.RDE"};
 
 using ObjectPath = sdbusplus::message::object_path;
 using OperationType =
