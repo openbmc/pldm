@@ -1,5 +1,6 @@
 #include "platform_manager.hpp"
 
+#include "common/utils.hpp"
 #include "manager.hpp"
 #include "terminus_manager.hpp"
 
@@ -110,6 +111,14 @@ exec::task<int> PlatformManager::initTerminus()
                 "TID", tid, "ERROR", rc);
         }
         terminus->initialized = true;
+
+        const auto redfishResources = terminus->getRedfishResourcePdrsRaw();
+
+        if (!redfishResources.empty())
+        {
+            pldm::utils::emitDiscoveryCompleteSignal(tid, redfishResources);
+        }
+
         if (manager)
         {
             manager->startSensorPolling(tid);

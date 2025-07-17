@@ -203,6 +203,22 @@ class Terminus
      */
     std::shared_ptr<NumericSensor> getSensorObject(SensorId id);
 
+    /**
+     * @brief Retrieve the list of raw Redfish Resource PDR payloads.
+     *
+     * This function returns a reference to the collection of raw Redfish
+     * Resource PDR records stored as byte vectors. Each element in the returned
+     * vector represents a complete PDR structure as received from the
+     * repository, and only those that have been successfully parsed.
+     *
+     * @return const std::vector<std::vector<uint8_t>>&
+     *         A reference to the raw Redfish Resource PDR payloads.
+     */
+    const std::vector<std::vector<uint8_t>>& getRedfishResourcePdrsRaw() const
+    {
+        return redfishResourcePdrsRaw;
+    }
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
@@ -353,6 +369,9 @@ class Terminus
     /** @brief Redfish Resource PDR list */
     std::vector<std::shared_ptr<pldm_redfish_resource_pdr>>
         redfishResourcePdrs{};
+
+    /** @brief  Redfish Resource PDR list blob **/
+    std::vector<std::vector<uint8_t>> redfishResourcePdrsRaw;
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorId sensorPdrIt = 0;
