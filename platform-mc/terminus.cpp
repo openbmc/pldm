@@ -203,6 +203,7 @@ void Terminus::parseTerminusPDRs()
                     continue;
                 }
                 redfishResourcePdrs.emplace_back(std::move(parsedPdr));
+                redfishResourcePdrsRaw.emplace_back(pdr);
                 break;
             }
             default:

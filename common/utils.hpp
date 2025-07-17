@@ -508,6 +508,26 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
                                uint8_t previousEventState);
 
 /**
+ * @brief Emit a D-Bus signal indicating Redfish PDR discovery is complete
+ *
+ * Emits a signal with the terminus ID and a list of parsed Redfish Resource
+ * PDRs, each represented as a byte array suitable for D-Bus transmission.
+ *
+ * D-Bus Signature: DiscoveryComplete(uint8_t terminusId, array<array<byte>>
+ * pdrPayloads)
+ *
+ * @param tid[in] Terminus ID from which the PDRs were discovered
+ * @param pdrPayloads[in] Vector of raw Redfish Resource PDR payloads,
+ *        each PDR as a vector of bytes (std::vector<uint8_t>)
+ * @return int Returns PLDM_SUCCESS on success, or PLDM_ERROR on failure.
+ *
+ * @exception Logs an error message if the signal emission fails due to an
+ * exception.
+ */
+int emitDiscoveryCompleteSignal(
+    uint8_t tid, const std::vector<std::vector<uint8_t>>& pdrPayloads);
+
+/**
  *  @brief call Recover() method to recover an MCTP Endpoint
  *  @param[in] MCTP Endpoint's object path
  */
