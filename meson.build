@@ -257,6 +257,7 @@ executable(
     'platform-mc/numeric_sensor.cpp',
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
+    'rde/device.cpp',
     'rde/dictionary.cpp',
     'rde/dictionary_manager.cpp',
     'rde/manager.cpp',

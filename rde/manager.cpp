@@ -1,5 +1,7 @@
 #include "manager.hpp"
 
+#include "device.hpp"
+
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/message.hpp>
@@ -65,10 +67,41 @@ void Manager::handleMctpEndpoints(const std::vector<MctpInfo>& mctpInfos)
     }
 }
 
-void Manager::createDeviceDbusObject(eid /*devEID*/, const UUID& /*devUUID*/,
-                                     pldm_tid_t /*tid*/,
-                                     const PdrPayloadList& /*pdrPayloads*/)
-{}
+void Manager::createDeviceDbusObject(
+    eid devEID, const UUID& devUUID, pldm_tid_t tid,
+    const std::vector<std::vector<uint8_t>>& pdrPayloads)
+{
+    // Prevent duplicate creation for the same EID
+    if (eidMap_.count(eid()))
+    {
+        info("Device for EID already exists. Skipping registration.");
+        return;
+    }
+
+    std::string path =
+        std::string(DeviceObjectPath) + "/" + std::to_string(devEID);
+    std::string friendlyName = "Device_" + std::to_string(devEID);
+
+    // Create base device
+    auto devicePtr = std::make_shared<Device>(
+        bus_, path, instanceIdDb_, handler_, devEID, tid, devUUID, pdrPayloads);
+    bus_.request_name(DeviceServiceName.data());
+
+    DeviceContext context;
+    context.uuid = devUUID;
+    context.deviceEID = devEID;
+    context.tid = tid;
+    context.friendlyName = friendlyName;
+    context.devicePtr = devicePtr;
+
+    info("RDE device created UUID:{UUID} EID:{EID} Path:{PATH}, Name:{NAME}",
+         "UUID", devUUID, "EID", static_cast<int>(devEID), "PATH", path, "NAME",
+         friendlyName);
+
+    eidMap_[eid()] = std::move(context);
+
+    devicePtr->refreshDeviceInfo();
+}
 
 DeviceContext* Manager::getDeviceContext(eid devEID)
 {
@@ -93,10 +126,17 @@ ObjectPath Manager::startRedfishOperation(
     return objPath;
 }
 
-std::map<std::string, std::map<std::string, std::variant<int64_t, std::string>>>
-    Manager::getDeviceSchemaInfo(std::string /*deviceUUID*/)
+SchemaResourcesType Manager::getDeviceSchemaInfo(std::string deviceUUID)
 {
-    // TODO: Implement schema info retrieval
+    for (const auto& [eid, context] : eidMap_)
+    {
+        if (context.uuid == deviceUUID && context.devicePtr)
+        {
+            return context.devicePtr->schemaResources();
+        }
+    }
+
+    // If no match found
     return {};
 }
 
