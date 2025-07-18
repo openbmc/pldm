@@ -3,6 +3,8 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/platform.hpp"
 #include "oem/meta/event/oem_event_manager.hpp"
+#include "oem/meta/libpldmresponder/file_io.hpp"
+#include "pldmd/invoker.hpp"
 #include "utils.hpp"
 
 namespace pldm::oem_meta
@@ -27,9 +29,11 @@ class OemMETA
   public:
     /** @brief Constucts OemMETA object
      *  @param[in] dBusIntf - D-Bus handler
+     *  @param[in] invoker - invoker handler
      *  @param[in] platformHandler - platformHandler handler
      */
     explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler,
+                     pldm::responder::Invoker& invoker,
                      pldm::responder::platform::Handler* platformHandler);
 
     /** @brief return pointer to ConfigurationDiscoveryHandler for mctp endpoint
@@ -41,6 +45,11 @@ class OemMETA
   private:
     void registerOemEventHandler(
         pldm::responder::platform::Handler* platformHandler);
+
+    void registerOemHandler(
+        pldm::responder::Invoker& invoker,
+        std::unique_ptr<pldm::responder::oem_meta::FileIOHandler>
+            fileIOHandler);
 
     std::unique_ptr<oem_meta::OemEventManager> oemEventManager{};
 };
