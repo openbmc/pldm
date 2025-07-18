@@ -2,10 +2,9 @@
 
 #include <libpldm/base.h>
 
-#include <phosphor-logging/lg2.hpp>
+#include <common/types.hpp>
 
 #include <cstdint>
-#include <format>
 #include <map>
 #include <optional>
 #include <string>
@@ -24,30 +23,13 @@ struct MctpEndpoint
     std::optional<std::string> iana;
 };
 
-inline bool checkMetaIana(
-    pldm_tid_t tid, const std::map<std::string, MctpEndpoint>& configurations)
-{
-    static constexpr std::string MetaIANA = "0015A000";
+bool checkMetaIana(pldm_tid_t tid,
+                   const std::map<std::string, MctpEndpoint>& configurations);
 
-    for (const auto& [configDbusPath, mctpEndpoint] : configurations)
-    {
-        if (mctpEndpoint.EndpointId == tid)
-        {
-            if (mctpEndpoint.iana.has_value() &&
-                mctpEndpoint.iana.value() == MetaIANA)
-            {
-                return true;
-            }
-            else if (mctpEndpoint.iana.value() != MetaIANA)
-            {
-                lg2::error("WRONG IANA {IANA}", "IANA",
-                           mctpEndpoint.iana.value());
-                return false;
-            }
-        }
-    }
-    return false;
-}
+uint64_t getSlotNumberByTID(
+    const std::map<pldm::dbus::ObjectPath, pldm::oem_meta::MctpEndpoint>&
+        configurations,
+    pldm_tid_t tid);
 
 } // namespace oem_meta
 } // namespace pldm
