@@ -1,15 +1,21 @@
-
 #include "oem_meta.hpp"
 
 #include <libpldm/base.h>
 
+#include <utility>
+
 namespace pldm::oem_meta
 {
 
-OemMETA::OemMETA(pldm::responder::platform::Handler* platformHandler)
+OemMETA::OemMETA(pldm::responder::Invoker& invoker,
+                 pldm::responder::platform::Handler* platformHandler)
 {
     oemEventManager = std::make_unique<oem_meta::OemEventManager>();
     registerOemEventHandler(platformHandler);
+
+    auto fileIOHandler =
+        std::make_unique<pldm::responder::oem_meta::FileIOHandler>();
+    registerOemHandler(invoker, std::move(fileIOHandler));
 }
 
 void OemMETA::registerOemEventHandler(
@@ -22,6 +28,13 @@ void OemMETA::registerOemEventHandler(
             return this->oemEventManager->handleOemEvent(
                 request, payloadLength, formatVersion, tid, eventDataOffset);
         }});
+}
+
+void OemMETA::registerOemHandler(
+    pldm::responder::Invoker& invoker,
+    std::unique_ptr<pldm::responder::oem_meta::FileIOHandler> fileIOHandler)
+{
+    invoker.registerHandler(PLDM_OEM, std::move(fileIOHandler));
 }
 
 } // namespace pldm::oem_meta
