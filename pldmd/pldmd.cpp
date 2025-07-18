@@ -326,7 +326,8 @@ int main(int argc, char** argv)
 #endif
 
 #ifdef OEM_META
-    pldm::oem_meta::OemMETA oemMETA(&dbusHandler, platformHandler.get());
+    pldm::oem_meta::OemMETA oemMETA(&dbusHandler, invoker,
+                                    platformHandler.get());
 #endif
 
 #ifdef OEM_IBM
