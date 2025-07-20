@@ -99,12 +99,14 @@ class Manager :
      * enabling support for Redfish Device Enablement operations.
      *
      * @param[in] bus           Reference to the system D-Bus connection.
+     * @param[in] event         pldmd sd_event loop
      * @param[in] instanceIdDb  Pointer to the instance ID database used for
      *                          PLDM message tracking.
      * @param[in] handler       Pointer to the PLDM request handler for sending
      *                          and receiving messages.
      */
-    Manager(sdbusplus::bus::bus& bus, pldm::InstanceIdDb* instanceIdDb,
+    Manager(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
+            pldm::InstanceIdDb* instanceIdDb,
             pldm::requester::Handler<pldm::requester::Request>* handler);
 
     /**
@@ -277,6 +279,7 @@ class Manager :
     pldm::InstanceIdDb* instanceIdDb_ = nullptr;
     pldm::requester::Handler<pldm::requester::Request>* handler_ = nullptr;
     sdbusplus::bus::bus& bus_;
+    sdeventplus::Event& event_;
     std::unordered_map<eid, DeviceContext> eidMap_;
     std::unordered_map<eid, std::unique_ptr<sdbusplus::bus::match_t>>
         signalMatches_;

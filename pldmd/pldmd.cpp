@@ -341,7 +341,8 @@ int main(int argc, char** argv)
 #endif
 
     std::unique_ptr<pldm::rde::Manager> rdeManager =
-        std::make_unique<pldm::rde::Manager>(bus, &instanceIdDb, &reqHandler);
+        std::make_unique<pldm::rde::Manager>(bus, event, &instanceIdDb,
+                                             &reqHandler);
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =

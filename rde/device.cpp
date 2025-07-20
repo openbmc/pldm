@@ -5,14 +5,14 @@
 
 namespace pldm::rde
 {
-Device::Device(sdbusplus::bus::bus& bus, const std::string& path,
-               pldm::InstanceIdDb* instanceIdDb,
+Device::Device(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
+               const std::string& path, pldm::InstanceIdDb* instanceIdDb,
                pldm::requester::Handler<pldm::requester::Request>* handler,
                const pldm::eid devEid, const pldm_tid_t tid,
                const pldm::UUID& uuid,
                const std::vector<std::vector<uint8_t>>& pdrPayloads) :
     EntryIfaces(bus, path.c_str()), instanceIdDb_(instanceIdDb),
-    handler_(handler), tid_(tid), pdrPayloads_(pdrPayloads),
+    handler_(handler), event_(event), tid_(tid), pdrPayloads_(pdrPayloads),
     currentState_(DeviceState::NotReady)
 {
     info(
@@ -42,19 +42,41 @@ void Device::refreshDeviceInfo()
 
         dictionaryManager_ =
             std::make_unique<pldm::rde::DictionaryManager>(deviceUUID());
+
+        std::shared_ptr<Device> self;
+        try
+        {
+            self = shared_from_this();
+        }
+        catch (const std::bad_weak_ptr& e)
+        {
+            error("Device shared_from_this() failed: Msg={MSG}", "MSG",
+                  e.what());
+            return;
+        }
+
+        info("RDE: Discovery sequence started for EID={EID}, use_count={COUNT}",
+             "EID", static_cast<int>(eid()), "COUNT", self.use_count());
+
+        discovSession_ = std::make_unique<DiscoverySession>(self);
+        discovSession_->doNegotiateRedfish();
+    }
+    catch (const sdbusplus::exception::SdBusError& e)
+    {
+        error("refreshDeviceInfo D-Bus error: Msg={MSG}", "MSG", e.what());
+        return;
     }
     catch (const std::exception& e)
     {
-        error("Failed to initialize the objects: Msg{MSG}", "MSG", e.what());
+        error("refreshDeviceInfo: Failed : Msg={MSG}", "MSG", e.what());
+        return;
     }
 
-    info("Discovery is in progress");
-
-    // Placeholder for actual refresh logic
     std::map<std::string,
              std::variant<std::string, uint16_t, uint32_t, uint8_t>>
         changed;
-    changed["Name"] = this->name();
+    changed["Name"] = name(); // Simplified access
+
     deviceUpdated();
 }
 

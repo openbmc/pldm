@@ -15,12 +15,13 @@ PHOSPHOR_LOG2_USING;
 
 namespace pldm::rde
 {
-Manager::Manager(sdbusplus::bus::bus& bus, pldm::InstanceIdDb* instanceIdDb,
+Manager::Manager(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
+                 pldm::InstanceIdDb* instanceIdDb,
                  pldm::requester::Handler<pldm::requester::Request>* handler) :
     sdbusplus::server::object::object<
         sdbusplus::xyz::openbmc_project::RDE::server::Manager>(
         bus, std::string(RDEManagerObjectPath).c_str()),
-    instanceIdDb_(instanceIdDb), handler_(handler), bus_(bus)
+    instanceIdDb_(instanceIdDb), handler_(handler), bus_(bus), event_(event)
 {}
 
 void Manager::handleMctpEndpoints(const std::vector<MctpInfo>& mctpInfos)
@@ -83,8 +84,9 @@ void Manager::createDeviceDbusObject(
     std::string friendlyName = "Device_" + std::to_string(devEID);
 
     // Create base device
-    auto devicePtr = std::make_shared<Device>(
-        bus_, path, instanceIdDb_, handler_, devEID, tid, devUUID, pdrPayloads);
+    auto devicePtr =
+        std::make_shared<Device>(bus_, event_, path, instanceIdDb_, handler_,
+                                 devEID, tid, devUUID, pdrPayloads);
     bus_.request_name(DeviceServiceName.data());
 
     DeviceContext context;

@@ -19,7 +19,13 @@ DictionaryManager::DictionaryManager(std::string deviceUUID) :
 {
     std::filesystem::create_directories(dictRootPath);
     buildAnnotationDictionary(dictRootPath / std::string(annotationFileName));
-    loadAllDictionariesFromRoot();
+
+    const std::string triggerFile = "/tmp/.enable_dict_bootstrap";
+    if (std::filesystem::exists(triggerFile))
+    {
+        info("RDE: loading dictionaries from persistent store");
+        loadAllDictionariesFromRoot(); // Load from persistent location
+    }
 }
 
 Dictionary& DictionaryManager::getOrCreate(uint32_t resourceId,
@@ -40,6 +46,8 @@ void DictionaryManager::addChunk(uint32_t resourceId, uint8_t schemaClass,
                                  std::span<const uint8_t> payload,
                                  bool hasChecksum, bool isFinalChunk)
 {
+    info("RDE: DictionaryManager addChunk Enter");
+
     if (payload.empty())
     {
         throw std::invalid_argument("Payload chunk is empty.");
@@ -65,6 +73,7 @@ void DictionaryManager::addChunk(uint32_t resourceId, uint8_t schemaClass,
                 std::string("Failed to persist dictionary: ") + e.what());
         }
     }
+    info("RDE: DictionaryManager addChunk Exit");
 }
 
 void DictionaryManager::reset(uint32_t resourceId, uint8_t schemaClass)
