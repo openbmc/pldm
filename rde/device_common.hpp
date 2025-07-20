@@ -169,7 +169,7 @@ struct Metadata
     DeviceCapabilities devCapabilities{};
     uint32_t devConfigSignature = 0;
     std::string devProviderName;
-    uint32_t mcMaxTransferChunkSizeBytes = 64;
+    uint32_t mcMaxTransferChunkSizeBytes = 1024;
     uint32_t devMaxTransferChunkSizeBytes = 0;
     std::string etag;
     std::string protocolVersion = "1.0";
