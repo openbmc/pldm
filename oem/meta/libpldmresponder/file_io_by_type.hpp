@@ -17,7 +17,8 @@ enum class FileIOType : uint8_t
     POWER_CONTROL = 0x02,
     HTTP_BOOT = 0x03,
     APML_ALERT = 0x04,
-    EVENT_LOG = 0x05
+    EVENT_LOG = 0x05,
+    CRASH_DUMP = 0x06
 };
 
 /**
