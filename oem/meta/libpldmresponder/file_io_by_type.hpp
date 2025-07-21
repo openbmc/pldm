@@ -25,7 +25,8 @@ enum class FileIOType : uint8_t
     BIOS_VERSION = 0x01,
     POWER_CONTROL = 0x02,
     HTTP_BOOT = 0x03,
-    APML_ALERT = 0x04
+    APML_ALERT = 0x04,
+    EVENT_LOG = 0x05
 };
 
 class FileHandler

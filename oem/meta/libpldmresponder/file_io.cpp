@@ -2,6 +2,7 @@
 
 #include "file_io_type_apml_alert.hpp"
 #include "file_io_type_bios_version.hpp"
+#include "file_io_type_event_log.hpp"
 #include "file_io_type_http_boot.hpp"
 #include "file_io_type_post_code.hpp"
 #include "file_io_type_power_control.hpp"
@@ -33,6 +34,9 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(
             return std::make_unique<HttpBootHandler>();
         case FileIOType::APML_ALERT:
             return std::make_unique<APMLAlertHandler>(messageTid);
+        case FileIOType::EVENT_LOG:
+            return std::make_unique<EventLogHandler>(
+                messageTid, configurationDiscovery->getConfigurations());
         default:
             error("Get invalid file io type {FILEIOTYPE}", "FILEIOTYPE",
                   fileIOType);
