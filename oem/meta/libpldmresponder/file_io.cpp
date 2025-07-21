@@ -1,5 +1,6 @@
 #include "file_io.hpp"
 
+#include "file_io_type_bios_version.hpp"
 #include "file_io_type_post_code.hpp"
 
 #include <libpldm/oem/meta/file_io.h>
@@ -15,6 +16,9 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(
     {
         case FileIOType::POST_CODE:
             return std::make_unique<PostCodeHandler>(messageTid);
+        case FileIOType::BIOS_VERSION:
+            return std::make_unique<BIOSVersionHandler>(messageTid,
+                                                        dBusHandler);
         default:
             error("Get invalid file io type {FILEIOTYPE}", "FILEIOTYPE",
                   fileIOType);
