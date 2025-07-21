@@ -12,7 +12,8 @@ using message = std::span<uint8_t>;
 
 enum class FileIOType : uint8_t
 {
-    POST_CODE = 0x00
+    POST_CODE = 0x00,
+    BIOS_VERSION = 0x01
 };
 
 /**
