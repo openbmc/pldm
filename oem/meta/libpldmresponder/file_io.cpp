@@ -2,6 +2,7 @@
 
 #include "file_io_type_bios_version.hpp"
 #include "file_io_type_post_code.hpp"
+#include "file_io_type_power_control.hpp"
 
 #include <libpldm/oem/meta/file_io.h>
 
@@ -19,6 +20,9 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(
         case FileIOType::BIOS_VERSION:
             return std::make_unique<BIOSVersionHandler>(messageTid,
                                                         dBusHandler);
+        case FileIOType::POWER_CONTROL:
+            return std::make_unique<PowerControlHandler>(messageTid,
+                                                         dBusHandler);
         default:
             error("Get invalid file io type {FILEIOTYPE}", "FILEIOTYPE",
                   fileIOType);
