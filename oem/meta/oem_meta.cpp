@@ -7,14 +7,15 @@
 namespace pldm::oem_meta
 {
 
-OemMETA::OemMETA(pldm::responder::Invoker& invoker,
+OemMETA::OemMETA(const pldm::utils::DBusHandler* dbusHandler,
+                 pldm::responder::Invoker& invoker,
                  pldm::responder::platform::Handler* platformHandler)
 {
     oemEventManager = std::make_unique<oem_meta::OemEventManager>();
     registerOemEventHandler(platformHandler);
 
     auto fileIOHandler =
-        std::make_unique<pldm::responder::oem_meta::FileIOHandler>();
+        std::make_unique<pldm::responder::oem_meta::FileIOHandler>(dbusHandler);
     registerOemHandler(invoker, std::move(fileIOHandler));
 }
 

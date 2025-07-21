@@ -26,10 +26,12 @@ class OemMETA
 
   public:
     /** @brief Constucts OemMETA object
+     *  @param[in] dBusIntf - D-Bus handler
      *  @param[in] invoker - invoker handler
      *  @param[in] platformHandler - platformHandler handler
      */
-    explicit OemMETA(pldm::responder::Invoker& invoker,
+    explicit OemMETA(const pldm::utils::DBusHandler* dbusHandler,
+                     pldm::responder::Invoker& invoker,
                      pldm::responder::platform::Handler* platformHandler);
 
   private:
