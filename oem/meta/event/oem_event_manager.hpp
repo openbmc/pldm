@@ -7,8 +7,12 @@
 
 #include <libpldm/base.h>
 
+#include <span>
+
 namespace pldm::oem_meta
 {
+
+using eventMsg = std::span<const uint8_t>;
 
 class OemEventManager
 {
@@ -36,6 +40,9 @@ class OemEventManager
                        size_t eventDataOffset) const;
 
   private:
+    // @brief The event message length with timestamp.
+    size_t eventMsgLengthWithTimestamp = 20;
+
     /** @brief Process an OEM Meta event.
      *
      *  @param[in] tid - The PLDM terminal ID.
@@ -52,15 +59,16 @@ class OemEventManager
      *  @param[in] eventData - A pointer to the event data.
      *  @param[out] message - The resulting event message.
      */
-    void handleSystemEvent(const uint8_t* eventData,
+    void handleSystemEvent(const eventMsg& eventData,
                            std::string& message) const;
 
     /** @brief Handle a unified BIOS event.
      *
+     *  @param[in] tid - The PLDM terminal ID.
      *  @param[in] eventData - A pointer to the event data.
      *  @param[out] message - The resulting event message.
      */
-    void handleUnifiedBIOSEvent(const uint8_t* eventData,
+    void handleUnifiedBIOSEvent(pldm_tid_t tid, const eventMsg& eventData,
                                 std::string& message) const;
 
     /** @brief Handle a memory error event.
@@ -70,7 +78,7 @@ class OemEventManager
      *  @param[in] dimmInfo - Information about the DIMM.
      *  @param[in] generalInfo - General information about the event.
      */
-    void handleMemoryError(const uint8_t* eventData, std::string& message,
+    void handleMemoryError(const eventMsg& eventData, std::string& message,
                            const DimmInfo& dimmInfo, uint8_t generalInfo) const;
 
     /** @brief Handle a system POST event.
@@ -79,7 +87,7 @@ class OemEventManager
      *  @param[out] message - The resulting event message.
      *  @param[in] generalInfo - General information about the event.
      */
-    void handleSystemPostEvent(const uint8_t* eventData, std::string& message,
+    void handleSystemPostEvent(const eventMsg& eventData, std::string& message,
                                uint8_t generalInfo) const;
 
     /** @brief Get the DIMM device name.
@@ -89,7 +97,7 @@ class OemEventManager
      *
      *  @return The DIMM device name.
      */
-    std::string getDimmDeviceName(const uint8_t* eventData, int bdfIdx) const
+    std::string getDimmDeviceName(const eventMsg& eventData, int bdfIdx) const
     {
         std::string dimmDevName = "";
         for (size_t i = 0; i < cxlBdfMap.size(); i++)
