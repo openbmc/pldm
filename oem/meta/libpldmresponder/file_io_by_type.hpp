@@ -21,7 +21,8 @@ constexpr auto decodeDataMaxLength = 240;
 
 enum class FileIOType : uint8_t
 {
-    POST_CODE = 0x00
+    POST_CODE = 0x00,
+    BIOS_VERSION = 0x01
 };
 
 class FileHandler
