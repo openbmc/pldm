@@ -15,21 +15,26 @@ namespace pldm
 namespace oem_meta
 {
 
+std::map<std::pair<pldm_tid_t, UnifiedError>, uint32_t>
+    receivedEventMsgTimeStamp;
+
 int OemEventManager::processOemMetaEvent(
     pldm_tid_t tid, const uint8_t* eventData, size_t eventDataSize) const
 {
+    auto data = std::span(eventData, eventDataSize);
+
     RecordType recordType = static_cast<RecordType>(eventData[0]);
     std::string errorLog;
     switch (recordType)
     {
         case RecordType::SYSTEM_EVENT_RECORD:
         {
-            handleSystemEvent(eventData, errorLog);
+            handleSystemEvent(data, errorLog);
             break;
         }
         case RecordType::UNIFIED_BIOS_SEL:
         {
-            handleUnifiedBIOSEvent(eventData, errorLog);
+            handleUnifiedBIOSEvent(tid, data, errorLog);
             break;
         }
         default:
@@ -83,7 +88,7 @@ int OemEventManager::handleOemEvent(
     return PLDM_SUCCESS;
 }
 
-void OemEventManager::handleSystemEvent(const uint8_t* eventData,
+void OemEventManager::handleSystemEvent(const eventMsg& eventData,
                                         std::string& errorLog) const
 {
     errorLog = "Standard (0x02), ";
@@ -227,10 +232,39 @@ void OemEventManager::handleSystemEvent(const uint8_t* eventData,
     }
 }
 
-void OemEventManager::handleUnifiedBIOSEvent(const uint8_t* eventData,
-                                             std::string& errorLog) const
+void OemEventManager::handleUnifiedBIOSEvent(
+    pldm_tid_t tid, const eventMsg& eventData, std::string& errorLog) const
 {
     errorLog = "Meta Unified SEL (0xFB), ";
+
+    if (eventData.size() == eventMsgLengthWithTimestamp)
+    {
+        // Check whether the event is a retry event based on the timestamp
+        // recorded by the BIC. This works as long as each event type is sent by
+        // only one thread on the BIC, i.e., no race condition occurs for the
+        // same event type.
+        uint32_t eventTimeStamp = (eventData[16] << 12) + (eventData[17] << 8) +
+                                  (eventData[18] << 4) + eventData[19];
+        std::pair<pldm_tid_t, UnifiedError> eventKey =
+            std::make_pair(tid, static_cast<UnifiedError>(0xF & eventData[1]));
+        lg2::info(
+            "oem event msg: detected retry event, type {TYPE}, timestamp {TIMEST}",
+            "TYPE", 0xF & eventData[1], "TIMEST", eventTimeStamp);
+        if (receivedEventMsgTimeStamp.count(eventKey) &&
+            receivedEventMsgTimeStamp[eventKey] == eventTimeStamp)
+        {
+            lg2::info(
+                "oem event msg: TID {TID}: Event time stamp {EVTT} skip retry event",
+                "TID", tid, "EVTT", eventTimeStamp);
+            return;
+        }
+        receivedEventMsgTimeStamp[eventKey] = eventTimeStamp;
+    }
+    else
+    {
+        lg2::info("oem event msg: not handle retry event, event len {LEN}",
+                  "LEN", eventData.size());
+    }
 
     DimmInfo dimmInfo = {
         static_cast<uint8_t>((eventData[6] >> 4) & 0x03), // Sled
@@ -562,7 +596,7 @@ void OemEventManager::handleUnifiedBIOSEvent(const uint8_t* eventData,
 }
 
 void OemEventManager::handleMemoryError(
-    const uint8_t* eventData, std::string& errorLog, const DimmInfo& dimmInfo,
+    const eventMsg& eventData, std::string& errorLog, const DimmInfo& dimmInfo,
     uint8_t generalInfo) const
 {
     std::string dimmLocation, dimm;
@@ -611,7 +645,7 @@ void OemEventManager::handleMemoryError(
 }
 
 void OemEventManager::handleSystemPostEvent(
-    const uint8_t* eventData, std::string& errorLog, uint8_t generalInfo) const
+    const eventMsg& eventData, std::string& errorLog, uint8_t generalInfo) const
 {
     uint8_t certEventIdx = (eventData[10] < certEvent.size())
                                ? eventData[10]
