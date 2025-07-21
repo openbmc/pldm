@@ -16,7 +16,15 @@ namespace pldm::responder::oem_meta
 class FileIOHandler : public CmdHandler
 {
   public:
-    FileIOHandler()
+    FileIOHandler() = delete;
+    FileIOHandler(const FileIOHandler&) = delete;
+    FileIOHandler(FileIOHandler&&) = delete;
+    FileIOHandler& operator=(const FileIOHandler&) = delete;
+    FileIOHandler& operator=(FileIOHandler&&) = delete;
+    virtual ~FileIOHandler() = default;
+
+    explicit FileIOHandler(const pldm::utils::DBusHandler* dBusHandler) :
+        dBusHandler(dBusHandler)
     {
         handlers.emplace(
             PLDM_OEM_META_FILE_IO_CMD_WRITE_FILE,
@@ -31,12 +39,6 @@ class FileIOHandler : public CmdHandler
                 return this->readFileIO(tid, request, payloadLength);
             });
     }
-
-    FileIOHandler(const FileIOHandler&) = delete;
-    FileIOHandler(FileIOHandler&&) = delete;
-    FileIOHandler& operator=(const FileIOHandler&) = delete;
-    FileIOHandler& operator=(FileIOHandler&&) = delete;
-    virtual ~FileIOHandler() = default;
 
   private:
     /** @brief Handler for writeFileIO command
@@ -63,6 +65,8 @@ class FileIOHandler : public CmdHandler
 
     std::unique_ptr<FileHandler> getHandlerByType(pldm_tid_t tid,
                                                   FileIOType fileIOType);
+
+    const pldm::utils::DBusHandler* dBusHandler;
 };
 
 } // namespace pldm::responder::oem_meta
