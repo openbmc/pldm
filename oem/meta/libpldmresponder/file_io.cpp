@@ -1,6 +1,7 @@
 #include "file_io.hpp"
 
 #include "file_io_type_bios_version.hpp"
+#include "file_io_type_http_boot.hpp"
 #include "file_io_type_post_code.hpp"
 #include "file_io_type_power_control.hpp"
 
@@ -27,6 +28,8 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(
             return std::make_unique<PowerControlHandler>(
                 messageTid, configurationDiscovery->getConfigurations(),
                 dBusHandler);
+        case FileIOType::HTTP_BOOT:
+            return std::make_unique<HttpBootHandler>();
         default:
             error("Get invalid file io type {FILEIOTYPE}", "FILEIOTYPE",
                   fileIOType);
