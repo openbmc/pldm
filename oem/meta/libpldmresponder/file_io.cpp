@@ -1,5 +1,7 @@
 #include "file_io.hpp"
 
+#include "file_io_type_post_code.hpp"
+
 #include <libpldm/oem/meta/file_io.h>
 
 #include <filesystem>
@@ -11,6 +13,9 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(
 {
     switch (fileIOType)
     {
+        case FileIOType::POST_CODE:
+            return std::make_unique<PostCodeHandler>(
+                messageTid, configurationDiscovery->getConfigurations());
         default:
             error("Get invalid file io type {FILEIOTYPE}", "FILEIOTYPE",
                   fileIOType);
