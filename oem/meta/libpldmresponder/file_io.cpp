@@ -2,6 +2,7 @@
 
 #include "file_io_type_bios_version.hpp"
 #include "file_io_type_post_code.hpp"
+#include "file_io_type_power_control.hpp"
 
 #include <libpldm/oem/meta/file_io.h>
 
@@ -20,6 +21,10 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(
                 messageTid, configurationDiscovery->getConfigurations());
         case FileIOType::BIOS_VERSION:
             return std::make_unique<BIOSVersionHandler>(
+                messageTid, configurationDiscovery->getConfigurations(),
+                dBusHandler);
+        case FileIOType::POWER_CONTROL:
+            return std::make_unique<PowerControlHandler>(
                 messageTid, configurationDiscovery->getConfigurations(),
                 dBusHandler);
         default:
