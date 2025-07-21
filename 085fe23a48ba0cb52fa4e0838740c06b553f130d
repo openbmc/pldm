@@ -16,6 +16,24 @@
       "message": "A device can have multiple component image as per T5 spec. And each component image for a single device should be transferred one after the other as per spec. The original PLDM code with inotify update flow is handling it correctly. But update flow breaks when we implement StartUpdate on each component with the proposed solution.",
       "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "706ade56_d4c7750f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 46
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-21T07:16:47Z",
+      "side": 1,
+      "message": "I think the upstream code update design which requires StartUpdate to be implemented by each SW component breaks for PLDM T5. PLDM T5 requires both package access and device access to determine component ordering. To do such a think pldmd should implement a single StartUpdate.",
+      "parentUuid": "d248897b_5a4f4939",
+      "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
