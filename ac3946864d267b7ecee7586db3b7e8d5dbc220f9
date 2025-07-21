@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca2ec821_6d7056ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-21T05:23:43Z",
+      "side": 1,
+      "message": "PLDM OEM META commits need to be merged together.",
+      "revId": "ac3946864d267b7ecee7586db3b7e8d5dbc220f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
