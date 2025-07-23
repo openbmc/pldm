@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2dbbf89_383d8e75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-23T03:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a520b5a3_04e5b4c1",
+      "revId": "c5ee74e988288dceb3c2bc3ec47c1e7cb685ad4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29cdcceb_913f7863",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbdee7ca_c30215df",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-23T03:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29cdcceb_913f7863",
+      "revId": "c5ee74e988288dceb3c2bc3ec47c1e7cb685ad4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca38908c_5d1f8aed",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-07-22T17:35:17Z",
       "side": 1,
       "message": "Change name from handleUnifiedMemoryEvent to handleUnifiedBIOSEvent. This is not a memory event.",
+      "revId": "c5ee74e988288dceb3c2bc3ec47c1e7cb685ad4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c38cd2da_41d890a4",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-23T03:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca38908c_5d1f8aed",
       "revId": "c5ee74e988288dceb3c2bc3ec47c1e7cb685ad4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
