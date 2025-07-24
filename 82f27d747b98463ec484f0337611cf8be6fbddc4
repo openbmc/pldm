@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa87fee6_f06eb356",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 50
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-24T10:44:04Z",
+      "side": 1,
+      "message": "I believe this issue is still unresolved. Since we\u0027re currently loading the entire image into memory and also maintaining a copy in tmpfs temporarily, this results in a 2x drop in available memory, which should be avoided.\nWe can have a follow-up patch to fix this issue",
+      "parentUuid": "c98df4b8_80dce596",
+      "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a61eb029_8985d84e",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 50
