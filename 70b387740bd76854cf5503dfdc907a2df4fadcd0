@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2684d80d_a3143d1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-07-24T08:35:56Z",
+      "side": 1,
+      "message": "Made three changes:\n\n- Replaced the type representing TID from ```uint8_t``` to ```pldm_tid_t```\n- Replaced the type representing file I/O type from ```uint8_t``` to ```FileIOType``` in function parameters\n- Added ```getSlotNumberByTID``` function for handlers to retrieve the slot number from D-Bus",
+      "revId": "70b387740bd76854cf5503dfdc907a2df4fadcd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
