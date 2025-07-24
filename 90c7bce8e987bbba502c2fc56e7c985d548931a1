@@ -1,0 +1,220 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4e1ee20_f9f37ef2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "This doesn\u0027t say much. Please add details per commit guidelines.",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec1bea03_6aadcf18",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Where is this size coming from? Look for patterns in other repos (bmc-code-mgmt) that deal with image files.",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f209b964_4c270ec3",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Why do you need to write to another file?",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a0e665_af98d62f",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "You will have to dup the fd.",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23329d84_6d5947b4",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "All of this has to be done in an async way",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf1d178b_41c17f62",
+        "filename": "fw-update/activation.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Please rebase this patch.",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e3f14f9_75949598",
+        "filename": "fw-update/activation.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Don\u0027t think we should put this under Activation (as that is post update). I would recommend a new file.",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "879aee49_90fd8941",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Why do we need to do this?",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc63572_404cca7b",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Can\u0027t be doing this in all the failure paths like this, need something better.",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 9
+      },
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbf1c06c_0fd30720",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Should throw D-Bus exceptions instread of returning empty strings.",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab145a1b_688cb0a3",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "Why is this returning a string? And the doc doesn\u0027t match.",
+      "range": {
+        "startLine": 78,
+        "startChar": 4,
+        "endLine": 78,
+        "endChar": 15
+      },
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46740bd4_fab7adde",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-24T14:14:59Z",
+      "side": 1,
+      "message": "We should retain inotify mechanism with a build flag option",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
