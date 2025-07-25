@@ -52,10 +52,10 @@ class DictionaryManager
      * Initializes the dictionary manager with a device UUID and ensures that
      * the associated persistence directory exists on the filesystem.
      *
-     * @param[in] deviceUUID Unique identifier string for the device whose
+     * @param[in] uuid Unique identifier string for the device whose
      * dictionaries are managed by this instance.
      */
-    explicit DictionaryManager(std::string deviceUUID);
+    explicit DictionaryManager(std::string uuid);
 
     DictionaryManager(const DictionaryManager&) = default;
     DictionaryManager(DictionaryManager&&) = default;
