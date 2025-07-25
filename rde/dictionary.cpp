@@ -1,10 +1,15 @@
 #include "dictionary.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <filesystem>
 #include <fstream>
 
+PHOSPHOR_LOG2_USING;
+
 namespace pldm::rde
 {
+
 Dictionary::Dictionary(uint32_t resourceId, uint8_t schemaClass,
                        const std::string& deviceUUID,
                        const std::string& basePath) :
@@ -15,18 +20,22 @@ Dictionary::Dictionary(uint32_t resourceId, uint8_t schemaClass,
 bool Dictionary::addToDictionaryBytes(std::span<const uint8_t> payload,
                                       bool hasChecksum)
 {
-    if (hasChecksum && !payload.empty())
+    size_t actualPayloadSize = payload.size();
+    info("RDE: addToDictionaryBytespayloadSize={SIZE}, hasChecksum={CHECKSUM}",
+         "SIZE", actualPayloadSize, "CHECKSUM", hasChecksum);
+
+    if (hasChecksum && actualPayloadSize >= sizeof(uint32_t))
     {
-        // Remove the last byte (checksum)
-        dictionary.insert(dictionary.end(), payload.begin(), payload.end() - 1);
+        actualPayloadSize -= sizeof(uint32_t); // trim off checksum
     }
-    else
-    {
-        dictionary.insert(dictionary.end(), payload.begin(), payload.end());
-    }
+    dictionary.insert(dictionary.end(), payload.begin(),
+                      payload.begin() + actualPayloadSize);
+
+    info("RDE: addToDictionaryBytespayloadSize={SIZE}, hasChecksum={CHECKSUM}",
+         "SIZE", actualPayloadSize, "CHECKSUM", hasChecksum);
+
     return true;
 }
-
 uint32_t Dictionary::getResourceId() const
 {
     return resourceId;
@@ -56,33 +65,51 @@ void Dictionary::save() const
 {
     std::ofstream outFile(persistencePath, std::ios::binary);
     if (!outFile)
+    {
+        error("RDE: Failed to open file for saving dictionary at path={PATH}",
+              "PATH", persistencePath);
         return;
+    }
 
-    outFile.write(reinterpret_cast<const char*>(&resourceId),
-                  sizeof(resourceId));
-    outFile.write(reinterpret_cast<const char*>(&schemaClass),
-                  sizeof(schemaClass));
-    outFile.write(reinterpret_cast<const char*>(&complete), sizeof(complete));
-
-    uint32_t size = dictionary.size();
-    outFile.write(reinterpret_cast<const char*>(&size), sizeof(size));
-    outFile.write(reinterpret_cast<const char*>(dictionary.data()), size);
+    outFile.write(reinterpret_cast<const char*>(dictionary.data()),
+                  dictionary.size());
+    outFile.flush(); // Ensure all data is written
 }
 
 void Dictionary::load()
 {
-    std::ifstream inFile(persistencePath, std::ios::binary);
+    std::ifstream inFile(persistencePath, std::ios::binary | std::ios::ate);
     if (!inFile)
+    {
+        error("RDE: Failed to open file for loading dictionary at path={PATH}",
+              "PATH", persistencePath);
         return;
+    }
 
-    inFile.read(reinterpret_cast<char*>(&resourceId), sizeof(resourceId));
-    inFile.read(reinterpret_cast<char*>(&schemaClass), sizeof(schemaClass));
-    inFile.read(reinterpret_cast<char*>(&complete), sizeof(complete));
+    std::streamsize size = inFile.tellg();
+    if (size <= 0)
+    {
+        error("RDE: Invalid dictionary size while loading (size={SIZE})",
+              "SIZE", static_cast<int>(size));
+        return;
+    }
 
-    uint32_t size = 0;
-    inFile.read(reinterpret_cast<char*>(&size), sizeof(size));
-    dictionary.resize(size);
-    inFile.read(reinterpret_cast<char*>(dictionary.data()), size);
+    inFile.seekg(0);
+    std::vector<uint8_t> temp(static_cast<size_t>(size));
+    inFile.read(reinterpret_cast<char*>(temp.data()), size);
+    std::streamsize bytesRead = inFile.gcount();
+
+    if (bytesRead == size)
+    {
+        dictionary = std::move(temp);
+    }
+    else
+    {
+        error("RDE: Mismatch in read size. Expected={EXPECTED} Actual={ACTUAL}",
+              "EXPECTED", static_cast<int>(size), "ACTUAL",
+              static_cast<int>(bytesRead));
+        dictionary.clear(); // Optional safeguard
+    }
 }
 
 void Dictionary::reset()

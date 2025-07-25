@@ -13,8 +13,8 @@ PHOSPHOR_LOG2_USING;
 namespace pldm::rde
 {
 
-DictionaryManager::DictionaryManager(std::string deviceUUID) :
-    deviceUUID(std::move(deviceUUID)),
+DictionaryManager::DictionaryManager(std::string uuid) :
+    deviceUUID(std::move(uuid)),
     dictRootPath(std::string(baseDictionaryRoot) + "/" + deviceUUID)
 {
     std::filesystem::create_directories(dictRootPath);
