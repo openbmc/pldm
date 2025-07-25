@@ -34,8 +34,8 @@ void MultipartReceiver::sendReceiveRequest(uint32_t handle)
 {
     uint8_t instanceId = device_->getInstanceIdDb().next(eid_);
 
-    lg2::info("RDE: Allocated Instance ID={ID} for EID={EID}", "ID", instanceId,
-              "EID", eid_);
+    lg2::debug("RDE: Allocated Instance ID={ID} for EID={EID}", "ID",
+               instanceId, "EID", eid_);
 
     Request request(
         sizeof(pldm_msg_hdr) + PLDM_RDE_MULTIPART_RECEIVE_REQ_BYTES);
@@ -43,7 +43,7 @@ void MultipartReceiver::sendReceiveRequest(uint32_t handle)
 
     rde_op_id operationID{};
 
-    lg2::info(
+    lg2::debug(
         "RDE: Sending multipart request: EID={EID}, HANDLE={HANDLE}, INST_ID={ID}, OP={OP}",
         "EID", eid_, "HANDLE", handle, "ID", instanceId, "OP",
         transferOperation_);
@@ -79,6 +79,8 @@ void MultipartReceiver::sendReceiveRequest(uint32_t handle)
 
 void MultipartReceiver::handleReceiveResp(const pldm_msg* respMsg, size_t rxLen)
 {
+    lg2::info("RDE: :handleReceiveResp LEN={LEN}", "LEN", rxLen);
+
     if (!respMsg || rxLen == 0)
     {
         lg2::error("RDE: Empty multipart response: EID={EID}, LEN={LEN}", "EID",
@@ -88,8 +90,17 @@ void MultipartReceiver::handleReceiveResp(const pldm_msg* respMsg, size_t rxLen)
         return;
     }
 
-    uint8_t cc = 0, transferFlag = 0;
-    uint32_t nextHandle = 0, length = 0, checksum = 0;
+    constexpr size_t kFixedHeaderBytes =
+        PLDM_RDE_MULTIPART_RECEIVE_RESP_FIXED_BYTES;
+    if (rxLen <= kFixedHeaderBytes)
+    {
+        lg2::error(
+            "RDE: Response too short to contain payload: EID={EID}, LEN={LEN}",
+            "EID", eid_, "LEN", rxLen);
+        if (onFailure_)
+            onFailure_("RDE: Response length too small");
+        return;
+    }
 
     const auto& chunkMeta =
         device_->getMetadataField("devMaxTransferChunkSizeBytes");
@@ -97,16 +108,23 @@ void MultipartReceiver::handleReceiveResp(const pldm_msg* respMsg, size_t rxLen)
     if (!chunkSizePtr)
     {
         error(
-            "RDE:Invalid metadata: 'mcMaxTransferChunkSizeBytes' is missing or malformed. EID={EID}",
+            "RDE: Invalid metadata: 'mcMaxTransferChunkSizeBytes' is missing or malformed. EID={EID}",
             "EID", eid_);
         return;
     }
-    uint32_t maxSize = *chunkSizePtr;
-    std::vector<uint8_t> buffer(maxSize);
+
+    const uint32_t declaredMaxSize = *chunkSizePtr;
+    const size_t payloadBytes =
+        rxLen - PLDM_RDE_MULTIPART_RECEIVE_RESP_FIXED_BYTES;
+    std::vector<uint8_t> buffer(payloadBytes, 0);
+
+    uint8_t cc = 0, transferFlag = 0;
+    uint32_t nextHandle = 0, length = 0, checksum = 0;
 
     int rc = decode_rde_multipart_receive_resp(
         respMsg, rxLen, &cc, &transferFlag, &nextHandle, &length, buffer.data(),
         &checksum);
+
     if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
     {
         lg2::error("RDE: Chunk decode failed: RC={RC}, CC={CC}, EID={EID}",
@@ -116,30 +134,32 @@ void MultipartReceiver::handleReceiveResp(const pldm_msg* respMsg, size_t rxLen)
         return;
     }
 
-    if (length > maxSize)
+    if (length > buffer.size())
     {
         lg2::error(
-            "RDE: Chunk length overflow: LEN={LEN}, MAX={MAX}, EID={EID}",
-            "LEN", length, "MAX", maxSize, "EID", eid_);
+            "RDE: Declared chunk length overflow: LEN={LEN}, ALLOCATED={ALLOC}, EID={EID}",
+            "LEN", length, "ALLOC", buffer.size(), "EID", eid_);
         if (onFailure_)
-            onFailure_("RDE: Chunk length overflow");
+            onFailure_("RDE: Declared chunk length exceeds allocated buffer");
         return;
     }
 
     std::span<const uint8_t> payload(buffer.data(), length);
     const bool isFinalChunk = (nextHandle == 0);
 
-    MultipartRcvMeta meta{.schemaClass = 0, // can be extended later
-                          .hasChecksum = true,
+    MultipartRcvMeta meta{.schemaClass = 0,
+                          .hasChecksum = isFinalChunk,
                           .isFinalChunk = isFinalChunk,
                           .nextHandle = nextHandle,
                           .checksum = checksum,
                           .length = length};
 
-    lg2::info(
-        "RDE: Received multipart chunk: EID={EID}, HANDLE={HANDLE}, LEN={LEN}, FINAL={FINAL}",
-        "EID", eid_, "HANDLE", nextHandle, "LEN", length, "FINAL",
-        isFinalChunk);
+    // Logging decoded metadata (excluding payload)
+    lg2::debug(
+        "RDE: Multipart chunk decoded successfully: EID={EID}, CC={CC}, TF={TF},\
+        HANDLE={HANDLE}, LEN={LEN}, CHECKSUM={CHK}, FINAL={FINAL}, MAX_META={MAX}",
+        "EID", eid_, "CC", cc, "TF", transferFlag, "HANDLE", nextHandle, "LEN",
+        length, "CHK", checksum, "FINAL", isFinalChunk, "MAX", declaredMaxSize);
 
     if (onData_)
     {
