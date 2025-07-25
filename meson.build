@@ -264,6 +264,7 @@ executable(
     'rde/manager.cpp',
     'rde/multipart_recv.cpp',
     'rde/multipart_send.cpp',
+    'rde/operation_task.cpp',
     'rde/resource_registry.cpp',
     'rde/utils.cpp',
     oem_files,
