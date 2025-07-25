@@ -1,6 +1,7 @@
 #include "manager.hpp"
 
 #include "device.hpp"
+#include "device_common.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -100,7 +101,7 @@ void Manager::createDeviceDbusObject(
          "UUID", devUUID, "EID", static_cast<int>(devEID), "PATH", path, "NAME",
          friendlyName);
 
-    eidMap_[eid()] = std::move(context);
+    eidMap_[devEID] = std::move(context);
 
     devicePtr->refreshDeviceInfo();
 }
@@ -116,15 +117,47 @@ DeviceContext* Manager::getDeviceContext(eid devEID)
 }
 
 ObjectPath Manager::startRedfishOperation(
-    uint32_t /*operationID*/,
+    uint32_t operationID,
     sdbusplus::common::xyz::openbmc_project::rde::Common::OperationType
-    /*operationType*/,
-    std::string /*targetURI*/, std::string /*deviceUUID*/, uint8_t /*eid*/,
-    std::string /*payload*/, PayloadFormatType /*payloadFormat*/,
-    EncodingFormatType /*encodingFormat*/, std::string /*sessionId*/)
+        operationType,
+    std::string targetURI, std::string deviceUUID, uint8_t eid,
+    std::string payload, PayloadFormatType payloadFormat,
+    EncodingFormatType encodingFormat, std::string sessionId)
 {
-    // TODO: Implement Redfish operation logic
-    ObjectPath objPath{"/xyz/openbmc_project/RDE/OperationTask/1"};
+    info("RDE startRedfishOperation: UUID={UUID} EID={EID}", "UUID", deviceUUID,
+         "EID", static_cast<int>(eid));
+
+    auto it = eidMap_.find(eid);
+    if (it == eidMap_.end() || !it->second.devicePtr)
+    {
+        error("RDE: No valid device context found for EID={EID}", "EID",
+              static_cast<int>(eid));
+        return ObjectPath{};
+    }
+
+    debug("RDE: devicePtr use_count={COUNT} address={ADDR}", "COUNT",
+          it->second.devicePtr.use_count(), "ADDR",
+          static_cast<const void*>(it->second.devicePtr.get()));
+
+    // Build D-Bus object path
+    std::string taskPathStr =
+        "/xyz/openbmc_project/RDE/OperationTask/" + std::to_string(operationID);
+    ObjectPath objPath{taskPathStr};
+
+    // Create and register D-Bus OperationTask object
+    auto task = std::make_shared<OperationTask>(bus_, taskPathStr);
+    // task->emitInterfaceAdded();
+
+    taskMap_[operationID] = task;
+
+    // Construct minimal OperationInfo
+    OperationInfo opInitInfo{
+        operationID, operationType, targetURI,      deviceUUID, eid,
+        payload,     payloadFormat, encodingFormat, sessionId,  taskPathStr};
+
+    // Launch the Redfish operation
+    it->second.devicePtr->performRDEOperation(opInitInfo);
+
     return objPath;
 }
 
