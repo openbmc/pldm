@@ -12,8 +12,8 @@ Device::Device(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
                const pldm::UUID& uuid,
                const std::vector<std::vector<uint8_t>>& pdrPayloads) :
     EntryIfaces(bus, path.c_str()), instanceIdDb_(instanceIdDb),
-    handler_(handler), event_(event), tid_(tid), pdrPayloads_(pdrPayloads),
-    currentState_(DeviceState::NotReady)
+    handler_(handler), bus_(bus), event_(event), tid_(tid),
+    pdrPayloads_(pdrPayloads), currentState_(DeviceState::NotReady)
 {
     info(
         "RDE : device Object creating device UUID:{UUID} EID:{EID} Path:{PATH}",
@@ -55,8 +55,9 @@ void Device::refreshDeviceInfo()
             return;
         }
 
-        info("RDE: Discovery sequence started for EID={EID}, use_count={COUNT}",
-             "EID", static_cast<int>(eid()), "COUNT", self.use_count());
+        debug(
+            "RDE: Discovery sequence started for EID={EID}, use_count={COUNT}",
+            "EID", static_cast<int>(eid()), "COUNT", self.use_count());
 
         discovSession_ = std::make_unique<DiscoverySession>(self);
         discovSession_->doNegotiateRedfish();
@@ -78,6 +79,45 @@ void Device::refreshDeviceInfo()
     changed["Name"] = name(); // Simplified access
 
     deviceUpdated();
+}
+
+void Device::performRDEOperation(const OperationInfo& oipInfo)
+{
+    info("Operation Session Started");
+
+    std::shared_ptr<Device> self;
+    try
+    {
+        self = shared_from_this();
+        if (!self)
+        {
+            error("Device::shared_from_this() returned null shared_ptr");
+            return;
+        }
+    }
+    catch (const std::bad_weak_ptr& e)
+    {
+        error("Device shared_from_this() failed: Msg={MSG}", "MSG", e.what());
+        return;
+    }
+
+    try
+    {
+        opSession_ = std::make_unique<OperationSession>(self, oipInfo);
+        if (!opSession_)
+        {
+            error("OperationSession creation failed");
+            return;
+        }
+
+        info("Operation is in progress");
+        opSession_->doOperationInit();
+    }
+    catch (const std::exception& e)
+    {
+        error("OperationSession setup failed: Msg={MSG}", "MSG", e.what());
+        return;
+    }
 }
 
 Metadata& Device::getMetadata()
