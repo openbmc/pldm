@@ -185,6 +185,12 @@ if get_option('tests').allowed()
     endif
 endif
 
+libbej_dep = dependency(
+    'libbej',
+    fallback: ['libbej', 'libbej_dep'],
+    include_type: 'system',
+)
+
 libpldm_dep = dependency(
     'libpldm',
     fallback: ['libpldm', 'libpldm_dep'],
@@ -219,6 +225,7 @@ libpldmutils = declare_dependency(
 
 deps = [
     libpldm_dep,
+    libbej_dep,
     libpldmutils,
     nlohmann_json_dep,
     phosphor_dbus_interfaces,
@@ -264,6 +271,7 @@ executable(
     'rde/manager.cpp',
     'rde/multipart_recv.cpp',
     'rde/multipart_send.cpp',
+    'rde/operation_session.cpp',
     'rde/operation_task.cpp',
     'rde/resource_registry.cpp',
     'rde/utils.cpp',

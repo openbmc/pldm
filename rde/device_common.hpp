@@ -1,6 +1,11 @@
 #pragma once
 
+#include "xyz/openbmc_project/RDE/Common/common.hpp"
+#include "xyz/openbmc_project/RDE/Manager/server.hpp"
+
 #include <libpldm/pldm_types.h>
+
+#include <common/types.hpp>
 
 #include <cstdint>
 #include <string>
@@ -9,6 +14,27 @@
 
 namespace pldm::rde
 {
+
+using OperationType =
+    sdbusplus::common::xyz::openbmc_project::rde::Common::OperationType;
+using PayloadFormatType =
+    sdbusplus::xyz::openbmc_project::RDE::server::Manager::PayloadFormatType;
+using EncodingFormatType =
+    sdbusplus::xyz::openbmc_project::RDE::server::Manager::EncodingFormatType;
+
+struct OperationInfo
+{
+    uint32_t operationID;
+    OperationType operationType;
+    std::string targetURI;
+    pldm::UUID deviceUUID;
+    pldm::eid eid;
+    std::string payload;
+    PayloadFormatType payloadFormat;
+    EncodingFormatType encodingType;
+    std::string sessionId;
+    std::string opTaskPath; // D-Bus object path for OperationTask
+};
 
 /**
  * @enum DeviceState

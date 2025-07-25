@@ -3,11 +3,15 @@
 #include "device_common.hpp"
 #include "dictionary_manager.hpp"
 #include "discov_session.hpp"
+#include "operation_session.hpp"
 #include "resource_registry.hpp"
 #include "xyz/openbmc_project/Common/UUID/server.hpp"
+#include "xyz/openbmc_project/RDE/Common/common.hpp"
 #include "xyz/openbmc_project/RDE/Device/server.hpp"
+#include "xyz/openbmc_project/RDE/Manager/server.hpp"
 
 #include <libpldm/base.h>
+#include <libpldm/rde.h>
 
 #include <common/instance_id.hpp>
 #include <common/types.hpp>
@@ -76,6 +80,8 @@ class Device : public EntryIfaces, public std::enable_shared_from_this<Device>
      * device.
      */
     void refreshDeviceInfo() override;
+
+    void performRDEOperation(const OperationInfo& opInfo);
 
     /**
      * @brief Access the device metadata.
@@ -189,6 +195,16 @@ class Device : public EntryIfaces, public std::enable_shared_from_this<Device>
         return event_;
     }
 
+    /**
+     * @brief Get the D-Bus connection reference.
+     *
+     * @return Reference to the D-Bus connection.
+     */
+    inline sdbusplus::bus::bus& getBus()
+    {
+        return bus_;
+    }
+
   private:
     /**
      * @brief Constructs schema resource payload based on discovered resources.
@@ -208,6 +224,7 @@ class Device : public EntryIfaces, public std::enable_shared_from_this<Device>
     Metadata metaData_;
     pldm::InstanceIdDb* instanceIdDb_ = nullptr;
     pldm::requester::Handler<pldm::requester::Request>* handler_ = nullptr;
+    sdbusplus::bus::bus& bus_;
     sdeventplus::Event& event_;
     pldm_tid_t tid_;
     /** @brief  Redfish Resource PDR list blob **/
@@ -216,6 +233,7 @@ class Device : public EntryIfaces, public std::enable_shared_from_this<Device>
     std::unique_ptr<ResourceRegistry> resourceRegistry_;
     std::unique_ptr<pldm::rde::DictionaryManager> dictionaryManager_;
     std::unique_ptr<DiscoverySession> discovSession_;
+    std::unique_ptr<OperationSession> opSession_;
 };
 
 } // namespace pldm::rde
