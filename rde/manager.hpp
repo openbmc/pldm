@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operation_task.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "xyz/openbmc_project/RDE/Manager/server.hpp"
@@ -275,6 +276,23 @@ class Manager :
                                 pldm_tid_t tid,
                                 const PdrPayloadList& pdrPayloads);
 
+    /**
+     * @brief Retrieve the map of currently active OperationTask D-Bus objects.
+     *
+     * This method provides direct access to the internal task registry,
+     * where each Operation ID is mapped to its corresponding D-Bus object.
+     * These objects expose the Redfish operation status via the
+     * xyz.openbmc_project.RDE.OperationTask interface.
+     *
+     * @return Reference to the task map: operationID → OperationTask smart
+     * pointer.
+     */
+    const std::unordered_map<uint32_t, std::shared_ptr<OperationTaskIface>>&
+        getActiveTasks() const
+    {
+        return taskMap_;
+    }
+
   private:
     pldm::InstanceIdDb* instanceIdDb_ = nullptr;
     pldm::requester::Handler<pldm::requester::Request>* handler_ = nullptr;
@@ -283,6 +301,10 @@ class Manager :
     std::unordered_map<eid, DeviceContext> eidMap_;
     std::unordered_map<eid, std::unique_ptr<sdbusplus::bus::match_t>>
         signalMatches_;
+    // Registry of active OperationTask D-Bus objects.
+    std::unordered_map<uint32_t, // OperationID
+                       std::shared_ptr<OperationTaskIface>>
+        taskMap_;
 };
 
 } // namespace pldm::rde
