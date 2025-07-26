@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11032627_b1dd9581",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T14:12:34Z",
+      "side": 1,
+      "message": "Please add testing details.",
+      "revId": "ec81f3a41ca9cfe209ba0917c25b43b0ae979e82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42547a96_92af01ea",
+        "filename": "fw-update/device_dedicated_updater.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T14:12:34Z",
+      "side": 1,
+      "message": "No need to check ret?",
+      "revId": "ec81f3a41ca9cfe209ba0917c25b43b0ae979e82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b90b5a2_9b1a7ab0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T14:12:34Z",
+      "side": 1,
+      "message": "Can this go to a non-zero number and then back to 0?",
+      "revId": "ec81f3a41ca9cfe209ba0917c25b43b0ae979e82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdb823d2_16841b5e",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T14:12:34Z",
+      "side": 1,
+      "message": "No need to check ret?",
+      "revId": "ec81f3a41ca9cfe209ba0917c25b43b0ae979e82",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
