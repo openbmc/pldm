@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be28b7da_e39cfb27",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T13:44:05Z",
+      "side": 1,
+      "message": "Can you also state why EM config may not be available?",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b46c6730_076a8961",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T13:44:05Z",
+      "side": 1,
+      "message": "On what platform?",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ab8fdb_27da55a5",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T13:44:05Z",
+      "side": 1,
+      "message": "Doesn\u0027t getBoardPath handle this already?",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65d80dd3_60924301",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T13:44:05Z",
+      "side": 1,
+      "message": "Can we remove this log?",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "251764d2_6cc3128a",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T13:44:05Z",
+      "side": 1,
+      "message": "Can we remove this log? We will have the path on D-Bus.",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
