@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0e2c303_0b6937c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 64
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T11:27:03Z",
+      "side": 1,
+      "message": "Please add a testing section. What was tested/which platform/did you require any patches?",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b13ee023_525018eb",
+        "filename": "common/types.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T11:27:03Z",
+      "side": 1,
+      "message": "Do we really need such macros?\n\nCppCoreGuidelines discourage them for code text manipulation",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 74
+      },
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2de1085c_015a2f94",
+        "filename": "common/types.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T11:27:03Z",
+      "side": 1,
+      "message": "Why do we need a multimap?",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c762b32_1da6bb9e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T11:27:03Z",
+      "side": 1,
+      "message": "Has a patch been pushed for this?",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5a164f_e0ed7cdc",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T11:27:03Z",
+      "side": 1,
+      "message": "We should capture data for debug",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cdc8d44_407dc506",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T11:27:03Z",
+      "side": 1,
+      "message": "This and related code looks like new support being added for downstream descriptors rather than a reimpl. Should this be in its own commit?",
+      "range": {
+        "startLine": 46,
+        "startChar": 22,
+        "endLine": 46,
+        "endChar": 45
+      },
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba22b121_5e98bd21",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T11:27:03Z",
+      "side": 1,
+      "message": "Should we split this up into regulat and downstream device handling?",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
