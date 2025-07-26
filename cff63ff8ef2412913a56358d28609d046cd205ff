@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf0259c_7c26af8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 107
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T12:31:16Z",
+      "side": 1,
+      "message": "What has been tested?",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e35f3b49_3652b24c",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T12:31:16Z",
+      "side": 1,
+      "message": "Will each dedicated device update have a copy of the PLDM firmware package?",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc64a64_3a120772",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T12:31:16Z",
+      "side": 1,
+      "message": "Why does this need to be in each updater?",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca9e0eff_8e60d62f",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T12:31:16Z",
+      "side": 1,
+      "message": "Do these need to be shared pointers (in case they are involved in async flows)?",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "113ee841_12d244b9",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-07-26T12:31:16Z",
+      "side": 1,
+      "message": "Should we do this in a getter function or in the caller?",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
