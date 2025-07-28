@@ -1,0 +1,10 @@
+Code-Review+1: Amithash Prasad <amithash@meta.com>
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 28 Jul 2025 01:52:32 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/81860
+Comments-Total: 3
+Project: openbmc/pldm
+Branch: refs/heads/master
