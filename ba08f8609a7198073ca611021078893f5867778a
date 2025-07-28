@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c0b6b16_e5d7f631",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-28T18:14:34Z",
+      "side": 1,
+      "message": "Updated the commit message. Testing was done on B40.",
+      "parentUuid": "b46c6730_076a8961",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4ab8fdb_27da55a5",
