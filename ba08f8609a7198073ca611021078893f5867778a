@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcd60ed1_3dba617d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-28T08:51:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "be28b7da_e39cfb27",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b46c6730_076a8961",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "509c1538_1ef8444a",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-28T08:51:53Z",
+      "side": 1,
+      "message": "getBoardPath doesn\u0027t handle \"no Entity-Manager config\" scenario because it requires an inventory path as an input - which isn’t available if EM isn’t configured.\n\nWhile we could catch the exception from the dbus call, I think it’s unnecessary to make a dbus request in this situation.",
+      "parentUuid": "a4ab8fdb_27da55a5",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65d80dd3_60924301",
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f19eb5c_9a85febb",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-28T08:51:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "65d80dd3_60924301",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "251764d2_6cc3128a",
@@ -82,6 +136,24 @@
       "writtenOn": "2025-07-26T13:44:05Z",
       "side": 1,
       "message": "Can we remove this log? We will have the path on D-Bus.",
+      "revId": "ba08f8609a7198073ca611021078893f5867778a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f2412d0_929cd4a8",
+        "filename": "fw-update/software_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-07-28T08:51:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "251764d2_6cc3128a",
       "revId": "ba08f8609a7198073ca611021078893f5867778a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
