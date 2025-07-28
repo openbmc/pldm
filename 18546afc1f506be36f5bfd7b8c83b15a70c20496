@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c28f07f1_ae290fec",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-28T02:01:09Z",
+      "side": 1,
+      "message": "please also include the code that call this function in the same patchset. otherwise checking-in this code would be effective checking in dead code right ? \n\nThe function declaration seems a bit odd that it now expects the callers to std::move the parameters instead. Rather why not just do const reference instead ?",
+      "range": {
+        "startLine": 524,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 45
+      },
+      "revId": "18546afc1f506be36f5bfd7b8c83b15a70c20496",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
