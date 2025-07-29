@@ -23,42 +23,8 @@ namespace pldm
 namespace platform_mc
 {
 
+using namespace pldm::pdr;
 using namespace pldm::file_transfer;
-
-using ContainerID = uint16_t;
-using EntityInstanceNumber = uint16_t;
-using EntityName = std::string;
-using EntityType = uint16_t;
-using SensorId = uint16_t;
-using SensorCnt = uint8_t;
-using NameLanguageTag = std::string;
-using SensorName = std::string;
-using SensorAuxiliaryNames = std::tuple<
-    SensorId, SensorCnt,
-    std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
-
-/** @struct EntityKey
- *
- *  EntityKey uniquely identifies the PLDM entity and a combination of Entity
- *  Type, Entity Instance Number, Entity Container ID
- *
- */
-struct EntityKey
-{
-    EntityType type;                  //!< Entity type
-    EntityInstanceNumber instanceIdx; //!< Entity instance number
-    ContainerID containerId;          //!< Entity container ID
-
-    bool operator==(const EntityKey& e) const
-    {
-        return ((type == e.type) && (instanceIdx == e.instanceIdx) &&
-                (containerId == e.containerId));
-    }
-};
-
-using AuxiliaryNames = std::vector<std::pair<NameLanguageTag, std::string>>;
-using EntityKey = struct EntityKey;
-using EntityAuxiliaryNames = std::tuple<EntityKey, AuxiliaryNames>;
 
 struct FileInfoStruct
 {
@@ -205,7 +171,7 @@ class Terminus
      *  @param[in] id - sensor ID
      *  @return sensor auxiliary names
      */
-    std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorId id);
+    std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorID id);
 
     /** @brief Get Numeric Sensor Object by sensorID
      *
@@ -213,7 +179,7 @@ class Terminus
      *
      *  @return sensor object
      */
-    std::shared_ptr<NumericSensor> getSensorObject(SensorId id);
+    std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
 
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
@@ -295,7 +261,7 @@ class Terminus
      *  @return vector of sensor name strings
      *
      */
-    std::vector<std::string> getSensorNames(const SensorId& sensorId);
+    std::vector<std::string> getSensorNames(const SensorID& sensorId);
 
     /** @brief Add the next sensor PDR to this terminus, iterated by
      *         sensorPdrIt.
@@ -379,7 +345,7 @@ class Terminus
     std::vector<std::shared_ptr<pldm_platform_file_descriptor_pdr>> fileDescriptorPdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
-    SensorId sensorPdrIt = 0;
+    SensorID sensorPdrIt = 0;
 };
 } // namespace platform_mc
 } // namespace pldm
