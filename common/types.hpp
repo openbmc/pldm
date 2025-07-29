@@ -187,6 +187,36 @@ using CompositeCount = uint8_t;
 using SensorOffset = uint8_t;
 using EventState = uint8_t;
 using TerminusValidity = uint8_t;
+using EntityName = std::string;
+using SensorCount = uint8_t;
+using NameLanguageTag = std::string;
+using SensorName = std::string;
+using SensorAuxiliaryNames = std::tuple<
+    SensorID, SensorCount,
+    std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
+using AuxiliaryNames = std::vector<std::pair<NameLanguageTag, std::string>>;
+
+/** @struct EntityKey
+ *
+ *  EntityKey uniquely identifies the PLDM entity and a combination of Entity
+ *  Type, Entity Instance Number, Entity Container ID
+ *
+ */
+struct EntityKey
+{
+    EntityType type;            //!< Entity type
+    EntityInstance instanceIdx; //!< Entity instance number
+    ContainerID containerId;    //!< Entity container ID
+
+    bool operator==(const EntityKey& e) const
+    {
+        return ((type == e.type) && (instanceIdx == e.instanceIdx) &&
+                (containerId == e.containerId));
+    }
+};
+
+using EntityKey = struct EntityKey;
+using EntityAuxiliaryNames = std::tuple<EntityKey, AuxiliaryNames>;
 
 //!< Subset of the State Set that is supported by a effecter/sensor
 using PossibleStates = std::set<uint8_t>;
