@@ -269,7 +269,7 @@ void Terminus::addNextSensorFromPDRs()
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
-    SensorId id)
+    SensorID id)
 {
     auto it = std::find_if(
         sensorAuxiliaryNamesTbl.begin(), sensorAuxiliaryNamesTbl.end(),
@@ -570,7 +570,7 @@ void Terminus::addCompactNumericSensor(
     addNextSensorFromPDRs();
 }
 
-std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorId id)
+std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorID id)
 {
     if (terminusName.empty())
     {
@@ -730,7 +730,7 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
     }
 }
 
-std::vector<std::string> Terminus::getSensorNames(const SensorId& sensorId)
+std::vector<std::string> Terminus::getSensorNames(const SensorID& sensorId)
 {
     std::vector<std::string> sensorNames;
     std::string defaultName =
