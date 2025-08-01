@@ -431,6 +431,15 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     }
     termini[tid]->setSupportedCommands(pldmCmds);
 
+    /* Use the MCTP target name as the default terminus name */
+    MctpInfoName mctpInfoName = std::get<4>(mctpInfo);
+    if (mctpInfoName.has_value())
+    {
+        lg2::info("Terminus {TID} has default Terminus Name {NAME}", "NAME",
+                  mctpInfoName.value(), "TID", tid);
+        termini[tid]->setTerminusName(mctpInfoName.value());
+    }
+
     co_return PLDM_SUCCESS;
 }
 
