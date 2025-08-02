@@ -279,11 +279,14 @@ class GetPDR : public CommandInterface
                               respRecordData + respCnt);
 
             // End or StartAndEnd
-            if (transferFlag == PLDM_PLATFORM_TRANSFER_END ||
-                transferFlag == PLDM_PLATFORM_TRANSFER_START_AND_END)
+            if ((transferFlag ==
+                     static_cast<uint8_t>(PLDM_PLATFORM_TRANSFER_END) ||
+                 transferFlag == static_cast<uint8_t>(
+                                     PLDM_PLATFORM_TRANSFER_START_AND_END)))
+
             {
-                printPDRMsg(nextRecordHndl, respCnt, recordData.data(),
-                            terminusHandle);
+                printPDRMsg(nextRecordHndl, recordData.size(),
+                            recordData.data(), terminusHandle);
                 nextPartRequired = false;
                 recordHandle = nextRecordHndl;
                 dataTransferHandle = 0;
@@ -295,7 +298,8 @@ class GetPDR : public CommandInterface
             {
                 nextPartRequired = true;
                 dataTransferHandle = nextDataTransferHndl;
-                struct pldm_pdr_hdr* pdr_hdr = new (respRecordData)
+
+                struct pldm_pdr_hdr* pdr_hdr = new (recordData.data())
                     pldm_pdr_hdr;
                 recordChangeNumber = pdr_hdr->record_change_num;
                 operationFlag = PLDM_GET_NEXTPART;
