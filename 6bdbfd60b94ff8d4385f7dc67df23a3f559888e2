@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bee07576_c0d22de7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 64
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0e2c303_0b6937c6",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b13ee023_525018eb",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-07-26T11:27:03Z",
       "side": 1,
       "message": "Do we really need such macros?\n\nCppCoreGuidelines discourage them for code text manipulation",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 74
+      },
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daac7d44_940f7ded",
+        "filename": "common/types.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b13ee023_525018eb",
       "range": {
         "startLine": 80,
         "startChar": 0,
@@ -60,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5cb20f30_20faebc7",
+        "filename": "common/types.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "Because we\u0027re using DescriptorType as key, which is not unique when we\u0027re using vendor defined descriptors, in fact the title of it should be as a part of the key, this will be fixed in the next or following patchset.",
+      "parentUuid": "2de1085c_015a2f94",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c762b32_1da6bb9e",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 64
@@ -77,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cff6e238_d91457c5",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "No, the libpldm API is currently implemented but haven\u0027t been stabilized yet.",
+      "parentUuid": "7c762b32_1da6bb9e",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2d5a164f_e0ed7cdc",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 64
@@ -88,6 +166,24 @@
       "writtenOn": "2025-07-26T11:27:03Z",
       "side": 1,
       "message": "We should capture data for debug",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14c9091e_128d1381",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d5a164f_e0ed7cdc",
       "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -117,6 +213,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a66d713f_cd352912",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "Acknowledged, will decouple the dd related code to another patch.",
+      "parentUuid": "4cdc8d44_407dc506",
+      "range": {
+        "startLine": 46,
+        "startChar": 22,
+        "endLine": 46,
+        "endChar": 45
+      },
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba22b121_5e98bd21",
         "filename": "fw-update/package_parser.cpp",
         "patchSetId": 64
@@ -128,6 +248,24 @@
       "writtenOn": "2025-07-26T11:27:03Z",
       "side": 1,
       "message": "Should we split this up into regulat and downstream device handling?",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "901ee3d4_2c815572",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ba22b121_5e98bd21",
       "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f65a8ff3_84e0facc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 50
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-04T06:34:48Z",
+      "side": 1,
+      "message": "Done, using `mmap` and `std::span` to prevent duplicate copy in memory.\nlibpldm will need to parse not only header but the whole package in the new version of APIs, which contains benefits like header/payload(after DSP0267 v1.3.0) checksum validation and keep consumer out of responsibility of offset calculating.",
+      "parentUuid": "fa87fee6_f06eb356",
+      "revId": "82f27d747b98463ec484f0337611cf8be6fbddc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a61eb029_8985d84e",
