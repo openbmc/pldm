@@ -18,6 +18,40 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f18baa_f0d87b05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 107
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-04T17:07:04Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Can the inventory patches be merged independently of the new libpldm package parsing APIs?\nI don’t see any reason to hold them back.",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a343023_ca4c5a96",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-04T17:07:04Z",
+      "side": 1,
+      "message": "Can we use use this patch only to create software objects.\nLet\u0027s move update related interfaces to this patch - https://gerrit.openbmc.org/c/openbmc/pldm/+/74774/46",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e35f3b49_3652b24c",
