@@ -394,7 +394,7 @@ exec::task<int> PlatformManager::getPDRRepositoryInfo(
     const pldm_tid_t tid, uint8_t& repositoryState, uint32_t& recordCount,
     uint32_t& repositorySize, uint32_t& largestRecordSize)
 {
-    Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    Request request(sizeof(pldm_msg_hdr));
     auto requestMsg = new (request.data()) pldm_msg;
     auto rc = encode_pldm_header_only(PLDM_REQUEST, 0, PLDM_PLATFORM,
                                       PLDM_GET_PDR_REPOSITORY_INFO, requestMsg);
