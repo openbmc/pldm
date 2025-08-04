@@ -220,8 +220,8 @@ void Terminus::parseTerminusPDRs()
 
     if (createInventoryPath(terminusName))
     {
-        lg2::error("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
-                   tid, "PATH", inventoryPath);
+        lg2::info("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
+                  tid, "PATH", inventoryPath);
     }
 
     addNextSensorFromPDRs();
