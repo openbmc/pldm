@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "007349cd_c4fdc20a",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-05T15:50:26Z",
+      "side": 1,
+      "message": "We are creating a copy of the entire file here.\n\nAgain, we need not solve this problem if Unive has already solved it here - https://gerrit.openbmc.org/c/openbmc/pldm/+/80194\n\nBut let\u0027s capture free memory usage to ensure it\u0027s limited to a single copy with this patch.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 5
+      },
+      "revId": "6ea5255a79e8d11f8c1d8d2df68c98f2e8dccd0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b419878_d36d54cf",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-05T15:50:26Z",
+      "side": 1,
+      "message": "Since we are performing this check here, isn\u0027t it redundant in processPackage and should be removed ?",
+      "revId": "6ea5255a79e8d11f8c1d8d2df68c98f2e8dccd0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93c4d1ad_dfeacb74",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-05T15:50:26Z",
+      "side": 1,
+      "message": "We should still create the task and fail in all these error paths. The firmware update behavior should be consistent.",
+      "revId": "6ea5255a79e8d11f8c1d8d2df68c98f2e8dccd0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c90bc91e_55916d9e",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-05T15:50:26Z",
+      "side": 1,
+      "message": "Can we return the object path early and update the activation interface in case of failures so that the task is created and updated accordingly ?",
+      "revId": "6ea5255a79e8d11f8c1d8d2df68c98f2e8dccd0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "390a1553_6f112342",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-05T15:50:26Z",
+      "side": 1,
+      "message": "should be disabled by default",
+      "range": {
+        "startLine": 231,
+        "startChar": 12,
+        "endLine": 231,
+        "endChar": 19
+      },
+      "revId": "6ea5255a79e8d11f8c1d8d2df68c98f2e8dccd0b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

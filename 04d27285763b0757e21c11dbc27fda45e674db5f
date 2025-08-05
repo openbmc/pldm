@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95346bfe_ba0910a9",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-05T15:50:26Z",
+      "side": 0,
+      "message": "would inotify flow work with this patch ? Was it tested ?",
+      "revId": "04d27285763b0757e21c11dbc27fda45e674db5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "113fa738_4a96c254",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-05T15:50:26Z",
+      "side": 0,
+      "message": "Shall we move pacakge.close() and std::filesystem::remove(fwPackageFilePath) under the meson option check (FW_UPDATE_INOTIFY_ENABLED) ?",
+      "revId": "04d27285763b0757e21c11dbc27fda45e674db5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
