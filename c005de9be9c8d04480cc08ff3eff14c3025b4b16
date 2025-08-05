@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3376a75c_bb487ed9",
+        "filename": "common/types.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-05T08:23:07Z",
+      "side": 1,
+      "message": "Are all thr types here defined in the DSP0242 spec?",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 21
+      },
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d513cca5_fde1aa20",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-05T08:23:07Z",
+      "side": 1,
+      "message": "I don\u0027t think we should move DSP0242 related code to separate dir/files.",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "454963e4_5c4b4426",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-05T08:23:07Z",
+      "side": 1,
+      "message": "Did we get +1s on the design to represent each file as a D-Bus object?",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
