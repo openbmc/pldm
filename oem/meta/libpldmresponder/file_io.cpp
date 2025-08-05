@@ -2,6 +2,7 @@
 
 #include "file_io_type_apml_alert.hpp"
 #include "file_io_type_bios_version.hpp"
+#include "file_io_type_boot_order.hpp"
 #include "file_io_type_crash_dump.hpp"
 #include "file_io_type_event_log.hpp"
 #include "file_io_type_http_boot.hpp"
@@ -40,6 +41,10 @@ std::unique_ptr<FileHandler> FileIOHandler::getHandlerByType(
         case FileIOType::CRASH_DUMP:
             return std::make_unique<CrashDumpHandler>(
                 messageTid, configurationDiscovery->getConfigurations());
+        case FileIOType::BOOT_ORDER:
+            return std::make_unique<BootOrderHandler>(
+                messageTid, configurationDiscovery->getConfigurations(),
+                dBusHandler);
         default:
             error("Get invalid file io type {FILEIOTYPE}", "FILEIOTYPE",
                   fileIOType);
