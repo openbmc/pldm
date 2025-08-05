@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "564aa154_adbd3bb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2025-08-05T07:23:10Z",
+      "side": 1,
+      "message": "I wonder if we should get rid of this https://github.com/openbmc/pldm/blob/04d27285763b0757e21c11dbc27fda45e674db5f/platform-mc/platform_manager.cpp#L228 once this fix is accepted.\n\nWhat do you think?",
+      "revId": "c1d86f5f216f69c5a0a88d9f6e6a29f79900cc2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
