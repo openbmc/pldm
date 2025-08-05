@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "234bf1c1_0ee0e361",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-05T09:12:16Z",
+      "side": 1,
+      "message": "Hi, the failures are because the APIs in libpldm is not updated from ABI_TESTING to ABI_STABLE yet. I already sent a patch [here](https://gerrit.openbmc.org/c/openbmc/libpldm/+/82483?usp\u003dsubmitted-together)",
+      "parentUuid": "142d05eb_58301725",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3376a75c_bb487ed9",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-08-05T08:23:07Z",
       "side": 1,
       "message": "Are all thr types here defined in the DSP0242 spec?",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 21
+      },
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29db49f2_94c18a51",
+        "filename": "common/types.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-05T09:12:16Z",
+      "side": 1,
+      "message": "They are defined as enum of the field `FileClassification` in DSP0248 v1.3.0 - Table 108 – File Descriptor PDR",
+      "parentUuid": "3376a75c_bb487ed9",
       "range": {
         "startLine": 216,
         "startChar": 0,
@@ -60,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12b04efe_e68607bd",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-05T09:12:16Z",
+      "side": 1,
+      "message": "Should I create another folder for `file-transfer`, like how `fw-update` pieces are placed?",
+      "parentUuid": "d513cca5_fde1aa20",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "454963e4_5c4b4426",
         "filename": "platform-mc/terminus.hpp",
         "patchSetId": 3
@@ -71,6 +131,24 @@
       "writtenOn": "2025-08-05T08:23:07Z",
       "side": 1,
       "message": "Did we get +1s on the design to represent each file as a D-Bus object?",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc2d290d_fc193897",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-05T09:12:16Z",
+      "side": 1,
+      "message": "It hasn\u0027t received a +1 yet or any further review until now. So I think some code lines will help demonstrate the design better. I put all the replated patches (design doc, D-Bus interface, codes) into the same topic for better tracing https://gerrit.openbmc.org/q/topic:%22PLDM_File_Transfer%22",
+      "parentUuid": "454963e4_5c4b4426",
       "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
