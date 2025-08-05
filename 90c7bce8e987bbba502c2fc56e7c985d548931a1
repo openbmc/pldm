@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b5012b61_8092bafd",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "I\u0027ll have a separate commit for handling this. Since we need to maintain backward compatibility with inotify",
+      "parentUuid": "ec1bea03_6aadcf18",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f209b964_4c270ec3",
         "filename": "fw-update/activation.cpp",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2025-07-24T14:14:59Z",
       "side": 1,
       "message": "Why do you need to write to another file?",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce36e5c9_8538651e",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "I\u0027m writing it into a stream to maintain backwards compatibility. This will write the file into memory and not onto the disk.",
+      "parentUuid": "f209b964_4c270ec3",
       "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2fc9d17c_b62dfc67",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Not necessary here since the package is being written into a stream",
+      "parentUuid": "13a0e665_af98d62f",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "23329d84_6d5947b4",
         "filename": "fw-update/activation.cpp",
         "patchSetId": 1
@@ -82,6 +136,24 @@
       "writtenOn": "2025-07-24T14:14:59Z",
       "side": 1,
       "message": "All of this has to be done in an async way",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08bdaba0_3a16f32f",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "This is synchronous until we process the package, and is aligned with the current inotify usage",
+      "parentUuid": "23329d84_6d5947b4",
       "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -103,6 +175,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6763fbe7_7e108e22",
+        "filename": "fw-update/activation.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cf1d178b_41c17f62",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e3f14f9_75949598",
@@ -120,6 +210,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a421a7_b90a42f1",
+        "filename": "fw-update/activation.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1e3f14f9_75949598",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "879aee49_90fd8941",
@@ -133,6 +241,24 @@
       "writtenOn": "2025-07-24T14:14:59Z",
       "side": 1,
       "message": "Why do we need to do this?",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1141ca9_51ef5407",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Bmcweb waits until a software path is returned or an exception is thrown by pldm. This was done to decouple creating the software object from the version (as done previously in inotify flow). I\u0027ve reverted this change and resorting to throwing an exception wherever applicable",
+      "parentUuid": "879aee49_90fd8941",
       "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -160,6 +286,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75d10d88_f432230f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Ack, cleaned up failure paths",
+      "parentUuid": "5dc63572_404cca7b",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 9
+      },
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbf1c06c_0fd30720",
@@ -173,6 +323,24 @@
       "writtenOn": "2025-07-24T14:14:59Z",
       "side": 1,
       "message": "Should throw D-Bus exceptions instread of returning empty strings.",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aa0c154_f41aa731",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bbf1c06c_0fd30720",
       "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -200,6 +368,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d3d84b1_5836b948",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Ack, updated the doc string. This will return the object path of the software object created",
+      "parentUuid": "ab145a1b_688cb0a3",
+      "range": {
+        "startLine": 78,
+        "startChar": 4,
+        "endLine": 78,
+        "endChar": 15
+      },
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46740bd4_fab7adde",
@@ -213,6 +405,24 @@
       "writtenOn": "2025-07-24T14:14:59Z",
       "side": 1,
       "message": "We should retain inotify mechanism with a build flag option",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccea70e4_5a01aff8",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-05T10:42:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "46740bd4_fab7adde",
       "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
