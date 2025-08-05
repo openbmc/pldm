@@ -56,20 +56,20 @@ class UpdateManager
         const ComponentInfoMap& componentInfoMap) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
-        #ifdef FW_UPDATE_INOTIFY_ENABLED
+#ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
               [this](std::string& packageFilePath) {
                   return this->processPackage(
                       std::filesystem::path(packageFilePath));
               }),
-        #endif
+#endif
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {
-        #ifndef FW_UPDATE_INOTIFY_ENABLED
-            updater = std::make_unique<Update>(pldm::utils::DBusHandler::getBus(),
-                                           "/xyz/openbmc_project/software",
-                                           this);
-        #endif
+#ifndef FW_UPDATE_INOTIFY_ENABLED
+        updater =
+            std::make_unique<Update>(pldm::utils::DBusHandler::getBus(),
+                                     "/xyz/openbmc_project/software", this);
+#endif
     }
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -108,6 +108,11 @@ class UpdateManager
     void activatePackage();
 
     void clearActivationInfo();
+
+    void setStreamHolder(std::shared_ptr<MappedStreamHolder> holder)
+    {
+        mappedStreamHolder = std::move(holder);
+    }
 
     /** @brief
      *
@@ -159,6 +164,9 @@ class UpdateManager
      */
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
+
+    // Holder that keeps the mapped memory and spanstream alive
+    std::shared_ptr<MappedStreamHolder> mappedStreamHolder;
 };
 
 } // namespace fw_update

@@ -88,7 +88,6 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         std::filesystem::remove(packageFilePath);
         return -1;
     }
-
 }
 
 std::string UpdateManager::processStream(std::istream& package,
@@ -105,12 +104,47 @@ std::string UpdateManager::processStream(std::istream& package,
         {
             activation->activation(software::Activation::Activations::Invalid);
         }
-        throw sdbusplus::error::xyz::openbmc_project::software::update::InvalidImage();
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            InvalidImage();
     }
 
-    package.seekg(0);
-    std::vector<uint8_t> packageHeader(packageSize);
-    package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
+    std::vector<uint8_t> packageHeader;
+
+    if (mappedStreamHolder)
+    {
+        const auto* pkgDataPtr = mappedStreamHolder->data();
+        auto totalSize = mappedStreamHolder->size();
+
+        pldm_package_header_information pkgHdrInfo{};
+        variable_field pkgVersion{};
+        auto rc = decode_pldm_package_header_info(
+            const_cast<uint8_t*>(pkgDataPtr), totalSize, &pkgHdrInfo,
+            &pkgVersion);
+        if (rc)
+        {
+            error(
+                "Failed to decode PLDM package header information, response code '{RC}'",
+                "RC", rc);
+            if (activation)
+            {
+                activation->activation(
+                    software::Activation::Activations::Invalid);
+            }
+            throw sdbusplus::error::xyz::openbmc_project::software::update::
+                InvalidImage();
+        }
+
+        PackageHeaderSize headerSize = pkgHdrInfo.package_header_size;
+        packageHeader.assign(pkgDataPtr, pkgDataPtr + headerSize);
+        packageSize = totalSize;
+    }
+    else
+    {
+        package.seekg(0);
+        packageHeader.resize(packageSize);
+        package.read(reinterpret_cast<char*>(packageHeader.data()),
+                     packageSize);
+    }
 
     parser = parsePkgHeader(packageHeader);
     if (parser == nullptr)
@@ -120,7 +154,8 @@ std::string UpdateManager::processStream(std::istream& package,
         {
             activation->activation(software::Activation::Activations::Invalid);
         }
-        throw sdbusplus::error::xyz::openbmc_project::software::update::InvalidImage();
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            InvalidImage();
     }
 
     // Populate object path with the hash of the package version
@@ -136,7 +171,8 @@ std::string UpdateManager::processStream(std::istream& package,
     {
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
         parser.reset();
-        throw sdbusplus::error::xyz::openbmc_project::software::update::InvalidImage();
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            InvalidImage();
     }
 
     auto deviceUpdaterInfos =
@@ -146,7 +182,8 @@ std::string UpdateManager::processStream(std::istream& package,
     {
         error(
             "No matching devices found with the PLDM firmware update package");
-        throw sdbusplus::error::xyz::openbmc_project::software::update::Incompatible();
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            Incompatible();
     }
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
@@ -170,9 +207,9 @@ std::string UpdateManager::processStream(std::istream& package,
     activationProgress = std::make_unique<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPath);
 
-    #ifndef FW_UPDATE_INOTIFY_ENABLED
+#ifndef FW_UPDATE_INOTIFY_ENABLED
     activation->activation(software::Activation::Activations::Activating);
-    #endif
+#endif
 
     return objPath;
 }

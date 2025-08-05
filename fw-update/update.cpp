@@ -1,5 +1,8 @@
 #include "update.hpp"
+
 #include "update_manager.hpp"
+
+#include <sys/stat.h>
 
 namespace pldm
 {
@@ -14,24 +17,24 @@ sdbusplus::message::object_path Update::startUpdate(
     {
         updateManager->clearActivationInfo();
     }
-    info("Starting update for image {FD}", "FD", static_cast<int>(image));
-    char buffer[4096];
-    ssize_t bytesRead;
-    imageStream.str(std::string());
 
-    while ((bytesRead = read(image, buffer, sizeof(buffer))) > 0)
+    struct stat st;
+    if (fstat(image, &st) < 0)
     {
-        imageStream.write(buffer, bytesRead);
+        throw std::system_error(errno, std::generic_category(),
+                                "Failed to get file size");
     }
 
-    if (bytesRead < 0)
+    if (st.st_size == 0)
     {
-        throw std::runtime_error("Failed to read image file descriptor");
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            InvalidImage();
     }
 
-    // Process the stream directly
+    auto holder = std::make_shared<MappedStreamHolder>(image, st.st_size);
+    updateManager->setStreamHolder(holder);
     return sdbusplus::message::object_path(
-        updateManager->processStream(imageStream, imageStream.str().size()));
+        updateManager->processStream(holder->stream(), st.st_size));
 }
 
 } // namespace fw_update
