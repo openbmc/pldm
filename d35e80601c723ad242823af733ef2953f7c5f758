@@ -16,6 +16,24 @@
       "message": "Is this related to the PLDM file transfer spec (DSP0242)?",
       "revId": "d35e80601c723ad242823af733ef2953f7c5f758",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cad0ffe_fb7016cd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 37
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-06T15:02:14Z",
+      "side": 1,
+      "message": "no",
+      "parentUuid": "9dbf8727_655bf244",
+      "revId": "d35e80601c723ad242823af733ef2953f7c5f758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
