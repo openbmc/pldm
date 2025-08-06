@@ -389,6 +389,12 @@ void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
         std::variant<std::string> v = std::get<std::string>(value);
         setDbusValue(v);
     }
+    else if (dBusMap.propertyType == "array[string]")
+    {
+        std::variant<std::vector<std::string>> v =
+            std::get<std::vector<std::string>>(value);
+        setDbusValue(v);
+    }
     else
     {
         error("Unsupported property type '{TYPE}'", "TYPE",
