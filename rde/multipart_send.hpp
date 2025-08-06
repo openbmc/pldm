@@ -32,11 +32,9 @@ struct MultipartSndMeta
 {
     uint8_t schemaClass = 0;    ///< Schema class used for decoding.
     uint8_t hasChecksum = true; ///< Indicates presence of checksum in chunk.
-    bool isFinalChunk =
-        false;               ///< True if this is the final chunk in the stream.
+    uint8_t isOpComplete =
+        false;               ///< True if the send operation is complete.
     uint32_t nextHandle = 0; ///< Handle for the next chunk (if any).
-    uint32_t checksum = 0;   ///< Optional checksum value.
-    uint32_t length = 0;     ///< Length of the chunk payload.
 };
 
 /**
@@ -53,10 +51,10 @@ class MultipartSender
      * @brief Construct a multipart sender instance.
      * @param device Reference to target device.
      * @param eid Device endpoint ID.
-     * @param transferHandle Initial transfer handle to begin sequence.
+     * @param dataPayload The request payload data.
      */
     MultipartSender(std::shared_ptr<Device> device, uint8_t eid,
-                    uint32_t transferHandle);
+                    std::vector<uint8_t> dataPayload);
 
     /**
      * @brief Start a multipart read or receive flow.
@@ -64,26 +62,20 @@ class MultipartSender
      * @param onComplete Optional callback for successful completion.
      * @param onFailure Optional callback for error handling.
      */
-    void start(
-        std::function<void(std::span<const uint8_t>, const MultipartSndMeta&)>
-            onData,
-        std::function<void()> onComplete = nullptr,
-        std::function<void(std::string)> onFailure = nullptr);
+    void start(std::function<void(const MultipartSndMeta&)> onData,
+               std::function<void()> onComplete = nullptr,
+               std::function<void(std::string)> onFailure = nullptr);
 
     /**
      * @brief Send a command-only multipart request.
-     *
      * Typically used to request next chunk from the device.
-     *
      * @param handle Chunk handle to query.
      */
     void sendRequest(uint32_t handle);
 
     /**
      * @brief Send a data-bearing multipart request.
-     *
      * Slices and transmits a payload chunk using metadata constraints.
-     *
      * @param handle Handle used for this chunk's transmission.
      */
     void sendReceiveRequest(uint32_t handle);
@@ -93,16 +85,21 @@ class MultipartSender
      * @param respMsg Pointer to the raw PLDM response.
      * @param rxLen Length of the response buffer.
      */
-    void handleReceiveResp(const pldm_msg* respMsg, size_t rxLen);
+    void handleSendResp(const pldm_msg* respMsg, size_t rxLen);
 
     /**
-     * @brief Set transfer operation mode.
-     *
+     * @brief Set transfer flag.
      * Controls PLDM semantics used for next multipart request.
-     *
-     * @param op Operation ID such as PLDM_RDE_XFER_FIRST_PART or NEXT_PART.
+     * @param flag Transfer flag such as START, MIDDLE, END or START_AND_END.
      */
-    void setTransferOperation(rde_op_id op);
+    void setTransferFlag(uint8_t flag);
+
+    /**
+     * @brief Set operation ID.
+     * Set the Operation ID for the current operation.
+     * @param op The current operation ID.
+     */
+    void setOperationID(rde_op_id op);
 
   private:
     /**
@@ -125,14 +122,13 @@ class MultipartSender
 
     std::shared_ptr<Device> device_;   // Target device abstraction.
     uint8_t eid_;                      // Device endpoint ID.
-    uint32_t transferHandle_;          // Current multipart transfer handle.
-    rde_op_id transferOperation_;      // Current transfer operation phase.
+    uint32_t transferHandle_ = 1;      // Current multipart transfer handle.
+    rde_op_id operationID_;            // Current transfer operation phase.
 
     std::vector<uint8_t> dataPayload_; // Outbound payload data.
     uint8_t transferFlag_ = PLDM_RDE_START; // Transfer flag for current chunk.
 
-    std::function<void(std::span<const uint8_t>, const MultipartSndMeta&)>
-        onData_;                                 // Chunk callback.
+    std::function<void(const MultipartSndMeta&)> onData_; // Chunk callback.
     std::function<void()> onComplete_;           // Completion callback.
     std::function<void(std::string)> onFailure_; // Error callback.
 };

@@ -262,6 +262,7 @@ void OperationSession::doOperationInit()
     uint32_t requestPayloadLength;
     bitfield8_t operationFlags = {0};
     std::vector<uint8_t> operationLocator{0};
+    std::vector<uint8_t> requestPayload{0};
 
     info("RDE: Starting operation setup for Resource={RID}, OperationID={OID}",
          "RID", currentResourceId_, "OID", static_cast<uint8_t>(operationID));
@@ -292,8 +293,7 @@ void OperationSession::doOperationInit()
             return;
         }
 
-        requestPayload = getBejPayload();
-        requestPayloadLength = requestPayload.size();
+        payloadBuffer = getBejPayload();
 
         const auto& chunkMeta =
             device_->getMetadataField("mcMaxTransferChunkSizeBytes");
@@ -308,21 +308,26 @@ void OperationSession::doOperationInit()
             return;
         }
 
-        uint32_t maxChunkSize = *maxChunkSizePtr;
-        uint32_t totalReqLength =
-            (sizeof(pldm_msg_hdr) + PLDM_RDE_OPERATION_INIT_REQ_FIXED_BYTES +
-             operationLocatorLength + requestPayloadLength);
-
-        if (totalReqLength <= maxChunkSize)
-            sendDataTransferHandle = 0;
+        uint32_t mcMaxChunkSize = *maxChunkSizePtr;
+        uint32_t maxChunkSize =
+            (mcMaxChunkSize -
+             (sizeof(pldm_msg_hdr) + PLDM_RDE_OPERATION_INIT_REQ_FIXED_BYTES +
+              operationLocatorLength));
+        if (payloadBuffer.size() > maxChunkSize)
+        {
+            multiPartTransferFlag = true;
+            sendDataTransferHandle = instanceId;
+            requestPayloadLength = 0;
+        }
         else
         {
-            // TODO: Add handler for RDEMultipartSend
-            error(
-                "Request payload is greater than DeviceMaximumTransferChunkSizeBytes. RDEMultipartSend is not supported");
-            updateState(OpState::OperationFailed);
-            device_->getInstanceIdDb().free(eid_, instanceId);
-            return;
+            sendDataTransferHandle = 0;
+            requestPayloadLength =
+                (sizeof(pldm_msg_hdr) +
+                 PLDM_RDE_OPERATION_INIT_REQ_FIXED_BYTES +
+                 operationLocatorLength + requestPayloadLength);
+            requestPayload = payloadBuffer;
+            requestPayloadLength = requestPayload.size();
         }
     }
 
@@ -504,6 +509,49 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
     else if (oipInfo.operationType == OperationType::UPDATE)
     {
         // TODO: Add handler for RDEMultipartSend
+        if (multiPartTransferFlag)
+        {
+            try
+            {
+                info(
+                    "RDE: Received transferHandle={HANDLE} for resourceId={RID}",
+                    "HANDLE", resultTransferHandle, "RID", currentResourceId_);
+
+                sender_ = std::make_unique<pldm::rde::MultipartSender>(
+                    device_, eid_, payloadBuffer);
+
+                sender_->start(
+                    [this](const pldm::rde::MultipartSndMeta& meta) {
+                        if ((meta.isOpComplete))
+                        {
+                            info("Multipartsend completed");
+                            multiPartTransferFlag = false;
+                        }
+                        else
+                        {
+                            sender_->setTransferFlag(PLDM_RDE_START);
+                            sender_->setOperationID(oipInfo.operationID);
+                            sender_->sendReceiveRequest(meta.nextHandle);
+                        }
+                    },
+                    [this]() {
+                        info(
+                            "RDE: Multipart transfer complete for resourceId={RID}",
+                            "RID", currentResourceId_);
+                    },
+                    [this](const std::string& reason) {
+                        error(
+                            "RDE: Multipart transfer failed for resourceId={RID}, Error={ERR}",
+                            "RID", currentResourceId_, "ERR", reason);
+                    });
+            }
+            catch (const std::exception& ex)
+            {
+                error(
+                    "RDE: Exception during multipart transfer setup for resourceId={RID}, Error={ERR}",
+                    "RID", currentResourceId_, "ERR", ex.what());
+            }
+        }
     }
 
     // TODO: Add D-bus response handler
