@@ -4,6 +4,7 @@
 
 #include "device_common.hpp"
 #include "multipart_recv.hpp"
+#include "multipart_send.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/platform.h>
@@ -182,11 +183,13 @@ class OperationSession
     OpState currentState_ = OpState::Idle;
     struct OperationInfo oipInfo;
     rde_op_id operationID = 0;
-    std::vector<uint8_t> requestPayload;
+    std::vector<uint8_t> payloadBuffer;
     std::vector<uint8_t> responseBuffer;
     nlohmann::json jsonPayload;
     bool complete = false;
+    bool multiPartTransferFlag = false;
     std::unique_ptr<pldm::rde::MultipartReceiver> receiver_;
+    std::unique_ptr<pldm::rde::MultipartSender> sender_;
 };
 
 } // namespace pldm::rde

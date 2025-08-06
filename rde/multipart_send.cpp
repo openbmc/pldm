@@ -7,15 +7,13 @@ namespace pldm::rde
 {
 
 MultipartSender::MultipartSender(std::shared_ptr<Device> device, uint8_t eid,
-                                 uint32_t transferHandle) :
-    device_(std::move(device)), eid_(eid), transferHandle_(transferHandle)
+                                 std::vector<uint8_t> dataPayload) :
+    device_(std::move(device)), eid_(eid), dataPayload_(dataPayload)
 {}
 
-void MultipartSender::start(
-    std::function<void(std::span<const uint8_t>, const MultipartSndMeta&)>
-        onData,
-    std::function<void()> onComplete,
-    std::function<void(std::string)> onFailure)
+void MultipartSender::start(std::function<void(const MultipartSndMeta&)> onData,
+                            std::function<void()> onComplete,
+                            std::function<void(std::string)> onFailure)
 {
     onData_ = std::move(onData);
     onComplete_ = std::move(onComplete);
@@ -24,14 +22,34 @@ void MultipartSender::start(
     sendRequest(transferHandle_);
 }
 
-void MultipartSender::setTransferOperation(rde_op_id op)
+void MultipartSender::setOperationID(rde_op_id op)
 {
-    transferOperation_ = op;
+    operationID_ = op;
+}
+
+void MultipartSender::setTransferFlag(uint8_t flag)
+{
+    transferFlag_ = flag;
 }
 
 void MultipartSender::sendRequest(uint32_t handle)
 {
-    sendMultipartCommand(handle, transferOperation_, PLDM_RDE_START, {}, 0);
+    const auto& meta = device_->getMetadataField("mcMaxTransferChunkSizeBytes");
+    const auto* maxChunkSizePtr = std::get_if<uint32_t>(&meta);
+    if (!maxChunkSizePtr)
+    {
+        if (onFailure_)
+            onFailure_(
+                "Missing or invalid mcMaxTransferChunkSizeBytes metadata");
+        return;
+    }
+
+    uint32_t maxChunkSize = *maxChunkSizePtr;
+    std::vector<uint8_t> first_chunk;
+    first_chunk = std::vector<uint8_t>(dataPayload_.begin(),
+                                       dataPayload_.begin() + maxChunkSize);
+
+    sendMultipartCommand(handle, operationID_, PLDM_RDE_START, first_chunk, 0);
 }
 
 void MultipartSender::sendReceiveRequest(uint32_t handle)
@@ -53,6 +71,7 @@ void MultipartSender::sendReceiveRequest(uint32_t handle)
     {
         chunk = dataPayload_;
         transferFlag_ = PLDM_RDE_END;
+        handle = 0;
     }
     else
     {
@@ -63,12 +82,11 @@ void MultipartSender::sendReceiveRequest(uint32_t handle)
 
     uint32_t checksum = 0; // Optional: implement checksum logic if required
 
-    sendMultipartCommand(handle, transferOperation_, transferFlag_, chunk,
-                         checksum);
+    sendMultipartCommand(handle, operationID_, transferFlag_, chunk, checksum);
 }
 
 bool MultipartSender::sendMultipartCommand(
-    uint32_t handle, rde_op_id operation, uint8_t transferFlag,
+    uint32_t handle, rde_op_id operationID, uint8_t transferFlag,
     const std::vector<uint8_t>& payload, uint32_t checksum)
 {
     uint8_t instanceId = device_->getInstanceIdDb().next(eid_);
@@ -85,7 +103,7 @@ bool MultipartSender::sendMultipartCommand(
     // Behavior varies based on operation flag (e.g. FIRST_PART vs NEXT_PART)
 
     int rc = encode_rde_multipart_send_req(
-        instanceId, handle, operation, transferFlag, handle, dataLength,
+        instanceId, handle, operationID, transferFlag, handle, dataLength,
         const_cast<uint8_t*>(payload.data()), checksum, requestMsg);
     if (rc != PLDM_SUCCESS)
     {
@@ -98,7 +116,7 @@ bool MultipartSender::sendMultipartCommand(
     rc = device_->getHandler()->registerRequest(
         eid_, instanceId, PLDM_RDE, PLDM_RDE_MULTIPART_SEND, std::move(request),
         [this](uint8_t, const pldm_msg* msg, size_t len) {
-            this->handleReceiveResp(msg, len);
+            this->handleSendResp(msg, len);
         });
 
     if (rc)
@@ -112,14 +130,12 @@ bool MultipartSender::sendMultipartCommand(
     return true;
 }
 
-void MultipartSender::handleReceiveResp(const pldm_msg* respMsg, size_t rxLen)
+void MultipartSender::handleSendResp(const pldm_msg* respMsg, size_t rxLen)
 {
-    MultipartSndMeta meta{};
-    const uint8_t* payload = nullptr;
-    size_t payloadLen = 0;
-    uint8_t cc = 0, transferFlag = 0;
+    uint8_t cc = 0, transferOperation = 0;
 
-    int rc = decode_rde_multipart_send_resp(respMsg, rxLen, &cc, &transferFlag);
+    int rc =
+        decode_rde_multipart_send_resp(respMsg, rxLen, &cc, &transferOperation);
     if (rc != PLDM_SUCCESS)
     {
         if (onFailure_)
@@ -135,21 +151,26 @@ void MultipartSender::handleReceiveResp(const pldm_msg* respMsg, size_t rxLen)
         return;
     }
 
-    std::span<const uint8_t> chunk(payload, payloadLen);
+    const bool isOpComplete = (transferOperation == PLDM_XFER_COMPLETE);
+    MultipartSndMeta meta{
+        .schemaClass = 0, // can be extended later
+        .hasChecksum = true,
+        .isOpComplete = isOpComplete,
+        .nextHandle = (transferHandle_ += 1),
+    };
     if (onData_)
     {
-        onData_(chunk, meta);
+        onData_(meta);
     }
 
-    if (meta.isFinalChunk)
+    if (meta.isOpComplete)
     {
         if (onComplete_)
             onComplete_();
     }
     else
     {
-        transferHandle_ = meta.nextHandle;
-        setTransferOperation(PLDM_RDE_XFER_NEXT_PART);
+        transferHandle_ += 1;
         sendReceiveRequest(transferHandle_);
     }
 }
