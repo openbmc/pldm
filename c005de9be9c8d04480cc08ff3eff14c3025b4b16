@@ -151,6 +151,24 @@
       "parentUuid": "454963e4_5c4b4426",
       "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8e56167_08d795ee",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-06T02:30:31Z",
+      "side": 1,
+      "message": "Update: the design doc just got one +1.",
+      "parentUuid": "dc2d290d_fc193897",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
