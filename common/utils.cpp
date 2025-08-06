@@ -796,7 +796,6 @@ std::optional<std::string> fruFieldValuestring(const uint8_t* value,
 {
     if (!value || !length)
     {
-        lg2::error("Fru data to string invalid data.");
         return std::nullopt;
     }
 
