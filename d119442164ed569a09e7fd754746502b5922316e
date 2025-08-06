@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d4ca927_c346ab96",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3880fb71_fe965f56",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35c0c069_04174003",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a19aabc1_659f37ca",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35c0c069_04174003",
+      "range": {
+        "startLine": 47,
+        "startChar": 6,
+        "endLine": 47,
+        "endChar": 28
+      },
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f05d72d_dfc90f90",
@@ -54,6 +96,24 @@
       "writtenOn": "2025-08-04T17:07:04Z",
       "side": 1,
       "message": "nit: can be removed as it\u0027s not used anywhere in this patch",
+      "revId": "d119442164ed569a09e7fd754746502b5922316e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edc4107a_a0913933",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 102
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f05d72d_dfc90f90",
       "revId": "d119442164ed569a09e7fd754746502b5922316e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

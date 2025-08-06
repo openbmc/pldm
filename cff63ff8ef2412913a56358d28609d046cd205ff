@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a742c39c_746d1383",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 107
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "Revised the commit message: Successfully create firmware inventory entries on Yosemite V4",
+      "parentUuid": "eaf0259c_7c26af8f",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c5f18baa_f0d87b05",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 107
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9062783_8dd956d0",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a343023_ca4c5a96",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e35f3b49_3652b24c",
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab87f399_8e391652",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "Removed at the moment.",
+      "parentUuid": "e35f3b49_3652b24c",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8dc64a64_3a120772",
@@ -82,6 +136,24 @@
       "writtenOn": "2025-07-26T12:31:16Z",
       "side": 1,
       "message": "Why does this need to be in each updater?",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a52d5729_652ecd01",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "Removed at the moment.",
+      "parentUuid": "8dc64a64_3a120772",
       "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -105,6 +177,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "33981805_1aea6962",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "I would like to know more about the case we need these to be shared.",
+      "parentUuid": "ca9e0eff_8e60d62f",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "113ee841_12d244b9",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 107
@@ -116,6 +206,24 @@
       "writtenOn": "2025-07-26T12:31:16Z",
       "side": 1,
       "message": "Should we do this in a getter function or in the caller?",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72a53ae6_8b5f6a78",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-06T10:52:14Z",
+      "side": 1,
+      "message": "If I didn\u0027t understand it wrong, this should happen after we queried the component entry successfully, let me know if there\u0027s a better place to put this.",
+      "parentUuid": "113ee841_12d244b9",
       "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
