@@ -132,7 +132,7 @@ ObjectPath Manager::startRedfishOperation(
     {
         error("RDE: No valid device context found for EID={EID}", "EID",
               static_cast<int>(eid));
-        return ObjectPath{};
+        return ObjectPath{""};
     }
 
     debug("RDE: devicePtr use_count={COUNT} address={ADDR}", "COUNT",
