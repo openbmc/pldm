@@ -16,6 +16,24 @@
       "message": "Can you brief on why this is needed and point to the use case?",
       "revId": "dbf203eea57977230549404c13d656fd66b1da21",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517d0b09_0587a9fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-07T07:12:19Z",
+      "side": 1,
+      "message": "For the sake of recording the boot order on D-Bus.\n\nYou can refer to the following link: https://gerrit.openbmc.org/c/openbmc/pldm/+/82551",
+      "parentUuid": "59c7c938_4e56d394",
+      "revId": "dbf203eea57977230549404c13d656fd66b1da21",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
