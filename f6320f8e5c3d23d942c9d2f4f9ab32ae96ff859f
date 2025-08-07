@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7349014b_45c5a5d0",
+        "filename": "common/utils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:35:26Z",
+      "side": 1,
+      "message": "is there a way to get this from the PDI, to prevent the use of literals",
+      "range": {
+        "startLine": 822,
+        "startChar": 0,
+        "endLine": 824,
+        "endChar": 1
+      },
+      "revId": "f6320f8e5c3d23d942c9d2f4f9ab32ae96ff859f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf830bd7_df9abc95",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:35:26Z",
+      "side": 1,
+      "message": "Can we combine this in a single line",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 54
+      },
+      "revId": "f6320f8e5c3d23d942c9d2f4f9ab32ae96ff859f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ade0bff6_b3ce865a",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:35:26Z",
+      "side": 1,
+      "message": "can we combine this in a single line",
+      "range": {
+        "startLine": 98,
+        "startChar": 5,
+        "endLine": 99,
+        "endChar": 58
+      },
+      "revId": "f6320f8e5c3d23d942c9d2f4f9ab32ae96ff859f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea082d02_7a81a001",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:35:26Z",
+      "side": 1,
+      "message": "magic number?",
+      "range": {
+        "startLine": 484,
+        "startChar": 25,
+        "endLine": 484,
+        "endChar": 30
+      },
+      "revId": "f6320f8e5c3d23d942c9d2f4f9ab32ae96ff859f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92d00bc6_36b802fb",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:35:26Z",
+      "side": 1,
+      "message": "can we add a doxygen for this",
+      "revId": "f6320f8e5c3d23d942c9d2f4f9ab32ae96ff859f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bda982f4_8449facd",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:35:26Z",
+      "side": 1,
+      "message": "I guess one of the sensors should have the instance ID as 0?",
+      "range": {
+        "startLine": 448,
+        "startChar": 0,
+        "endLine": 455,
+        "endChar": 79
+      },
+      "revId": "f6320f8e5c3d23d942c9d2f4f9ab32ae96ff859f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
