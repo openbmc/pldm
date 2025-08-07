@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63f17b5d_264b228f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-07T16:24:41Z",
+      "side": 0,
+      "message": "Ack, inotify flow works as well",
+      "parentUuid": "95346bfe_ba0910a9",
+      "revId": "04d27285763b0757e21c11dbc27fda45e674db5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "113fa738_4a96c254",
