@@ -202,11 +202,20 @@ std::string ResourceRegistry::constructFullUriRecursive(
     if (resourceId == 0 || subUriMap.find(resourceId) == subUriMap.end())
         return "";
 
+    std::string part = subUriMap.at(resourceId);
     uint16_t parentId =
         parentMap.count(resourceId) ? parentMap.at(resourceId) : 0;
+
+    //  This approach is currently not aligned with the DMTF specification,
+    //  but discussions are ongoing to support the SoC RDE use case where
+    //  the subURI is treated as part of the root node.
+    if (parentId == 0 && !part.empty())
+    {
+        return (part.front() == '/') ? part : "/" + part;
+    }
+
     std::string parentUri =
         constructFullUriRecursive(parentId, subUriMap, parentMap);
-    std::string part = subUriMap.at(resourceId);
 
     if (!part.empty() && part.front() != '/')
         parentUri += "/";
@@ -265,12 +274,26 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
         bool isRoot = (pdr->cont_resrc_id == 0);
         std::string proposedRoot = getRdeResourceName(
             pdr->prop_cont_resrc_name, pdr->prop_cont_resrc_length);
+        std::string subUri =
+            getRdeResourceName(pdr->sub_uri_name, pdr->sub_uri_length);
 
-        if (isRoot && !proposedRoot.empty())
-            subUriMap[rid] = proposedRoot;
+        std::string fullUri;
+        if (isRoot)
+        {
+            if (!proposedRoot.empty())
+                fullUri = "/" + proposedRoot;
+            if (!subUri.empty())
+            {
+                if (!fullUri.empty() && fullUri.back() != '/')
+                    fullUri += "/";
+                fullUri += subUri;
+            }
+        }
         else
-            subUriMap[rid] =
-                getRdeResourceName(pdr->sub_uri_name, pdr->sub_uri_length);
+        {
+            fullUri = subUri;
+        }
+        subUriMap[rid] = fullUri;
         parentMap[rid] = parent;
 
         for (size_t i = 0; i < pdr->add_resrc_id_count; ++i)
