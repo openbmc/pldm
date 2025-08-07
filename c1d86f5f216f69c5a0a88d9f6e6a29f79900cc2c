@@ -34,6 +34,24 @@
       "parentUuid": "564aa154_adbd3bb0",
       "revId": "c1d86f5f216f69c5a0a88d9f6e6a29f79900cc2c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0c3b1e6_dbcdf853",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2025-08-07T16:07:45Z",
+      "side": 1,
+      "message": "I mean currently the code doesn\u0027t require working `PLDM_GET_PDR_REPOSITORY_INFO` command and by default assumes that `uint8_t repositoryState \u003d PLDM_AVAILABLE;`\nI just wonder if this check was really suppressed just because `PLDM_GET_PDR_REPOSITORY_INFO` command was always failing because of the error that is fixed in this patchset.\nAnd now when the error is fixed, maybe we shouldn\u0027t permit command fail like before?",
+      "parentUuid": "1e74bbb4_977bf519",
+      "revId": "c1d86f5f216f69c5a0a88d9f6e6a29f79900cc2c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
