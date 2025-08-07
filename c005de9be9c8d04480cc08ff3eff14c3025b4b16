@@ -38,6 +38,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6abaa5f_090d264f",
+        "filename": "common/types.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:55:26Z",
+      "side": 1,
+      "message": "Can we maintain uniformity and make this 0x00 ?",
+      "range": {
+        "startLine": 208,
+        "startChar": 4,
+        "endLine": 208,
+        "endChar": 12
+      },
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3376a75c_bb487ed9",
         "filename": "common/types.hpp",
         "patchSetId": 3
@@ -114,6 +137,69 @@
       "side": 1,
       "message": "Should I create another folder for `file-transfer`, like how `fw-update` pieces are placed?",
       "parentUuid": "d513cca5_fde1aa20",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f80ecb_9956e9e9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:55:26Z",
+      "side": 1,
+      "message": "can we have a null check of the pointer `file` before we dereference it?",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68e764d5_a6fb773d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:55:26Z",
+      "side": 1,
+      "message": "can we avoid this here and have a utils function or so?",
+      "range": {
+        "startLine": 813,
+        "startChar": 3,
+        "endLine": 816,
+        "endChar": 31
+      },
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d54a7b7_9383b6fb",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 842,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-07T06:55:26Z",
+      "side": 1,
+      "message": "magic number?",
+      "range": {
+        "startLine": 842,
+        "startChar": 2,
+        "endLine": 842,
+        "endChar": 36
+      },
       "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
