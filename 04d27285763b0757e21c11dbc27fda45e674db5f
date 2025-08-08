@@ -16,6 +16,24 @@
       "message": "why was this removed?",
       "revId": "04d27285763b0757e21c11dbc27fda45e674db5f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5fccdd_072971b0",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-08T10:56:04Z",
+      "side": 0,
+      "message": "Because the header file is including itself but it happens to bypass error due to `#pragma once`",
+      "parentUuid": "4d03063d_7f95c4b5",
+      "revId": "04d27285763b0757e21c11dbc27fda45e674db5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
