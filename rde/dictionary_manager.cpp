@@ -18,7 +18,13 @@ DictionaryManager::DictionaryManager(std::string uuid) :
     dictRootPath(std::string(baseDictionaryRoot) + "/" + deviceUUID)
 {
     std::filesystem::create_directories(dictRootPath);
-    buildAnnotationDictionary(dictRootPath / std::string(annotationFileName));
+    // TODO: Revisit this path once host-based annotation file support
+    // is implemented.
+    // buildAnnotationDictionary(dictRootPath /
+    // std::string(annotationFileName));
+    constexpr const char* annotationPath =
+        "/usr/share/redfish-schema-pack/dictionaries/annotation.bin";
+    buildAnnotationDictionary(annotationPath);
 
     const std::string triggerFile = "/tmp/.enable_dict_bootstrap";
     if (std::filesystem::exists(triggerFile))
