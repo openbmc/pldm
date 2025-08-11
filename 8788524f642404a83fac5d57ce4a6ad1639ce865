@@ -16,6 +16,24 @@
       "message": "What happen when the terminus already has the terminus name PDRs?\nWhich name will be chosen?",
       "revId": "8788524f642404a83fac5d57ce4a6ad1639ce865",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ad0a47d_bb46cda6",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2025-08-11T05:14:24Z",
+      "side": 1,
+      "message": "The terminus name is determined as follows:\n- If neither EM nor PDRs provide a terminus name, it will be empty.\n- If EM provides a terminus name but PDRs do not, the EM-defined name will be used.\n- If both EM and PDRs provide a terminus name, the PDRs-defined name will override the EM-defined name.\n\nTherefore, if the terminus already has a terminus name in the PDRs, the name in the PDRs will be chosen.",
+      "parentUuid": "d4cdf546_40ab0a0a",
+      "revId": "8788524f642404a83fac5d57ce4a6ad1639ce865",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
