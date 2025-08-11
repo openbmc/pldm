@@ -81,6 +81,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "048e6096_72adbcaf",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d1cdbd09_532a47a9",
+      "range": {
+        "startLine": 320,
+        "startChar": 62,
+        "endLine": 320,
+        "endChar": 66
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "312a2e09_9bc3e4da",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ed51c1aa_a442e050",
+      "range": {
+        "startLine": 320,
+        "startChar": 43,
+        "endLine": 320,
+        "endChar": 50
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a23fbd40_15afb444",
@@ -94,6 +142,30 @@
       "writtenOn": "2025-08-11T11:00:44Z",
       "side": 1,
       "message": "This can be merged to the previous paragraph.",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 325,
+        "endChar": 62
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3d36fe_3b866ef5",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a23fbd40_15afb444",
       "range": {
         "startLine": 325,
         "startChar": 0,
@@ -121,6 +193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "469cad09_5ebfa234",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "std::ifstream can\u0027t be used to read data from file descriptors",
+      "parentUuid": "00fc9cc5_fc9de756",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78f708f0_f423e47e",
@@ -138,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ece2874e_e1721fe5",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "This would clear any data if present",
+      "parentUuid": "78f708f0_f423e47e",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9937b097_01562265",
@@ -151,6 +259,24 @@
       "writtenOn": "2025-08-11T08:04:59Z",
       "side": 1,
       "message": "nit: remove comment",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07708672_ae72a95c",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9937b097_01562265",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -207,6 +333,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61ca66b2_7d9eb800",
+        "filename": "fw-update/update.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "std::ifstream does not have a constructor overload for file descriptors",
+      "parentUuid": "9bb842a2_4ab6806a",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01d37702_37eb3edc",
@@ -247,6 +391,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89f2067f_dfae0f8c",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Package parsing occurs in a deferred call so we don\u0027t have the pkg version to create the hash",
+      "parentUuid": "d07de069_69944e26",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c184f16f_a12021e4",
@@ -260,6 +422,24 @@
       "writtenOn": "2025-08-11T08:04:59Z",
       "side": 1,
       "message": "Why are we not using the hash of the pkg version?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0ff8e63_829d467a",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "The process has not been parsed yet at this point, so we don\u0027t have access to the version",
+      "parentUuid": "c184f16f_a12021e4",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -281,6 +461,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87447f36_aa7bd410",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Used to log the FW Update duration in `updateDeviceCompletion`",
+      "parentUuid": "bcb99cf0_290b20be",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a85c15e4_ca8389c3",
@@ -294,6 +492,24 @@
       "writtenOn": "2025-08-11T08:04:59Z",
       "side": 1,
       "message": "Do we really need this? Bmcweb will catch the exception anyway?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b481751_f04cf2e7",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Same as below, we throw the error in the deferred call so bmcweb relies on the activation object to track the status",
+      "parentUuid": "a85c15e4_ca8389c3",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -315,6 +531,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e25c85c4_0e1c2481",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "No, it won\u0027t, since this is being run in a deferred call. We\u0027re returning early to bmcweb on line 105.",
+      "parentUuid": "3d7f472b_c5d402b6",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "103ba100_00c1336c",
@@ -332,6 +566,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "835d8480_9f2ef45f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "103ba100_00c1336c",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "968f982a_030feb8a",
@@ -345,6 +597,24 @@
       "writtenOn": "2025-08-11T08:04:59Z",
       "side": 1,
       "message": "Why is this here? Where was this being done in the existing inotify flow?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7732e11f_b580e1f0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "In inotify flow - Bmcweb would set `RequestedActivations` on the Activation object which is where this would get triggered",
+      "parentUuid": "968f982a_030feb8a",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -401,6 +671,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df54f47a_219157fb",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b05c7d68_031c7d2e",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c7b3925_5923fd49",
@@ -424,6 +712,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bcc8324_6e2fd927",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7c7b3925_5923fd49",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 58
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af04e1a7_b44a5f82",
@@ -437,6 +749,30 @@
       "writtenOn": "2025-08-11T11:00:44Z",
       "side": 1,
       "message": "nit: `fw-update-pkg-inotify`",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 22
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27f21fac_852944a1",
+        "filename": "meson.options",
+        "patchSetId": 7
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-11T12:08:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "af04e1a7_b44a5f82",
       "range": {
         "startLine": 229,
         "startChar": 4,
