@@ -226,6 +226,24 @@
       "parentUuid": "113ee841_12d244b9",
       "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56c6146d_63b2a3b1",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Is this comment still valid as i see you have changed the patch. Please handle this comment accordingly to close/followup on this.",
+      "parentUuid": "72a53ae6_8b5f6a78",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

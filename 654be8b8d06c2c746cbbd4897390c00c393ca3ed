@@ -1,0 +1,310 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9fde9a3_ffe0e500",
+        "filename": "fw-update/firmware_inventory.cpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "I don\u0027t see InternalFailure being used. Can we drop this if it not needed in this patch and add it where u use it?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72361a6f_c1305779",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "What kind of request is this? Is this the handler API from PLDM sdevent loop?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e0cb753_955406c2",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Since, u r initializing this in constructor args you can make this a regular var?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152de4ef_9e018b92",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Since, u r initializing this in constructor args you can make this a regular var?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac135e21_5a101588",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "How are you handling the Version being empty case?\n\nWhy are you not using the method like https://grok.openbmc.org/xref/openbmc/phosphor-bmc-code-mgmt/common/src/software.cpp?r\u003ddbb7015e93b1170465efa9c38ce9ab5a317d190e#42?\n\nIs see you are only calling getVersionId in creation flow. Would there be any flow where you need to do a reverse lookup, if not then better to use a method like i mentioned above.",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19c86074_bb76b90e",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Is this the firmware update message/request? If yes, then why are you feeding it back into firmmwareInventory Instance?\nAlso lets keep the update flow patch separate. There should be no implementation of firmware update in this patch but should only handle exposing the firmware inventory version and other related show interfaces as the patch description states.",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963b6e87_fd928b9e",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Rename to createFirmwareEntry",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07758419_5b51e960",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Rename to deletFirmwareEntry.",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3991a1c3_e4ce42ff",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Why don\u0027t you use SoftwareIdentifier as the in_arg for the delete flow too, to keep API signature consistent for maintainability. Is there some flow where ComponentIdentifier won\u0027t be available?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e78662be_50ebb61d",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Why do you need this refresh API. Please add a comment with some description above it explaining the usecase.",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b33f8587_b8094770",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Does this handler processes async messages queued for later processing from StartUpdate interface or is it something else?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8a76338_cb5c48c9",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "getVersionId is really a confusion name for this API. I thought your manager class is returning some version.\nPlease rename this API to generateVersionHash. Make this API static and drop it from class definition.",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6239c6b_2126dbc9",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Can you please make this function static function instead and drop it from class definition. It only calls pldm::utils::DBusHandler().getAncestors which is possible if its static API too and it doesn\u0027t use any state from the class as such?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f23d9d3_a8fb9e0d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Is there no reactor to this configuration change? Is there something already handling this?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b95cc980_4828fbd4",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Please make this a static API as it just operates on descriptors passed in arg and drop it from class definition.",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7e72828_0ee23171",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Why do we need to update this? Whats the reason?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5d785b_8c45a81d",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "Why do you need the refresh API? Can you please add the usecase to the API description?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ab8a798_695bc705",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:17:10Z",
+      "side": 1,
+      "message": "You are feeding this to updateManager and then to inventoryMgr based on an error, why is that? Why is there a fallback?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
