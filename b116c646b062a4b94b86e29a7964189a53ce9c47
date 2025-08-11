@@ -83,6 +83,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a23fbd40_15afb444",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-11T11:00:44Z",
+      "side": 1,
+      "message": "This can be merged to the previous paragraph.",
+      "range": {
+        "startLine": 325,
+        "startChar": 0,
+        "endLine": 325,
+        "endChar": 62
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00fc9cc5_fc9de756",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-11T11:00:44Z",
+      "side": 1,
+      "message": "What is the motivation for this?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78f708f0_f423e47e",
         "filename": "fw-update/update.cpp",
         "patchSetId": 7
@@ -111,6 +151,23 @@
       "writtenOn": "2025-08-11T08:04:59Z",
       "side": 1,
       "message": "nit: remove comment",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd4fdaa1_58a31393",
+        "filename": "fw-update/update.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-11T11:00:44Z",
+      "side": 1,
+      "message": "How is ApplyTimeIntf used in PLDM T5 flow now? ApplyImmediate can be mapped to SelfContainedActivationRequest to true.",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -276,6 +333,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0950294_12d0b36a",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-11T11:00:44Z",
+      "side": 1,
+      "message": "Can we have separate source files for inotify vs StartUpdate to ease code maintenance and inotify source files can be removed when it is obsolete.",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b05c7d68_031c7d2e",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 7
@@ -287,6 +361,52 @@
       "writtenOn": "2025-08-11T08:04:59Z",
       "side": 1,
       "message": "Can you init this in the ctor initializer list so that this can be a #else?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c7b3925_5923fd49",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-11T11:00:44Z",
+      "side": 1,
+      "message": "doxygen comments for processStreamDefer",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 58
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af04e1a7_b44a5f82",
+        "filename": "meson.options",
+        "patchSetId": 7
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-11T11:00:44Z",
+      "side": 1,
+      "message": "nit: `fw-update-pkg-inotify`",
+      "range": {
+        "startLine": 229,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 22
+      },
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
