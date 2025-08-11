@@ -1,0 +1,294 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71a3cc5e_ded9cbe0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Add a couple lines on why this is a top-level StartUpdate vs per component (could just point to the design doc link).",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "817352de_917b1909",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "What component images where contained in the bundle?\n\nBoth inotify and StartUpdate methods were tested?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1cdbd09_532a47a9",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "nit: pldmd",
+      "range": {
+        "startLine": 320,
+        "startChar": 62,
+        "endLine": 320,
+        "endChar": 66
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed51c1aa_a442e050",
+        "filename": "README.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "this is not the default.",
+      "range": {
+        "startLine": 320,
+        "startChar": 43,
+        "endLine": 320,
+        "endChar": 50
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f708f0_f423e47e",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Do you need this?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9937b097_01562265",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "nit: remove comment",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb842a2_4ab6806a",
+        "filename": "fw-update/update.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Why a stringstream? Why not ifstream?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d37702_37eb3edc",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "We\u0027re not doing these checks in the StartUpdate path?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 5
+      },
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07de069_69944e26",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Why are we not using the hash of the pkg version?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c184f16f_a12021e4",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Why are we not using the hash of the pkg version?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcb99cf0_290b20be",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Is this used?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a85c15e4_ca8389c3",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Do we really need this? Bmcweb will catch the exception anyway?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d7f472b_c5d402b6",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Do we really need this? Bmcweb will catch the exception anyway?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "103ba100_00c1336c",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Need to throw here as well.",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "968f982a_030feb8a",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Why is this here? Where was this being done in the existing inotify flow?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b05c7d68_031c7d2e",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Can you init this in the ctor initializer list so that this can be a #else?",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

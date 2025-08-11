@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47a4b303_605196e1",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b5012b61_8092bafd",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f209b964_4c270ec3",
@@ -106,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64e88835_5c55d556",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ce36e5c9_8538651e",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13a0e665_af98d62f",
@@ -137,6 +173,24 @@
       "side": 1,
       "message": "Not necessary here since the package is being written into a stream",
       "parentUuid": "13a0e665_af98d62f",
+      "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94d5eef0_91bad1ec",
+        "filename": "fw-update/activation.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T08:04:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2fc9d17c_b62dfc67",
       "revId": "90c7bce8e987bbba502c2fc56e7c985d548931a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
