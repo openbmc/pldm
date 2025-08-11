@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cf67bff_25995570",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 71
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-11T07:25:20Z",
+      "side": 1,
+      "message": "Hi @manojkiran.eda@gmail.com,\n\nCould you please help me review this series of commits?\n\nThank you very much!",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
