@@ -174,6 +174,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "199ee321_7fc7852b",
+        "filename": "fw-update/update.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T11:38:46Z",
+      "side": 1,
+      "message": "It\u0027s not used in this commit at all. That support can come in later?",
+      "parentUuid": "fd4fdaa1_58a31393",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9bb842a2_4ab6806a",
         "filename": "fw-update/update.hpp",
         "patchSetId": 7
@@ -344,6 +362,24 @@
       "writtenOn": "2025-08-11T11:00:44Z",
       "side": 1,
       "message": "Can we have separate source files for inotify vs StartUpdate to ease code maintenance and inotify source files can be removed when it is obsolete.",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "333b4ce2_1fb214fb",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-11T11:38:46Z",
+      "side": 1,
+      "message": "@rushtotom@gmail.com I don\u0027t think complete separatio is possible without adding a lot of new code. Let me know if you have ideas. I think the current #ifdef use here is not too bad (some comments need to be fixed).",
+      "parentUuid": "e0950294_12d0b36a",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
