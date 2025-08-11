@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49784d54_29318139",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-11T15:58:12Z",
+      "side": 1,
+      "message": "Please add a test for package parsing failures. In such cases, the task should fail immediately.",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1cdbd09_532a47a9",
         "filename": "README.md",
         "patchSetId": 7
@@ -440,6 +457,23 @@
       "side": 1,
       "message": "The process has not been parsed yet at this point, so we don\u0027t have access to the version",
       "parentUuid": "c184f16f_a12021e4",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626203e4_cdc076fc",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-11T15:58:12Z",
+      "side": 1,
+      "message": "So, we’ll create the task without even creating the activation interface. I don’t see any concerns here, as bmcweb will create the task without verifying if the D-Bus object path is valid — which wasn’t the case with the inotify approach.\n\nAlso, the phrase “will be hosted” in the PDI description is ambiguous-\n```\nThe object path where the image interfaces will be hosted, for\nexample, required interfaces such as ActivationStatus,\nActivationProgress and optional interfaces such as Version.\n```",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

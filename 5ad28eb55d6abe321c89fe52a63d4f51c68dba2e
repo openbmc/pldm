@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fe759d3_eabd9fb1",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-11T15:58:12Z",
+      "side": 1,
+      "message": "Please add logs here to clarify why the update didn’t start.",
+      "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf01eb20_68688668",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-11T15:58:12Z",
+      "side": 1,
+      "message": "Instead of returning a path that isn’t hosted on D-Bus, we should-\n1. Either create a D-Bus object with the activation interface and then fail it \n2. Or throw an exception here.\n\nThis way, bmcweb won’t end up waiting 5 minutes for the update task to time out.",
+      "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b62eab98_721e2017",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-11T15:58:12Z",
+      "side": 1,
+      "message": "Where are these exceptions being handled? Wouldn’t this cause a pldmd crash? The same concern applies to other error cases in this method as well.",
+      "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
