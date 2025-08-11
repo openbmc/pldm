@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a2e5e2b4_6856bcc9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 46
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:23:20Z",
+      "side": 1,
+      "message": "Which property change event are you referring here?",
+      "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d248897b_5a4f4939",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 46
@@ -83,6 +100,23 @@
       "writtenOn": "2025-07-22T09:59:13Z",
       "side": 1,
       "message": "Same as above, please clear `packageData`",
+      "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a4f1b8d_cdb3962c",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-11T19:23:20Z",
+      "side": 1,
+      "message": "Which patch introduces this class ? I don\u0027t see it in https://gerrit.openbmc.org/c/openbmc/pldm/+/73512?",
       "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
