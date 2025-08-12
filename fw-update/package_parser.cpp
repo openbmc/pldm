@@ -22,7 +22,7 @@ using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 size_t PackageParser::parseFDIdentificationArea(
-    DeviceIDRecordCount deviceIdRecCount, const std::vector<uint8_t>& pkgHdr,
+    DeviceIDRecordCount deviceIdRecCount, std::span<const uint8_t> pkgHdr,
     size_t offset)
 {
     size_t pkgHdrRemainingSize = pkgHdr.size() - offset;
@@ -141,7 +141,7 @@ size_t PackageParser::parseFDIdentificationArea(
 }
 
 size_t PackageParser::parseCompImageInfoArea(ComponentImageCount compImageCount,
-                                             const std::vector<uint8_t>& pkgHdr,
+                                             std::span<const uint8_t> pkgHdr,
                                              size_t offset)
 {
     size_t pkgHdrRemainingSize = pkgHdr.size() - offset;
@@ -221,10 +221,9 @@ void PackageParser::validatePkgTotalSize(uintmax_t pkgSize)
     }
 }
 
-void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
-                            uintmax_t pkgSize)
+void PackageParserV1::parse(std::span<const uint8_t> package)
 {
-    if (pkgHeaderSize >= pkgHdr.size())
+    if (pkgHeaderSize >= package.size())
     {
         error("Invalid package header size '{PKG_HDR_SIZE}' ", "PKG_HDR_SIZE",
               pkgHeaderSize);
@@ -239,10 +238,10 @@ void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
         throw InternalFailure();
     }
 
-    auto deviceIdRecCount = static_cast<DeviceIDRecordCount>(pkgHdr[offset]);
+    auto deviceIdRecCount = static_cast<DeviceIDRecordCount>(package[offset]);
     offset += sizeof(DeviceIDRecordCount);
 
-    offset = parseFDIdentificationArea(deviceIdRecCount, pkgHdr, offset);
+    offset = parseFDIdentificationArea(deviceIdRecCount, package, offset);
     if (deviceIdRecCount != fwDeviceIDRecords.size())
     {
         error("Failed to find DeviceIDRecordCount {DREC_CNT} entries",
@@ -257,10 +256,10 @@ void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
     }
 
     auto compImageCount = static_cast<ComponentImageCount>(
-        le16toh(pkgHdr[offset] | (pkgHdr[offset + 1] << 8)));
+        le16toh(package[offset] | (package[offset + 1] << 8)));
     offset += sizeof(ComponentImageCount);
 
-    offset = parseCompImageInfoArea(compImageCount, pkgHdr, offset);
+    offset = parseCompImageInfoArea(compImageCount, package, offset);
     if (compImageCount != componentImageInfos.size())
     {
         error("Failed to find ComponentImageCount '{COMP_IMG_CNT}' entries",
@@ -275,10 +274,10 @@ void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
         throw InternalFailure();
     }
 
-    auto calcChecksum = pldm_edac_crc32(pkgHdr.data(), offset);
+    auto calcChecksum = pldm_edac_crc32(package.data(), offset);
     auto checksum = static_cast<PackageHeaderChecksum>(
-        le32toh(pkgHdr[offset] | (pkgHdr[offset + 1] << 8) |
-                (pkgHdr[offset + 2] << 16) | (pkgHdr[offset + 3] << 24)));
+        le32toh(package[offset] | (package[offset + 1] << 8) |
+                (package[offset + 2] << 16) | (package[offset + 3] << 24)));
     if (calcChecksum != checksum)
     {
         error(
@@ -288,10 +287,10 @@ void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
         throw InternalFailure();
     }
 
-    validatePkgTotalSize(pkgSize);
+    validatePkgTotalSize(package.size());
 }
 
-std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgData)
+std::unique_ptr<PackageParser> parsePkgHeader(std::span<const uint8_t> pkgData)
 {
     constexpr std::array<uint8_t, PLDM_FWUP_UUID_LENGTH> hdrIdentifierv1{
         0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D, 0x49, 0x43,

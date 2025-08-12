@@ -110,7 +110,8 @@ class UpdateManager
 
     std::filesystem::path fwPackageFilePath;
     std::unique_ptr<PackageParser> parser;
-    std::ifstream package;
+    int packageFd = -1;
+    std::span<uint8_t> package;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
         deviceUpdaterMap;

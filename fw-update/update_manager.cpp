@@ -4,10 +4,15 @@
 #include "common/utils.hpp"
 #include "package_parser.hpp"
 
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+
 #include <phosphor-logging/lg2.hpp>
 
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -51,39 +56,61 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         }
     }
 
-    package.open(packageFilePath,
-                 std::ios::binary | std::ios::in | std::ios::ate);
-    if (!package.good())
+    packageFd = open(packageFilePath.c_str(), O_RDONLY);
+    if (packageFd < 0)
     {
         error(
             "Failed to open the PLDM fw update package file '{FILE}', error - {ERROR}.",
             "ERROR", errno, "FILE", packageFilePath);
-        package.close();
         std::filesystem::remove(packageFilePath);
         return -1;
     }
 
-    uintmax_t packageSize = package.tellg();
+    struct stat st;
+    if (fstat(packageFd, &st) < 0)
+    {
+        error(
+            "Failed to get the file status of PLDM fw update package file '{FILE}', error - {ERROR}.",
+            "ERROR", errno, "FILE", packageFilePath);
+        close(packageFd);
+        packageFd = -1;
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+    size_t packageSize = st.st_size;
     if (packageSize < sizeof(pldm_package_header_information))
     {
         error(
             "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
             "SIZE", packageSize, "PACKAGE_HEADER_INFO_SIZE",
             sizeof(pldm_package_header_information));
-        package.close();
+        close(packageFd);
         std::filesystem::remove(packageFilePath);
         return -1;
     }
 
-    package.seekg(0);
-    std::vector<uint8_t> packageHeader(packageSize);
-    package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
+    auto packageMap = static_cast<uint8_t*>(
+        mmap(nullptr, packageSize, PROT_READ, MAP_PRIVATE, packageFd, 0));
+    if (packageMap == MAP_FAILED)
+    {
+        error(
+            "Failed to map the PLDM fw update package file '{FILE}', error - {ERROR}.",
+            "ERROR", errno, "FILE", packageFilePath);
+        close(packageFd);
+        packageFd = -1;
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
 
-    parser = parsePkgHeader(packageHeader);
+    package = std::span<uint8_t>(packageMap, packageSize);
+
+    parser = parsePkgHeader(package);
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
-        package.close();
+        munmap(packageMap, packageSize);
+        close(packageFd);
+        packageFd = -1;
         std::filesystem::remove(packageFilePath);
         return -1;
     }
@@ -92,10 +119,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     size_t versionHash = std::hash<std::string>{}(parser->pkgVersion);
     objPath = swRootPath + std::to_string(versionHash);
 
-    package.seekg(0);
     try
     {
-        parser->parse(packageHeader, packageSize);
+        parser->parse(package);
     }
     catch (const std::exception& e)
     {
@@ -103,7 +129,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        package.close();
+        munmap(packageMap, packageSize);
+        close(packageFd);
+        packageFd = -1;
         parser.reset();
         return -1;
     }
@@ -118,7 +146,9 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        package.close();
+        munmap(packageMap, packageSize);
+        close(packageFd);
+        packageFd = -1;
         parser.reset();
         return 0;
     }
@@ -261,7 +291,9 @@ void UpdateManager::clearActivationInfo()
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
     parser.reset();
-    package.close();
+    munmap(package.data(), package.size());
+    close(packageFd);
+    packageFd = -1;
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
     compUpdateCompletedCount = 0;

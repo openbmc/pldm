@@ -4,7 +4,12 @@
 #include "fw-update/package_parser.hpp"
 #include "requester/handler.hpp"
 
+#include <fcntl.h>
 #include <libpldm/firmware_update.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+
+#include <cstdlib>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -15,9 +20,27 @@ using namespace pldm::fw_update;
 class DeviceUpdaterTest : public testing::Test
 {
   protected:
-    DeviceUpdaterTest() :
-        package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate)
+    DeviceUpdaterTest()
     {
+        fd = open("./test_pkg", O_RDONLY);
+        if (fd < 0)
+        {
+            throw std::runtime_error("Failed to open test package file");
+        }
+        struct stat st;
+        if (fstat(fd, &st) < 0)
+        {
+            throw std::runtime_error("Failed to get file status");
+        }
+        package = std::span<uint8_t>(
+            static_cast<uint8_t*>(
+                mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0)),
+            st.st_size);
+        if (package.data() == MAP_FAILED)
+        {
+            throw std::runtime_error("Failed to map package file");
+        }
+
         fwDeviceIDRecord = {
             1,
             {0x00},
@@ -31,9 +54,20 @@ class DeviceUpdaterTest : public testing::Test
             {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
         compInfo = {{std::make_pair(10, 100), 1}};
     }
+    ~DeviceUpdaterTest() override
+    {
+        if (package.data() != MAP_FAILED)
+        {
+            munmap(package.data(), package.size());
+        }
+        if (fd >= 0)
+        {
+            close(fd);
+        }
+    }
 
     int fd = -1;
-    std::ifstream package;
+    std::span<uint8_t> package;
     FirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
@@ -42,19 +76,12 @@ class DeviceUpdaterTest : public testing::Test
 TEST_F(DeviceUpdaterTest, validatePackage)
 {
     constexpr uintmax_t testPkgSize = 1163;
-    uintmax_t packageSize = package.tellg();
-    EXPECT_EQ(packageSize, testPkgSize);
+    EXPECT_EQ(package.size(), testPkgSize);
 
-    package.seekg(0);
-    std::vector<uint8_t> packageHeader(testPkgSize);
-    package.read(new (packageHeader.data()) char, testPkgSize);
-
-    auto parser = parsePkgHeader(packageHeader);
+    auto parser = parsePkgHeader(package);
     EXPECT_NE(parser, nullptr);
 
-    package.seekg(0);
-
-    parser->parse(packageHeader, packageSize);
+    parser->parse(package);
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& testPkgCompImageInfos = parser->getComponentImageInfos();
 

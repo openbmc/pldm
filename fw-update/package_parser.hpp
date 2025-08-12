@@ -7,8 +7,8 @@
 #include <array>
 #include <cstdint>
 #include <memory>
+#include <span>
 #include <tuple>
-#include <vector>
 
 namespace pldm
 {
@@ -53,13 +53,11 @@ class PackageParser
 
     /** @brief Parse the firmware update package header
      *
-     *  @param[in] pkgHdr - Package header
-     *  @param[in] pkgSize - Size of the firmware update package
+     *  @param[in] package - Package data to parse
      *
      *  @note Throws exception is parsing fails
      */
-    virtual void parse(const std::vector<uint8_t>& pkgHdr,
-                       uintmax_t pkgSize) = 0;
+    virtual void parse(std::span<const uint8_t> package) = 0;
 
     /** @brief Get firmware device ID records from the package
      *
@@ -99,7 +97,7 @@ class PackageParser
      *          device identification area, on error throw exception.
      */
     size_t parseFDIdentificationArea(DeviceIDRecordCount deviceIdRecCount,
-                                     const std::vector<uint8_t>& pkgHdr,
+                                     std::span<const uint8_t> pkgHdr,
                                      size_t offset);
 
     /** @brief Parse the component image information area
@@ -113,7 +111,7 @@ class PackageParser
      *          image information area, on error throw exception.
      */
     size_t parseCompImageInfoArea(ComponentImageCount compImageCount,
-                                  const std::vector<uint8_t>& pkgHdr,
+                                  std::span<const uint8_t> pkgHdr,
                                   size_t offset);
 
     /** @brief Validate the total size of the package
@@ -170,17 +168,17 @@ class PackageParserV1 final : public PackageParser
         PackageParser(pkgHeaderSize, pkgVersion, componentBitmapBitLength)
     {}
 
-    virtual void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize);
+    virtual void parse(std::span<const uint8_t> pkgHdr);
 };
 
 /** @brief Parse the package header information
  *
- *  @param[in] pkgHdrInfo - package header information section in the package
+ *  @param[in] package - the buffer of the firmware update package
  *
  *  @return On success return the PackageParser for the header format version
  *          on failure return nullptr
  */
-std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgHdrInfo);
+std::unique_ptr<PackageParser> parsePkgHeader(std::span<const uint8_t> package);
 
 } // namespace fw_update
 

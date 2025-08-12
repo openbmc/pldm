@@ -456,11 +456,8 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
 
     response.resize(sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
     responseMsg = new (response.data()) pldm_msg;
-    package.seekg(compOffset + offset);
-    package.read(
-        reinterpret_cast<char*>(
-            response.data() + sizeof(pldm_msg_hdr) + sizeof(completionCode)),
-        length - padBytes);
+    std::memcpy(response.data() + sizeof(pldm_msg_hdr) + sizeof(completionCode),
+                package.data() + compOffset + offset, length - padBytes);
     rc = encode_request_firmware_data_resp(
         request->hdr.instance_id, completionCode, responseMsg,
         sizeof(completionCode));
