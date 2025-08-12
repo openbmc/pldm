@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dd2a3dd_d4ca941f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-12T11:02:59Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8fe759d3_eabd9fb1",
+      "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf01eb20_68688668",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c1a84aa_37f7c419",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-12T11:02:59Z",
+      "side": 1,
+      "message": "Ack, pldm will now create the activation interface with the appropriate property set. There\u0027s no relevant exceptions defined in PDI for this scenario",
+      "parentUuid": "cf01eb20_68688668",
+      "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b62eab98_721e2017",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-08-11T15:58:12Z",
       "side": 1,
       "message": "Where are these exceptions being handled? Wouldn’t this cause a pldmd crash? The same concern applies to other error cases in this method as well.",
+      "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71f67cd7_e854d596",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-12T11:02:59Z",
+      "side": 1,
+      "message": "For inotify flow, they\u0027re handled by the try-catch block in processPackage(). \n\nFor StartUpdate flow, the deferred handler does not cause pldm to crash",
+      "parentUuid": "b62eab98_721e2017",
       "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
