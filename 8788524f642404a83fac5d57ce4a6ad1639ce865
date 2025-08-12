@@ -34,6 +34,24 @@
       "parentUuid": "d4cdf546_40ab0a0a",
       "revId": "8788524f642404a83fac5d57ce4a6ad1639ce865",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f1fe57b_2c7917c1",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-12T04:11:11Z",
+      "side": 1,
+      "message": "Kevin, \n\nCould u please add this to the commit message stating, what takes the highest precedence and over what ? I don\u0027t want this to be buried in the comments and in code.",
+      "parentUuid": "0ad0a47d_bb46cda6",
+      "revId": "8788524f642404a83fac5d57ce4a6ad1639ce865",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
