@@ -46,6 +46,30 @@
       },
       "revId": "18546afc1f506be36f5bfd7b8c83b15a70c20496",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7046e3c3_0d3cf199",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-12T04:17:22Z",
+      "side": 1,
+      "message": "\u003e The function declaration seems a bit odd that it now expects the callers to std::move the parameters instead. Rather why not just do const reference instead ?\n\nCould u respond to this question as well ? This makes all its callers to move the parameters, right ? why are we designing it that way ?",
+      "parentUuid": "6a0e2d89_bfaec33f",
+      "range": {
+        "startLine": 524,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 45
+      },
+      "revId": "18546afc1f506be36f5bfd7b8c83b15a70c20496",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
