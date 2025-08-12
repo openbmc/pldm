@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b57c5d3_36f612a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-12T19:30:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "71a3cc5e_ded9cbe0",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "817352de_917b1909",
@@ -48,6 +66,42 @@
       "writtenOn": "2025-08-11T15:58:12Z",
       "side": 1,
       "message": "Please add a test for package parsing failures. In such cases, the task should fail immediately.",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1442f66_2456d332",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-12T19:30:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "49784d54_29318139",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "442aaa29_e2cb33ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-12T19:30:17Z",
+      "side": 1,
+      "message": "Yes, both of them were tested. The bundle contained GPU and SMA images",
+      "parentUuid": "817352de_917b1909",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
