@@ -52,6 +52,24 @@
       "parentUuid": "0ad0a47d_bb46cda6",
       "revId": "8788524f642404a83fac5d57ce4a6ad1639ce865",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2e4209d_a17cb86d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2025-08-12T05:01:52Z",
+      "side": 1,
+      "message": "Sure, added to the commit message.",
+      "parentUuid": "7f1fe57b_2c7917c1",
+      "revId": "8788524f642404a83fac5d57ce4a6ad1639ce865",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
