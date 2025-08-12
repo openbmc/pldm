@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2368267_1148d50f",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-12T20:33:28Z",
+      "side": 1,
+      "message": "Some of the included headers seem unnecessary — please remove them.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 29
+      },
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70aefd26_bafcf21c",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-12T20:33:28Z",
+      "side": 1,
+      "message": "Please remove it as it\u0027s not used anywhere",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7881f7b0_29627c70",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-12T20:33:28Z",
+      "side": 1,
+      "message": "I see that it\u0027s declared in the header file but implementation is missing, let\u0027s remove it if it\u0027s not required.",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b80450d7_3651273f",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-12T20:33:28Z",
+      "side": 1,
+      "message": "What’s the reason for adding this check? Is it solely to log an error in the PLDM journal?\nWe already create a hash for an empty string, just like in other cases.",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67ffcb5b_5fed975b",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-12T20:33:28Z",
+      "side": 1,
+      "message": "Similarly, it\u0027s again declared in the header file but not implemented. Please remove.",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c70ee51_f9e11883",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-12T20:33:28Z",
+      "side": 1,
+      "message": "There’s a type mismatch here,\n`using SoftwareIdentifier \u003d std::pair\u003ceid, CompIdentifier\u003e;`\n\nCompIdentifier is not the same as downstreamDeviceIndex",
+      "range": {
+        "startLine": 582,
+        "startChar": 8,
+        "endLine": 582,
+        "endChar": 74
+      },
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8b5ac09_5ab9ee13",
+        "filename": "fw-update/test/meson.build",
+        "patchSetId": 109
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-12T20:33:28Z",
+      "side": 1,
+      "message": "We don\u0027t need this change as there\u0027s no new UT added.",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
