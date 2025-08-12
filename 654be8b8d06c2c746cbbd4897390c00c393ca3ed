@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "895fb2cc_3d85249f",
+        "filename": "fw-update/firmware_inventory.cpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "a9fde9a3_ffe0e500",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72361a6f_c1305779",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-11T19:17:10Z",
       "side": 1,
       "message": "What kind of request is this? Is this the handler API from PLDM sdevent loop?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddf5f111_16bce8e9",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "We plan to let the class inherit from the update manager, these are the function needed from, but I just remove it to avoid the confusion of the motivation.",
+      "parentUuid": "72361a6f_c1305779",
       "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a92c87e5_4344bf66",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "8e0cb753_955406c2",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "152de4ef_9e018b92",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-08-11T19:17:10Z",
       "side": 1,
       "message": "Since, u r initializing this in constructor args you can make this a regular var?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17658f39_91de2118",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "152de4ef_9e018b92",
       "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +192,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fb89d79_66e856ea",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "963b6e87_fd928b9e",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07758419_5b51e960",
@@ -150,6 +240,24 @@
       "writtenOn": "2025-08-11T19:17:10Z",
       "side": 1,
       "message": "Why don\u0027t you use SoftwareIdentifier as the in_arg for the delete flow too, to keep API signature consistent for maintainability. Is there some flow where ComponentIdentifier won\u0027t be available?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f343a53a_8652bbf9",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07758419_5b51e960",
       "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -188,6 +296,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08cdd80b_05002f1a",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Removed at this stage, this is used to bypass the responce to firmware inventories.",
+      "parentUuid": "b33f8587_b8094770",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8a76338_cb5c48c9",
@@ -201,6 +327,24 @@
       "writtenOn": "2025-08-11T19:17:10Z",
       "side": 1,
       "message": "getVersionId is really a confusion name for this API. I thought your manager class is returning some version.\nPlease rename this API to generateVersionHash. Make this API static and drop it from class definition.",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "150afbc6_ebf960da",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8a76338_cb5c48c9",
       "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -303,6 +447,24 @@
       "writtenOn": "2025-08-11T19:17:10Z",
       "side": 1,
       "message": "You are feeding this to updateManager and then to inventoryMgr based on an error, why is that? Why is there a fallback?",
+      "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77cfbaf4_1f0a3665",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 108
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-12T09:48:18Z",
+      "side": 1,
+      "message": "Removed at this stage.\nMy intention is to let each Firmware Inventory carry a saperated derieved class of the `UpdateManager`, so that we can accomplish the parallel update feature, and let the update tasks be allowed to run indipendently.\n\nIn this case, manager should be a proxy for multiple update managers, including the original one.\n\nBut I\u0027m open to know if there is a better design for our accomplishment.",
+      "parentUuid": "3ab8a798_695bc705",
       "revId": "654be8b8d06c2c746cbbd4897390c00c393ca3ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
