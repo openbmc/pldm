@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01b4a9fd_0904ef59",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "This should be structured log DeviceOverOperatingTemperatureFault",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3539eedb_a238fd3b",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "This shoulld be PowerRailFault",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89dac828_e06647c4",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "PowerRailFault",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07871e16_d6d3377f",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "PowerRailFault? Or VoltageRegulatorFault",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3167ed5c_d0956315",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "DeviceOverOperatingTemperature",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db4309bc_cd68f3d7",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "We probably need a new event type for this. HostBootFailure or something like that. That could cover all OS LOAD, FRB2/FRB3 logs including Post Timedout.",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bbfa21e_5323d394",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "PowerRailFault?",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948870d4_5ccd0250",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:39:44Z",
+      "side": 1,
+      "message": "VoltageRegulatorFault? Or PowerRailFault?",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
