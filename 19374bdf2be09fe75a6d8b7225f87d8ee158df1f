@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d453ad2_c4fdaf0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-13T12:00:20Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Can you share PLDM memory usage during firmware update both without and with this change?\n\nNormally this is how I capture the memory usage, but feel free to use any other method you prefer - \n\n```\nBefore starting Update-\nnohup top -b -d 0.1 | awk \u0027{ print strftime(\"[%Y-%m-%d %H:%M:%S]\"), $0; fflush(); }\u0027 \u003e top_output.txt 2\u003e\u00261 \u0026\n\nOnce image is copied and pldm update starts\nkill %1\n\ncat top_output.txt | grep Mem:\n\ncat top_output.txt| grep /usr/bin/pldmd\n```",
+      "revId": "19374bdf2be09fe75a6d8b7225f87d8ee158df1f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
