@@ -449,20 +449,24 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
 
     if (oipInfo.operationType == OperationType::READ)
     {
+        info("RDE: Received transferHandle={HANDLE} for resourceId={RID}",
+             "HANDLE", resultTransferHandle, "RID", currentResourceId_);
+
         if (resultTransferHandle == 0)
+        {
             addChunk(currentResourceId_,
                      {responsePayload, responsePayloadLength}, false, true);
+            std::string decoded = getJsonStrPayload();
+            info("Response{STR}", "STR", decoded.c_str());
+            emitTaskUpdatedSignal(
+                device_->getBus(), oipInfo.opTaskPath, decoded.c_str(),
+                static_cast<uint16_t>(OpState::OperationCompleted));
+            doOperationComplete();
+        }
         else if (resultTransferHandle != 0)
         {
             try
             {
-                addChunk(currentResourceId_,
-                         {responsePayload, responsePayloadLength}, false,
-                         false);
-                info(
-                    "RDE: Received transferHandle={HANDLE} for resourceId={RID}",
-                    "HANDLE", resultTransferHandle, "RID", currentResourceId_);
-
                 receiver_ = std::make_unique<pldm::rde::MultipartReceiver>(
                     device_, eid_, resultTransferHandle);
 
@@ -474,6 +478,14 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
                         if (isComplete())
                         {
                             info("MultipartReceive sequence completed");
+                            std::string decoded = getJsonStrPayload();
+                            info("Response{STR}", "STR", decoded.c_str());
+                            emitTaskUpdatedSignal(
+                                device_->getBus(), oipInfo.opTaskPath,
+                                decoded.c_str(),
+                                static_cast<uint16_t>(
+                                    OpState::OperationCompleted));
+                            doOperationComplete();
                         }
                         else
                         {
@@ -500,13 +512,6 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
                     "RID", currentResourceId_, "ERR", ex.what());
             }
         }
-
-        std::string decoded = getJsonStrPayload();
-        debug("Response{STR}", "STR", decoded.c_str());
-
-        emitTaskUpdatedSignal(
-            device_->getBus(), oipInfo.opTaskPath, decoded.c_str(),
-            static_cast<uint16_t>(OpState::OperationCompleted));
     }
     else if (oipInfo.operationType == OperationType::UPDATE)
     {
@@ -528,6 +533,7 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
                         {
                             info("Multipartsend completed");
                             multiPartTransferFlag = false;
+                            doOperationComplete();
                         }
                         else
                         {
@@ -556,8 +562,6 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
         }
     }
 
-    // TODO: Add D-bus response handler
-    doOperationComplete();
     return;
 }
 
