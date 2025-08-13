@@ -53,11 +53,13 @@ bool OperationSession::isComplete() const
 bool OperationSession::addToOperationBytes(std::span<const uint8_t> payload,
                                            bool hasChecksum)
 {
-    if (hasChecksum && !payload.empty())
+    size_t actualPayloadSize = payload.size();
+    if (hasChecksum && actualPayloadSize >= sizeof(uint32_t))
     {
+        actualPayloadSize -= sizeof(uint32_t);
         // Remove the last byte (checksum)
         responseBuffer.insert(responseBuffer.end(), payload.begin(),
-                              payload.end() - 1);
+                              payload.begin() + actualPayloadSize);
     }
     else
     {
@@ -502,9 +504,9 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
         std::string decoded = getJsonStrPayload();
         debug("Response{STR}", "STR", decoded.c_str());
 
-        emitTaskUpdatedSignal(device_->getBus(), oipInfo.opTaskPath,
-                              decoded.c_str(),
-                              static_cast<uint16_t>(OpState::OperationCompleted));
+        emitTaskUpdatedSignal(
+            device_->getBus(), oipInfo.opTaskPath, decoded.c_str(),
+            static_cast<uint16_t>(OpState::OperationCompleted));
     }
     else if (oipInfo.operationType == OperationType::UPDATE)
     {
