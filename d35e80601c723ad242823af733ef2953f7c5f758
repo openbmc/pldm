@@ -34,6 +34,24 @@
       "parentUuid": "9dbf8727_655bf244",
       "revId": "d35e80601c723ad242823af733ef2953f7c5f758",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fc96b96_19b8b162",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 37
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-13T20:25:39Z",
+      "side": 1,
+      "message": "Long answer, back when we were designing the interface from our controller to the BMC, we saw the IBM OEM and decided to reuse that pattern. We are not doing generic file transfer between the uC and the BMC (See the next few commits in this chain on how we extend this to get things like post-code etc).",
+      "parentUuid": "0cad0ffe_fb7016cd",
+      "revId": "d35e80601c723ad242823af733ef2953f7c5f758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
