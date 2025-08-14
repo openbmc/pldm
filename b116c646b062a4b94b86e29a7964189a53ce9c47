@@ -387,6 +387,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20b019bf_89243f89",
+        "filename": "fw-update/update.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-14T14:26:25Z",
+      "side": 1,
+      "message": "Ack, mapping to PLDM T5 can be a follow up commit.",
+      "parentUuid": "199ee321_7fc7852b",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bb842a2_4ab6806a",
@@ -780,6 +798,24 @@
       "side": 1,
       "message": "@rushtotom@gmail.com I don\u0027t think complete separatio is possible without adding a lot of new code. Let me know if you have ideas. I think the current #ifdef use here is not too bad (some comments need to be fixed).",
       "parentUuid": "e0950294_12d0b36a",
+      "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bb11d81_03abbdfc",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-14T14:26:25Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com I think we should remove inotify options as followup commit since bmcweb has switched the default to StartUpdate.",
+      "parentUuid": "333b4ce2_1fb214fb",
       "revId": "b116c646b062a4b94b86e29a7964189a53ce9c47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

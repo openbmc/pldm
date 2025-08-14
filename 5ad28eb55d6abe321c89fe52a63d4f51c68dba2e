@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "328721d9_1f076fc4",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-08-14T14:26:25Z",
+      "side": 1,
+      "message": "+1, @arunpapannagari23@gmail.com Please pick this up as followup patch.",
+      "parentUuid": "d1380b61_7edd32e5",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 5
+      },
+      "revId": "5ad28eb55d6abe321c89fe52a63d4f51c68dba2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8fe759d3_eabd9fb1",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 8
