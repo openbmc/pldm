@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c18b3e5_b9e1797e",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-14T11:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2368267_1148d50f",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 29
+      },
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70aefd26_bafcf21c",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64c3219d_5ef0ab3b",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-14T11:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70aefd26_bafcf21c",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7881f7b0_29627c70",
@@ -54,6 +96,24 @@
       "writtenOn": "2025-08-12T20:33:28Z",
       "side": 1,
       "message": "I see that it\u0027s declared in the header file but implementation is missing, let\u0027s remove it if it\u0027s not required.",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "392a4a4a_dfd8612c",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-14T11:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7881f7b0_29627c70",
       "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -92,6 +152,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3eb46d2_596c92af",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-14T11:08:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67ffcb5b_5fed975b",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c70ee51_f9e11883",
@@ -115,6 +193,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a95c445f_bbe791cd",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-14T11:08:53Z",
+      "side": 1,
+      "message": "Function removed, this impl will be moved to the future patches.",
+      "parentUuid": "5c70ee51_f9e11883",
+      "range": {
+        "startLine": 582,
+        "startChar": 8,
+        "endLine": 582,
+        "endChar": 74
+      },
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8b5ac09_5ab9ee13",
@@ -128,6 +230,24 @@
       "writtenOn": "2025-08-12T20:33:28Z",
       "side": 1,
       "message": "We don\u0027t need this change as there\u0027s no new UT added.",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69600ea9_c38e2f73",
+        "filename": "fw-update/test/meson.build",
+        "patchSetId": 109
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-14T11:08:53Z",
+      "side": 1,
+      "message": "`firmware_inventory.cpp` and `firmware_inventory_manager.cpp` should be left since there\u0027s an actual FirmwareInventory method call in inventory manager.\n\nThe others are removed.",
+      "parentUuid": "b8b5ac09_5ab9ee13",
       "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
