@@ -70,6 +70,30 @@
       },
       "revId": "18546afc1f506be36f5bfd7b8c83b15a70c20496",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b49cd2a_d3ed3bf5",
+        "filename": "libpldmresponder/platform.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-14T08:00:48Z",
+      "side": 1,
+      "message": "Acknowledged, changed it to const reference.",
+      "parentUuid": "7046e3c3_0d3cf199",
+      "range": {
+        "startLine": 524,
+        "startChar": 0,
+        "endLine": 526,
+        "endChar": 45
+      },
+      "revId": "18546afc1f506be36f5bfd7b8c83b15a70c20496",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
