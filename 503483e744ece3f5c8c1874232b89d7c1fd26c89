@@ -1,0 +1,181 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8554d8e_6c510fe5",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "`rc` is an `int` that is either 0 or a negative `errno`. Please don\u0027t test it against `enum pldm_completion_codes`. For decoded response (not the case here where you\u0027re encoding a request, but elsewhere), you need to test both the returned value, and the `completion_code` member of the response struct.\n\nPlease fix throughout.",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8799621c_2c794224",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "std::array?",
+      "range": {
+        "startLine": 175,
+        "startChar": 33,
+        "endLine": 175,
+        "endChar": 69
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbc39bf6_620b0dcb",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "In-fact, shouldn\u0027t the caller just pass pointers to objects of the libpldm types through as arguments? It would seem that would save a lot of copying and tedium here.",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1384fc1e_18289402",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "std::array?",
+      "range": {
+        "startLine": 176,
+        "startChar": 28,
+        "endLine": 176,
+        "endChar": 59
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6587c7f_733649dc",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "This sequence seems unnecessary?",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 22
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16fb8327_f8868217",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "This looks quite tedious. Can we do better by using pointers to the libpldm types instead?",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00fd3fe4_6c0a0bf3",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "See: https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 252,
+        "endChar": 183
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4ce6bc5_3706114b",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "If this is not `PLDM_SUCCESS`, then none of the rest of the data is defined. You must test this first before accessing remaining members of the response struct.",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "292905f3_b3982baf",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-08-14T03:08:18Z",
+      "side": 1,
+      "message": "See https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
