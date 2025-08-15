@@ -193,6 +193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42770376_5a993dee",
+        "filename": "fw-update/device_dedicated_updater.hpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-15T11:25:56Z",
+      "side": 1,
+      "message": "Close this comment since we switched to regular var.\nBut feel free to open this again if there is a reason it has to be shareed ptr.",
+      "parentUuid": "33981805_1aea6962",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "113ee841_12d244b9",
