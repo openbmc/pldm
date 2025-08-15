@@ -16,6 +16,247 @@
       "message": "Hi @manojkiran.eda@gmail.com,\n\nCould you please help me review this series of commits?\n\nThank you very much!",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48b604d_f9377bba",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "Why are these in the header file?  You should only need these at the implementation site.  They\u0027re not part of the API, so they end up being clutter here.",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 46
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6befc77b_ac1a2dbe",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "Please ensure all public functions have doxygen.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcbdbb45_d9003073",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "const std::map?  I\u0027m guessing you don\u0027t want callers to change the map on you?",
+      "range": {
+        "startLine": 69,
+        "startChar": 4,
+        "endLine": 69,
+        "endChar": 32
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1ce5b70_3bdbad5c",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "I don\u0027t understand this in the slightest.  This is an empty implementation defined inline and there are no returns.  What does it mean to \"search\"?",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07e300a0_92e27e04",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "`findConfig`?",
+      "range": {
+        "startLine": 79,
+        "startChar": 9,
+        "endLine": 79,
+        "endChar": 31
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e859574_3e248e52",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "Why do we have so many empty functions?",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e7b6b36_90d2773d",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "Why are these \"error\"",
+      "range": {
+        "startLine": 57,
+        "startChar": 13,
+        "endLine": 57,
+        "endChar": 18
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d315e81_d3fd9da5",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "We should not be recording specific machine information here.  What is the purpose of this?",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd6c5d6f_56cf2754",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "This dbus property is a \"size_t\" and not a \"uint64_t\".  Why is it a uint64_t here?\n\nIf this is because of an entity-manager quirk where it isn\u0027t following the dbus definition, please leave a comment.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 35
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30184d49_02689f62",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "Can we keep these ordered alphabetically?\n\nA \u003c I \u003c M",
+      "range": {
+        "startLine": 328,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f36a1b7_06b982a2",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-15T16:29:37Z",
+      "side": 1,
+      "message": "This seems pretty awkward.  Is there a better way to do this that we don\u0027t need a OEM_META embedded here?",
+      "range": {
+        "startLine": 356,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
