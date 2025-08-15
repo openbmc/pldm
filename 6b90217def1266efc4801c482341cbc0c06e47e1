@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23ff0674_a8c3ff38",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01b4a9fd_0904ef59",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3539eedb_a238fd3b",
@@ -71,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c17f902_3df20661",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7040f5ea_9140783f",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89dac828_e06647c4",
@@ -84,6 +120,24 @@
       "writtenOn": "2025-08-13T20:39:44Z",
       "side": 1,
       "message": "PowerRailFault",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d5d47c_c5b5afd4",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89dac828_e06647c4",
       "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -105,6 +159,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d9e6e00_c7638c9b",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07871e16_d6d3377f",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3167ed5c_d0956315",
@@ -118,6 +190,24 @@
       "writtenOn": "2025-08-13T20:39:44Z",
       "side": 1,
       "message": "DeviceOverOperatingTemperature",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b4c499a_3118e053",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3167ed5c_d0956315",
       "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -139,6 +229,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f076baf_860412d3",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "db4309bc_cd68f3d7",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bbfa21e_5323d394",
@@ -156,6 +264,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f110d1ae_43e881a6",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bbfa21e_5323d394",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "948870d4_5ccd0250",
@@ -169,6 +295,24 @@
       "writtenOn": "2025-08-13T20:39:44Z",
       "side": 1,
       "message": "VoltageRegulatorFault? Or PowerRailFault?",
+      "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b80296fc_ae4170dd",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "948870d4_5ccd0250",
       "revId": "6b90217def1266efc4801c482341cbc0c06e47e1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

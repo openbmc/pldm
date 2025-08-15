@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4c8bea2_08b0b500",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-15T02:39:26Z",
+      "side": 1,
+      "message": "Changes in patchset 23:\n\n- Removed all strcmp calls and replaced the original event classification mechanism with a switch-case structure based on the EventType enum.\n\n- Added DeviceOverOperatingTemperatureFault for CPU_THERMAL_TRIP and FAST_PROCHOT_ASSERTION events.\n\n- Added PowerRailFault for HSC_OCP, P12V_STBY_UV, POWER_ON_SEQUENCE_FAILURE, and DIMM_PMIC_ERROR events.",
+      "revId": "de17a1366cf9f5edd1f0f99d08ba20b8ad04b78f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
