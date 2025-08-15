@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0297c678_8d66df96",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8554d8e_6c510fe5",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8799621c_2c794224",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-08-14T03:08:18Z",
       "side": 1,
       "message": "std::array?",
+      "range": {
+        "startLine": 175,
+        "startChar": 33,
+        "endLine": 175,
+        "endChar": 69
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "434a775c_fe447cf1",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Updated to accept pointer to the request struct.",
+      "parentUuid": "8799621c_2c794224",
       "range": {
         "startLine": 175,
         "startChar": 33,
@@ -81,6 +123,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2e8d740_6ef04a2d",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "bbc39bf6_620b0dcb",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ce693ee_52807f76",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Updated to accept pointer to the request struct.",
+      "parentUuid": "1384fc1e_18289402",
+      "range": {
+        "startLine": 176,
+        "startChar": 28,
+        "endLine": 176,
+        "endChar": 59
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6587c7f_733649dc",
@@ -94,6 +178,30 @@
       "writtenOn": "2025-08-14T03:08:18Z",
       "side": 1,
       "message": "This sequence seems unnecessary?",
+      "range": {
+        "startLine": 182,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 22
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69efcfbe_b0649b20",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6587c7f_733649dc",
       "range": {
         "startLine": 182,
         "startChar": 0,
@@ -121,6 +229,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aaefe56_979bf22c",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16fb8327_f8868217",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00fd3fe4_6c0a0bf3",
@@ -134,6 +260,30 @@
       "writtenOn": "2025-08-14T03:08:18Z",
       "side": 1,
       "message": "See: https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 252,
+        "endChar": 183
+      },
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a6cad7_da059398",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Removed cuz I don\u0027t know how to make it better for a debug log.",
+      "parentUuid": "00fd3fe4_6c0a0bf3",
       "range": {
         "startLine": 252,
         "startChar": 0,
@@ -161,6 +311,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36b99d68_a57b9be5",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4ce6bc5_3706114b",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "292905f3_b3982baf",
@@ -174,6 +342,24 @@
       "writtenOn": "2025-08-14T03:08:18Z",
       "side": 1,
       "message": "See https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings",
+      "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e80def5f_e6f2a7e0",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-15T14:14:56Z",
+      "side": 1,
+      "message": "Removed cuz I don\u0027t know how to make it better for a debug log.",
+      "parentUuid": "292905f3_b3982baf",
       "revId": "503483e744ece3f5c8c1874232b89d7c1fd26c89",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
