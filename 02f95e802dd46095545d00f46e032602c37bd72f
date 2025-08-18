@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3af41ea1_e7bef140",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-18T08:29:32Z",
+      "side": 1,
+      "message": "Ack, I\u0027ve replaced with `sdbusplus::xyz::openbmc_project::Common::Error::Unavailable()` for now",
+      "parentUuid": "a5be0526_6c5ab3f4",
+      "revId": "02f95e802dd46095545d00f46e032602c37bd72f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2637560c_fcae5dbc",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6573d728_e350a929",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-18T08:29:32Z",
+      "side": 1,
+      "message": "This was left over from testing target filtering using StartUpdate. It now serves as an indication that pldm has received the startupdate call",
+      "parentUuid": "2637560c_fcae5dbc",
+      "range": {
+        "startLine": 31,
+        "startChar": 66,
+        "endLine": 31,
+        "endChar": 71
+      },
+      "revId": "02f95e802dd46095545d00f46e032602c37bd72f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "faa4ff78_9135aecd",
@@ -54,6 +96,24 @@
       "writtenOn": "2025-08-14T14:26:25Z",
       "side": 1,
       "message": "This exception should be thrown for StartUpdate method call to bmcweb and not after the object path is created?",
+      "revId": "02f95e802dd46095545d00f46e032602c37bd72f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc8507dd_85d5229f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-18T08:29:32Z",
+      "side": 1,
+      "message": "This error falls in the same category as other parsing failures, so it made sense to have this here",
+      "parentUuid": "faa4ff78_9135aecd",
       "revId": "02f95e802dd46095545d00f46e032602c37bd72f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
