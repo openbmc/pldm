@@ -5,11 +5,19 @@ fw_update_test_src = declare_dependency(
         '../package_parser.cpp',
         '../device_updater.cpp',
         '../update_manager.cpp',
+        '../firmware_inventory_manager.cpp',
+        '../firmware_inventory.cpp',
         '../../common/utils.cpp',
     ],
 )
 
-tests = ['inventory_manager_test', 'package_parser_test', 'device_updater_test']
+tests = [
+    'inventory_manager_test',
+    'package_parser_test',
+    'device_updater_test',
+    'firmware_inventory_manager_test',
+    'firmware_inventory_test',
+]
 
 foreach t : tests
     test(
