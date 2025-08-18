@@ -2,6 +2,7 @@
 
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
+#include "firmware_inventory_manager.hpp"
 #include "requester/handler.hpp"
 
 namespace pldm
@@ -44,11 +45,13 @@ class InventoryManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
-        ComponentInfoMap& componentInfoMap) :
+        ComponentInfoMap& componentInfoMap,
+        const Configurations& configurations) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
-        componentInfoMap(componentInfoMap)
+        componentInfoMap(componentInfoMap), configurations(configurations),
+        firmwareInventoryManager(configurations)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
@@ -57,9 +60,18 @@ class InventoryManager
      *  commands are sent to every FD and the response is used to populate
      *  the firmware identifiers and component details of the FDs.
      *
-     *  @param[in] eids - MCTP endpoint ID of the FDs
+     *  @param[in] mctpInfos - List of MCTP endpoint information
      */
-    void discoverFDs(const std::vector<mctp_eid_t>& eids);
+    void discoverFDs(const MctpInfos& mctpInfos);
+
+    /** @brief Remove the firmware identifiers and component details of FDs
+     *
+     *  This function removes the firmware identifiers, component details and
+     *  downstream device identifiers of the FDs managed by the BMC.
+     *
+     *  @param[in] mctpInfos - List of MCTP endpoint information
+     */
+    void removeFDs(const MctpInfos& mctpInfos);
 
     /** @brief Handler for QueryDeviceIdentifiers command response
      *
@@ -153,6 +165,17 @@ class InventoryManager
         mctp_eid_t eid, uint32_t dataTransferHandle,
         const enum transfer_op_flag transferOperationFlag);
 
+    /**
+     * @brief obtain Firmware Device Name from either configurations or
+     * descriptors, if non of them is available, a default name is
+     * generated.
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] descriptors - Descriptors of the firmware device
+     */
+    void obtainFirmwareDeviceName(pldm::eid eid,
+                                  const Descriptors& descriptors);
+
     /** @brief Send GetFirmwareParameters command request
      *
      *  @param[in] eid - Remote MCTP endpoint
@@ -168,12 +191,41 @@ class InventoryManager
     /** @brief Device identifiers of the managed FDs */
     DescriptorMap& descriptorMap;
 
+    /** @brief Firmware Device names of the managed FDs */
+    std::map<eid, SoftwareName> firmwareDeviceNameMap;
+
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
 
     /** @brief Component information needed for the update of the managed FDs */
     ComponentInfoMap& componentInfoMap;
+
+    /** @brief Configuration bindings from Entity Manager */
+    const Configurations& configurations;
+
+    /** @brief Dbus Inventory Item Manager */
+    FirmwareInventoryManager firmwareInventoryManager;
 };
+
+/**
+ * @brief Obtain the device name from the configurations
+ *
+ * @param[in] configurations - Configurations from Entity Manager
+ * @param[in] eid - Remote MCTP endpoint
+ *
+ * @return SoftwareName - The Device name, empty if not found
+ */
+SoftwareName obtainDeviceNameFromConfigurations(
+    const Configurations& configurations, pldm::eid eid);
+
+/**
+ * @brief Obtain the device name from the descriptors
+ *
+ * @param[in] descriptors - Descriptors of the device
+ *
+ * @return SoftwareName - The Device name, empty if not found
+ */
+SoftwareName obtainDeviceNameFromDescriptors(const Descriptors& descriptors);
 
 } // namespace fw_update
 

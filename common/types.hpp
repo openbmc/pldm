@@ -100,6 +100,8 @@ using Configurations = std::map<dbus::ObjectPath, MctpInfo>;
 
 namespace fw_update
 {
+using InventoryPath = std::string;
+using SoftwareName = std::string;
 
 // Descriptor definition
 using DescriptorType = uint16_t;
@@ -121,6 +123,7 @@ using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 // Component information
 using CompClassification = uint16_t;
 using CompIdentifier = uint16_t;
+using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
