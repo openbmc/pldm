@@ -417,6 +417,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91a03066_b8ebeaf8",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T04:04:58Z",
+      "side": 1,
+      "message": "This property has the signature t on D-Bus, which corresponds to uint64_t.",
+      "parentUuid": "37bb51c6_11e85075",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 35
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30184d49_02689f62",
