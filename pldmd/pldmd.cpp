@@ -341,7 +341,8 @@ int main(int argc, char** argv)
 #endif
 
     std::unique_ptr<fw_update::Manager> fwManager =
-        std::make_unique<fw_update::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<fw_update::Manager>(&dbusHandler, event, reqHandler,
+                                             instanceIdDb);
     std::unique_ptr<MctpDiscovery> mctpDiscoveryHandler =
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
