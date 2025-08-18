@@ -33,15 +33,27 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     Manager& operator=(Manager&&) = delete;
     ~Manager() = default;
 
-    /** @brief Constructor
+    /**
+     * @brief Constructor for the PLDM Firmware Update Manager
      *
-     *  @param[in] handler - PLDM request handler
+     * @param[in] dbusHandler - Pointer to the D-Bus handler used for querying
+     * inventory and board paths
+     * @param[in] event - Reference to the io_context event object for
+     * asynchronous operations
+     * @param[in] handler - Reference to the PLDM request handler for processing
+     * PLDM requests
+     * @param[in] instanceIdDb - Reference to the InstanceId database for
+     * managing PLDM instance IDs
      */
-    explicit Manager(Event& event,
-                     requester::Handler<requester::Request>& handler,
-                     pldm::InstanceIdDb& instanceIdDb) :
-        inventoryMgr(handler, instanceIdDb, descriptorMap,
-                     downstreamDescriptorMap, componentInfoMap),
+    explicit Manager(
+        const pldm::utils::DBusHandler*
+            dbusHandler,
+        Event& event,
+        requester::Handler<requester::Request>& handler,
+        pldm::InstanceIdDb& instanceIdDb)
+        :
+        inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
+                     downstreamDescriptorMap, componentInfoMap, configurations),
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap)
     {}
@@ -51,15 +63,19 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of discovered MCTP endpoints
      */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos)
+    void handleMctpEndpoints(const MctpInfos& mctpInfos) override
     {
-        std::vector<mctp_eid_t> eids;
-        for (const auto& mctpInfo : mctpInfos)
-        {
-            eids.emplace_back(std::get<mctp_eid_t>(mctpInfo));
-        }
+        inventoryMgr.discoverFDs(mctpInfos);
+    }
 
-        inventoryMgr.discoverFDs(eids);
+    /** @brief Helper function to invoke registered handlers for
+     *         the updated EM configurations
+     *
+     *  @param[in] configurations - updated EM configurations
+     */
+    void handleConfigurations(const Configurations& configurations) override
+    {
+        this->configurations = configurations;
     }
 
     /** @brief Helper function to invoke registered handlers for
@@ -67,9 +83,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos&)
+    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) override
     {
-        return;
+        inventoryMgr.removeFDs(mctpInfos);
     }
 
     /** @brief Helper function to invoke registered handlers for
@@ -78,7 +94,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] mctpInfo - information of the target endpoint
      *  @param[in] availability - new availability status
      */
-    void updateMctpEndpointAvailability(const MctpInfo&, Availability)
+    void updateMctpEndpointAvailability(const MctpInfo&, Availability) override
     {
         return;
     }
@@ -103,7 +119,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] addr - MCTP address of terminus
      *  @param[in] terminiNames - MCTP terminus name
      */
-    std::optional<mctp_eid_t> getActiveEidByName(const std::string&)
+    std::optional<mctp_eid_t> getActiveEidByName(const std::string&) override
     {
         return std::nullopt;
     }
@@ -118,6 +134,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     /** Component information of all the discovered MCTP endpoints */
     ComponentInfoMap componentInfoMap;
+
+    /** Configuration bindings from the Entity Manager */
+    Configurations configurations;
 
     /** @brief PLDM firmware inventory manager */
     InventoryManager inventoryMgr;
