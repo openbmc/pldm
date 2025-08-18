@@ -208,6 +208,10 @@ void Terminus::parseTerminusPDRs()
                   "NAME", tName.value());
         terminusName = static_cast<std::string>(tName.value());
     }
+    else
+    {
+        terminusName = std::format("Terminus_{}", tid);
+    }
 
     if (terminusName.empty() &&
         (numericSensorPdrs.size() || compactNumericSensorPdrs.size()))
