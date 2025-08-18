@@ -280,6 +280,24 @@
       "parentUuid": "56c6146d_63b2a3b1",
       "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c2d71ac_b00870ae",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 107
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-18T06:49:58Z",
+      "side": 1,
+      "message": "Closing this since no futher input.\nFeel free to open it again if anyone believe this is still an issue.",
+      "parentUuid": "01afad46_bbf06fbc",
+      "revId": "cff63ff8ef2412913a56358d28609d046cd205ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

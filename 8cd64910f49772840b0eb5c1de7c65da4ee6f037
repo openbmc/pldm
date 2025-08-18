@@ -135,6 +135,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbb4b1fa_06d82cbc",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 109
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-18T06:49:58Z",
+      "side": 1,
+      "message": "Revised",
+      "parentUuid": "b80450d7_3651273f",
+      "revId": "8cd64910f49772840b0eb5c1de7c65da4ee6f037",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67ffcb5b_5fed975b",
