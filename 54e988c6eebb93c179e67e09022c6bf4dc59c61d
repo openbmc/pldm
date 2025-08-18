@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f18b7cbe_a66d49c4",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a48b604d_f9377bba",
+      "range": {
+        "startLine": 40,
+        "startChar": 29,
+        "endLine": 40,
+        "endChar": 46
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6befc77b_ac1a2dbe",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-08-15T16:29:37Z",
       "side": 1,
       "message": "Please ensure all public functions have doxygen.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8990a149_bbdb8ab7",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6befc77b_ac1a2dbe",
       "range": {
         "startLine": 50,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a632bf44_e7ed4ac6",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged. This will be fixed in the next patch set.",
+      "parentUuid": "fcbdbb45_d9003073",
+      "range": {
+        "startLine": 69,
+        "startChar": 4,
+        "endLine": 69,
+        "endChar": 32
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1ce5b70_3bdbad5c",
@@ -100,6 +172,24 @@
       "writtenOn": "2025-08-15T16:29:37Z",
       "side": 1,
       "message": "I don\u0027t understand this in the slightest.  This is an empty implementation defined inline and there are no returns.  What does it mean to \"search\"?",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aaf8df6_76c568c8",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1ce5b70_3bdbad5c",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -127,6 +217,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca71303f_bd59ca0c",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged. This will be fixed in the next patch set.",
+      "parentUuid": "07e300a0_92e27e04",
+      "range": {
+        "startLine": 79,
+        "startChar": 9,
+        "endLine": 79,
+        "endChar": 31
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e859574_3e248e52",
@@ -140,6 +254,30 @@
       "writtenOn": "2025-08-15T16:29:37Z",
       "side": 1,
       "message": "Why do we have so many empty functions?",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3368e9d6_28f2022a",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1e859574_3e248e52",
       "range": {
         "startLine": 88,
         "startChar": 0,
@@ -175,6 +313,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4aa13331_b6cad1f9",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Because this should never happen on a META machine. Every MCTP endpoint is expected to have this IANA value. Do you want me to replace it with lg2::info or something else?",
+      "parentUuid": "6e7b6b36_90d2773d",
+      "range": {
+        "startLine": 57,
+        "startChar": 13,
+        "endLine": 57,
+        "endChar": 18
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d315e81_d3fd9da5",
         "filename": "oem/meta/utils.cpp",
         "patchSetId": 71
@@ -186,6 +348,24 @@
       "writtenOn": "2025-08-15T16:29:37Z",
       "side": 1,
       "message": "We should not be recording specific machine information here.  What is the purpose of this?",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f380caf_a0d79a10",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4d315e81_d3fd9da5",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -203,6 +383,30 @@
       "writtenOn": "2025-08-15T16:29:37Z",
       "side": 1,
       "message": "This dbus property is a \"size_t\" and not a \"uint64_t\".  Why is it a uint64_t here?\n\nIf this is because of an entity-manager quirk where it isn\u0027t following the dbus definition, please leave a comment.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 35
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37bb51c6_11e85075",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bd6c5d6f_56cf2754",
       "range": {
         "startLine": 127,
         "startChar": 0,
@@ -236,6 +440,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c844de20_d58a59dc",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "Acknowledged. This will be fixed in the next patch set.",
+      "parentUuid": "30184d49_02689f62",
+      "range": {
+        "startLine": 328,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f36a1b7_06b982a2",
@@ -249,6 +477,30 @@
       "writtenOn": "2025-08-15T16:29:37Z",
       "side": 1,
       "message": "This seems pretty awkward.  Is there a better way to do this that we don\u0027t need a OEM_META embedded here?",
+      "range": {
+        "startLine": 356,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "523ecb6f_073df26d",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-18T03:38:23Z",
+      "side": 1,
+      "message": "The reason I implemented it this way is to utilize the MctpDiscoveryHandlerIntf. OEM META needs to monitor the signal emitted by the MCTP service, so oemMETA has to be passed to the constructor of MctpDiscovery to achieve this. The only way to separate OEM META from this implementation is to give it its own mechanism to monitor the MCTP interface, which is easy to do. Would that be okay?",
+      "parentUuid": "2f36a1b7_06b982a2",
       "range": {
         "startLine": 356,
         "startChar": 0,
