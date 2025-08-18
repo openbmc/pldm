@@ -699,6 +699,12 @@ std::optional<std::string> fruFieldValuestring(const uint8_t* value,
 std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
                                           const uint8_t& length);
 
+/**
+ * @brief Get a random ID for firmware inventory entry
+ * @return Random ID as long integer
+ */
+long int generateSwId();
+
 /** @brief Method to get the value from a bios attribute
  *
  *  @param[in] dbusAttrName - the bios attribute name from
