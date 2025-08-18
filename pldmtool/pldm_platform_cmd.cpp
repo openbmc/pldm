@@ -165,7 +165,7 @@ class GetPDR : public CommandInterface
             "[terminusLocator, stateSensor, "
             "numericEffecter, stateEffecter, "
             "compactNumericSensor, sensorauxname, "
-            "efffecterAuxName, numericsensor, "
+            "effecterAuxName, numericsensor, "
             "EntityAssociation, fruRecord, ... ]");
 
         getPDRGroupOption = pdrOptionGroup->add_option(
@@ -710,7 +710,7 @@ class GetPDR : public CommandInterface
         {"statesensor", PLDM_STATE_SENSOR_PDR},
         {"sensorauxname", PLDM_SENSOR_AUXILIARY_NAMES_PDR},
         {"numericeffecter", PLDM_NUMERIC_EFFECTER_PDR},
-        {"efffecterauxname", PLDM_EFFECTER_AUXILIARY_NAMES_PDR},
+        {"effecterauxname", PLDM_EFFECTER_AUXILIARY_NAMES_PDR},
         {"numericsensor", PLDM_NUMERIC_SENSOR_PDR},
         {"compactnumericsensor", PLDM_COMPACT_NUMERIC_SENSOR_PDR},
         {"stateeffecter", PLDM_STATE_EFFECTER_PDR},
