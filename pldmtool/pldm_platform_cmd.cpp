@@ -158,15 +158,18 @@ class GetPDR : public CommandInterface
             "eg: The recordHandle value for the PDR to be retrieved and 0 "
             "means get first PDR in the repository.");
         pdrRecType = "";
-        pdrOptionGroup->add_option(
-            "-t, --type", pdrRecType,
-            "retrieve all PDRs of the requested type\n"
-            "supported types:\n"
-            "[terminusLocator, stateSensor, "
-            "numericEffecter, stateEffecter, "
-            "compactNumericSensor, sensorauxname, "
-            "effecterAuxName, numericsensor, "
-            "EntityAssociation, fruRecord, ... ]");
+        std::string supportedPDRTypes = "";
+
+        for (const auto& [type, _] : strToPdrType)
+        {
+            supportedPDRTypes += (type + ", ");
+        }
+        supportedPDRTypes = std::format("[{}...]", supportedPDRTypes);
+
+        pdrOptionGroup->add_option("-t, --type", pdrRecType,
+                                   "retrieve all PDRs of the requested type\n"
+                                   "supported types:\n" +
+                                       supportedPDRTypes);
 
         getPDRGroupOption = pdrOptionGroup->add_option(
             "-i, --terminusID", pdrTerminus,
