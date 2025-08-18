@@ -81,4 +81,8 @@ class MockdBusHandler : public pldm::utils::DBusHandler
 
     MOCK_METHOD(pldm::utils::PropertyMap, getDbusPropertiesVariant,
                 (const char*, const char*, const char*), (const override));
+
+    MOCK_METHOD(pldm::utils::GetAncestorsResponse, getAncestors,
+                (const std::string&, const std::vector<std::string>&),
+                (const, override));
 };
