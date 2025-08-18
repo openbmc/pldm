@@ -862,5 +862,10 @@ std::vector<pldm::pdr::SensorID> findSensorIds(
     return sensorIDs;
 }
 
+long int generateSwId()
+{
+    return random() % 10000;
+}
+
 } // namespace utils
 } // namespace pldm
