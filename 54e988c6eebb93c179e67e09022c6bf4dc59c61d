@@ -288,6 +288,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f66ba45b_586a4636",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-19T02:37:32Z",
+      "side": 1,
+      "message": "The class Configuration_discovery_handler uses some D-Bus interfaces that the upstream Entity Manager does not support. This is why the class has an empty function implementation. We can either push the empty implementation upstream, or keep the entire class in a downstream patch.",
+      "parentUuid": "3368e9d6_28f2022a",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e7b6b36_90d2773d",
@@ -366,6 +390,24 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "4d315e81_d3fd9da5",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5662edfd_9b6167ad",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-08-19T02:37:32Z",
+      "side": 1,
+      "message": "This is a workaround for an issue caused by a timeout when attempting to retrieve the slot number recorded on D-Bus. If the retrieval fails, we fall back to using tid / 10 as the slot number. However, this calculation is only valid on Yosemite4 machines.",
+      "parentUuid": "1f380caf_a0d79a10",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
