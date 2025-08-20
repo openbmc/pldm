@@ -3,6 +3,108 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f49abc43_73f45788",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T18:43:59Z",
+      "side": 1,
+      "message": "define a static API, lets say getSwId and use it here and in processStreamDefer too.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68c6a44c_f0ddae66",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T18:43:59Z",
+      "side": 1,
+      "message": "I think this would be pretty long string. If yes, can you please use something similar to this https://grok.openbmc.org/xref/openbmc/phosphor-bmc-code-mgmt/common/src/software.cpp?r\u003ddbb7015e93b1170465efa9c38ce9ab5a317d190e#42.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02e0b4d0_4adc277d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T18:43:59Z",
+      "side": 1,
+      "message": "Lets change this to swRootPath / \"pldm\" as this is a singleton path that you are exposing or are you using this path just for this specific activation.\n\nWhere would the software version be exposed? Would that be done via https://gerrit.openbmc.org/c/openbmc/pldm/+/73512?",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4970c618_33f74048",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T18:43:59Z",
+      "side": 1,
+      "message": "no need to create activation interface as u will throw a exception here. See below comment.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab514c56_0c6d1074",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T18:43:59Z",
+      "side": 1,
+      "message": "Please throw the Unavailable error here (You are still in StartUpdate context and haven\u0027t scheduled the image for later processing yet).\n\nno need to return the objPath since its an error situation.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f1ecd49_b22f2ad0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T18:43:59Z",
+      "side": 1,
+      "message": "Lets create the activation interface here with ActivationStatus as NotReady. That way you don\u0027t need to repeat the std::make_unique\u003cActivation\u003e(... at multiple places, but just change the ActivationStatus to new one. Also, after this the BMCWeb is going to start watching that interface since you are returning from StartUpdate sync flow (Which is the caller for this function).",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52a6fc41_dd0815e5",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 10
