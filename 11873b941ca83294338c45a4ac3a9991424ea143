@@ -16,6 +16,24 @@
       "message": "Why not to toggle this at runtime?\nBy using `std::optional` or `std::unique_ptr` with default initialization it can leave the design flexibility for the backword compatibility.",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d746593_78407737",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-20T10:10:48Z",
+      "side": 1,
+      "message": "Is there a Redfish API for this? Not all users may have access to BMC shell (not sure if that\u0027s what you meant?).\n\nWe could even have a follow-up patch to take out inotify support altogether if there are no users (we will check on the ML).",
+      "parentUuid": "52a6fc41_dd0815e5",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
