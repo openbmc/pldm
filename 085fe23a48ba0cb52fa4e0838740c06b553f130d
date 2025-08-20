@@ -126,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7beced8_8abafca9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 46
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-20T08:31:28Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Did you mean that StartUpdate would be created per device rather than per component?\nIf so, how would target filtering work at the component level?",
+      "parentUuid": "d35afff4_9a62b5fc",
+      "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eeeae368_6fbb8f97",
         "filename": "fw-update/device_dedicated_updater.cpp",
         "patchSetId": 46
