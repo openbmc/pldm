@@ -139,6 +139,176 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1584c7ff_b259c2ab",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "Just set the ActivationState here based on https://gerrit.openbmc.org/c/openbmc/pldm/+/79192/comment/5f1ecd49_b22f2ad0/.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f8ee214_8df66e06",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "No need to throw the exception as u r already in async handler here, just return after setting the Activation status to Invalid.\n\nAlso an unrelated question - won\u0027t the process dump since u r throwing from a async handler and there is no one to catch the exception?",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6456845_215fa58b",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "No need to throw the exception as u r already in async handler here, just return after setting the Activation status to Invalid",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b622c9ad_4b99c2fa",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "Just change ActivationStatus to invalid for an existing ActivationObject.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc6d5399_96540604",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "No need to throw the exception as u r already in async handler here, just return.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11049c37_38e7f0b6",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "Just change ActivationStatus to invalid for an existing ActivationObject.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "393091bb_c0d60371",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "No need to throw the exception as u r already in async handler here, just return after setting the Activation status to Invalid",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20443534_ead05b88",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "Just change ActivationStatus to Ready for an existing ActivationObject.\n\nI am surprised to see how many times the create activation interface code has been copied over.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8664c0b6_bc12a360",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "Who takes care of update after this step?",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "055d1c85_7b60e516",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "Where is ActivationBlockTransition interface being created? You need to create that and delete after the update finishes.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52a6fc41_dd0815e5",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 10
@@ -185,6 +355,23 @@
       "writtenOn": "2025-08-20T19:06:45Z",
       "side": 1,
       "message": "Change this path to /xyz/openbmc_project/software/pldm so you implement the update interface on a specific path.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60a3687f_42dcd837",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:27:23Z",
+      "side": 1,
+      "message": "rename to updateDeferHandler",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
