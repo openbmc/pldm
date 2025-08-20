@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b97d551_75d5db47",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:06:45Z",
+      "side": 1,
+      "message": "Does current UpdateManager only has support for single FD update or in general it assumes there is only one FD? What if multiple FDs needs to be updated in parallel (Spec supports that). How would this logic work then?",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e935b7b_86ed2201",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:06:45Z",
+      "side": 1,
+      "message": "Why are you not doing a dup on the FD rather than copying this out?",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f49abc43_73f45788",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 10
@@ -134,6 +168,23 @@
       "side": 1,
       "message": "Is there a Redfish API for this? Not all users may have access to BMC shell (not sure if that\u0027s what you meant?).\n\nWe could even have a follow-up patch to take out inotify support altogether if there are no users (we will check on the ML).",
       "parentUuid": "52a6fc41_dd0815e5",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cccabe03_5df1e281",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-20T19:06:45Z",
+      "side": 1,
+      "message": "Change this path to /xyz/openbmc_project/software/pldm so you implement the update interface on a specific path.",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
