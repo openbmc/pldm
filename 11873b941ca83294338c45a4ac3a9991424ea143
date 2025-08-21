@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "771a992c_0deb9e76",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "UpdateManager only supports one update process at a time, irrespective of whether its updating single/multiple FDs. \n\nIf the fwpkg contains images for multiple FDs, they will be updated in parallel. The check on line 19 is to prevent triggering multiple FW Updates back to back",
+      "parentUuid": "2b97d551_75d5db47",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e935b7b_86ed2201",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-20T19:06:45Z",
       "side": 1,
       "message": "Why are you not doing a dup on the FD rather than copying this out?",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eede265_b83df676",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The fd would eventually need to be read into a `std::istream` for passing it along to `processStreamDefer`. \n\nThis will be optimized with Unive\u0027s patch https://gerrit.openbmc.org/c/openbmc/pldm/+/82708",
+      "parentUuid": "1e935b7b_86ed2201",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d047809e_de802b07",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f49abc43_73f45788",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68c6a44c_f0ddae66",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-08-20T18:43:59Z",
       "side": 1,
       "message": "I think this would be pretty long string. If yes, can you please use something similar to this https://grok.openbmc.org/xref/openbmc/phosphor-bmc-code-mgmt/common/src/software.cpp?r\u003ddbb7015e93b1170465efa9c38ce9ab5a317d190e#42.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d0a071e_da0d0f85",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The string would only be 10 characters long",
+      "parentUuid": "68c6a44c_f0ddae66",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95590ad6_46b92d7d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Yes, this object is specific for this activation. We don\u0027t currently expose the Version interface in pldm",
+      "parentUuid": "02e0b4d0_4adc277d",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4970c618_33f74048",
@@ -103,6 +193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1bd205b_f7ff1324",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4970c618_33f74048",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab514c56_0c6d1074",
@@ -116,6 +224,24 @@
       "writtenOn": "2025-08-20T18:43:59Z",
       "side": 1,
       "message": "Please throw the Unavailable error here (You are still in StartUpdate context and haven\u0027t scheduled the image for later processing yet).\n\nno need to return the objPath since its an error situation.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d01f72f5_6741a7d5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ab514c56_0c6d1074",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -139,6 +265,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23e3c271_9856ba51",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "When updating through the inotify flow, bmcweb subscribes to InterfacesAdded signal rather than PropertiesChanged. Bmcweb would set the RequestedActivations to active (which starts the update flow) even before the package has been parsed completely. This might break the inotify flow.\n\nThe suggestion is feasible for StartUpdate flow but would require making changes in bmcweb for supporting inotify flow. Once we deprecate inotify, we can make the code here cleaner",
+      "parentUuid": "5f1ecd49_b22f2ad0",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1584c7ff_b259c2ab",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 10
@@ -150,6 +294,24 @@
       "writtenOn": "2025-08-20T19:27:23Z",
       "side": 1,
       "message": "Just set the ActivationState here based on https://gerrit.openbmc.org/c/openbmc/pldm/+/79192/comment/5f1ecd49_b22f2ad0/.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eecf404_e723f674",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Replied above",
+      "parentUuid": "1584c7ff_b259c2ab",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -171,6 +333,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8100bacc_0d8cda42",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The exception is thrown so that its caught in the inotify flow on line 82.\n\nSdeventplus library handles the exceptions internally and will not cause a process dump",
+      "parentUuid": "4f8ee214_8df66e06",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6456845_215fa58b",
@@ -184,6 +364,42 @@
       "writtenOn": "2025-08-20T19:27:23Z",
       "side": 1,
       "message": "No need to throw the exception as u r already in async handler here, just return after setting the Activation status to Invalid",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7ebf79c_345a3745",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The exception is thrown so that its caught in the inotify flow on line 82.",
+      "parentUuid": "f6456845_215fa58b",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f809793a_599b73d5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The exception is thrown so that its caught in the inotify flow on line 82.",
+      "parentUuid": "f6456845_215fa58b",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -205,6 +421,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51ce5919_c249e3a5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Please look at my reply to https://gerrit.openbmc.org/c/openbmc/pldm/+/79192/comment/5f1ecd49_b22f2ad0/",
+      "parentUuid": "b622c9ad_4b99c2fa",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc6d5399_96540604",
@@ -218,6 +452,42 @@
       "writtenOn": "2025-08-20T19:27:23Z",
       "side": 1,
       "message": "No need to throw the exception as u r already in async handler here, just return.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8eb306_196f7f24",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The exception is thrown so that its caught in the inotify flow on line 82.",
+      "parentUuid": "cc6d5399_96540604",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7cff52c_9a9f1610",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The exception is thrown to be handled in the inotify flow on line 82",
+      "parentUuid": "cc6d5399_96540604",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -239,6 +509,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f35f7c38_064423bb",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Please look at my reply to https://gerrit.openbmc.org/c/openbmc/pldm/+/79192/comment/5f1ecd49_b22f2ad0/",
+      "parentUuid": "11049c37_38e7f0b6",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "393091bb_c0d60371",
@@ -252,6 +540,24 @@
       "writtenOn": "2025-08-20T19:27:23Z",
       "side": 1,
       "message": "No need to throw the exception as u r already in async handler here, just return after setting the Activation status to Invalid",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eb56e56_a7914cc1",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The exception is thrown so that its caught in the inotify flow on line 82.",
+      "parentUuid": "393091bb_c0d60371",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -273,6 +579,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "985b93dd_8b23a9e5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Please look at my reply to https://gerrit.openbmc.org/c/openbmc/pldm/+/79192/comment/5f1ecd49_b22f2ad0/",
+      "parentUuid": "20443534_ead05b88",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8664c0b6_bc12a360",
@@ -290,6 +614,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "818a7336_338c61d5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "This emulates the inotify flow, where bmcweb sets RequestedActivations to Active after the activation interface has been created. \n\n`activation()` is overloaded to call `updateManager-\u003eactivationPackage()`",
+      "parentUuid": "8664c0b6_bc12a360",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "055d1c85_7b60e516",
@@ -303,6 +645,24 @@
       "writtenOn": "2025-08-20T19:27:23Z",
       "side": 1,
       "message": "Where is ActivationBlockTransition interface being created? You need to create that and delete after the update finishes.",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26fd64e4_3e6a5943",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "The interface isn\u0027t part of the existing pldm update flow. We will have a follow-up patch to add support for that",
+      "parentUuid": "055d1c85_7b60e516",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -395,6 +755,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19d53be4_8c8369a3",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cccabe03_5df1e281",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60a3687f_42dcd837",
@@ -408,6 +786,24 @@
       "writtenOn": "2025-08-20T19:27:23Z",
       "side": 1,
       "message": "rename to updateDeferHandler",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "941d4868_155fec28",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-21T09:32:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60a3687f_42dcd837",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
