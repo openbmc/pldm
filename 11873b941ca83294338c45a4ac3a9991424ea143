@@ -344,6 +344,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a184fa1e_698412b3",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-21T07:40:30Z",
+      "side": 1,
+      "message": "Redfish does not planned to use watchdog, but there are other projects still using this mechanism to trigger the update process (as a temporary workaround), the current patchset set the option to disabled, which means the feature would instantly turns unusable once this is merged, unless the builder actively enable the option before building.\n\nWhile the commit message saying \"maintaining backward compatibility\", at least the option should be enabled as default. Otherwise just tell that we are deprecating this feature.",
+      "parentUuid": "9d746593_78407737",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cccabe03_5df1e281",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 10
