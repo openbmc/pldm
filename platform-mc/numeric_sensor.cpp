@@ -146,6 +146,10 @@ void NumericSensor::setSensorUnit(uint8_t baseUnit)
             sensorNameSpace = "/xyz/openbmc_project/sensors/utilization/";
             sensorUnit = SensorUnit::Percent;
             break;
+        case PLDM_SENSOR_UNIT_HERTZ:
+            sensorNameSpace = "/xyz/openbmc_project/sensors/frequency/";
+            sensorUnit = SensorUnit::Hertz;
+            break;
         case PLDM_SENSOR_UNIT_COUNTS:
         case PLDM_SENSOR_UNIT_CORRECTED_ERRORS:
         case PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS:
