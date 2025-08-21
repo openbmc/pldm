@@ -205,6 +205,8 @@ using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
 
 using SensorPDR = std::vector<uint8_t>;
 using SensorPDRs = std::vector<SensorPDR>;
+using EffecterPDR = std::vector<uint8_t>;
+using EffecterPDRs = std::vector<EffecterPDR>;
 
 /**
  * @brief The interface for DBusHandler
@@ -533,6 +535,29 @@ SensorPDRs getStateSensorPDRsByType(uint16_t entityType, const pldm_pdr* repo);
  *  @return vector of all sensor IDs
  */
 std::vector<pldm::pdr::SensorID> findSensorIds(
+    const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
+    uint16_t containerId);
+
+/** @brief Method to find all state effecter PDRs by type
+ *
+ *  @param[in] entityType - the entity type
+ *  @param[in] repo - opaque pointer acting as a PDR repo handle
+ *
+ *  @return vector of vector of all state effecter PDRs
+ */
+EffecterPDRs getStateEffecterPDRsByType(uint16_t entityType,
+                                        const pldm_pdr* repo);
+
+/** @brief method to find effecter IDs based on the pldm_entity
+ *
+ *  @param[in] pdrRepo - opaque pointer acting as a PDR repo handle
+ *  @param[in] entityType - the entity type
+ *  @param[in] entityInstance - the entity instance number
+ *  @param[in] containerId - the container ID
+ *
+ *  @return vector of all effecter IDs
+ */
+std::vector<pldm::pdr::EffecterID> findEffecterIds(
     const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
     uint16_t containerId);
 
