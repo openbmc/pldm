@@ -16,6 +16,24 @@
       "message": "can you also please document what is the hardware that generates the frequency measurements on the remote endpoint side.",
       "revId": "114684ecf36500d9357b1c1e3753726458657a68",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce64b227_88039473",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002377
+      },
+      "writtenOn": "2025-08-21T12:29:09Z",
+      "side": 1,
+      "message": "Done. I have added the hardware details.",
+      "parentUuid": "747faf49_ffea6289",
+      "revId": "114684ecf36500d9357b1c1e3753726458657a68",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
