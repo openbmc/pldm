@@ -3,6 +3,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6bf150a5_046cfd8d",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "can you please add doxygen for these ?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 32
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6c0a41_7a926a07",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "rather we could define it as  filesystem::path \n\n```\nconst std::filesystem::path boardPath \u003d getBoardPath(inventoryPath);\nconst auto boardName \u003d boardPath.filename().string();\n```\n\nThat handles edge cases (/, trailing slashes, no slashes, etc.) more robustly.",
+      "range": {
+        "startLine": 31,
+        "startChar": 3,
+        "endLine": 31,
+        "endChar": 70
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e25be03_ab750fe6",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "use modern `std::erase_if()` instead ?",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 9
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1f8dcf9_b93bb774",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "Because you call srandom(seed) inside the function, every call resets the generator. If you call this multiple times quickly (within the same nanosecond or same pid), you’ll get the same number repeatedly. I would rather suggest you seed it just once ?",
+      "range": {
+        "startLine": 65,
+        "startChar": 3,
+        "endLine": 65,
+        "endChar": 18
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "81279a6d_96e81382",
         "filename": "fw-update/firmware_inventory_manager.cpp",
         "patchSetId": 112
@@ -14,6 +106,24 @@
       "writtenOn": "2025-08-19T16:50:04Z",
       "side": 1,
       "message": "I don\u0027t see a reason to define a function just for this purpose. Either fold this into getRandomId by calling it getRandomIdStr or do string formatting in caller as there is just one user/caller for this.",
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd7a6044_981de27a",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "+1 , agree with jagpals comment here.",
+      "parentUuid": "81279a6d_96e81382",
       "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -37,6 +147,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32d05aa9_40b744a5",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "why are we returning arbitrary path back ? who hosts this path ? need the references to be documented in the commit message.",
+      "range": {
+        "startLine": 96,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 73
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3e58d0ae_5a24f93b",
         "filename": "fw-update/firmware_inventory_manager.cpp",
         "patchSetId": 112
@@ -54,6 +187,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5244c94e_5ca26339",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "add doxygen for these functions.",
+      "range": {
+        "startLine": 29,
+        "startChar": 5,
+        "endLine": 34,
+        "endChar": 51
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df405e32_76b170b9",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "add doxygen for these as well.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 41
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "abdc5f6f_a3dd4d85",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 112
@@ -65,6 +244,24 @@
       "writtenOn": "2025-08-19T16:50:04Z",
       "side": 1,
       "message": "Any specific reason you are changing this to insert_or_assign?",
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b258ed_4254ae4d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-21T09:23:21Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "abdc5f6f_a3dd4d85",
       "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
