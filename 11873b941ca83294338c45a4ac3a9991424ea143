@@ -362,6 +362,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab7e3900_7052f999",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-21T08:20:13Z",
+      "side": 1,
+      "message": "Isn\u0027t keeping both watchdog and `startUpdate` method an option?",
+      "parentUuid": "a184fa1e_698412b3",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cccabe03_5df1e281",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 10
