@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5476b6ce_af23d200",
+        "filename": "fw-update/firmware_inventory.hpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-22T09:40:52Z",
+      "side": 1,
+      "message": "Done, meanwhile I removed some members of the class which is not used at this patch.",
+      "parentUuid": "6bf150a5_046cfd8d",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 32
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af6c0a41_7a926a07",
@@ -262,6 +286,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f7f61e1_109736c8",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-22T09:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5244c94e_5ca26339",
+      "range": {
+        "startLine": 29,
+        "startChar": 5,
+        "endLine": 34,
+        "endChar": 51
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df405e32_76b170b9",
@@ -275,6 +323,30 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "add doxygen for these as well.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 41
+      },
+      "revId": "fa29b7af912be5fe1e52da5d91fe6d88f7a33249",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9035ea0f_3faf69e1",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 112
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-22T09:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df405e32_76b170b9",
       "range": {
         "startLine": 37,
         "startChar": 0,
