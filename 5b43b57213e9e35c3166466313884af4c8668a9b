@@ -168,6 +168,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "75a77634_90d78277",
+        "filename": "fw-update/update.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T19:11:47Z",
+      "side": 1,
+      "message": "Tom\u0027s design needs to introduce a new PDI interface for Multipart update as one of the options.",
+      "revId": "5b43b57213e9e35c3166466313884af4c8668a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59214fed_2506f9e0",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 11

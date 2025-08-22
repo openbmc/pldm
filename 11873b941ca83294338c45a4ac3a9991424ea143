@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5726a22f_e1c73e15",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T19:11:47Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com Just a heads up. This is the first issue i have asked @unive.tien.wiwynn@gmail.com to solve so FDs can be updated in parallel. Code will need refactoring so solution can work for single image for multiple FDs as well as parallel update for multiple FDs (exposed via Dbus).",
+      "parentUuid": "771a992c_0deb9e76",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e935b7b_86ed2201",
         "filename": "fw-update/update.cpp",
         "patchSetId": 10
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "The string would only be 10 characters long",
       "parentUuid": "68c6a44c_f0ddae66",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d885723_83477869",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T19:11:47Z",
+      "side": 1,
+      "message": "You can refer to https://gerrit.openbmc.org/c/openbmc/pldm/+/73512 patch for getRandomId to make it little more concise. Fix the comment from Manoj related to seeding while taking the change.",
+      "parentUuid": "8d0a071e_da0d0f85",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -277,6 +313,24 @@
       "side": 1,
       "message": "When updating through the inotify flow, bmcweb subscribes to InterfacesAdded signal rather than PropertiesChanged. Bmcweb would set the RequestedActivations to active (which starts the update flow) even before the package has been parsed completely. This might break the inotify flow.\n\nThe suggestion is feasible for StartUpdate flow but would require making changes in bmcweb for supporting inotify flow. Once we deprecate inotify, we can make the code here cleaner",
       "parentUuid": "5f1ecd49_b22f2ad0",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce6ba49c_5ad83187",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T19:11:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "23e3c271_9856ba51",
       "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
