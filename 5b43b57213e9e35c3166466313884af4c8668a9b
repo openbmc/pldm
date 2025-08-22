@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aad05fe0_b844c438",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-22T10:14:13Z",
+      "side": 1,
+      "message": "oh wow, that\u0027s a bummer. The commit message seems to state that we are trying to maintain backward compatibility with the existing design - this made me think if we already have things working already. I think it\u0027s better we call it out clearly about the redfish side of things and state that existing code is sort of broken already, and we are fixing it.",
+      "parentUuid": "6210edf1_624b9ce2",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 66
+      },
+      "revId": "5b43b57213e9e35c3166466313884af4c8668a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc911baa_d776a38d",
         "filename": "fw-update/update.cpp",
         "patchSetId": 11
