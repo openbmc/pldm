@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6210edf1_624b9ce2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-22T09:24:23Z",
+      "side": 1,
+      "message": "There\u0027s no working mechanism. Bmcweb moved to StartUpdate API method from inotify months back as per a design doc that was merged also many months before the bmcweb change.",
+      "parentUuid": "ed6159db_567910f5",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 66
+      },
+      "revId": "5b43b57213e9e35c3166466313884af4c8668a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc911baa_d776a38d",
         "filename": "fw-update/update.cpp",
         "patchSetId": 11
