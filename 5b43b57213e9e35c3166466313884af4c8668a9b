@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "afaf9230_f2286597",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-22T10:19:32Z",
+      "side": 1,
+      "message": "Ack, commit msg needs improvement.",
+      "parentUuid": "aad05fe0_b844c438",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 66
+      },
+      "revId": "5b43b57213e9e35c3166466313884af4c8668a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc911baa_d776a38d",
         "filename": "fw-update/update.cpp",
         "patchSetId": 11
