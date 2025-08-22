@@ -524,6 +524,7 @@ int Handler::pldmPDRRepositoryChgEvent(
     uint8_t tid, size_t eventDataOffset)
 {
     uint8_t eventDataFormat{};
+    uint8_t eventDataOperation{};
     uint8_t numberOfChangeRecords{};
     size_t dataOffset{};
 
@@ -548,7 +549,6 @@ int Handler::pldmPDRRepositoryChgEvent(
 
     if (eventDataFormat == FORMAT_IS_PDR_HANDLES)
     {
-        uint8_t eventDataOperation{};
         uint8_t numberOfChangeEntries{};
 
         auto changeRecordData = eventData + dataOffset;
@@ -613,7 +613,14 @@ int Handler::pldmPDRRepositoryChgEvent(
                 }
             }
         }
-        hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
+        if (eventDataOperation == PLDM_RECORDS_DELETED)
+        {
+            hostPDRHandler->deletePDRFromRepo(std::move(pdrRecordHandles));
+        }
+        else
+        {
+            hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
+        }
     }
 
     return PLDM_SUCCESS;
