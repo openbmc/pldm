@@ -1228,4 +1228,17 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
 }
 
+void HostPDRHandler::deletePDRFromRepo(PDRRecordHandles&& recordHandles)
+{
+    for (auto& recordHandle : recordHandles)
+    {
+        int rc = pldm_pdr_delete_by_record_handle(repo, recordHandle, true);
+        if (rc)
+        {
+            error("Failed to delete the record handle: {REC_HANDLE}",
+                  "REC_HANDLE", recordHandle);
+        }
+    }
+}
+
 } // namespace pldm
