@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e9d75dc_4c329a9c",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T18:45:29Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "5d0d053d_3b656cca",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 38
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16eb9b04_0ea0f909",
         "filename": "fw-update/firmware_inventory_manager.cpp",
         "patchSetId": 114
@@ -106,6 +130,30 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "i would rather expect this function to return  std::nullopt and the function return type be std::optional - this avoids sending emtpy {}",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 84,
+        "endChar": 18
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7a7d179_994539e0",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T18:45:29Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "805c407f_fd05cb84",
       "range": {
         "startLine": 84,
         "startChar": 7,
