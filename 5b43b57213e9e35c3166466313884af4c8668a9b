@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bf746b5b_c8408770",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T18:04:31Z",
+      "side": 1,
+      "message": "Yes, lets add relevant details for the reviewers so it provides context and history -\n\n1. Limitations with inotify mechanism specifically mentioning the race condition between bmc code updater and pldmd updater to get the image from /tmp/images directory. Also, lack of a standard Dbus interface.\n2. Add reference to the current upstream design for device \u0026 component level inventory \u0026 update mentioning that the implementation will follow in separate patches for that.\n3. Add reference to Tom\u0027s in review design which is the basis for this patch.",
+      "parentUuid": "afaf9230_f2286597",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 66
+      },
+      "revId": "5b43b57213e9e35c3166466313884af4c8668a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fc911baa_d776a38d",
         "filename": "fw-update/update.cpp",
         "patchSetId": 11
