@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c32caeb5_d30930c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 115
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-08-22T19:14:54Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Please add reference to the upstream design and explain some details on the implementation like object paths as Manoj asked above.",
+      "revId": "c27f269093a2063968b99fc21001fcfe5afead13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e497f874_aec07c97",
         "filename": "fw-update/firmware_inventory_manager.cpp",
         "patchSetId": 115
