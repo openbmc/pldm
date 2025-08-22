@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81de8e02_cd8df44d",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-22T05:25:51Z",
+      "side": 1,
+      "message": "This is quite similar to getStateSensorPDRsByType. Do we need the dup?",
+      "revId": "60aa0bbdc7e5e7595ff263aa4d3d5c31e4b44adf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65d554f2_595f6175",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-22T05:25:51Z",
+      "side": 1,
+      "message": "This is quite similar to findSensorIds. Do we need the code dup?",
+      "revId": "60aa0bbdc7e5e7595ff263aa4d3d5c31e4b44adf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b96643df_ecc3b28e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-08-22T05:25:51Z",
+      "side": 1,
+      "message": "What code uses this API? Is there a different commit for that?",
+      "revId": "60aa0bbdc7e5e7595ff263aa4d3d5c31e4b44adf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
