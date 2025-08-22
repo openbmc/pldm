@@ -1212,4 +1212,12 @@ void HostPDRHandler::createDbusObjects(const PDRList& fruRecordSetPDRs)
     getFRURecordTableMetadataByRemote(fruRecordSetPDRs);
 }
 
+void HostPDRHandler::deletePDRFromRepo(PDRRecordHandles&& recordHandles)
+{
+    for (auto& recordHandle : recordHandles)
+    {
+        pldm_delete_by_record_handle(repo, recordHandle, true);
+    }
+}
+
 } // namespace pldm
