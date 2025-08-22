@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "056dd5a0_4665000b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-22T09:11:25Z",
+      "side": 1,
+      "message": "Acknowledged, but this is for Effecters and the common util APIs are seperate for sensors and effecters throughout.",
+      "parentUuid": "81de8e02_cd8df44d",
+      "revId": "60aa0bbdc7e5e7595ff263aa4d3d5c31e4b44adf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65d554f2_595f6175",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90f77606_84bc6ca3",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-22T09:11:25Z",
+      "side": 1,
+      "message": "Acknowledged, but this is for Effecters and the common util APIs are seperate for sensors and effecters throughout.",
+      "parentUuid": "65d554f2_595f6175",
+      "revId": "60aa0bbdc7e5e7595ff263aa4d3d5c31e4b44adf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b96643df_ecc3b28e",
@@ -48,6 +84,24 @@
       "writtenOn": "2025-08-22T05:25:51Z",
       "side": 1,
       "message": "What code uses this API? Is there a different commit for that?",
+      "revId": "60aa0bbdc7e5e7595ff263aa4d3d5c31e4b44adf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9fe23b7_182a593a",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-08-22T09:11:25Z",
+      "side": 1,
+      "message": "yes, I have a commit that uses this API - https://gerrit.openbmc.org/c/openbmc/pldm/+/79879",
+      "parentUuid": "b96643df_ecc3b28e",
       "revId": "60aa0bbdc7e5e7595ff263aa4d3d5c31e4b44adf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
