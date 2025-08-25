@@ -650,7 +650,7 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
                                std::string_view trimStr)
 {
     std::vector<std::string> out;
-    size_t start;
+    size_t start = 0;
     size_t end = 0;
 
     while ((start = srcStr.find_first_not_of(delim, end)) != std::string::npos)
@@ -666,7 +666,7 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
 
         if (!dstStr.empty())
         {
-            out.push_back(std::string(dstStr));
+            out.emplace_back(dstStr);
         }
     }
 
