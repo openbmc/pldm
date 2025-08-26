@@ -39,7 +39,40 @@ using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
-class UpdateManager
+class UpdateManagerIntf
+{
+  public:
+    virtual ~UpdateManagerIntf() = default;
+
+    UpdateManagerIntf() = delete;
+    UpdateManagerIntf(const UpdateManagerIntf&) = delete;
+    UpdateManagerIntf(UpdateManagerIntf&&) = delete;
+    UpdateManagerIntf& operator=(const UpdateManagerIntf&) = delete;
+    UpdateManagerIntf& operator=(UpdateManagerIntf&&) = delete;
+    /** @brief Constructor
+     *
+     *  @param[in] event - PLDM daemon's main event loop
+     *  @param[in] handler - PLDM request handler
+     *  @param[in] instanceIdDb - Managing instance ID for PLDM requests
+     */
+    UpdateManagerIntf(
+        Event& event,
+        pldm::requester::Handler<pldm::requester::Request>& handler,
+        InstanceIdDb& instanceIdDb) :
+        event(event), handler(handler), instanceIdDb(instanceIdDb)
+    {}
+
+    virtual Response handleRequest(mctp_eid_t eid, uint8_t command,
+                           const pldm_msg* request, size_t reqMsgLen) = 0;
+    virtual void updateDeviceCompletion(mctp_eid_t eid, bool status) = 0;
+    virtual void updateActivationProgress() = 0;
+
+    Event& event;               //!< reference to PLDM daemon's main event loop
+    pldm::requester::Handler<pldm::requester::Request>& handler;
+    InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
+};
+
+class UpdateManager : public UpdateManagerIntf
 {
   public:
     UpdateManager() = delete;
@@ -54,7 +87,7 @@ class UpdateManager
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap) :
-        event(event), handler(handler), instanceIdDb(instanceIdDb),
+        UpdateManagerIntf(event, handler, instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
@@ -80,7 +113,7 @@ class UpdateManager
      *
      *  @return PLDM response message
      */
-    Response handleRequest(mctp_eid_t eid, uint8_t command,
+    virtual Response handleRequest(mctp_eid_t eid, uint8_t command,
                            const pldm_msg* request, size_t reqMsgLen);
 
     int processPackage(const std::filesystem::path& packageFilePath);
@@ -104,9 +137,9 @@ class UpdateManager
     std::string processStreamDefer(std::istream& packageStream,
                                    uintmax_t packageSize);
 
-    void updateDeviceCompletion(mctp_eid_t eid, bool status);
+    void updateDeviceCompletion(mctp_eid_t eid, bool status) override;
 
-    void updateActivationProgress();
+    void updateActivationProgress() override;
 
     /** @brief Callback function that will be invoked when the
      *         RequestedActivation will be set to active in the Activation
@@ -131,10 +164,6 @@ class UpdateManager
     static std::string getSwId();
 
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
-    Event& event; //!< reference to PLDM daemon's main event loop
-    /** @brief PLDM request handler */
-    pldm::requester::Handler<pldm::requester::Request>& handler;
-    InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
 
     std::unique_ptr<Activation> activation;
 

@@ -4,6 +4,7 @@
 #include "common/types.hpp"
 #include "firmware_inventory_manager.hpp"
 #include "requester/handler.hpp"
+#include "aggregate_update_manager.hpp"
 
 namespace pldm
 {
@@ -46,12 +47,13 @@ class InventoryManager
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
-        const Configurations& configurations) :
+        const Configurations& configurations,
+        AggregateUpdateManager& updateManager) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap), configurations(configurations),
-        firmwareInventoryManager(configurations)
+        firmwareInventoryManager(configurations, updateManager)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs

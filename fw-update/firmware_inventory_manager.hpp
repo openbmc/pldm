@@ -2,6 +2,7 @@
 
 #include "common/types.hpp"
 #include "firmware_inventory.hpp"
+#include "aggregate_update_manager.hpp"
 
 namespace pldm::fw_update
 {
@@ -33,8 +34,10 @@ class FirmwareInventoryManager
      * @param[in] configurations - Reference to the EM configurations for MCTP
      *                             endpoints
      */
-    explicit FirmwareInventoryManager(const Configurations& configurations) :
-        configurations(configurations)
+    explicit FirmwareInventoryManager(const Configurations& configurations,
+                                     AggregateUpdateManager& updateManager) :
+        configurations(configurations),
+        updateManager(updateManager)
     {}
 
     /**
@@ -90,6 +93,8 @@ class FirmwareInventoryManager
      *        the initialization of the FirmwareInventoryManager.
      */
     const Configurations& configurations;
+
+    AggregateUpdateManager& updateManager;
 };
 
 } // namespace pldm::fw_update

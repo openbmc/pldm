@@ -41,7 +41,8 @@ void FirmwareInventoryManager::createFirmwareEntry(
     softwareMap.insert_or_assign(
         softwareIdentifier, std::make_unique<FirmwareInventory>(
                                 softwareIdentifier, softwarePath, activeVersion,
-                                *boardPath, descriptors, componentInfo));
+                                *boardPath, descriptors, componentInfo,
+                                updateManager));
 }
 
 void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
