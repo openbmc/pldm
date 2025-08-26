@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b529f1ba_828e4efa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 114
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "467dfb3e_38b2eec0",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 10
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "746307e7_4b100b1a",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "what is the reason for us to expect an inventory item like board  ?",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 25,
+        "endChar": 55
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f40aa6_e9ef5e9c",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "In case of multi-host system, there would be multiple devices register with the same device name, therefore we expect a different board name to help us figure out which specific slot/host is the device belong with.\n\ne.g.\n```\nserver_board_slot_1_VR\nserver_board_slot_2_VR\n```",
+      "parentUuid": "746307e7_4b100b1a",
       "range": {
         "startLine": 25,
         "startChar": 3,
@@ -94,6 +142,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c947ac8b_b0c6eac7",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e9d75dc_4c329a9c",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 38
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16eb9b04_0ea0f909",
@@ -107,6 +179,30 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "I don\u0027t understand why this was needed ? more comments needed",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 22
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7022c46_fe6f326e",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Renamed to `generateSwId` for clarity",
+      "parentUuid": "16eb9b04_0ea0f909",
       "range": {
         "startLine": 61,
         "startChar": 0,
@@ -164,6 +260,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19f6fbc9_42f32961",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7a7d179_994539e0",
+      "range": {
+        "startLine": 84,
+        "startChar": 7,
+        "endLine": 84,
+        "endChar": 18
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c833043_c07f5b5c",
@@ -187,6 +307,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b26eb769_ca8a0a20",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Revised to give the first element of the response to caller.",
+      "parentUuid": "0c833043_c07f5b5c",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 73
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56d1af01_5d112b9d",
@@ -200,6 +344,30 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "same comment about std::optional here as well. we need explcit return types lke std::nullopt rather than returning empty string \u0026 empty lists.",
+      "range": {
+        "startLine": 116,
+        "startChar": 3,
+        "endLine": 116,
+        "endChar": 14
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4624254c_62e3e0ed",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56d1af01_5d112b9d",
       "range": {
         "startLine": 116,
         "startChar": 3,
@@ -256,6 +424,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a4cad60_e02b7005",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2d72d93_1777cfa6",
+      "range": {
+        "startLine": 575,
+        "startChar": 27,
+        "endLine": 576,
+        "endChar": 5
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "718807fb_6c5deaa6",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Documented in the commit message, feel free to open it again to let me know if this need to be documented elsewhere.",
+      "parentUuid": "b83d6616_eac95259",
+      "range": {
+        "startLine": 565,
+        "startChar": 0,
+        "endLine": 576,
+        "endChar": 5
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88122767_d1c9028f",
@@ -269,6 +485,30 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "same comment about returning std::nullopt \u0026 using std::optional as return type here.",
+      "range": {
+        "startLine": 711,
+        "startChar": 3,
+        "endLine": 711,
+        "endChar": 14
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0312955b_642b5907",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88122767_d1c9028f",
       "range": {
         "startLine": 711,
         "startChar": 3,
@@ -302,6 +542,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e3ea9e9_df21815d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Documented in the commit message, feel free to open it again to let me know if this need to be documented elsewhere.",
+      "parentUuid": "0de6031e_e297fdd0",
+      "range": {
+        "startLine": 723,
+        "startChar": 11,
+        "endLine": 723,
+        "endChar": 40
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e89190a_9626a4fd",
@@ -315,6 +579,30 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "same comment as above.",
+      "range": {
+        "startLine": 734,
+        "startChar": 2,
+        "endLine": 734,
+        "endChar": 14
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0bf1c9f_eac983b5",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e89190a_9626a4fd",
       "range": {
         "startLine": 734,
         "startChar": 2,
@@ -348,6 +636,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cadd1f75_e65aaa79",
+        "filename": "fw-update/inventory_manager.hpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8472b105_1a2c4064",
+      "range": {
+        "startLine": 170,
+        "startChar": 23,
+        "endLine": 170,
+        "endChar": 26
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ce5c231_3479c1e9",
@@ -361,6 +673,24 @@
       "writtenOn": "2025-08-21T09:23:21Z",
       "side": 1,
       "message": "I dont see that we are unit testing any functions that were being added as part of this commit, please improve the unit testing.",
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d24e58cc_03f17ff7",
+        "filename": "fw-update/test/meson.build",
+        "patchSetId": 114
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Acknowledged, working on it.",
+      "parentUuid": "5ce5c231_3479c1e9",
       "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

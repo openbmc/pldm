@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e5ddcb0_b2e5d05e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 115
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c32caeb5_d30930c0",
+      "revId": "c27f269093a2063968b99fc21001fcfe5afead13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e497f874_aec07c97",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-08-22T18:45:29Z",
       "side": 1,
       "message": "Lets call this generateSwId() so intent is clear.",
+      "revId": "c27f269093a2063968b99fc21001fcfe5afead13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef9f703_6b947fd7",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 115
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-26T06:21:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e497f874_aec07c97",
       "revId": "c27f269093a2063968b99fc21001fcfe5afead13",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
