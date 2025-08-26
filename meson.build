@@ -43,6 +43,9 @@ cpp = meson.get_compiler('cpp')
 if cpp.has_header('poll.h')
     conf_data.set('PLDM_HAS_POLL', 1)
 endif
+
+conf_data.set_quoted('HOST_JSONS_DIR', join_paths(package_datadir, 'host'))
+
 if get_option('libpldmresponder').allowed()
     conf_data.set_quoted('BIOS_JSONS_DIR', join_paths(package_datadir, 'bios'))
     conf_data.set(
@@ -63,7 +66,7 @@ if get_option('libpldmresponder').allowed()
         'ENTITY_MAP_JSON',
         join_paths(package_datadir, 'entityMap.json'),
     )
-    conf_data.set_quoted('HOST_JSONS_DIR', join_paths(package_datadir, 'host'))
+
     conf_data.set_quoted(
         'EVENTS_JSONS_DIR',
         join_paths(package_datadir, 'events'),
