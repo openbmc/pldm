@@ -899,6 +899,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f6abf7d_8434d52a",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2025-08-26T08:02:54Z",
+      "side": 1,
+      "message": "Adding the output for the introspect here\n\n```\nroot@gb200nvl-obmc:~# busctl introspect xyz.openbmc_project.PLDM /xyz/openbmc_project/software/pldm\nNAME                                TYPE      SIGNATURE RESULT/VALUE FLAGS\norg.freedesktop.DBus.Introspectable interface -         -            -\n.Introspect                         method    -         s            -\norg.freedesktop.DBus.Peer           interface -         -            -\n.GetMachineId                       method    -         s            -\n.Ping                               method    -         -            -\norg.freedesktop.DBus.Properties     interface -         -            -\n.Get                                method    ss        v            -\n.GetAll                             method    s         a{sv}        -\n.Set                                method    ssv       -            -\n.PropertiesChanged                  signal    sa{sv}as  -            -\nxyz.openbmc_project.Software.Update interface -         -            -\n.StartUpdate                        method    hs        o            -\n.AllowedApplyTimes                  property  as        0            emits-change\n```",
+      "parentUuid": "19d53be4_8c8369a3",
+      "revId": "11873b941ca83294338c45a4ac3a9991424ea143",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60a3687f_42dcd837",
