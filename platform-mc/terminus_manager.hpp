@@ -28,6 +28,8 @@ enum class SupportedTransportLayer
 namespace platform_mc
 {
 
+using namespace pldm::pdr;
+
 /** @brief Size of TID Pool in pldmd */
 constexpr size_t tidPoolSize = std::numeric_limits<pldm_tid_t>::max() + 1;
 /** @brief Type definition for Requester request handler */
@@ -180,6 +182,17 @@ class TerminusManager
      */
     std::optional<mctp_eid_t> getActiveEidByName(
         const std::string& terminusName);
+
+    /** @brief Member functions to get the File Size Monitoring Sensor
+     *         of a File Descriptor object using its Entity info
+     *
+     *  @param[in] tid - Terminus ID that the file object belongs
+     *  @param[in] entityInfo - Entity info of the file object
+     *
+     *  @return Pointer to the sensor object - nullptr if not found
+     */
+    std::shared_ptr<NumericSensor> getFileSizeMonitoringSensor(
+        const pldm_tid_t& tid, const EntityInfo& entityInfo);
 
   private:
     /** @brief Find the terminus object pointer in termini list.
