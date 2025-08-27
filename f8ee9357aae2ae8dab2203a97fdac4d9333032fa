@@ -33,6 +33,24 @@
       "message": "Could we create a JSON file for different platforms to overwrite components?\n\n@amithash@meta.com What do you think about solving the component problem across different platforms?",
       "revId": "f8ee9357aae2ae8dab2203a97fdac4d9333032fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bccedfb_4d4f54a5",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2025-08-27T21:06:41Z",
+      "side": 1,
+      "message": "In a perfect world, these should be retrieved from the BIC. So, if we have for example, a ARM server controller vs an AMD server controller, I suspect the names of these VRs would change. IMHO this is what PDRs were supposed to address.\n\nTo be honest, I see OEM as a temporary measure while we figure out the story on how we can better utilize more standard interfaces. So, it could be a couple of platforms stuck on the OEM variants while our future platforms jump onto other more standard PLDM features?",
+      "parentUuid": "1acc3481_0eea8dad",
+      "revId": "f8ee9357aae2ae8dab2203a97fdac4d9333032fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
