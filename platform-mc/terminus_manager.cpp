@@ -805,5 +805,23 @@ std::optional<mctp_eid_t> TerminusManager::getActiveEidByName(
 
     return std::nullopt;
 }
+
+std::shared_ptr<NumericSensor> TerminusManager::getFileSizeMonitoringSensor(
+    const pldm_tid_t& tid, const EntityInfo& entityInfo)
+{
+    auto it = termini.find(tid);
+    if (it != termini.end())
+    {
+        for (const auto& sensor : it->second->numericSensors)
+        {
+            if (sensor->isEntityInfoMatching(entityInfo))
+            {
+                return sensor;
+                break;
+            }
+        }
+    }
+    return nullptr;
+}
 } // namespace platform_mc
 } // namespace pldm
