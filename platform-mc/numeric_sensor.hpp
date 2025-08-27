@@ -24,6 +24,8 @@ namespace pldm
 namespace platform_mc
 {
 
+using namespace pldm::pdr;
+
 using SensorUnit = sdbusplus::xyz::openbmc_project::Sensor::server::Value::Unit;
 using ValueIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Sensor::server::Value>;
@@ -360,6 +362,29 @@ class NumericSensor
     int triggerThresholdEvent(pldm::utils::Level eventType,
                               pldm::utils::Direction direction, double rawValue,
                               bool newAlarm, bool assert);
+
+    /** @brief Compare Entity info against the sensor's
+     *
+     *  @param[in] entityInfo - Entity info to be compared
+     *
+     *  @return true if matching, false otherwise
+     */
+    bool isEntityInfoMatching(const EntityInfo& entityInfo)
+    {
+        if (!valueIntf && !metricIntf)
+        {
+            return (std::tie(entityType, entityInstanceNum, containerId) ==
+                    entityInfo);
+        }
+        else
+        {
+            return (entityIntf &&
+                    (entityIntf->entityType() == std::get<0>(entityInfo)) &&
+                    (entityIntf->entityInstanceNumber() ==
+                     std::get<1>(entityInfo)) &&
+                    (entityIntf->containerID() == std::get<2>(entityInfo)));
+        }
+    }
 
     /** @brief Get the current value of the sensor
      *
