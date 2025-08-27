@@ -24,6 +24,8 @@ namespace pldm
 namespace platform_mc
 {
 
+using namespace pldm::pdr;
+
 constexpr const char* SENSOR_VALUE_INTF = "xyz.openbmc_project.Sensor.Value";
 constexpr const char* METRIC_VALUE_INTF = "xyz.openbmc_project.Metric.Value";
 
@@ -363,6 +365,24 @@ class NumericSensor
     int triggerThresholdEvent(pldm::utils::Level eventType,
                               pldm::utils::Direction direction, double rawValue,
                               bool newAlarm, bool assert);
+
+    /** @brief Compare Entity info against the sensor's
+     *
+     *  @param[in] entityInfo - Entity info to be compared
+     *
+     *  @return true if matching, false otherwise
+     */
+    bool isEntityInfoMatching(const EntityInfo& entityInfo)
+    {
+        if (entityIntf &&
+            (entityIntf->entityType() == std::get<0>(entityInfo)) &&
+            (entityIntf->entityInstanceNumber() == std::get<1>(entityInfo)) &&
+            (entityIntf->containerID() == std::get<2>(entityInfo)))
+        {
+            return true;
+        }
+        return false;
+    }
 
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
