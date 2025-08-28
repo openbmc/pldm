@@ -590,6 +590,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dbe2150_45b83c83",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-08-28T06:14:55Z",
+      "side": 1,
+      "message": "Hi ManojKiran, sorry for the confusion, there are some overlap pushing between me and carter, and I\u0027ve restored them.\n\nThere will be another push when the unit test portion is done.",
+      "parentUuid": "3c5b39db_2d1c34a7",
+      "range": {
+        "startLine": 723,
+        "startChar": 11,
+        "endLine": 723,
+        "endChar": 40
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e89190a_9626a4fd",
