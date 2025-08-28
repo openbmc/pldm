@@ -568,6 +568,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c5b39db_2d1c34a7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-08-28T06:06:13Z",
+      "side": 1,
+      "message": "Hey Unive - i don\u0027t see the commit message being changed from your old patches - can you please recheck the commit",
+      "parentUuid": "4e3ea9e9_df21815d",
+      "range": {
+        "startLine": 723,
+        "startChar": 11,
+        "endLine": 723,
+        "endChar": 40
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e89190a_9626a4fd",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 114
