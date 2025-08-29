@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7273faa0_7fd4aadd",
+        "filename": "common/utils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-08-29T06:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fbe6737_96fa0b63",
+      "range": {
+        "startLine": 891,
+        "startChar": 8,
+        "endLine": 891,
+        "endChar": 18
+      },
+      "revId": "59ce84d20a3714dae5811e7c8a11ec1fff46ed91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32fd5b72_d2448f50",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-08-21T10:12:16Z",
       "side": 1,
       "message": "bios attributes can also be integer or enum type, if the return type is just string .. this does not seem to qualify as a generic util function that every one can use. can you scale this to work with any type ?",
+      "range": {
+        "startLine": 673,
+        "startChar": 0,
+        "endLine": 673,
+        "endChar": 28
+      },
+      "revId": "59ce84d20a3714dae5811e7c8a11ec1fff46ed91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1d73777_9e0d5fcc",
+        "filename": "common/utils.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-08-29T06:52:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "32fd5b72_d2448f50",
       "range": {
         "startLine": 673,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9efc424b_baf054f0",
+        "filename": "common/utils.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-08-29T06:52:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f820bc14_d4c9635d",
+      "range": {
+        "startLine": 681,
+        "startChar": 0,
+        "endLine": 681,
+        "endChar": 56
+      },
+      "revId": "59ce84d20a3714dae5811e7c8a11ec1fff46ed91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bbdfcbd_27a047e4",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-08-21T10:12:16Z",
       "side": 1,
       "message": "need to check for exceptions.",
+      "range": {
+        "startLine": 472,
+        "startChar": 4,
+        "endLine": 472,
+        "endChar": 58
+      },
+      "revId": "59ce84d20a3714dae5811e7c8a11ec1fff46ed91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f678dbc0_e5fd3246",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-08-29T06:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bbdfcbd_27a047e4",
       "range": {
         "startLine": 472,
         "startChar": 4,
@@ -129,6 +225,30 @@
       "writtenOn": "2025-08-21T10:12:16Z",
       "side": 1,
       "message": "it is just `return` right ? i dont think it is return []",
+      "range": {
+        "startLine": 226,
+        "startChar": 14,
+        "endLine": 226,
+        "endChar": 16
+      },
+      "revId": "59ce84d20a3714dae5811e7c8a11ec1fff46ed91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "258ed763_2ac7a927",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-08-29T06:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c103e507_50787e04",
       "range": {
         "startLine": 226,
         "startChar": 14,
