@@ -1,6 +1,7 @@
 #pragma once
 
 #include <xyz/openbmc_project/Software/ApplyTime/server.hpp>
+#include <xyz/openbmc_project/Software/MultipartUpdate/server.hpp>
 #include <xyz/openbmc_project/Software/Update/server.hpp>
 
 namespace pldm
@@ -12,7 +13,8 @@ namespace fw_update
 class UpdateManager;
 
 using UpdateIntf = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::Software::server::Update>;
+    sdbusplus::xyz::openbmc_project::Software::server::Update,
+    sdbusplus::xyz::openbmc_project::Software::server::MultipartUpdate>;
 using ApplyTimeIntf =
     sdbusplus::xyz::openbmc_project::Software::server::ApplyTime;
 
