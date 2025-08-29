@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "215d1364_791b7857",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 798,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5889efc_499ad14d",
+      "range": {
+        "startLine": 798,
+        "startChar": 25,
+        "endLine": 798,
+        "endChar": 32
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "830e5b11_0bc79a61",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c17033a_ed5b854c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "830e5b11_0bc79a61",
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77eae39e_c608c6c0",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-08-29T05:12:47Z",
       "side": 1,
       "message": "do we need to include the basepath here to know which basePath there was an error?",
+      "range": {
+        "startLine": 815,
+        "startChar": 6,
+        "endLine": 815,
+        "endChar": 61
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a0a22b4_d3003b4b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77eae39e_c608c6c0",
       "range": {
         "startLine": 815,
         "startChar": 6,
@@ -110,6 +176,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b55cbf5b_cc43e734",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "Yes. I added a check here and a check to skip files with empty object paths before calling std::make_shared\u003cFileDescriptor\u003e.",
+      "parentUuid": "8d3e5d20_3b6bcbb3",
+      "range": {
+        "startLine": 820,
+        "startChar": 27,
+        "endLine": 820,
+        "endChar": 38
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ac95857_0d99f2b5",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "Agree. I added an `objPathAntiPattern` static const.",
+      "parentUuid": "980e4018_875b43cc",
+      "range": {
+        "startLine": 819,
+        "startChar": 4,
+        "endLine": 820,
+        "endChar": 75
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a2305df_39744122",
@@ -123,6 +237,30 @@
       "writtenOn": "2025-08-29T05:12:47Z",
       "side": 1,
       "message": "const auto\u0026 child ?",
+      "range": {
+        "startLine": 828,
+        "startChar": 9,
+        "endLine": 828,
+        "endChar": 20
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf4e565_7b1798f6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 828,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "`constructFilePathRecursive` needs to modify objPath field of child, so child needs to be non-const.",
+      "parentUuid": "8a2305df_39744122",
       "range": {
         "startLine": 828,
         "startChar": 9,
@@ -202,6 +340,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3aeeec01_a22890e3",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "Added a check to skip adding file with a zero file name length or empty file name to the fileInfoMap.",
+      "parentUuid": "947d8837_7e3c3b7b",
+      "range": {
+        "startLine": 874,
+        "startChar": 29,
+        "endLine": 874,
+        "endChar": 56
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db1bb395_3577a26e",
@@ -215,6 +377,30 @@
       "writtenOn": "2025-08-29T05:12:47Z",
       "side": 1,
       "message": "redundant std::move?",
+      "range": {
+        "startLine": 878,
+        "startChar": 50,
+        "endLine": 878,
+        "endChar": 60
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc34575b_06890a21",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-08-29T08:53:31Z",
+      "side": 1,
+      "message": "This move is to avoid copying of the shared pointer but to directly transfer the ownership of the shared_ptr into fileInfoMap, so no ref count increasemen/decreasement needed.",
+      "parentUuid": "db1bb395_3577a26e",
       "range": {
         "startLine": 878,
         "startChar": 50,
