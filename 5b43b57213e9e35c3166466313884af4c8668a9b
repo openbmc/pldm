@@ -291,6 +291,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4020a6e8_ee2cd9cc",
+        "filename": "fw-update/update.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-08-30T05:34:48Z",
+      "side": 1,
+      "message": "Ack - https://gerrit.openbmc.org/c/openbmc/pldm/+/83204/4",
+      "parentUuid": "a4651582_62a1be30",
+      "revId": "5b43b57213e9e35c3166466313884af4c8668a9b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59214fed_2506f9e0",
