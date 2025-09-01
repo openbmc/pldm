@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ed5ef74_1f36c328",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 71
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-01T02:45:48Z",
+      "side": 1,
+      "message": "Hi @patrick@stwcx.xyz,\n\nWe can completely remove the ConfigurationDiscoveryHandler class from the OEM meta code if you think that’s fine. In detail, we’d replace the slot number retrieval with just returning \"0\" in the OEM meta code, and handle our own mechanism in the downstream code. What do you suggest I do?",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a48b604d_f9377bba",
@@ -426,6 +443,24 @@
       "side": 1,
       "message": "@baxiche@gmail.com can we remove this in the initial version of the commit and add it back later in its own dedicated commit? That way, we document exactly what the workaround is.",
       "parentUuid": "5662edfd_9b6167ad",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da4abd1_384e07b3",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-01T02:45:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "14b931f7_09dbbcde",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
