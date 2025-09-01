@@ -409,6 +409,30 @@
       },
       "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbf8d971_7628b946",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-01T06:55:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fc34575b_06890a21",
+      "range": {
+        "startLine": 878,
+        "startChar": 50,
+        "endLine": 878,
+        "endChar": 60
+      },
+      "revId": "605f8aa508d9752377c23c7214205c32fcf2d75f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
