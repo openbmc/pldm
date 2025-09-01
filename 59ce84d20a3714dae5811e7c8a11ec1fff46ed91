@@ -212,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a362af3c_b78623f3",
+        "filename": "oem/ibm/libpldmresponder/inband_code_update.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-09-01T01:18:48Z",
+      "side": 1,
+      "message": "Whenever a new key is introduced, we should first check whether it exists in the JSON before reading its value. If the expected key is missing, we can assign a default value instead.\n\nBy assigning defaults for missing keys, the code remains forward-compatible. This handling is only required when new JSON keys are added in the future.",
+      "parentUuid": "d560d3f5_7da07c70",
+      "range": {
+        "startLine": 484,
+        "startChar": 0,
+        "endLine": 485,
+        "endChar": 30
+      },
+      "revId": "59ce84d20a3714dae5811e7c8a11ec1fff46ed91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c103e507_50787e04",
