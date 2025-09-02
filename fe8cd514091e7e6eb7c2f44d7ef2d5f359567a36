@@ -119,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "054d6621_f4d96849",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:57:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4d070e32_cf2a95de",
+      "range": {
+        "startLine": 25,
+        "startChar": 3,
+        "endLine": 25,
+        "endChar": 55
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d0d053d_3b656cca",
@@ -628,6 +652,30 @@
       "side": 1,
       "message": "Hi ManojKiran, sorry for the confusion, there are some overlap pushing between me and carter, and I\u0027ve restored them.\n\nThere will be another push when the unit test portion is done.",
       "parentUuid": "3c5b39db_2d1c34a7",
+      "range": {
+        "startLine": 723,
+        "startChar": 11,
+        "endLine": 723,
+        "endChar": 40
+      },
+      "revId": "fe8cd514091e7e6eb7c2f44d7ef2d5f359567a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f8d149_4ec941c6",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 114
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:57:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3dbe2150_45b83c83",
       "range": {
         "startLine": 723,
         "startChar": 11,

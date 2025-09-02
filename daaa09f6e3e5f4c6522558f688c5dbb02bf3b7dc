@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f115a38_32f3ce10",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 122
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:57:39Z",
+      "side": 1,
+      "message": "did you mean instanceID here ?",
+      "range": {
+        "startLine": 49,
+        "startChar": 3,
+        "endLine": 49,
+        "endChar": 15
+      },
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eafa27f_3544e8e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 122
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:57:39Z",
+      "side": 1,
+      "message": "@unive - just a couple of nits, but this looks much better now.",
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d50e85f5_f52082fe",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:57:39Z",
+      "side": 1,
+      "message": "i think it would be worth to move this to common/utils ? I think this can be used for any dbus object hosted by PLDM.",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 1
+      },
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eadb406c_518e7c37",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:57:39Z",
+      "side": 1,
+      "message": "can you remove the comments here ? the function stlying looks to be odd with comments.",
+      "range": {
+        "startLine": 48,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 9
+      },
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
