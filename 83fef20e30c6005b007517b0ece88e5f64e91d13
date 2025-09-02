@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55e57d8d_383a19a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:48:59Z",
+      "side": 1,
+      "message": "The patch looks good to me. It will be great if you add section do say about PLDM sensor Hertz unit in DSP0248 in commit message",
+      "revId": "83fef20e30c6005b007517b0ece88e5f64e91d13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
