@@ -1,0 +1,327 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "498b4edf_8fc42488",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "How about terminusManager?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6f54798_955c04a4",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "return error?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26013df4_da842b63",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Can file_capabilities be null?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dcd2c06_f4a3b8fd",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "sound like c type_casting",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9c9e30f_edeeb981",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "sound like c type_casting",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c057aef8_6524cda9",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Can we create the mapping from `FileClassification::BootLog` to `PurposeType::BootLog` instead of using switch .. case ..?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32f82943_98940e61",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Add definition for `5` max_retry?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e31abdfd_dd0a67d0",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Which is 2000 mean? Can we configure or add definition for that value?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c73e5f6_9a58be4c",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Can we use transferFlag condition instead of `!isEnd`?\nAs the code isEnd will be set to True when transferFlag \u003d PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_ACK_COMPLETION.\nIf the transferFlag never equal PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_ACK_COMPLETION then it is terminus issue.\nbut if isEnd never to `True` then it is code issue.",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e55cfcb_e3f0012b",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "For these kind of check i think \"if (buffer.size())\" is enough.",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "199be026_63a6ce54",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Can we remove these kind of lg2::info? for the worked code I think we don\u0027t need them",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23524279_770747e2",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Add definition for maxResponseSize. `0x100`",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48503395_ae2aae4f",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Remove lg2::info",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37a0d015_cf55d70e",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "How about\n    if (rc !\u003d PLDM_SUCCESS)\n    {\n        error log;\n        return;\n    }\n    handle when rc \u003d\u003d PLDM_SUCCESS;",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8ff3b90_c6daaa5a",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "C type casting",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7815e309_c28f164f",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Do we return from functions in this case?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb64b098_a1d5f115",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "Duplicate code?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a9f7119_f87909f1",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "I don\u0027t think we need personal reminders such as `[ChauLy]` 😄",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2197d54e_573d672f",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:39:28Z",
+      "side": 1,
+      "message": "What is limiting the code on support more socket? `2` is quite small for me?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
