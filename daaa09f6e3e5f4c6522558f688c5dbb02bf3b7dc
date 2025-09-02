@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "57172f0c_f7e4aae7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 122
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-09-02T08:08:19Z",
+      "side": 1,
+      "message": "No, `SoftwareID` it\u0027s an 4-byte interger to help comsumer side (Redfish in case) distinguish the different update session, while the 1-byte `instanceID` would/should be just used for communication with FDs.\n\nFor example, we perform an update operation on\n`server_board_slot_1_VR_2603`\nAfter the update, the inventory item should be deleted and recreate one (if the device come back properly after the update applies) due to the [code update spec].\n`server_board_slot_1_VR_7B61`\nThe recreated inventory item should have a different ID attached, so that the consumer will know this is a new session/scenario that different from the previous one.\n\nI\u0027ve also updated this to the commit message.",
+      "parentUuid": "9f115a38_32f3ce10",
+      "range": {
+        "startLine": 49,
+        "startChar": 3,
+        "endLine": 49,
+        "endChar": 15
+      },
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "4eafa27f_3544e8e0",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 122
@@ -37,6 +61,24 @@
       "writtenOn": "2025-09-02T05:57:39Z",
       "side": 1,
       "message": "@unive - just a couple of nits, but this looks much better now.",
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e66bdda_4143bf2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 122
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-09-02T08:08:19Z",
+      "side": 1,
+      "message": "Thanks for the review. 😊",
+      "parentUuid": "4eafa27f_3544e8e0",
       "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eab43281_c5489f20",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-09-02T08:08:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d50e85f5_f52082fe",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 1
+      },
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eadb406c_518e7c37",
@@ -77,6 +143,30 @@
       "writtenOn": "2025-09-02T05:57:39Z",
       "side": 1,
       "message": "can you remove the comments here ? the function stlying looks to be odd with comments.",
+      "range": {
+        "startLine": 48,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 9
+      },
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be9217a_a3e9391b",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-09-02T08:08:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eadb406c_518e7c37",
       "range": {
         "startLine": 48,
         "startChar": 3,
