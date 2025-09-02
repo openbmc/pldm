@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0015ac2b_7455e9b0",
+        "filename": "common/types.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:33:26Z",
+      "side": 1,
+      "message": "Recheck and remove used definitions such as TransferCtx, SectionOffset...",
+      "revId": "535c953ad507e4508510398c3c964610a3c8a60b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "832b03f0_cf98c200",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:33:26Z",
+      "side": 1,
+      "message": "How about `co_return respPtr-\u003ecompletion_code`?\n\nas my opinion, When there is no error in encode, send, receive, decode, the API caller will concern about the completion code instead of return code from pldm/libpldm apis.",
+      "revId": "535c953ad507e4508510398c3c964610a3c8a60b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f7dd1a4_1cb5c9ae",
+        "filename": "platform-mc/file_cmds.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-02T22:33:26Z",
+      "side": 1,
+      "message": "How about return?\nThe same comments for other APIs.",
+      "revId": "535c953ad507e4508510398c3c964610a3c8a60b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
