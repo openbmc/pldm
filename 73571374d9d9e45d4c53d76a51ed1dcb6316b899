@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba1214f3_95d5651b",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:33:18Z",
+      "side": 1,
+      "message": "i think we have a constexpression for this already somewhere ? re-use ?",
+      "range": {
+        "startLine": 526,
+        "startChar": 7,
+        "endLine": 526,
+        "endChar": 66
+      },
+      "revId": "73571374d9d9e45d4c53d76a51ed1dcb6316b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c8bb8b1_38c09a63",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:33:18Z",
+      "side": 1,
+      "message": "add the `side information` as well in the trace.",
+      "range": {
+        "startLine": 550,
+        "startChar": 62,
+        "endLine": 550,
+        "endChar": 82
+      },
+      "revId": "73571374d9d9e45d4c53d76a51ed1dcb6316b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00e19d10_f88c6cfa",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-02T05:33:18Z",
+      "side": 1,
+      "message": "is there a way we can move this out from the common code to `oem` ?",
+      "range": {
+        "startLine": 525,
+        "startChar": 0,
+        "endLine": 562,
+        "endChar": 6
+      },
+      "revId": "73571374d9d9e45d4c53d76a51ed1dcb6316b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
