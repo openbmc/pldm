@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "203a3bdc_599e550a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 51
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:39:13Z",
+      "side": 1,
+      "message": "Actually, I don\u0027t have much comments about the oem-meta code, because it is OEM code.\nJut make sure we follow OpenBMC C++ coding style.",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fee70a6_3add2276",
@@ -32,6 +49,74 @@
       "side": 1,
       "message": "IPMI is used to communicate with the host BIOS. When the host triggers events, the bridge IC on the host passes them to the BMC using the PLDM protocol. This is why SELEvent uses the ipmi prefix.",
       "parentUuid": "3fee70a6_3add2276",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f500d1e_57790bbd",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:39:13Z",
+      "side": 1,
+      "message": "Use OpenBMC c++ code format.\nif ()\n{\n{",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dbca4a5_f55b0f41",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:39:13Z",
+      "side": 1,
+      "message": "Add definition for 0xC1, 0xC2 in hpp file.",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "848a5c2f_7fc1fb46",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:39:13Z",
+      "side": 1,
+      "message": "Apply those definitions instead of hardcode in the error log.",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e892627d_08f35a2d",
+        "filename": "oem/meta/event/oem_event_manager.hpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:39:13Z",
+      "side": 1,
+      "message": "Add functions description.\nApply for all others functions.",
       "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
