@@ -70,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa99beed_6411125e",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-03T08:14:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f500d1e_57790bbd",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7dbca4a5_f55b0f41",
@@ -83,6 +101,24 @@
       "writtenOn": "2025-09-03T00:39:13Z",
       "side": 1,
       "message": "Add definition for 0xC1, 0xC2 in hpp file.",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a709c081_650598e3",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-03T08:14:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dbca4a5_f55b0f41",
       "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -104,6 +140,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e11e897_bcf78b31",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-03T08:14:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "848a5c2f_7fc1fb46",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e892627d_08f35a2d",
@@ -117,6 +171,24 @@
       "writtenOn": "2025-09-03T00:39:13Z",
       "side": 1,
       "message": "Add functions description.\nApply for all others functions.",
+      "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ea437db_1f6bc9f1",
+        "filename": "oem/meta/event/oem_event_manager.hpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-03T08:14:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e892627d_08f35a2d",
       "revId": "293238110c90fc5f4a80ee0a1dc9457518233891",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
