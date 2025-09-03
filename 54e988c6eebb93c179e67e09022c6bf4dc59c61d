@@ -35,6 +35,57 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f307d885_7822a11e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 71
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:28:50Z",
+      "side": 1,
+      "message": "As my opinion, the Configuration_discovery_handler.hpp and be added in others commit.\nSo in this commit just add OEM Meta handler.",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8418ca78_b0f8b063",
+        "filename": "oem/meta/oem_meta.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:28:50Z",
+      "side": 1,
+      "message": "ConfigurationDiscoveryHandler is return I think.",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d82d762a_3f69cd1d",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:28:50Z",
+      "side": 1,
+      "message": "There are many defined functions in the file but don\u0027t used. Please remove them and add when it is use.",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a48b604d_f9377bba",
@@ -125,6 +176,40 @@
         "endLine": 53,
         "endChar": 6
       },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7495baf3_c8f1eb33",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:28:50Z",
+      "side": 1,
+      "message": "Add description about the return.",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "973433ab_637c2e33",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-09-03T00:28:50Z",
+      "side": 1,
+      "message": "Instead of using `[[maybe_unused]] const std::string\u0026 terminusName` you can use `const std::string\u0026`. Apply the same for others APIs.",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
