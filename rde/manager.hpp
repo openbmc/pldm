@@ -22,8 +22,7 @@ namespace pldm::rde
 
 inline constexpr std::string_view RDEManagerObjectPath{
     "/xyz/openbmc_project/RDE/Manager"};
-inline constexpr std::string_view DeviceObjectPath{
-    "/xyz/openbmc_project/RDE/Device"};
+constexpr const char* DeviceObjectPath = "/xyz/openbmc_project/RDE/Device";
 inline constexpr std::string_view DeviceServiceName{"xyz.openbmc_project.RDE"};
 
 using ObjectPath = sdbusplus::message::object_path;
@@ -305,6 +304,7 @@ class Manager :
     std::unordered_map<uint32_t, // OperationID
                        std::shared_ptr<OperationTaskIface>>
         taskMap_;
+    std::unique_ptr<sdbusplus::server::manager_t> objManager_;
 };
 
 } // namespace pldm::rde
