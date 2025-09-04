@@ -79,7 +79,7 @@ void Manager::createDeviceDbusObject(
     const std::vector<std::vector<uint8_t>>& pdrPayloads)
 {
     // Prevent duplicate creation for the same EID
-    if (eidMap_.count(eid()))
+    if (eidMap_.count(devEID))
     {
         info("Device for EID already exists. Skipping registration.");
         return;
