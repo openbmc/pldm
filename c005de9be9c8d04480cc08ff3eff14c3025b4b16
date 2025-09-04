@@ -130,6 +130,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db163888_429ad0bc",
+        "filename": "common/types.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-04T09:00:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29db49f2_94c18a51",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 21
+      },
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d513cca5_fde1aa20",
@@ -161,6 +185,24 @@
       "side": 1,
       "message": "Should I create another folder for `file-transfer`, like how `fw-update` pieces are placed?",
       "parentUuid": "d513cca5_fde1aa20",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09172ba3_cfcec461",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-04T09:00:11Z",
+      "side": 1,
+      "message": "There\u0027s no other comment since then so marked resolved. Please re-open if necessary.",
+      "parentUuid": "12b04efe_e68607bd",
       "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -391,6 +433,24 @@
       "side": 1,
       "message": "Update: the design doc just got one +1.",
       "parentUuid": "dc2d290d_fc193897",
+      "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34c8770a_0268c298",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-04T09:00:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8e56167_08d795ee",
       "revId": "c005de9be9c8d04480cc08ff3eff14c3025b4b16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
