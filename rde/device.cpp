@@ -27,7 +27,8 @@ Device::Device(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
 
 Device::~Device()
 {
-    info("RDE: D-Bus Device object destroyed");
+    info("RDE : D-Bus Device object destroyed UUID:{UUID} EID:{EID}", "UUID",
+         deviceUUID(), "EID", static_cast<int>(eid()));
 }
 
 void Device::refreshDeviceInfo()
