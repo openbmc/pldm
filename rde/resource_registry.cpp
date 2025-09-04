@@ -50,7 +50,7 @@ const std::string& ResourceRegistry::getResourceIdFromUri(
     auto it = uriToResourceId_.find(uri);
     if (it == uriToResourceId_.end())
     {
-        throw std::out_of_range("URI not found in uriToResourceId");
+        throw std::out_of_range("URI not found in uriToResourceId" + uri);
     }
     return it->second;
 }
@@ -194,51 +194,6 @@ std::string ResourceRegistry::getRdeResourceName(uint8_t* ptr, size_t length)
     return std::string(reinterpret_cast<const char*>(ptr), length);
 }
 
-std::string ResourceRegistry::constructFullUriRecursive(
-    uint16_t resourceId,
-    const std::unordered_map<uint16_t, std::string>& subUriMap,
-    const std::unordered_map<uint16_t, uint16_t>& parentMap)
-{
-    if (resourceId == 0 || subUriMap.find(resourceId) == subUriMap.end())
-        return "";
-
-    std::string part = subUriMap.at(resourceId);
-    uint16_t parentId =
-        parentMap.count(resourceId) ? parentMap.at(resourceId) : 0;
-
-    //  This approach is currently not aligned with the DMTF specification,
-    //  but discussions are ongoing to support the SoC RDE use case where
-    //  the subURI is treated as part of the root node.
-    if (parentId == 0 && !part.empty())
-    {
-        return (part.front() == '/') ? part : "/" + part;
-    }
-
-    std::string parentUri =
-        constructFullUriRecursive(parentId, subUriMap, parentMap);
-
-    if (!part.empty() && part.front() != '/')
-        parentUri += "/";
-    parentUri += part;
-
-    /*
-    TODO revisit this during bringup
-    // Warning if subURI is '0' or empty
-    if (part == "0" || part.empty()) {
-        // Warning: suspicious subURI detected
-        // Consider verifying if this is intentional
-    }
-
-    // Avoid duplicate segments like '/0/0/Settings'
-    if (parentUri.size() >= part.size() + 1 &&
-        parentUri.substr(parentUri.size() - part.size() - 1) == "/" + part)
-    { return parentUri;
-    }
-    */
-
-    return parentUri;
-}
-
 std::string ResourceRegistry::getMajorSchemaVersion(ver32_t& version)
 {
     constexpr int MaxSize = 1024;
@@ -259,6 +214,69 @@ std::string ResourceRegistry::getMajorSchemaVersion(ver32_t& version)
     return std::string(version_buffer, rc);
 }
 
+std::string ResourceRegistry::constructFullUriRecursive(
+    uint16_t resourceId,
+    const std::unordered_map<uint16_t, std::string>& subUriMap,
+    const std::unordered_map<uint16_t, uint16_t>& parentMap)
+{
+    if (resourceId == 0 || subUriMap.find(resourceId) == subUriMap.end())
+        return "";
+
+    std::string part = subUriMap.at(resourceId);
+    uint16_t parentId =
+        parentMap.count(resourceId) ? parentMap.at(resourceId) : 0;
+
+    // Root node
+    if (parentId == 0 && !part.empty())
+    {
+        return part;
+    }
+
+    std::string parentUri =
+        constructFullUriRecursive(parentId, subUriMap, parentMap);
+
+    if (!parentUri.empty() && parentUri.back() != '/')
+        parentUri += "/";
+
+    // TODO: Workaround for RDE PDRs that redundantly encode segments like
+    // "0/0/Settings" If parent URI ends with the same segment as the beginning
+    // of `part`, skip duplication
+    std::vector<std::string> parentSegments;
+    std::stringstream ss(parentUri);
+    std::string segment;
+    while (std::getline(ss, segment, '/'))
+    {
+        if (!segment.empty())
+            parentSegments.push_back(segment);
+    }
+
+    std::vector<std::string> partSegments;
+    std::stringstream ps(part);
+    while (std::getline(ps, segment, '/'))
+    {
+        if (!segment.empty())
+            partSegments.push_back(segment);
+    }
+
+    if (!parentSegments.empty() && !partSegments.empty() &&
+        parentSegments.back() == partSegments.front())
+    {
+        // Skip the first segment of `part` to avoid duplication
+        partSegments.erase(partSegments.begin());
+    }
+
+    for (const auto& seg : partSegments)
+    {
+        parentUri += seg + "/";
+    }
+
+    // Remove trailing slash if added
+    if (!parentUri.empty() && parentUri.back() == '/')
+        parentUri.pop_back();
+
+    return parentUri;
+}
+
 std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
     const std::vector<std::shared_ptr<pldm_redfish_resource_pdr>>& pdrList)
 {
@@ -271,7 +289,8 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
     {
         uint16_t rid = static_cast<uint16_t>(pdr->resource_id);
         uint16_t parent = static_cast<uint16_t>(pdr->cont_resrc_id);
-        bool isRoot = (pdr->cont_resrc_id == 0);
+        bool isRoot = (parent == 0);
+
         std::string proposedRoot = getRdeResourceName(
             pdr->prop_cont_resrc_name, pdr->prop_cont_resrc_length);
         std::string subUri =
@@ -280,19 +299,16 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
         std::string fullUri;
         if (isRoot)
         {
-            if (!proposedRoot.empty())
-                fullUri = "/" + proposedRoot;
             if (!subUri.empty())
             {
-                if (!fullUri.empty() && fullUri.back() != '/')
-                    fullUri += "/";
-                fullUri += subUri;
+                fullUri = subUri;
             }
         }
         else
         {
             fullUri = subUri;
         }
+
         subUriMap[rid] = fullUri;
         parentMap[rid] = parent;
 
@@ -300,7 +316,8 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
         {
             add_resrc_t* add = pdr->additional_resrc[i];
             uint16_t addId = static_cast<uint16_t>(add->resrc_id);
-            subUriMap[addId] = getRdeResourceName(add->name, add->length);
+            std::string addUri = getRdeResourceName(add->name, add->length);
+            subUriMap[addId] = addUri;
             parentMap[addId] = rid;
         }
 
@@ -319,7 +336,16 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
         ResourceInfo info =
             resInfoMap.count(rid) ? resInfoMap[rid] : ResourceInfo{};
         info.resourceId = std::to_string(rid);
-        info.uri = constructFullUriRecursive(rid, subUriMap, parentMap);
+
+        std::string uri = constructFullUriRecursive(rid, subUriMap, parentMap);
+
+        // Remove leading '/' if present
+        if (!uri.empty() && uri.front() == '/')
+        {
+            uri.erase(0, 1);
+        }
+
+        info.uri = uri;
         resInfoVect.push_back(info);
     }
 
