@@ -61,16 +61,19 @@ void Device::refreshDeviceInfo()
             "EID", static_cast<int>(eid()), "COUNT", self.use_count());
 
         discovSession_ = std::make_unique<DiscoverySession>(self);
+        this->negotiationStatus(NegotiationStatus::InProgress);
         discovSession_->doNegotiateRedfish();
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
         error("refreshDeviceInfo D-Bus error: Msg={MSG}", "MSG", e.what());
+        this->negotiationStatus(NegotiationStatus::Failed);
         return;
     }
     catch (const std::exception& e)
     {
         error("refreshDeviceInfo: Failed : Msg={MSG}", "MSG", e.what());
+        this->negotiationStatus(NegotiationStatus::Failed);
         return;
     }
 

@@ -151,6 +151,7 @@ void DiscoverySession::handleNegotiateRedfishResp(const pldm_msg* respMsg,
         error("RDE: Null PLDM response received from endpoint ID {EID}", "EID",
               eid_);
         updateState(OpState::OperationFailed);
+        device_->negotiationStatus(device_->NegotiationStatus::Failed, false);
         return;
     }
 
@@ -159,6 +160,7 @@ void DiscoverySession::handleNegotiateRedfishResp(const pldm_msg* respMsg,
         error("RDE:rxLen is 0; applying fallback length. EID={EID}", "EID",
               eid_);
         updateState(OpState::OperationFailed);
+        device_->negotiationStatus(device_->NegotiationStatus::Failed, false);
         return;
     }
 
@@ -179,6 +181,7 @@ void DiscoverySession::handleNegotiateRedfishResp(const pldm_msg* respMsg,
             "RDE: Failed to decode NegotiateRedfishParameters response rc:{RC} cc:{CC}",
             "RC", rc, "CC", cc);
         updateState(OpState::OperationFailed);
+        device_->negotiationStatus(device_->NegotiationStatus::Failed, false);
         return;
     }
 
@@ -269,6 +272,7 @@ void DiscoverySession::handleNegotiateMediumResp(const pldm_msg* respMsg,
     {
         error("RDE: Null PLDM response received from Endpoint ID {EID}", "EID",
               eid_);
+        device_->negotiationStatus(device_->NegotiationStatus::Failed, false);
         updateState(OpState::OperationFailed);
         return;
     }
@@ -276,6 +280,7 @@ void DiscoverySession::handleNegotiateMediumResp(const pldm_msg* respMsg,
     if (rxLen == 0)
     {
         error("RDE: rxLen is 0; Bad response Packet. EID={EID}", "EID", eid_);
+        device_->negotiationStatus(device_->NegotiationStatus::Failed, false);
         updateState(OpState::OperationFailed);
         return;
     }
@@ -291,6 +296,7 @@ void DiscoverySession::handleNegotiateMediumResp(const pldm_msg* respMsg,
         error(
             "RDE: Failed to decode NegotiateMediumParameters response rc:{RC} cc:{CC}",
             "RC", rc, "CC", cc);
+        device_->negotiationStatus(device_->NegotiationStatus::Failed, false);
         updateState(OpState::OperationFailed);
         return;
     }
@@ -345,6 +351,8 @@ void DiscoverySession::runNextDictionaryCommand(size_t index)
     if (index >= majorSchemaResources_.size())
     {
         info("RDE: All schema dictionary commands completed.");
+        // Update negotiation status
+        device_->negotiationStatus(device_->NegotiationStatus::Success, false);
         return;
     }
 
