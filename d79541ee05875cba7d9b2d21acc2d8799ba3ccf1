@@ -16,6 +16,24 @@
       "message": "Marking it as WIP, as it is dependent on a few of the LIBPLDM APIS that are in the review process.",
       "revId": "d79541ee05875cba7d9b2d21acc2d8799ba3ccf1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "198785fc_220777c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-09-05T02:05:32Z",
+      "side": 1,
+      "message": "If you set the same gerrit topic in this patch and the corresponding patch on libpldm, then CI will apply both patches for the build, and give us a useful result.\n\nCan you please try that, and take this patch out of WIP state? Once done, I\u0027ll review both.",
+      "parentUuid": "c40080e4_c00cf76a",
+      "revId": "d79541ee05875cba7d9b2d21acc2d8799ba3ccf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
