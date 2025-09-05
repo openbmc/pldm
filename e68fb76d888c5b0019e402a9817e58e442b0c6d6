@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "865f0893_077ccb73",
         "filename": "common/utils.hpp",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "this function should not be needed, see comment elsewhere",
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "ce92bcf7_5cb71b37",
         "filename": "libpldm/pldm_types.h",
@@ -37,10 +38,10 @@
         "endChar": 33
       },
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "f531b168_ebe5e1ec",
         "filename": "libpldm/pldm_types.h",
@@ -60,10 +61,10 @@
         "endChar": 23
       },
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "ab38d0d6_3df282c5",
         "filename": "libpldm/pldm_types.h",
@@ -83,10 +84,10 @@
         "endChar": 16
       },
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "32aa0df8_da6297d6",
         "filename": "libpldm/pldm_types.h",
@@ -106,10 +107,10 @@
         "endChar": 28
       },
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "d1885289_3fbe56de",
         "filename": "libpldm/pldm_types.h",
@@ -129,10 +130,10 @@
         "endChar": 17
       },
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "ba11d862_0535f26d",
         "filename": "libpldm/pldm_types.h",
@@ -146,10 +147,10 @@
       "side": 1,
       "message": "you have to reverse the order of the fields in the struct, in order to lay them according to the spec definition.",
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "72761b90_b8d7b907",
         "filename": "libpldm/pldm_types.h",
@@ -169,10 +170,10 @@
         "endChar": 23
       },
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "733bbc80_5fb88e81",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
@@ -192,8 +193,8 @@
         "endChar": 61
       },
       "revId": "e68fb76d888c5b0019e402a9817e58e442b0c6d6",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
-  ]
+  ],
+  "submitRequirementResults": []
 }
