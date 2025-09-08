@@ -118,6 +118,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d97b661_dda7e540",
+        "filename": "common/types.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-09-08T02:17:51Z",
+      "side": 1,
+      "message": "I’ll go ahead and mark this thread as resolved. If further discussion is needed, please feel free to reopen.",
+      "parentUuid": "5cb20f30_20faebc7",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c762b32_1da6bb9e",
@@ -149,6 +167,24 @@
       "side": 1,
       "message": "No, the libpldm API is currently implemented but haven\u0027t been stabilized yet.",
       "parentUuid": "7c762b32_1da6bb9e",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c784f089_aab5c43a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-09-08T02:17:51Z",
+      "side": 1,
+      "message": "I’ll go ahead and mark this thread as resolved. If further discussion is needed, please feel free to reopen.",
+      "parentUuid": "cff6e238_d91457c5",
       "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -235,6 +271,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1afab89c_f486e04a",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-09-08T02:17:51Z",
+      "side": 1,
+      "message": "I’ll go ahead and mark this thread as resolved. If further discussion is needed, please feel free to reopen.",
+      "parentUuid": "a66d713f_cd352912",
+      "range": {
+        "startLine": 46,
+        "startChar": 22,
+        "endLine": 46,
+        "endChar": 45
+      },
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba22b121_5e98bd21",
@@ -266,6 +326,24 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "ba22b121_5e98bd21",
+      "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26180eeb_e490451a",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 64
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-09-08T02:17:51Z",
+      "side": 1,
+      "message": "I’ll go ahead and mark this thread as resolved. If further discussion is needed, please feel free to reopen.",
+      "parentUuid": "901ee3d4_2c815572",
       "revId": "6bdbfd60b94ff8d4385f7dc67df23a3f559888e2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
