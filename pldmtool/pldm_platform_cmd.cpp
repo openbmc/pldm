@@ -209,7 +209,7 @@ class GetPDR : public CommandInterface
                     // close the array
                     std::cout << ",";
                 }
-            } while (recordHandle != 0);
+            } while (recordHandle != 0 || nextPartRequired != 0);
 
             // close the array
             std::cout << "]\n";
