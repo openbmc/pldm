@@ -16,6 +16,24 @@
       "message": "Changes looks good to me, once the PDI is in. I will merge this changes.",
       "revId": "3aa73fd16cf8acb012e75cbb7b6fc3b0a943cef5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a1dba06_00e62e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002377
+      },
+      "writtenOn": "2025-09-08T04:24:45Z",
+      "side": 1,
+      "message": "Hi @manojkiran.eda@gmail.com, the PDI patch was merged. Can you please merge this patch?",
+      "parentUuid": "08b89cd2_b5d0f0b7",
+      "revId": "3aa73fd16cf8acb012e75cbb7b6fc3b0a943cef5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
