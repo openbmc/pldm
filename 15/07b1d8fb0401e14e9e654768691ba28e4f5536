@@ -1,0 +1,10 @@
+Code-Review+1: Name of user not set #1002621
+Code-Review+1: Thu Nguyen <thu@os.amperecomputing.com>
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Submitted-at: Mon, 08 Sep 2025 04:27:53 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/83010
+Comments-Total: 7
+Project: openbmc/pldm
+Branch: refs/heads/master
