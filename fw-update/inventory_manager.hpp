@@ -1,5 +1,6 @@
 #pragma once
 
+#include "aggregate_update_manager.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "firmware_inventory_manager.hpp"
@@ -47,12 +48,13 @@ class InventoryManager
         InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
-        const Configurations& configurations) :
+        const Configurations& configurations,
+        AggregateUpdateManager& updateManager) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap), configurations(configurations),
-        firmwareInventoryManager(dbusHandler, configurations)
+        firmwareInventoryManager(dbusHandler, configurations, updateManager)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
