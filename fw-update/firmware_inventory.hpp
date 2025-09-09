@@ -1,5 +1,6 @@
 #pragma once
 
+#include "aggregate_update_manager.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
@@ -30,7 +31,6 @@ class FirmwareInventory
     FirmwareInventory(FirmwareInventory&&) = delete;
     FirmwareInventory& operator=(const FirmwareInventory&) = delete;
     FirmwareInventory& operator=(FirmwareInventory&&) = delete;
-    ~FirmwareInventory() = default;
 
     /**
      * @brief Constructor
@@ -49,18 +49,24 @@ class FirmwareInventory
      * future use and currently not used in the implementation.
      */
     explicit FirmwareInventory(
-        SoftwareIdentifier /*softwareIdentifier*/,
-        const std::string& softwarePath, const std::string& softwareVersion,
-        const std::string& associatedEndpoint,
-        const Descriptors& /*descriptors*/,
-        const ComponentInfo& /*componentInfo*/,
+        SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
+        const std::string& softwareVersion,
+        const std::string& associatedEndpoint, const Descriptors& descriptors,
+        const ComponentInfo& componentInfo,
+        AggregateUpdateManager& updateManager,
         SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
+    ~FirmwareInventory();
 
   private:
     /**
      * @brief Reference to the sdbusplus bus
      */
     sdbusplus::bus_t& bus = utils::DBusHandler::getBus();
+
+    /**
+     * @brief Software identifier containing EID and component identifier
+     */
+    SoftwareIdentifier softwareIdentifier;
 
     /**
      * @brief The D-Bus object path for the firmware inventory entry, obtained
@@ -78,6 +84,11 @@ class FirmwareInventory
      * @brief Software version object that represents the firmware version
      */
     SoftwareVersion version;
+
+    /**
+     * @brief Reference to the aggregate update manager
+     */
+    AggregateUpdateManager& updateManager;
 };
 
 } // namespace pldm::fw_update
