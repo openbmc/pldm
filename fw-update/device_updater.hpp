@@ -22,7 +22,7 @@ namespace fw_update
  */
 using ComponentUpdateStatusMap = std::map<size_t, bool>;
 
-class UpdateManager;
+class UpdateManagerBase;
 
 /** @class DeviceUpdater
  *
@@ -54,12 +54,12 @@ class DeviceUpdater
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
      */
-    explicit DeviceUpdater(mctp_eid_t eid, std::ifstream& package,
+    explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
                            const FirmwareDeviceIDRecord& fwDeviceIDRecord,
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
                            uint32_t maxTransferSize,
-                           UpdateManager* updateManager) :
+                           UpdateManagerBase* updateManager) :
         eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
         compImageInfos(compImageInfos), compInfo(compInfo),
         maxTransferSize(maxTransferSize), updateManager(updateManager)
@@ -199,7 +199,7 @@ class DeviceUpdater
     mctp_eid_t eid;
 
     /** @brief File stream for firmware update package */
-    std::ifstream& package;
+    std::istream& package;
 
     /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
      *         firmware device
@@ -222,7 +222,7 @@ class DeviceUpdater
     uint32_t maxTransferSize;
 
     /** @brief To update the status of fw update of the FD */
-    UpdateManager* updateManager;
+    UpdateManagerBase* updateManager;
 
     /** @brief Component index is used to track the current component being
      *         updated if multiple components are applicable for the FD.
