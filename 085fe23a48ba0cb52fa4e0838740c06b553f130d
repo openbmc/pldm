@@ -216,6 +216,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58fc543b_de3d29ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 46
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-09-10T09:09:37Z",
+      "side": 1,
+      "message": "Sorry for taking so long to reply.\n\n\u003e 1) How many Version objects for such FD?\n\nWould be multiple for now, one per component, since [#81505] by @ranjan.rajeev1609@gmail.com is included in the stack.\nBut you can always call `StartUpdate` method of one of the entries and bring a package with multiple images to it, FD side would/should take responsibility to request the image for each components, since it would discover more than one compImage while passing CompTable (by DeviceUpdater).\n\n\u003e 2) How many objects implementing StartUpdate for such FD?\n\nEach inventory item would have one, we have items for each component, so one per components.\n\n\u003e 3) How will a case of Redfish user not specifying any Target work?\n\nWe don\u0027t plan to handle such case in this patch, but [#79192] does, and suppose to be not mutually exclusive between these two patches.\n\n[#81505]: https://gerrit.openbmc.org/c/openbmc/pldm/+/81505\n[#79192]: https://gerrit.openbmc.org/c/openbmc/pldm/+/79192",
+      "parentUuid": "28d4a09a_fa5aba60",
+      "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eeeae368_6fbb8f97",
         "filename": "fw-update/device_dedicated_updater.cpp",
         "patchSetId": 46
