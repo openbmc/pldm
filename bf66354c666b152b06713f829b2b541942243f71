@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74318515_db61188b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-09-10T08:27:53Z",
+      "side": 1,
+      "message": "Hi @ranjan.rajeev1609@gmail.com, during the rebasing, I added a condition that not to tag `_component_` words if there\u0027s only one component carried by the FD, let me know if it makes impact to your case.",
+      "revId": "bf66354c666b152b06713f829b2b541942243f71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
