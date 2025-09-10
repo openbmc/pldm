@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd75f1ce_eb5945cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 122
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-10T13:44:44Z",
+      "side": 1,
+      "message": "sure, but in the object path u seem to have missed the `softwareId` - hence the confusion. can you update the path as well then ?",
+      "parentUuid": "57172f0c_f7e4aae7",
+      "range": {
+        "startLine": 49,
+        "startChar": 3,
+        "endLine": 49,
+        "endChar": 15
+      },
+      "revId": "daaa09f6e3e5f4c6522558f688c5dbb02bf3b7dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4eafa27f_3544e8e0",

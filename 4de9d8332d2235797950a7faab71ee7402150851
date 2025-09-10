@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da86bcb3_8064cf8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 128
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-10T13:44:44Z",
+      "side": 1,
+      "message": "can you help me understand where this requirement is coming from ?",
+      "range": {
+        "startLine": 59,
+        "startChar": 42,
+        "endLine": 60,
+        "endChar": 34
+      },
+      "revId": "4de9d8332d2235797950a7faab71ee7402150851",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
