@@ -8,7 +8,8 @@
 #include <ranges>
 #include <system_error>
 
-struct pldm_transport* transport_impl_init(TransportImpl& impl, pollfd& pollfd);
+struct pldm_transport* transport_impl_init(TransportImpl& impl, pollfd& pollfd,
+                                           bool listening);
 void transport_impl_destroy(TransportImpl& impl);
 
 static constexpr uint8_t MCTP_EID_VALID_MIN = 8;
@@ -64,7 +65,7 @@ static constexpr uint8_t MCTP_EID_VALID_MAX = 255;
 }
 
 [[maybe_unused]] static struct pldm_transport* pldm_transport_impl_af_mctp_init(
-    TransportImpl& impl, pollfd& pollfd)
+    TransportImpl& impl, pollfd& pollfd, bool listening)
 {
     impl.af_mctp = nullptr;
     pldm_transport_af_mctp_init(&impl.af_mctp);
@@ -85,7 +86,7 @@ static constexpr uint8_t MCTP_EID_VALID_MAX = 255;
     }
 
     /* Listen for requests on any interface */
-    if (pldm_transport_af_mctp_bind(impl.af_mctp, nullptr, 0))
+    if (listening && pldm_transport_af_mctp_bind(impl.af_mctp, nullptr, 0))
     {
         return nullptr;
     }
@@ -100,12 +101,13 @@ static constexpr uint8_t MCTP_EID_VALID_MAX = 255;
     return pldmTransport;
 }
 
-struct pldm_transport* transport_impl_init(TransportImpl& impl, pollfd& pollfd)
+struct pldm_transport* transport_impl_init(TransportImpl& impl, pollfd& pollfd,
+                                           [[maybe_unused]] bool listening)
 {
 #if defined(PLDM_TRANSPORT_WITH_MCTP_DEMUX)
     return pldm_transport_impl_mctp_demux_init(impl, pollfd);
 #elif defined(PLDM_TRANSPORT_WITH_AF_MCTP)
-    return pldm_transport_impl_af_mctp_init(impl, pollfd);
+    return pldm_transport_impl_af_mctp_init(impl, pollfd, listening);
 #else
     return nullptr;
 #endif
@@ -120,9 +122,9 @@ void transport_impl_destroy(TransportImpl& impl)
 #endif
 }
 
-PldmTransport::PldmTransport()
+PldmTransport::PldmTransport(bool listening)
 {
-    transport = transport_impl_init(impl, pfd);
+    transport = transport_impl_init(impl, pfd, listening);
     if (!transport)
     {
         throw std::system_error(ENOMEM, std::generic_category());

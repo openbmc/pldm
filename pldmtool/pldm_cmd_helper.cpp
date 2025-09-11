@@ -130,7 +130,7 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
     }
 
     auto tid = mctp_eid;
-    PldmTransport pldmTransport{};
+    PldmTransport pldmTransport(false);
     uint8_t retry = 0;
     int rc = PLDM_ERROR;
 
