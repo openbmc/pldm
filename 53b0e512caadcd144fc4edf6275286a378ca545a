@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b9c6d52_9f09ec32",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-12T09:22:41Z",
+      "side": 1,
+      "message": "Can we perform a null check on reqPtr before we dereference it?",
+      "range": {
+        "startLine": 21,
+        "startChar": 39,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "53b0e512caadcd144fc4edf6275286a378ca545a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13fbf040_ad618296",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-12T09:22:41Z",
+      "side": 1,
+      "message": "here too and everywhere below?",
+      "range": {
+        "startLine": 73,
+        "startChar": 41,
+        "endLine": 73,
+        "endChar": 47
+      },
+      "revId": "53b0e512caadcd144fc4edf6275286a378ca545a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
