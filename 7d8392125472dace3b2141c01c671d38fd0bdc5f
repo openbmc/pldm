@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5f8e623_ee944490",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-12T06:24:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6f6b51db_b2bf2dfb",
+      "range": {
+        "startLine": 1222,
+        "startChar": 22,
+        "endLine": 1222,
+        "endChar": 62
+      },
+      "revId": "7d8392125472dace3b2141c01c671d38fd0bdc5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d91f2285_18ad7bee",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbdc824_c60da538",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-12T06:24:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d91f2285_18ad7bee",
+      "range": {
+        "startLine": 107,
+        "startChar": 31,
+        "endLine": 107,
+        "endChar": 46
+      },
+      "revId": "7d8392125472dace3b2141c01c671d38fd0bdc5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b37499c_c0501291",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-09-12T06:11:24Z",
       "side": 1,
       "message": "remote PDR\u0027s",
+      "range": {
+        "startLine": 108,
+        "startChar": 69,
+        "endLine": 108,
+        "endChar": 75
+      },
+      "revId": "7d8392125472dace3b2141c01c671d38fd0bdc5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98e263c5_438da452",
+        "filename": "host-bmc/host_pdr_handler.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-12T06:24:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b37499c_c0501291",
       "range": {
         "startLine": 108,
         "startChar": 69,
