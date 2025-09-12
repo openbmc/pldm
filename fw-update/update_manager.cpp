@@ -122,6 +122,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         parser.reset();
         return 0;
     }
+    // test push
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& compImageInfos = parser->getComponentImageInfos();
