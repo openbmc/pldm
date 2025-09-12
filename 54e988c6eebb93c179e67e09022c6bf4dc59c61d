@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9250886b_03eb9da9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 71
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-12T02:43:22Z",
+      "side": 1,
+      "message": "The class Configuration_discovery_handler is closely tied to OemMETA, so there’s no reason to split them into two commits. The only question is whether to upstream this class or remove it entirely from upstream.",
+      "parentUuid": "f307d885_7822a11e",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8418ca78_b0f8b063",
@@ -69,6 +87,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4977cd02_96ad32a3",
+        "filename": "oem/meta/oem_meta.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-12T02:43:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8418ca78_b0f8b063",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d82d762a_3f69cd1d",
@@ -82,6 +118,24 @@
       "writtenOn": "2025-09-03T00:28:50Z",
       "side": 1,
       "message": "There are many defined functions in the file but don\u0027t used. Please remove them and add when it is use.",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac816721_815bd37e",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-12T02:43:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d82d762a_3f69cd1d",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -197,6 +251,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5805b6_66c82f97",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-12T02:43:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7495baf3_c8f1eb33",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "973433ab_637c2e33",
@@ -210,6 +282,24 @@
       "writtenOn": "2025-09-03T00:28:50Z",
       "side": 1,
       "message": "Instead of using `[[maybe_unused]] const std::string\u0026 terminusName` you can use `const std::string\u0026`. Apply the same for others APIs.",
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4659fcf3_4f67e0ac",
+        "filename": "oem/meta/requester/configuration_discovery_handler.hpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-12T02:43:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "973433ab_637c2e33",
       "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
