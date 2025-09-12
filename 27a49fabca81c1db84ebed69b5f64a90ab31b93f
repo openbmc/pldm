@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c6869f5_bb8ea35d",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "terminusManager member is a reference value, not a pointer of optional, so no check needed.",
+      "parentUuid": "498b4edf_8fc42488",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6f54798_955c04a4",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "return error?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d8e0cb1_a6224725",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6f54798_955c04a4",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8114429_4e3c024d",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "It\u0027s a struct element. I don\u0027t know how it can be null? If the decoding was success, element access can be granted, given that it\u0027s not a pointer or something.",
+      "parentUuid": "26013df4_da842b63",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dcd2c06_f4a3b8fd",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "sound like c type_casting",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca87c9d6_04677d00",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dcd2c06_f4a3b8fd",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f06135_3834b4fa",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9c9e30f_edeeb981",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c057aef8_6524cda9",
@@ -99,6 +189,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "Can we create the mapping from `FileClassification::BootLog` to `PurposeType::BootLog` instead of using switch .. case ..?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90d9156a_dcdaf601",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Added an std::map.",
+      "parentUuid": "c057aef8_6524cda9",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df95c774_80d822f2",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Added a constexpr.",
+      "parentUuid": "32f82943_98940e61",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e31abdfd_dd0a67d0",
@@ -133,6 +259,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "Which is 2000 mean? Can we configure or add definition for that value?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f4ed391_d52a7062",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Added a constexpr.",
+      "parentUuid": "e31abdfd_dd0a67d0",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -156,6 +300,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "76bbd658_ac5cbf95",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "I declared `transferFlag` inside the while loop to separate request and response parameters (response parameters should be refreshed every loop), so transferFlag is visible only inside the loop. That\u0027s why I declared isEnd.",
+      "parentUuid": "5c73e5f6_9a58be4c",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e55cfcb_e3f0012b",
         "filename": "platform-mc/file_descriptor.cpp",
         "patchSetId": 11
@@ -167,6 +329,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "For these kind of check i think \"if (buffer.size())\" is enough.",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b93e48_b7411fee",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e55cfcb_e3f0012b",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -188,6 +368,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4662bd_3ed710ff",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "This checksum check depends on response data from File Host, if it constantly fails, File client will re-request forever. I think this log needs to be kept to know what happens.",
+      "parentUuid": "199be026_63a6ce54",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23524279_770747e2",
@@ -205,6 +403,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "208443a6_d192a3ed",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23524279_770747e2",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48503395_ae2aae4f",
@@ -218,6 +434,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "Remove lg2::info",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df0b04a3_eee13238",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "I think this log should be kept to keep track of failures. I set it as info and not error because this does not affect the main request.",
+      "parentUuid": "48503395_ae2aae4f",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -241,6 +475,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c0c552c_28ec2dba",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "If (rc), dfClose also needs to be called at the end. That\u0027s why I use this arrangement, to not have to call dfClose many places.",
+      "parentUuid": "37a0d015_cf55d70e",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c8ff3b90_c6daaa5a",
         "filename": "platform-mc/file_descriptor.cpp",
         "patchSetId": 11
@@ -252,6 +504,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "C type casting",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6dc98c1_6064d359",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8ff3b90_c6daaa5a",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -273,6 +543,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec76fa94_08276918",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "This elog throws an exception that will be caught by D-Bus framework and converted into a D-Bus error reply, so no return needed because the D-Bus method handler ends here.",
+      "parentUuid": "7815e309_c28f164f",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb64b098_a1d5f115",
@@ -286,6 +574,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "Duplicate code?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c61c3a9e_4d56f7e1",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "This should be `close(sockets[1]);`. Fixed.",
+      "parentUuid": "bb64b098_a1d5f115",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -307,6 +613,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a69788a_7a53d7e3",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a9f7119_f87909f1",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2197d54e_573d672f",
@@ -320,6 +644,24 @@
       "writtenOn": "2025-09-02T22:39:28Z",
       "side": 1,
       "message": "What is limiting the code on support more socket? `2` is quite small for me?",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ca6d16e_555c907f",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-09-12T08:40:02Z",
+      "side": 1,
+      "message": "This array holds the socketpair (a pair of sockets), with one server socket and one client socket. This class currently supports only one socketpair setup for a file object, so one array of size 2.",
+      "parentUuid": "2197d54e_573d672f",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
