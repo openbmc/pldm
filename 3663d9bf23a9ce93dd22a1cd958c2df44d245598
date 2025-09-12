@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f996d058_f2d4800f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-09-12T05:56:26Z",
+      "side": 1,
+      "message": "Makes sense, but has the change been tested?",
+      "revId": "3663d9bf23a9ce93dd22a1cd958c2df44d245598",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
