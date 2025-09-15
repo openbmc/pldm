@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a3a0444_7d6fb7e0",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-15T04:03:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3dda4d43_f113b525",
+      "range": {
+        "startLine": 21,
+        "startChar": 39,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "53b0e512caadcd144fc4edf6275286a378ca545a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13fbf040_ad618296",
