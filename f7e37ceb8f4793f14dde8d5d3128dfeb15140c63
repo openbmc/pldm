@@ -76,6 +76,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c1ab7e1_25cf8716",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-09-15T13:36:19Z",
+      "side": 1,
+      "message": "I\u0027m not sure whether `@tparam T - InstanceId value type` is the best phrasing, or if you have other suggestions for the `@tparam` description.",
+      "parentUuid": "0827d15b_983f5eb1",
+      "range": {
+        "startLine": 175,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 10
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d491b3b_763f6548",
@@ -99,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73993623_39d7e615",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-09-15T13:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d491b3b_763f6548",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 52
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd0a9a51_3524b221",
@@ -112,6 +160,30 @@
       "writtenOn": "2025-09-12T06:06:02Z",
       "side": 1,
       "message": "PLDM uses lg2 for logging.",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 18
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5519bc11_0f94cf50",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-09-15T13:36:19Z",
+      "side": 1,
+      "message": "I added `phosphor-logging` in pldmtool\u0027s `meson.build` since `getInstanceId` was changed from `std::cerr` to `lg2::error`, which caused a linker error in CI due to missing symbols from `libphosphor_logging`.",
+      "parentUuid": "fd0a9a51_3524b221",
       "range": {
         "startLine": 186,
         "startChar": 7,
