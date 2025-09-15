@@ -51,6 +51,24 @@
       "parentUuid": "1acc3481_0eea8dad",
       "revId": "f8ee9357aae2ae8dab2203a97fdac4d9333032fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa975bd8_1b60ab07",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-15T10:13:25Z",
+      "side": 1,
+      "message": "Maybe we can make that kind of improvement in the future, I think the current version should be merged first.",
+      "parentUuid": "3bccedfb_4d4f54a5",
+      "revId": "f8ee9357aae2ae8dab2203a97fdac4d9333032fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
