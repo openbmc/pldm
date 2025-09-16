@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d91d71c_6029db24",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-09-16T03:43:46Z",
+      "side": 1,
+      "message": "We don\u0027t appear to test this for errors before doing further operations?",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "487d3021_ec1a55d5",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-09-16T03:43:46Z",
+      "side": 1,
+      "message": "Again with error handling here. Need to think about what failure handling looks like if the operation above succeeds but this one fails?",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24437091_a94c0f94",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-09-16T03:43:46Z",
+      "side": 1,
+      "message": "Test result for errors?",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "742fe50f_78b5fcb7",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-09-16T03:43:46Z",
+      "side": 1,
+      "message": "Test result for errors?",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1321e66c_f3a179bf",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-09-16T03:43:46Z",
+      "side": 1,
+      "message": "Is it the right thing to do to ignore errors here?",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b267578d_9fb8d5d3",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-09-16T03:43:46Z",
+      "side": 1,
+      "message": "Same query here.",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
