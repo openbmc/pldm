@@ -114,6 +114,7 @@ inline double getRangeFieldValue(uint8_t range_field_format,
 void NumericSensor::setSensorUnit(uint8_t baseUnit)
 {
     sensorUnit = SensorUnit::DegreesC;
+    metricUnit = MetricUnit::Count;
     useMetricInterface = false;
     switch (baseUnit)
     {
@@ -153,10 +154,17 @@ void NumericSensor::setSensorUnit(uint8_t baseUnit)
         case PLDM_SENSOR_UNIT_CORRECTED_ERRORS:
         case PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS:
             sensorNameSpace = "/xyz/openbmc_project/metric/count/";
+            metricUnit = MetricUnit::Count;
+            useMetricInterface = true;
+            break;
+        case PLDM_SENSOR_UNIT_BYTES:
+            sensorNameSpace = "/xyz/openbmc_project/metric/bytes/";
+            metricUnit = MetricUnit::Bytes;
             useMetricInterface = true;
             break;
         case PLDM_SENSOR_UNIT_OEMUNIT:
             sensorNameSpace = "/xyz/openbmc_project/metric/oem/";
+            metricUnit = MetricUnit::Count;
             useMetricInterface = true;
             break;
         default:
@@ -180,7 +188,6 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
-    MetricUnit metricUnit = MetricUnit::Count;
     setSensorUnit(pdr->base_unit);
 
     path = sensorNameSpace + sensorName;
@@ -437,7 +444,6 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
-    MetricUnit metricUnit = MetricUnit::Count;
     setSensorUnit(pdr->base_unit);
 
     path = sensorNameSpace + sensorName;

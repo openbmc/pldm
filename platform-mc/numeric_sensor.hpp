@@ -385,6 +385,9 @@ class NumericSensor
     /** @brief Sensor Unit */
     SensorUnit sensorUnit;
 
+    /** @brief Metric Unit */
+    MetricUnit metricUnit;
+
   private:
     /**
      * @brief resolve and clear a log entry
