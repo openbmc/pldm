@@ -13,6 +13,9 @@ namespace responder
 namespace utils
 {
 
+constexpr uint32_t BMC_PDR_START_RANGE = 0x00000000;
+constexpr uint32_t BMC_PDR_END_RANGE = 0x00FFFFFF;
+
 /** @brief Setup UNIX socket
  *  This function creates listening socket in non-blocking mode and allows only
  *  one socket connection. returns accepted socket after accepting connection
