@@ -69,7 +69,8 @@ class FruImpl
             pldm_entity_association_tree* entityTree,
             pldm_entity_association_tree* bmcEntityTree) :
         parser(configPath, fruMasterJsonPath), pdrRepo(pdrRepo),
-        entityTree(entityTree), bmcEntityTree(bmcEntityTree)
+        entityTree(entityTree), bmcEntityTree(bmcEntityTree),
+        oemUtilsHandler(nullptr)
     {}
 
     /** @brief Total length of the FRU table in bytes, this includes the pad
@@ -148,6 +149,15 @@ class FruImpl
         getAssociateEntityMap() const
     {
         return associatedEntityMap;
+    }
+
+    /* @brief Method to set the oem utils handler in FRU handler class
+     *
+     * @param[in] handler - oem utils handler
+     */
+    inline void setOemUtilsHandler(pldm::responder::oem_utils::Handler* handler)
+    {
+        oemUtilsHandler = handler;
     }
 
     /** @brief Get pldm entity by the object path
@@ -236,6 +246,8 @@ class FruImpl
     dbus::ObjectValueTree objects;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
+    /** @OEM Utils handler */
+    pldm::responder::oem_utils::Handler* oemUtilsHandler;
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
      *         updates the FRU table with the FRU records.
@@ -255,6 +267,14 @@ class FruImpl
      *  @return
      */
     void deleteFRURecord(uint16_t rsi);
+
+    /** @brief Add hotplug record that was modified or added to the PDR entry
+     *
+     *  @param[in] pdrEntry - PDR record structure in PDR repository
+     *
+     *  @return record handle of added or modified hotplug record
+     */
+    uint32_t addHotPlugRecord(pldm::responder::pdr_utils::PdrEntry pdrEntry);
 
     /** @brief Associate sensor/effecter to FRU entity
      */
@@ -332,6 +352,15 @@ class Handler : public CmdHandler
         const
     {
         return impl.getAssociateEntityMap();
+    }
+
+    /* @brief Method to set the oem utils handler in host pdr handler class
+     *
+     * @param[in] handler - oem utils handler
+     */
+    void setOemUtilsHandler(pldm::responder::oem_utils::Handler* handler)
+    {
+        return impl.setOemUtilsHandler(handler);
     }
 
     /** @brief Handler for GetFRURecordByOption
