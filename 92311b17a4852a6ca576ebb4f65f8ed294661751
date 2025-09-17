@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c05d0231_18c443ee",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-17T10:53:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5d91d71c_6029db24",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "487d3021_ec1a55d5",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-09-16T03:43:46Z",
       "side": 1,
       "message": "Again with error handling here. Need to think about what failure handling looks like if the operation above succeeds but this one fails?",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf57749a_34cbbe06",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-17T10:53:03Z",
+      "side": 1,
+      "message": "Acknowledged, yes we must want both to succeed for the operation to continue.",
+      "parentUuid": "487d3021_ec1a55d5",
       "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf704ffc_027cffb8",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-17T10:53:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "24437091_a94c0f94",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "742fe50f_78b5fcb7",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-09-16T03:43:46Z",
       "side": 1,
       "message": "Test result for errors?",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "832aad35_f2f3e991",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-17T10:53:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "742fe50f_78b5fcb7",
       "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d7a95e3_4148895e",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-17T10:53:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1321e66c_f3a179bf",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b267578d_9fb8d5d3",
@@ -99,6 +189,24 @@
       "writtenOn": "2025-09-16T03:43:46Z",
       "side": 1,
       "message": "Same query here.",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d77872f_83adbcaf",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-17T10:53:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b267578d_9fb8d5d3",
       "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
