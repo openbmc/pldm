@@ -361,6 +361,27 @@ class NumericSensor
                               pldm::utils::Direction direction, double rawValue,
                               bool newAlarm, bool assert);
 
+    /** @brief Get the current value of the sensor
+     *
+     *  @return The current sensor's value
+     */
+
+    double getSensorValue(void)
+    {
+        if (!dbusSensor)
+        {
+            return sensorValue;
+        }
+        else
+        {
+            if (useMetricInterface)
+            {
+                return metricIntf->value();
+            }
+            return valueIntf->value();
+        }
+    }
+
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
 
@@ -381,6 +402,9 @@ class NumericSensor
 
     /** @brief Sensor Unit */
     SensorUnit sensorUnit;
+
+    /** @brief Metric Unit */
+    MetricUnit metricUnit;
 
   private:
     /**
@@ -417,7 +441,7 @@ class NumericSensor
     /**
      * @brief Update the object units based on the PDR baseUnit
      */
-    void setSensorUnit(uint8_t baseUnit);
+    bool setSensorUnit(uint8_t baseUnit);
 
     /** @brief Create the sensor inventory path.
      *
@@ -458,6 +482,24 @@ class NumericSensor
 
     /** @brief A power-of-10 multiplier for baseUnit */
     int8_t baseUnitModifier;
+
+    /****** Non-D-Bus sensor internal variables *************/
+    /** @brief Current sensor reading */
+    double sensorValue;
+
+    /** @brief Sensor's entity type */
+    uint16_t entityType;
+
+    /** @brief Sensor's entity instance number */
+    uint16_t entityInstanceNum;
+
+    /** @brief Sensor's container ID */
+    uint16_t containerId;
+    /*******************************************************/
+
+    /** @brief Whether this sensor has a D-Bus representative */
+    bool dbusSensor = false;
+
     bool useMetricInterface = false;
 
     /** @brief An internal mapping of thresholds and its associated log
