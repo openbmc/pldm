@@ -2,6 +2,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/platform.h>
@@ -56,6 +57,8 @@ class FileDescriptor : virtual public FileInterface
     std::string oemClassName;
     TerminusManager& terminusManager;
 
+    mutable std::shared_ptr<NumericSensor> sizeSensor;
+
     // TODO: support multiple socket pairs based on
     // FileMaximumFileDescriptorCount
     int sockets[2];
@@ -73,6 +76,11 @@ class FileDescriptor : virtual public FileInterface
                              bool exclusivity);
     sdbusplus::message::unix_fd open(size_t offset, size_t length,
                                      bool exclusivity) override;
+    size_t size() const override
+    {
+        return getFileSize();
+    }
+    std::optional<FileSize> getFileSize() const;
     std::optional<std::pair<exec::async_scope, std::optional<int>>> taskHandle;
 };
 } // namespace platform_mc
