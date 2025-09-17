@@ -111,9 +111,10 @@ inline double getRangeFieldValue(uint8_t range_field_format,
     return ret;
 }
 
-void NumericSensor::setSensorUnit(uint8_t baseUnit)
+bool NumericSensor::setSensorUnit(uint8_t baseUnit)
 {
     sensorUnit = SensorUnit::DegreesC;
+    metricUnit = MetricUnit::Count;
     useMetricInterface = false;
     switch (baseUnit)
     {
@@ -153,19 +154,19 @@ void NumericSensor::setSensorUnit(uint8_t baseUnit)
         case PLDM_SENSOR_UNIT_CORRECTED_ERRORS:
         case PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS:
             sensorNameSpace = "/xyz/openbmc_project/metric/count/";
+            metricUnit = MetricUnit::Count;
             useMetricInterface = true;
             break;
         case PLDM_SENSOR_UNIT_OEMUNIT:
             sensorNameSpace = "/xyz/openbmc_project/metric/oem/";
+            metricUnit = MetricUnit::Count;
             useMetricInterface = true;
             break;
         default:
-            lg2::error("Sensor {NAME} has Invalid baseUnit {UNIT}.", "NAME",
-                       sensorName, "UNIT", baseUnit);
-            throw sdbusplus::xyz::openbmc_project::Common::Error::
-                InvalidArgument();
-            break;
+            return false;
     }
+
+    return true;
 }
 
 NumericSensor::NumericSensor(
@@ -180,8 +181,23 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
-    MetricUnit metricUnit = MetricUnit::Count;
-    setSensorUnit(pdr->base_unit);
+    if (!setSensorUnit(pdr->base_unit))
+    {
+        if ((pdr->base_unit == PLDM_SENSOR_UNIT_BYTES) &&
+            ((pdr->entity_type & 0x7FFF) == PLDM_ENTITY_DEVICE_FILE))
+        {
+            sensorNameSpace = "/xyz/openbmc_project/metric/file_size/";
+            metricUnit = MetricUnit::Bytes;
+            useMetricInterface = true;
+        }
+        else
+        {
+            lg2::error("Sensor {NAME} has Invalid baseUnit {UNIT}.", "NAME",
+                       sensorName, "UNIT", pdr->base_unit);
+            throw sdbusplus::xyz::openbmc_project::Common::Error::
+                InvalidArgument();
+        }
+    }
 
     path = sensorNameSpace + sensorName;
     try
@@ -437,7 +453,6 @@ NumericSensor::NumericSensor(
 
     sensorId = pdr->sensor_id;
     std::string path;
-    MetricUnit metricUnit = MetricUnit::Count;
     setSensorUnit(pdr->base_unit);
 
     path = sensorNameSpace + sensorName;

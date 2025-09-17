@@ -385,6 +385,9 @@ class NumericSensor
     /** @brief Sensor Unit */
     SensorUnit sensorUnit;
 
+    /** @brief Metric Unit */
+    MetricUnit metricUnit;
+
   private:
     /**
      * @brief resolve and clear a log entry
@@ -420,7 +423,7 @@ class NumericSensor
     /**
      * @brief Update the object units based on the PDR baseUnit
      */
-    void setSensorUnit(uint8_t baseUnit);
+    bool setSensorUnit(uint8_t baseUnit);
 
     /** @brief Create the sensor inventory path.
      *
