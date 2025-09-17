@@ -77,6 +77,9 @@ constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
 constexpr auto mapperService = ObjectMapper::default_service;
 constexpr auto inventoryPath = "/xyz/openbmc_project/inventory";
 
+constexpr uint32_t BMC_PDR_START_RANGE = 0x00000000;
+constexpr uint32_t BMC_PDR_END_RANGE = 0x00FFFFFF;
+
 /** @struct CustomFD
  *
  *  RAII wrapper for file descriptor.
