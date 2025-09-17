@@ -156,6 +156,10 @@ void NumericSensor::setSensorUnit(uint8_t baseUnit)
             sensorNameSpace = "/xyz/openbmc_project/metric/count/";
             useMetricInterface = true;
             break;
+        case PLDM_SENSOR_UNIT_BYTES:
+            sensorNameSpace = "/xyz/openbmc_project/metric/bytes/";
+            useMetricInterface = true;
+            break;
         case PLDM_SENSOR_UNIT_OEMUNIT:
             sensorNameSpace = "/xyz/openbmc_project/metric/oem/";
             useMetricInterface = true;
