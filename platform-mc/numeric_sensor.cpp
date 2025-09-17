@@ -114,7 +114,12 @@ inline double getRangeFieldValue(uint8_t range_field_format,
 template <typename T>
 bool validateSupportedSensorType(const std::shared_ptr<T> pdr)
 {
-    // No supported case yet
+    if ((pdr->base_unit == PLDM_SENSOR_UNIT_BYTES) &&
+              ((pdr->entity_type & 0x7FFF) == PLDM_ENTITY_DEVICE_FILE))
+    {
+        // File Size Monitoring Sensor
+        return true;
+    }
     return false;
 }
 
