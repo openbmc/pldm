@@ -551,6 +551,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db85c44f_f4729028",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-17T06:03:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4aa13331_b6cad1f9",
+      "range": {
+        "startLine": 57,
+        "startChar": 13,
+        "endLine": 57,
+        "endChar": 18
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d315e81_d3fd9da5",
@@ -795,6 +819,30 @@
       "side": 1,
       "message": "The reason I implemented it this way is to utilize the MctpDiscoveryHandlerIntf. OEM META needs to monitor the signal emitted by the MCTP service, so oemMETA has to be passed to the constructor of MctpDiscovery to achieve this. The only way to separate OEM META from this implementation is to give it its own mechanism to monitor the MCTP interface, which is easy to do. Would that be okay?",
       "parentUuid": "2f36a1b7_06b982a2",
+      "range": {
+        "startLine": 356,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 6
+      },
+      "revId": "54e988c6eebb93c179e67e09022c6bf4dc59c61d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc889ec5_59a4353e",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 71
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-09-17T06:03:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "523ecb6f_073df26d",
       "range": {
         "startLine": 356,
         "startChar": 0,
