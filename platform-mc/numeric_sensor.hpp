@@ -364,6 +364,15 @@ class NumericSensor
                               pldm::utils::Direction direction, double rawValue,
                               bool newAlarm, bool assert);
 
+    double getSensorValue(void)
+    {
+        if (useMetricInterface)
+        {
+            return metricIntf->value();
+        }
+        return valueIntf->value();
+    }
+
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
 
