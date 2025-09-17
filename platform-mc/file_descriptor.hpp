@@ -2,6 +2,7 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/platform.h>
@@ -49,12 +50,15 @@ class FileDescriptor : virtual public FileInterface
     bool isRegular = false;
     bool exReadPermitted = false;
     pldm_tid_t tid;
+    EntityInfo entityInfo;
     FileID identifier;
     FileID supDirIdentifier;
     FileSize maxSize;
     FDCount maxFdCount;
     std::string oemClassName;
     TerminusManager& terminusManager;
+
+    mutable std::shared_ptr<NumericSensor> sizeSensor;
 
     // TODO: support multiple socket pairs based on
     // FileMaximumFileDescriptorCount
@@ -125,6 +129,21 @@ class FileDescriptor : virtual public FileInterface
      */
     sdbusplus::message::unix_fd open(size_t offset, size_t length,
                                      bool exclusivity) override;
+
+    /** @brief Override the handler of D-Bus call to get Size property that
+     * returns the current file size
+     */
+    size_t size() const override
+    {
+        return getFileSize();
+    }
+
+    /** @brief Get current file size from the current reading of the associated
+     * File Size Monitoring sensor
+     *
+     *  @return current file size
+     */
+    FileSize getFileSize() const;
 
     std::optional<std::pair<exec::async_scope, std::optional<int>>> taskHandle;
 };

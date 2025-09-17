@@ -69,8 +69,12 @@ FileDescriptor::FileDescriptor(
         return;
     }
 
-    auto entityId = pdr->container.entity_type & 0x7FFF;
-    isDirectory = (entityId == PLDM_ENTITY_DEVICE_FILE_DIRECTORY);
+    entityInfo = std::make_tuple(
+        static_cast<EntityType>(pdr->container.entity_type),
+        static_cast<EntityInstance>(pdr->container.entity_instance_num),
+        static_cast<ContainerID>(pdr->container.entity_container_id));
+    isDirectory = ((pdr->container.entity_type & 0x7FFF) ==
+                   PLDM_ENTITY_DEVICE_FILE_DIRECTORY);
     isRegular = (pdr->file_capabilities.bits.bit3 == 0);
     exReadPermitted = (pdr->file_capabilities.bits.bit0 == 1);
     identifier = pdr->file_identifier;
@@ -395,13 +399,20 @@ exec::task<int> FileDescriptor::readTask(const size_t& offset,
                                       &heartBeatResp);
         }
 
-        rc = co_await readFileByLength(curFd, offset, length);
-        if (rc)
+        FileSize fileSize = getFileSize();
+
+        if (fileSize)
         {
-            lg2::error(
-                "Failed to read {LEN} bytes at offset {OFF} for terminus ID {TID}, FileIdentifier {ID}, error {RC}.",
-                "LEN", length, "OFF", offset, "TID", tid, "ID", identifier,
-                "RC", rc);
+            FileSize readLength = (length != 0) ? length : fileSize;
+
+            rc = co_await readFileByLength(curFd, offset, length);
+            if (rc)
+            {
+                lg2::error(
+                    "Failed to read {LEN} bytes at offset {OFF} for terminus ID {TID}, FileIdentifier {ID}, error {RC}.",
+                    "LEN", readLength, "OFF", offset, "TID", tid, "ID",
+                    identifier, "RC", rc);
+            }
         }
     }
     else
@@ -480,6 +491,30 @@ sdbusplus::message::unix_fd FileDescriptor::open(size_t offset, size_t length,
         }),
         exec::default_task_context<void>(exec::inline_scheduler{}));
     return sockets[1];
+}
+
+FileSize FileDescriptor::getFileSize() const
+{
+    if (!sizeSensor)
+    {
+        sizeSensor =
+            terminusManager.getFileSizeMonitoringSensor(tid, entityInfo);
+        if (!sizeSensor)
+        {
+            /*
+             * DSP0242 v1.0.0 Section 8.8.3 File Size Monitoring Sensor:
+             * If the File PDR does not have an associated File Size Monitoring
+             * Sensor, then the File Size is the number of bytes indicated by
+             * the File PDR FileMaximumSize field;
+             */
+            lg2::error(
+                "No size sensor available for terminus ID {TID}, FileIdentifier {ID}",
+                "TID", tid, "ID", identifier);
+            return maxSize;
+        }
+    }
+
+    return sizeSensor->getSensorValue();
 }
 } // namespace platform_mc
 } // namespace pldm
