@@ -256,6 +256,14 @@ class FruImpl
      */
     void deleteFRURecord(uint16_t rsi);
 
+    /** @brief Add hotplug record that was modified or added to the PDR entry
+     *
+     *  @param[in] pdrEntry - PDR record structure in PDR repository
+     *
+     *  @return record handle of added or modified hotplug record
+     */
+    uint32_t addHotPlugRecord(pldm::responder::pdr_utils::PdrEntry pdrEntry);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
