@@ -150,7 +150,22 @@ std::optional<std::string> Handler::getSysSpecificJsonDir(
         return std::nullopt;
     }
 
-    for (const auto& dirEntry : std::filesystem::directory_iterator{dirPath})
+    std::vector<fs::directory_entry> jsonDirs;
+
+    // Fetch the directories
+    for (const auto& entry : fs::directory_iterator(dirPath))
+    {
+        if (entry.is_directory())
+        {
+            jsonDirs.push_back(entry);
+        }
+    }
+
+    // Sort alphabetically by directory name
+    std::sort(jsonDirs.begin(), jsonDirs.end());
+
+    // Find matching directory
+    for (const auto& dirEntry : jsonDirs)
     {
         if (dirEntry.is_directory())
         {
