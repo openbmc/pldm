@@ -20,6 +20,12 @@ if get_option('oem-ibm').allowed()
     install_subdir(
         '../oem/ibm/configurations/bios',
         install_dir: package_datadir,
+        follow_symlinks: true,
+    )
+    install_subdir(
+        '../oem/ibm/configurations/bios/com.ibm.Hardware.Chassis.Model.Balcones',
+        install_dir: join_paths(package_datadir, 'bios'),
+        follow_symlinks: true,
     )
     install_data(
         '../oem/ibm/configurations/fru_master.json',
