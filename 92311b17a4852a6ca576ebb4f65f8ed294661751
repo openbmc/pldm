@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ace79c1_9fef222a",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-18T04:55:47Z",
+      "side": 1,
+      "message": "@Andrew, when there is an error encountered and we log an error and return, the caller could retry the operation?",
+      "parentUuid": "535fc523_06e6b068",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24437091_a94c0f94",
         "filename": "libpldmresponder/fru.cpp",
         "patchSetId": 22
