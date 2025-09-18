@@ -87,9 +87,9 @@ void BIOSConfig::initBIOSAttributes(const std::string& systemType,
 {
     sysType = systemType;
     fs::path dir{jsonDir / sysType};
-    if (!fs::exists(dir))
+    if (!fs::exists(dir) && !fs::is_symlink(dir))
     {
-        error("System specific bios attribute directory {DIR} does not exit",
+        error("System specific bios attribute directory {DIR} does not exist",
               "DIR", dir);
         if (registerService)
         {
