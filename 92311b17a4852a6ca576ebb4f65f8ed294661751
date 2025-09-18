@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6cb632a_77be1672",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-18T06:24:17Z",
+      "side": 1,
+      "message": "Ahh, I get your point Andrew, let me rethink on this",
+      "parentUuid": "7ace79c1_9fef222a",
+      "revId": "92311b17a4852a6ca576ebb4f65f8ed294661751",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24437091_a94c0f94",
         "filename": "libpldmresponder/fru.cpp",
         "patchSetId": 22
