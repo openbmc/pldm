@@ -150,15 +150,15 @@ std::optional<std::string> Handler::getSysSpecificJsonDir(
         return std::nullopt;
     }
 
-    for (const auto& dirEntry : std::filesystem::directory_iterator{dirPath})
+    for (const auto& compatibleName : dirNames)
     {
-        if (dirEntry.is_directory())
+        for (const auto& dirEntry :
+             std::filesystem::directory_iterator{dirPath})
         {
-            const auto sysDir = dirEntry.path().filename().string();
-            if (std::find(dirNames.begin(), dirNames.end(), sysDir) !=
-                dirNames.end())
+            if (dirEntry.is_directory() &&
+	        (compatibleName == dirEntry.path().filename()))		    
             {
-                return sysDir;
+                return compatibleName;
             }
         }
     }
