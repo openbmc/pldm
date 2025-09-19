@@ -81,7 +81,7 @@ std::string OperationSession::getRootObjectName(const nlohmann::json& json)
             return odataType.substr(hashPos + 1, dotPos - hashPos - 1);
         }
     }
-    return "Root"; // fallback
+    return ""; // fallback
 }
 
 RedfishPropertyParent* OperationSession::createBejTree(
