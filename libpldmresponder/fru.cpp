@@ -504,6 +504,606 @@ int FruImpl::setFRUTable(const std::vector<uint8_t>& fruData)
     return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
 }
 
+void FruImpl::buildIndividualFRU(const std::string& fruInterface,
+                                 const std::string& fruObjectPath)
+{
+    // An exception will be thrown by getRecordInfo, if the item
+    // D-Bus interface name specified in FRU_Master.json does
+    // not have corresponding config jsons
+    pldm_entity parent = {};
+    pldm_entity entity{};
+    pldm_entity parentEntity{};
+    static uint32_t bmc_record_handle = 0;
+    uint32_t newRecordHdl{};
+
+    if (fruInterface == "xyz.openbmc_project.Inventory.Item.PCIeDevice")
+    {
+        // Delete the existing adapter PDR before creating new one
+        info("Removing old PDRs {PATH}", "PATH", fruObjectPath);
+        removeIndividualFRU(fruObjectPath);
+    }
+
+    try
+    {
+        entity.entity_type = parser.getEntityType(fruInterface);
+        auto parentObj = pldm::utils::findParent(fruObjectPath);
+        do
+        {
+            auto iter = objToEntityNode.find(parentObj);
+            if (iter != objToEntityNode.end())
+            {
+                parent = iter->second;
+                break;
+            }
+            parentObj = pldm::utils::findParent(parentObj);
+        } while (parentObj != "/");
+
+        pldm_entity_node* parent_node = nullptr;
+        pldm_find_entity_ref_in_tree(entityTree, parent, &parent_node);
+
+        uint16_t last_container_id = next_container_id(entityTree);
+        auto node = pldm_entity_association_tree_add_entity(
+            entityTree, &entity, 0xFFFF, parent_node,
+            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false, true, last_container_id);
+
+        pldm_entity node_entity = pldm_entity_extract(node);
+        objToEntityNode[fruObjectPath] = node_entity;
+        info(
+            "Building Individual FRU [{FRU_OBJ_PATH}] with entityid [ {ENTITY_TYPE}, {ENTITY_NUM}, {ENTITY_ID} ] Parent :[ {P_ENTITY_TYP}, {P_ENTITY_NUM}, {P_ENTITY_ID} ]",
+            "FRU_OBJ_PATH", fruObjectPath, "ENTITY_TYPE",
+            static_cast<unsigned>(node_entity.entity_type), "ENTITY_NUM",
+            static_cast<unsigned>(node_entity.entity_instance_num), "ENTITY_ID",
+            static_cast<unsigned>(node_entity.entity_container_id),
+            "P_ENTITY_TYP", static_cast<unsigned>(parent.entity_type),
+            "P_ENTITY_NUM", static_cast<unsigned>(parent.entity_instance_num),
+            "P_ENTITY_ID", static_cast<unsigned>(parent.entity_container_id));
+        auto recordInfos = parser.getRecordInfo(fruInterface);
+
+        memcpy(reinterpret_cast<void*>(&parentEntity),
+               reinterpret_cast<void*>(parent_node), sizeof(pldm_entity));
+        pldm_entity_node* bmcTreeParentNode = nullptr;
+        pldm_find_entity_ref_in_tree(bmcEntityTree, parentEntity,
+                                     &bmcTreeParentNode);
+
+        pldm_entity_association_tree_add_entity(
+            bmcEntityTree, &entity, 0xFFFF, bmcTreeParentNode,
+            PLDM_ENTITY_ASSOCIAION_PHYSICAL, false, true, last_container_id);
+
+        objects = DBusHandler::getManagedObj(
+            "xyz.openbmc_project.Inventory.Manager", inventoryPath);
+        for (const auto& object : objects)
+        {
+            if (object.first.str == fruObjectPath)
+            {
+                const auto& interfaces = object.second;
+                newRecordHdl = populateRecords(interfaces, recordInfos, entity,
+                                               fruObjectPath, true);
+                associatedEntityMap.emplace(fruObjectPath, entity);
+                break;
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Config JSONs missing for the item in concurrent add path interface type, interface = {FRU_INTF} ERROR={ERROR}",
+            "FRU_INTF", fruInterface, "ERROR", e);
+    }
+    if (oemUtilsHandler)
+    {
+        auto lastLocalRecord = pldm_pdr_find_last_in_range(
+            pdrRepo, BMC_PDR_START_RANGE, BMC_PDR_END_RANGE);
+        bmc_record_handle =
+            pldm_pdr_get_record_handle(pdrRepo, lastLocalRecord);
+    }
+
+    uint8_t bmcEventDataOps;
+    uint32_t updatedRecordHdlBmc = 0;
+    bool found = false;
+    pldm_entity_association_find_parent_entity(pdrRepo, &parent, false,
+                                               &updatedRecordHdlBmc, &found);
+    if (found)
+    {
+        pldm_entity_association_pdr_add_contained_entity_to_remote_pdr(
+            pdrRepo, &entity, updatedRecordHdlBmc);
+        bmcEventDataOps = PLDM_RECORDS_MODIFIED;
+    }
+    else
+    {
+        pldm_entity_association_pdr_create_new(
+            pdrRepo, bmc_record_handle, &parent, &entity, &updatedRecordHdlBmc);
+        bmcEventDataOps = PLDM_RECORDS_ADDED;
+    }
+
+    if (oemUtilsHandler)
+    {
+        auto lastBMCRecord = pldm_pdr_find_last_in_range(
+            pdrRepo, BMC_PDR_START_RANGE, BMC_PDR_END_RANGE);
+        bmc_record_handle = pldm_pdr_get_record_handle(pdrRepo, lastBMCRecord);
+    }
+
+    uint8_t hostEventDataOps;
+    uint32_t updatedRecordHdlHost = 0;
+    found = false;
+    pldm_entity_association_find_parent_entity(pdrRepo, &parent, true,
+                                               &updatedRecordHdlHost, &found);
+    if (found)
+    {
+        pldm_entity_association_pdr_add_contained_entity_to_remote_pdr(
+            pdrRepo, &entity, updatedRecordHdlHost);
+        hostEventDataOps = PLDM_RECORDS_MODIFIED;
+    }
+
+    // create the relevant state effecter and sensor PDRs for the new fru record
+    std::vector<uint32_t> recordHdlList;
+    reGenerateStatePDR(fruObjectPath, recordHdlList);
+
+    std::vector<ChangeEntry> handlesTobeAdded;
+    std::vector<ChangeEntry> handlesTobeModified;
+
+    handlesTobeAdded.push_back(newRecordHdl);
+
+    for (auto& ids : recordHdlList)
+    {
+        handlesTobeAdded.push_back(ids);
+    }
+    if (updatedRecordHdlBmc != 0)
+    {
+        (bmcEventDataOps == PLDM_RECORDS_MODIFIED)
+            ? handlesTobeModified.push_back(updatedRecordHdlBmc)
+            : handlesTobeAdded.push_back(updatedRecordHdlBmc);
+    }
+    if (updatedRecordHdlHost != 0)
+    {
+        (hostEventDataOps == PLDM_RECORDS_MODIFIED)
+            ? handlesTobeModified.push_back(updatedRecordHdlHost)
+            : handlesTobeAdded.push_back(updatedRecordHdlHost);
+    }
+    if (!handlesTobeAdded.empty())
+    {
+        sendPDRRepositoryChgEventbyPDRHandles(
+            std::move(handlesTobeAdded),
+            (std::vector<uint8_t>(1, PLDM_RECORDS_ADDED)));
+    }
+    if (!handlesTobeModified.empty())
+    {
+        sendPDRRepositoryChgEventbyPDRHandles(
+            std::move(handlesTobeModified),
+            (std::vector<uint8_t>(1, PLDM_RECORDS_MODIFIED)));
+    }
+}
+
+void FruImpl::reGenerateStatePDR(const std::string& fruObjectPath,
+                                 std::vector<uint32_t>& recordHdlList)
+{
+    pldm::responder::pdr_utils::Type pdrType{};
+    static const Json empty{};
+    for (const auto& directory : statePDRJsonsDir)
+    {
+        for (const auto& dirEntry : fs::directory_iterator(directory))
+        {
+            try
+            {
+                if (fs::is_regular_file(dirEntry.path().string()))
+                {
+                    auto json = pldm::responder::pdr_utils::readJson(
+                        dirEntry.path().string());
+                    if (!json.empty())
+                    {
+                        pldm::responder::pdr_utils::DbusObjMaps tmpMap{};
+                        auto effecterPDRs = json.value("effecterPDRs", empty);
+                        for (const auto& effecter : effecterPDRs)
+                        {
+                            pdrType = effecter.value("pdrType", 0);
+                            if (pdrType == PLDM_STATE_EFFECTER_PDR)
+                            {
+                                auto stateEffecterList = setStatePDRParams(
+                                    {directory}, 0, 0, tmpMap, tmpMap, true,
+                                    effecter, fruObjectPath, pdrType);
+                                std::move(stateEffecterList.begin(),
+                                          stateEffecterList.end(),
+                                          std::back_inserter(recordHdlList));
+                            }
+                        }
+                        auto sensorPDRs = json.value("sensorPDRs", empty);
+                        for (const auto& sensor : sensorPDRs)
+                        {
+                            pdrType = sensor.value("pdrType", 0);
+                            if (pdrType == PLDM_STATE_SENSOR_PDR)
+                            {
+                                auto stateSensorList = setStatePDRParams(
+                                    {directory}, 0, 0, tmpMap, tmpMap, true,
+                                    sensor, fruObjectPath, pdrType);
+                                std::move(stateSensorList.begin(),
+                                          stateSensorList.end(),
+                                          std::back_inserter(recordHdlList));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (const InternalFailure& e)
+            {
+                error(
+                    "PDR config directory for path PATH= {DIR_PATH} does not exist or is empty for TYPE= {PDR_TYP}, ERROR={ERROR}",
+                    "DIR_PATH", dirEntry.path().string(), "PDR_TYP",
+                    (unsigned)pdrType, "ERROR", e);
+                // log an error here
+            }
+            catch (const Json::exception& e)
+            {
+                error(
+                    "Failed parsing PDR JSON file for TYPE= {PDR_TYP} ERROR={ERROR}",
+                    "PDR_TYP", (unsigned)pdrType, "ERROR", e);
+                // log error
+            }
+            catch (const std::exception& e)
+            {
+                error(
+                    "Failed parsing PDR JSON file for TYPE= {PDR_TYP} ERROR={ERROR}",
+                    "PDR_TYP", (unsigned)pdrType, "ERROR", e);
+                // log appropriate error
+            }
+        }
+    }
+}
+
+std::vector<uint32_t> FruImpl::setStatePDRParams(
+    const std::vector<fs::path> pdrJsonsDir, uint16_t nextSensorId,
+    uint16_t nextEffecterId,
+    pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+    pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps, bool hotPlug,
+    const Json& json, const std::string& fruObjectPath,
+    pldm::responder::pdr_utils::Type pdrType)
+{
+    using namespace pldm::responder::pdr_utils;
+    static DbusObjMaps& sensorDbusObjMapsRef = sensorDbusObjMaps;
+    static DbusObjMaps& effecterDbusObjMapsRef = effecterDbusObjMaps;
+    std::vector<uint32_t> idList;
+    static const Json empty{};
+    if (!hotPlug)
+    {
+        startStateSensorId = nextSensorId;
+        startStateEffecterId = nextEffecterId;
+        statePDRJsonsDir = pdrJsonsDir;
+        return idList;
+    }
+
+    if (pdrType == PLDM_STATE_EFFECTER_PDR)
+    {
+        static const std::vector<Json> emptyList{};
+        auto entries = json.value("entries", emptyList);
+        for (const auto& e : entries)
+        {
+            size_t pdrSize = 0;
+            auto effecters = e.value("effecters", emptyList);
+            for (const auto& effecter : effecters)
+            {
+                auto set = effecter.value("set", empty);
+                auto statesSize = set.value("size", 0);
+                if (!statesSize)
+                {
+                    error(
+                        "Malformed PDR JSON return pdrEntry;- no state set info, TYPE={INFO_TYP}",
+                        "INFO_TYP",
+                        static_cast<unsigned>(PLDM_STATE_EFFECTER_PDR));
+                    throw InternalFailure();
+                }
+                pdrSize += sizeof(state_effecter_possible_states) -
+                           sizeof(bitfield8_t) +
+                           (sizeof(bitfield8_t) * statesSize);
+            }
+            pdrSize += sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
+
+            std::vector<uint8_t> entry{};
+            entry.resize(pdrSize);
+
+            pldm_state_effecter_pdr* pdr =
+                reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+            if (!pdr)
+            {
+                error("Failed to get state effecter PDR.");
+                continue;
+            }
+            pdr->hdr.record_handle = 0;
+            pdr->hdr.version = 1;
+            pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
+            pdr->hdr.record_change_num = 0;
+            pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
+
+            pdr->terminus_handle = TERMINUS_HANDLE;
+
+            bool singleEffecter = false;
+            try
+            {
+                std::string entity_path = e.value("entity_path", "");
+                if (fruObjectPath.size())
+                {
+                    if (fruObjectPath != entity_path)
+                    {
+                        continue;
+                    }
+                    singleEffecter = true;
+                }
+                pdr->effecter_id = startStateEffecterId++;
+                if (entity_path != "" &&
+                    associatedEntityMap.find(entity_path) !=
+                        associatedEntityMap.end())
+                {
+                    pdr->entity_type =
+                        associatedEntityMap.at(entity_path).entity_type;
+                    pdr->entity_instance =
+                        associatedEntityMap.at(entity_path).entity_instance_num;
+                    pdr->container_id =
+                        associatedEntityMap.at(entity_path).entity_container_id;
+                }
+                else
+                {
+                    pdr->entity_type = e.value("type", 0);
+                    pdr->entity_instance = e.value("instance", 0);
+                    pdr->container_id = e.value("container", 0);
+                }
+            }
+            catch (const std::exception&)
+            {
+                pdr->entity_type = e.value("type", 0);
+                pdr->entity_instance = e.value("instance", 0);
+                pdr->container_id = e.value("container", 0);
+            }
+            pdr->effecter_semantic_id = 0;
+            pdr->effecter_init = PLDM_NO_INIT;
+            pdr->has_description_pdr = false;
+            pdr->composite_effecter_count = effecters.size();
+
+            pldm::responder::pdr_utils::DbusMappings dbusMappings{};
+            pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
+            uint8_t* start = entry.data() + sizeof(pldm_state_effecter_pdr) -
+                             sizeof(uint8_t);
+            for (const auto& effecter : effecters)
+            {
+                auto set = effecter.value("set", empty);
+                state_effecter_possible_states* possibleStates =
+                    reinterpret_cast<state_effecter_possible_states*>(start);
+                possibleStates->state_set_id = set.value("id", 0);
+                possibleStates->possible_states_size = set.value("size", 0);
+
+                start += sizeof(possibleStates->state_set_id) +
+                         sizeof(possibleStates->possible_states_size);
+                static const std::vector<uint8_t> emptyStates{};
+                pldm::responder::pdr_utils::PossibleValues stateValues;
+                auto states = set.value("states", emptyStates);
+                for (const auto& state : states)
+                {
+                    auto index = state / 8;
+                    auto bit = state - (index * 8);
+                    bitfield8_t* bf =
+                        reinterpret_cast<bitfield8_t*>(start + index);
+                    bf->byte |= 1 << bit;
+                    stateValues.emplace_back(state);
+                }
+                start += possibleStates->possible_states_size;
+
+                auto dbusEntry = effecter.value("dbus", empty);
+                auto objectPath = dbusEntry.value("path", "");
+                auto interface = dbusEntry.value("interface", "");
+                auto propertyName = dbusEntry.value("property_name", "");
+                auto propertyType = dbusEntry.value("property_type", "");
+
+                pldm::responder::pdr_utils::StatestoDbusVal dbusIdToValMap{};
+                pldm::utils::DBusMapping dbusMapping{};
+                try
+                {
+                    auto service = pldm::utils::DBusHandler().getService(
+                        objectPath.c_str(), interface.c_str());
+                    dbusMapping = pldm::utils::DBusMapping{
+                        objectPath, interface, propertyName, propertyType};
+                    dbusIdToValMap =
+                        pldm::responder::pdr_utils::populateMapping(
+                            propertyType, dbusEntry["property_values"],
+                            stateValues);
+                }
+                catch (const std::exception& e)
+                {
+                    error(
+                        "D-Bus object path does not exist, effecter ID: {EFFECTER_ID} ERROR={ERROR}",
+                        "EFFECTER_ID", static_cast<uint16_t>(pdr->effecter_id),
+                        "ERROR", e);
+                }
+                dbusMappings.emplace_back(std::move(dbusMapping));
+                dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            }
+            uint32_t effecterId = pdr->effecter_id;
+            effecterDbusObjMapsRef.emplace(
+                effecterId, std::make_tuple(std::move(dbusMappings),
+                                            std::move(dbusValMaps)));
+            pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = pdrSize;
+            if (singleEffecter)
+            {
+                auto newRecordHdl = addHotPlugRecord(pdrEntry);
+                idList.push_back(newRecordHdl);
+            }
+        }
+    }
+    else if (pdrType == PLDM_STATE_SENSOR_PDR)
+    {
+        static const std::vector<Json> emptyList{};
+        auto entries = json.value("entries", emptyList);
+        for (const auto& e : entries)
+        {
+            size_t pdrSize = 0;
+            auto sensors = e.value("sensors", emptyList);
+            for (const auto& sensor : sensors)
+            {
+                auto set = sensor.value("set", empty);
+                auto statesSize = set.value("size", 0);
+                if (!statesSize)
+                {
+                    error(
+                        "Malformed PDR JSON return pdrEntry;- no state set info, TYPE={INFO_TYP}",
+                        "INFO_TYP",
+                        static_cast<unsigned>(PLDM_STATE_SENSOR_PDR));
+                    throw InternalFailure();
+                }
+                pdrSize += sizeof(state_sensor_possible_states) -
+                           sizeof(bitfield8_t) +
+                           (sizeof(bitfield8_t) * statesSize);
+            }
+            pdrSize += sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
+
+            std::vector<uint8_t> entry{};
+            entry.resize(pdrSize);
+
+            pldm_state_sensor_pdr* pdr =
+                reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
+            if (!pdr)
+            {
+                error("Failed to get state sensor PDR.");
+                continue;
+            }
+            pdr->hdr.record_handle = 0;
+            pdr->hdr.version = 1;
+            pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
+            pdr->hdr.record_change_num = 0;
+            pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
+
+            HTOLE32(pdr->hdr.record_handle);
+            HTOLE16(pdr->hdr.record_change_num);
+            HTOLE16(pdr->hdr.length);
+
+            pdr->terminus_handle = TERMINUS_HANDLE;
+            bool singleSensor = false;
+
+            try
+            {
+                std::string entity_path = e.value("entity_path", "");
+                if (fruObjectPath.size())
+                {
+                    if (fruObjectPath != entity_path)
+                    {
+                        continue;
+                    }
+                    singleSensor = true;
+                }
+                pdr->sensor_id = startStateSensorId++;
+                if (entity_path != "" &&
+                    associatedEntityMap.find(entity_path) !=
+                        associatedEntityMap.end())
+                {
+                    pdr->entity_type =
+                        associatedEntityMap.at(entity_path).entity_type;
+                    pdr->entity_instance =
+                        associatedEntityMap.at(entity_path).entity_instance_num;
+                    pdr->container_id =
+                        associatedEntityMap.at(entity_path).entity_container_id;
+                }
+                else
+                {
+                    pdr->entity_type = e.value("type", 0);
+                    pdr->entity_instance = e.value("instance", 0);
+                    pdr->container_id = e.value("container", 0);
+                }
+            }
+            catch (const std::exception&)
+            {
+                pdr->entity_type = e.value("type", 0);
+                pdr->entity_instance = e.value("instance", 0);
+                pdr->container_id = e.value("container", 0);
+            }
+            pdr->sensor_init = PLDM_NO_INIT;
+            pdr->sensor_auxiliary_names_pdr = false;
+            if (sensors.size() > 8)
+            {
+                throw std::runtime_error("sensor size must be less than 8");
+            }
+            pdr->composite_sensor_count = sensors.size();
+
+            HTOLE16(pdr->terminus_handle);
+            HTOLE16(pdr->sensor_id);
+            HTOLE16(pdr->entity_type);
+            HTOLE16(pdr->entity_instance);
+            HTOLE16(pdr->container_id);
+
+            pldm::responder::pdr_utils::DbusMappings dbusMappings{};
+            pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
+            uint8_t* start =
+                entry.data() + sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
+            for (const auto& sensor : sensors)
+            {
+                auto set = sensor.value("set", empty);
+                state_sensor_possible_states* possibleStates =
+                    reinterpret_cast<state_sensor_possible_states*>(start);
+                possibleStates->state_set_id = set.value("id", 0);
+                HTOLE16(possibleStates->state_set_id);
+                possibleStates->possible_states_size = set.value("size", 0);
+
+                start += sizeof(possibleStates->state_set_id) +
+                         sizeof(possibleStates->possible_states_size);
+                static const std::vector<uint8_t> emptyStates{};
+                pldm::responder::pdr_utils::PossibleValues stateValues;
+                auto states = set.value("states", emptyStates);
+                for (const auto& state : states)
+                {
+                    auto index = state / 8;
+                    auto bit = state - (index * 8);
+                    bitfield8_t* bf =
+                        reinterpret_cast<bitfield8_t*>(start + index);
+                    bf->byte |= 1 << bit;
+                    stateValues.emplace_back(state);
+                }
+                start += possibleStates->possible_states_size;
+                auto dbusEntry = sensor.value("dbus", empty);
+                auto objectPath = dbusEntry.value("path", "");
+                auto interface = dbusEntry.value("interface", "");
+                auto propertyName = dbusEntry.value("property_name", "");
+                auto propertyType = dbusEntry.value("property_type", "");
+
+                pldm::responder::pdr_utils::StatestoDbusVal dbusIdToValMap{};
+                pldm::utils::DBusMapping dbusMapping{};
+                try
+                {
+                    auto service = pldm::utils::DBusHandler().getService(
+                        objectPath.c_str(), interface.c_str());
+                    dbusMapping = pldm::utils::DBusMapping{
+                        objectPath, interface, propertyName, propertyType};
+                    dbusIdToValMap =
+                        pldm::responder::pdr_utils::populateMapping(
+                            propertyType, dbusEntry["property_values"],
+                            stateValues);
+                }
+                catch (const std::exception& e)
+                {
+                    error(
+                        "D-Bus object path does not exist, sensor ID: {SENSOR_ID} ERROR={ERROR}",
+                        "SENSOR_ID", static_cast<uint16_t>(pdr->sensor_id),
+                        "ERROR", e);
+                }
+                dbusMappings.emplace_back(std::move(dbusMapping));
+                dbusValMaps.emplace_back(std::move(dbusIdToValMap));
+            }
+            uint32_t sensorId = pdr->sensor_id;
+            sensorDbusObjMapsRef.emplace(
+                sensorId, std::make_tuple(std::move(dbusMappings),
+                                          std::move(dbusValMaps)));
+
+            // creating a match for the newly added sensor
+            dbusToPLDMEventHandler->sendStateSensorEvent(sensorId,
+                                                         sensorDbusObjMapsRef);
+
+            pldm::responder::pdr_utils::PdrEntry pdrEntry{};
+            pdrEntry.data = entry.data();
+            pdrEntry.size = pdrSize;
+            if (singleSensor)
+            {
+                auto newRecordHdl = addHotPlugRecord(pdrEntry);
+                idList.push_back(newRecordHdl);
+            }
+        }
+    }
+    return idList;
+}
+
 namespace fru
 {
 Response Handler::getFRURecordTableMetadata(const pldm_msg* request,
