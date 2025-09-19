@@ -192,6 +192,30 @@
       },
       "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4ada262_fe1be223",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-19T10:18:02Z",
+      "side": 1,
+      "message": "ah , i see i dont want pldmtool to use the lg2. Since the lg2 logs looks a bit odd for command line based tools. Can you please revert back to `std::cerr`.\n\nI don\u0027t have any concerns on this commit otherwise.",
+      "parentUuid": "5519bc11_0f94cf50",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 18
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
