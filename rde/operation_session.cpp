@@ -256,7 +256,7 @@ void OperationSession::doOperationInit()
     int rc = 0;
     const std::string& resourceIdStr =
         device_->getRegistry()->getResourceIdFromUri(oipInfo.targetURI);
-    uint32_t currentResourceId_ =
+    currentResourceId_ =
         static_cast<uint32_t>(std::stoul(resourceIdStr));
     rde_op_id operationID = oipInfo.operationID;
     uint32_t sendDataTransferHandle;
