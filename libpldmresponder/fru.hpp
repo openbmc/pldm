@@ -256,6 +256,16 @@ class FruImpl
      */
     void deleteFRURecord(uint16_t rsi);
 
+    /** @brief Builds a FRU record set PDR and associted PDRs after a
+     *         concurrent add operation.
+     *  @param[in] fruInterface - the FRU interface
+     *  @param[in] fruObjectPath - the FRU object path
+     *
+     *  @return none
+     */
+    void buildIndividualFRU(const std::string& fruInterface,
+                            const std::string& fruObjectPath);
+
     /** @brief Associate sensor/effecter to FRU entity
      */
     dbus::AssociatedEntityMap associatedEntityMap;
