@@ -525,6 +525,37 @@ class Handler : public CmdHandler
         const std::vector<uint32_t>& pdrRecordHandles,
         const std::vector<uint8_t>& eventDataOps);
 
+    /** @brief Regenerate state sensor and effecter PDRs after a FRU record
+     *         is updated or added
+     *  @param[in] fruObjectPath - FRU object path
+     *  @param[in] recordHdlList - list of PDR record handles
+     *
+     */
+    void reGenerateStatePDR(const std::string& fruObjectPath,
+                            std::vector<uint32_t>& recordHdlList);
+
+    /* @brief Set or update the state sensor and effecter PDRs after a hotplug
+     *
+     * @param[in] pdrJsonsDir - vector of PDR JSON directory path
+     * @param[in] nextSensorId - next sensor ID
+     * @param[in] nextEffectorId - next effecter ID
+     * @param[in] sensorDbusObjMaps - map of sensor ID to DbusObjMaps
+     * @param[in] effecterDbusObjMaps - map of effecter ID to DbusObjMaps
+     * @param[in] hotPlug - boolean to check if the record is a hotplug record
+     * @param[in] json - josn data
+     * @param[in] fruObjectPath - FRU object path
+     * @param[in] pdrType - Typr of PDR
+     *
+     * @return list of state sensor or effecter record handles
+     */
+    std::vector<uint32_t> setStatePDRParams(
+        const std::vector<fs::path> pdrJsonsDir, uint16_t nextSensorId,
+        uint16_t nextEffecterId,
+        pldm::responder::pdr_utils::DbusObjMaps& sensorDbusObjMaps,
+        pldm::responder::pdr_utils::DbusObjMaps& effecterDbusObjMaps,
+        bool hotPlug, const Json& json, const std::string& fruObjectPath = "",
+        pldm::responder::pdr_utils::Type pdrType = 0);
+
   private:
     uint8_t eid;
     InstanceIdDb* instanceIdDb;
@@ -545,6 +576,9 @@ class Handler : public CmdHandler
     bool pdrCreated;
     std::vector<fs::path> pdrJsonsDir;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
+    std::vector<fs::path> statePDRJsonsDir;
+    uint16_t startStateSensorId;
+    uint16_t startStateEffecterId;
 };
 
 /** @brief Function to check if a sensor falls in OEM range
