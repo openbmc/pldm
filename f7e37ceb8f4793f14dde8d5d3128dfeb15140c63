@@ -240,6 +240,30 @@
       },
       "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e0eeef4_7428f575",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-09-22T10:43:35Z",
+      "side": 1,
+      "message": "To validate the difference between `std::cerr` and `lg2::error` in pldmtool, I forced `instanceIdDb.next()` to return early with rc \u003d `-EAGAIN`.\n\nThe outputs were:\nstd::cerr:\n```\nroot@bmc:~# pldmtool base GetTID -m 10\nError message printed by std::cerr\nFailed to allocate instance ID for EID 10: No free instance ids\nterminate called after throwing an instance of \u0027pldm::InstanceIdError\u0027\n  what(): Failed to allocate instance ID for EID 10: No free instance ids Aborted (core dumped)\n```\nlg2::error:\n```\nroot@bmc:~# pldmtool base GetTID -m 10\n\u003c3\u003e Error message printed by lg2::error\n\u003c3\u003e Failed to allocate instance ID for EID 10: No free instance ids\nterminate called after throwing an instance of \u0027pldm::InstanceIdError\u0027\n  what(): Failed to allocate instance ID for EID 10: No free instance ids Aborted (core dumped)\n```\n\nThe visible difference is the “\u003c3\u003e” prefix, I’d like to get consensus from both of you before proceeding.",
+      "parentUuid": "27fb7e73_eba017c2",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 18
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
