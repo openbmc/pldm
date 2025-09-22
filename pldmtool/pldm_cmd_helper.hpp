@@ -31,7 +31,12 @@ namespace helper
 {
 
 constexpr uint8_t PLDM_ENTITY_ID = 8;
+constexpr static uint8_t MCTP_MSG_TYPE_PLDM = 1;
 using ordered_json = nlohmann::ordered_json;
+constexpr static auto mctpEndpointIntfName{"xyz.openbmc_project.MCTP.Endpoint"};
+constexpr static auto unixSocketIntfName{
+    "xyz.openbmc_project.Common.UnixSocket"};
+constexpr static auto objectEnableIntfName{"xyz.openbmc_project.Object.Enable"};
 
 /** @brief print the input message if pldmverbose is enabled
  *
@@ -153,6 +158,11 @@ class CommandInterface
     const std::string commandName;
     uint8_t mctp_eid;
     bool pldmVerbose;
+    pldm::dbus::ObjectValueTree getMctpManagedObjects(
+        const std::string& service) const noexcept;
+    std::set<pldm::dbus::Service> getMctpServices() const;
+    std::tuple<bool, int, int, std::vector<uint8_t>> getMctpSockInfo(
+        uint8_t remoteEID);
 
   protected:
     uint8_t instanceId;

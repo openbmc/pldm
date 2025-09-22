@@ -21,6 +21,7 @@ void InventoryManager::discoverFDs(const std::vector<mctp_eid_t>& eids)
     {
         try
         {
+            error("discoverFDs debug");
             sendQueryDeviceIdentifiersRequest(eid);
         }
         catch (const std::exception& e)

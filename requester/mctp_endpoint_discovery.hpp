@@ -18,9 +18,9 @@ const std::string emptyUUID = "00000000-0000-0000-0000-000000000000";
 constexpr const char* MCTPService = "au.com.codeconstruct.MCTP1";
 constexpr const char* MCTPInterface = "xyz.openbmc_project.MCTP.Endpoint";
 constexpr const char* EndpointUUID = "xyz.openbmc_project.Common.UUID";
-constexpr const char* MCTPPath = "/au/com/codeconstruct/mctp1";
-constexpr const char* MCTPInterfaceCC = "au.com.codeconstruct.MCTP.Endpoint1";
-constexpr const char* MCTPConnectivityProp = "Connectivity";
+constexpr const char* MCTPPath = "/xyz/openbmc_project/mctp";
+constexpr const char* MCTPInterfaceCC = "xyz.openbmc_project.Object.Enable";
+constexpr const char* MCTPConnectivityProp = "Enabled";
 
 /** @class MctpDiscoveryHandlerIntf
  *

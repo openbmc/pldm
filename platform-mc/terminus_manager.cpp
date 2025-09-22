@@ -248,6 +248,7 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
 
 exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
 {
+    lg2::error("initMctpTerminus debug");
     mctp_eid_t eid = std::get<0>(mctpInfo);
     pldm_tid_t tid = 0;
     bool isMapped = false;

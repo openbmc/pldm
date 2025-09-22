@@ -3,6 +3,7 @@
 #include <libpldm/platform.h>
 
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/lg2.hpp>
 
 #include <fstream>
 #include <stdexcept>
@@ -277,6 +278,12 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
         std::string subUri =
             getRdeResourceName(pdr->sub_uri_name, pdr->sub_uri_length);
 
+        lg2::info(
+            "Processing PDR - RID: {RID}, Parent: {PARENT}, IsRoot: {IS_ROOT}",
+            "RID", rid, "PARENT", parent, "IS_ROOT", isRoot);
+        lg2::info("ProposedRoot: '{PROPOSED_ROOT}', SubUri: '{SUB_URI}'",
+                  "PROPOSED_ROOT", proposedRoot, "SUB_URI", subUri);
+
         std::string fullUri;
         if (isRoot)
         {
@@ -288,20 +295,29 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
                     fullUri += "/";
                 fullUri += subUri;
             }
+            lg2::info("Root resource - FullUri: '{FULL_URI}'", "FULL_URI",
+                      fullUri);
         }
         else
         {
             fullUri = subUri;
+            lg2::info("Child resource - FullUri: '{FULL_URI}'", "FULL_URI",
+                      fullUri);
         }
         subUriMap[rid] = fullUri;
         parentMap[rid] = parent;
-
+        lg2::info("Additional resources count: {COUNT}", "COUNT",
+                  pdr->add_resrc_id_count);
         for (size_t i = 0; i < pdr->add_resrc_id_count; ++i)
         {
             add_resrc_t* add = pdr->additional_resrc[i];
             uint16_t addId = static_cast<uint16_t>(add->resrc_id);
             subUriMap[addId] = getRdeResourceName(add->name, add->length);
             parentMap[addId] = rid;
+            lg2::info(
+                "Additional resource [{INDEX}] - ID: {ADD_ID}, Name: '{ADD_NAME}'",
+                "INDEX", i, "ADD_ID", addId, "ADD_NAME",
+                getRdeResourceName(add->name, add->length));
         }
 
         ResourceInfo info;
@@ -311,6 +327,10 @@ std::vector<ResourceInfo> ResourceRegistry::parseRedfishResourcePDRs(
         info.schemaVersion = getMajorSchemaVersion(pdr->major_schema_version);
         info.schemaClass = PLDM_RDE_SCHEMA_MAJOR;
         info.propContainResourceName = proposedRoot;
+        lg2::info(
+            "ResourceInfo - ID: {RES_ID}, Schema: '{SCHEMA}', Version: '{VERSION}'",
+            "RES_ID", info.resourceId, "SCHEMA", info.schemaName, "VERSION",
+            info.schemaVersion);
         resInfoMap[rid] = info;
     }
 
@@ -340,6 +360,16 @@ void ResourceRegistry::loadFromResourcePDR(
         {
             continue; // Skip empty payloads
         }
+
+        std::ostringstream hexStream;
+        hexStream << std::hex << std::setfill('0');
+        for (size_t j = 0; j < data.size(); ++j)
+        {
+            if (j > 0)
+                hexStream << " ";
+            hexStream << std::setw(2) << static_cast<unsigned>(data[j]);
+        }
+        lg2::info("Raw data: {HEX_DATA}", "HEX_DATA", hexStream.str());
 
         const uint8_t* ptr = data.data();
         auto parsedPdr = std::make_shared<pldm_redfish_resource_pdr>();

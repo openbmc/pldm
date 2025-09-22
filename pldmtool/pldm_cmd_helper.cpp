@@ -260,9 +260,122 @@ void CommandInterface::exec()
     instanceIdDb.free(mctp_eid, instanceId);
 }
 
+std::set<pldm::dbus::Service> CommandInterface::getMctpServices() const
+{
+    pldm::utils::GetSubTreeResponse getSubTreeResponse{};
+    std::set<pldm::dbus::Service> mctpCtrlServices{};
+    const pldm::dbus::Interfaces ifaceList{mctpEndpointIntfName};
+    try
+    {
+        getSubTreeResponse = pldm::utils::DBusHandler().getSubtree(
+            "/xyz/openbmc_project/mctp", 0, ifaceList);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "D-Bus error calling Subtrees method on ObjectMapper: "
+                  << e.what() << '\n';
+    }
+
+    for (const auto& [objPath, mapperServiceMap] : getSubTreeResponse)
+    {
+        for (const auto& [service, interfaces] : mapperServiceMap)
+        {
+            mctpCtrlServices.insert(service);
+        }
+    }
+
+    return mctpCtrlServices;
+}
+
+pldm::dbus::ObjectValueTree CommandInterface::getMctpManagedObjects(
+    const std::string& service) const noexcept
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    pldm::dbus::ObjectValueTree objects{};
+    try
+    {
+        pldm::dbus::ObjectValueTree tmpObjects{};
+        auto method = bus.new_method_call(
+            service.c_str(), "/xyz/openbmc_project/mctp",
+            "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
+        auto reply = bus.call(method);
+        reply.read(tmpObjects);
+        objects.insert(tmpObjects.begin(), tmpObjects.end());
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "D-Bus error while fetching MCTP managed objects for: "
+                  << service << '\n'
+                  << e.what() << '\n';
+    }
+    return objects;
+}
+
+std::tuple<bool, int, int, std::vector<uint8_t>>
+    CommandInterface::getMctpSockInfo(uint8_t remoteEID)
+{
+    using namespace pldm;
+    int type = 0;
+    int protocol = 0;
+    bool enabled = false;
+    std::vector<uint8_t> address{};
+
+    const auto& mctpCtrlServices = getMctpServices();
+
+    for (const auto& serviceName : mctpCtrlServices)
+    {
+        const auto& objects = getMctpManagedObjects(serviceName);
+
+        for (const auto& [objectPath, interfaces] : objects)
+        {
+            if (interfaces.contains(mctpEndpointIntfName))
+            {
+                const auto& mctpProperties =
+                    interfaces.at(mctpEndpointIntfName);
+                auto eid = std::get<size_t>(mctpProperties.at("EID"));
+                if (remoteEID != eid)
+                {
+                    continue;
+                }
+                if (!interfaces.contains(unixSocketIntfName))
+                {
+                    continue;
+                }
+
+                const auto& properties = interfaces.at(unixSocketIntfName);
+                type = std::get<size_t>(properties.at("Type"));
+                protocol = std::get<size_t>(properties.at("Protocol"));
+                address =
+                    std::get<std::vector<uint8_t>>(properties.at("Address"));
+
+                if (interfaces.contains(objectEnableIntfName))
+                {
+                    const auto& propertiesEnable =
+                        interfaces.at(objectEnableIntfName);
+                    enabled = std::get<bool>(propertiesEnable.at("Enabled"));
+                }
+
+                if (address.empty() || !type)
+                {
+                    address.clear();
+                    return {false, 0, 0, address};
+                }
+                else
+                {
+                    return {enabled, type, protocol, address};
+                }
+            }
+        }
+    }
+
+    return {enabled, type, protocol, address};
+}
+
 int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                                    std::vector<uint8_t>& responseMsg)
 {
+    requestMsg.insert(requestMsg.begin(), MCTP_MSG_TYPE_PLDM);
+    requestMsg.insert(requestMsg.begin(), mctp_eid);
     // By default enable request/response msgs for pldmtool raw commands.
     if ((CommandInterface::pldmType == "raw") ||
         (CommandInterface::pldmType == "mctpRaw"))
@@ -276,11 +389,87 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         printBuffer(Tx, requestMsg);
     }
 
+    /*
     auto tid = mctp_eid;
     PldmTransport pldmTransport{};
     uint8_t retry = 0;
     int rc = PLDM_ERROR;
+    */
 
+    if (mctp_eid != PLDM_ENTITY_ID)
+    {
+        auto [enabled, type, protocol, sockAddress] = getMctpSockInfo(mctp_eid);
+        if (sockAddress.empty())
+        {
+            std::cerr << "pldmtool: Remote MCTP endpoint not found"
+                      << "\n";
+            return -1;
+        }
+
+        if (!enabled)
+        {
+            std::cerr << "pldmtool: Remote MCTP endpoint is disabled"
+                      << "\n";
+            return -1;
+        }
+
+        int rc = 0;
+        int sockFd = socket(AF_UNIX, type, protocol);
+        if (-1 == sockFd)
+        {
+            rc = -errno;
+            std::cerr << "Failed to create the socket : RC = " << sockFd
+                      << "\n";
+            return rc;
+        }
+        Logger(pldmVerbose, "Success in creating the socket : RC = ", sockFd);
+
+        CustomFD socketFd(sockFd);
+
+        struct sockaddr_un addr{};
+        addr.sun_family = AF_UNIX;
+        memcpy(addr.sun_path, sockAddress.data(), sockAddress.size());
+        rc = connect(sockFd, reinterpret_cast<struct sockaddr*>(&addr),
+                     sockAddress.size() + sizeof(addr.sun_family));
+        if (-1 == rc)
+        {
+            rc = -errno;
+            std::cerr << "Failed to connect to socket : RC = " << rc << "\n";
+            return rc;
+        }
+        Logger(pldmVerbose, "Success in connecting to socket : RC = ", rc);
+
+        auto pldmType = MCTP_MSG_TYPE_PLDM;
+        rc = write(socketFd(), &pldmType, sizeof(pldmType));
+        if (-1 == rc)
+        {
+            rc = -errno;
+            std::cerr
+                << "Failed to send message type as pldm to mctp demux daemon: RC = "
+                << rc << "\n";
+            return rc;
+        }
+        Logger(
+            pldmVerbose,
+            "Success in sending message type as pldm to mctp demux daemon : RC = ",
+            rc);
+
+        uint8_t* responseMessage = nullptr;
+        size_t responseMessageSize{};
+        rc = pldm_send_recv(mctp_eid, sockFd, requestMsg.data() + 2,
+                       requestMsg.size() - 2, &responseMessage,
+                       &responseMessageSize);
+        responseMsg.resize(responseMessageSize);
+        memcpy(responseMsg.data(), responseMessage, responseMsg.size());
+
+        free(responseMessage);
+        if (pldmVerbose)
+        {
+            std::cerr << "pldmtool: ";
+            printBuffer(Rx, responseMsg);
+        }
+    }
+    /*
     while (PLDM_REQUESTER_SUCCESS != rc && retry <= numRetries)
     {
         void* responseMessage = nullptr;
@@ -330,8 +519,8 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
     {
         std::cerr << "failed to pldm send recv error rc " << rc << std::endl;
     }
-
-    return rc;
+    */
+    return PLDM_SUCCESS;
 }
 } // namespace helper
 } // namespace pldmtool

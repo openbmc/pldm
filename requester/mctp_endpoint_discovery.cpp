@@ -5,6 +5,7 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
+#include <libpldm/pldm.h>
 #include <linux/mctp.h>
 
 #include <phosphor-logging/lg2.hpp>
@@ -104,7 +105,7 @@ MctpEndpointProps MctpDiscovery::getMctpEndpointProps(
             properties.contains("SupportedMessageTypes"))
         {
             auto networkId = std::get<NetworkId>(properties.at("NetworkId"));
-            auto eid = std::get<mctp_eid_t>(properties.at("EID"));
+            auto eid = static_cast<mctp_eid_t>(std::get<uint32_t>(properties.at("EID")));
             auto types = std::get<std::vector<uint8_t>>(
                 properties.at("SupportedMessageTypes"));
             return MctpEndpointProps(networkId, eid, types);
@@ -153,7 +154,7 @@ Availability MctpDiscovery::getEndpointConnectivityProp(const std::string& path)
         pldm::utils::PropertyValue propertyValue =
             pldm::utils::DBusHandler().getDbusPropertyVariant(
                 path.c_str(), MCTPConnectivityProp, MCTPInterfaceCC);
-        if (std::get<std::string>(propertyValue) == "Available")
+        if (std::get<bool>(propertyValue) == true)
         {
             available = true;
         }
