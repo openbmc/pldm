@@ -232,6 +232,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80f10a07_e0badaec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 46
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-09-22T05:36:15Z",
+      "side": 1,
+      "message": "Closing this comment due to no further input, feel free to open it again if needed.",
+      "parentUuid": "58fc543b_de3d29ba",
+      "revId": "085fe23a48ba0cb52fa4e0838740c06b553f130d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eeeae368_6fbb8f97",
