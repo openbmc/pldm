@@ -23,7 +23,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -122,7 +122,7 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -136,7 +136,7 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
     getRepoByType(inRepo, outRepo, PLDM_NUMERIC_EFFECTER_PDR);
 
     // 1 entries
-    ASSERT_EQ(outRepo.getRecordCount(), 1);
+    ASSERT_EQ(outRepo.getRecordCount(), 2);
 
     // Check first PDR
     pdr_utils::PdrEntry e;
@@ -160,7 +160,7 @@ TEST(GeneratePDRByNumericEffecter, testGoodJson)
     EXPECT_EQ(dbusMappings[0].objectPath, "/foo/bar");
     EXPECT_EQ(dbusMappings[0].interface, "xyz.openbmc_project.Foo.Bar");
     EXPECT_EQ(dbusMappings[0].propertyName, "propertyName");
-    EXPECT_EQ(dbusMappings[0].propertyType, "uint64_t");
+    EXPECT_EQ(dbusMappings[0].propertyType, "uint32_t");
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
@@ -170,7 +170,7 @@ TEST(GeneratePDR, testMalformedJson)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -195,7 +195,7 @@ TEST(findStateEffecterId, goodJson)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();

@@ -280,6 +280,10 @@ size_t getEffecterDataSize(uint8_t effecterDataSize)
             return sizeof(uint32_t);
         case PLDM_EFFECTER_DATA_SIZE_SINT32:
             return sizeof(int32_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT64:
+            return sizeof(uint64_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT64:
+            return sizeof(int64_t);
         default:
             return 0;
     }

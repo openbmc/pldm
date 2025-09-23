@@ -170,6 +170,32 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>> getEffecterRawValue(
             }
             break;
         }
+        case PLDM_EFFECTER_DATA_SIZE_UINT64:
+        {
+            auto rawValue = static_cast<uint64_t>(
+                round(effecterValue - pdr->offset) / pdr->resolution);
+            if (pdr->min_settable.value_u64 < pdr->max_settable.value_u64 &&
+                (rawValue < pdr->min_settable.value_u64 ||
+                 rawValue > pdr->max_settable.value_u64))
+            {
+                rc = PLDM_ERROR_INVALID_DATA;
+            }
+            value = rawValue;
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT64:
+        {
+            auto rawValue = static_cast<int64_t>(
+                round(effecterValue - pdr->offset) / pdr->resolution);
+            if (pdr->min_settable.value_s64 < pdr->max_settable.value_s64 &&
+                (rawValue < pdr->min_settable.value_s64 ||
+                 rawValue > pdr->max_settable.value_s64))
+            {
+                rc = PLDM_ERROR_INVALID_DATA;
+            }
+            value = rawValue;
+            break;
+        }
     }
 
     return {rc, std::make_optional(std::move(value))};
@@ -220,6 +246,20 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>> convertToDbusValue(
         int32_t currentValue = *(reinterpret_cast<int32_t*>(&effecterValue[0]));
         return getEffecterRawValue<int32_t>(pdr, currentValue, propertyType);
     }
+    else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT64)
+    {
+        uint64_t currentValue;
+        std::memcpy(&currentValue, effecterValue, sizeof(currentValue));
+        currentValue = le64toh(currentValue);
+        return getEffecterRawValue<uint64_t>(pdr, currentValue, propertyType);
+    }
+    else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT64)
+    {
+        int64_t currentValue =
+            le64toh(*(reinterpret_cast<int64_t*>(&effecterValue[0])));
+        return getEffecterRawValue<int64_t>(pdr, currentValue, propertyType);
+    }
+
     else
     {
         error("Unknown Effecter Size {SIZE}", "SIZE", effecterDataSize);
@@ -249,7 +289,6 @@ int setNumericEffecterValueHandler(
     uint8_t effecterDataSize, uint8_t* effecterValue,
     size_t effecterValueLength)
 {
-    constexpr auto effecterValueArrayLength = 4;
     pldm_numeric_effecter_value_pdr* pdr = nullptr;
 
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
@@ -291,7 +330,9 @@ int setNumericEffecterValueHandler(
         return PLDM_PLATFORM_INVALID_EFFECTER_ID;
     }
 
-    if (effecterValueLength != effecterValueArrayLength)
+    auto expectedSize =
+        pldm::responder::pdr_utils::getEffecterDataSize(effecterDataSize);
+    if (effecterValueLength != expectedSize)
     {
         error("Incorrect effecter data size {SIZE}", "SIZE",
               effecterValueLength);
@@ -411,6 +452,26 @@ int getEffecterValue(T propertyValue, uint8_t effecterDataSize,
                 reinterpret_cast<uint8_t*>(&value),
                 reinterpret_cast<uint8_t*>(&value), responsePtr,
                 responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_UINT64:
+        {
+            uint64_t value = static_cast<uint64_t>(propertyValue);
+            return encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength);
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT64:
+        {
+            int64_t value = static_cast<int64_t>(propertyValue);
+            return encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength);
         }
         default:
         {

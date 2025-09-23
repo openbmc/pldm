@@ -36,7 +36,7 @@ TEST(getPDR, testGoodPath)
 
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
@@ -74,7 +74,7 @@ TEST(getPDR, testShortRead)
 
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
@@ -106,7 +106,7 @@ TEST(getPDR, testBadRecordHandle)
 
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
@@ -136,7 +136,7 @@ TEST(getPDR, testNoNextRecord)
 
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
@@ -168,7 +168,7 @@ TEST(getPDR, testFindPDR)
 
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto pdrRepo = pldm_pdr_init();
@@ -227,7 +227,7 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
 
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -274,7 +274,7 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
 
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -318,7 +318,7 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -341,10 +341,10 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
 
     uint16_t effecterId = 3;
     uint32_t effecterValue = 2100000000; // 2036-07-18 21:20:00
-    PropertyValue propertyValue = static_cast<uint64_t>(effecterValue);
+    PropertyValue propertyValue = static_cast<uint32_t>(effecterValue);
 
     DBusMapping dbusMapping{"/foo/bar", "xyz.openbmc_project.Foo.Bar",
-                            "propertyName", "uint64_t"};
+                            "propertyName", "uint32_t"};
     EXPECT_CALL(mockedUtils, setDbusProperty(dbusMapping, propertyValue))
         .Times(1);
 
@@ -358,11 +358,67 @@ TEST(setNumericEffecterValueHandler, testGoodRequest)
     pldm_pdr_destroy(numericEffecterPdrRepo);
 }
 
+TEST(setNumericEffecterValueHandler64bit, testGoodRequest)
+{
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(6)
+        .WillRepeatedly(Return("foo.bar"));
+
+    // Initialize PDR Repos
+    auto inPDRRepo = pldm_pdr_init();
+    auto numericEffecterPdrRepo = pldm_pdr_init();
+    Repo numericEffecterPDRs(numericEffecterPdrRepo);
+
+    auto event = sdeventplus::Event::get_default();
+    Handler handler(&mockedUtils, 0, nullptr, "./pdr_jsons/state_effecter/good",
+                    inPDRRepo, nullptr, nullptr, nullptr, nullptr, nullptr,
+                    event);
+
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, numericEffecterPDRs, PLDM_NUMERIC_EFFECTER_PDR);
+
+    pdr_utils::PdrEntry e;
+    auto record5 = pdr::getRecordByHandle(numericEffecterPDRs, 5, e);
+    ASSERT_NE(record5, nullptr);
+
+    // Prepare PDR entry
+    pldm_numeric_effecter_value_pdr* pdr = new (e.data)
+        pldm_numeric_effecter_value_pdr;
+    EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
+    EXPECT_EQ(pdr->effecter_data_size, PLDM_EFFECTER_DATA_SIZE_UINT64);
+    EXPECT_EQ(pdr->effecter_id, 4);
+
+    uint64_t hostValue = 2100000000;
+    uint64_t payloadValue = htole64(hostValue);
+    uint8_t payload[8];
+    std::memcpy(payload, &payloadValue, sizeof(payloadValue));
+
+    PropertyValue propertyValue = hostValue; // expected D-Bus property
+
+    DBusMapping dbusMapping{"/foo/bar", "xyz.openbmc_project.Foo.Bar",
+                            "propertyName", "uint64_t"};
+
+    EXPECT_CALL(mockedUtils, setDbusProperty(dbusMapping, propertyValue))
+        .Times(1);
+
+    // Call handler
+    auto rc = platform_numeric_effecter::setNumericEffecterValueHandler<
+        MockdBusHandler, Handler>(mockedUtils, handler, pdr->effecter_id,
+                                  PLDM_EFFECTER_DATA_SIZE_UINT64, payload,
+                                  sizeof(hostValue));
+
+    ASSERT_EQ(rc, 0);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(numericEffecterPdrRepo);
+}
+
 TEST(setNumericEffecterValueHandler, testBadRequest)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -399,7 +455,7 @@ TEST(getNumericEffecterValueHandler, testGoodRequest)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -434,13 +490,17 @@ TEST(getNumericEffecterValueHandler, testGoodRequest)
     EXPECT_CALL(mockedUtils,
                 getDbusPropertyVariant(StrEq("/foo/bar"), StrEq("propertyName"),
                                        StrEq("xyz.openbmc_project.Foo.Bar")))
-        .WillOnce(Return(PropertyValue(static_cast<uint64_t>(effecterValue))));
+        .WillOnce(Return(PropertyValue(static_cast<uint32_t>(effecterValue))));
 
     auto rc = platform_numeric_effecter::getNumericEffecterData<
         MockdBusHandler, Handler>(mockedUtils, handler, effecterId,
                                   effecterDataSize, propertyType, dbusValue);
+    std::cerr << effecterDataSize << std::endl;
 
     ASSERT_EQ(rc, 0);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(effecterDataSize, PLDM_EFFECTER_DATA_SIZE_UINT32);
+    EXPECT_EQ(propertyType, "uint32_t");
 
     size_t responsePayloadLength =
         sizeof(completionCode) + sizeof(effecterDataSize) +
@@ -460,8 +520,9 @@ TEST(getNumericEffecterValueHandler, testGoodRequest)
     struct pldm_get_numeric_effecter_value_resp* resp =
         new (responsePtr->payload) pldm_get_numeric_effecter_value_resp;
     ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
+    size_t valOffset = getEffecterDataSize(effecterDataSize);
     uint32_t valPresent;
-    memcpy(&valPresent, &resp->pending_and_present_values[4],
+    memcpy(&valPresent, &resp->pending_and_present_values[valOffset],
            sizeof(valPresent));
 
     ASSERT_EQ(effecterValue, valPresent);
@@ -474,7 +535,7 @@ TEST(getNumericEffecterValueHandler, testBadRequest)
 {
     MockdBusHandler mockedUtils;
     EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
-        .Times(5)
+        .Times(6)
         .WillRepeatedly(Return("foo.bar"));
 
     auto inPDRRepo = pldm_pdr_init();
@@ -495,7 +556,7 @@ TEST(getNumericEffecterValueHandler, testBadRequest)
         pldm_numeric_effecter_value_pdr;
     EXPECT_EQ(pdr->hdr.type, PLDM_NUMERIC_EFFECTER_PDR);
 
-    uint16_t effecterId = 4;
+    uint16_t effecterId = 5;
 
     uint8_t effecterDataSize{};
     pldm::utils::PropertyValue dbusValue;
