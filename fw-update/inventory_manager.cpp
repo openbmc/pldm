@@ -695,7 +695,7 @@ void InventoryManager::getFirmwareParameters(
               eid);
     }
 
-    componentInfoMap.insert_or_assign(eid, std::move(componentInfo));
+    componentInfoMap.insert_or_assign(eid, std::make_pair(std::move(componentInfo), selfContainedActivationRequest));
 }
 
 std::optional<SoftwareName> obtainDeviceNameFromConfigurations(
