@@ -37,7 +37,7 @@ void Device::refreshDeviceInfo()
 
     try
     {
-        resourceRegistry_ = std::make_unique<ResourceRegistry>();
+        resourceRegistry_ = std::make_unique<ResourceRegistry>(eid(), this);
         resourceRegistry_->loadFromResourcePDR(pdrPayloads_);
         schemaResources(buildSchemaResourcesPayload());
 

@@ -4,6 +4,8 @@
 
 #include <libpldm/platform.h>
 
+#include <common/types.hpp>
+
 extern "C"
 {
 #include "libpldm/rde.h"
@@ -57,7 +59,7 @@ class ResourceRegistry
      * @param[in] eid Entity ID identifying the device.
      * @param[in] parent Pointer to parent object for hierarchical access.
      */
-    explicit ResourceRegistry(uint16_t eid, void* parent = nullptr);
+    explicit ResourceRegistry(const pldm::eid eid, void* parent = nullptr);
 
     /**
      * @brief Register a resource and its schema metadata.
@@ -249,16 +251,16 @@ class ResourceRegistry
     std::vector<ResourceInfo> parseRedfishResourcePDRs(
         const std::vector<std::shared_ptr<pldm_redfish_resource_pdr>>& pdrList);
 
-    uint16_t entityId_;   // Entity ID of the associated device
-    void* parent_;        // Pointer to parent object for context
+    const pldm::eid entityId_; // Entity ID of the associated device
+    void* parent_;             // Pointer to parent object for context
     std::unordered_map<std::string, ResourceInfo>
-        resourceMap_;     // Map from resource ID to metadata
+        resourceMap_;          // Map from resource ID to metadata
     std::unordered_map<std::string, std::string>
-        uriToResourceId_; // URI to resource ID map
+        uriToResourceId_;      // URI to resource ID map
     std::unordered_map<std::string, std::string>
-        resourceIdToUri_; // Resource ID to URI map
+        resourceIdToUri_;      // Resource ID to URI map
     std::unordered_map<uint16_t, std::string>
-        classToUri_;      // Schema class to URI map
+        classToUri_;           // Schema class to URI map
 };
 
 } // namespace pldm::rde

@@ -10,7 +10,7 @@
 namespace pldm::rde
 {
 
-ResourceRegistry::ResourceRegistry(uint16_t eid, void* parent) :
+ResourceRegistry::ResourceRegistry(const pldm::eid eid, void* parent) :
     entityId_(eid), parent_(parent)
 {}
 
