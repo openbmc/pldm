@@ -194,6 +194,24 @@ class TerminusManager
      */
     exec::task<int> discoverMctpTerminusTask();
 
+    /**
+     * @brief Update per-endpoint retry state for terminus discovery.
+     *
+     * Increments the discovery retry count for the given endpoint. If the count
+     * exceeds TERMINUS_DISCOVERY_RETRY_COUNT, sets terminusInitFailed to true
+     * and does not re-queue the endpoint; otherwise adds the endpoint to
+     * retryMctpInfos for another discovery attempt.
+     *
+     * @param[in] mctpInfo - information of the target endpoint.
+     * @param[in,out] retryMctpInfos - batch of endpoints to retry in the next
+     * pass.
+     * @param[in,out] terminusInitFailed - set to true when any endpoint
+     * exhausts retries.
+     */
+    void updateDiscoveryRetryState(const MctpInfo& mctpInfo,
+                                   MctpInfos& retryMctpInfos,
+                                   bool& terminusInitFailed);
+
     /** @brief Initialize terminus and then instantiate terminus object to keeps
      *         the data fetched from terminus
      *
@@ -293,6 +311,13 @@ class TerminusManager
      *  work
      */
     sdeventplus::Event& event;
+
+    /** @brief Max retries for terminus discovery */
+    size_t maxDiscoveryRetryCount =
+        static_cast<size_t>(TERMINUS_DISCOVERY_RETRY_COUNT);
+
+    /** @brief Retry attempts per endpoint for terminus discovery */
+    std::map<MctpInfo, size_t> discoveryRetryMap;
 };
 } // namespace platform_mc
 } // namespace pldm
