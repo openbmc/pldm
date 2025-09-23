@@ -135,6 +135,15 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 pdr->max_settable.value_s32 = e.value("max_settable", 0);
                 pdr->min_settable.value_s32 = e.value("min_settable", 0);
                 break;
+            case PLDM_EFFECTER_DATA_SIZE_UINT64:
+                pdr->max_settable.value_u64 = e.value("max_settable", 0ULL);
+                pdr->min_settable.value_u64 = e.value("min_settable", 0ULL);
+                break;
+            case PLDM_EFFECTER_DATA_SIZE_SINT64:
+                pdr->max_settable.value_s64 = e.value("max_settable", 0LL);
+                pdr->min_settable.value_s64 = e.value("min_settable", 0LL);
+                break;
+
             default:
                 break;
         }
@@ -193,6 +202,21 @@ void generateNumericEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                 pdr->rated_max.value_f32 = e.value("rated_max", 0);
                 pdr->rated_min.value_f32 = e.value("rated_min", 0);
                 break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT64:
+                pdr->nominal_value.value_u64 = e.value("nominal_value", 0ULL);
+                pdr->normal_max.value_u64 = e.value("normal_max", 0ULL);
+                pdr->normal_min.value_u64 = e.value("normal_min", 0ULL);
+                pdr->rated_max.value_u64 = e.value("rated_max", 0ULL);
+                pdr->rated_min.value_u64 = e.value("rated_min", 0ULL);
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT64:
+                pdr->nominal_value.value_s64 = e.value("nominal_value", 0LL);
+                pdr->normal_max.value_s64 = e.value("normal_max", 0LL);
+                pdr->normal_min.value_s64 = e.value("normal_min", 0LL);
+                pdr->rated_max.value_s64 = e.value("rated_max", 0LL);
+                pdr->rated_min.value_s64 = e.value("rated_min", 0LL);
+                break;
+
             default:
                 break;
         }
