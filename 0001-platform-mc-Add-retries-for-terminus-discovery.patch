@@ -1,0 +1,221 @@
+From 3f329972ab88053ff8f2ff8747c56c688657fbbc Mon Sep 17 00:00:00 2001
+From: Eric Yang <eric.yang.wiwynn@gmail.com>
+Date: Tue, 23 Sep 2025 09:47:45 +0000
+Subject: [PATCH] platform-mc: Add retries for terminus discovery
+
+Adds a configurable, per-endpoint retry mechanism to terminus discovery.
+Endpoints are scheduled for retry when:
+- InitMctpTerminus() fails
+- TID resolution (toTid()) fails
+- Terminus remains uninitialized after afterDiscoverTerminus()
+
+Such endpoints are collected per batch and re-queued as a batch until
+the per-endpoint retry limit (NUMBER_OF_TERMINUS_DISCOVERY_RETRIES) is
+reached. Successful endpoints clear their counters; counters are also
+cleared on endpoint removal. If any endpoint exhausts its retry budget,
+discovery continues for others and an error is reported after the queue
+drains. Default behavior is unchanged when the retry count is 0.
+
+Motivation:
+When discovery runs amid heavy request traffic, any step can fail
+transiently, which prevents a device from creating its sensors or
+starting polling and leaves it unmonitored. Per-endpoint retries give
+such devices additional chances to complete discovery so sensors are
+instantiated and polling begins, while not blocking healthy endpoints.
+
+Change-Id: I88cd5e776bc288813e041c74de3cc49a6d4eaf4b
+Signed-off-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+---
+ meson.build                      |  1 +
+ meson.options                    | 10 ++++++
+ platform-mc/terminus_manager.cpp | 60 ++++++++++++++++++++++++++++----
+ platform-mc/terminus_manager.hpp | 18 ++++++++++
+ 4 files changed, 83 insertions(+), 6 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 461d657..44ac603 100644
+--- a/meson.build
++++ b/meson.build
+@@ -141,6 +141,7 @@ conf_data.set(
+ )
+ conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
+ conf_data.set('UPDATE_TIMEOUT_SECONDS', get_option('update-timeout-seconds'))
++conf_data.set('NUMBER_OF_TERMINUS_DISCOVERY_RETRIES', get_option('number-of-terminus-discovery-retries'))
+ 
+ configure_file(output: 'config.h', configuration: conf_data)
+ 
+diff --git a/meson.options b/meson.options
+index bd51f70..0ad66b2 100644
+--- a/meson.options
++++ b/meson.options
+@@ -223,3 +223,13 @@ option(
+                     `GetSensorReading` if the sensor need to be updated.''',
+     value: 249,
+ )
++
++# Terminus discovery options
++option(
++    'number-of-terminus-discovery-retries',
++    type: 'integer',
++    min: 0,
++    max: 10,
++    value: 0,
++    description: 'The number of times pldmd retries terminus discovery after a failed initialization',
++)
+diff --git a/platform-mc/terminus_manager.cpp b/platform-mc/terminus_manager.cpp
+index 0de6ce9..a7c14f2 100644
+--- a/platform-mc/terminus_manager.cpp
++++ b/platform-mc/terminus_manager.cpp
+@@ -186,16 +186,18 @@ TerminiMapper::iterator TerminusManager::findTerminusPtr(
+ exec::task<int> TerminusManager::discoverMctpTerminusTask()
+ {
+     std::vector<pldm_tid_t> addedTids;
++    bool terminusInitFailed = false;
+ 
+     while (!queuedMctpInfos.empty())
+     {
+-        bool terminusInitFailed = false;
+         if (manager)
+         {
+             co_await manager->beforeDiscoverTerminus();
+         }
+ 
+         const MctpInfos& mctpInfos = queuedMctpInfos.front();
++        MctpInfos retryMctpInfos;
++
+         for (const auto& mctpInfo : mctpInfos)
+         {
+             auto it = findTerminusPtr(mctpInfo);
+@@ -210,7 +212,8 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
+                         "EID", std::get<0>(mctpInfo), "NETWORK",
+                         std::get<3>(mctpInfo), "RC", rc);
+                     mctpInfoAvailTable.erase(mctpInfo);
+-                    terminusInitFailed = true;
++                    updateDiscoveryRetryState(mctpInfo, retryMctpInfos,
++                                              terminusInitFailed);
+                     continue;
+                 }
+             }
+@@ -224,7 +227,8 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
+                     "EID", std::get<0>(mctpInfo), "NETWORK",
+                     std::get<3>(mctpInfo));
+                 mctpInfoAvailTable.erase(mctpInfo);
+-                terminusInitFailed = true;
++                updateDiscoveryRetryState(mctpInfo, retryMctpInfos,
++                                          terminusInitFailed);
+                 continue;
+             }
+             addedTids.push_back(tid.value());
+@@ -233,19 +237,62 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
+         if (manager)
+         {
+             co_await manager->afterDiscoverTerminus();
++
++            for (const auto& mctpInfo : mctpInfos)
++            {
++                if (std::find(retryMctpInfos.begin(), retryMctpInfos.end(),
++                              mctpInfo) != retryMctpInfos.end())
++                {
++                    continue;
++                }
++
++                auto it = findTerminusPtr(mctpInfo);
++                if (it != termini.end() && it->second &&
++                    !it->second->initialized)
++                {
++                    updateDiscoveryRetryState(mctpInfo, retryMctpInfos,
++                                              terminusInitFailed);
++                }
++                else
++                {
++                    discoveryRetryCount.erase(mctpInfo);
++                }
++            }
+         }
+ 
+-        if (terminusInitFailed)
++        queuedMctpInfos.pop();
++
++        if (!retryMctpInfos.empty())
+         {
+-            co_return PLDM_ERROR;
++            queuedMctpInfos.emplace(std::move(retryMctpInfos));
+         }
++    }
+ 
+-        queuedMctpInfos.pop();
++    if (terminusInitFailed)
++    {
++        co_return PLDM_ERROR;
+     }
+ 
+     co_return PLDM_SUCCESS;
+ }
+ 
++void TerminusManager::updateDiscoveryRetryState(const MctpInfo& mctpInfo,
++                                                MctpInfos& retryMctpInfos,
++                                                bool& terminusInitFailed)
++{
++    auto& retryAttempts = discoveryRetryCount[mctpInfo];
++    retryAttempts++;
++    if (retryAttempts <= numDiscoveryRetries)
++    {
++        retryMctpInfos.emplace_back(mctpInfo);
++    }
++    else
++    {
++        terminusInitFailed = true;
++        discoveryRetryCount.erase(mctpInfo);
++    }
++}
++
+ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
+ {
+     // remove terminus
+@@ -265,6 +312,7 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
+         unmapTid(it->first);
+         termini.erase(it);
+         mctpInfoAvailTable.erase(mctpInfo);
++        discoveryRetryCount.erase(mctpInfo);
+     }
+ }
+ 
+diff --git a/platform-mc/terminus_manager.hpp b/platform-mc/terminus_manager.hpp
+index 8382201..a415f2e 100644
+--- a/platform-mc/terminus_manager.hpp
++++ b/platform-mc/terminus_manager.hpp
+@@ -194,6 +194,17 @@ class TerminusManager
+      */
+     exec::task<int> discoverMctpTerminusTask();
+ 
++    /**
++     * @brief Update retry state for terminus discovery
++     *
++     * @param[in] mctpInfo information of the MCTP endpoints
++     * @param[in,out] retryMctpInfos batch of MCTP endpoints to retry
++     * @param[in,out] terminusInitFailed set to true when retries are exhausted
++     */
++    void updateDiscoveryRetryState(const MctpInfo& mctpInfo,
++                                   MctpInfos& retryMctpInfos,
++                                   bool& terminusInitFailed);
++
+     /** @brief Initialize terminus and then instantiate terminus object to keeps
+      *         the data fetched from terminus
+      *
+@@ -293,6 +304,13 @@ class TerminusManager
+      *  work
+      */
+     sdeventplus::Event& event;
++
++    /** @brief Max retries for terminus discovery */
++    size_t numDiscoveryRetries =
++        static_cast<size_t>(NUMBER_OF_TERMINUS_DISCOVERY_RETRIES);
++
++    /** @brief Retry attempts per endpoint for terminus discovery */
++    std::map<MctpInfo, size_t> discoveryRetryCount;
+ };
+ } // namespace platform_mc
+ } // namespace pldm
+-- 
+2.43.0
+

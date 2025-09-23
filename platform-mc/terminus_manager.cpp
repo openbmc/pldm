@@ -186,16 +186,18 @@ TerminiMapper::iterator TerminusManager::findTerminusPtr(
 exec::task<int> TerminusManager::discoverMctpTerminusTask()
 {
     std::vector<pldm_tid_t> addedTids;
+    bool terminusInitFailed = false;
 
     while (!queuedMctpInfos.empty())
     {
-        bool terminusInitFailed = false;
         if (manager)
         {
             co_await manager->beforeDiscoverTerminus();
         }
 
         const MctpInfos& mctpInfos = queuedMctpInfos.front();
+        MctpInfos retryMctpInfos;
+
         for (const auto& mctpInfo : mctpInfos)
         {
             auto it = findTerminusPtr(mctpInfo);
@@ -210,7 +212,8 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
                         "EID", std::get<0>(mctpInfo), "NETWORK",
                         std::get<3>(mctpInfo), "RC", rc);
                     mctpInfoAvailTable.erase(mctpInfo);
-                    terminusInitFailed = true;
+                    updateDiscoveryRetryState(mctpInfo, retryMctpInfos,
+                                              terminusInitFailed);
                     continue;
                 }
             }
@@ -224,7 +227,8 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
                     "EID", std::get<0>(mctpInfo), "NETWORK",
                     std::get<3>(mctpInfo));
                 mctpInfoAvailTable.erase(mctpInfo);
-                terminusInitFailed = true;
+                updateDiscoveryRetryState(mctpInfo, retryMctpInfos,
+                                          terminusInitFailed);
                 continue;
             }
             addedTids.push_back(tid.value());
@@ -233,17 +237,60 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
         if (manager)
         {
             co_await manager->afterDiscoverTerminus();
-        }
 
-        if (terminusInitFailed)
-        {
-            co_return PLDM_ERROR;
+            for (const auto& mctpInfo : mctpInfos)
+            {
+                if (std::find(retryMctpInfos.begin(), retryMctpInfos.end(),
+                              mctpInfo) != retryMctpInfos.end())
+                {
+                    continue;
+                }
+
+                auto it = findTerminusPtr(mctpInfo);
+                if (it != termini.end() && it->second &&
+                    !it->second->initialized)
+                {
+                    updateDiscoveryRetryState(mctpInfo, retryMctpInfos,
+                                              terminusInitFailed);
+                }
+                else
+                {
+                    discoveryRetryCount.erase(mctpInfo);
+                }
+            }
         }
 
         queuedMctpInfos.pop();
+
+        if (!retryMctpInfos.empty())
+        {
+            queuedMctpInfos.emplace(std::move(retryMctpInfos));
+        }
+    }
+
+    if (terminusInitFailed)
+    {
+        co_return PLDM_ERROR;
     }
 
     co_return PLDM_SUCCESS;
+}
+
+void TerminusManager::updateDiscoveryRetryState(const MctpInfo& mctpInfo,
+                                                MctpInfos& retryMctpInfos,
+                                                bool& terminusInitFailed)
+{
+    auto& retryAttempts = discoveryRetryCount[mctpInfo];
+    retryAttempts++;
+    if (retryAttempts <= numDiscoveryRetries)
+    {
+        retryMctpInfos.emplace_back(mctpInfo);
+    }
+    else
+    {
+        terminusInitFailed = true;
+        discoveryRetryCount.erase(mctpInfo);
+    }
 }
 
 void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
@@ -265,6 +312,7 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
         unmapTid(it->first);
         termini.erase(it);
         mctpInfoAvailTable.erase(mctpInfo);
+        discoveryRetryCount.erase(mctpInfo);
     }
 }
 
