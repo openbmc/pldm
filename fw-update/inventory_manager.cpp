@@ -653,6 +653,7 @@ void InventoryManager::getFirmwareParameters(
     variable_field pendingCompVerStr{};
 
     ComponentInfo componentInfo{};
+    bool selfContainedActivationRequest = PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS;
     while (fwParams.comp_count-- && (compParamTableLen > 0))
     {
         auto rc = decode_get_firmware_parameters_resp_comp_entry(
@@ -664,6 +665,10 @@ void InventoryManager::getFirmwareParameters(
                 "Failed to decode component parameter table entry for endpoint ID {EID}, response code {RC}",
                 "EID", eid, "RC", rc);
             return;
+        }
+        if (compEntry.comp_activation_methods.bits.bit1)
+        {
+            selfContainedActivationRequest = PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS;
         }
 
         auto compClassification = compEntry.comp_classification;
@@ -690,7 +695,7 @@ void InventoryManager::getFirmwareParameters(
               eid);
     }
 
-    componentInfoMap.insert_or_assign(eid, std::move(componentInfo));
+    componentInfoMap.insert_or_assign(eid, std::make_pair(std::move(componentInfo), selfContainedActivationRequest));
 }
 
 std::optional<SoftwareName> obtainDeviceNameFromConfigurations(

@@ -51,6 +51,8 @@ class DeviceUpdater
      *                        derived from GetFirmwareParameters response
      *  @param[in] maxTransferSize - Maximum size in bytes of the variable
      *                               payload allowed to be requested by the FD
+     *  @param[in] selfContainedActivationMode - Whether Self-Contained Activation Mode
+     *                               is required by the FD
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
      */
@@ -59,10 +61,13 @@ class DeviceUpdater
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
                            uint32_t maxTransferSize,
+                           SelfContainedActivationRequest selfContainedActivationMode,
                            UpdateManager* updateManager) :
         eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
         compImageInfos(compImageInfos), compInfo(compInfo),
-        maxTransferSize(maxTransferSize), updateManager(updateManager)
+        maxTransferSize(maxTransferSize),
+        selfContainedActivationMode(selfContainedActivationMode),
+        updateManager(updateManager)
     {}
 
     /** @brief Start the firmware update flow for the FD
@@ -220,6 +225,15 @@ class DeviceUpdater
      *         the FD via RequestFirmwareData command
      */
     uint32_t maxTransferSize;
+
+    /** @brief Self-contained activation mode as requested by the FD
+     */
+    SelfContainedActivationRequest selfContainedActivationMode;
+
+    /** @brief True: FD/FDP shall activate all self-contained activation capable components.
+     *         False: FD/FDP shall not activate any self-contained activation capable components.
+     */
+    bool selfContainedActivationRequest;
 
     /** @brief To update the status of fw update of the FD */
     UpdateManager* updateManager;

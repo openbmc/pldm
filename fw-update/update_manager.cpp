@@ -135,7 +135,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
             deviceUpdaterInfo.first,
             std::make_unique<DeviceUpdater>(
                 deviceUpdaterInfo.first, package, fwDeviceIDRecord,
-                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+                compImageInfos, search->second.first, MAXIMUM_TRANSFER_SIZE, search->second.second, this));
     }
 
     fwPackageFilePath = packageFilePath;
