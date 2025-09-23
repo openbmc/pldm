@@ -288,6 +288,30 @@
       },
       "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09e502ef_821f4878",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-23T10:29:21Z",
+      "side": 1,
+      "message": "\u003e Exactly, the \u003c number \u003e prior to every trace spit from pldmtool is what made me feel that those look odd.\n\nIs this really a problem?  Google logging, Rust logging, they all put the \"level\" into the output.  This is pretty standard practice these days.  If it is just that we don\u0027t like the \u003c1\u003e and would rather have INFO or \u003cI\u003e we can make that change in phosphor-logging.\n\nI don\u0027t think we should explicitly avoid the preferred logging in common code just because we are also using that code in a CLI.",
+      "parentUuid": "63086da7_b8e9b48d",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 18
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
