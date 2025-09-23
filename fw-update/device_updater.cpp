@@ -664,6 +664,12 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' with '{COMPONENT_VERSION}' apply complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+
+        if (applyResult == PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD)
+        {
+            selfContainedActivationMode = compActivationModification.bits.bit1;
+        }
+
         updateManager->updateActivationProgress();
         if (componentIndex == applicableComponents.size() - 1)
         {
@@ -715,8 +721,13 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = new (request.data()) pldm_msg;
 
+    // if (selfContainedActivationMode)
+    // {
+    //     info("Force to disable Self-Contained Activation");
+    //     selfContainedActivationMode = PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS;
+    // }
     auto rc = encode_activate_firmware_req(
-        instanceId, PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
+        instanceId, selfContainedActivationMode, requestMsg,
         sizeof(pldm_activate_firmware_req));
     if (rc)
     {
