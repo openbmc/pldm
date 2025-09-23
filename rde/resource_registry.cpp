@@ -398,8 +398,10 @@ void ResourceRegistry::loadFromResourcePDR(
         registerResource(resourceId, info);
     }
 
-    // Need to replace with unique file name
-    saveToFile("/tmp/ResourceRegistry.txt");
+    constexpr const char* kResourceRegistryPrefix = "/tmp/ResourceRegistry_";
+    std::string filename =
+        std::string(kResourceRegistryPrefix) + std::to_string(entityId_);
+    saveToFile(filename);
 }
 
 } // namespace pldm::rde
