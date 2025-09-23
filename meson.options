@@ -223,3 +223,13 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249,
 )
+
+# Terminus discovery options
+option(
+    'number-of-terminus-discovery-retries',
+    type: 'integer',
+    min: 0,
+    max: 10,
+    value: 0,
+    description: 'The number of times pldmd retries terminus discovery after a failed initialization',
+)
