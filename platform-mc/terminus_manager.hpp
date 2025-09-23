@@ -194,6 +194,17 @@ class TerminusManager
      */
     exec::task<int> discoverMctpTerminusTask();
 
+    /**
+     * @brief Update retry state for terminus discovery
+     *
+     * @param[in] mctpInfo information of the MCTP endpoints
+     * @param[in,out] retryMctpInfos batch of MCTP endpoints to retry
+     * @param[in,out] terminusInitFailed set to true when retries are exhausted
+     */
+    void updateDiscoveryRetryState(const MctpInfo& mctpInfo,
+                                   MctpInfos& retryMctpInfos,
+                                   bool& terminusInitFailed);
+
     /** @brief Initialize terminus and then instantiate terminus object to keeps
      *         the data fetched from terminus
      *
@@ -293,6 +304,13 @@ class TerminusManager
      *  work
      */
     sdeventplus::Event& event;
+
+    /** @brief Max retries for terminus discovery */
+    size_t numDiscoveryRetries =
+        static_cast<size_t>(NUMBER_OF_TERMINUS_DISCOVERY_RETRIES);
+
+    /** @brief Retry attempts per endpoint for terminus discovery */
+    std::map<MctpInfo, size_t> discoveryRetryCount;
 };
 } // namespace platform_mc
 } // namespace pldm
