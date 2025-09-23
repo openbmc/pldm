@@ -98,6 +98,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1fec4bbc_dd3ddb8d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-23T08:56:15Z",
+      "side": 1,
+      "message": "This looks a lot better.",
+      "parentUuid": "a15ce722_45dbf4d0",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "9bb2c61c76a88e49d02027117eec89b260d426dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "052b04f5_76781b4f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
