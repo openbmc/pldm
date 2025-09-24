@@ -343,16 +343,17 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         rc = co_await setTidOverMctp(eid, tid);
         if (rc != PLDM_SUCCESS)
         {
-            lg2::error("Failed to Set terminus TID, error{ERROR}.", "ERROR",
-                       rc);
-            unmapTid(tid);
-            co_return rc;
-        }
-
-        if (rc != PLDM_SUCCESS && rc != PLDM_ERROR_UNSUPPORTED_PLDM_CMD)
-        {
-            lg2::error("Terminus {TID} does not support SetTID command.", "TID",
-                       tid);
+            if (rc == PLDM_ERROR_UNSUPPORTED_PLDM_CMD)
+            {
+                lg2::error("Terminus {TID} does not support SetTID command.",
+                           "TID", tid);
+            }
+            else
+            {
+                lg2::error(
+                    "Failed to Set terminus TID for terminus {TID}, error {ERROR}.",
+                    "TID", tid, "ERROR", rc)
+            }
             unmapTid(tid);
             co_return rc;
         }
