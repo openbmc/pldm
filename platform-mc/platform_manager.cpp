@@ -116,7 +116,18 @@ exec::task<int> PlatformManager::initTerminus()
 
         if (!redfishResources.empty())
         {
-            pldm::utils::emitDiscoveryCompleteSignal(tid, redfishResources);
+            auto info = terminusManager.getMctpInfoForTid(tid);
+            if (info)
+            {
+                pldm::utils::emitRDEDeviceDetectedSignal(
+                    tid, info->first, info->second, redfishResources);
+            }
+            else
+            {
+                lg2::error(
+                    "Failed to find Mctp Info for terminus with TID: {TID}",
+                    "TID", tid);
+            }
         }
 
         if (manager)
