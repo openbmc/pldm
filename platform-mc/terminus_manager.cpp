@@ -773,5 +773,18 @@ std::optional<mctp_eid_t> TerminusManager::getActiveEidByName(
 
     return std::nullopt;
 }
+
+std::optional<std::pair<eid, UUID>> TerminusManager::getMctpInfoForTid(
+    pldm_tid_t tid)
+{
+    auto it = mctpInfoTable.find(tid);
+    if (it == mctpInfoTable.end())
+    {
+        return std::nullopt;
+    }
+
+    const auto& mctpInfo = it->second;
+    return std::make_pair(std::get<0>(mctpInfo), std::get<1>(mctpInfo));
+}
 } // namespace platform_mc
 } // namespace pldm

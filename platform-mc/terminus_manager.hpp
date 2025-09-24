@@ -181,6 +181,18 @@ class TerminusManager
     std::optional<mctp_eid_t> getActiveEidByName(
         const std::string& terminusName);
 
+    /**
+     * @brief Get the MCTP EID and UUID for a given PLDM TID.
+     *
+     * This function looks up the MCTP information associated with a specific
+     * PLDM Terminus ID (TID) from the internal mctpInfoTable.
+     *
+     * @param tid[in] The PLDM Terminus ID to look up.
+     * @return std::optional<std::pair<eid, UUID>> Returns a pair of EID and
+     * UUID if the TID is found, or std::nullopt if not found.
+     */
+    std::optional<std::pair<eid, UUID>> getMctpInfoForTid(pldm_tid_t tid);
+
   private:
     /** @brief Find the terminus object pointer in termini list.
      *
