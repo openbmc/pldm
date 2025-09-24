@@ -298,6 +298,7 @@ class Manager :
     sdbusplus::bus::bus& bus_;
     sdeventplus::Event& event_;
     std::unordered_map<eid, DeviceContext> eidMap_;
+    std::unique_ptr<sdbusplus::bus::match_t> signalMatch_;
     std::unordered_map<eid, std::unique_ptr<sdbusplus::bus::match_t>>
         signalMatches_;
     // Registry of active OperationTask D-Bus objects.

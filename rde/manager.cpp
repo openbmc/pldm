@@ -28,6 +28,32 @@ Manager::Manager(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
     bus_.request_name(DeviceServiceName.data());
     objManager_ =
         std::make_unique<sdbusplus::server::manager_t>(bus_, DeviceObjectPath);
+
+    // match for all RDEDeviceDetected signals
+    signalMatch_ = std::make_unique<sdbusplus::bus::match_t>(
+        bus_,
+        sdbusplus::bus::match::rules::type::signal() +
+            sdbusplus::bus::match::rules::member("RDEDeviceDetected") +
+            sdbusplus::bus::match::rules::interface(
+                "xyz.openbmc_project.PLDM.Event") +
+            sdbusplus::bus::match::rules::path("/xyz/openbmc_project/pldm"),
+        [this](sdbusplus::message::message& msg) {
+            uint8_t signalTid = 0;
+            uint8_t signalEid = 0;
+            UUID devUUID;
+            std::vector<std::vector<uint8_t>> pdrPayloads;
+
+            msg.read(signalTid, signalEid, devUUID, pdrPayloads);
+            info("RDE: RDEDeviceDetected UUID:{UUID} EID:{EID} TID:{TID}",
+                 "UUID", devUUID, "EID", static_cast<int>(signalEid), "TID",
+                 static_cast<int>(signalTid));
+
+            if (!eidMap_.count(signalEid))
+            {
+                this->createDeviceDbusObject(signalEid, devUUID, signalTid,
+                                             pdrPayloads);
+            }
+        });
 }
 
 void Manager::handleMctpEndpoints(const std::vector<MctpInfo>& mctpInfos)
