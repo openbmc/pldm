@@ -584,6 +584,32 @@ int emitDiscoveryCompleteSignal(
     return PLDM_SUCCESS;
 }
 
+int emitRDEDeviceDetectedSignal(
+    uint8_t tid, eid mctpEid, pldm::UUID devUUID,
+    const std::vector<std::vector<uint8_t>>& pdrPayloads)
+{
+    try
+    {
+        auto& bus = DBusHandler::getBus();
+        auto msg = bus.new_signal("/xyz/openbmc_project/pldm",
+                                  "xyz.openbmc_project.PLDM.Event",
+                                  "RDEDeviceDetected");
+        msg.append(tid);
+        msg.append(mctpEid);
+        msg.append(devUUID);
+        msg.append(pdrPayloads);
+        msg.signal_send();
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to emit PLDM RDEDeviceDetected signal, error - {ERROR}",
+              "ERROR", e);
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
 void recoverMctpEndpoint(const std::string& endpointObjPath)
 {
     auto& bus = DBusHandler::getBus();

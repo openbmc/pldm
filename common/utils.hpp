@@ -549,6 +549,38 @@ int emitDiscoveryCompleteSignal(
     uint8_t tid, const std::vector<std::vector<uint8_t>>& pdrPayloads);
 
 /**
+ * @brief Emit the RDEDeviceDetected D-Bus signal
+ *
+ * Signal indicating that PLDM discovery has completed for a device that
+ * supports Redfish Device Enablement (RDE). This signal allows PLDM Requester
+ * applications to prepare for RDE negotiation and resource creation.
+ * Note: RDE-specific negotiation has not yet started at this point.
+ *
+ * Emits a D-Bus signal named `RDEDeviceDetected` with the terminus ID and a
+ * list of parsed Redfish Resource PDRs, each represented as a byte array
+ * suitable for D-Bus transmission.
+ *
+ * D-Bus Signature:
+ *     RDEDeviceDetected(uint8_t tid,
+ *                       uint8_t mctpEid,
+ *                       string deviceUUID,
+ *                       array<array<byte>> pdrPayloads)
+ *
+ * @param[in] tid Terminus ID from which the PDRs were discovered
+ * @param[in] mctpEid MCTP EID
+ * @param[in] deviceUUID - Uniquely identifies the target device instance.
+ * @param[in] pdrPayloads Vector of raw Redfish Resource PDR payloads,
+ *        each PDR as a vector of bytes (std::vector<uint8_t>)
+ * @return int Returns PLDM_SUCCESS on success, or PLDM_ERROR on failure.
+ *
+ * @exception Logs an error message if the signal emission fails due to an
+ * exception.
+ */
+int emitRDEDeviceDetectedSignal(
+    uint8_t tid, eid mctpEid, pldm::UUID devUUID,
+    const std::vector<std::vector<uint8_t>>& pdrPayloads);
+
+/**
  *  @brief call Recover() method to recover an MCTP Endpoint
  *  @param[in] MCTP Endpoint's object path
  */
