@@ -1,7 +1,6 @@
-#include "manager.hpp"
-
 #include "device.hpp"
 #include "device_common.hpp"
+#include "manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -54,50 +53,6 @@ Manager::Manager(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
                                              pdrPayloads);
             }
         });
-}
-
-void Manager::handleMctpEndpoints(const std::vector<MctpInfo>& mctpInfos)
-{
-    for (const auto& mctpInfo : mctpInfos)
-    {
-        const eid devEID = std::get<0>(mctpInfo);
-        const UUID& devUUID = std::get<1>(mctpInfo);
-
-        info("RDE: Handling device UUID:{UUID} EID:{EID}", "UUID", devUUID,
-             "EID", static_cast<int>(devEID));
-
-        // Skip if already registered
-        if (signalMatches_.count(devEID))
-            continue;
-
-        auto match = std::make_unique<sdbusplus::bus::match_t>(
-            bus_,
-            sdbusplus::bus::match::rules::type::signal() +
-                sdbusplus::bus::match::rules::member("DiscoveryComplete") +
-                sdbusplus::bus::match::rules::interface(
-                    "xyz.openbmc_project.PLDM.Event") +
-                sdbusplus::bus::match::rules::path("/xyz/openbmc_project/pldm"),
-            [this, devEID, devUUID](sdbusplus::message::message& msg) {
-                uint8_t signalTid = 0;
-                std::vector<std::vector<uint8_t>> pdrPayloads;
-                msg.read(signalTid, pdrPayloads);
-
-                info("RDE: Call back device UUID:{UUID} EID:{EID} TID: {TID}",
-                     "UUID", devUUID, "EID", static_cast<int>(devEID), "TID",
-                     static_cast<int>(signalTid));
-
-                if (!eidMap_.count(devEID))
-                {
-                    this->createDeviceDbusObject(devEID, devUUID, signalTid,
-                                                 pdrPayloads);
-
-                    // Remove match if one-time use
-                    signalMatches_.erase(devEID);
-                }
-            });
-
-        signalMatches_[devEID] = std::move(match);
-    }
 }
 
 void Manager::createDeviceDbusObject(

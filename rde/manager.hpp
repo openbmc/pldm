@@ -81,8 +81,7 @@ struct DeviceContext
  */
 class Manager :
     public sdbusplus::server::object::object<
-        sdbusplus::xyz::openbmc_project::RDE::server::Manager>,
-    public pldm::MctpDiscoveryHandlerIntf
+        sdbusplus::xyz::openbmc_project::RDE::server::Manager>
 {
   public:
     Manager(const Manager&) = delete;
@@ -217,44 +216,6 @@ class Manager :
     std::map<std::string,
              std::map<std::string, std::variant<int64_t, std::string>>>
         getDeviceSchemaInfo(std::string deviceUUID) override;
-
-    /** @brief Helper function to invoke registered handlers for
-     *         the added MCTP endpoints
-     *
-     *  @param[in] mctpInfos - information of discovered MCTP endpoints
-     */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos) override;
-
-    /** @brief Helper function to invoke registered handlers for
-     *         the removed MCTP endpoints
-     *
-     *  @param[in] mctpInfos - information of removed MCTP endpoints
-     */
-    void handleRemovedMctpEndpoints(const MctpInfos&) override
-    {
-        return;
-    }
-
-    /** @brief Helper function to invoke registered handlers for
-     *  updating the availability status of the MCTP endpoint
-     *
-     *  @param[in] mctpInfo - information of the target endpoint
-     *  @param[in] availability - new availability status
-     */
-    void updateMctpEndpointAvailability(const MctpInfo&, Availability) override
-    {
-        return;
-    }
-
-    /** @brief Get Active EIDs.
-     *
-     *  @param[in] addr - MCTP address of terminus
-     *  @param[in] terminiNames - MCTP terminus name
-     */
-    std::optional<mctp_eid_t> getActiveEidByName(const std::string&) override
-    {
-        return std::nullopt;
-    }
 
     /**
      * @brief Create a device D-Bus object associated with PLDM discovery.
