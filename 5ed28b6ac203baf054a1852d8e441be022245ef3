@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed10cc3c_37cc58fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-24T13:49:51Z",
+      "side": 1,
+      "message": "how is this tested ? possible to write unit tests ?",
+      "revId": "5ed28b6ac203baf054a1852d8e441be022245ef3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "549eb395_8229229e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-24T13:49:51Z",
+      "side": 1,
+      "message": "these are ibm special values , these needs to be in OEM",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 50
+      },
+      "revId": "5ed28b6ac203baf054a1852d8e441be022245ef3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4635fbdc_a0b8ed13",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-09-24T13:49:51Z",
+      "side": 1,
+      "message": "u probably need to also explain what a hot plug really mean.",
+      "range": {
+        "startLine": 278,
+        "startChar": 14,
+        "endLine": 278,
+        "endChar": 29
+      },
+      "revId": "5ed28b6ac203baf054a1852d8e441be022245ef3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
