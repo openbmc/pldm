@@ -43,6 +43,16 @@
 #include <string>
 #include <vector>
 
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <queue>
+#include <sys/eventfd.h>
+
+#ifdef MULTI_THREADED
+#define THREAD_WORKDER_COUNT 32
+#endif
+
 PHOSPHOR_LOG2_USING;
 
 #ifdef LIBPLDMRESPONDER
@@ -164,25 +174,157 @@ static std::optional<Response> processRxMsg(
     return std::nullopt;
 }
 
+#ifdef MULTI_THREADED
+
+struct WorkItem
+{
+    std::vector<uint8_t> request;
+    pldm_tid_t tid;
+};
+
+class WorkerPool
+{
+public:
+    WorkerPool(size_t n,
+               Invoker& invoker,
+               requester::Handler<requester::Request>& handler,
+               fw_update::Manager* fwManager,
+               PldmTransport& transport,
+               bool verbose,
+               std::mutex& transportMtx, std::queue<WorkItem>& readyQ, std::mutex& readyMtx, int resultEfd)
+        : invoker(invoker),
+          handler(handler),
+          fwManager(fwManager),
+          transport(transport),
+          verbose(verbose),
+          transportMtx(transportMtx),
+          readyQ(readyQ), readyMtx(readyMtx), resultEfd(resultEfd),
+          stop(false)
+    {
+        for (size_t i = 0; i < n; ++i)
+        {
+            workers.emplace_back([this] { this->run(); });
+        }
+    }
+
+    ~WorkerPool()
+    {
+        {
+            std::lock_guard<std::mutex> lk(m);
+            stop = true;
+        }
+        cv.notify_all();
+        for (auto& t : workers)
+        {
+            if (t.joinable()) t.join();
+        }
+    }
+
+    void enqueue(WorkItem&& w)
+    {
+        {
+            std::lock_guard<std::mutex> lk(m);
+            q.push(std::move(w));
+        }
+        cv.notify_one();
+    }
+
+private:
+    void run()
+    {
+        while (true)
+        {
+            WorkItem item;
+            {
+                std::unique_lock<std::mutex> lk(m);
+                cv.wait(lk, [&]{ return stop || !q.empty(); });
+                if (stop && q.empty())
+                {
+                    return;
+                }
+                item = std::move(q.front());
+                q.pop();
+            }
+
+            // Forward message back to main loop for processing and sending
+            {
+                std::lock_guard<std::mutex> lg(readyMtx);
+                readyQ.push(std::move(item));
+            }
+            uint64_t one = 1;
+            (void)!write(resultEfd, &one, sizeof(one));
+        }
+    }
+
+    std::vector<std::thread> workers;
+    std::mutex m;
+    std::condition_variable cv;
+    std::queue<WorkItem> q;
+
+
+    Invoker& invoker;
+    requester::Handler<requester::Request>& handler;
+    fw_update::Manager* fwManager;
+    PldmTransport& transport;
+    bool verbose;
+    std::mutex& transportMtx;
+    std::queue<WorkItem>& readyQ;
+    std::mutex& readyMtx;
+    int resultEfd;
+
+    bool stop;
+};
+
+#endif // MULTI_THREADED
+
+
 void optionUsage(void)
 {
     info("Usage: pldmd [options]");
     info("Options:");
     info(" [--verbose] - would enable verbosity");
+#ifdef MULTI_THREADED
+    info(" [-t #] - number of worker threads to process PLDM requests");
+#endif
 }
 
 int main(int argc, char** argv)
 {
     bool verbose = false;
     static struct option long_options[] = {
-        {"verbose", no_argument, nullptr, 'v'}, {nullptr, 0, nullptr, 0}};
+        {"verbose", no_argument, nullptr, 'v'},
+#ifdef MULTI_THREADED
+        {"threads", required_argument, nullptr, 't'},
+#endif
+        {nullptr, 0, nullptr, 0}
+    };
+#ifdef MULTI_THREADED
+    // Worker thread pool for processing PLDM requests off the I/O thread.
+    size_t workerCount = THREAD_WORKDER_COUNT;
+    if (const char* env = std::getenv("PLDMD_WORKERS")) {
+        try {
+            unsigned long v = std::stoul(env);
+            if (v >= 1 && v <= 64) workerCount = static_cast<size_t>(v);
+        } catch (...) {
+            perror("PLDMD_WORKERS environment variable not parsed - ignoring");
+        }
+    }
 
+    auto argflag = getopt_long(argc, argv, "vt:", long_options, nullptr);
+#else
     auto argflag = getopt_long(argc, argv, "v", long_options, nullptr);
+#endif
+
     switch (argflag)
     {
         case 'v':
             verbose = true;
             break;
+#ifdef MULTI_THREADED
+        case 't':
+            workerCount = std::max(1, std::min(64, std::stoi(optarg)));
+            break;
+#endif
         case -1:
             break;
         default:
@@ -347,8 +489,59 @@ int main(int argc, char** argv)
         std::make_unique<MctpDiscovery>(
             bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
                      fwManager.get(), platformManager.get()});
+
+#ifdef MULTI_THREADED
+    // Mailbox from worker threads to sd-event loop
+    static std::mutex readyMtx;
+    static std::queue<WorkItem> readyQ;
+
+    // Eventfd to wake the sd-event loop when workers enqueue items
+    const int resultEfd = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
+    if (resultEfd < 0) { // unlikely to happen, but handle gracefully
+        perror("eventfd");
+        exit(1);
+    }
+
+    // IO source to drain eventfd and process requests on the loop thread
+    IO resultIo(event, resultEfd, EPOLLIN, IO::Callback{[&](IO&, int, uint32_t) {
+        // Drain the counter, nothing expected to be there, but lets be sure
+        uint64_t cnt;
+        while (read(resultEfd, &cnt, sizeof(cnt)) > 0) {}
+
+        // Pop-and-handle all queued items (now on sd-event thread)
+        while (true) {
+            WorkItem item;
+            {
+                std::lock_guard<std::mutex> lg(readyMtx);
+                if (readyQ.empty()) break;
+                item = std::move(readyQ.front());
+                readyQ.pop();
+            }
+
+            auto response = processRxMsg(item.request, invoker, reqHandler, fwManager.get(), item.tid);
+            if (response.has_value()) {
+                FlightRecorder::GetInstance().saveRecord(*response, true);
+                if (verbose) { printBuffer(Tx, *response); }
+                int rc = pldmTransport.sendMsg(item.tid, response->data(), response->size());
+                if (rc != PLDM_REQUESTER_SUCCESS) {
+                    warning("Failed to send pldmTransport message for TID '{TID}', response code '{RETURN_CODE}'",
+                            "TID", item.tid, "RETURN_CODE", rc);
+                }
+            }
+        }
+    }});
+
+    static std::mutex transportMtx; // guard transport send path
+    WorkerPool workerPool(workerCount, invoker, reqHandler, fwManager.get(), pldmTransport, verbose, transportMtx, readyQ, readyMtx, resultEfd);
+
+
+    auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
+                     TID, &workerPool](IO& io, int fd, uint32_t revents) mutable {
+#else
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
+#endif
+
         if (revents & (POLLHUP | POLLERR))
         {
             warning("Transport Socket hang-up or error. IO Exiting.");
@@ -380,6 +573,10 @@ int main(int argc, char** argv)
             {
                 printBuffer(Rx, requestMsgVec);
             }
+#ifdef MULTI_THREADED
+            // enqueue for background processing and response
+            workerPool.enqueue(WorkItem{std::move(requestMsgVec), TID});
+#else
             // process message and send response
             auto response = processRxMsg(requestMsgVec, invoker, reqHandler,
                                          fwManager.get(), TID);
@@ -400,6 +597,7 @@ int main(int argc, char** argv)
                         "TID", TID, "RETURN_CODE", returnCode);
                 }
             }
+#endif
         }
         // TODO check that we get here if mctp-demux dies?
         else if (returnCode == PLDM_REQUESTER_RECV_FAIL)
