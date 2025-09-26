@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c8fb6a8_ee61af0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-26T06:46:44Z",
+      "side": 1,
+      "message": "Acknowledged, its functionally tested by adding a FRU back.",
+      "parentUuid": "ed10cc3c_37cc58fb",
+      "revId": "5ed28b6ac203baf054a1852d8e441be022245ef3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "549eb395_8229229e",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-09-24T13:49:51Z",
       "side": 1,
       "message": "these are ibm special values , these needs to be in OEM",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 50
+      },
+      "revId": "5ed28b6ac203baf054a1852d8e441be022245ef3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5630fd25_f382d823",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-26T06:46:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "549eb395_8229229e",
       "range": {
         "startLine": 80,
         "startChar": 0,
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9b84758_06633441",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-26T06:46:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ad53e0f0_97e0fb19",
+      "revId": "5ed28b6ac203baf054a1852d8e441be022245ef3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4635fbdc_a0b8ed13",
@@ -71,6 +131,30 @@
       "writtenOn": "2025-09-24T13:49:51Z",
       "side": 1,
       "message": "u probably need to also explain what a hot plug really mean.",
+      "range": {
+        "startLine": 278,
+        "startChar": 14,
+        "endLine": 278,
+        "endChar": 29
+      },
+      "revId": "5ed28b6ac203baf054a1852d8e441be022245ef3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9f6e7fa_62fb382b",
+        "filename": "libpldmresponder/fru.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-09-26T06:46:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4635fbdc_a0b8ed13",
       "range": {
         "startLine": 278,
         "startChar": 14,
