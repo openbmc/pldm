@@ -256,8 +256,7 @@ void OperationSession::doOperationInit()
     int rc = 0;
     const std::string& resourceIdStr =
         device_->getRegistry()->getResourceIdFromUri(oipInfo.targetURI);
-    currentResourceId_ =
-        static_cast<uint32_t>(std::stoul(resourceIdStr));
+    currentResourceId_ = static_cast<uint32_t>(std::stoul(resourceIdStr));
     rde_op_id operationID = oipInfo.operationID;
     uint32_t sendDataTransferHandle;
     uint8_t operationLocatorLength;
@@ -280,22 +279,46 @@ void OperationSession::doOperationInit()
         operationLocatorLength = 0;
         operationFlags.bits.bit1 = CONTAINS_REQ_PAYLOAD;
 
-        try
+        if (!oipInfo.payload.empty())
         {
-            jsonPayload = nlohmann::json::parse(oipInfo.payload);
+            try
+            {
+                jsonPayload = nlohmann::json::parse(oipInfo.payload);
+            }
+            catch (const nlohmann::json::parse_error& e)
+            {
+                error(
+                    "JSON parsing error: EID '{EID}', targetURI '{URI}, json payload '{PAYLOAD}",
+                    "EID", oipInfo.eid, "URI", oipInfo.targetURI, "PAYLOAD",
+                    oipInfo.payload);
+                updateState(OpState::OperationFailed);
+                device_->getInstanceIdDb().free(eid_, instanceId);
+                return;
+            }
+
+            payloadBuffer = getBejPayload();
+            if (payloadBuffer.empty())
+            {
+                error(
+                    "BEJ encode failed: produced empty payload. EID '{EID}', URI '{URI}'",
+                    "EID", oipInfo.eid, "URI", oipInfo.targetURI);
+                updateState(OpState::OperationFailed);
+                device_->getInstanceIdDb().free(eid_, instanceId);
+                return;
+            }
         }
-        catch (const nlohmann::json::parse_error& e)
+#ifndef OEM_AMD
+        else
         {
+            // With OEM_AMD disabled empty payloads are not allowed
             error(
-                "JSON parsing error: EID '{EID}', targetURI '{URI}, json payload '{PAYLOAD}",
-                "EID", oipInfo.eid, "URI", oipInfo.targetURI, "PAYLOAD",
-                oipInfo.payload);
+                "RDE: Empty request payload is not allowed for UPDATE. EID '{EID}', targetURI '{URI}'",
+                "EID", oipInfo.eid, "URI", oipInfo.targetURI);
             updateState(OpState::OperationFailed);
             device_->getInstanceIdDb().free(eid_, instanceId);
             return;
         }
-
-        payloadBuffer = getBejPayload();
+#endif
 
         const auto& chunkMeta =
             device_->getMetadataField("mcMaxTransferChunkSizeBytes");

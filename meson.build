@@ -112,6 +112,9 @@ if get_option('oem-ibm').allowed()
     conf_data.set('DMA_MAXSIZE', get_option('oem-ibm-dma-maxsize'))
     add_project_arguments('-DOEM_IBM', language: 'cpp')
 endif
+if get_option('oem-amd').allowed()
+    add_project_arguments('-DOEM_AMD', language: 'cpp')
+endif
 conf_data.set(
     'NUMBER_OF_REQUEST_RETRIES',
     get_option('number-of-request-retries'),

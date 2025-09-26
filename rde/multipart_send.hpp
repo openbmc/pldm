@@ -30,11 +30,10 @@ class Device;
  */
 struct MultipartSndMeta
 {
-    uint8_t schemaClass = 0;    ///< Schema class used for decoding.
-    uint8_t hasChecksum = true; ///< Indicates presence of checksum in chunk.
-    uint8_t isOpComplete =
-        false;               ///< True if the send operation is complete.
-    uint32_t nextHandle = 0; ///< Handle for the next chunk (if any).
+    uint8_t schemaClass = 0;      // Schema class used for decoding.
+    uint8_t hasChecksum = true;   // Indicates presence of checksum in chunk.
+    uint8_t isOpComplete = false; // True if the send operation is complete.
+    uint32_t nextHandle = 0;      // Handle for the next chunk (if any).
 };
 
 /**

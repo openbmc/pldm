@@ -179,6 +179,14 @@ option(
     value: 'enabled',
 )
 
+## OEM AMD Options
+option(
+    'oem-amd',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable AMD OEM PLDM',
+)
+
 ## Default Sensor Update Interval Options
 option(
     'default-sensor-update-interval',
