@@ -306,10 +306,12 @@ class OemEventManager
 
     /** @brief Log the message into Redfish SEL.
      *
+     *  @param[in] source - the logging resource
      *  @param[in] description - the logging message
      *  @param[in] logLevel - the logging level
      */
-    void sendJournalRedfish(const std::string& description,
+    void sendJournalRedfish(const std::string& source,
+                            const std::string& description,
                             log_level& logLevel);
 
     /** @brief Convert the one-hot DIMM index byte into a string of DIMM
@@ -353,7 +355,7 @@ class OemEventManager
      *  @param[in] sensorId - Sensor ID
      *  @param[in] presentReading - the present reading of the sensor
      */
-    void handleBootOverallEvent(pldm_tid_t /*tid*/, uint16_t /*sensorId*/,
+    void handleBootOverallEvent(pldm_tid_t tid, uint16_t sensorId,
                                 uint32_t presentReading);
 
     /** @brief Handle numeric sensor event message from DIMM status sensor.
