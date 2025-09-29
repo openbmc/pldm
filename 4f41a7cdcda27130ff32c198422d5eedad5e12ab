@@ -16,6 +16,23 @@
       "message": "Changes looks good to me, but I would want @deepak.kodihalli.83@gmail.com review as well. I don\u0027t a way to test this since IBM does not use pldm firmware spec.",
       "revId": "4f41a7cdcda27130ff32c198422d5eedad5e12ab",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d4d1ce0_215c5244",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2025-09-29T04:38:49Z",
+      "side": 1,
+      "message": "This commit is missing the metadata changes to support Downstream device identifiers and README to capture the support added for the latest specification.\n\nhttps://github.com/openbmc/pldm/blob/master/tools/fw-update/README.md\nhttps://github.com/openbmc/pldm/blob/master/tools/fw-update/metadata-example.json",
+      "revId": "4f41a7cdcda27130ff32c198422d5eedad5e12ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
