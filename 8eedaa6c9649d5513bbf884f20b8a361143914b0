@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2acd336_eebd8dd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-01T13:25:51Z",
+      "side": 1,
+      "message": "This makes sense - to have default behavior that enables PLDM T2 sensors when the terminus name is not provided through the optional PDR for the same and neither via EM.\n\nPLDM T5 does something similar for FW inventory names.",
+      "revId": "8eedaa6c9649d5513bbf884f20b8a361143914b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "091a1b7e_4a78af3f",
