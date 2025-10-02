@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ea82d49_e4094ad4",
+        "filename": "meson.build",
+        "patchSetId": 8
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "If this is experimental, shouldn\u0027t you use a meson.option to enable it?  This ends up hard-coding it as enabled for everyone.",
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7e7e281_359a7865",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "Generally prefer `static constexpr auto` rather than C-macros.\n\nWhy is 32 the preferred number here?  Should we document that.",
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc076b2d_21182ecb",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "spelling of \"worker\"?",
+      "range": {
+        "startLine": 52,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 28
+      },
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ac9fe71_59d7f99b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "`join` is a blocking operation, right?  Should we really be holding the lock-guard during that?  Can\u0027t that result in a potential deadlock?",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 9
+      },
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "990bb5d4_36fafb3a",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "Check it isn\u0027t in `stop` state before enqueue new work?",
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d40e2c1_26645a5b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "I\u0027m having trouble understanding where the \"parallelism\" is coming from.  Isn\u0027t it only the main thread that could `enqueue`?   And then the workers aren\u0027t running anything except moving the work from one queue to another and triggering an eventFD.  Why does more than 1 worker even do anything?",
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3a331bb_50771b0f",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "Why do we have a compile constant, an environment variable, _and_ an option?  Simplify by removing the environment variable at least.",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 0
+      },
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba0ef78f_85e507f7",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-02T17:28:58Z",
+      "side": 1,
+      "message": "static? 😞\n\n\nCan we move these into the work-queue itself?  It seems to me like we have a lot of arguments to the constructor.  Wouldn\u0027t it be easier to have the ready queue and the mutex be part of the work-queue itself and provide an API to give back an `std::optional\u003cWorkItem\u003e`?",
+      "range": {
+        "startLine": 471,
+        "startChar": 4,
+        "endLine": 471,
+        "endChar": 10
+      },
+      "revId": "9268f279da47580d4278767b74dce87759f4eec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
