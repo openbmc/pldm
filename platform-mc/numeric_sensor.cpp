@@ -6,7 +6,6 @@
 #include <libpldm/platform.h>
 
 #include <phosphor-logging/commit.hpp>
-#include <sdbusplus/asio/property.hpp>
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/event.hpp>
 
