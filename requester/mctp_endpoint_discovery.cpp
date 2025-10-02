@@ -278,6 +278,50 @@ void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
     }
 }
 
+void MctpDiscovery::removeBeforeAdd(const MctpInfos& toAddMctpInfo)
+{
+    if (toAddMctpInfo.empty())
+    {
+        return;
+    }
+
+    MctpInfos removedInfos;
+    for (const auto& existingInfo : existingMctpInfos)
+    {
+        const auto existingEid = std::get<0>(existingInfo);
+        const auto existingNet = std::get<3>(existingInfo);
+
+        auto it =
+            std::find_if(toAddMctpInfo.begin(), toAddMctpInfo.end(),
+                         [existingEid, existingNet](const auto& mctpInfo) {
+                             return std::get<0>(mctpInfo) == existingEid &&
+                                    std::get<3>(mctpInfo) == existingNet;
+                         });
+        if (it != toAddMctpInfo.end())
+        {
+            removedInfos.emplace_back(existingInfo);
+        }
+    }
+
+    if (removedInfos.empty())
+    {
+        return;
+    }
+
+    for (const auto& mctpInfo : removedInfos)
+    {
+        info(
+            "Removing Endpoint networkId '{NETWORK}' and EID '{EID}' to prevent duplicate addition of the same MCTP Info",
+            "NETWORK", std::get<3>(mctpInfo), "EID", std::get<0>(mctpInfo));
+        existingMctpInfos.erase(std::remove(existingMctpInfos.begin(),
+                                            existingMctpInfos.end(), mctpInfo),
+                                existingMctpInfos.end());
+    }
+
+    handleRemovedMctpEndpoints(removedInfos);
+    removeConfigs(removedInfos);
+}
+
 void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
 {
     using Interface = std::string;
@@ -329,6 +373,7 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             {
                 if (availability)
                 {
+                    removeBeforeAdd(MctpInfos(1, mctpInfo));
                     // The endpoint not in existingMctpInfos and is
                     // available Add it to existingMctpInfos
                     info(
@@ -352,6 +397,7 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
 {
     MctpInfos addedInfos;
     getAddedMctpInfos(msg, addedInfos);
+    removeBeforeAdd(addedInfos);
     addToExistingMctpInfos(addedInfos);
     handleMctpEndpoints(addedInfos);
 }
