@@ -166,6 +166,12 @@ class MctpDiscovery
     void removeFromExistingMctpInfos(MctpInfos& mctpInfos,
                                      MctpInfos& removedInfos);
 
+    /** @brief Remove any existing MCTP endpoint with same Network
+     *         Index and Endpoint ID before adding the new MCTP endpoint.
+     *  @param[in] toAddMctpInfo - information of the new MCTP endpoint
+     */
+    void removeBeforeAdd(const MctpInfos& toAddMctpInfo);
+
     friend class ::TestMctpDiscovery;
 
   private:
