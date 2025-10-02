@@ -25,6 +25,7 @@ executable(
         libpldmutils,
         nlohmann_json_dep,
         phosphor_dbus_interfaces,
+        phosphor_logging_dep,
         sdbusplus,
     ],
     install: true,
