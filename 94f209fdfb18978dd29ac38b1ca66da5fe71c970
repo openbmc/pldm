@@ -54,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f16400b0_b4430f50",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-03T22:19:17Z",
+      "side": 1,
+      "message": "After reading the code, it seems to be doing -\n\nUpdate the terminus discovery retry count and mark the terminus init as failed if max count has been reached.\n\nPlease update the description based on above to explain the intent.",
+      "revId": "94f209fdfb18978dd29ac38b1ca66da5fe71c970",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "712bfa67_2b33188e",
         "filename": "platform-mc/terminus_manager.hpp",
         "patchSetId": 4
