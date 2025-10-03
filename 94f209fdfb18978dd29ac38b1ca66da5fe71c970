@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "024c164c_05196398",
+        "filename": "meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-03T22:15:42Z",
+      "side": 1,
+      "message": "lets rename to TERMINUS_DISCOVERY_RETRY_COUNT",
+      "revId": "94f209fdfb18978dd29ac38b1ca66da5fe71c970",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55f61e79_c8b58a14",
+        "filename": "meson.build",
+        "patchSetId": 4
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-03T22:15:42Z",
+      "side": 1,
+      "message": "same as above.",
+      "revId": "94f209fdfb18978dd29ac38b1ca66da5fe71c970",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a9191a0_9ec24814",
+        "filename": "meson.options",
+        "patchSetId": 4
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-03T22:15:42Z",
+      "side": 1,
+      "message": "terminus-discovery-retry-count",
+      "revId": "94f209fdfb18978dd29ac38b1ca66da5fe71c970",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "712bfa67_2b33188e",
+        "filename": "platform-mc/terminus_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-03T22:15:42Z",
+      "side": 1,
+      "message": "rename to discoveryRetryMap",
+      "revId": "94f209fdfb18978dd29ac38b1ca66da5fe71c970",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
