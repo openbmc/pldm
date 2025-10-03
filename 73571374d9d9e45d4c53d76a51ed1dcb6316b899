@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "baa149f1_f014a9f7",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-10-03T13:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba1214f3_95d5651b",
+      "range": {
+        "startLine": 526,
+        "startChar": 7,
+        "endLine": 526,
+        "endChar": 66
+      },
+      "revId": "73571374d9d9e45d4c53d76a51ed1dcb6316b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c8bb8b1_38c09a63",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0927a105_7653f698",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-10-03T13:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c8bb8b1_38c09a63",
+      "range": {
+        "startLine": 550,
+        "startChar": 62,
+        "endLine": 550,
+        "endChar": 82
+      },
+      "revId": "73571374d9d9e45d4c53d76a51ed1dcb6316b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00e19d10_f88c6cfa",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-09-02T05:33:18Z",
       "side": 1,
       "message": "is there a way we can move this out from the common code to `oem` ?",
+      "range": {
+        "startLine": 525,
+        "startChar": 0,
+        "endLine": 562,
+        "endChar": 6
+      },
+      "revId": "73571374d9d9e45d4c53d76a51ed1dcb6316b899",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "236dee63_a690c84c",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-10-03T13:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00e19d10_f88c6cfa",
       "range": {
         "startLine": 525,
         "startChar": 0,

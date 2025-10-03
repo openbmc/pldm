@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63fc67d2_36fa64b1",
+        "filename": "libpldmresponder/bios.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-10-03T13:23:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "77f7a3e1_ed116d6b",
+      "range": {
+        "startLine": 95,
+        "startChar": 3,
+        "endLine": 95,
+        "endChar": 65
+      },
+      "revId": "c372ab7ae35d9d4e98bcf75bc2eda43f0fd955d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0f449b7_9b824c15",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-09-19T06:24:08Z",
       "side": 1,
       "message": "its the biosTable passed right",
+      "range": {
+        "startLine": 192,
+        "startChar": 8,
+        "endLine": 192,
+        "endChar": 64
+      },
+      "revId": "c372ab7ae35d9d4e98bcf75bc2eda43f0fd955d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "588b2bab_8a16fc52",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001384
+      },
+      "writtenOn": "2025-10-03T13:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0f449b7_9b824c15",
       "range": {
         "startLine": 192,
         "startChar": 8,
