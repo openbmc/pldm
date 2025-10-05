@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edfe6d48_a4d76e82",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T03:52:01Z",
+      "side": 1,
+      "message": "Add enum class to define index 0 and 1 of the sockets list.",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e82bdefc_b02aca8e",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T03:52:01Z",
+      "side": 1,
+      "message": "Add End of line before return. Apply the same for other code.",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddd0666c_22f4ae69",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T03:52:01Z",
+      "side": 1,
+      "message": "```\n     *  @param[in] maxfd - Highest-num fd of all the fd set. maxfd + 1 will be\n     *                     passed as nfds argument to select()\n     *\n     *  @return coroutine task returning int\n     */\n```\nlooks better.",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05266e77_cccbbada",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T03:52:01Z",
+      "side": 1,
+      "message": "Discription.",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

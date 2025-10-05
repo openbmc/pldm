@@ -700,6 +700,24 @@
       "parentUuid": "2197d54e_573d672f",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffa4fde7_801d692d",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T03:52:01Z",
+      "side": 1,
+      "message": "Add description about that in code.",
+      "parentUuid": "5ca6d16e_555c907f",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
