@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49af94eb_a8f743a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T01:01:14Z",
+      "side": 1,
+      "message": "The patch set look good to me. Just move it out of the chain.",
+      "revId": "ad274c61c4c37f531812006653ad367e84bc425f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
