@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c5acf60_66ef2736",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T00:22:30Z",
+      "side": 1,
+      "message": "Do we need `buildFileHierarchy()` when there is no filePDR?",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b55874ae_bc947fe7",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T00:22:30Z",
+      "side": 1,
+      "message": "return when fileDescriptorPdrs is empty.",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efc12858_44545bec",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T00:22:30Z",
+      "side": 1,
+      "message": "Include the terminus name parent path as discussion on other patch set.",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f40747a7_4acabd76",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T00:22:30Z",
+      "side": 1,
+      "message": "Please remove the lg2::debug() or you can change lg2::info",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
