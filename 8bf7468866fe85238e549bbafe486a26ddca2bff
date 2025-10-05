@@ -33,6 +33,24 @@
       "message": "Byte is data types, but not the characteristics which byte is used to measure.\nSo I suggest change to `/xyz/openbmc_project/metric/filesize/` or better object path.",
       "revId": "8bf7468866fe85238e549bbafe486a26ddca2bff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c17dab2_2c474c7a",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T00:54:43Z",
+      "side": 1,
+      "message": "Any comment in this @manojkiran.eda@gmail.com?",
+      "parentUuid": "df345c2b_a47c8ed9",
+      "revId": "8bf7468866fe85238e549bbafe486a26ddca2bff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
