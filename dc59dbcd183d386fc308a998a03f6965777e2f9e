@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed474731_00d3cacc",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 813,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T01:30:12Z",
+      "side": 1,
+      "message": "if (it \u003d\u003d termini.end())\n{\nreturn;\n}\nHandle when `it !\u003d termini.end()`",
+      "revId": "dc59dbcd183d386fc308a998a03f6965777e2f9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31b59241_1b49c006",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T01:30:12Z",
+      "side": 1,
+      "message": "No need break when you already return.",
+      "revId": "dc59dbcd183d386fc308a998a03f6965777e2f9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
