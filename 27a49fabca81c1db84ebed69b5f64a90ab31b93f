@@ -316,6 +316,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6aead43_687f583a",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T00:40:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "76bbd658_ac5cbf95",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e55cfcb_e3f0012b",
@@ -487,6 +505,24 @@
       "side": 1,
       "message": "If (rc), dfClose also needs to be called at the end. That\u0027s why I use this arrangement, to not have to call dfClose many places.",
       "parentUuid": "37a0d015_cf55d70e",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e146e7b_def1c7f9",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-05T00:40:55Z",
+      "side": 1,
+      "message": "Your current code is\n```\n    rc \u003d co_await dfOpen(terminusManager, tid, \u0026openReq, \u0026openResp);\n    if (rc \u003d\u003d PLDM_SUCCESS)\n    {\n    handle when rc \u003d\u003d PLDM_SUCCESS;\n    }\n    else\n    {\n    log error\n    co_return rc;\n    }\n```\nI suggest change to\n```\n    rc \u003d co_await dfOpen(terminusManager, tid, \u0026openReq, \u0026openResp);\n    if (rc !\u003d PLDM_SUCCESS)\n    {\n    log error\n    co_return rc;\n    }\n    handle when rc \u003d\u003d PLDM_SUCCESS;\n```\n\nCode logic does not change. Just simple and easy to read code.",
+      "parentUuid": "9c0c552c_28ec2dba",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
