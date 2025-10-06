@@ -1,5 +1,8 @@
 #pragma once
 
+#ifdef OEM_AMD
+#include "operation_session.hpp"
+#endif
 #include "operation_task.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
@@ -24,6 +27,8 @@ inline constexpr std::string_view RDEManagerObjectPath{
     "/xyz/openbmc_project/RDE/Manager"};
 constexpr const char* DeviceObjectPath = "/xyz/openbmc_project/RDE/Device";
 inline constexpr std::string_view DeviceServiceName{"xyz.openbmc_project.RDE"};
+constexpr pldm::eid INVALID_EID = 0xFF;
+const std::string operationIdFile = "/var/run/rde-operation-id";
 
 using ObjectPath = sdbusplus::message::object_path;
 using OperationType =
@@ -253,6 +258,97 @@ class Manager :
         return taskMap_;
     }
 
+#ifdef OEM_AMD
+    pldm::eid getEidFromUuid(const UUID& uuid) const
+    {
+        for (const auto& [candidateEid, ctx] : eidMap_)
+        {
+            if (ctx.uuid == uuid)
+            {
+                return candidateEid;
+            }
+        }
+        return INVALID_EID;
+    }
+
+    std::string getJSONSchema()
+    {
+        constexpr const char* rdeDeviceMetadataFile =
+            "/etc/pldm/rde_device_metadata.json";
+
+        std::string schema;
+        std::string deviceId;
+
+        if (!std::filesystem::exists(rdeDeviceMetadataFile))
+        {
+            error("RDE: Device metadata file {FILE} not found: ", "FILE",
+                  rdeDeviceMetadataFile);
+            return "";
+        }
+
+        std::ifstream file(rdeDeviceMetadataFile);
+        if (!file.is_open())
+        {
+            error("RDE: Failed to open device metadata file:{FILE} ", "FILE",
+                  rdeDeviceMetadataFile);
+            return "";
+        }
+
+        try
+        {
+            if (file.peek() == std::ifstream::traits_type::eof())
+            {
+                error("RDE: Device metadata file{FILE} is empty: ", "FILE",
+                      rdeDeviceMetadataFile);
+                return "";
+            }
+
+            nlohmann::json jsonData;
+            file >> jsonData;
+
+            if (!jsonData.is_object())
+            {
+                error(
+                    "RDE: Device metadata file does not contain a valid JSON object.");
+                return "";
+            }
+
+            for (const auto& [jsonSchema, deviceEntries] : jsonData.items())
+            {
+                if (!deviceEntries.is_object())
+                {
+                    error("RDE: Invalid schema section {SCHEMA} ", "SCHEMA",
+                          jsonSchema);
+                    continue;
+                }
+                return jsonSchema;
+            }
+        }
+        catch (const std::exception& e)
+        {
+            error(
+                "RDE: Unexpected error while reading device metadata file:{MSG} ",
+                "MSG", e.what());
+            return "";
+        }
+        return "";
+    }
+
+    uint32_t nextOperationId()
+    {
+        uint32_t operationId = 0;
+        if (std::filesystem::exists(operationIdFile))
+        {
+            std::ifstream inFile(operationIdFile);
+            inFile >> operationId;
+        }
+        std::ofstream outFile(operationIdFile);
+        outFile << ++operationId;
+
+        return operationId;
+    }
+#endif
+
   private:
     pldm::InstanceIdDb* instanceIdDb_ = nullptr;
     pldm::requester::Handler<pldm::requester::Request>* handler_ = nullptr;
@@ -267,6 +363,10 @@ class Manager :
                        std::shared_ptr<OperationTaskIface>>
         taskMap_;
     std::unique_ptr<sdbusplus::server::manager_t> objManager_;
+#ifdef OEM_AMD
+    std::unique_ptr<sdbusplus::bus::match_t> cacheCompleteSignal_;
+    std::unique_ptr<OperationSession> opSession_;
+#endif
 };
 
 } // namespace pldm::rde

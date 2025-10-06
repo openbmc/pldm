@@ -1,6 +1,7 @@
+#include "manager.hpp"
+
 #include "device.hpp"
 #include "device_common.hpp"
-#include "manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -89,6 +90,63 @@ void Manager::createDeviceDbusObject(
     eidMap_[devEID] = std::move(context);
 
     devicePtr->refreshDeviceInfo();
+#ifdef OEM_AMD
+    // match for all RDEReplayComplete signals
+    cacheCompleteSignal_ = std::make_unique<sdbusplus::bus::match_t>(
+        bus_,
+        sdbusplus::bus::match::rules::type::signal() +
+            sdbusplus::bus::match::rules::member("RDEReplayComplete") +
+            sdbusplus::bus::match::rules::interface(
+                "xyz.openbmc_project.RDE.CacheManager") +
+            sdbusplus::bus::match::rules::path(
+                "/xyz/openbmc_project/CacheManager"),
+        [this](sdbusplus::message::message& msg) {
+            pldm::UUID devUUID;
+            pldm::eid devEid;
+
+            msg.read(devUUID);
+            devEid = getEidFromUuid(devUUID);
+            if (devEid == INVALID_EID)
+            {
+                error(
+                    "RDEReplayComplete: Erro no matching EID found for UUID '{UUID}'",
+                    "UUID", devUUID);
+                return;
+            }
+
+            uint32_t operationID = nextOperationId();
+            OperationType operationType = OperationType::UPDATE;
+            std::string subURI = "Oem/AMD/SocConfiguration/Token";
+            std::string payload = "";
+            PayloadFormatType payloadFormat = PayloadFormatType::Inline;
+            EncodingFormatType encodingType = EncodingFormatType::JSON;
+            std::string sessionID = getJSONSchema();
+            if (sessionID.empty())
+            {
+                error("RDEReplayComplete: Cannot find session ID");
+                return;
+            }
+
+            std::string taskPathStr =
+                "/xyz/openbmc_project/RDE/OperationTask/" + std::to_string(1);
+            ObjectPath objPath{taskPathStr};
+
+            OperationInfo opInfo{operationID,   operationType, subURI,
+                                 devUUID,       devEid,        payload,
+                                 payloadFormat, encodingType,  sessionID,
+                                 taskPathStr};
+
+            opSession_ = std::make_unique<OperationSession>(
+                eidMap_[devEid].devicePtr, opInfo);
+            if (!opSession_)
+            {
+                error("RDEReplayComplete: Failed to send zero length request");
+                return;
+            }
+
+            opSession_->doOperationInit();
+        });
+#endif
 }
 
 DeviceContext* Manager::getDeviceContext(eid devEID)
