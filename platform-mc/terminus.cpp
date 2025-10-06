@@ -208,18 +208,10 @@ void Terminus::parseTerminusPDRs()
                   "NAME", tName.value());
         terminusName = static_cast<std::string>(tName.value());
     }
-    else
+
+    if (terminusName.empty())
     {
         terminusName = std::format("Terminus_{}", tid);
-    }
-
-    if (terminusName.empty() &&
-        (numericSensorPdrs.size() || compactNumericSensorPdrs.size()))
-    {
-        lg2::error(
-            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
-            "TID", tid);
-        return;
     }
 
     if (createInventoryPath(terminusName))
