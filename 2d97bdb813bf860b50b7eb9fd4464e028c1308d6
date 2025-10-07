@@ -22,6 +22,30 @@
       },
       "revId": "2d97bdb813bf860b50b7eb9fd4464e028c1308d6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "383cc792_87d4be3e",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2025-10-07T08:46:31Z",
+      "side": 1,
+      "message": "You are correct.\n\nI have rewritten the commit message, I hope it is more clear now",
+      "parentUuid": "c678e429_35b4d408",
+      "range": {
+        "startLine": 212,
+        "startChar": 4,
+        "endLine": 212,
+        "endChar": 29
+      },
+      "revId": "2d97bdb813bf860b50b7eb9fd4464e028c1308d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
