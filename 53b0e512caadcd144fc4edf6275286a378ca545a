@@ -134,6 +134,24 @@
       "message": "````\n *  @param[out] respPtr - pointer to the response struct\n *\n *  @return PLDM completion code\n */\n ```\n Apply the same for others descriptions.",
       "revId": "53b0e512caadcd144fc4edf6275286a378ca545a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67da71b4_97ad15dc",
+        "filename": "platform-mc/file_cmds.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:20:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c0f1451_58686e85",
+      "revId": "53b0e512caadcd144fc4edf6275286a378ca545a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
