@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4148653_7e64856d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:20:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c5acf60_66ef2736",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b55874ae_bc947fe7",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-10-05T00:22:30Z",
       "side": 1,
       "message": "return when fileDescriptorPdrs is empty.",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceeb89f9_089b1da0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:20:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b55874ae_bc947fe7",
       "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a04c104d_061c9705",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:20:41Z",
+      "side": 1,
+      "message": "The topMostInfo contains terminusName as file name and it is placed on top of the file hierarchy as a virtual topmost file, so the path will always have \u003cterminusName\u003e in it.",
+      "parentUuid": "efc12858_44545bec",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f40747a7_4acabd76",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-10-05T00:22:30Z",
       "side": 1,
       "message": "Please remove the lg2::debug() or you can change lg2::info",
+      "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b681ef02_6367f3fa",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:20:41Z",
+      "side": 1,
+      "message": "Used lg2::info().",
+      "parentUuid": "f40747a7_4acabd76",
       "revId": "f7092c9d0e1695e8c0348d1a80e10a6b0b2d2b12",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
