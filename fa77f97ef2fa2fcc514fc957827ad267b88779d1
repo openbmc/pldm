@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43db299f_62537da6",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:37Z",
+      "side": 1,
+      "message": "Squashed it to the commit in front of this.",
+      "parentUuid": "6ccd99e7_455e4ff3",
+      "revId": "fa77f97ef2fa2fcc514fc957827ad267b88779d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92951f76_623e7ec5",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-10-05T03:54:26Z",
       "side": 1,
       "message": "return error?",
+      "revId": "fa77f97ef2fa2fcc514fc957827ad267b88779d1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17056e03_50ceee45",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:37Z",
+      "side": 1,
+      "message": "We still need to call dfClose to the file. Added a comment to clarify.",
+      "parentUuid": "92951f76_623e7ec5",
       "revId": "fa77f97ef2fa2fcc514fc957827ad267b88779d1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
