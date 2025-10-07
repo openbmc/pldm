@@ -527,6 +527,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb633807_fba21099",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:07Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "0e146e7b_def1c7f9",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8ff3b90_c6daaa5a",
@@ -716,6 +734,24 @@
       "side": 1,
       "message": "Add description about that in code.",
       "parentUuid": "5ca6d16e_555c907f",
+      "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fdf72c5_1766fda9",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:07Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ffa4fde7_801d692d",
       "revId": "27a49fabca81c1db84ebed69b5f64a90ab31b93f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

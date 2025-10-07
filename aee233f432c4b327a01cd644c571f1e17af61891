@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "212961b6_a2701a54",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edfe6d48_a4d76e82",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e82bdefc_b02aca8e",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-10-05T03:52:01Z",
       "side": 1,
       "message": "Add End of line before return. Apply the same for other code.",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e08797ec_13895a85",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e82bdefc_b02aca8e",
       "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0aa213a_d87f652e",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddd0666c_22f4ae69",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05266e77_cccbbada",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-10-05T03:52:01Z",
       "side": 1,
       "message": "Discription.",
+      "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "510d1ab3_011e9ee9",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-07T09:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05266e77_cccbbada",
       "revId": "aee233f432c4b327a01cd644c571f1e17af61891",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
