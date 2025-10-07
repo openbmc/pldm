@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c678e429_35b4d408",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-10-07T05:29:00Z",
+      "side": 1,
+      "message": "This still tells that the terminus name can be empty, correct? We are not removing the code that removes the default terminus name rather I think you are just removing the piece of code that logs an error when there is an empty terminus name?\n\nIf yes, can we re-write the commit message?",
+      "range": {
+        "startLine": 212,
+        "startChar": 4,
+        "endLine": 212,
+        "endChar": 29
+      },
+      "revId": "2d97bdb813bf860b50b7eb9fd4464e028c1308d6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
