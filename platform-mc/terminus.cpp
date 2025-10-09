@@ -139,6 +139,20 @@ void Terminus::parseTerminusPDRs()
                 sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));
                 break;
             }
+            case PLDM_STATE_SENSOR_PDR:
+            {
+                auto parsedPdr = parseStateSensorPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                stateSensorPdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             case PLDM_NUMERIC_SENSOR_PDR:
             {
                 auto parsedPdr = parseNumericSensorPDR(pdr);
@@ -253,6 +267,17 @@ void Terminus::addNextSensorFromPDRs()
         sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
             event, std::bind(std::mem_fn(&Terminus::addCompactNumericSensor),
                              this, pdr));
+    }
+    else if (pdrIt <
+             numericSensorPdrs.size() + compactNumericSensorPdrs.size() +
+                 stateSensorPdrs.size())
+    {
+        pdrIt -= (numericSensorPdrs.size() + compactNumericSensorPdrs.size());
+        const auto& pdr = stateSensorPdrs[pdrIt];
+        // Defer adding the next State Sensor
+        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
+            event,
+            std::bind(std::mem_fn(&Terminus::addStateSensor), this, pdr));
     }
     else
     {
@@ -404,6 +429,41 @@ std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(
                   decodedPdr->container.entity_container_id};
 
     return std::make_shared<EntityAuxiliaryNames>(key, nameStrings);
+}
+
+std::shared_ptr<pldm_state_sensor_pdr> Terminus::parseStateSensorPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    auto pdr = std::make_shared<pldm_state_sensor_pdr>();
+    auto pdrPtr =
+        reinterpret_cast<const pldm_state_sensor_pdr*>(pdrData.data());
+    if (pdrData.size() < sizeof(pldm_state_sensor_pdr))
+    {
+        return nullptr;
+    }
+    *pdr = *pdrPtr;
+    return pdr;
+}
+void Terminus::addStateSensor(const std::shared_ptr<pldm_state_sensor_pdr> pdr)
+{
+    // ARP: TODO - Need to rewrite this
+    auto sensorId = pdr->sensor_id;
+    auto sensorNames = getSensorNames(sensorId);
+
+    if (sensorNames.empty())
+    {
+        lg2::error(
+            "Terminus ID {TID}: Failed to get name for State Sensor {SID}",
+            "TID", tid, "SID", sensorId);
+        addNextSensorFromPDRs();
+        return;
+    }
+
+    std::string sensorName = sensorNames.front();
+    auto sensor = std::make_shared<StateSensor>(tid, true, pdr, sensorName,
+                                                inventoryPath);
+    stateSensors.emplace_back(sensor);
+    addNextSensorFromPDRs();
 }
 
 std::shared_ptr<pldm_numeric_sensor_value_pdr> Terminus::parseNumericSensorPDR(

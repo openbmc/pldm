@@ -4,6 +4,7 @@
 #include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
+#include "state_sensor.hpp"
 #include "terminus.hpp"
 
 #include <libpldm/fru.h>
@@ -146,6 +147,9 @@ class Terminus
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 
+    /* List of all State sensors */
+    std::vector<std::shared_ptr<StateSensor>> stateSensors{};
+
     /** @brief The flag indicates that the terminus FIFO contains a large
      *         message that will require a multipart transfer via the
      *         PollForPlatformEvent command
@@ -192,12 +196,18 @@ class Terminus
     void addNumericSensor(
         const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr);
 
+    void addStateSensor(const std::shared_ptr<pldm_state_sensor_pdr> pdr);
+
     /** @brief Parse the numeric sensor PDRs
      *
      *  @param[in] pdrData - the response PDRs from GetPDR command
      *  @return pointer to numeric sensor info struct
      */
     std::shared_ptr<pldm_numeric_sensor_value_pdr> parseNumericSensorPDR(
+        const std::vector<uint8_t>& pdrData);
+
+    /* Add parsing methods */
+    std::shared_ptr<pldm_state_sensor_pdr> parseStateSensorPDR(
         const std::vector<uint8_t>& pdrData);
 
     /** @brief Parse the sensor Auxiliary name PDRs
@@ -314,6 +324,9 @@ class Terminus
     /** @brief Compact Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief State Sensor PDR list */
+    std::vector<std::shared_ptr<pldm_state_sensor_pdr>> stateSensorPdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;
