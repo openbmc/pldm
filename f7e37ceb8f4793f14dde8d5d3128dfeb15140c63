@@ -312,6 +312,30 @@
       },
       "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79fe4e27_a0b0c872",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-09T10:22:01Z",
+      "side": 1,
+      "message": "\u003e Is this really a problem?  Google logging, Rust logging, they all put the \"level\" into the output.  This is pretty standard practice these days.  If it is just that we don\u0027t like the \u003c1\u003e and would rather have INFO or \u003cI\u003e we can make that change in phosphor-logging.\n\u003e \n\nLooking at how other logging utilizes like `dmesg` strip out the \u003cn\u003e while displaying logs, was thinking if this needs to be implemented within `pldmtool` or with in `logging`. we seem to have `LG2_FORMAT` environment variable, right ? setting it to just \"%m\" for pldmtool would not work ? \n\n\u003e I don\u0027t think we should explicitly avoid the preferred logging in common code just because we are also using that code in a CLI.\n\nagree, I am not against using lg2 in common code - just wanted things to be a little cleaner.",
+      "parentUuid": "09e502ef_821f4878",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 18
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
