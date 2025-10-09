@@ -16,6 +16,24 @@
       "message": "can you point where pldmtool uses the lg2 ? I don\u0027t think we do -  at the moment.\n\nI was able to build pldm using subprojects without this commit just to re-confirm.",
       "revId": "ced748b71734a5c19d63d29b06c81aaf30f78291",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5a71c86_50c73545",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-09T21:16:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8efdf2b6_e8274275",
+      "revId": "ced748b71734a5c19d63d29b06c81aaf30f78291",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
