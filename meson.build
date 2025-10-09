@@ -131,7 +131,7 @@ conf_data.set(
 conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
 conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
 if get_option('transport-implementation') == 'mctp-demux'
-    conf_data.set('PLDM_TRANSPORT_WITH_MCTP_DEMUX', 1)
+    conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 elif get_option('transport-implementation') == 'af-mctp'
     conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
@@ -274,6 +274,7 @@ executable(
     'platform-mc/manager.cpp',
     'platform-mc/sensor_manager.cpp',
     'platform-mc/numeric_sensor.cpp',
+    'platform-mc/state_sensor.cpp',
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
     oem_files,
