@@ -141,6 +141,10 @@ conf_data.set(
 )
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 conf_data.set('UPDATE_TIMEOUT_SECONDS', get_option('update-timeout-seconds'))
+conf_data.set(
+    'USE_DEFAULT_TERMINUS_NAME',
+    get_option('use_default_terminus_name').enabled(),
+)
 
 configure_file(output: 'config.h', configuration: conf_data)
 

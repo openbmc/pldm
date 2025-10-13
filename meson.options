@@ -223,3 +223,11 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249,
 )
+
+# This option allows the user to enable or disable the use of the default terminus name.
+option(
+    'use_default_terminus_name',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Use fallback terminus name "Terminus_{tid}" when no terminus name.',
+)
