@@ -223,3 +223,11 @@ option(
                     `GetSensorReading` if the sensor need to be updated.''',
     value: 249,
 )
+
+# This option allows platforms to control whether a fallback terminus name is used when none is provided.
+option(
+    'enable-fallback-terminus-name',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable fallback terminus name "Terminus_{tid}" when no terminus name is found.',
+)
