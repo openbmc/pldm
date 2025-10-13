@@ -230,4 +230,11 @@ option(
     type: 'feature',
     value: 'disabled',
     description: 'Enable inotify-based firmware update package monitoring',
+
+# This option allows platforms to control whether a fallback terminus name is used when none is provided.
+option(
+    'enable-fallback-terminus-name',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable fallback terminus name "Terminus_{tid}" when no terminus name is found.',
 )

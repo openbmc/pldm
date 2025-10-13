@@ -141,6 +141,10 @@ conf_data.set(
 )
 conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
 conf_data.set('UPDATE_TIMEOUT_SECONDS', get_option('update-timeout-seconds'))
+conf_data.set(
+    'ENABLE_FALLBACK_TERMINUS_NAME',
+    get_option('enable-fallback-terminus-name').enabled(),
+)
 
 # Firmware update inotify option
 if get_option('fw-update-pkg-inotify').allowed()
