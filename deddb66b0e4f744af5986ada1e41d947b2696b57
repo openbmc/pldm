@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1af3ea14_fc8c73d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 59
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-13T09:20:54Z",
+      "side": 1,
+      "message": "Replace “Facebook” with “Meta” in the log string.",
+      "revId": "deddb66b0e4f744af5986ada1e41d947b2696b57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
