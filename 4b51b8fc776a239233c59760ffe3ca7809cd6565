@@ -67,6 +67,24 @@
       "message": "Can we use `const pldm_tid_t\u0026 tid`, because tid is not changed in the function?\nThe same comment for others functions.",
       "revId": "4b51b8fc776a239233c59760ffe3ca7809cd6565",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c36c84f_fe90ff23",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-13T08:13:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "343c9c17_5a58afc9",
+      "revId": "4b51b8fc776a239233c59760ffe3ca7809cd6565",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
