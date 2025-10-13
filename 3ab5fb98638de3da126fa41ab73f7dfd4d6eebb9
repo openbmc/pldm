@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f525dc_dceb0eb9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-13T14:57:17Z",
+      "side": 1,
+      "message": "nit: `Add PDR \u0026 BIOS support for Balcones`",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44cd867b_21fbb750",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-13T14:57:17Z",
+      "side": 1,
+      "message": "drop since this does not convey any extra information.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4b9a102_c3207165",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-13T14:57:17Z",
+      "side": 1,
+      "message": "you pushed changes with gmail ? and signed off with in.ibm.com ? was this intentional ?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 65
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2658248_269c7c9a",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-13T14:57:17Z",
+      "side": 1,
+      "message": "don\u0027t think we need an explicit `.string()` , std::filesystem supports overloaded \u003d\u003d operator to compare against strings.",
+      "range": {
+        "startLine": 160,
+        "startChar": 65,
+        "endLine": 160,
+        "endChar": 74
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73d7fccc_20528047",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-13T14:57:17Z",
+      "side": 1,
+      "message": "merge both if\u0027s with `\u0026\u0026`",
+      "range": {
+        "startLine": 158,
+        "startChar": 9,
+        "endLine": 160,
+        "endChar": 74
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
