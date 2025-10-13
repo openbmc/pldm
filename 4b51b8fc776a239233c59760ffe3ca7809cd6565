@@ -33,6 +33,40 @@
       "message": "Hi @rushtotom@gmail.com, @deepak.kodihalli.83@gmail.com, @manojkiran.eda@gmail.com,\n\nCould you please help review this series of commits?\n\nThanks.",
       "revId": "4b51b8fc776a239233c59760ffe3ca7809cd6565",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94035bab_fed94fef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 74
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:19:19Z",
+      "side": 1,
+      "message": "Let move the utils.* to the commit use its functions.\nThe remain code is good to me.",
+      "revId": "4b51b8fc776a239233c59760ffe3ca7809cd6565",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "343c9c17_5a58afc9",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 74
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:19:19Z",
+      "side": 1,
+      "message": "Can we use `const pldm_tid_t\u0026 tid`, because tid is not changed in the function?\nThe same comment for others functions.",
+      "revId": "4b51b8fc776a239233c59760ffe3ca7809cd6565",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
