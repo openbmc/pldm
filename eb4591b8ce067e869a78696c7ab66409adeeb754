@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bd16e4d_90fd282c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 57
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:29:07Z",
+      "side": 1,
+      "message": "I don\u0027t have much comment about this patch set because it is OEM Meta code.",
+      "revId": "eb4591b8ce067e869a78696c7ab66409adeeb754",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7a2cb41_978facc4",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:29:07Z",
+      "side": 1,
+      "message": "The utils.* can be moved to this patch set because its\u0027 functions are used here.",
+      "revId": "eb4591b8ce067e869a78696c7ab66409adeeb754",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a723bd8_5bc7cb4b",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:29:07Z",
+      "side": 1,
+      "message": "How about moving the parsing the `SYSTEM_PROCESSOR_ERR` to one sub function and call it here?",
+      "revId": "eb4591b8ce067e869a78696c7ab66409adeeb754",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1aaac510_283c582f",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:29:07Z",
+      "side": 1,
+      "message": "Are you still using Facebook instead of Meta?",
+      "revId": "eb4591b8ce067e869a78696c7ab66409adeeb754",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f21dddcb_a42fb280",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:29:07Z",
+      "side": 1,
+      "message": "For those long code in case {}. Can you add sub function and call it here?",
+      "revId": "eb4591b8ce067e869a78696c7ab66409adeeb754",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8da0d83_a8139e80",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:29:07Z",
+      "side": 1,
+      "message": "For those long code in case {}. Can you add sub function and call it here?",
+      "revId": "eb4591b8ce067e869a78696c7ab66409adeeb754",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "858489fb_de2e7db6",
+        "filename": "oem/meta/oem_meta.hpp",
+        "patchSetId": 57
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-13T07:29:07Z",
+      "side": 1,
+      "message": "Seem these change should be moved to first commit add oem_meta.hpp",
+      "revId": "eb4591b8ce067e869a78696c7ab66409adeeb754",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
