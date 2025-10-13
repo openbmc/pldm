@@ -68,6 +68,24 @@
       "parentUuid": "df345c2b_a47c8ed9",
       "revId": "8bf7468866fe85238e549bbafe486a26ddca2bff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "628d627f_5aae63c7",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-10-13T05:30:56Z",
+      "side": 1,
+      "message": "agree with @thu@os.amperecomputing.com here",
+      "parentUuid": "7c17dab2_2c474c7a",
+      "revId": "8bf7468866fe85238e549bbafe486a26ddca2bff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
