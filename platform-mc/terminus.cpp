@@ -211,7 +211,14 @@ void Terminus::parseTerminusPDRs()
 
     if (terminusName.empty())
     {
+#ifdef USE_DEFAULT_TERMINUS_NAME
         terminusName = std::format("Terminus_{}", tid);
+#else
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
+            "TID", tid);
+        return;
+#endif
     }
 
     if (createInventoryPath(terminusName))
