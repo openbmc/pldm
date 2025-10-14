@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f09d8a5a_2115905f",
+        "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T20:08:10Z",
+      "side": 1,
+      "message": "This is not an upstream tool.  We can\u0027t take this here like this.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 31
+      },
+      "revId": "4280a43eddc1cfc0cd5d044f3f56ccf2dbf4c932",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
