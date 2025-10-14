@@ -336,6 +336,30 @@
       },
       "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75044b0d_ed942c49",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T18:56:01Z",
+      "side": 1,
+      "message": "\u003e we seem to have LG2_FORMAT environment variable, right ? setting it to just \"%m\" for pldmtool would not work ?\n\nThe challenge would be that the phosphor-logging library likely reads the variable before you have any ability to override it in the executable itself.  You\u0027d have to do some strange things like having an executable that first sets the variable, then fork/exec\u0027s (itself?) in order to get the variable reapplied.  To me, this doesn\u0027t seem like valuable work.",
+      "parentUuid": "79fe4e27_a0b0c872",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 18
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
