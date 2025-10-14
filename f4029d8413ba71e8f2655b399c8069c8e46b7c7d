@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc4b58c_14266ab5",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T20:11:55Z",
+      "side": 1,
+      "message": "Why are we calling logging-create directly here??",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 53
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a2c489_30f3352c",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T20:11:55Z",
+      "side": 1,
+      "message": "Please don\u0027t add FUNC.  phosphor-logging already includes this information in the messages.",
+      "range": {
+        "startLine": 611,
+        "startChar": 72,
+        "endLine": 612,
+        "endChar": 44
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ec0091_c68ced60",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T20:11:55Z",
+      "side": 1,
+      "message": "I\u0027d prefer not to log it into the journal and in phosphor-logging.",
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "989f46b7_7027540c",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T20:11:55Z",
+      "side": 1,
+      "message": "We should be clearer here that this was an \"unexpected event\".  If we don\u0027t have parsing for it, we want that to be very obvious that we\u0027re missing code.",
+      "range": {
+        "startLine": 621,
+        "startChar": 0,
+        "endLine": 624,
+        "endChar": 74
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
