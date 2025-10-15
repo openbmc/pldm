@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50fb76b4_bbd808de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2025-10-15T13:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44cd867b_21fbb750",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b812f274_f06b810b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2025-10-15T13:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94f525dc_dceb0eb9",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4b9a102_c3207165",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-10-13T14:57:17Z",
       "side": 1,
       "message": "you pushed changes with gmail ? and signed off with in.ibm.com ? was this intentional ?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 65
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d282d1_fcde6753",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2025-10-15T13:51:09Z",
+      "side": 1,
+      "message": "Changing back to gmail",
+      "parentUuid": "b4b9a102_c3207165",
       "range": {
         "startLine": 22,
         "startChar": 0,
@@ -106,6 +178,54 @@
       "writtenOn": "2025-10-13T14:57:17Z",
       "side": 1,
       "message": "merge both if\u0027s with `\u0026\u0026`",
+      "range": {
+        "startLine": 158,
+        "startChar": 9,
+        "endLine": 160,
+        "endChar": 74
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c95964ab_d9cb99e1",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2025-10-15T13:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2658248_269c7c9a",
+      "range": {
+        "startLine": 160,
+        "startChar": 65,
+        "endLine": 160,
+        "endChar": 74
+      },
+      "revId": "3ab5fb98638de3da126fa41ab73f7dfd4d6eebb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64c4d1a8_e005bb91",
+        "filename": "libpldmresponder/platform_config.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2025-10-15T13:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73d7fccc_20528047",
       "range": {
         "startLine": 158,
         "startChar": 9,
