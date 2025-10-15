@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "80e7ac6c_f5a1332f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 53
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-15T06:21:21Z",
+      "side": 1,
+      "message": "General comment that applies to subsequent commits that introduce something testable: please add a tested section for testing done on an (upstream) platform",
+      "revId": "fdd5b181d94158995d8550a888428acf9c05bec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1d682f20_32bc766a",
@@ -14,6 +31,23 @@
       "writtenOn": "2025-10-15T02:18:56Z",
       "side": 1,
       "message": "Moved the dBusHandler member to https://gerrit.openbmc.org/c/openbmc/pldm/+/82138.",
+      "revId": "fdd5b181d94158995d8550a888428acf9c05bec5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e27dca1_df51858c",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-15T06:21:21Z",
+      "side": 1,
+      "message": "Do we really need multiple instances of oemMETA? Other OEMs don\u0027t seem to require that.\n\nNit: I don\u0027t think META had to be all caps here in the name (it makes sensor for IBM).",
       "revId": "fdd5b181d94158995d8550a888428acf9c05bec5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
