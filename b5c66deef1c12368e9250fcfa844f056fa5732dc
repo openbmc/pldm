@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5fdc658_856fda5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-15T07:35:55Z",
+      "side": 1,
+      "message": "Since the commits [meson: pldmtool: fix subproject build] and [platform: Function to send the PDR Repo Change event to Host] have been merged into the latest master branch, I have updated the content of the patch accordingly.\n\n[meson: pldmtool: fix subproject build]: https://gerrit.openbmc.org/c/openbmc/pldm/+/84195\n\n[platform: Function to send the PDR Repo Change event to Host]:\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/79878",
+      "revId": "b5c66deef1c12368e9250fcfa844f056fa5732dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
