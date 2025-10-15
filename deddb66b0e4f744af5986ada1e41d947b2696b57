@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab3b432f_ceee82c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 59
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-15T06:14:55Z",
+      "side": 1,
+      "message": "Can you add a Tested section? On what upstream platform have the OEM events been tested?",
+      "revId": "deddb66b0e4f744af5986ada1e41d947b2696b57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1af3ea14_fc8c73d0",
