@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80373449_bf924d1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-15T18:39:25Z",
+      "side": 1,
+      "message": "Can you add a little detail - please see https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#testing.\n\nGeneral comment for rest of the patches.",
+      "revId": "a6a235eee2fb9157febbd3b6fbaf51e7895cbc0d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
