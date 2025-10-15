@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2826d6a_1b6e2abe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 75
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-15T18:38:04Z",
+      "side": 1,
+      "message": "You need to be on the Wiwynn CCLA - see https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md and contact your CCLA manager to get yourself (and other authors of this series that are not on the CCLA) added.",
+      "parentUuid": "f17cf1ab_58ad6f00",
+      "range": {
+        "startLine": 13,
+        "startChar": 15,
+        "endLine": 13,
+        "endChar": 22
+      },
+      "revId": "9251d8815328b8130643e82d01397267ea65a396",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a91b2dd5_357efd7c",
         "filename": "oem/meta/utils.cpp",
         "patchSetId": 75
