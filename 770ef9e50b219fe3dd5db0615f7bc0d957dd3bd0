@@ -16,6 +16,24 @@
       "message": "How feasible would it be to use JSON rather than this human-oriented formatting?  Isn\u0027t a crashdump more likely to be used by software than humans anyhow?",
       "revId": "770ef9e50b219fe3dd5db0615f7bc0d957dd3bd0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d503536_43305a58",
+        "filename": "oem/meta/libpldmresponder/file_io_type_crash_dump.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T00:29:42Z",
+      "side": 1,
+      "message": "I think we can leave this kind of improvement for a future patch. Would you prefer that I refactor it now instead?",
+      "parentUuid": "72b97284_07b75711",
+      "revId": "770ef9e50b219fe3dd5db0615f7bc0d957dd3bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
