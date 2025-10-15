@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ec7111b_6ac4628a",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T02:26:17Z",
+      "side": 1,
+      "message": "Currently, there are no logging interfaces for this kind of event. Do you have any suggestions on how to handle it?",
+      "parentUuid": "0bc4b58c_14266ab5",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 53
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4a2c489_30f3352c",
         "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
         "patchSetId": 44
@@ -37,6 +61,30 @@
       "writtenOn": "2025-10-14T20:11:55Z",
       "side": 1,
       "message": "Please don\u0027t add FUNC.  phosphor-logging already includes this information in the messages.",
+      "range": {
+        "startLine": 611,
+        "startChar": 72,
+        "endLine": 612,
+        "endChar": 44
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38634bac_2cd761f0",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T02:26:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4a2c489_30f3352c",
       "range": {
         "startLine": 611,
         "startChar": 72,
@@ -66,6 +114,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7e5e7ee5_b011ba76",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T02:26:17Z",
+      "side": 1,
+      "message": "Do you mean removing all lg2::info and lg2::error? I think it’s convenient to keep them for our testing, and lg2::commit logs into the journal as well.",
+      "parentUuid": "c2ec0091_c68ced60",
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "989f46b7_7027540c",
         "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
         "patchSetId": 44
@@ -77,6 +143,30 @@
       "writtenOn": "2025-10-14T20:11:55Z",
       "side": 1,
       "message": "We should be clearer here that this was an \"unexpected event\".  If we don\u0027t have parsing for it, we want that to be very obvious that we\u0027re missing code.",
+      "range": {
+        "startLine": 621,
+        "startChar": 0,
+        "endLine": 624,
+        "endChar": 74
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dac22cd_29831687",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T02:26:17Z",
+      "side": 1,
+      "message": "Actually, the events that fall under this default label may not be unexpected. Our event system splits events across multiple locations during processing and then combines them once the process is complete.",
+      "parentUuid": "989f46b7_7027540c",
       "range": {
         "startLine": 621,
         "startChar": 0,
