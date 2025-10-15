@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "45b1c3c2_66297963",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 75
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-15T07:59:50Z",
+      "side": 1,
+      "message": "I don\u0027t see the name there (last update is 25 Feb).",
+      "parentUuid": "c7abec1a_0c60baec",
+      "range": {
+        "startLine": 13,
+        "startChar": 15,
+        "endLine": 13,
+        "endChar": 22
+      },
+      "revId": "9251d8815328b8130643e82d01397267ea65a396",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a91b2dd5_357efd7c",
         "filename": "oem/meta/utils.cpp",
         "patchSetId": 75
