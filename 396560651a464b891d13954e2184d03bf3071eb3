@@ -51,6 +51,24 @@
       "parentUuid": "d8012509_280d9d67",
       "revId": "396560651a464b891d13954e2184d03bf3071eb3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d62ee32b_d7519d08",
+        "filename": "oem/meta/libpldmresponder/file_io_type_bios_version.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-15T18:42:12Z",
+      "side": 1,
+      "message": "Where is it set to a non-zero value?",
+      "parentUuid": "39e03f2d_9393197e",
+      "revId": "396560651a464b891d13954e2184d03bf3071eb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
