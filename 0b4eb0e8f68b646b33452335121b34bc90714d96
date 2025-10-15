@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fecee3e_7e7fb47e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "I suppose you mean \"pass\" and not \"bypass\", isn\u0027t it?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e0e91e29_2b33713d",
@@ -14,6 +31,210 @@
       "writtenOn": "2025-10-07T05:16:42Z",
       "side": 1,
       "message": "Hi @rushtotom@gmail.com, @manojkiran.eda@gmail.com and @deepak.kodihalli.83@gmail.com\nWhen you have time, please help review this change. Any feedback would be appreciated!\n\ncc: @patrick@stwcx.xyz",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a72f7a87_03913626",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Please move all function definitions to .cpp file.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8186a0c_3478e6f8",
+        "filename": "fw-update/item_based_update.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "I don\u0027t see a reason why we need to create a new .cpp and .hpp file just to implement this one function. Is there any reason item_based_update_manager cannot inherit from the Update Dbus interface?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "661e9a33_555412e9",
+        "filename": "fw-update/item_based_update.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Please process the Fd asynchronously and not block the D-Bus call.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2938810_facf744d",
+        "filename": "fw-update/item_based_update.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Do you need to specify this default destructor, wouldn\u0027t compiler generate the correct behavior automatically?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ccabc7b_ad7038b0",
+        "filename": "fw-update/item_based_update.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Why do we need this package var? I don\u0027t see this being used?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2e0ded0_0cf25319",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "IS activation interface implemented in server which further takes over the flow?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07af396_67e66e30",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Please dup the fd and schedule rest of flow for later processing.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b901aaf_4ad2d588",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Why are you setting status as Active in clearActivationInfo?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e35d61ef_de2aaab5",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Is there a reason to make progressPercentage a class var. If not, please pass the progressPercentage directly to API or better do this in caller itself.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38723ba6_873d550e",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Rename to ItemUpdater or ItemUpdateManager.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98fcc352_c766a148",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Why this is a class var? Can\u0027t this be passed to APIs directly?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d0fbc00_c1e4e939",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-15T20:34:04Z",
+      "side": 1,
+      "message": "Same as above.",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
