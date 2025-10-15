@@ -22,6 +22,30 @@
       },
       "revId": "4280a43eddc1cfc0cd5d044f3f56ccf2dbf4c932",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a438b23_6f9e58c8",
+        "filename": "oem/meta/libpldmresponder/file_io_type_apml_alert.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T02:22:14Z",
+      "side": 1,
+      "message": "The entire APML alert feature relies on this tool. I think keeping the header file helps maintain consistency across all file_io* structures.",
+      "parentUuid": "f09d8a5a_2115905f",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 31
+      },
+      "revId": "4280a43eddc1cfc0cd5d044f3f56ccf2dbf4c932",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
