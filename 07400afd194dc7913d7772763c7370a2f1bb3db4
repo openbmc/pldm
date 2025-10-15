@@ -22,6 +22,30 @@
       },
       "revId": "07400afd194dc7913d7772763c7370a2f1bb3db4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5462f2a1_e7c1c244",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T09:19:08Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "6a174ed7_4cc163a7",
+      "range": {
+        "startLine": 427,
+        "startChar": 40,
+        "endLine": 427,
+        "endChar": 62
+      },
+      "revId": "07400afd194dc7913d7772763c7370a2f1bb3db4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
