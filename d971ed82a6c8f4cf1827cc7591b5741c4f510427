@@ -16,6 +16,24 @@
       "message": "Can we make this an RAII fd?",
       "revId": "d971ed82a6c8f4cf1827cc7591b5741c4f510427",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bc06804_9f763d2b",
+        "filename": "oem/meta/libpldmresponder/file_io_type_http_boot.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T06:36:25Z",
+      "side": 1,
+      "message": "This can be done in future patches. For now, this file descriptor is handled by the close() system call.",
+      "parentUuid": "110a1925_c60fb765",
+      "revId": "d971ed82a6c8f4cf1827cc7591b5741c4f510427",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
