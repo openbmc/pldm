@@ -22,6 +22,30 @@
       },
       "revId": "9251d8815328b8130643e82d01397267ea65a396",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14c95820_43b07687",
+        "filename": "oem/meta/utils.cpp",
+        "patchSetId": 75
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-15T00:21:05Z",
+      "side": 1,
+      "message": "This unusual implementation exists because the Meta OEM codebase relies on certain EM interfaces that aren’t supported upstream. More importantly, the two functions you mentioned are used in almost every function within the Meta OEM code. My implementation helps reduce the effort required to maintain the downstream patches.",
+      "parentUuid": "8929af1d_fe9cd179",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 1
+      },
+      "revId": "9251d8815328b8130643e82d01397267ea65a396",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
