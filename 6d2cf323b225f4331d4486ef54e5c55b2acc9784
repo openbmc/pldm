@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44d70ae7_3b309730",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T07:10:20Z",
+      "side": 1,
+      "message": "So this is a case where the device does support PLDM Type 2 on your platform but you don\u0027t want to talk PLDM Type 2 to the device?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
