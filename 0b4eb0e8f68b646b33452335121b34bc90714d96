@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f4e2d6d_f4635759",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Why would this be in the same commit? Is this to allow concurrent StartUpdate invocations? If so, that should be a separate commit. Introduce one FD at a time StartUpdate, then add code to allow concurrent such updates.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bec8d495_daf00ac8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "I don\u0027t follow what you mean by each instance here.",
+      "range": {
+        "startLine": 20,
+        "startChar": 33,
+        "endLine": 21,
+        "endChar": 65
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8fecee3e_7e7fb47e",
         "filename": "/COMMIT_MSG",
         "patchSetId": 60
@@ -14,6 +54,69 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "I suppose you mean \"pass\" and not \"bypass\", isn\u0027t it?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5f716a4_c03a1490",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "By legacy do you mean the inotify method? Is it possible to have both inotify and D-Bus updates in parallel? I think it\u0027s better to keep inotify flow out of AggregateManager.",
+      "range": {
+        "startLine": 29,
+        "startChar": 65,
+        "endLine": 29,
+        "endChar": 71
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d446323c_9411ad30",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "rephrase?",
+      "range": {
+        "startLine": 29,
+        "startChar": 38,
+        "endLine": 29,
+        "endChar": 59
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "301359d7_a6f8afc7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Some more details please? What about concurrent udpates? Did this need any bmcweb or other repo changes?",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +157,126 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f13a2e13_911de61a",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Isn\u0027t the software ID supposed to be checked?",
+      "range": {
+        "startLine": 62,
+        "startChar": 21,
+        "endLine": 62,
+        "endChar": 22
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09390e2f_060ee430",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Is there a reason to copy these? Can they be moved, or better - create the updaters at an upper layer and map them to software IDs?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 59
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78417fad_c0b1a22c",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Where is this used?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc3a3b5_3b8196f5",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "No need to dup this and other members that are in the parent class?",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 17
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bb50a75_7120a2b3",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Why was this changed?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e25d66de_8d24d189",
+        "filename": "fw-update/firmware_inventory.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "I don\u0027t think FWInventory should be aware of a scope beyond the inventory and the way to update this inventory. Aggregation of such inventory item updaters should happen in an upper layer (maybe the one that creates all the FW inventories).",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8186a0c_3478e6f8",
         "filename": "fw-update/item_based_update.cpp",
         "patchSetId": 60
@@ -82,6 +305,24 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "Please process the Fd asynchronously and not block the D-Bus call.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02a48f3a_e8e8ee49",
+        "filename": "fw-update/item_based_update.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "661e9a33_555412e9",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -122,6 +363,80 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4b89114_d186a84a",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Any possibility of code reuse as some of this pkg processing is in the legacy update manager file as well?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1cf7b0c_44f3a148",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Some of these checks happen here and some in the callers? What\u0027s the rationale behind not doing all of them at one place?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6726fb7c_65e4f137",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Let\u0027s use RAII here else one needs to remember to do this cleanup in all the error paths.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 18
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "066a72ab_754ff05c",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Why do we need this copy?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2e0ded0_0cf25319",
         "filename": "fw-update/item_based_update_manager.cpp",
         "patchSetId": 60
@@ -139,6 +454,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc15c245_6594a58a",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Some of these checks happen here and some in the caller? What\u0027s the rationale behind not doing all of them at one place?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d07af396_67e66e30",
         "filename": "fw-update/item_based_update_manager.cpp",
         "patchSetId": 60
@@ -150,6 +482,23 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "Please dup the fd and schedule rest of flow for later processing.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c14cbd0_8d5adda7",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Can this end up mapping the same package multiple times for different targets/FDs? Do we need any boundary/sanity checks?",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -207,6 +556,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b603bf7e_23154fb1",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "38723ba6_873d550e",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98fcc352_c766a148",
         "filename": "fw-update/item_based_update_manager.hpp",
         "patchSetId": 60
@@ -235,6 +602,47 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "Same as above.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bfd98f1_f637303e",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "Why do we need both this and the span?",
+      "parentUuid": "0d0fbc00_c1e4e939",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b15c21d0_b7ba7bc4",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-16T12:40:43Z",
+      "side": 1,
+      "message": "why is this needed?",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 164,
+        "endChar": 10
+      },
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
