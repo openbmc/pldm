@@ -69,6 +69,24 @@
       "parentUuid": "39e03f2d_9393197e",
       "revId": "396560651a464b891d13954e2184d03bf3071eb3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91afed4c_9ce024f0",
+        "filename": "oem/meta/libpldmresponder/file_io_type_bios_version.hpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-16T01:40:02Z",
+      "side": 1,
+      "message": "In the explicit constructor of BIOSVersionHandler",
+      "parentUuid": "d62ee32b_d7519d08",
+      "revId": "396560651a464b891d13954e2184d03bf3071eb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
