@@ -124,6 +124,24 @@
       "parentUuid": "2e74e318_dfac1412",
       "revId": "d35e80601c723ad242823af733ef2953f7c5f758",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd608b7_9e2f3b17",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 37
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-16T01:41:01Z",
+      "side": 1,
+      "message": "Yes, no such plan.",
+      "parentUuid": "6a8a63bf_a7438d89",
+      "revId": "d35e80601c723ad242823af733ef2953f7c5f758",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
