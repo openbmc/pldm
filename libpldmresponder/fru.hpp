@@ -150,6 +150,16 @@ class FruImpl
         return associatedEntityMap;
     }
 
+    /* @brief Method to set the oem platform handler in FRU handler class
+     *
+     * @param[in] handler - oem platform handler
+     */
+    inline void setOemPlatformHandler(
+        pldm::responder::oem_platform::Handler* handler)
+    {
+        oemPlatformHandler = handler;
+    }
+
     /** @brief Get pldm entity by the object path
      *
      *  @param[in] intfMaps - D-Bus interfaces and the associated property
@@ -235,6 +245,9 @@ class FruImpl
     pldm::responder::oem_fru::Handler* oemFruHandler = nullptr;
     dbus::ObjectValueTree objects;
 
+    /** @OEM platform handler */
+    pldm::responder::oem_platform::Handler* oemPlatformHandler;
+
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
@@ -248,6 +261,16 @@ class FruImpl
     void populateRecords(const dbus::InterfaceMap& interfaces,
                          const fru_parser::FruRecordInfos& recordInfos,
                          const pldm_entity& entity);
+
+    /** @brief Add hotplug record that was modified or added to the PDR entry
+     *  HotPlug is a feature where a FRU can be removed or added when
+     *  the system is running, without needing it to power off.
+     *
+     *  @param[in] pdrEntry - PDR record structure in PDR repository
+     *
+     *  @return record handle of added or modified hotplug record
+     */
+    uint32_t addHotPlugRecord(pldm::responder::pdr_utils::PdrEntry pdrEntry);
 
     /** @brief Deletes a FRU record from record set table.
      *  @param[in] rsi - the FRU Record Set Identifier
@@ -332,6 +355,15 @@ class Handler : public CmdHandler
         const
     {
         return impl.getAssociateEntityMap();
+    }
+
+    /* @brief Method to set the oem platform  handler in host pdr handler class
+     *
+     * @param[in] handler - oem platform handler
+     */
+    void setOemPlatformHandler(pldm::responder::oem_platform::Handler* handler)
+    {
+        return impl.setOemPlatformHandler(handler);
     }
 
     /** @brief Handler for GetFRURecordByOption
