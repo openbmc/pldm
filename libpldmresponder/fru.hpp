@@ -15,6 +15,8 @@
 #include <variant>
 #include <vector>
 
+using namespace pldm::utils;
+
 namespace pldm
 {
 
@@ -69,7 +71,8 @@ class FruImpl
             pldm_entity_association_tree* entityTree,
             pldm_entity_association_tree* bmcEntityTree) :
         parser(configPath, fruMasterJsonPath), pdrRepo(pdrRepo),
-        entityTree(entityTree), bmcEntityTree(bmcEntityTree)
+        entityTree(entityTree), bmcEntityTree(bmcEntityTree),
+        oemUtilsHandler(nullptr)
     {}
 
     /** @brief Total length of the FRU table in bytes, this includes the pad
@@ -148,6 +151,15 @@ class FruImpl
         getAssociateEntityMap() const
     {
         return associatedEntityMap;
+    }
+
+    /* @brief Method to set the oem utils handler in FRU handler class
+     *
+     * @param[in] handler - oem utils handler
+     */
+    inline void setOemUtilsHandler(pldm::responder::oem_utils::Handler* handler)
+    {
+        oemUtilsHandler = handler;
     }
 
     /** @brief Get pldm entity by the object path
@@ -235,6 +247,9 @@ class FruImpl
     pldm::responder::oem_fru::Handler* oemFruHandler = nullptr;
     dbus::ObjectValueTree objects;
 
+    /** @OEM Utils handler */
+    pldm::responder::oem_utils::Handler* oemUtilsHandler;
+
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 
     /** @brief populateRecord builds the FRU records for an instance of FRU and
@@ -248,6 +263,16 @@ class FruImpl
     void populateRecords(const dbus::InterfaceMap& interfaces,
                          const fru_parser::FruRecordInfos& recordInfos,
                          const pldm_entity& entity);
+
+    /** @brief Add hotplug record that was modified or added to the PDR entry
+     *  HotPlug is a feature where a FRU can be removed or added when
+     *  the system is running, without needing it to power off.
+     *
+     *  @param[in] pdrEntry - PDR record structure in PDR repository
+     *
+     *  @return record handle of added or modified hotplug record
+     */
+    uint32_t addHotPlugRecord(pldm::responder::pdr_utils::PdrEntry pdrEntry);
 
     /** @brief Deletes a FRU record from record set table.
      *  @param[in] rsi - the FRU Record Set Identifier
