@@ -2,6 +2,10 @@
 
 #include "common/utils.hpp"
 
+#ifdef OEM_IBM
+#include "oem/ibm/libpldmresponder/utils.hpp"
+#endif
+
 #include <libpldm/entity.h>
 #include <libpldm/utils.h>
 #include <systemd/sd-journal.h>
@@ -502,6 +506,25 @@ int FruImpl::setFRUTable(const std::vector<uint8_t>& fruData)
         }
     }
     return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
+}
+
+uint32_t FruImpl::addHotPlugRecord(
+    pldm::responder::pdr_utils::PdrEntry pdrEntry)
+{
+    uint32_t lastHandle = 0;
+    uint32_t record_handle = 0;
+
+    if (oemPlatformHandler)
+    {
+        auto lastLocalRecord = oemPlatformHandler->fetchLastBMCRecord(pdrRepo);
+        lastHandle = pldm_pdr_get_record_handle(pdrRepo, lastLocalRecord);
+    }
+
+    pdrEntry.handle.recordHandle = lastHandle + 1;
+    pldm_pdr_add(pdrRepo, pdrEntry.data, pdrEntry.size, false,
+                 pdrEntry.handle.recordHandle, &record_handle);
+
+    return record_handle;
 }
 
 namespace fru
