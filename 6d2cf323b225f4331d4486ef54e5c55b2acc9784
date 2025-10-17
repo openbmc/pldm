@@ -22,6 +22,30 @@
       },
       "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3c83eb4_926ffbca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-17T12:29:47Z",
+      "side": 1,
+      "message": "Yes. For example, some devices like NICs do support PLDM Type 2, but on certain platforms we prefer not to rely on PLDM Type 2 for sensor discovery. Instead, we configure sensors (e.g., NIC temperature sensors) via `entity-manager`, including name, thresholds, and other metadata, and instantiate them through dbus-sensors like `xyz.openbmc_project.hwmontempsensor.service`. This allows sensor management to be handled entirely from the BMC side without requiring NIC vendors to modify PDRs or release new firmware.\n\nHowever, we still expect the BMC to support PLDM-based firmware update flows for these devices.",
+      "parentUuid": "44d70ae7_3b309730",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
