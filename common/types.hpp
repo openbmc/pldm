@@ -128,8 +128,9 @@ using CompIdentifier = uint16_t;
 using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
+using SelfContainedActivationRequest = bool;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
-using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+using ComponentInfoMap = std::unordered_map<eid, std::pair<ComponentInfo, SelfContainedActivationRequest>>;
 
 // PackageHeaderInformation
 using PackageHeaderSize = size_t;
