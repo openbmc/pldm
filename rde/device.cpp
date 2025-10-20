@@ -3,6 +3,13 @@
 #include <filesystem>
 #include <iostream>
 
+#ifdef OEM_AMD
+constexpr auto rdeCacheManagerService = "xyz.openbmc_project.RDE.CacheManager";
+constexpr auto rdeCacheManagerPath = "/xyz/openbmc_project/CacheManager";
+constexpr auto rdeCacheManagerInterface =
+    "xyz.openbmc_project.RDE.CacheManager";
+#endif
+
 namespace pldm::rde
 {
 Device::Device(sdbusplus::bus::bus& bus, sdeventplus::Event& event,
@@ -85,6 +92,99 @@ void Device::refreshDeviceInfo()
     deviceUpdated();
 }
 
+#ifdef OEM_AMD
+inline std::string loadProcessorURI(std::string devUUID)
+{
+    constexpr const char* rdeDeviceMetadataFile =
+        "/etc/pldm/rde_device_metadata.json";
+
+    std::string schema;
+    std::string deviceId;
+
+    if (!std::filesystem::exists(rdeDeviceMetadataFile))
+    {
+        error("RDE: Device metadata file {FILE} not found: ", "FILE",
+              rdeDeviceMetadataFile);
+        return "";
+    }
+
+    std::ifstream file(rdeDeviceMetadataFile);
+    if (!file.is_open())
+    {
+        error("RDE: Failed to open device metadata file:{FILE} ", "FILE",
+              rdeDeviceMetadataFile);
+        return "";
+    }
+
+    try
+    {
+        if (file.peek() == std::ifstream::traits_type::eof())
+        {
+            error("RDE: Device metadata file{FILE} is empty: ", "FILE",
+                  rdeDeviceMetadataFile);
+            return "";
+        }
+
+        nlohmann::json jsonData;
+        file >> jsonData;
+
+        if (!jsonData.is_object())
+        {
+            error(
+                "RDE: Device metadata file does not contain a valid JSON object.");
+            return "";
+        }
+
+        for (const auto& [jsonSchema, deviceEntries] : jsonData.items())
+        {
+            if (!deviceEntries.is_object())
+            {
+                error("RDE: Invalid schema section {SCHEMA} ", "SCHEMA",
+                      jsonSchema);
+                continue;
+            }
+
+            for (const auto& [jsonDeviceId, deviceInfo] : deviceEntries.items())
+            {
+                if (!deviceInfo.contains("UUIDs") ||
+                    !deviceInfo["UUIDs"].is_array())
+                {
+                    error(
+                        "RDE: Missing or invalid 'UUIDs' for {SCHEMA} {DEVID}",
+                        "SCHEMA", jsonSchema, "DEVID", jsonDeviceId);
+                    continue;
+                }
+
+                const std::string deviceKeyFromJson =
+                    jsonSchema + "/" + jsonDeviceId + "/";
+
+                for (const auto& uuid : deviceInfo["UUIDs"])
+                {
+                    if (!uuid.is_string())
+                    {
+                        error("RDE: Invalid UUID format in {KEY}", "KEY",
+                              deviceKeyFromJson);
+                        continue;
+                    }
+                    if (devUUID == uuid.get<std::string>())
+                    {
+                        return deviceKeyFromJson;
+                    }
+                }
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        error("RDE: Unexpected error while reading device metadata file:{MSG} ",
+              "MSG", e.what());
+        return "";
+    }
+
+    return "";
+}
+#endif
+
 void Device::performRDEOperation(const OperationInfo& oipInfo)
 {
     info("Operation Session Started");
@@ -120,6 +220,33 @@ void Device::performRDEOperation(const OperationInfo& oipInfo)
     catch (const std::exception& e)
     {
         error("OperationSession setup failed: Msg={MSG}", "MSG", e.what());
+#ifdef OEM_AMD
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto method =
+            bus.new_method_call(rdeCacheManagerService, rdeCacheManagerPath,
+                                rdeCacheManagerInterface, "CreateCache");
+
+        const std::string redfishRootURI = "/redfish/v1/Systems/system/";
+        const std::string redfishProcessorURI =
+            loadProcessorURI(oipInfo.deviceUUID);
+        if (redfishProcessorURI.empty())
+        {
+            error("Caching failed. Unable to find Processor URI");
+            return;
+        }
+
+        const std::string fullURI =
+            redfishRootURI + redfishProcessorURI + oipInfo.targetURI;
+
+        if (oipInfo.operationType == OperationType::UPDATE)
+            method.append(deviceUUID(), "patch", fullURI, oipInfo.payload);
+        else
+            return;
+
+        info("Caching the data for RDE Device of EID={EID} and UUID={UUID}",
+             "EID", oipInfo.eid, "UUID", oipInfo.deviceUUID);
+        auto reply = bus.call(method, dbusTimeout);
+#endif
         return;
     }
 }
