@@ -22,6 +22,30 @@
       },
       "revId": "540934b7d72f0c3763fe66a152fdea44f0074ccc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b58e7a30_0e150d15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-10-22T17:38:23Z",
+      "side": 1,
+      "message": "```\nroot@gb200nvl-obmc:~# busctl get-property xyz.openbmc_project.PLDM /xyz/openbmc_project/software/PLDM_Device_Firmware_Device_13_Component_49152_73 xyz.openbmc_project.Association.Definitions Associations\na(sss) 1 \"running\" \"ran_on\" \"/xyz/openbmc_project/inventory/system/board/PLDM_Device\"\n```\n\nAssociation with chassis or board URI is not shown on Redfish.\nWe only show Manager URI for BMC and System/{}/Bios for bios in RelateItems\nfor other URIs, we don\u0027t show anything",
+      "parentUuid": "1340510e_1074296d",
+      "range": {
+        "startLine": 13,
+        "startChar": 25,
+        "endLine": 13,
+        "endChar": 44
+      },
+      "revId": "540934b7d72f0c3763fe66a152fdea44f0074ccc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
