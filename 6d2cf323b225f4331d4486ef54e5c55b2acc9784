@@ -118,6 +118,30 @@
       },
       "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84e2b876_0dc39c3f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-22T07:53:21Z",
+      "side": 1,
+      "message": "Just to clarify—are you suggesting a single option to disable Type 2 for all devices? Different platforms may require more fine-grained control. This patch takes a more targeted approach by skipping Type 2 sensor creation only for devices without a terminus name, while others proceed as usual. What are your thoughts on this endpoint-level behavior?",
+      "parentUuid": "f66fb1f3_7363474e",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
