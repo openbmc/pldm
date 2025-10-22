@@ -190,6 +190,30 @@
       },
       "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b1e9ff4_3c2614cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-22T11:43:44Z",
+      "side": 1,
+      "message": "Yes, that sounds reasonable.",
+      "parentUuid": "fe7a5ba3_abca4e58",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
