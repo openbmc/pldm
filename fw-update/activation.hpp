@@ -13,7 +13,7 @@ namespace pldm
 namespace fw_update
 {
 
-class UpdateManager;
+class UpdateManagerBase;
 
 using ActivationIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Software::server::Activation>;
@@ -57,7 +57,7 @@ class Delete : public DeleteIntf
      *  @param[in] updateManager - Reference to FW update manager
      */
     Delete(sdbusplus::bus_t& bus, const std::string& objPath,
-           UpdateManager* updateManager) :
+           UpdateManagerBase* updateManager) :
         DeleteIntf(bus, objPath.c_str(), action::emit_interface_added),
         updateManager(updateManager)
     {}
@@ -66,7 +66,7 @@ class Delete : public DeleteIntf
     void delete_() override;
 
   private:
-    UpdateManager* updateManager;
+    UpdateManagerBase* updateManager;
 };
 
 /** @class Activation
@@ -84,13 +84,16 @@ class Activation : public ActivationIntf
      *  @param[in] updateManager - Reference to FW update manager
      */
     Activation(sdbusplus::bus_t& bus, std::string objPath,
-               Activations activationStatus, UpdateManager* updateManager) :
+               Activations activationStatus, UpdateManagerBase* updateManager) :
         ActivationIntf(bus, objPath.c_str(),
                        ActivationIntf::action::defer_emit),
         bus(bus), objPath(objPath), updateManager(updateManager)
     {
         activation(activationStatus);
-        deleteImpl = std::make_unique<Delete>(bus, objPath, updateManager);
+        if (!deleteImpl)
+        {
+            deleteImpl = std::make_unique<Delete>(bus, objPath, updateManager);
+        }
         emit_object_added();
     }
 
@@ -122,7 +125,7 @@ class Activation : public ActivationIntf
   private:
     sdbusplus::bus_t& bus;
     const std::string objPath;
-    UpdateManager* updateManager;
+    UpdateManagerBase* updateManager;
     std::unique_ptr<Delete> deleteImpl;
 };
 

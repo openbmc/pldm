@@ -1,5 +1,6 @@
 #pragma once
 
+#include "aggregate_update_manager.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
@@ -7,6 +8,7 @@
 #include <xyz/openbmc_project/Software/Version/server.hpp>
 
 class FirmwareInventoryTest;
+class FirmwareInventoryTestInstance;
 
 namespace pldm::fw_update
 {
@@ -25,12 +27,12 @@ class FirmwareInventory
 {
   public:
     friend class ::FirmwareInventoryTest;
+    friend class ::FirmwareInventoryTestInstance;
     FirmwareInventory() = delete;
     FirmwareInventory(const FirmwareInventory&) = delete;
     FirmwareInventory(FirmwareInventory&&) = delete;
     FirmwareInventory& operator=(const FirmwareInventory&) = delete;
     FirmwareInventory& operator=(FirmwareInventory&&) = delete;
-    ~FirmwareInventory() = default;
 
     /**
      * @brief Constructor
@@ -49,11 +51,9 @@ class FirmwareInventory
      * future use and currently not used in the implementation.
      */
     explicit FirmwareInventory(
-        SoftwareIdentifier /*softwareIdentifier*/,
-        const std::string& softwarePath, const std::string& softwareVersion,
+        SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
+        const std::string& softwareVersion,
         const std::string& associatedEndpoint,
-        const Descriptors& /*descriptors*/,
-        const ComponentInfo& /*componentInfo*/,
         SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
 
   private:
@@ -61,6 +61,11 @@ class FirmwareInventory
      * @brief Reference to the sdbusplus bus
      */
     sdbusplus::bus_t& bus = utils::DBusHandler::getBus();
+
+    /**
+     * @brief Software identifier containing EID and component identifier
+     */
+    SoftwareIdentifier softwareIdentifier;
 
     /**
      * @brief The D-Bus object path for the firmware inventory entry, obtained
