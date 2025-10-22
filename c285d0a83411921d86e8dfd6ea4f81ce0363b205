@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cb92d6b_5b43b5fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-10-22T17:37:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "266f5d98_a75e611a",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "c285d0a83411921d86e8dfd6ea4f81ce0363b205",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb8d5b93_e1910dc7",
@@ -41,6 +65,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fa6729e_cf09ec67",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-10-22T17:37:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cb8d5b93_e1910dc7",
+      "revId": "c285d0a83411921d86e8dfd6ea4f81ce0363b205",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "982bcf79_2c3788bf",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-10-16T13:38:55Z",
       "side": 1,
       "message": "More copies here as well. See if these can be avoided.",
+      "range": {
+        "startLine": 698,
+        "startChar": 0,
+        "endLine": 703,
+        "endChar": 69
+      },
+      "revId": "c285d0a83411921d86e8dfd6ea4f81ce0363b205",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbcc22ca_ccf96836",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2025-10-22T17:37:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "982bcf79_2c3788bf",
       "range": {
         "startLine": 698,
         "startChar": 0,
