@@ -142,6 +142,30 @@
       },
       "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67232724_cd011657",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-22T08:08:53Z",
+      "side": 1,
+      "message": "My concern is disabling Type 2 for the lack of an optional Terminus name. That seems to be a very specific platform behavior/out-of-spec behavior. One can come up with N such cases resulting in N build flags - would like to avoid this.",
+      "parentUuid": "84e2b876_0dc39c3f",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
