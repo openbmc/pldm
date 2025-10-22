@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c1504d4_24527e94",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-22T13:36:48Z",
+      "side": 1,
+      "message": "Hi @patrick@stwcx.xyz, another reason for directly calling logging-create is to have control over the severity of the logged event. Please let me know if this approach doesn’t work for you.",
+      "parentUuid": "8ec7111b_6ac4628a",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 53
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4a2c489_30f3352c",
         "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
         "patchSetId": 44
