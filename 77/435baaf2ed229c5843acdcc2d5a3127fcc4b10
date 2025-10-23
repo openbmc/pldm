@@ -1,0 +1,8 @@
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Code-Review+1: Thu Nguyen <thu@os.amperecomputing.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Thu, 23 Oct 2025 17:19:14 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/84598
+Project: openbmc/pldm
+Branch: refs/heads/master
