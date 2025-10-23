@@ -30,7 +30,7 @@ class Update : public UpdateIntf
      *  @param[in] objPath - D-Bus object path
      *  @param[in] updateManager - Reference to FW update manager
      */
-    Update(sdbusplus::bus::bus& bus, const std::string& path,
+    Update(sdbusplus::bus_t& bus, const std::string& path,
            UpdateManager* updateManager) :
         UpdateIntf(bus, path.c_str()), updateManager(updateManager),
         objPath(path)
