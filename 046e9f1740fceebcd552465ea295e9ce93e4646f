@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b4e0a36b_27c22c00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-23T13:45:42Z",
+      "side": 1,
+      "message": "Is this different than the timing/retries defined in the PLDM base spec? If yes, why are the limits in the spec not sufficient?",
+      "range": {
+        "startLine": 16,
+        "startChar": 26,
+        "endLine": 16,
+        "endChar": 56
+      },
+      "revId": "046e9f1740fceebcd552465ea295e9ce93e4646f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5dce0fab_3949773f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
