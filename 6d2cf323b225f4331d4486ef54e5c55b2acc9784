@@ -286,6 +286,30 @@
       },
       "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff6f96eb_ca90fd6a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-23T09:36:31Z",
+      "side": 1,
+      "message": "My intention is indeed to support configuring PLDM types for each MCTP EID terminus. The idea is to define a flag like \"pldmDisableSensors\": true in the EM JSON config for each device that has an EID, so that pldmd can read this setting when adding the EID and determine how to handle the corresponding terminus accordingly.",
+      "parentUuid": "36c0bcc6_dec15b80",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
