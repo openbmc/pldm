@@ -200,6 +200,11 @@ using SensorName = std::string;
 using SensorAuxiliaryNames = std::tuple<
     SensorID, SensorCount,
     std::vector<std::vector<std::pair<NameLanguageTag, SensorName>>>>;
+using EffecterName = SensorName;
+using EffecterCount = SensorCount;
+using EffecterAuxiliaryNames = std::tuple<
+    EffecterID, EffecterCount,
+    std::vector<std::vector<std::pair<NameLanguageTag, EffecterName>>>>;
 using AuxiliaryNames = std::vector<std::pair<NameLanguageTag, std::string>>;
 
 /** @struct EntityKey
