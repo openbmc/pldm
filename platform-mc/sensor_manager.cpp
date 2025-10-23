@@ -216,6 +216,32 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_await manager->oemPollForPlatformEvent(tid);
         }
 
+        for (auto effector : terminus->numericEffecters)
+        {
+            if (manager && terminus->pollEvent)
+            {
+                break;
+            }
+
+            // Get numeric effector if we haven't synced it.
+            if (effector->needsUpdate)
+            {
+                auto rc = co_await effector->getNumericEffecterValue();
+                if (rc != PLDM_SUCCESS)
+                {
+                    lg2::error(
+                        "Failed to get numeric effecter value for terminus {TID}, numeric effecter {EFFECTERID}, error: {RC}",
+                        "TID", tid, "EFFECTERID", effector->effecterId, "RC",
+                        rc);
+                    co_return rc;
+                }
+                lg2::info(
+                    "Successfully updated numeric effecter value for effecter {EFFECTERID} on terminus {TID} for the first time",
+                    "EFFECTERID", effector->effecterId, "TID", tid);
+                effector->needsUpdate = false;
+            }
+        }
+
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
 
         auto& numericSensors = terminus->numericSensors;
