@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d46089ba_fbaf3902",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-23T12:57:51Z",
+      "side": 1,
+      "message": "Add Testing details please. How does this show up on Redfish?",
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d84de94_70bc9a3d",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-23T12:57:51Z",
+      "side": 1,
+      "message": "Where is this path segment documented?",
+      "range": {
+        "startLine": 161,
+        "startChar": 59,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
