@@ -310,6 +310,23 @@
       },
       "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bbdbdc9_5eb3667a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-23T13:08:14Z",
+      "side": 1,
+      "message": "The original idea is `pldmd` will create the sensors for each of PLDM terminus which support type 2.\nThe created sensors include terminus_name and sensor name from the terminus PDRs.\n+ Terminus name can come from ENTITY_AUX_NAMES_PDR or EM. The commit `platform-mc: Use a default terminus name if empty` changed that rule.\n\nSo some OEMs want `pldmd` creates the PLDM sensors when there is no terminus name and will use the \"Terminus_\u003cTID\u003e\" as terminus name. But some OEMs have different thought.\n\nSo my concern is what will happened if the sensors is created?\nBecause Wiwynn, have the EM configuration to setting the terminus name, so what happens if the terminus name will also added for NIC?",
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
