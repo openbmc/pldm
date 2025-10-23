@@ -122,6 +122,24 @@
       "parentUuid": "628d627f_5aae63c7",
       "revId": "8bf7468866fe85238e549bbafe486a26ddca2bff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc57aad_6fc27b64",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-23T12:50:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2b85dee_51ce30f7",
+      "revId": "8bf7468866fe85238e549bbafe486a26ddca2bff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
