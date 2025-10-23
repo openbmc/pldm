@@ -1419,7 +1419,7 @@ class GetPDR : public CommandInterface
                 output["criticalHigh"] = pdr.critical_high.value_u8;
                 output["criticalLow"] = pdr.critical_low.value_u8;
                 output["fatalHigh"] = pdr.fatal_high.value_u8;
-                output["fatalLeow"] = pdr.fatal_low.value_u8;
+                output["fatalLow"] = pdr.fatal_low.value_u8;
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT8:
                 output["nominalValue"] = pdr.nominal_value.value_s8;
@@ -1430,7 +1430,7 @@ class GetPDR : public CommandInterface
                 output["criticalHigh"] = pdr.critical_high.value_s8;
                 output["criticalLow"] = pdr.critical_low.value_s8;
                 output["fatalHigh"] = pdr.fatal_high.value_s8;
-                output["fatalLeow"] = pdr.fatal_low.value_s8;
+                output["fatalLow"] = pdr.fatal_low.value_s8;
                 break;
             case PLDM_RANGE_FIELD_FORMAT_UINT16:
                 output["nominalValue"] = pdr.nominal_value.value_u16;
@@ -1441,7 +1441,7 @@ class GetPDR : public CommandInterface
                 output["criticalHigh"] = pdr.critical_high.value_u16;
                 output["criticalLow"] = pdr.critical_low.value_u16;
                 output["fatalHigh"] = pdr.fatal_high.value_u16;
-                output["fatalLeow"] = pdr.fatal_low.value_u16;
+                output["fatalLow"] = pdr.fatal_low.value_u16;
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT16:
                 output["nominalValue"] = pdr.nominal_value.value_s16;
@@ -1452,7 +1452,7 @@ class GetPDR : public CommandInterface
                 output["criticalHigh"] = pdr.critical_high.value_s16;
                 output["criticalLow"] = pdr.critical_low.value_s16;
                 output["fatalHigh"] = pdr.fatal_high.value_s16;
-                output["fatalLeow"] = pdr.fatal_low.value_s16;
+                output["fatalLow"] = pdr.fatal_low.value_s16;
                 break;
             case PLDM_RANGE_FIELD_FORMAT_UINT32:
                 output["nominalValue"] = pdr.nominal_value.value_u32;
@@ -1463,7 +1463,7 @@ class GetPDR : public CommandInterface
                 output["criticalHigh"] = pdr.critical_high.value_u32;
                 output["criticalLow"] = pdr.critical_low.value_u32;
                 output["fatalHigh"] = pdr.fatal_high.value_u32;
-                output["fatalLeow"] = pdr.fatal_low.value_u32;
+                output["fatalLow"] = pdr.fatal_low.value_u32;
                 break;
             case PLDM_RANGE_FIELD_FORMAT_SINT32:
                 output["nominalValue"] = pdr.nominal_value.value_s32;
@@ -1474,7 +1474,7 @@ class GetPDR : public CommandInterface
                 output["criticalHigh"] = pdr.critical_high.value_s32;
                 output["criticalLow"] = pdr.critical_low.value_s32;
                 output["fatalHigh"] = pdr.fatal_high.value_s32;
-                output["fatalLeow"] = pdr.fatal_low.value_s32;
+                output["fatalLow"] = pdr.fatal_low.value_s32;
                 break;
             case PLDM_RANGE_FIELD_FORMAT_REAL32:
                 output["nominalValue"] = pdr.nominal_value.value_f32;
@@ -1485,7 +1485,7 @@ class GetPDR : public CommandInterface
                 output["criticalHigh"] = pdr.critical_high.value_f32;
                 output["criticalLow"] = pdr.critical_low.value_f32;
                 output["fatalHigh"] = pdr.fatal_high.value_f32;
-                output["fatalLeow"] = pdr.fatal_low.value_f32;
+                output["fatalLow"] = pdr.fatal_low.value_f32;
                 break;
             default:
                 break;
