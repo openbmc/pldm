@@ -39,7 +39,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -205,7 +205,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
         mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -366,7 +366,7 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
         mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -485,7 +485,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
         mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE, event);
+        tid, 1 << PLDM_BASE, event, mockTerminusManager);
     auto terminus = termini[tid];
 
     sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
@@ -504,7 +504,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
         mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, mockTerminusManager);
     auto terminus = termini[tid];
 
     // queue getPDRRepositoryInfo response cc=PLDM_ERROR
