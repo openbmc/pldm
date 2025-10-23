@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2fc689a_f1388aea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-10-23T06:47:34Z",
+      "side": 1,
+      "message": "Remove the entire APML-related implementation, but keep the enum as a placeholder.",
+      "revId": "aa5c0455e389457c5311b980dc1d85ae4d59440c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
