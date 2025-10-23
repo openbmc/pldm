@@ -282,6 +282,7 @@ executable(
     'platform-mc/manager.cpp',
     'platform-mc/sensor_manager.cpp',
     'platform-mc/numeric_sensor.cpp',
+    'platform-mc/numeric_effecter.cpp',
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
     oem_files,
