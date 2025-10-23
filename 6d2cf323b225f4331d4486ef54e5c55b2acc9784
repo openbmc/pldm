@@ -314,6 +314,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e0d7c5d_fb76d108",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-10-23T13:12:54Z",
+      "side": 1,
+      "message": "Okay, AFAIAK, there is no way to define static EIDs in the EM config. I suppose we can continue the review of how the EM config looks in the em repository.",
+      "parentUuid": "ff6f96eb_ca90fd6a",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9bbdbdc9_5eb3667a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
