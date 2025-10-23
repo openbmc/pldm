@@ -189,11 +189,12 @@ int main(int argc, char** argv)
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
 
-    std::array<sdbusplus::server::manager_t, 4> dbusObjectManagers{
+    std::array<sdbusplus::server::manager_t, 5> dbusObjectManagers{
         sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/software"),
         sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/sensors"),
         sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/metric"),
-        sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/inventory")};
+        sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/inventory"),
+        sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/control")};
 
     InstanceIdDb instanceIdDb;
 
