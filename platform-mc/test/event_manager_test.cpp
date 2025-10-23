@@ -46,7 +46,7 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
 #define WARNING_HIGH 45
     pldm_tid_t tid = 1;
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, terminusManager);
     std::vector<uint8_t> pdr1{
         0x1,
         0x0,
@@ -175,7 +175,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
         terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, terminusManager);
     auto terminus = termini[tid];
 
     /* Set supported command by terminus */
@@ -406,7 +406,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
         terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
-        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event, terminusManager);
     auto terminus = termini[tid];
 
     // queue pollForPlatformEventMessage first part response
