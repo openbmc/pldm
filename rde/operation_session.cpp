@@ -556,6 +556,10 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
                         {
                             info("Multipartsend completed");
                             multiPartTransferFlag = false;
+                            emitTaskUpdatedSignal(
+                                device_->getBus(), oipInfo.opTaskPath, "",
+                                static_cast<uint16_t>(
+                                    OpState::OperationCompleted));
                             doOperationComplete();
                         }
                         else
@@ -583,6 +587,10 @@ void OperationSession::handleOperationInitResp(const pldm_msg* respMsg,
                     "RID", currentResourceId_, "ERR", ex.what());
             }
         }
+        emitTaskUpdatedSignal(
+            device_->getBus(), oipInfo.opTaskPath, "",
+            static_cast<uint16_t>(OpState::OperationCompleted));
+        doOperationComplete();
     }
 
     return;
