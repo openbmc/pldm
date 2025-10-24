@@ -327,10 +327,21 @@ std::shared_ptr<SensorAuxiliaryNames> Terminus::parseSensorAuxiliaryNamesPDR(
                            [](uint16_t utf16) { return be16toh(utf16); });
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-            std::string nameString =
-                std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
-                                     char16_t>{}
-                    .to_bytes(u16NameString);
+            std::string nameString{};
+            try
+            {
+                nameString =
+                    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
+                                         char16_t>{}
+                        .to_bytes(u16NameString);
+            }
+            catch (const std::range_error& e)
+            {
+                lg2::error(
+                    "Exception while converting UTF-16 to UTF-8 for sensor auxiliary name: {ERROR}, Skipping this name.",
+                    "ERROR", e.what());
+                continue;
+            }
 #pragma GCC diagnostic pop
             nameStrings.emplace_back(std::make_pair(
                 nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
@@ -391,9 +402,20 @@ std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(
                        [](uint16_t utf16) { return be16toh(utf16); });
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-        std::string nameString =
-            std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}
-                .to_bytes(u16NameString);
+        std::string nameString{};
+        try
+        {
+            nameString = std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
+                                              char16_t>{}
+                             .to_bytes(u16NameString);
+        }
+        catch (const std::range_error& e)
+        {
+            lg2::error(
+                "Exception while converting UTF-16 to UTF-8 for entity auxiliary name: {ERROR}, Skipping this name.",
+                "ERROR", e.what());
+            continue;
+        }
 #pragma GCC diagnostic pop
         nameStrings.emplace_back(std::make_pair(
             nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
