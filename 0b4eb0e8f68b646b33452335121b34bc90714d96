@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23281b29_1afc4164",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "I\u0027ll decouple this in the next patchset.",
+      "parentUuid": "5f4e2d6d_f4635759",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bec8d495_daf00ac8",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b689adf_74fba52f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Revised",
+      "parentUuid": "bec8d495_daf00ac8",
+      "range": {
+        "startLine": 20,
+        "startChar": 33,
+        "endLine": 21,
+        "endChar": 65
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fecee3e_7e7fb47e",
@@ -54,6 +96,24 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "I suppose you mean \"pass\" and not \"bypass\", isn\u0027t it?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "951b3268_6885d998",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fecee3e_7e7fb47e",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -104,6 +164,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9274524_bd67db43",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d446323c_9411ad30",
+      "range": {
+        "startLine": 29,
+        "startChar": 38,
+        "endLine": 29,
+        "endChar": 59
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b31ba418_590fc16b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "\u003e By legacy do you mean the inotify method?\n\nYes, and why to avoid that?\nThe `AggregateUpdateManager` in a nutshell is a pldm command router to the original update manager or the item update managers, it doesn\u0027t actually manage the inotify activities.",
+      "parentUuid": "e5f716a4_c03a1490",
+      "range": {
+        "startLine": 29,
+        "startChar": 65,
+        "endLine": 29,
+        "endChar": 71
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "301359d7_a6f8afc7",
@@ -117,6 +225,24 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Some more details please? What about concurrent udpates? Did this need any bmcweb or other repo changes?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9f0edaf_1ad8a8fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 60
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "301359d7_a6f8afc7",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -155,6 +281,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b723a2e_9c79e773",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a72f7a87_03913626",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f13a2e13_911de61a",
@@ -168,6 +312,30 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Isn\u0027t the software ID supposed to be checked?",
+      "range": {
+        "startLine": 62,
+        "startChar": 21,
+        "endLine": 62,
+        "endChar": 22
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "885f5161_1f0908e2",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Software ID isn\u0027t used for pldm message identification, instead, it uses the instance ID, which is stored in the comment payload.",
+      "parentUuid": "f13a2e13_911de61a",
       "range": {
         "startLine": 62,
         "startChar": 21,
@@ -203,6 +371,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "25b064d0_230c702d",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "The descriptor/componentInfo here should be a snapshot and not being modified by the resource owner until the itemUpdateManager instance is destructed after finish updating, therefore the aggUpdateMgr have to kept these resource itself.\n\nHowever I\u0027ll figure out a way to optimize this.",
+      "parentUuid": "09390e2f_060ee430",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 59
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78417fad_c0b1a22c",
         "filename": "fw-update/aggregate_update_manager.hpp",
         "patchSetId": 60
@@ -214,6 +406,24 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Where is this used?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5577bb6_47891d14",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Removed for now",
+      "parentUuid": "78417fad_c0b1a22c",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -241,6 +451,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13dbb6ef_26e7dbcb",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "bfc3a3b5_3b8196f5",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 17
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bb50a75_7120a2b3",
@@ -254,6 +488,24 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Why was this changed?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9284dfca_3b8ed3ef",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "`DeviceUpdater` should accept not only file stream from the original flow but also memory stream `std::stringstream` from the new flow since we don\u0027t want to write the memfd to a file and reload it, therefore we use the common base class `std::istream` here rather than `std::ifstream`.\n\nHowever this is just a workaround before all of these been restructed to use `std::span\u003cuint8_t\u003e` or `std::span\u003cchar\u003e` for memory optimization.\nSee also: [#82708]\n\n[#82708]: https://gerrit.openbmc.org/c/openbmc/pldm/+/82708\n\nMarked as resolved",
+      "parentUuid": "4bb50a75_7120a2b3",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -275,6 +527,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13f89e17_5768736a",
+        "filename": "fw-update/firmware_inventory.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Revised",
+      "parentUuid": "e25d66de_8d24d189",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8186a0c_3478e6f8",
@@ -288,6 +558,24 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "I don\u0027t see a reason why we need to create a new .cpp and .hpp file just to implement this one function. Is there any reason item_based_update_manager cannot inherit from the Update Dbus interface?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c1c7c01_b3d26586",
+        "filename": "fw-update/item_based_update.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8186a0c_3478e6f8",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -327,6 +615,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "706cee6e_a3b174d8",
+        "filename": "fw-update/item_based_update.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02a48f3a_e8e8ee49",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2938810_facf744d",
@@ -340,6 +646,24 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "Do you need to specify this default destructor, wouldn\u0027t compiler generate the correct behavior automatically?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "221af19d_14052c0b",
+        "filename": "fw-update/item_based_update.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "b2938810_facf744d",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -361,6 +685,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1c17b59_d20fb15b",
+        "filename": "fw-update/item_based_update.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ccabc7b_ad7038b0",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4b89114_d186a84a",
@@ -378,6 +720,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a628b37_0f1917d9",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "I don\u0027t think so?\nThese two API are made for the same purpose but the interface and the type of the class var are different.",
+      "parentUuid": "d4b89114_d186a84a",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1cf7b0c_44f3a148",
@@ -391,6 +751,24 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Some of these checks happen here and some in the callers? What\u0027s the rationale behind not doing all of them at one place?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47a7fe7f_303ba0b7",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1cf7b0c_44f3a148",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -418,6 +796,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "109cee2d_86a28348",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6726fb7c_65e4f137",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 18
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "066a72ab_754ff05c",
@@ -431,6 +833,24 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Why do we need this copy?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c01839_cdf2385f",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "This is a workaround before [#82708] being merged.\n\n[#82708]: https://gerrit.openbmc.org/c/openbmc/pldm/+/82708",
+      "parentUuid": "066a72ab_754ff05c",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -454,6 +874,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0e2502a2_6aab29ed",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Yes, the update prcedure would start after this, without trigger needed by client.",
+      "parentUuid": "f2e0ded0_0cf25319",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc15c245_6594a58a",
         "filename": "fw-update/item_based_update_manager.cpp",
         "patchSetId": 60
@@ -465,6 +903,24 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Some of these checks happen here and some in the caller? What\u0027s the rationale behind not doing all of them at one place?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "421271c9_720ef726",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc15c245_6594a58a",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -486,6 +942,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca47d03b_ab94788a",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d07af396_67e66e30",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c14cbd0_8d5adda7",
@@ -499,6 +973,24 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "Can this end up mapping the same package multiple times for different targets/FDs? Do we need any boundary/sanity checks?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c72f3bf_7627a80d",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Migrated this to utils, the package would be mapped as read only mode, so I think is okay for mapping multiple times.",
+      "parentUuid": "0c14cbd0_8d5adda7",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -520,6 +1012,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f9d025e_b5b518bb",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Renamed the API",
+      "parentUuid": "3b901aaf_4ad2d588",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e35d61ef_de2aaab5",
@@ -533,6 +1043,24 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "Is there a reason to make progressPercentage a class var. If not, please pass the progressPercentage directly to API or better do this in caller itself.",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0ea3d1_9509914c",
+        "filename": "fw-update/item_based_update_manager.cpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "I\u0027ll defer the progressPercentage implementation to [#76702]\n\n[#76702]: https://gerrit.openbmc.org/c/openbmc/pldm/+/76702",
+      "parentUuid": "e35d61ef_de2aaab5",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -572,6 +1100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e85d5629_98eba099",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b603bf7e_23154fb1",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98fcc352_c766a148",
@@ -585,6 +1131,24 @@
       "writtenOn": "2025-10-15T20:34:04Z",
       "side": 1,
       "message": "Why this is a class var? Can\u0027t this be passed to APIs directly?",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0df3f759_c324ceee",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98fcc352_c766a148",
       "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -626,6 +1190,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cb349b3_61bfc6b8",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "\u003e Why do we need both this and the span?\n\nThis is a workaround before [#82708] being merged.\n\n\u003e Why this is a class var? Can\u0027t this be passed to APIs directly?\n\n`DeviceUpdater` is using the reference of this var, which should be a class var here to keep the resource.",
+      "parentUuid": "2bfd98f1_f637303e",
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b15c21d0_b7ba7bc4",
         "filename": "fw-update/item_based_update_manager.hpp",
         "patchSetId": 60
@@ -637,6 +1219,30 @@
       "writtenOn": "2025-10-16T12:40:43Z",
       "side": 1,
       "message": "why is this needed?",
+      "range": {
+        "startLine": 164,
+        "startChar": 4,
+        "endLine": 164,
+        "endChar": 10
+      },
+      "revId": "0b4eb0e8f68b646b33452335121b34bc90714d96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f4a7c0_5afe7028",
+        "filename": "fw-update/item_based_update_manager.hpp",
+        "patchSetId": 60
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-27T03:35:34Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "b15c21d0_b7ba7bc4",
       "range": {
         "startLine": 164,
         "startChar": 4,
