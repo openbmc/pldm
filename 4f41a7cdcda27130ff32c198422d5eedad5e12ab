@@ -51,6 +51,24 @@
       "parentUuid": "3d4d1ce0_215c5244",
       "revId": "4f41a7cdcda27130ff32c198422d5eedad5e12ab",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9a43607_2d076035",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T10:44:08Z",
+      "side": 1,
+      "message": "@rushtotom@gmail.com - are you with this ?",
+      "parentUuid": "aa6c0359_948b0786",
+      "revId": "4f41a7cdcda27130ff32c198422d5eedad5e12ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
