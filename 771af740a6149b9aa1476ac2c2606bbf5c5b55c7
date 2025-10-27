@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "faa01d6f_d6a2ea0b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-27T02:55:51Z",
+      "side": 1,
+      "message": "There\u0027s currently no Redfish representation for this metric namespace. This will just be exposed on D-Bus.",
+      "parentUuid": "d46089ba_fbaf3902",
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d84de94_70bc9a3d",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-10-23T12:57:51Z",
       "side": 1,
       "message": "Where is this path segment documented?",
+      "range": {
+        "startLine": 161,
+        "startChar": 59,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "932abb0b_aa3b85be",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-27T02:55:51Z",
+      "side": 1,
+      "message": "So I need to add path segment definitions for `metric/file_size`, `metric/count` and `metric/oem` to PDI, right?",
+      "parentUuid": "3d84de94_70bc9a3d",
       "range": {
         "startLine": 161,
         "startChar": 59,
