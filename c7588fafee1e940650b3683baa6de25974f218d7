@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec1c92e8_bcbcd88d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T10:36:53Z",
+      "side": 1,
+      "message": "just an FYI - gcc 15.1 has deprecated `string_convert` , so we are already using deprecated features of gcc in pldm - we should look at alternatives like https://ztdtext.readthedocs.io/en/latest - incase if you are interested in making this right -  the correct way.",
+      "range": {
+        "startLine": 9,
+        "startChar": 19,
+        "endLine": 9,
+        "endChar": 39
+      },
+      "revId": "c7588fafee1e940650b3683baa6de25974f218d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "173a45b5_37b57bf4",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T10:36:53Z",
+      "side": 1,
+      "message": "just limit it to `std::range_error` ?",
+      "range": {
+        "startLine": 338,
+        "startChar": 19,
+        "endLine": 338,
+        "endChar": 43
+      },
+      "revId": "c7588fafee1e940650b3683baa6de25974f218d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c35e08c_c60073c9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T10:36:53Z",
+      "side": 1,
+      "message": "same as above.",
+      "range": {
+        "startLine": 411,
+        "startChar": 9,
+        "endLine": 412,
+        "endChar": 37
+      },
+      "revId": "c7588fafee1e940650b3683baa6de25974f218d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
