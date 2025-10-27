@@ -461,6 +461,10 @@ size_t getEffecterDataSize(uint8_t effecterDataSize)
             return sizeof(uint32_t);
         case PLDM_EFFECTER_DATA_SIZE_SINT32:
             return sizeof(int32_t);
+        case PLDM_EFFECTER_DATA_SIZE_UINT64:
+            return sizeof(uint64_t);
+        case PLDM_EFFECTER_DATA_SIZE_SINT64:
+            return sizeof(int64_t);
         default:
             return 0;
     }
@@ -549,6 +553,24 @@ int HostEffecterParser::setTerminusNumericEffecter(
             rc = encode_set_numeric_effecter_value_req(
                 instanceId, effecterId, dataSize,
                 reinterpret_cast<uint8_t*>(&value_int32), request,
+                payload_length);
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_UINT64:
+        {
+            auto value_uint64 = (uint64_t)rawValue;
+            rc = encode_set_numeric_effecter_value_req(
+                instanceId, effecterId, dataSize,
+                reinterpret_cast<uint8_t*>(&value_uint64), request,
+                payload_length);
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT64:
+        {
+            auto value_int64 = (int64_t)rawValue;
+            rc = encode_set_numeric_effecter_value_req(
+                instanceId, effecterId, dataSize,
+                reinterpret_cast<uint8_t*>(&value_int64), request,
                 payload_length);
             break;
         }

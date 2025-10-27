@@ -170,6 +170,32 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>> getEffecterRawValue(
             }
             break;
         }
+        case PLDM_EFFECTER_DATA_SIZE_UINT64:
+        {
+            auto rawValue = static_cast<uint64_t>(
+                round(effecterValue - pdr->offset) / pdr->resolution);
+            if (pdr->min_settable.value_u64 < pdr->max_settable.value_u64 &&
+                (rawValue < pdr->min_settable.value_u64 ||
+                 rawValue > pdr->max_settable.value_u64))
+            {
+                rc = PLDM_ERROR_INVALID_DATA;
+            }
+            value = rawValue;
+            break;
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT64:
+        {
+            auto rawValue = static_cast<int64_t>(
+                round(effecterValue - pdr->offset) / pdr->resolution);
+            if (pdr->min_settable.value_s64 < pdr->max_settable.value_s64 &&
+                (rawValue < pdr->min_settable.value_s64 ||
+                 rawValue > pdr->max_settable.value_s64))
+            {
+                rc = PLDM_ERROR_INVALID_DATA;
+            }
+            value = rawValue;
+            break;
+        }
     }
 
     return {rc, std::make_optional(std::move(value))};
@@ -219,6 +245,17 @@ std::pair<int, std::optional<pldm::utils::PropertyValue>> convertToDbusValue(
     {
         int32_t currentValue = *(reinterpret_cast<int32_t*>(&effecterValue[0]));
         return getEffecterRawValue<int32_t>(pdr, currentValue, propertyType);
+    }
+    else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT64)
+    {
+        uint64_t currentValue =
+            *(reinterpret_cast<uint64_t*>(&effecterValue[0]));
+        return getEffecterRawValue<uint64_t>(pdr, currentValue, propertyType);
+    }
+    else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT64)
+    {
+        int64_t currentValue = *(reinterpret_cast<int64_t*>(&effecterValue[0]));
+        return getEffecterRawValue<int64_t>(pdr, currentValue, propertyType);
     }
     else
     {
@@ -405,6 +442,26 @@ int getEffecterValue(T propertyValue, uint8_t effecterDataSize,
         case PLDM_EFFECTER_DATA_SIZE_SINT32:
         {
             int32_t value = static_cast<int32_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_UINT64:
+        {
+            uint64_t value = static_cast<uint64_t>(propertyValue);
+            return (encode_get_numeric_effecter_value_resp(
+                instanceId, PLDM_SUCCESS, effecterDataSize,
+                EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                reinterpret_cast<uint8_t*>(&value),
+                reinterpret_cast<uint8_t*>(&value), responsePtr,
+                responsePayloadLength));
+        }
+        case PLDM_EFFECTER_DATA_SIZE_SINT64:
+        {
+            int64_t value = static_cast<int64_t>(propertyValue);
             return (encode_get_numeric_effecter_value_resp(
                 instanceId, PLDM_SUCCESS, effecterDataSize,
                 EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,

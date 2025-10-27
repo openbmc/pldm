@@ -218,8 +218,8 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
     uint8_t eventState = 0;
     uint8_t previousEventState = 0;
     uint8_t sensorDataSize = 0;
-    uint32_t presentReading;
-    auto rc = decode_numeric_sensor_data(
+    union_sensor_data_size presentReading;
+    auto rc = decode_numeric_sensor_data_ex(
         sensorData, sensorDataLength, &eventState, &previousEventState,
         &sensorDataSize, &presentReading);
     if (rc)
@@ -230,11 +230,40 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         return rc;
     }
 
-    double value = static_cast<double>(presentReading);
+    double reading = 0.0;
+    switch (sensorDataSize)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            reading = static_cast<double>(presentReading.value_u8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            reading = static_cast<double>(presentReading.value_s8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            reading = static_cast<double>(presentReading.value_u16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            reading = static_cast<double>(presentReading.value_s16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            reading = static_cast<double>(presentReading.value_u32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            reading = static_cast<double>(presentReading.value_s32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT64:
+            reading = static_cast<double>(presentReading.value_u64);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT64:
+            reading = static_cast<double>(presentReading.value_s64);
+            break;
+        default:
+            break;
+    }
     lg2::error(
         "processNumericSensorEvent tid {TID}, sensorID {SID} value {VAL} previousState {PSTATE} eventState {ESTATE}",
-        "TID", tid, "SID", sensorId, "VAL", value, "PSTATE", previousEventState,
-        "ESTATE", eventState);
+        "TID", tid, "SID", sensorId, "VAL", reading, "PSTATE",
+        previousEventState, "ESTATE", eventState);
 
     if (!termini.contains(tid) || !termini[tid])
     {
@@ -260,7 +289,7 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
                                                  newAlarm, assert);
         };
     rc = triggerNumericSensorThresholdEvent(sensorHandler, previousEventState,
-                                            eventState, value);
+                                            eventState, reading);
     if (rc)
     {
         lg2::error(
