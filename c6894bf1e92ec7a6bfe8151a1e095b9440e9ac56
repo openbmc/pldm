@@ -34,6 +34,24 @@
       "parentUuid": "f47bc078_06294ee0",
       "revId": "c6894bf1e92ec7a6bfe8151a1e095b9440e9ac56",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54a30508_f632441b",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T09:18:49Z",
+      "side": 1,
+      "message": "@chaul@amperecomputing.com - okay with the code changes and the motivation here - but can we merge this along with https://gerrit.openbmc.org/c/openbmc/pldm/+/82472 when that is ready as well - since merging this without a call is effectively checking in dead code.",
+      "parentUuid": "de96aade_3cf5a6f3",
+      "revId": "c6894bf1e92ec7a6bfe8151a1e095b9440e9ac56",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
