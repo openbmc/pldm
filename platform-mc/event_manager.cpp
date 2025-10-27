@@ -230,7 +230,40 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         return rc;
     }
 
-    double value = static_cast<double>(presentReading);
+    double reading;
+    switch (sensorDataSize)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            reading = static_cast<double>(static_cast<uint8_t>(presentReading));
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            reading = static_cast<double>(static_cast<int8_t>(presentReading));
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            reading =
+                static_cast<double>(static_cast<uint16_t>(presentReading));
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            reading = static_cast<double>(static_cast<int16_t>(presentReading));
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            reading =
+                static_cast<double>(static_cast<uint32_t>(presentReading));
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            reading = static_cast<double>(static_cast<int32_t>(presentReading));
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT64:
+            reading =
+                static_cast<double>(static_cast<uint64_t>(presentReading));
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT64:
+            reading = static_cast<double>(static_cast<int64_t>(presentReading));
+            break;
+        default:
+            break;
+    }
+    double value = reading;
     lg2::error(
         "processNumericSensorEvent tid {TID}, sensorID {SID} value {VAL} previousState {PSTATE} eventState {ESTATE}",
         "TID", tid, "SID", sensorId, "VAL", value, "PSTATE", previousEventState,

@@ -333,7 +333,7 @@ exec::task<int> SensorManager::getSensorReading(
     }
 
     uint8_t completionCode = PLDM_SUCCESS;
-    uint8_t sensorDataSize = PLDM_SENSOR_DATA_SIZE_SINT32;
+    uint8_t sensorDataSize = PLDM_SENSOR_DATA_SIZE_SINT64;
     uint8_t sensorOperationalState = 0;
     uint8_t sensorEventMessageEnable = 0;
     uint8_t presentState = 0;
@@ -398,6 +398,12 @@ exec::task<int> SensorManager::getSensorReading(
             break;
         case PLDM_SENSOR_DATA_SIZE_SINT32:
             value = static_cast<double>(presentReading.value_s32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT64:
+            value = static_cast<double>(presentReading.value_u64);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT64:
+            value = static_cast<double>(presentReading.value_s64);
             break;
         default:
             value = std::numeric_limits<double>::quiet_NaN();
