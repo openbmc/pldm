@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc1ac204_9b1d4aa6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T09:07:49Z",
+      "side": 1,
+      "message": "@chaul@amperecomputing.com - I am okay with the changes made from PLDM file numeric sensor perspective - whether exposing the size of a file via metric/file_size segment path is acceptable or not should be debated via PDI(as that would be a common understanding across companies) - lets get it added to the PDI, then we can merge this change.",
+      "revId": "f65e5afee943d3f8fce308cc7123b2c2ff2b608b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
