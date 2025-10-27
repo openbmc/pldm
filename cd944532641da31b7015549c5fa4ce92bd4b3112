@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06bf8e57_1a272cda",
+        "filename": "common/types.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T09:59:58Z",
+      "side": 1,
+      "message": "I think these definitions should go into libpldm as they are stated in the spec.",
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e43d873f_5c7defac",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T09:59:58Z",
+      "side": 1,
+      "message": "can we have a sanitizePathforDbus() type common util function.\n\n```\nvoid sanitizePathforDbus(std::string\u0026 path)\n{\n    const static std::regex reg(\"[^A-Za-z0-9_/]\");\n    std::regex_replace(path.begin(), path.begin(), path.end(), reg, \"_\");\n}\n```",
+      "range": {
+        "startLine": 820,
+        "startChar": 8,
+        "endLine": 820,
+        "endChar": 26
+      },
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59f07de9_e5b2910b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T09:59:58Z",
+      "side": 1,
+      "message": "wouldn\u0027t this be a better fit as a utility function ?",
+      "range": {
+        "startLine": 809,
+        "startChar": 0,
+        "endLine": 832,
+        "endChar": 1
+      },
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "537333a2_01b38f25",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-10-27T09:59:58Z",
+      "side": 1,
+      "message": "this should be a constant from libpldm as well right ?",
+      "range": {
+        "startLine": 865,
+        "startChar": 3,
+        "endLine": 865,
+        "endChar": 36
+      },
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
