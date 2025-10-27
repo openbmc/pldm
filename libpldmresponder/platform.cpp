@@ -379,8 +379,7 @@ Response Handler::platformEventMessage(const pldm_msg* request,
             bool oneFailedHandler = false;
             for (const auto& handler : handlers)
             {
-                auto rc =
-                    handler(request, payloadLength, formatVersion, tid, offset);
+                rc = handler(request, payloadLength, formatVersion, tid, offset);
                 if (rc != PLDM_SUCCESS)
                 {
                     oneFailedHandler = true;
