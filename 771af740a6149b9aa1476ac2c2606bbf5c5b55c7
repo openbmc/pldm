@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f22aece8_1e2ff693",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-28T09:34:36Z",
+      "side": 1,
+      "message": "The Sensor schemas is used to report the sensors which include `/xyz/openbmc_project/Sensor/Value.interface.yaml` interface. Those are real hardware sensors.\nWhile `xyz/openbmc_project/Metric/Value.interface.yaml` provides the Board Manager Metric values for resource utilization.\nFor each type of resource we will need different Redfish schemas for them.\n\nI agree with @deepak.kodihalli.83@gmail.com that there is no consumer of this file_size object paths. They are internally used by pldm file transfer to check the file size. So I think we don\u0027t need report to user.",
+      "parentUuid": "81cfea77_9ac76dfe",
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3d84de94_70bc9a3d",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 8
@@ -133,6 +151,30 @@
       "side": 1,
       "message": "Yes, Since this should be a common understanding between companies. I think its worth to get these path segments added to the PDI https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Metric/Value.interface.yaml#L60 before we merge this in pldm.",
       "parentUuid": "932abb0b_aa3b85be",
+      "range": {
+        "startLine": 161,
+        "startChar": 59,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28b2e159_26552a84",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-10-28T09:34:36Z",
+      "side": 1,
+      "message": "Actually, the file size objects path is internal using by pldm file transfer to check the size of file before getting it.\n\nThe reason of adding the D-Bus interface for those sensors are `platform-mc` is designed to public all of numeric sensors or compact numeric sensors to D-Bus and there is no exception. That why we added the `/xyz/openbmc_project/metric/file_size/` object path for sensor with byte base unit.\n\nSo as my opinion. we don\u0027t need to update the https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Metric/Value.interface.yaml#L60.\n\nThe name space in `/Metric/Value.interface.yaml#L60` is very specific, but we don\u0027t have those kind of specific info in the File PDRs. So we can\u0027t add the name space for this kind of object path.",
+      "parentUuid": "d8e52024_9dc27de2",
       "range": {
         "startLine": 161,
         "startChar": 59,
