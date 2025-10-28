@@ -222,6 +222,8 @@ class Handler
                 "Failure to send the PLDM request message for polling endpoint queue, response code '{RC}'",
                 "RC", rc);
             endpointMessageQueues[eid]->activeRequest = false;
+            requestMsg->responseHandler(eid, nullptr, 0);
+            pollEndpointQueue(eid);
             return rc;
         }
 
@@ -237,6 +239,8 @@ class Handler
                 "Failed to start the instance ID expiry timer, error - {ERROR}",
                 "ERROR", e);
             endpointMessageQueues[eid]->activeRequest = false;
+            requestMsg->responseHandler(eid, nullptr, 0);
+            pollEndpointQueue(eid);
             return PLDM_ERROR;
         }
 
