@@ -179,7 +179,12 @@ class Handler
             endpointMessageQueues[eid]->activeRequest = false;
 
             /* try to send new request if the endpoint is free */
-            pollEndpointQueue(eid);
+            if (auto rc = pollEndpointQueue(eid); rc != PLDM_SUCCESS)
+            {
+                error(
+                    "Failed to process request queue for EID {EID}, response code {RC}.",
+                    "EID", eid, "RC", rc);
+            }
         }
         else
         {
@@ -222,6 +227,8 @@ class Handler
                 "Failure to send the PLDM request message for polling endpoint queue, response code '{RC}'",
                 "RC", rc);
             endpointMessageQueues[eid]->activeRequest = false;
+            requestMsg->responseHandler(eid, nullptr, 0);
+            pollEndpointQueue(eid);
             return rc;
         }
 
@@ -237,6 +244,8 @@ class Handler
                 "Failed to start the instance ID expiry timer, error - {ERROR}",
                 "ERROR", e);
             endpointMessageQueues[eid]->activeRequest = false;
+            requestMsg->responseHandler(eid, nullptr, 0);
+            pollEndpointQueue(eid);
             return PLDM_ERROR;
         }
 
@@ -287,13 +296,11 @@ class Handler
         }
 
         /* try to send new request if the endpoint is free */
-        auto rc = pollEndpointQueue(eid);
-        if (rc != PLDM_SUCCESS)
+        if (auto rc = pollEndpointQueue(eid); rc != PLDM_SUCCESS)
         {
             error(
                 "Failed to process request queue for EID {EID}, response code {RC}.",
                 "EID", eid, "RC", rc);
-            return rc;
         }
 
         return PLDM_SUCCESS;
@@ -330,7 +337,12 @@ class Handler
             handlers.erase(key);
             endpointMessageQueues[eid]->activeRequest = false;
             /* try to send new request if the endpoint is free */
-            pollEndpointQueue(eid);
+            if (auto rc = pollEndpointQueue(eid); rc != PLDM_SUCCESS)
+            {
+                error(
+                    "Failed to process request queue for EID {EID}, response code {RC}.",
+                    "EID", eid, "RC", rc);
+            }
 
             return PLDM_SUCCESS;
         }
@@ -396,7 +408,12 @@ class Handler
 
             endpointMessageQueues[eid]->activeRequest = false;
             /* try to send new request if the endpoint is free */
-            pollEndpointQueue(eid);
+            if (auto rc = pollEndpointQueue(eid); rc != PLDM_SUCCESS)
+            {
+                error(
+                    "Failed to process request queue for EID {EID}, response code {RC}.",
+                    "EID", eid, "RC", rc);
+            }
         }
     }
 
