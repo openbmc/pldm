@@ -338,6 +338,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f76f128_41c4d130",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-28T12:13:36Z",
+      "side": 1,
+      "message": "That\u0027s right — currently, static EIDs are not supported, so it\u0027s not possible to directly link inventory information with EIDs in the EM config.\nBut I wonder if the MCTP reactor might be capable of indirectly mapping inventory information to EIDs.\nIf this kind of mapping turns out to be feasible, perhaps there\u0027s a way to define which PLDM types a device supports and make that available to pldmd.\nI’ll take a look at how the MCTP reactor currently works. Thanks!",
+      "parentUuid": "3e0d7c5d_fb76d108",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9bbdbdc9_5eb3667a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 9
@@ -349,6 +373,24 @@
       "writtenOn": "2025-10-23T13:08:14Z",
       "side": 1,
       "message": "The original idea is `pldmd` will create the sensors for each of PLDM terminus which support type 2.\nThe created sensors include terminus_name and sensor name from the terminus PDRs.\n+ Terminus name can come from ENTITY_AUX_NAMES_PDR or EM. The commit `platform-mc: Use a default terminus name if empty` changed that rule.\n\nSo some OEMs want `pldmd` creates the PLDM sensors when there is no terminus name and will use the \"Terminus_\u003cTID\u003e\" as terminus name. But some OEMs have different thought.\n\nSo my concern is what will happened if the sensors is created?\nBecause Wiwynn, have the EM configuration to setting the terminus name, so what happens if the terminus name will also added for NIC?",
+      "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bccde5c_7978798c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-28T12:13:36Z",
+      "side": 1,
+      "message": "As of now, I think we don’t configure terminus names through EM, which is why sensors with names like \"Terminus_\u003cTID\u003e\" started appearing after the commit platform-mc: Use a default terminus name if empty.\nSorry, I’m not entirely sure I understand your point — are you trying to confirm whether creating these \"Terminus_\u003cTID\u003e\" sensors has any impact on our platform?",
+      "parentUuid": "9bbdbdc9_5eb3667a",
       "revId": "6d2cf323b225f4331d4486ef54e5c55b2acc9784",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
