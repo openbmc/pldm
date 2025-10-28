@@ -16,6 +16,24 @@
       "message": "The purpose of the changing is resolve the issue \"However, under heavy BMC load, an EID may have been removed and even re-added before pldmd processes the Interface Removed signal. As a result, GetSubtree may show nothing to remove.\" sound like we talking the race condition between the removed and added D-Bus signal in D-Bus but not the `pldmd`.",
       "revId": "ff52acbd1ba33bc274d9c4acc0c0450098e74981",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14a6e055_8ea4d2b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-28T11:49:05Z",
+      "side": 1,
+      "message": "Thank you for your attention. Let me explain the situation in more detail.\n\nWhat I’ve observed is that during the [getSensorReading] process in `pldmd`, if the [pollEndpointQueue triggered by instanceIdExpiryCallback] fails due to the EID having already been removed, the co_await in [getSensorReading] will never get a chance to process the registered request. This causes the entire terminus\u0027s sensor values to stop updating.\nI’m not sure if this behavior is intentional by design, and I’d like to hear your thoughts on it.\nAs a demo, I tried an approach similar to [Gerrit 84694], where pollEndpointQueue keeps running continuously. However, I found that this could potentially lead to a `pldmd` coredump.\n\nUnder normal conditions, if `pldmd` processes the Removed signal before the EID is re-probed, it will reinitialize the sensor info associated with the MCTP info for that EID, and things will return to normal. But if `pldmd` is too slow and only processes the Removed signal after the EID has already been re-probed, it will skip the reinitialization of the MCTP info. Even though the EID has come back, the sensor values will remain stuck and never update again — which is a very dangerous state for the host.\n\nIn this scenario, `pldmd` does process the Removed and Added signals in order, but just too late. That’s why I added a check during the handling of the Added signal to determine whether reinitialization is needed, to ensure the terminus’s sensors can be updated properly.\nIf possible, I’d really appreciate any feedback or suggestions you may have regarding this situation.\n\n[getSensorReading]: https://github.com/openbmc/pldm/blob/34f902598235f9e5fb4e35b8c19c5e21c83e6cc9/platform-mc/sensor_manager.cpp#L254C31-L254C47\n[pollEndpointQueue triggered by instanceIdExpiryCallback]: https://github.com/openbmc/pldm/blob/34f902598235f9e5fb4e35b8c19c5e21c83e6cc9/requester/handler.hpp#L182\n[Gerrit 84694]: https://gerrit.openbmc.org/c/openbmc/pldm/+/84694",
+      "parentUuid": "d9a39667_c396dd0c",
+      "revId": "ff52acbd1ba33bc274d9c4acc0c0450098e74981",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
