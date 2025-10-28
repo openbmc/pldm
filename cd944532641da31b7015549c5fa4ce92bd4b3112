@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "673976e3_4339c222",
+        "filename": "common/types.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-28T07:54:27Z",
+      "side": 1,
+      "message": "ACK. Will create a patch to libpldm.",
+      "parentUuid": "06bf8e57_1a272cda",
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e43d873f_5c7defac",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 4
@@ -31,6 +49,30 @@
       "writtenOn": "2025-10-27T09:59:58Z",
       "side": 1,
       "message": "can we have a sanitizePathforDbus() type common util function.\n\n```\nvoid sanitizePathforDbus(std::string\u0026 path)\n{\n    const static std::regex reg(\"[^A-Za-z0-9_/]\");\n    std::regex_replace(path.begin(), path.begin(), path.end(), reg, \"_\");\n}\n```",
+      "range": {
+        "startLine": 820,
+        "startChar": 8,
+        "endLine": 820,
+        "endChar": 26
+      },
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "263bcdb4_ca3526fa",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-28T07:54:27Z",
+      "side": 1,
+      "message": "There\u0027s already one `trimNameForDbus` function in common/utils.cpp being used in placed but it only replaces spaces with underscores while in this case, a file name can contain many more anti-dbus characters (e.g \".\", \"-\", etc). In this latest version of this patch, I declare the regex as a static const at the beginning of the file.",
+      "parentUuid": "e43d873f_5c7defac",
       "range": {
         "startLine": 820,
         "startChar": 8,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbe7a75f_1926fc2f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-28T07:54:27Z",
+      "side": 1,
+      "message": "Although this looks like a util function but the file object it takes and its implementation is pretty specific to the File Descriptor PDR and the FileInfoStruct. Not to mention that it\u0027s only used in this file, so I think it\u0027s suitable to be defined here only. Should I define it a as global function in the file, instead of a member function?",
+      "parentUuid": "59f07de9_e5b2910b",
+      "range": {
+        "startLine": 809,
+        "startChar": 0,
+        "endLine": 832,
+        "endChar": 1
+      },
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "537333a2_01b38f25",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 4
@@ -77,6 +143,30 @@
       "writtenOn": "2025-10-27T09:59:58Z",
       "side": 1,
       "message": "this should be a constant from libpldm as well right ?",
+      "range": {
+        "startLine": 865,
+        "startChar": 3,
+        "endLine": 865,
+        "endChar": 36
+      },
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4389c2f1_a662403d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-28T07:54:27Z",
+      "side": 1,
+      "message": "I think you\u0027re viewing the old version of this patch. I now define this as a static const `virtualTopMostFileId` on the top. I don\u0027t think it suits to be in libpldm as the spec does not mention a file with this 0xFFFF ID to be a top most file, but only says that a file with a parent ID of 0xFFFF means it\u0027s not under any directory. I just define this virtual top most ID for the terminus name to be constructed at the root of the path. Please help see the latest version and you will see a comment section I explain about this.",
+      "parentUuid": "537333a2_01b38f25",
       "range": {
         "startLine": 865,
         "startChar": 3,
