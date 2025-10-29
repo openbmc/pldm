@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa7f4396_a77a9511",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-29T04:18:41Z",
+      "side": 1,
+      "message": "Thanks for the review 😊, added test details to the commit messages.",
+      "parentUuid": "239cd578_1a0cb407",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 52
+      },
+      "revId": "036a9a62454a985c28a6c550416067d03f7e55cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d65a401_8681fe58",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-10-27T11:42:02Z",
       "side": 1,
       "message": "Why is this relevant only to DownstreamDevice? Or did some code get overwritten?",
+      "revId": "036a9a62454a985c28a6c550416067d03f7e55cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4b8ae8e_b1117bd7",
+        "filename": "tools/fw-update/metadata-example.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-10-29T04:18:41Z",
+      "side": 1,
+      "message": "Not sure the meaning, there are FD sample exist on an entry above.\nI revised some of the sample entries as DD entry but not all of them.",
+      "parentUuid": "3d65a401_8681fe58",
       "revId": "036a9a62454a985c28a6c550416067d03f7e55cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
