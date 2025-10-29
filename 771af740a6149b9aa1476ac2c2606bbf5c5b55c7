@@ -183,6 +183,30 @@
       },
       "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6561c25_423e8eb8",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-29T09:32:58Z",
+      "side": 1,
+      "message": "Right, this sensor object is present just because the FileDescriptor object implemented in https://gerrit.openbmc.org/c/openbmc/pldm/+/82472 needs its value to fill in the file object\u0027s size property, and the value needs to be polled periodically together with other Numeric sensors. So I suppose we can either leave this path segment out of the PDI or reimplement the NumericSensor class so that it can still construct sensors with un-supported units to register them to the polling queue without exposing them to D-Bus. Those sensors are to be accessed internally by pldmd.",
+      "parentUuid": "28b2e159_26552a84",
+      "range": {
+        "startLine": 161,
+        "startChar": 59,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
