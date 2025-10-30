@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3488c14b_572c8eed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-10-30T14:37:30Z",
+      "side": 1,
+      "message": "Its pushed already - https://gerrit.openbmc.org/c/openbmc/pldm/+/84672",
+      "parentUuid": "aedc0b03_0d4a7248",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f6d8c51_60c8460b",
@@ -53,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a02295_391b4f95",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-10-30T14:37:30Z",
+      "side": 1,
+      "message": "Added the new API decode_numeric_sensor_data_ex for supporting 64 Bit in libpldm https://gerrit.openbmc.org/c/openbmc/libpldm/+/84665 and used it in pldm. \n\n/oem/amphere/ also has reference to decode_numeric_sensor_data.  You would like to update @chaul@amperecomputing.com depending on need?",
+      "parentUuid": "f8039428_e1af9fad",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ceece1f_756fcd29",
@@ -66,6 +102,24 @@
       "writtenOn": "2025-10-30T07:33:12Z",
       "side": 1,
       "message": "Do we need to have both a `value` and a `reading` here?",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7321c81_cc36fd56",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-10-30T14:37:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ceece1f_756fcd29",
       "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
