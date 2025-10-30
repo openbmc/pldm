@@ -257,6 +257,7 @@ fw_update_sources = files(
     'fw-update/firmware_inventory.cpp',
     'fw-update/firmware_inventory_manager.cpp',
     'fw-update/inventory_manager.cpp',
+    'fw-update/item_update_manager.cpp',
     'fw-update/package_parser.cpp',
     'fw-update/update.cpp',
     'fw-update/update_manager.cpp',

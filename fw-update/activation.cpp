@@ -29,7 +29,7 @@ ActivationIntf::Activations Activation::activation(
 
 void Delete::delete_()
 {
-    updateManager->clearActivationInfo();
+    updateManager->resetActivationState();
 }
 } // namespace fw_update
 } // namespace pldm
