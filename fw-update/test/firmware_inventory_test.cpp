@@ -36,10 +36,9 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
     ComponentInfo firmwareComponentInfo;
     SoftwareVersionPurpose expectedPurpose = SoftwareVersionPurpose::Unknown;
 
-    FirmwareInventoryTest inventory(
-        softwareIdentifier, expectedSoftwarePath, expectedSoftwareVersion,
-        expectedEndpointPath, firmwareDescriptors, firmwareComponentInfo,
-        expectedPurpose);
+    FirmwareInventoryTest inventory(softwareIdentifier, expectedSoftwarePath,
+                                    expectedSoftwareVersion,
+                                    expectedEndpointPath, expectedPurpose);
 
     EXPECT_EQ(inventory.getSoftwarePath(), expectedSoftwarePath);
     auto associationTuples = inventory.getAssociation().associations();

@@ -41,16 +41,23 @@ void FirmwareInventoryManager::createFirmwareEntry(
         std::format("/xyz/openbmc_project/software/{}_{}_{}", boardName,
                     softwareName, utils::generateSwId());
 
+    updateManager.createUpdateManager(softwareIdentifier, descriptors,
+                                      componentInfo, softwarePath);
+
     softwareMap.insert_or_assign(
-        softwareIdentifier, std::make_unique<FirmwareInventory>(
-                                softwareIdentifier, softwarePath, activeVersion,
-                                *boardPath, descriptors, componentInfo));
+        softwareIdentifier,
+        std::make_unique<FirmwareInventory>(softwareIdentifier, softwarePath,
+                                            activeVersion, *boardPath));
 }
 
 void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
 {
     std::erase_if(softwareMap,
                   [&](const auto& pair) { return pair.first.first == eid; });
+    updateManager.eraseUpdateManagerIf(
+        [&](const SoftwareIdentifier& softwareIdentifier) {
+            return softwareIdentifier.first == eid;
+        });
 }
 
 std::optional<std::filesystem::path> getBoardPath(

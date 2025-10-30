@@ -52,8 +52,6 @@ class FirmwareInventory
         SoftwareIdentifier /*softwareIdentifier*/,
         const std::string& softwarePath, const std::string& softwareVersion,
         const std::string& associatedEndpoint,
-        const Descriptors& /*descriptors*/,
-        const ComponentInfo& /*componentInfo*/,
         SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
 
   private:
