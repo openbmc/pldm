@@ -13,7 +13,7 @@ namespace pldm::fw_update
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo)
+    const Descriptors& /*descriptors*/, const ComponentInfo& /*componentInfo*/)
 {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -42,15 +42,19 @@ void FirmwareInventoryManager::createFirmwareEntry(
                     softwareName, utils::generateSwId());
 
     softwareMap.insert_or_assign(
-        softwareIdentifier, std::make_unique<FirmwareInventory>(
-                                softwareIdentifier, softwarePath, activeVersion,
-                                *boardPath, descriptors, componentInfo));
+        softwareIdentifier,
+        std::make_unique<FirmwareInventory>(softwareIdentifier, softwarePath,
+                                            activeVersion, *boardPath));
 }
 
 void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
 {
     std::erase_if(softwareMap,
                   [&](const auto& pair) { return pair.first.first == eid; });
+    updateManager.eraseUpdateManagerIf(
+        [&](const SoftwareIdentifier& softwareIdentifier) {
+            return softwareIdentifier.first == eid;
+        });
 }
 
 std::optional<std::filesystem::path> getBoardPath(
