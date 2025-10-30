@@ -20,7 +20,7 @@ namespace pldm::fw_update
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& /*descriptors*/, const ComponentInfo& /*componentInfo*/)
+    const Descriptors& descriptors, const ComponentInfo& componentInfo)
 {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -44,14 +44,19 @@ void FirmwareInventoryManager::createFirmwareEntry(
         boardPath = "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     }
     const auto boardName = boardPath->filename().string();
-    const auto softwarePath =
-        std::format("{}/{}_{}_{}", SoftwareVersion::namespace_path, boardName,
-                    softwareName, utils::generateSwId());
 
-    softwareMap.insert_or_assign(
-        softwareIdentifier,
-        std::make_unique<FirmwareInventory>(softwareIdentifier, softwarePath,
-                                            activeVersion, *boardPath));
+    const auto softwarePath = std::format("{}/{}_{}", SoftwareVersion::namespace_path,
+                                          boardName, softwareName);
+    const auto softwareHash = std::to_string(utils::generateSwId());
+
+    updateManager.createUpdateManager(softwareIdentifier, descriptors,
+                                      componentInfo, softwarePath,
+                                      softwareHash);
+
+    softwareMap.insert_or_assign(softwareIdentifier,
+                                 std::make_unique<FirmwareInventory>(
+                                     softwareIdentifier, softwarePath,
+                                     softwareHash, activeVersion, *boardPath));
 }
 
 void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
