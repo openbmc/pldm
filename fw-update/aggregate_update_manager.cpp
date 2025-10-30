@@ -25,6 +25,24 @@ Response AggregateUpdateManager::handleRequest(
     return response;
 }
 
+void AggregateUpdateManager::createUpdateManager(
+    const SoftwareIdentifier& softwareIdentifier,
+    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    const std::string& updateObjPath)
+{
+    auto eid = softwareIdentifier.first;
+
+    descriptorMap[softwareIdentifier] =
+        std::make_unique<Descriptors>(descriptors);
+    componentInfoMap[softwareIdentifier] =
+        std::make_unique<ComponentInfo>(componentInfo);
+
+    updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
+        eid, event, handler, instanceIdDb, updateObjPath,
+        *descriptorMap[softwareIdentifier],
+        *componentInfoMap[softwareIdentifier]);
+}
+
 void AggregateUpdateManager::eraseUpdateManager(
     const SoftwareIdentifier& softwareIdentifier)
 {
