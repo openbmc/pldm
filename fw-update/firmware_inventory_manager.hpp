@@ -1,5 +1,6 @@
 #pragma once
 
+#include "aggregate_update_manager.hpp"
 #include "common/types.hpp"
 #include "firmware_inventory.hpp"
 
@@ -40,8 +41,9 @@ class FirmwareInventoryManager
      */
     explicit FirmwareInventoryManager(
         const pldm::utils::DBusHandler* dbusHandler,
-        const Configurations& config) :
-        dbusHandler(dbusHandler), configurations(config)
+        const Configurations& config, AggregateUpdateManager& updateManager) :
+        dbusHandler(dbusHandler), configurations(config),
+        updateManager(updateManager)
     {}
 
     /**
@@ -96,6 +98,11 @@ class FirmwareInventoryManager
      *        the initialization of the FirmwareInventoryManager.
      */
     const Configurations& configurations;
+
+    /**
+     * @brief Reference to the aggregate update manager
+     */
+    AggregateUpdateManager& updateManager;
 };
 
 } // namespace pldm::fw_update

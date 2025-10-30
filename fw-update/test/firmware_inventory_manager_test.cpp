@@ -1,6 +1,7 @@
 #include "common/test/mocked_utils.hpp"
 #include "fw-update/firmware_inventory.hpp"
 #include "fw-update/firmware_inventory_manager.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -33,8 +34,9 @@ class FirmwareInventoryManagerTest : public FirmwareInventoryManager
 {
   public:
     FirmwareInventoryManagerTest(const pldm::utils::DBusHandler* handler,
-                                 const Configurations& config) :
-        FirmwareInventoryManager(handler, config)
+                                 const Configurations& config,
+                                 AggregateUpdateManager& updateManager) :
+        FirmwareInventoryManager(handler, config, updateManager)
     {}
 
     SoftwareMap& getSoftwareMap()
@@ -64,7 +66,19 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
         endpointId, endpointUuid, endpointMedium, endpointNetId, endpointName);
     configurations[boardInventoryPath] = endpointInfo;
 
-    FirmwareInventoryManagerTest inventoryManager(&mockHandler, configurations);
+    Event event(sdeventplus::Event::get_default());
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> handler(
+        nullptr, event, instanceIdDb, false, seconds(1), 2, milliseconds(100));
+
+    DescriptorMap descriptorMap{};
+    ComponentInfoMap componentInfoMap{};
+
+    AggregateUpdateManager updateManager(event, handler, instanceIdDb,
+                                         descriptorMap, componentInfoMap);
+
+    FirmwareInventoryManagerTest inventoryManager(&mockHandler, configurations,
+                                                  updateManager);
 
     SoftwareIdentifier softwareIdentifier{endpointId, 100};
     SoftwareName softwareName{"TestDevice"};
