@@ -1,8 +1,11 @@
 #include "utils.hpp"
 
+#include <fcntl.h>
 #include <libpldm/pdr.h>
 #include <libpldm/pldm_types.h>
 #include <linux/mctp.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 
 #include <xyz/openbmc_project/BIOSConfig/Manager/client.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
@@ -14,6 +17,7 @@
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <iostream>
@@ -960,6 +964,63 @@ void setBiosAttr(const PendingAttributesList& biosAttrList)
 long int generateSwId()
 {
     return random() % 10000;
+}
+
+MMapHandler::MMapHandler(int fd, std::optional<size_t> size) : fd(fd)
+{
+    struct stat sb;
+    if (fstat(fd, &sb) == -1)
+    {
+        error("Failed to get the actual file size");
+        data = nullptr;
+        throw std::runtime_error("Failed to get the actual file size");
+    }
+
+    if (size.has_value())
+    {
+        if (size.value() < static_cast<size_t>(sb.st_size))
+        {
+            warning("The provided size is smaller than the actual file size");
+        }
+        size = std::min(size.value(), static_cast<size_t>(sb.st_size));
+    }
+    else
+    {
+        size = static_cast<size_t>(sb.st_size);
+    }
+
+    data = static_cast<char*>(
+        mmap(nullptr, this->size, PROT_READ, MAP_PRIVATE, fd, 0));
+    if (data == MAP_FAILED)
+    {
+        data = nullptr;
+        error("mmap failed");
+        throw std::runtime_error("mmap failed");
+    }
+}
+
+MMapHandler::~MMapHandler()
+{
+    if (data)
+    {
+        munmap(data, size);
+        close(fd);
+    }
+}
+
+char* MMapHandler::getData()
+{
+    return data;
+}
+
+const char* MMapHandler::getData() const
+{
+    return data;
+}
+
+size_t MMapHandler::getSize() const
+{
+    return size;
 }
 
 } // namespace utils
