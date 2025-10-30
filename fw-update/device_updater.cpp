@@ -389,6 +389,7 @@ void DeviceUpdater::createRequestFwDataTimer()
 Response DeviceUpdater::requestFwData(const pldm_msg* request,
                                       size_t payloadLength)
 {
+    info("Received PLDM Request Firmware Data command");
     uint8_t completionCode = PLDM_SUCCESS;
     uint32_t offset = 0;
     uint32_t length = 0;

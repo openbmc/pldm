@@ -6,6 +6,7 @@ namespace pldm::fw_update
 Response AggregateUpdateManager::handleRequest(
     mctp_eid_t eid, uint8_t command, const pldm_msg* request, size_t reqMsgLen)
 {
+    info("AggregateUpdateManager received request");
     Response response;
     response = UpdateManager::handleRequest(eid, command, request, reqMsgLen);
     auto responseMsg = new (response.data()) pldm_msg;
@@ -15,6 +16,7 @@ Response AggregateUpdateManager::handleRequest(
     }
     for (auto& [_, updateManager] : updateManagers)
     {
+        info("Forwarding request to ItemUpdateManager");
         response =
             updateManager->handleRequest(eid, command, request, reqMsgLen);
         if (responseMsg->payload[0] != PLDM_FWUP_COMMAND_NOT_EXPECTED)
@@ -23,6 +25,24 @@ Response AggregateUpdateManager::handleRequest(
         }
     }
     return response;
+}
+
+void AggregateUpdateManager::createUpdateManager(
+    const SoftwareIdentifier& softwareIdentifier,
+    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    const std::string& updateObjPath, const std::string& softwareHash)
+{
+    auto eid = softwareIdentifier.first;
+
+    descriptorMap[softwareIdentifier] =
+        std::make_unique<Descriptors>(descriptors);
+    componentInfoMap[softwareIdentifier] =
+        std::make_unique<ComponentInfo>(componentInfo);
+
+    updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
+        eid, event, handler, instanceIdDb, updateObjPath, softwareHash,
+        *descriptorMap[softwareIdentifier],
+        *componentInfoMap[softwareIdentifier]);
 }
 
 void AggregateUpdateManager::eraseUpdateManager(
