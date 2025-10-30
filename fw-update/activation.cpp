@@ -12,6 +12,12 @@ ActivationIntf::Activations Activation::activation(
 {
     if (value == ActivationIntf::Activations::Activating)
     {
+        // Only allow activation from Ready state to prevent segfaults
+        // on invalid/uninitialized objects
+        if (ActivationIntf::activation() != ActivationIntf::Activations::Ready)
+        {
+            return ActivationIntf::activation();
+        }
         deleteImpl.reset();
         updateManager->activatePackage();
     }
@@ -29,7 +35,7 @@ ActivationIntf::Activations Activation::activation(
 
 void Delete::delete_()
 {
-    updateManager->clearActivationInfo();
+    updateManager->resetActivationState();
 }
 } // namespace fw_update
 } // namespace pldm
