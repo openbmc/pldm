@@ -1,10 +1,13 @@
+#include "fw-update/aggregate_update_manager.hpp"
 #include "fw-update/firmware_inventory.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <string>
 
 #include <gtest/gtest.h>
 
 using namespace pldm::fw_update;
+using namespace std::chrono;
 
 class FirmwareInventoryTest : public FirmwareInventory
 {
@@ -33,8 +36,19 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
     std::string expectedEndpointPath =
         "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     Descriptors firmwareDescriptors;
+    DescriptorMap firmwareDescriptorMap{};
     ComponentInfo firmwareComponentInfo;
+    ComponentInfoMap firmwareComponentInfoMap{};
     SoftwareVersionPurpose expectedPurpose = SoftwareVersionPurpose::Unknown;
+
+    Event event(sdeventplus::Event::get_default());
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> handler(
+        nullptr, event, instanceIdDb, false, seconds(1), 2, milliseconds(100));
+
+    AggregateUpdateManager updateManager(
+        event, handler, instanceIdDb, firmwareDescriptorMap,
+        firmwareComponentInfoMap);
 
     FirmwareInventoryTest inventory(softwareIdentifier, expectedSoftwarePath,
                                     expectedSoftwareVersion,
