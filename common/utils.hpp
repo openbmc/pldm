@@ -25,6 +25,7 @@
 #include <filesystem>
 #include <iostream>
 #include <map>
+#include <span>
 #include <string>
 #include <variant>
 #include <vector>
@@ -754,6 +755,81 @@ std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
  *             to be set
  */
 void setBiosAttr(const PendingAttributesList& biosAttrList);
+
+/** @brief RAII class to handle mmap and munmap */
+class MMapHandler
+{
+  public:
+    /** @brief Constructor to handle mmap
+     *
+     *  @param[in] fd - file descriptor to be mapped
+     *  @param[in] size - size to be mapped (optional)
+     */
+    MMapHandler(int fd, std::optional<size_t> size = std::nullopt);
+    ~MMapHandler();
+
+    /** @brief Get the data pointer and size of the mapped data
+     *
+     *  @return char* - pointer to the mapped data
+     */
+    char* data();
+
+    /** @brief Get the const data pointer and size of the mapped data
+     *
+     *  @return const char* - const pointer to the mapped data
+     */
+    const char* data() const;
+
+    /** @brief Get the size of the mapped data
+     *
+     *  @return size_t - size of the mapped data
+     */
+    size_t size() const;
+
+    /** @brief Get a span of type T from the mapped data
+     *
+     *  @tparam T - type of the span elements
+     *  @return std::span<T> - span of type T
+     */
+    template <typename T>
+    std::span<T> getSpan()
+    {
+        if (!data_)
+        {
+            return {};
+        }
+        size_t n = size_ / sizeof(T);
+        auto p = new (data_) T;
+        return {p, n};
+    }
+
+    /** @brief Convert the mapped data to a vector of type T
+     *
+     *  @tparam T - type of the vector elements
+     *  @return std::vector<T> - vector of type T
+     */
+    template <typename T>
+    std::vector<T> toVector() const
+    {
+        if (!data_)
+        {
+            return {};
+        }
+        size_t count = size_ / sizeof(T);
+        std::vector<T> vec;
+        vec.reserve(count);
+        T* ptr = new (data_) T;
+        for (size_t i = 0; i < count; ++i)
+        {
+            vec.push_back(ptr[i]);
+        }
+        return vec;
+    }
+
+  private:
+    size_t size_;
+    char* data_ = nullptr;
+};
 
 } // namespace utils
 } // namespace pldm
