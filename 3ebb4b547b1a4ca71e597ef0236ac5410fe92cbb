@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aedc0b03_0d4a7248",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-30T07:33:12Z",
+      "side": 1,
+      "message": "Hi, do you also have a plan to update pldmtool?",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f6d8c51_60c8460b",
@@ -14,6 +31,41 @@
       "writtenOn": "2025-10-30T03:11:31Z",
       "side": 1,
       "message": "presentReading is 32 bits, so you can\u0027t use decode_numeric_sensor_data",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8039428_e1af9fad",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-30T07:33:12Z",
+      "side": 1,
+      "message": "He seems to have a patch to cast 64b-long data to 32b in libpldm https://gerrit.openbmc.org/c/openbmc/libpldm/+/84665.\n\nAre we planning on changing the decode_numeric_sensor_data function to support an uint64_t presentReading?",
+      "parentUuid": "3f6d8c51_60c8460b",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ceece1f_756fcd29",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-30T07:33:12Z",
+      "side": 1,
+      "message": "Do we need to have both a `value` and a `reading` here?",
       "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
