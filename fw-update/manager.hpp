@@ -1,13 +1,13 @@
 #pragma once
 
 #include "activation.hpp"
+#include "aggregate_update_manager.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "inventory_manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
-#include "update_manager.hpp"
 
 #include <unordered_map>
 #include <vector>
@@ -48,10 +48,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     explicit Manager(const pldm::utils::DBusHandler* dbusHandler, Event& event,
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
-        inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
-                     downstreamDescriptorMap, componentInfoMap, configurations),
         updateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                      componentInfoMap),
+        inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
+                     downstreamDescriptorMap, componentInfoMap, configurations,
+                     updateManager)
     {}
 
     /** @brief Helper function to invoke registered handlers for
@@ -134,11 +135,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     /** Configuration bindings from the Entity Manager */
     Configurations configurations;
 
+    /** @brief PLDM firmware update manager */
+    AggregateUpdateManager updateManager;
+
     /** @brief PLDM firmware inventory manager */
     InventoryManager inventoryMgr;
-
-    /** @brief PLDM firmware update manager */
-    UpdateManager updateManager;
 };
 
 } // namespace fw_update

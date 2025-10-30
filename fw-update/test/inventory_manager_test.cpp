@@ -1,4 +1,5 @@
 #include "common/utils.hpp"
+#include "fw-update/aggregate_update_manager.hpp"
 #include "fw-update/inventory_manager.hpp"
 #include "requester/test/mock_request.hpp"
 #include "test/test_instance_id.hpp"
@@ -18,9 +19,11 @@ class InventoryManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
+        updateManager(event, reqHandler, instanceIdDb, outDescriptorMap,
+                      outComponentInfoMap),
         inventoryManager(&dBusHandler, reqHandler, instanceIdDb,
                          outDescriptorMap, outDownstreamDescriptorMap,
-                         outComponentInfoMap, configurations)
+                         outComponentInfoMap, configurations, updateManager)
     {}
 
     int fd = -1;
@@ -28,6 +31,7 @@ class InventoryManagerTest : public testing::Test
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> reqHandler;
+    AggregateUpdateManager updateManager;
     InventoryManager inventoryManager;
     DescriptorMap outDescriptorMap{};
     DownstreamDescriptorMap outDownstreamDescriptorMap{};
