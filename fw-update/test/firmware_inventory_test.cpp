@@ -1,10 +1,13 @@
+#include "fw-update/aggregate_update_manager.hpp"
 #include "fw-update/firmware_inventory.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <string>
 
 #include <gtest/gtest.h>
 
 using namespace pldm::fw_update;
+using namespace std::chrono;
 
 class FirmwareInventoryTest : public FirmwareInventory
 {
@@ -28,19 +31,32 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
 {
     SoftwareIdentifier softwareIdentifier{1, 100};
     std::string expectedSoftwarePath =
-        "/xyz/openbmc_project/software/PLDM_Device_TestDevice_1234";
+        "/xyz/openbmc_project/software/PLDM_Device_TestDevice";
+    std::string expectedSoftwareHash = "1234";
     std::string expectedSoftwareVersion = "2.3.4";
     std::string expectedEndpointPath =
         "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     Descriptors firmwareDescriptors;
+    DescriptorMap firmwareDescriptorMap{};
     ComponentInfo firmwareComponentInfo;
+    ComponentInfoMap firmwareComponentInfoMap{};
     SoftwareVersionPurpose expectedPurpose = SoftwareVersionPurpose::Unknown;
 
-    FirmwareInventoryTest inventory(softwareIdentifier, expectedSoftwarePath,
-                                    expectedSoftwareVersion,
-                                    expectedEndpointPath, expectedPurpose);
+    Event event(sdeventplus::Event::get_default());
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> handler(
+        nullptr, event, instanceIdDb, false, seconds(1), 2, milliseconds(100));
 
-    EXPECT_EQ(inventory.getSoftwarePath(), expectedSoftwarePath);
+    AggregateUpdateManager updateManager(
+        event, handler, instanceIdDb, firmwareDescriptorMap,
+        firmwareComponentInfoMap);
+
+    FirmwareInventoryTest inventory(
+        softwareIdentifier, expectedSoftwarePath, expectedSoftwareHash,
+        expectedSoftwareVersion, expectedEndpointPath, expectedPurpose);
+
+    EXPECT_EQ(inventory.getSoftwarePath(),
+              std::format("{}_{}", expectedSoftwarePath, expectedSoftwareHash));
     auto associationTuples = inventory.getAssociation().associations();
     ASSERT_FALSE(associationTuples.empty());
     EXPECT_EQ(std::get<2>(associationTuples[0]), expectedEndpointPath);
