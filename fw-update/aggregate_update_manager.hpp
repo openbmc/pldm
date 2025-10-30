@@ -1,5 +1,6 @@
 #pragma once
 
+#include "item_update_manager.hpp"
 #include "update_manager.hpp"
 
 namespace pldm::fw_update
@@ -99,7 +100,8 @@ class AggregateUpdateManager : public UpdateManager
     /**
      * @brief Map of UpdateManager instances keyed by software identifier
      */
-    std::map<SoftwareIdentifier, std::unique_ptr<UpdateManager>> updateManagers;
+    std::map<SoftwareIdentifier, std::unique_ptr<ItemUpdateManager>>
+        updateManagers;
 
     /**
      * @brief Map of descriptor maps keyed by software identifier

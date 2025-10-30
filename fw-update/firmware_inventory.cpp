@@ -4,10 +4,10 @@ namespace pldm::fw_update
 {
 
 FirmwareInventory::FirmwareInventory(
-    SoftwareIdentifier /*softwareIdentifier*/, const std::string& softwarePath,
+    SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
     const std::string& softwareVersion, const std::string& associatedEndpoint,
     SoftwareVersionPurpose purpose) :
-    softwarePath(softwarePath),
+    softwareIdentifier(softwareIdentifier), softwarePath(softwarePath),
     association(this->bus, this->softwarePath.c_str()),
     version(this->bus, this->softwarePath.c_str(),
             SoftwareVersion::action::defer_emit)
