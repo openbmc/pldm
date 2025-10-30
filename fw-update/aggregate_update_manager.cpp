@@ -17,12 +17,31 @@ Response AggregateUpdateManager::handleRequest(
     {
         response =
             updateManager->handleRequest(eid, command, request, reqMsgLen);
+        auto responseMsg = new (response.data()) pldm_msg;
         if (responseMsg->payload[0] != PLDM_FWUP_COMMAND_NOT_EXPECTED)
         {
             return response;
         }
     }
     return response;
+}
+
+void AggregateUpdateManager::createUpdateManager(
+    const SoftwareIdentifier& softwareIdentifier,
+    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    const std::string& updateObjPath, const std::string& softwareHash)
+{
+    auto eid = softwareIdentifier.first;
+
+    descriptorMap[softwareIdentifier] =
+        std::make_unique<Descriptors>(descriptors);
+    componentInfoMap[softwareIdentifier] =
+        std::make_unique<ComponentInfo>(componentInfo);
+
+    updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
+        eid, event, handler, instanceIdDb, updateObjPath, softwareHash,
+        *descriptorMap[softwareIdentifier],
+        *componentInfoMap[softwareIdentifier]);
 }
 
 void AggregateUpdateManager::eraseUpdateManager(
