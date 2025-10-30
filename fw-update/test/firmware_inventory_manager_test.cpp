@@ -11,7 +11,7 @@ using namespace std::chrono;
 using namespace pldm::fw_update;
 
 // Helper class for testing: inherits FirmwareInventory and exposes protected
-class FirmwareInventoryTest : public pldm::fw_update::FirmwareInventory
+class FirmwareInventoryTestInstance : public pldm::fw_update::FirmwareInventory
 {
   public:
     using FirmwareInventory::FirmwareInventory;
@@ -95,7 +95,7 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
         inventoryManager.getSoftwareMap().find(softwareIdentifier);
     ASSERT_NE(inventoryIt, inventoryManager.getSoftwareMap().end());
     const auto* inventory =
-        static_cast<FirmwareInventoryTest*>(inventoryIt->second.get());
+        static_cast<FirmwareInventoryTestInstance*>(inventoryIt->second.get());
     ASSERT_NE(inventory, nullptr);
     EXPECT_NE(inventory->getSoftwarePath().find(
                   "/xyz/openbmc_project/software/PLDM_Device_TestDevice_"),
