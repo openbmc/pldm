@@ -1,6 +1,4 @@
-fw_update_test_src = declare_dependency(
-    sources: fw_update_sources,
-)
+fw_update_test_src = declare_dependency(sources: fw_update_sources)
 
 tests = [
     'inventory_manager_test',
