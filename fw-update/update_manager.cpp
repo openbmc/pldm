@@ -56,7 +56,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         }
         else
         {
-            clearActivationInfo();
+            resetActivationState();
         }
     }
 
@@ -311,7 +311,7 @@ void UpdateManager::activatePackage()
     }
 }
 
-void UpdateManager::clearActivationInfo()
+void UpdateManager::resetActivationState()
 {
     activation.reset();
     activationProgress.reset();

@@ -94,7 +94,7 @@ DeviceUpdater::DeviceUpdater(
     mctp_eid_t eid, std::istream& package,
     const FirmwareDeviceIDRecord& fwDeviceIDRecord,
     const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
-    uint32_t maxTransferSize, UpdateManager* updateManager) :
+    uint32_t maxTransferSize, UpdateManagerBase* updateManager) :
     eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
     compImageInfos(compImageInfos), compInfo(compInfo),
     maxTransferSize(maxTransferSize), updateManager(updateManager),

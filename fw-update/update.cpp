@@ -23,7 +23,7 @@ sdbusplus::message::object_path Update::startUpdate(
         }
         else
         {
-            updateManager->clearActivationInfo();
+            updateManager->resetActivationState();
         }
     }
 
