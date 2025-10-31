@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3311c7ab_8fe372d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-31T09:41:21Z",
+      "side": 1,
+      "message": "Thank you. I will review it.",
+      "parentUuid": "3488c14b_572c8eed",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f6d8c51_60c8460b",
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "Added the new API decode_numeric_sensor_data_ex for supporting 64 Bit in libpldm https://gerrit.openbmc.org/c/openbmc/libpldm/+/84665 and used it in pldm. \n\n/oem/amphere/ also has reference to decode_numeric_sensor_data.  You would like to update @chaul@amperecomputing.com depending on need?",
       "parentUuid": "f8039428_e1af9fad",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1f3fab0_75bb5f07",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-10-31T09:41:21Z",
+      "side": 1,
+      "message": "Thanks for addressing my comments. I left some comments on your patch.\nAnd yes, I will send a patch to update oem/ampere when we have the decode function merged to libpldm.",
+      "parentUuid": "49a02295_391b4f95",
       "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
