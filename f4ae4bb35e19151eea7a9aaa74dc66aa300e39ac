@@ -1,0 +1,256 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7adfa687_9884b67b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "@pavithrabarithaya07@gmail.com - I think we still need some refactor in this commit.",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fac59ed6_28beadc2",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "per [libpldm](https://github.com/openbmc/libpldm/blob/main/src/dsp/pdr.c#L329) , this seems to return the record if the RSI is matching otherwise it returns NULL, we should do NULL check instead of `entityType`",
+      "range": {
+        "startLine": 430,
+        "startChar": 4,
+        "endLine": 430,
+        "endChar": 39
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8552f147_4273f240",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "redundant check, similar comments through out the code",
+      "range": {
+        "startLine": 432,
+        "startChar": 18,
+        "endLine": 432,
+        "endChar": 23
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8266692f_e456b634",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "modern c++ allows us to do something like \n\n` removeEntity \u003d {entityType, entityInsNum, containerId};`",
+      "range": {
+        "startLine": 432,
+        "startChar": 1,
+        "endLine": 437,
+        "endChar": 5
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "353818b4_08a65f94",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "which entity and from which PDR , both needs to be printed",
+      "range": {
+        "startLine": 453,
+        "startChar": 25,
+        "endLine": 453,
+        "endChar": 56
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f61f780_95fd5c68",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "this is not an `error` right ? isn\u0027t this a `debug` instead ?",
+      "range": {
+        "startLine": 464,
+        "startChar": 8,
+        "endLine": 464,
+        "endChar": 17
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daf0000e_a53849ff",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "this is just defined above as -1 , why can\u0027t we remove that make it an `auto` here ?",
+      "range": {
+        "startLine": 466,
+        "startChar": 4,
+        "endLine": 466,
+        "endChar": 19
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53884631_0858c0f2",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "make this an auto instead",
+      "range": {
+        "startLine": 468,
+        "startChar": 2,
+        "endLine": 468,
+        "endChar": 32
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87d2f3cf_29d94e17",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "can\u0027t we split this into two functions - one too delete it from the bmctree and one to remove it from the merged tree - seems like its only the tree that is changing but nothing else seems to be changed ?",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9a4272e_d2ab5e1b",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "nit: We can do this later if we want to - but I think a libpldm function like `pldm_pdr_delete_by_enity_id()` function would have been a value add in situations like these where we need to remove all the PDR\u0027s for a specific entity",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cf84914_c3d8aeb9",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "nit: similar comment like above.",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbedd380_f1988811",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-03T13:15:58Z",
+      "side": 1,
+      "message": "PHYP -\u003e use generic terms",
+      "range": {
+        "startLine": 600,
+        "startChar": 51,
+        "endLine": 600,
+        "endChar": 56
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
