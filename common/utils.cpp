@@ -260,8 +260,8 @@ GetSubTreeResponse DBusHandler::getSubtree(
                                       ObjectMapper::interface, "GetSubTree");
     method.append(searchPath, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
-    GetSubTreeResponse response;
-    reply.read(response);
+    auto response = reply.unpack<GetSubTreeResponse>();
+
     return response;
 }
 
@@ -290,8 +290,8 @@ GetAncestorsResponse DBusHandler::getAncestors(
                                       ObjectMapper::interface, "GetAncestors");
     method.append(path, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
-    GetAncestorsResponse response;
-    reply.read(response);
+    auto response = reply.unpack<GetAncestorsResponse>();
+
     return response;
 }
 
@@ -424,8 +424,8 @@ GetAssociatedSubTreeResponse DBusHandler::getAssociatedSubTree(
         ObjectMapper::interface, "GetAssociatedSubTree");
     method.append(objectPath, subtree, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
-    GetAssociatedSubTreeResponse response;
-    reply.read(response);
+    auto response = reply.unpack<GetAssociatedSubTreeResponse>();
+
     return response;
 }
 
