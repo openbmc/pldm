@@ -90,6 +90,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ad8eab_f5ce8312",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-05T09:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f22aece8_1e2ff693",
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d84de94_70bc9a3d",
@@ -247,6 +265,30 @@
       "side": 1,
       "message": "The current framework of platform-mc base on the idea all of the compact numeric sensors/numeric sensors will have one numericSensor class with none empty D-Bus sensor object path. The sensor reading timer will go through list of NumericSensors objects, read sensors value and update the read value to Value D-Bus interface or Metric D-Bus interfaces.\n\nSo to support the PLDM numeric sensor PDR with base unit is byte and entity type is DeviceFile, we still need create Numeric sensors class for them with none empty object path. We also need the sensor polling update the value of those fileSize sensors.\n\nBecause PDR is `platform description` public or none public can be different between the OEM/ODM so my idea is just public them to D-Bus. The consumer will decide whether they care about them.\n\n@chaul@amperecomputing.com, please add the checking for PDR entity type, when they are deviceFile we will apply `sensorNameSpace \u003d \"/xyz/openbmc_project/metric/file_size/\";` object path.",
       "parentUuid": "3fc30706_c8f4ca08",
+      "range": {
+        "startLine": 161,
+        "startChar": 59,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbc40171_6c467224",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-05T09:37:54Z",
+      "side": 1,
+      "message": "I updated following the suggestion. Let\u0027s just use \"/xyz/openbmc_project/metric/file_size/\" namespace for a sensor with a Bytes unit and has an EntityType of DeviceFile, which indicates that it\u0027s a File Size Monitoring sensor. As it\u0027s not consumed anywhere so let\u0027s not add it to PDI for this patch, at least until we come up with a correct move for the NumericSensor class, but not in this patch.",
+      "parentUuid": "117ad146_06b53c63",
       "range": {
         "startLine": 161,
         "startChar": 59,
