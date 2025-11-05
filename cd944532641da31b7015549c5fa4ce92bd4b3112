@@ -148,6 +148,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1bcccda_145685ef",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 832,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-05T09:33:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbe7a75f_1926fc2f",
+      "range": {
+        "startLine": 809,
+        "startChar": 0,
+        "endLine": 832,
+        "endChar": 1
+      },
+      "revId": "cd944532641da31b7015549c5fa4ce92bd4b3112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "537333a2_01b38f25",
