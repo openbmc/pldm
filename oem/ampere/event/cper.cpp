@@ -242,11 +242,7 @@ void addCperSELLog(pldm_tid_t tid, uint16_t eventID, EFI_AMPERE_ERROR_DATA* p)
             bus.new_method_call(logBusName, logPath, logIntf, "IpmiSelAddOem");
         method.append(message, evtData, recordType);
 
-        auto selReply = bus.call(method);
-        if (selReply.is_method_error())
-        {
-            lg2::error("addCperSELLog: add SEL log error");
-        }
+        bus.call(method);
     }
     catch (const std::exception& e)
     {
