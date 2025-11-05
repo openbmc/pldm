@@ -46,6 +46,30 @@
       },
       "revId": "64ffe5d647e0372096dc378cc9e191b9793f0d56",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3eb3c2b7_cf50011c",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-05T09:34:01Z",
+      "side": 1,
+      "message": "Please re-open for your replies.",
+      "parentUuid": "f3e49a7a_437ad08b",
+      "range": {
+        "startLine": 386,
+        "startChar": 7,
+        "endLine": 393,
+        "endChar": 21
+      },
+      "revId": "64ffe5d647e0372096dc378cc9e191b9793f0d56",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
