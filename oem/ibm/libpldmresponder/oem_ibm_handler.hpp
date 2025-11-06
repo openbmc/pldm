@@ -2,6 +2,7 @@
 
 #include "collect_slot_vpd.hpp"
 #include "common/utils.hpp"
+#include "file_table.hpp"
 #include "inband_code_update.hpp"
 #include "libpldmresponder/bios_config.hpp"
 #include "libpldmresponder/oem_handler.hpp"
@@ -88,6 +89,7 @@ class Handler : public oem_platform::Handler
                         setEventReceiverCnt = 0;
                         disableWatchDogTimer();
                         startStopTimer(false);
+                        pldm::filetable::clearFileTable();
                     }
                     else if (propVal ==
                              "xyz.openbmc_project.State.Host.HostState.Running")
