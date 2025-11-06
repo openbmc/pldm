@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79c91c2d_2441a2e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "Added some comments, please check.\n\nPlease make sure to run the clang-formatter - I see many places white spaces and some alignment issues.",
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2b8f62c_1ac6bd43",
+        "filename": "common/types.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "NIT: These names such as FD, checksum very generic and   might conflict with linux file descriptor names. Since its in namespace, that is good. But i would recommend to use PldmFd, PldmChecksum.",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 269,
+        "endChar": 0
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9f9bea9_e7b888ad",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "pldm_tid_t is uint8_t for which its efficient to pass by value.",
+      "range": {
+        "startLine": 12,
+        "startChar": 57,
+        "endLine": 12,
+        "endChar": 75
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3530791d_315c7cd7",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "I think it\u0027s better to use \"reinterpret_cast\u003cpldm_msg*\u003e(request.data())\" which is much cleaner, Readable.",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 52
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55a30285_8afbe685",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "We can return the rc directly right instead of PLDM_ERROR?",
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4323c43_68de9ac3",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "Follow the coding guidelines for variable names - In other place too.\n\nhttps://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md",
+      "range": {
+        "startLine": 68,
+        "startChar": 11,
+        "endLine": 68,
+        "endChar": 26
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd7c06c0_5989247f",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "IS it file descriptor or transfer context?",
+      "range": {
+        "startLine": 236,
+        "startChar": 24,
+        "endLine": 236,
+        "endChar": 50
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecb89fb4_579a0d51",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-06T16:04:35Z",
+      "side": 1,
+      "message": "NIT: Redundant with Line 271. Can be removed.",
+      "range": {
+        "startLine": 268,
+        "startChar": 7,
+        "endLine": 268,
+        "endChar": 43
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
