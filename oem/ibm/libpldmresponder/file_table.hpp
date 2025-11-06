@@ -121,5 +121,8 @@ class FileTable
 
 FileTable& buildFileTable(const std::string& fileTablePath);
 
+/** @brief Clear the file table instance */
+void clearFileTable();
+
 } // namespace filetable
 } // namespace pldm
