@@ -9,6 +9,7 @@ test_src = declare_dependency(
         '../numeric_sensor.cpp',
         '../state_sensor.cpp',
         '../state_set/state_set.cpp',
+        '../state_set/health_state.cpp',
         '../event_manager.cpp',
         '../dbus_to_terminus_effecters.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
@@ -22,6 +23,7 @@ tests = [
     'platform_manager_test',
     'sensor_manager_test',
     'numeric_sensor_test',
+    'health_state_test',
     'event_manager_test',
     'dbus_to_terminus_effecter_test',
 ]
