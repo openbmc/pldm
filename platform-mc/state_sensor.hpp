@@ -2,9 +2,11 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "state_set/state_set.hpp"
 
 #include <libpldm/platform.h>
 #include <libpldm/pldm.h>
+#include <libpldm/state_set.h>
 #include <libpldm/states.h>
 
 #include <sdbusplus/server/object.hpp>
@@ -14,6 +16,8 @@
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
 #include <map>
+#include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -40,6 +44,7 @@ using EntityIntf = sdbusplus::server::object_t<
  *
  * This class handles state sensor reading updated by sensor manager and export
  * status to D-Bus interface according to DSP0248 specification.
+ * Uses polymorphic StateSet objects (DSP0249) for extensibility.
  */
 class StateSensor
 {
@@ -131,6 +136,29 @@ class StateSensor
      */
     bool isStateSupported(uint8_t sensorOffset, uint8_t state) const;
 
+    /** @brief Get StateSet object for a sensor offset
+     *
+     * @param[in] sensorOffset - offset within composite sensor
+     * @return StateSet* - pointer to StateSet object, or nullptr
+     */
+    StateSet* getStateSet(uint8_t sensorOffset) const
+    {
+        if (sensorOffset < stateSets.size())
+        {
+            return stateSets[sensorOffset].get();
+        }
+        return nullptr;
+    }
+
+    /** @brief Get all StateSet objects
+     *
+     * @return const vector<unique_ptr<StateSet>>& - vector of StateSet objects
+     */
+    const std::vector<std::unique_ptr<StateSet>>& getStateSets() const
+    {
+        return stateSets;
+    }
+
   private:
     /** @brief Create the sensor inventory path
      *
@@ -162,6 +190,14 @@ class StateSensor
      */
     void parsePossibleStates(std::shared_ptr<pldm_state_sensor_pdr> pdr);
 
+    /** @brief Create StateSet objects for each composite sensor
+     *
+     * @param[in] pdr - state sensor PDR structure
+     * @param[in] associationPath - D-Bus association path
+     */
+    void createStateSets(std::shared_ptr<pldm_state_sensor_pdr> pdr,
+                         const std::string& associationPath);
+
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
 
@@ -190,6 +226,9 @@ class StateSensor
 
     /** @brief State set IDs for each composite sensor */
     std::vector<uint16_t> stateSetIds;
+
+    /** @brief Polymorphic StateSet objects (DSP0249) */
+    std::vector<std::unique_ptr<StateSet>> stateSets;
 
     /** @brief Entity type from PDR */
     uint16_t entityType;
