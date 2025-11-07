@@ -39,7 +39,7 @@ option(
     'dbus-timeout-value',
     type: 'integer',
     min: 3,
-    max: 10,
+    max: 60,
     value: 5,
     description: '''The amount of time pldm waits to get a response for a dbus
                     message before timing out''',
