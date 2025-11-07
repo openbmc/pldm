@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2149b82e_5ef4ce48",
+        "filename": "common/types.hpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:47:58Z",
+      "side": 1,
+      "message": "Checksum \u003d\u003e CRC32Type. Because CRC32 value has to be an uint32_t, right?\nFD \u003d\u003e DfOpenFD as it belongs to DfOpen command. And it was moved to the next commit where it\u0027s actually used.",
+      "parentUuid": "f2b8f62c_1ac6bd43",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 269,
+        "endChar": 0
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9f9bea9_e7b888ad",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-11-06T16:04:35Z",
       "side": 1,
       "message": "pldm_tid_t is uint8_t for which its efficient to pass by value.",
+      "range": {
+        "startLine": 12,
+        "startChar": 57,
+        "endLine": 12,
+        "endChar": 75
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32e8bc13_ec0f2013",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:47:58Z",
+      "side": 1,
+      "message": "Right, uint8_t would rather be passed in by value. Thanks for pointing out.",
+      "parentUuid": "c9f9bea9_e7b888ad",
       "range": {
         "startLine": 12,
         "startChar": 57,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11b15895_82c0c644",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:47:58Z",
+      "side": 1,
+      "message": "We have actually moved from that to the placement new to adhere to the C++ characteristics of this repo.",
+      "parentUuid": "3530791d_315c7cd7",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 52
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55a30285_8afbe685",
@@ -104,6 +176,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "422d9739_a4456506",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:47:58Z",
+      "side": 1,
+      "message": "encode_pldm_file_df_open_req returns errno (can be negative) but the APIs in this repo takes PLDM error code so I don\u0027t return rc here (don\u0027t be bothered by the return type exec::task\u003cint\u003e)",
+      "parentUuid": "55a30285_8afbe685",
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4323c43_68de9ac3",
@@ -117,6 +207,30 @@
       "writtenOn": "2025-11-06T16:04:35Z",
       "side": 1,
       "message": "Follow the coding guidelines for variable names - In other place too.\n\nhttps://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md",
+      "range": {
+        "startLine": 68,
+        "startChar": 11,
+        "endLine": 68,
+        "endChar": 26
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80c1595f_78d9a0b0",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:47:58Z",
+      "side": 1,
+      "message": "Thanks for noticing. However, payload_length has been used every where in the repo as the variable name of the length of payload so I want to keep them consistent, you know? Maybe a refactoring in the future can get rid of them but can we just leave it as is?",
+      "parentUuid": "e4323c43_68de9ac3",
       "range": {
         "startLine": 68,
         "startChar": 11,
@@ -150,6 +264,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fd6b1e8_759f5c9d",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:47:58Z",
+      "side": 1,
+      "message": "MultipartReceive command das a TransferContext field in the Base spec (DSP0240) and it will be referred to as the FileDescriptor field of the DfRead command in the File Transfer spec (DSP0242). See Table 19 DfRead Command to MultipartReceive Command Mapping Format in DSP0242 v1.0.0.",
+      "parentUuid": "dd7c06c0_5989247f",
+      "range": {
+        "startLine": 236,
+        "startChar": 24,
+        "endLine": 236,
+        "endChar": 50
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecb89fb4_579a0d51",
@@ -163,6 +301,30 @@
       "writtenOn": "2025-11-06T16:04:35Z",
       "side": 1,
       "message": "NIT: Redundant with Line 271. Can be removed.",
+      "range": {
+        "startLine": 268,
+        "startChar": 7,
+        "endLine": 268,
+        "endChar": 43
+      },
+      "revId": "0a4f965fcfe5c47b28cc4cdbd7eacc7d3ba406ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "100bfbd6_16a97054",
+        "filename": "platform-mc/file_cmds.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:47:58Z",
+      "side": 1,
+      "message": "This can improve readability by separating error handling paths from the successful execution path. Therefore, keeping it as is is acceptable.",
+      "parentUuid": "ecb89fb4_579a0d51",
       "range": {
         "startLine": 268,
         "startChar": 7,
