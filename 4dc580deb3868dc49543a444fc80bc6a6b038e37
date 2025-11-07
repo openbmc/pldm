@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76a7177f_fe449a2f",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:49:25Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "63cec943_36933e9f",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 44
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99d69d2d_3063d5a7",
@@ -64,6 +88,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05d6059e_b0659fa9",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:49:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99d69d2d_3063d5a7",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 65
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ebce209_79485f53",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-11-06T17:23:25Z",
       "side": 1,
       "message": "For better readability return here in if() loop and remove else.",
+      "range": {
+        "startLine": 308,
+        "startChar": 5,
+        "endLine": 311,
+        "endChar": 5
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "197f12c6_983caf6b",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:49:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ebce209_79485f53",
       "range": {
         "startLine": 308,
         "startChar": 5,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c372b9f0_802f65f2",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:49:25Z",
+      "side": 1,
+      "message": "This array of bitfield8_t struct is not automatically initialized to 0 being defined as a local var. I want to make sure that all bits of all the array element are initially 0. For why I set the bits one by one, I want it to be clear which bits are set.",
+      "parentUuid": "3d5b4360_8711907e",
+      "range": {
+        "startLine": 314,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 41
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4150bf47_d50280c2",
         "filename": "platform-mc/file_descriptor.hpp",
         "patchSetId": 24
@@ -123,6 +219,30 @@
       "writtenOn": "2025-11-06T17:23:25Z",
       "side": 1,
       "message": "This will hold garbage values and accessing it before initialization will lead to undefined behaviour. So, initialize them.\n int sockets[SOCKET_CNT] \u003d {0. 0};",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 28
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3005008_e5035b4f",
+        "filename": "platform-mc/file_descriptor.hpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:49:25Z",
+      "side": 1,
+      "message": "Thanks for catching this. Initialized the pair to {-1, -1} as an invalid value is more correct for an unused fd variable.",
+      "parentUuid": "4150bf47_d50280c2",
       "range": {
         "startLine": 73,
         "startChar": 0,
@@ -146,6 +266,30 @@
       "writtenOn": "2025-11-06T17:23:25Z",
       "side": 1,
       "message": "Passing *this here creates the circular dependency. Either use weak_ptr or just reorder the manager class members (termini \u0026 TerminusManager)",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 5
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3009f019_25db3796",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-11-07T10:49:25Z",
+      "side": 1,
+      "message": "Terminus only wants to call its TerminusManager\u0027s method so it is taking a TerminusManager to its constructor by raw reference. TerminusManager owns its Terminus and manages their lifetime, but a Terminus can\u0027t prevent its TerminusManager from being destruction, so we can\u0027t say that this is a circular dependency. A Terminus can\u0027t affect a TerminusManager\u0027s lifetime and contribute to its reference count.\n\nA weak pointer can be robust but I think it\u0027s not necessary here when a Terminus can\u0027t outlive its TerminusManager. I think the current is a simpler approach to the target I\u0027m aiming for.",
+      "parentUuid": "52eb8937_63337fbe",
       "range": {
         "startLine": 379,
         "startChar": 0,
