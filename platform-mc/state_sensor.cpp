@@ -98,6 +98,60 @@ void StateSensor::parsePossibleStates(
     }
 }
 
+void StateSensor::createStateSets(std::shared_ptr<pldm_state_sensor_pdr> pdr,
+                                  const std::string& associationPath)
+{
+    if (!pdr)
+    {
+        lg2::error("Invalid PDR provided to createStateSets");
+        return;
+    }
+
+    stateSets.resize(compositeSensorCount);
+
+    for (uint8_t i = 0; i < compositeSensorCount; i++)
+    {
+        if (i >= stateSetIds.size())
+        {
+            lg2::error("State set ID not found for sensor offset {OFFSET}",
+                       "OFFSET", i);
+            continue;
+        }
+
+        uint16_t stateSetId = stateSetIds[i];
+
+        // Create D-Bus object path for this state set
+        std::string stateSetPath = path + "/Id_" + std::to_string(i);
+
+        // Create associations
+        Associations associations;
+        if (!associationPath.empty())
+        {
+            associations.push_back({"chassis", "all_states", associationPath});
+        }
+
+        // Use factory to create appropriate StateSet object (polymorphic)
+        auto stateSet =
+            StateSetFactory::create(stateSetId, i, stateSetPath, associations);
+
+        if (stateSet)
+        {
+            lg2::info(
+                "Created {TYPE} state set for sensor {NAME} offset {OFFSET}",
+                "TYPE", stateSet->getStateTypeName(), "NAME", sensorName,
+                "OFFSET", i);
+        }
+        else
+        {
+            lg2::warning(
+                "No state set implementation for ID {ID}, sensor {NAME} offset {OFFSET}",
+                "ID", stateSetId, "NAME", sensorName, "OFFSET", i);
+        }
+
+        stateSets[i] = std::move(stateSet);
+    }
+}
+
 StateSensor::StateSensor(const pldm_tid_t tid, const bool sensorDisabled,
                          std::shared_ptr<pldm_state_sensor_pdr> pdr,
                          const std::string& sensorName,
@@ -181,6 +235,9 @@ StateSensor::StateSensor(const pldm_tid_t tid, const bool sensorDisabled,
             }
         }
 
+        // Create polymorphic StateSet objects (DSP0249)
+        createStateSets(pdr, associationPath);
+
         lg2::info("Created state sensor {NAME} with {COUNT} composite sensors",
                   "NAME", sensorName, "COUNT", compositeSensorCount);
     }
@@ -239,6 +296,12 @@ void StateSensor::updateReading(bool available, bool functional,
                 previousStates[i] = currentStates[i];
                 currentStates[i] = PLDM_SENSOR_UNKNOWN;
 
+                // Update StateSet object if exists
+                if (stateSets[i])
+                {
+                    stateSets[i]->setValue(PLDM_SENSOR_UNKNOWN);
+                }
+
                 emitStateSensorEvent(i, PLDM_SENSOR_UNKNOWN, previousStates[i]);
             }
         }
@@ -267,13 +330,30 @@ void StateSensor::updateReading(bool available, bool functional,
             previousStates[i] = currentStates[i];
             currentStates[i] = newState;
 
+            // Update polymorphic StateSet object (if exists)
+            if (stateSets[i])
+            {
+                stateSets[i]->setValue(newState);
+
+                lg2::info(
+                    "State sensor {NAME} offset {OFFSET} changed: {PREV_NAME} ({PREV}) -> {CURR_NAME} ({CURR})",
+                    "NAME", sensorName, "OFFSET", i, "PREV_NAME",
+                    (previousStates[i] == PLDM_SENSOR_UNKNOWN
+                         ? "Unknown"
+                         : stateSets[i]->getStateValueName()),
+                    "PREV", previousStates[i], "CURR_NAME",
+                    stateSets[i]->getStateValueName(), "CURR", newState);
+            }
+            else
+            {
+                lg2::debug(
+                    "State sensor {NAME} offset {OFFSET} changed from {PREV} to {CURR}",
+                    "NAME", sensorName, "OFFSET", i, "PREV", previousStates[i],
+                    "CURR", newState);
+            }
+
             // Emit state change event
             emitStateSensorEvent(i, newState, previousStates[i]);
-
-            lg2::debug(
-                "State sensor {NAME} offset {OFFSET} changed from {PREV} to {CURR}",
-                "NAME", sensorName, "OFFSET", i, "PREV", previousStates[i],
-                "CURR", newState);
         }
     }
 }
