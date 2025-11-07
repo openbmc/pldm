@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11f649ba_9751d3f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-11-07T11:06:10Z",
+      "side": 1,
+      "message": "I\u0027m not sure if increasing the maximum value of dbus-timeout-value is the preferred approach.\n\nWould it be better to separate the D-Bus operations related to MCTP discovery and introduce a dedicated timeout option for them instead?\nAlternatively, should I add additional validation in the MCTP endpoint discovery flow, or modify the logic so that a D-Bus timeout does not result in removing existing MCTP info?",
+      "revId": "2f3e68bc94e06dce587ce80420039dbc72a96a05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
