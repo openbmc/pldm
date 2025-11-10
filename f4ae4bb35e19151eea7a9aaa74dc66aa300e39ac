@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96cc01b7_66d40300",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7adfa687_9884b67b",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fac59ed6_28beadc2",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-11-03T13:15:58Z",
       "side": 1,
       "message": "per [libpldm](https://github.com/openbmc/libpldm/blob/main/src/dsp/pdr.c#L329) , this seems to return the record if the RSI is matching otherwise it returns NULL, we should do NULL check instead of `entityType`",
+      "range": {
+        "startLine": 430,
+        "startChar": 4,
+        "endLine": 430,
+        "endChar": 39
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca3e3bc3_4c198666",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fac59ed6_28beadc2",
       "range": {
         "startLine": 430,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d26130b8_ac98a6ac",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8552f147_4273f240",
+      "range": {
+        "startLine": 432,
+        "startChar": 18,
+        "endLine": 432,
+        "endChar": 23
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8266692f_e456b634",
@@ -77,6 +143,30 @@
       "writtenOn": "2025-11-03T13:15:58Z",
       "side": 1,
       "message": "modern c++ allows us to do something like \n\n` removeEntity \u003d {entityType, entityInsNum, containerId};`",
+      "range": {
+        "startLine": 432,
+        "startChar": 1,
+        "endLine": 437,
+        "endChar": 5
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65d1aec0_dcfbbaef",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8266692f_e456b634",
       "range": {
         "startLine": 432,
         "startChar": 1,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e053886_e87765d4",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "353818b4_08a65f94",
+      "range": {
+        "startLine": 453,
+        "startChar": 25,
+        "endLine": 453,
+        "endChar": 56
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f61f780_95fd5c68",
@@ -123,6 +237,30 @@
       "writtenOn": "2025-11-03T13:15:58Z",
       "side": 1,
       "message": "this is not an `error` right ? isn\u0027t this a `debug` instead ?",
+      "range": {
+        "startLine": 464,
+        "startChar": 8,
+        "endLine": 464,
+        "endChar": 17
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d20cf57e_d66149ed",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8f61f780_95fd5c68",
       "range": {
         "startLine": 464,
         "startChar": 8,
@@ -156,6 +294,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11e78aa8_1d069a52",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "daf0000e_a53849ff",
+      "range": {
+        "startLine": 466,
+        "startChar": 4,
+        "endLine": 466,
+        "endChar": 19
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53884631_0858c0f2",
@@ -169,6 +331,30 @@
       "writtenOn": "2025-11-03T13:15:58Z",
       "side": 1,
       "message": "make this an auto instead",
+      "range": {
+        "startLine": 468,
+        "startChar": 2,
+        "endLine": 468,
+        "endChar": 32
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24fae1d4_ef33dd24",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "53884631_0858c0f2",
       "range": {
         "startLine": 468,
         "startChar": 2,
@@ -196,6 +382,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3407730_3bba5907",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "But I believe having it doesn’t seem to add much value here. This would introduce extra indirection and complexity without improving clarity or reusability. Let me know if you think otherwise.",
+      "parentUuid": "87d2f3cf_29d94e17",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9a4272e_d2ab5e1b",
@@ -209,6 +413,24 @@
       "writtenOn": "2025-11-03T13:15:58Z",
       "side": 1,
       "message": "nit: We can do this later if we want to - but I think a libpldm function like `pldm_pdr_delete_by_enity_id()` function would have been a value add in situations like these where we need to remove all the PDR\u0027s for a specific entity",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9a454f4_7a185563",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f9a4272e_d2ab5e1b",
       "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -230,6 +452,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80842bd8_a59e9d5b",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2cf84914_c3d8aeb9",
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbedd380_f1988811",
@@ -243,6 +483,30 @@
       "writtenOn": "2025-11-03T13:15:58Z",
       "side": 1,
       "message": "PHYP -\u003e use generic terms",
+      "range": {
+        "startLine": 600,
+        "startChar": 51,
+        "endLine": 600,
+        "endChar": 56
+      },
+      "revId": "f4ae4bb35e19151eea7a9aaa74dc66aa300e39ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd4540fa_0f3544a5",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-10T07:27:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbedd380_f1988811",
       "range": {
         "startLine": 600,
         "startChar": 51,
