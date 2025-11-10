@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ff5c73e_1717f582",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-10T19:40:39Z",
+      "side": 1,
+      "message": "\u003e Currently, there are no logging interfaces for this kind of event. Do you have any suggestions on how to handle it?  \n\nI don\u0027t know what the event is.  All I see here is a string shoved in to phosphor-logging.  Whatever it is, we probably need to define an event in phosphor-dbus-interfaces?\n\n\u003e another reason for directly calling logging-create is to have control over the severity of the logged event.\n\nDifferent severity should be different events.",
+      "parentUuid": "0c1504d4_24527e94",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 53
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4a2c489_30f3352c",
         "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
         "patchSetId": 44
@@ -150,6 +174,24 @@
       "side": 1,
       "message": "Do you mean removing all lg2::info and lg2::error? I think it’s convenient to keep them for our testing, and lg2::commit logs into the journal as well.",
       "parentUuid": "c2ec0091_c68ced60",
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28984d71_8c3c24af",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-10T19:40:39Z",
+      "side": 1,
+      "message": "All I mean is:\n\nIf we are calling lg2::commit (or similar) we don\u0027t need a lg2::error or lg2::info _also_.\n\nIt looks like you\u0027ve now removed the call to put something into phosphor-logging (like lg2::commit) so maybe it is fine to keep this trace statement here?",
+      "parentUuid": "7e5e7ee5_b011ba76",
       "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
