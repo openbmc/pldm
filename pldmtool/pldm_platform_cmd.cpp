@@ -342,8 +342,8 @@ class GetPDR : public CommandInterface
             if (transferFlag == PLDM_PLATFORM_TRANSFER_END ||
                 transferFlag == PLDM_PLATFORM_TRANSFER_START_AND_END)
             {
-                printPDRMsg(nextRecordHndl, respCnt, recordData.data(),
-                            terminusHandle);
+                printPDRMsg(nextRecordHndl, recordData.size(),
+                            recordData.data(), terminusHandle);
                 nextPartRequired = false;
                 recordHandle = nextRecordHndl;
                 dataTransferHandle = 0;
