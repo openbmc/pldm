@@ -232,9 +232,9 @@ std::string DBusHandler::getService(const char* path,
     std::map<std::string, std::vector<std::string>> mapperResponse;
     auto& bus = DBusHandler::getBus();
 
-    auto mapper = bus.new_method_call(ObjectMapper::default_service,
-                                      ObjectMapper::instance_path,
-                                      ObjectMapper::interface, "GetObject");
+    auto mapper = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_object);
 
     if (interface)
     {
@@ -255,9 +255,9 @@ GetSubTreeResponse DBusHandler::getSubtree(
     const std::vector<std::string>& ifaceList) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-    auto method = bus.new_method_call(ObjectMapper::default_service,
-                                      ObjectMapper::instance_path,
-                                      ObjectMapper::interface, "GetSubTree");
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
     method.append(searchPath, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
     auto response = reply.unpack<GetSubTreeResponse>();
@@ -273,7 +273,8 @@ GetSubTreePathsResponse DBusHandler::getSubTreePaths(
     auto& bus = pldm::utils::DBusHandler::getBus();
     auto method = bus.new_method_call(
         ObjectMapper::default_service, ObjectMapper::instance_path,
-        ObjectMapper::interface, "GetSubTreePaths");
+        ObjectMapper::interface,
+        ObjectMapper::method_names::get_sub_tree_paths);
     method.append(objectPath, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
 
@@ -285,9 +286,9 @@ GetAncestorsResponse DBusHandler::getAncestors(
     const std::string& path, const std::vector<std::string>& ifaceList) const
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-    auto method = bus.new_method_call(ObjectMapper::default_service,
-                                      ObjectMapper::instance_path,
-                                      ObjectMapper::interface, "GetAncestors");
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_ancestors);
     method.append(path, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
     auto response = reply.unpack<GetAncestorsResponse>();
@@ -421,7 +422,8 @@ GetAssociatedSubTreeResponse DBusHandler::getAssociatedSubTree(
     auto& bus = DBusHandler::getBus();
     auto method = bus.new_method_call(
         ObjectMapper::default_service, ObjectMapper::instance_path,
-        ObjectMapper::interface, "GetAssociatedSubTree");
+        ObjectMapper::interface,
+        ObjectMapper::method_names::get_associated_sub_tree);
     method.append(objectPath, subtree, depth, ifaceList);
     auto reply = bus.call(method, dbusTimeout);
     auto response = reply.unpack<GetAssociatedSubTreeResponse>();
