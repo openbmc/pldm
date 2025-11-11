@@ -355,7 +355,7 @@ class GetPDR : public CommandInterface
             {
                 nextPartRequired = true;
                 dataTransferHandle = nextDataTransferHndl;
-                struct pldm_pdr_hdr* pdr_hdr = new (respRecordData)
+                struct pldm_pdr_hdr* pdr_hdr = new (recordData.data())
                     pldm_pdr_hdr;
                 recordChangeNumber = pdr_hdr->record_change_num;
                 operationFlag = PLDM_GET_NEXTPART;
