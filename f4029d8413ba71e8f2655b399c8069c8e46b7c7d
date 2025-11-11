@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2791934_91d502d6",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-11-11T03:08:30Z",
+      "side": 1,
+      "message": "If you’d like us to refine the patch thoroughly before merging, we can certainly do that. I completely agree that all events should be recorded in a structured manner. \n\nThe event system in our machine carries a lot of historical baggage, as you mentioned, many components have simply “shoved the human-readable string into phosphor-logging.” \n\nRefactoring everything to fully utilize the event definitions in phosphor-dbus-interfaces would take quite a long time. \n\nOur primary consideration is that there are currently several tickets depending on this patch. I’d prefer to merge the current version first and handle the enhancements later.",
+      "parentUuid": "6ff5c73e_1717f582",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 53
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4a2c489_30f3352c",
         "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
         "patchSetId": 44
@@ -192,6 +216,24 @@
       "side": 1,
       "message": "All I mean is:\n\nIf we are calling lg2::commit (or similar) we don\u0027t need a lg2::error or lg2::info _also_.\n\nIt looks like you\u0027ve now removed the call to put something into phosphor-logging (like lg2::commit) so maybe it is fine to keep this trace statement here?",
       "parentUuid": "7e5e7ee5_b011ba76",
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbb2b9f7_775d64cc",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1002480
+      },
+      "writtenOn": "2025-11-11T03:08:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "28984d71_8c3c24af",
       "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
