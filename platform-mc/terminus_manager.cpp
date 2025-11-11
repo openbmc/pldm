@@ -164,7 +164,7 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
     auto& [scope, rcOpt] = discoverMctpTerminusTaskHandle.emplace();
     scope.spawn(discoverMctpTerminusTask() |
                     stdexec::then([&](int rc) { rcOpt.emplace(rc); }),
-                exec::default_task_context<void>(exec::inline_scheduler{}));
+                exec::default_task_context<void>(stdexec::inline_scheduler{}));
 }
 
 TerminiMapper::iterator TerminusManager::findTerminusPtr(
