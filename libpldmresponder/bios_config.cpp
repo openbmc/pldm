@@ -502,11 +502,6 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
 
 void BIOSConfig::updateBaseBIOSTableProperty()
 {
-    constexpr static auto biosConfigPath =
-        "/xyz/openbmc_project/bios_config/manager";
-    constexpr static auto biosConfigInterface =
-        "xyz.openbmc_project.BIOSConfig.Manager";
-    constexpr static auto biosConfigPropertyName = "BaseBIOSTable";
     constexpr static auto dbusProperties = "org.freedesktop.DBus.Properties";
 
     if (baseBIOSTableMaps.empty())
@@ -517,8 +512,8 @@ void BIOSConfig::updateBaseBIOSTableProperty()
     try
     {
         auto& bus = dbusHandler->getBus();
-        auto service =
-            dbusHandler->getService(biosConfigPath, biosConfigInterface);
+        auto service = dbusHandler->getService(biosConfigPath,
+                                               BIOSConfigManager::interface);
         auto method = bus.new_method_call(service.c_str(), biosConfigPath,
                                           dbusProperties, "Set");
         std::variant<BaseBIOSTable> value = baseBIOSTableMaps;
@@ -526,7 +521,9 @@ void BIOSConfig::updateBaseBIOSTableProperty()
         {
             oemBiosHandler->processOEMBaseBiosTable(baseBIOSTableMaps);
         }
-        method.append(biosConfigInterface, biosConfigPropertyName, value);
+        method.append(BIOSConfigManager::interface,
+                      BIOSConfigManager::property_names::base_bios_table,
+                      value);
         bus.call_noreply(method, dbusTimeout);
     }
     catch (const std::exception& e)
@@ -567,17 +564,17 @@ void BIOSConfig::buildAndStoreAttrTables(const Table& stringTable)
     }
 
     BaseBIOSTable biosTable{};
-    constexpr auto biosObjPath = "/xyz/openbmc_project/bios_config/manager";
-    constexpr auto biosInterface = "xyz.openbmc_project.BIOSConfig.Manager";
 
     try
     {
         auto& bus = dbusHandler->getBus();
-        auto service = dbusHandler->getService(biosObjPath, biosInterface);
+        auto service = dbusHandler->getService(biosConfigPath,
+                                               BIOSConfigManager::interface);
         auto method =
-            bus.new_method_call(service.c_str(), biosObjPath,
+            bus.new_method_call(service.c_str(), biosConfigPath,
                                 "org.freedesktop.DBus.Properties", "Get");
-        method.append(biosInterface, "BaseBIOSTable");
+        method.append(BIOSConfigManager::interface,
+                      BIOSConfigManager::property_names::base_bios_table);
         auto reply = bus.call(method, dbusTimeout);
         std::variant<BaseBIOSTable> varBiosTable{};
         reply.read(varBiosTable);
@@ -1154,16 +1151,11 @@ void BIOSConfig::constructPendingAttribute(
 
 void BIOSConfig::listenPendingAttributes()
 {
-    constexpr auto objPath = "/xyz/openbmc_project/bios_config/manager";
-    constexpr auto objInterface = "xyz.openbmc_project.BIOSConfig.Manager";
-
     using namespace sdbusplus::bus::match::rules;
     auto updateBIOSMatch = std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
-        propertiesChanged(objPath, objInterface),
+        propertiesChanged(biosConfigPath, BIOSConfigManager::interface),
         [this](sdbusplus::message_t& msg) {
-            constexpr auto propertyName = "PendingAttributes";
-
             using Value =
                 std::variant<std::string, PendingAttributes, BaseBIOSTable>;
             using Properties = std::map<DbusProp, Value>;
@@ -1172,7 +1164,8 @@ void BIOSConfig::listenPendingAttributes()
             std::string intf;
             msg.read(intf, props);
 
-            auto valPropMap = props.find(propertyName);
+            auto valPropMap = props.find(
+                BIOSConfigManager::property_names::pending_attributes);
             if (valPropMap == props.end())
             {
                 return;
