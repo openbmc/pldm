@@ -1,0 +1,11 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Roger Gili Coscojuela <roger.gili-coscojuela@sipearl.com>
+Code-Review+1: Pavithra Barithaya <pavithrabarithaya07@gmail.com>
+Code-Review+1: <apuli@nvidia.com>
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Submitted-by: Alexander <alexander.hansen@9elements.com>
+Submitted-at: Tue, 11 Nov 2025 15:38:26 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/85120
+Comments-Total: 5
+Project: openbmc/pldm
+Branch: refs/heads/master
