@@ -8,12 +8,16 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Software/Version/client.hpp>
 
 #include <optional>
 #include <set>
 #include <stack>
 
 PHOSPHOR_LOG2_USING;
+
+using SoftwareVersion =
+    sdbusplus::common::xyz::openbmc_project::software::Version;
 
 namespace pldm
 {
@@ -238,9 +242,9 @@ std::string FruImpl::populatefwVersion()
         auto reply = bus.call(method, dbusTimeout);
         reply.read(paths);
         auto fwRunningVersion = std::get<std::vector<std::string>>(paths)[0];
-        constexpr auto versionIntf = "xyz.openbmc_project.Software.Version";
         auto version = pldm::utils::DBusHandler().getDbusPropertyVariant(
-            fwRunningVersion.c_str(), "Version", versionIntf);
+            fwRunningVersion.c_str(), SoftwareVersion::property_names::version,
+            SoftwareVersion::interface);
         currentBmcVersion = std::get<std::string>(version);
     }
     catch (const std::exception& e)
