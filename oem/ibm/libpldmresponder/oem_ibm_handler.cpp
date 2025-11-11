@@ -879,7 +879,8 @@ void pldm::responder::oem_ibm_platform::Handler::handleBootTypesAtPowerOn()
         {
             restartCause =
                 pldm::utils::DBusHandler().getDbusProperty<std::string>(
-                    "/xyz/openbmc_project/state/host0", "RestartCause",
+                    "/xyz/openbmc_project/state/host0",
+                    HostState::property_names::restart_cause,
                     sdbusplus::common::xyz::openbmc_project::state::Host::
                         interface);
             setBootTypesBiosAttr(restartCause);

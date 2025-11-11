@@ -22,6 +22,8 @@
 
 PHOSPHOR_LOG2_USING;
 
+using HostState = sdbusplus::common::xyz::openbmc_project::state::Host;
+
 namespace pldm
 {
 using namespace sdeventplus;
@@ -98,8 +100,9 @@ int SoftPowerOff::getHostState()
     {
         pldm::utils::PropertyValue propertyValue =
             pldm::utils::DBusHandler().getDbusPropertyVariant(
-                "/xyz/openbmc_project/state/host0", "CurrentHostState",
-                "xyz.openbmc_project.State.Host");
+                "/xyz/openbmc_project/state/host0",
+                HostState::property_names::current_host_state,
+                HostState::interface);
 
         if ((std::get<std::string>(propertyValue) !=
              "xyz.openbmc_project.State.Host.HostState.Running") &&
@@ -282,7 +285,8 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
     uint8_t effecterState;
     auto requestHostTransition =
         pldm::utils::DBusHandler().getDbusProperty<std::string>(
-            "/xyz/openbmc_project/state/host0", "RequestedHostTransition",
+            "/xyz/openbmc_project/state/host0",
+            HostState::property_names::requested_host_transition,
             sdbusplus::common::xyz::openbmc_project::state::Host::interface);
     if (requestHostTransition !=
         "xyz.openbmc_project.State.Host.Transition.Off")
