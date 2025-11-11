@@ -190,7 +190,7 @@ NumericSensor::NumericSensor(
         std::string interface = ValueIntf::interface;
         if (useMetricInterface)
         {
-            interface = METRIC_VALUE_INTF;
+            interface = MetricIntf::interface;
         }
         tmp = pldm::utils::DBusHandler().getService(path.c_str(),
                                                     interface.c_str());
@@ -447,7 +447,7 @@ NumericSensor::NumericSensor(
         std::string interface = ValueIntf::interface;
         if (useMetricInterface)
         {
-            interface = METRIC_VALUE_INTF;
+            interface = MetricIntf::interface;
         }
         tmp = pldm::utils::DBusHandler().getService(path.c_str(),
                                                     interface.c_str());
