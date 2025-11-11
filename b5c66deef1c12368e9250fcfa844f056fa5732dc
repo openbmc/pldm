@@ -16,6 +16,46 @@
       "message": "Since the commits [meson: pldmtool: fix subproject build] and [platform: Function to send the PDR Repo Change event to Host] have been merged into the latest master branch, I have updated the content of the patch accordingly.\n\n[meson: pldmtool: fix subproject build]: https://gerrit.openbmc.org/c/openbmc/pldm/+/84195\n\n[platform: Function to send the PDR Repo Change event to Host]:\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/79878",
       "revId": "b5c66deef1c12368e9250fcfa844f056fa5732dc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2998ad1c_7d5a9342",
+        "filename": "common/utils.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-11-11T03:48:46Z",
+      "side": 1,
+      "message": "Given the implementation I don\u0027t think this is the right word. My expectation of \"unwrapping\" `std::expected\u003cT, E\u003e` is to yield a `T`.",
+      "range": {
+        "startLine": 174,
+        "startChar": 10,
+        "endLine": 174,
+        "endChar": 17
+      },
+      "revId": "b5c66deef1c12368e9250fcfa844f056fa5732dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17881b30_cc4a2e3f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-11-11T03:48:46Z",
+      "side": 1,
+      "message": "Why not do this logging in the InstanceIdDb implementation? I think it would remove the need for this helper?",
+      "revId": "b5c66deef1c12368e9250fcfa844f056fa5732dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
