@@ -22,6 +22,30 @@
       },
       "revId": "8b23c62d5d387e3f08063cc1a1ffa4eba6a2407e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd531279_e60402a0",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2025-11-11T14:12:12Z",
+      "side": 1,
+      "message": "Thanks for this fast response!\n\nI\u0027m referencing a pre-existing `using` directive in this repo\n\n```\n   28 using ValueIntf \u003d sdbusplus::server::object_t\u003c\n   29     sdbusplus::xyz::openbmc_project::Sensor::server::Value\u003e;\n```\n\nso i assumed it is well-known for reviewers.\n\nUsually i define a `using` directive for sensor value interface as \n\n`using SensorValue \u003d sdbusplus::common::xyz::openbmc_project::sensor::Value;`\n\n\nDo you think what would work better?\nShould i rename `ValueIntf` to `SensorValue` ?\n\nUsing the fully qualified name of the symbol would introduce a lot of bloat.",
+      "parentUuid": "96d95c83_dfb4fc0a",
+      "range": {
+        "startLine": 190,
+        "startChar": 32,
+        "endLine": 190,
+        "endChar": 41
+      },
+      "revId": "8b23c62d5d387e3f08063cc1a1ffa4eba6a2407e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
