@@ -16,6 +16,23 @@
       "message": "Code looks good, but need some basic tests. @apparao.puli@intel.com is that something you can help with as you were testing state sensor patches? Even a PLDM-alone (D-Bus) test should do.",
       "revId": "a6046a7b051c230b011122667cffd2a5bcd54012",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31987a09_56b29945",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-11T14:34:14Z",
+      "side": 1,
+      "message": "Code LGTM, But do you know why this CI issue poped-up suddenly on existing code? Is this due to some upgrade on sdbusplus?",
+      "revId": "a6046a7b051c230b011122667cffd2a5bcd54012",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
