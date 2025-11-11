@@ -24,7 +24,6 @@ namespace pldm
 namespace platform_mc
 {
 
-constexpr const char* SENSOR_VALUE_INTF = "xyz.openbmc_project.Sensor.Value";
 constexpr const char* METRIC_VALUE_INTF = "xyz.openbmc_project.Metric.Value";
 
 using SensorUnit = sdbusplus::xyz::openbmc_project::Sensor::server::Value::Unit;
