@@ -33,6 +33,24 @@
       "message": "Code LGTM, But do you know why this CI issue poped-up suddenly on existing code? Is this due to some upgrade on sdbusplus?",
       "revId": "a6046a7b051c230b011122667cffd2a5bcd54012",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8183f5fa_aeb1d4d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2025-11-11T14:39:15Z",
+      "side": 1,
+      "message": "\u003e  Is this due to some upgrade on sdbusplus?\n\nYes. Patrick updated the nvidia stdexec version in sdbusplus, i put\n\n\u003e Fixes: 10d0b4b7d1498cfd5c3d37edea271a54d1984e41\n\nfor reference. On stdexec side they had some deprecated one of their `using` directives. Since they aliased it to the new one, i assume we can just use that instead without further changes.",
+      "parentUuid": "31987a09_56b29945",
+      "revId": "a6046a7b051c230b011122667cffd2a5bcd54012",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
