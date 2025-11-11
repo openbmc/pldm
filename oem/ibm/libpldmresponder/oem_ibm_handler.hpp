@@ -16,8 +16,11 @@
 #include <sdbusplus/bus/match.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/utility/timer.hpp>
+#include <xyz/openbmc_project/State/Host/client.hpp>
 
 typedef ibm_oem_pldm_state_set_firmware_update_state_values CodeUpdateState;
+
+using HostState = sdbusplus::common::xyz::openbmc_project::state::Host;
 
 namespace pldm
 {
@@ -71,12 +74,13 @@ class Handler : public oem_platform::Handler
         hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/host0",
-                              "xyz.openbmc_project.State.Host"),
+                              HostState::interface),
             [this](sdbusplus::message_t& msg) {
                 pldm::utils::DbusChangedProps props{};
                 std::string intf;
                 msg.read(intf, props);
-                const auto itr = props.find("CurrentHostState");
+                const auto itr =
+                    props.find(HostState::property_names::current_host_state);
                 if (itr != props.end())
                 {
                     pldm::utils::PropertyValue value = itr->second;

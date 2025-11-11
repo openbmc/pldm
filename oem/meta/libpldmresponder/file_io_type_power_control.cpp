@@ -1,8 +1,12 @@
 #include "file_io_type_power_control.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/State/Host/client.hpp>
 
 PHOSPHOR_LOG2_USING;
+
+using HostState = sdbusplus::common::xyz::openbmc_project::state::Host;
+
 namespace pldm::responder::oem_meta
 {
 
@@ -52,9 +56,11 @@ int PowerControlHandler::write(const message& data)
             break;
         case static_cast<uint8_t>(POWER_CONTROL_OPTION::SLOT_DC_CYCLE):
             dbusMapping.objectPath =
-                std::string("/xyz/openbmc_project/state/host") + slotNum;
-            dbusMapping.interface = "xyz.openbmc_project.State.Host";
-            dbusMapping.propertyName = "RequestedHostTransition";
+                std::format("{}/{}{}", HostState::namespace_path::value,
+                            HostState::namespace_path::host, slotNum);
+            dbusMapping.interface = HostState::interface;
+            dbusMapping.propertyName =
+                HostState::property_names::requested_host_transition;
             property = "xyz.openbmc_project.State.Host.Transition.Reboot";
             break;
         case static_cast<uint8_t>(POWER_CONTROL_OPTION::NIC0_POWER_CYCLE):
