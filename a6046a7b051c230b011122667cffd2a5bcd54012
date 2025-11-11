@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ec6a9540_09fc2027",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-11T15:14:10Z",
+      "side": 1,
+      "message": "Checked on alon8 and sensors shows up fine on D-Bus.",
+      "parentUuid": "7ab261b4_7fe3461b",
+      "revId": "a6046a7b051c230b011122667cffd2a5bcd54012",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "31987a09_56b29945",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
