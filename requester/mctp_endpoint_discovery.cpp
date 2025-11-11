@@ -60,13 +60,13 @@ void MctpDiscovery::getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap)
     try
     {
         mapperResponse = pldm::utils::DBusHandler().getSubtree(
-            MCTPPath, 0, std::vector<std::string>({MCTPInterface}));
+            MCTPPath, 0, std::vector<std::string>({MCTPEndpoint::interface}));
     }
     catch (const sdbusplus::exception_t& e)
     {
         error(
             "Failed to getSubtree call at path '{PATH}' and interface '{INTERFACE}', error - {ERROR} ",
-            "ERROR", e, "PATH", MCTPPath, "INTERFACE", MCTPInterface);
+            "ERROR", e, "PATH", MCTPPath, "INTERFACE", MCTPEndpoint::interface);
         return;
     }
 
@@ -100,15 +100,19 @@ MctpEndpointProps MctpDiscovery::getMctpEndpointProps(
     try
     {
         auto properties = pldm::utils::DBusHandler().getDbusPropertiesVariant(
-            service.c_str(), path.c_str(), MCTPInterface);
+            service.c_str(), path.c_str(), MCTPEndpoint::interface);
 
-        if (properties.contains("NetworkId") && properties.contains("EID") &&
-            properties.contains("SupportedMessageTypes"))
+        if (properties.contains(MCTPEndpoint::property_names::network_id) &&
+            properties.contains(MCTPEndpoint::property_names::eid) &&
+            properties.contains(
+                MCTPEndpoint::property_names::supported_message_types))
         {
-            auto networkId = std::get<NetworkId>(properties.at("NetworkId"));
-            auto eid = std::get<mctp_eid_t>(properties.at("EID"));
-            auto types = std::get<std::vector<uint8_t>>(
-                properties.at("SupportedMessageTypes"));
+            auto networkId = std::get<NetworkId>(
+                properties.at(MCTPEndpoint::property_names::network_id));
+            auto eid = std::get<mctp_eid_t>(
+                properties.at(MCTPEndpoint::property_names::eid));
+            auto types = std::get<std::vector<uint8_t>>(properties.at(
+                MCTPEndpoint::property_names::supported_message_types));
             return MctpEndpointProps(networkId, eid, types);
         }
     }
@@ -208,17 +212,19 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
 
     for (const auto& [intfName, properties] : interfaces)
     {
-        if (intfName == MCTPInterface)
+        if (intfName == MCTPEndpoint::interface)
         {
-            if (properties.contains("NetworkId") &&
-                properties.contains("EID") &&
-                properties.contains("SupportedMessageTypes"))
+            if (properties.contains(MCTPEndpoint::property_names::network_id) &&
+                properties.contains(MCTPEndpoint::property_names::eid) &&
+                properties.contains(
+                    MCTPEndpoint::property_names::supported_message_types))
             {
-                auto networkId =
-                    std::get<NetworkId>(properties.at("NetworkId"));
-                auto eid = std::get<mctp_eid_t>(properties.at("EID"));
-                auto types = std::get<std::vector<uint8_t>>(
-                    properties.at("SupportedMessageTypes"));
+                auto networkId = std::get<NetworkId>(
+                    properties.at(MCTPEndpoint::property_names::network_id));
+                auto eid = std::get<mctp_eid_t>(
+                    properties.at(MCTPEndpoint::property_names::eid));
+                auto types = std::get<std::vector<uint8_t>>(properties.at(
+                    MCTPEndpoint::property_names::supported_message_types));
 
                 if (!availability)
                 {
@@ -310,8 +316,8 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
 
         if (key == MCTPConnectivityProp)
         {
-            service = pldm::utils::DBusHandler().getService(objPath.c_str(),
-                                                            MCTPInterface);
+            service = pldm::utils::DBusHandler().getService(
+                objPath.c_str(), MCTPEndpoint::interface);
             const MctpEndpointProps& epProps =
                 getMctpEndpointProps(service, objPath);
 
