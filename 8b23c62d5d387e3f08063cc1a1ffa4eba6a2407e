@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96d95c83_dfb4fc0a",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-11-11T13:39:29Z",
+      "side": 1,
+      "message": "How does one map this to the actual PDI YAML (need to do this when reading code and trying to understand what D-Bus APIs were used)?",
+      "range": {
+        "startLine": 190,
+        "startChar": 32,
+        "endLine": 190,
+        "endChar": 41
+      },
+      "revId": "8b23c62d5d387e3f08063cc1a1ffa4eba6a2407e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
