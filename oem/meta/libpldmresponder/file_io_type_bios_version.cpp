@@ -3,9 +3,13 @@
 #include "oem/meta/utils.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Software/Version/client.hpp>
 
 #include <sstream>
 #include <string>
+
+using SoftwareVersion =
+    sdbusplus::common::xyz::openbmc_project::software::Version;
 
 PHOSPHOR_LOG2_USING;
 namespace pldm::responder::oem_meta
@@ -24,9 +28,10 @@ int BIOSVersionHandler::write(const message& data)
 
     std::string slotNum = pldm::oem_meta::getSlotNumberStringByTID(tid);
     pldm::utils::DBusMapping dbusMapping{
-        std::string("/xyz/openbmc_project/software/host") + slotNum +
-            "/Sentinel_Dome_bios",
-        "xyz.openbmc_project.Software.Version", "Version", "string"};
+        std::format("{}/host{}/Sentinel_Dome_bios",
+                    SoftwareVersion::namespace_path, slotNum),
+        SoftwareVersion::interface, SoftwareVersion::property_names::version,
+        "string"};
 
     try
     {
