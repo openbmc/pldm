@@ -187,7 +187,7 @@ NumericSensor::NumericSensor(
     try
     {
         std::string tmp{};
-        std::string interface = SENSOR_VALUE_INTF;
+        std::string interface = ValueIntf::interface;
         if (useMetricInterface)
         {
             interface = METRIC_VALUE_INTF;
@@ -444,7 +444,7 @@ NumericSensor::NumericSensor(
     try
     {
         std::string tmp{};
-        std::string interface = SENSOR_VALUE_INTF;
+        std::string interface = ValueIntf::interface;
         if (useMetricInterface)
         {
             interface = METRIC_VALUE_INTF;
