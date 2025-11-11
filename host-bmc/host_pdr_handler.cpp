@@ -12,12 +12,15 @@
 #include <sdeventplus/exception.hpp>
 #include <sdeventplus/source/io.hpp>
 #include <sdeventplus/source/time.hpp>
+#include <xyz/openbmc_project/State/Host/client.hpp>
 
 #include <cassert>
 #include <fstream>
 #include <type_traits>
 
 PHOSPHOR_LOG2_USING;
+
+using HostState = sdbusplus::common::xyz::openbmc_project::state::Host;
 
 namespace pldm
 {
@@ -98,12 +101,13 @@ HostPDRHandler::HostPDRHandler(
     hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
-                          "xyz.openbmc_project.State.Host"),
+                          HostState::interface),
         [this, repo, entityTree, bmcEntityTree](sdbusplus::message_t& msg) {
             DbusChangedProps props{};
             std::string intf;
             msg.read(intf, props);
-            const auto itr = props.find("CurrentHostState");
+            const auto itr =
+                props.find(HostState::property_names::current_host_state);
             if (itr != props.end())
             {
                 PropertyValue value = itr->second;
