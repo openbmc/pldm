@@ -705,6 +705,8 @@ std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
  */
 long int generateSwId();
 
+constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
+
 /** @brief Method to get the value from a bios attribute
  *
  *  @param[in] dbusAttrName - the bios attribute name from
@@ -715,19 +717,19 @@ long int generateSwId();
 template <typename T>
 std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
 {
-    constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
-    constexpr auto biosConfigIntf = sdbusplus::common::xyz::openbmc_project::
-        bios_config::Manager::interface;
+    using BIOSConfigManager =
+        sdbusplus::common::xyz::openbmc_project::bios_config::Manager;
 
     std::string var1;
     std::variant<std::string, int64_t> var2, var3;
     auto& bus = DBusHandler::getBus();
     try
     {
-        auto service = pldm::utils::DBusHandler().getService(biosConfigPath,
-                                                             biosConfigIntf);
-        auto method = bus.new_method_call(service.c_str(), biosConfigPath,
-                                          biosConfigIntf, "GetAttribute");
+        auto service = pldm::utils::DBusHandler().getService(
+            biosConfigPath, BIOSConfigManager::interface);
+        auto method = bus.new_method_call(
+            service.c_str(), biosConfigPath, BIOSConfigManager::interface,
+            BIOSConfigManager::method_names::get_attribute);
         method.append(dbusAttrName);
         auto reply = bus.call(method, dbusTimeout);
         reply.read(var1, var2, var3);
