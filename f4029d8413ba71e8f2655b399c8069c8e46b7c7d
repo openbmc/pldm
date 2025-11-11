@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d555300_f98f28b6",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-11T22:00:05Z",
+      "side": 1,
+      "message": "Can we split the handling of this particular error into a separate commit then?  There shouldn\u0027t be anyone at Meta relying on a raw Logging.Create call.",
+      "parentUuid": "f2791934_91d502d6",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 53
+      },
+      "revId": "f4029d8413ba71e8f2655b399c8069c8e46b7c7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4a2c489_30f3352c",
         "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
         "patchSetId": 44
