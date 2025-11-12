@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e96f3dd_8b27b22e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 63
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-12T03:19:37Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com I think the code is in a state now where you can split the patch as asked by @deepak.kodihalli.83@gmail.com in one of his comments. Lets do that. You can revive https://gerrit.openbmc.org/c/openbmc/pldm/+/74773 and rebase this patch on top of it.",
+      "revId": "ca56daf9046afc006885a786f4a245d2596f2eff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "254471b9_273101bf",
