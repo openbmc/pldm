@@ -46,6 +46,30 @@
       },
       "revId": "aef6e3d6ab21bc0989db5dbb6103e85489469e6d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bbfc82e_52ee56e6",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-12T06:15:02Z",
+      "side": 1,
+      "message": "Ack, but I get a compiler error error: taking address of packed member of ‘pldm_entity’ may result in an unaligned pointer value [-Werror\u003daddress-of-packed-member]",
+      "parentUuid": "73312585_9e000ac1",
+      "range": {
+        "startLine": 430,
+        "startChar": 4,
+        "endLine": 438,
+        "endChar": 59
+      },
+      "revId": "aef6e3d6ab21bc0989db5dbb6103e85489469e6d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
