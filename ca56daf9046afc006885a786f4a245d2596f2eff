@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "254471b9_273101bf",
+        "filename": "common/utils.hpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-12T03:16:03Z",
+      "side": 1,
+      "message": "Can you please add some description to this class.",
+      "revId": "ca56daf9046afc006885a786f4a245d2596f2eff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c688e38_9e8b80f0",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-12T03:16:03Z",
+      "side": 1,
+      "message": "Can you add some descriptio here, how this function is different from above.",
+      "revId": "ca56daf9046afc006885a786f4a245d2596f2eff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
