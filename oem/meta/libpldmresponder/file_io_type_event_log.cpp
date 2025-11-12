@@ -530,10 +530,77 @@ void EventLogHandler::addSystemEventLogAndJournal(
         }
         case EventType::CXL1_HB:
         case EventType::CXL2_HB:
+        {
+            lg2::info("{INFO}", "INFO", event); // Create log in journal
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            using EntrySeverity =
+                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+            static constexpr auto loggingService =
+                "xyz.openbmc_project.Logging";
+            static constexpr auto loggingPath = "/xyz/openbmc_project/logging";
+            static constexpr auto loggingInterface =
+                "xyz.openbmc_project.Logging.Create";
+
+            std::string severityStr;
+            EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
+            if (eventStatus == EventAssert::EVENT_DEASSERTED)
+            {
+                severityStr = sdbusplus::xyz::openbmc_project::Logging::server::
+                    convertForMessage(EntrySeverity::Error);
+            }
+            else
+            {
+                severityStr = sdbusplus::xyz::openbmc_project::Logging::server::
+                    convertForMessage(EntrySeverity::Informational);
+            }
+
+            try
+            {
+                auto method = bus.new_method_call(loggingService, loggingPath,
+                                                  loggingInterface, "Create");
+
+                std::map<std::string, std::string> addlData{};
+                method.append(event.c_str(), severityStr, addlData);
+                bus.call_noreply(method, dbusTimeout);
+            }
+            catch (const std::exception& e)
+            {
+                error("Failed to create info-level D-Bus log: {ERR}", "ERR", e);
+            }
+            break;
+        }
         case EventType::PLTRST_ASSERTION:
         case EventType::POST_STARTED:
         case EventType::POST_ENDED:
         {
+            lg2::info("{INFO}", "INFO", event); // Create log in journal
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            using EntrySeverity =
+                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+            static constexpr auto loggingService =
+                "xyz.openbmc_project.Logging";
+            static constexpr auto loggingPath = "/xyz/openbmc_project/logging";
+            static constexpr auto loggingInterface =
+                "xyz.openbmc_project.Logging.Create";
+
+            auto severityStr = sdbusplus::xyz::openbmc_project::Logging::
+                server::convertForMessage(EntrySeverity::Informational);
+
+            try
+            {
+                auto method = bus.new_method_call(loggingService, loggingPath,
+                                                  loggingInterface, "Create");
+
+                std::map<std::string, std::string> addlData{};
+                method.append(event.c_str(), severityStr, addlData);
+                bus.call_noreply(method, dbusTimeout);
+            }
+            catch (const std::exception& e)
+            {
+                error("Failed to create info-level D-Bus log: {ERR}", "ERR", e);
+            }
             break;
         }
         case EventType::
