@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fa0c90b_b3c05d3b",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "nit: Can we use \u0027available\u0027 here? feels more semantic.",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b0f4f95_b034ed11",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "nit: Can we use \u0027functional\u0027 here? feels more semantic",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7354192_4fceddc9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "Maybe we can stabilise: https://github.com/openbmc/libpldm/blob/9f6b9b3aca29a022c597a87f445d487d8020fe51/src/dsp/pdr.c#L408",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a964195e_c3224247",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "Do we need an equivalent `decode_state_sensor_pdr_data` in libpldm as we have `decode_numeric_sensor_pdr_data`?",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccdb1828_f38c917f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "Clean up?",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d305edf_03e62efd",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this as we already have a default name for a sensor.\n\n```\n...\n    // To ensure there\u0027s always a default name at offset 0\n    sensorNames.emplace_back(defaultName);\n...\n```",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "073d362d_e7fb4dc1",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "But it looks like even numeric and compact numeric sensors have this check. Feels redundant. Maybe they can be modified later on.",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f33405a0_5bf70c6f",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-12T07:09:44Z",
+      "side": 1,
+      "message": "Can you please make this a doxygen style comment?",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
