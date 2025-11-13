@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d554309_289e0916",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 64
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-13T01:55:38Z",
+      "side": 1,
+      "message": "I\u0027ve closed the rest of the unresolved comments since no further input, feel free to open it again if need more discussion.",
+      "revId": "63bc9faa2357d38ed937a7cb5bd659088b2d9210",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
