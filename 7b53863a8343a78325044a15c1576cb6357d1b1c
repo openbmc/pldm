@@ -16,6 +16,24 @@
       "message": "dbus calls by default time out at 25 seconds, so setting this to 60 would not really have any effect, right ?",
       "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32100648_face7a96",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-11-14T11:05:45Z",
+      "side": 1,
+      "message": "PLDM uses [bus.call(method, dbusTimeout)], which explicitly sets the timeout for that call and overrides the default 25-second D-Bus timeout. I also see the same pattern in phosphor-state-manager (e.g., [bus.call(method, 60s)]).\n\n[bus.call(method, dbusTimeout)]: https://github.com/openbmc/pldm/blob/1f2794d0537b7c071ebc6052124108fecae6d3cc/common/utils.hpp#L734\n[bus.call(method, 60s)]:\nhttps://github.com/openbmc/phosphor-state-manager/blob/4d2da4bef6656b6b71ecfc09ef8a416ccece50b9/utils.cpp#L52",
+      "parentUuid": "9298f92a_cbd384df",
+      "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
