@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bea9c0f_a6595206",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-17T22:15:24Z",
+      "side": 1,
+      "message": "Can we return a const reference here, or a weak_ptr (if we it\u0027s possible to convert the state set to a shared ptr)? instead of a raw pointer",
+      "revId": "a1205bbf4a45322382a87504199265a0a55adc5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
