@@ -3,6 +3,10 @@
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Inventory/Decorator/Asset/common.hpp>
+#include <xyz/openbmc_project/Inventory/Decorator/AssetTag/common.hpp>
+#include <xyz/openbmc_project/Inventory/Decorator/Revision/common.hpp>
+#include <xyz/openbmc_project/Inventory/Item/common.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -20,6 +24,13 @@ namespace fru_parser
 using Json = nlohmann::json;
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
+using InventoryDecoratorAsset =
+    sdbusplus::common::xyz::openbmc_project::inventory::decorator::Asset;
+using InventoryDecoratorAssetTag =
+    sdbusplus::common::xyz::openbmc_project::inventory::decorator::AssetTag;
+using InventoryDecoratorRevision =
+    sdbusplus::common::xyz::openbmc_project::inventory::decorator::Revision;
+using InventoryItem = sdbusplus::common::xyz::openbmc_project::inventory::Item;
 
 const Json emptyJson{};
 const std::vector<Json> emptyJsonList{};
@@ -87,19 +98,23 @@ void FruParser::setupDefaultFruRecordMap()
         1, // encodingTypeASCII
         {
             // DSP0257 Table 5 General FRU Record Field Type Definitions
-            {"xyz.openbmc_project.Inventory.Decorator.Asset", "Model", "string",
-             2},
-            {"xyz.openbmc_project.Inventory.Decorator.Asset", "PartNumber",
-             "string", 3},
-            {"xyz.openbmc_project.Inventory.Decorator.Asset", "SerialNumber",
-             "string", 4},
-            {"xyz.openbmc_project.Inventory.Decorator.Asset", "Manufacturer",
-             "string", 5},
-            {"xyz.openbmc_project.Inventory.Item", "PrettyName", "string", 8},
-            {"xyz.openbmc_project.Inventory.Decorator.AssetTag", "AssetTag",
-             "string", 11},
-            {"xyz.openbmc_project.Inventory.Decorator.Revision", "Version",
-             "string", 10},
+            {InventoryDecoratorAsset::interface,
+             InventoryDecoratorAsset::property_names::model, "string", 2},
+            {InventoryDecoratorAsset::interface,
+             InventoryDecoratorAsset::property_names::part_number, "string", 3},
+            {InventoryDecoratorAsset::interface,
+             InventoryDecoratorAsset::property_names::serial_number, "string",
+             4},
+            {InventoryDecoratorAsset::interface,
+             InventoryDecoratorAsset::property_names::manufacturer, "string",
+             5},
+            {InventoryItem::interface,
+             InventoryItem::property_names::pretty_name, "string", 8},
+            {InventoryDecoratorAssetTag::interface,
+             InventoryDecoratorAssetTag::property_names::asset_tag, "string",
+             11},
+            {InventoryDecoratorRevision::interface,
+             InventoryDecoratorRevision::property_names::version, "string", 10},
         }};
 
     for (auto [intf, entityType] : intfToEntityType)
