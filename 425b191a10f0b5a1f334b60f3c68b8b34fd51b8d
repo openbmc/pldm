@@ -72,6 +72,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81b040df_fa300712",
+        "filename": "fw-update/aggregate_update_manager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T18:17:35Z",
+      "side": 1,
+      "message": "Can you instead add reference to the next patch which handles this.",
+      "revId": "425b191a10f0b5a1f334b60f3c68b8b34fd51b8d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "946fe2d7_a84f13a3",
         "filename": "fw-update/aggregate_update_manager.hpp",
         "patchSetId": 35
@@ -112,6 +129,23 @@
         "endLine": 86,
         "endChar": 68
       },
+      "revId": "425b191a10f0b5a1f334b60f3c68b8b34fd51b8d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5856e54_092479b2",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T18:17:35Z",
+      "side": 1,
+      "message": "Is there any specific reason you are creating a shared_ptr instead of a unique_ptr?",
       "revId": "425b191a10f0b5a1f334b60f3c68b8b34fd51b8d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
