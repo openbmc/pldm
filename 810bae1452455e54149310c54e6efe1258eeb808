@@ -37,6 +37,125 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97df3147_0d766404",
+        "filename": "common/utils.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 976,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "Better to throw an exception from the constructor to help user/client do the required handling.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d15fc338_6302ca61",
+        "filename": "common/utils.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "Same here.\n\nBetter to throw an exception from the constructor to help user/client do the required handling.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f74d48_82ca4b46",
+        "filename": "common/utils.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "What is the intent for 2 data APIs?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "276bc6f3_daf2e863",
+        "filename": "fw-update/aggregate_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "Is there any specific reason you need a shared_ptr?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1580340_63faa131",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "I see this API returning either -1 or 0, better to make it return bool if you don\u0027t see any other return value.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724bad39_87f1870e",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "This namespace short name is already defined on line#16 in header, isn\u0027t it?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5af2042e_8a13fa76",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "Why are you checking this again? All the required sanity check for incoming requests should already been done in StartUpdate Dbus API since thats the only entry point for this code.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb4deb84_6732fbdd",
         "filename": "fw-update/item_update_manager.cpp",
         "patchSetId": 66
@@ -65,6 +184,23 @@
       "writtenOn": "2025-11-18T17:42:17Z",
       "side": 1,
       "message": "Memory leak here as the file descriptor(dupFd) is not closed.\nEither we can close the fd immediately after mmap or use RAII wrapper that handles FD ownership.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee103787_af3eeead",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "This is new update request, so you need to return a new object path here where the new activation interface will reside (With state marked as NotReady in the beginning). Why are you returning the object path of the existing version/activation interface?",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -116,6 +252,108 @@
       "writtenOn": "2025-11-18T17:42:17Z",
       "side": 1,
       "message": "We also clean up other resources in UpdateManager::resetActivationState(). \nAre you sure we don’t need to do the same here?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b067b14_cf8ae6e1",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "This namespace short name is already defined on line#16 in header, isn\u0027t it? Better to keep it common since its getting used at multiple places.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ccd6a1f_a948f73c",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "You cannot rely on activation state of current firmware version as that will always be Active. Please add some local state in this class to gate this. You can refer to https://grok.openbmc.org/xref/openbmc/phosphor-bmc-code-mgmt/common/src/software_update.cpp?r\u003df9cfdca9c11096d12b0a7bb8063823792ed9ad30#48.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c2dce97_4b0bd5a6",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "error(\"An update is already in progress, cannot update.\");",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c96ff9e3_0b34a899",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "Missing descriptors and componentInfo from doxygen list.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11167ee2_ace5f134",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "Should this API be private? Lets also check other APIs in this .hpp file for this.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3d37004_82d54976",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-11-18T19:17:05Z",
+      "side": 1,
+      "message": "Should this API be private?",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
