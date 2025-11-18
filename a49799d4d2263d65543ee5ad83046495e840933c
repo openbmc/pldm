@@ -16,6 +16,24 @@
       "message": "@unive.tien.wiwynn@gmail.com There are bunch of CI failures on this patch https://jenkins.openbmc.org/job/ci-repository/121792/console. Can you please address those. Thanks",
       "revId": "a49799d4d2263d65543ee5ad83046495e840933c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "172526f5_8997e892",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 65
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-18T05:37:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8eed6453_336b4f10",
+      "revId": "a49799d4d2263d65543ee5ad83046495e840933c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
