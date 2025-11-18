@@ -70,6 +70,30 @@
       },
       "revId": "8b23c62d5d387e3f08063cc1a1ffa4eba6a2407e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7a0f99d_fa8b561b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-11-18T10:00:48Z",
+      "side": 1,
+      "message": "Thanks for the explanation, makes sense.",
+      "parentUuid": "94bebd19_e78468e9",
+      "range": {
+        "startLine": 190,
+        "startChar": 32,
+        "endLine": 190,
+        "endChar": 41
+      },
+      "revId": "8b23c62d5d387e3f08063cc1a1ffa4eba6a2407e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
