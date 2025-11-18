@@ -4,6 +4,13 @@
 #include "common/utils.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Board/common.hpp>
+#include <xyz/openbmc_project/Software/Version/common.hpp>
+
+using InventoryItemBoard =
+    sdbusplus::common::xyz::openbmc_project::inventory::item::Board;
+using SoftwareVersion =
+    sdbusplus::common::xyz::openbmc_project::software::Version;
 
 PHOSPHOR_LOG2_USING;
 
@@ -38,7 +45,7 @@ void FirmwareInventoryManager::createFirmwareEntry(
     }
     const auto boardName = boardPath->filename().string();
     const auto softwarePath =
-        std::format("/xyz/openbmc_project/software/{}_{}_{}", boardName,
+        std::format("{}/{}_{}_{}", SoftwareVersion::namespace_path, boardName,
                     softwareName, utils::generateSwId());
 
     softwareMap.insert_or_assign(
@@ -56,12 +63,12 @@ void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
 std::optional<std::filesystem::path> getBoardPath(
     const pldm::utils::DBusHandler& handler, const InventoryPath& path)
 {
-    constexpr auto boardInterface = "xyz.openbmc_project.Inventory.Item.Board";
     pldm::utils::GetAncestorsResponse response;
 
     try
     {
-        response = handler.getAncestors(path.c_str(), {boardInterface});
+        response =
+            handler.getAncestors(path.c_str(), {InventoryItemBoard::interface});
     }
     catch (const sdbusplus::exception_t& e)
     {
