@@ -16,6 +16,24 @@
       "message": "Can you describe how this has been tested?",
       "revId": "61e4b4b5dfb19a352c2cd87e3bd9297f11124d06",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02d6e15_64164053",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 38
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-11-19T07:00:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a7b29e85_76e92fc9",
+      "revId": "61e4b4b5dfb19a352c2cd87e3bd9297f11124d06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
