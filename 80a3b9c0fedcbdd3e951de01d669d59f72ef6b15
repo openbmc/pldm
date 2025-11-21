@@ -51,6 +51,24 @@
       "message": "Test with Ampere system which has some multiple part PDRs. The patch set work as expected.",
       "revId": "80a3b9c0fedcbdd3e951de01d669d59f72ef6b15",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d4b3610_6e60674b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-11-21T07:08:15Z",
+      "side": 1,
+      "message": "I tested and the patch set worked as expected.",
+      "parentUuid": "8a2c5f3d_2988693b",
+      "revId": "80a3b9c0fedcbdd3e951de01d669d59f72ef6b15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
