@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba0681b7_82611897",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-11-21T08:14:29Z",
+      "side": 1,
+      "message": "The effecter is using Sensor.Value interface. It is rejected by Patrick as the comment in the design spec https://gerrit.openbmc.org/c/openbmc/docs/+/68927",
+      "revId": "84d08d3129481c960f85b5ce11403c57449c6bc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
