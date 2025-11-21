@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5523392_96e880ea",
+        "filename": "platform-mc/state_set/health_state.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-21T12:44:10Z",
+      "side": 1,
+      "message": "Can you please remove this comment? Doesn\u0027t feel necessary and also doesn\u0027t follow the doxygen style.",
+      "revId": "e75a6680e81c3500a656f33f16d6d56e2aea7cc6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "060f2c89_aa86f0ae",
+        "filename": "platform-mc/state_set/health_state.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-21T12:44:10Z",
+      "side": 1,
+      "message": "Clean up.",
+      "revId": "e75a6680e81c3500a656f33f16d6d56e2aea7cc6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90faadcc_8a64c8d1",
+        "filename": "platform-mc/state_set/health_state.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-21T12:44:10Z",
+      "side": 1,
+      "message": "Why do we need this? Can we use the `pldm_state_set_health_state_values` directly?",
+      "revId": "e75a6680e81c3500a656f33f16d6d56e2aea7cc6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "399c55a2_c575dcb2",
+        "filename": "platform-mc/state_set/health_state.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-21T12:44:10Z",
+      "side": 1,
+      "message": "Can you please remove this comment? Doesn\u0027t feel necessary and also doesn\u0027t follow the doxygen style.",
+      "revId": "e75a6680e81c3500a656f33f16d6d56e2aea7cc6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba3ea0a3_ebecc7c8",
+        "filename": "platform-mc/state_set/health_state.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-21T12:44:10Z",
+      "side": 1,
+      "message": "Comment clean up.",
+      "revId": "e75a6680e81c3500a656f33f16d6d56e2aea7cc6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
