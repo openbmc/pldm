@@ -43,6 +43,7 @@ int PowerControlHandler::write(const message& data)
             dbusMapping.objectPath =
                 std::string("/xyz/openbmc_project/state/chassis0");
             dbusMapping.interface = "xyz.openbmc_project.State.Chassis";
+            dbusMapping.propertyName = "RequestedPowerTransition";
             property =
                 "xyz.openbmc_project.State.Chassis.Transition.PowerCycle";
             break;
