@@ -400,6 +400,26 @@ class Handler : public oem_platform::Handler
      */
     sdeventplus::Event& event;
 
+    /** @brief Method to perform actions when PLDM_RECORDS_MODIFIED event
+     *  is received from host
+     *  @param[in] entityType - entity type
+     *  @param[in] stateSetId - state set id
+     */
+    void modifyPDROemActions(uint16_t entityType, uint16_t stateSetId);
+
+    /** @brief D-Bus Method call to call the Panel D-Bus API
+     *
+     * @param[in] objPath - The D-Bus object path
+     * @param[in] dbusMethod - The Method name to be invoked
+     * @param[in] dbusInterface - The D-Bus interface
+     * @param[in] value - The value to be passed as argument
+     *            to D-Bus method
+     */
+    void setBitmapMethodCall(const std::string& objPath,
+                             const std::string& dbusMethod,
+                             const std::string& dbusInterface,
+                             const pldm::utils::PropertyValue& value);
+
   private:
     /** @brief Method to reset or stop the surveillance timer
      *
@@ -410,6 +430,8 @@ class Handler : public oem_platform::Handler
 
     /** @brief D-Bus property changed signal match for CurrentPowerState*/
     std::unique_ptr<sdbusplus::bus::match_t> chassisOffMatch;
+
+    const pldm_pdr* pdrRepo;
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;

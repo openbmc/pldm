@@ -565,11 +565,6 @@ int Handler::pldmPDRRepositoryChgEvent(
                 return rc;
             }
 
-            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
-            {
-                hostPDRHandler->isHostPdrModified = true;
-            }
-
             rc = getPDRRecordHandles(
                 reinterpret_cast<const ChangeEntry*>(
                     changeRecordData + dataOffset),
@@ -619,7 +614,8 @@ int Handler::pldmPDRRepositoryChgEvent(
         }
         else
         {
-            hostPDRHandler->fetchPDR(std::move(pdrRecordHandles));
+            hostPDRHandler->fetchPDR(std::move(pdrRecordHandles),
+                                     eventDataOperation);
         }
     }
 
