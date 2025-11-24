@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a189e776_f360aea0",
+        "filename": "common/utils.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 976,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97df3147_0d766404",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d15fc338_6302ca61",
@@ -65,6 +83,24 @@
       "writtenOn": "2025-11-18T19:17:05Z",
       "side": 1,
       "message": "Same here.\n\nBetter to throw an exception from the constructor to help user/client do the required handling.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ffecd17_9333e321",
+        "filename": "common/utils.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d15fc338_6302ca61",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +122,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3866abca_c77b3472",
+        "filename": "common/utils.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94f74d48_82ca4b46",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "276bc6f3_daf2e863",
@@ -99,6 +153,24 @@
       "writtenOn": "2025-11-18T19:17:05Z",
       "side": 1,
       "message": "Is there any specific reason you need a shared_ptr?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72165441_47e1eb2f",
+        "filename": "fw-update/aggregate_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "276bc6f3_daf2e863",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +192,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b949be18_4d79fb5a",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1580340_63faa131",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "724bad39_87f1870e",
@@ -133,6 +223,24 @@
       "writtenOn": "2025-11-18T19:17:05Z",
       "side": 1,
       "message": "This namespace short name is already defined on line#16 in header, isn\u0027t it?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73970b24_9910f5bf",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "724bad39_87f1870e",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +262,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "392ea208_0d30a7b5",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "5af2042e_8a13fa76",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb4deb84_6732fbdd",
@@ -171,6 +297,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8dd600c_f5c82b96",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "The `PackageParser` doesn\u0027t accept spans at this point, I\u0027ve raised another [patch] for addressing this, this will be resolved when it gets merged, so lets keep this workaround at this stage.\n\n[patch]: https://gerrit.openbmc.org/c/openbmc/pldm/+/82708",
+      "parentUuid": "cb4deb84_6732fbdd",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "314b53d4_7cbccf51",
@@ -184,6 +328,24 @@
       "writtenOn": "2025-11-18T17:42:17Z",
       "side": 1,
       "message": "Memory leak here as the file descriptor(dupFd) is not closed.\nEither we can close the fd immediately after mmap or use RAII wrapper that handles FD ownership.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0146195_43b81e7d",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "314b53d4_7cbccf51",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -222,6 +384,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a3b4a7_b4e479f2",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Added failed path in `updateDeviceCompletion`, thanks for finding.",
+      "parentUuid": "e2700fa4_6b60065d",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a22dc89_88a2823c",
@@ -235,6 +415,24 @@
       "writtenOn": "2025-11-18T17:42:17Z",
       "side": 1,
       "message": "is update task marked completed for failed update ?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "603a2a37_afebfc1a",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a22dc89_88a2823c",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -256,6 +454,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77e5cbcb_7769cc07",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "No need, the resources can be cleaned up when the entire update object is released.",
+      "parentUuid": "b2b4ec79_52f1e183",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b067b14_cf8ae6e1",
@@ -269,6 +485,24 @@
       "writtenOn": "2025-11-18T19:17:05Z",
       "side": 1,
       "message": "This namespace short name is already defined on line#16 in header, isn\u0027t it? Better to keep it common since its getting used at multiple places.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe13901d_5e139f2a",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "7b067b14_cf8ae6e1",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -307,6 +541,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8668f49_26eb549a",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c2dce97_4b0bd5a6",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c96ff9e3_0b34a899",
@@ -320,6 +572,24 @@
       "writtenOn": "2025-11-18T19:17:05Z",
       "side": 1,
       "message": "Missing descriptors and componentInfo from doxygen list.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9be7a9a0_fe543fe8",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c96ff9e3_0b34a899",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -341,6 +611,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e254159c_0c939a4a",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11167ee2_ace5f134",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3d37004_82d54976",
@@ -354,6 +642,24 @@
       "writtenOn": "2025-11-18T19:17:05Z",
       "side": 1,
       "message": "Should this API be private?",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "895643ed_d4f0bd0a",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-24T07:08:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3d37004_82d54976",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
