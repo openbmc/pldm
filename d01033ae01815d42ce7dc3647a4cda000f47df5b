@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee994ed8_d8ec0222",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "I don\u0027t see real benefit of changing instead unordered_map give extra hash overhead for with no major benefit.",
+      "parentUuid": "dbe45f12_c7621a72",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fa0c90b_b3c05d3b",
         "filename": "platform-mc/state_sensor.hpp",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2025-11-12T07:09:44Z",
       "side": 1,
       "message": "nit: Can we use \u0027available\u0027 here? feels more semantic.",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "028c84db_ccf551e9",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fa0c90b_b3c05d3b",
       "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2025-11-12T07:09:44Z",
       "side": 1,
       "message": "nit: Can we use \u0027functional\u0027 here? feels more semantic",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e1aef6a_2cbe2c8e",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b0f4f95_b034ed11",
       "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +140,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dc64ee4_4928273a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Good suggestion, we can do make libPLDM API decode_pldm_state_sensor_pdr() stable and use it. Once its stabilized, we can use that in future. \n\nhttps://github.com/openbmc/libpldm/blob/9f6b9b3aca29a022c597a87f445d487d8020fe51/src/dsp/pdr.c#L408C12-L408C40",
+      "parentUuid": "a964195e_c3224247",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c65c6154_658a3148",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7354192_4fceddc9",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccdb1828_f38c917f",
@@ -99,6 +189,24 @@
       "writtenOn": "2025-11-12T07:09:44Z",
       "side": 1,
       "message": "Clean up?",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6f8ea91_478591a0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccdb1828_f38c917f",
       "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -137,6 +245,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54e09d41_c0602bd1",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Agree but since return value of getSensorNames() is cpatured directly, Its safe to validate return value before use.",
+      "parentUuid": "8d305edf_03e62efd",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93943155_c6bb406b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "073d362d_e7fb4dc1",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f33405a0_5bf70c6f",
@@ -150,6 +294,24 @@
       "writtenOn": "2025-11-12T07:09:44Z",
       "side": 1,
       "message": "Can you please make this a doxygen style comment?",
+      "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6e25cc9_b6abd003",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-11-25T17:32:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f33405a0_5bf70c6f",
       "revId": "d01033ae01815d42ce7dc3647a4cda000f47df5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
