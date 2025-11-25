@@ -52,6 +52,24 @@
       "parentUuid": "32100648_face7a96",
       "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30362353_d769356b",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-25T09:08:52Z",
+      "side": 1,
+      "message": "I am not sure if we want this to be as big as 60 seconds, though. Are you saying  mcptd might take 60 seconds to respond back for endpoint query request ? that sounds like a problem that we should not fix in pldm.",
+      "parentUuid": "21e8fa01_4692e569",
+      "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
