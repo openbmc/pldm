@@ -224,6 +224,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd4086ef_079da13d",
+        "filename": "fw-update/aggregate_update_manager.hpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-11-25T10:04:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6f427eaf_146f75d6",
+      "range": {
+        "startLine": 80,
+        "startChar": 64,
+        "endLine": 81,
+        "endChar": 27
+      },
+      "revId": "425b191a10f0b5a1f334b60f3c68b8b34fd51b8d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52265290_bba3e04a",
