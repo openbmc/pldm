@@ -34,6 +34,24 @@
       "parentUuid": "9298f92a_cbd384df",
       "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21e8fa01_4692e569",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-11-25T06:03:04Z",
+      "side": 1,
+      "message": "From [sdbusplus], bus.call(method, timeout_us) forwards to sd_bus_call() under the hood. Per the [sd-bus docs], the usec parameter specifies the timeout in microseconds, and if usec is zero, the default method-call timeout(25 seconds) is used\n\n[sdbusplus]: https://github.com/openbmc/sdbusplus/blob/5e36f4ab9b19cebc8a1e9be82ae0c3363838b4ce/include/sdbusplus/bus.hpp#L343\n[sd-bus docs]: https://www.freedesktop.org/software/systemd/man/latest/sd_bus_call.html",
+      "parentUuid": "32100648_face7a96",
+      "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
