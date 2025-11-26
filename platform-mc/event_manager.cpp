@@ -6,12 +6,15 @@
 #include <libpldm/utils.h>
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Dump/Create/common.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include <cerrno>
 #include <memory>
 
 PHOSPHOR_LOG2_USING;
+
+using DumpCreate = sdbusplus::common::xyz::openbmc_project::dump::Create;
 
 namespace pldm
 {
@@ -380,16 +383,15 @@ int EventManager::createCperDumpEntry(const std::string& dataType,
                addData) {
             static constexpr auto dumpObjPath =
                 "/xyz/openbmc_project/dump/faultlog";
-            static constexpr auto dumpInterface =
-                "xyz.openbmc_project.Dump.Create";
             auto& bus = pldm::utils::DBusHandler::getBus();
 
             try
             {
                 auto service = pldm::utils::DBusHandler().getService(
-                    dumpObjPath, dumpInterface);
-                auto method = bus.new_method_call(service.c_str(), dumpObjPath,
-                                                  dumpInterface, "CreateDump");
+                    dumpObjPath, DumpCreate::interface);
+                auto method = bus.new_method_call(
+                    service.c_str(), dumpObjPath, DumpCreate::interface,
+                    DumpCreate::method_names::create_dump);
                 method.append(addData);
                 bus.call_noreply(method);
             }
