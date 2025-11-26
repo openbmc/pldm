@@ -149,6 +149,9 @@ using FirmwareDeviceIDRecord =
                FirmwareDevicePackageData>;
 using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
 
+// DownstreamDeviceIDRecords (Rev 1.2.0)
+using DownstreamDeviceIDRecordCount = uint8_t;
+
 // ComponentImageInformation
 using ComponentImageCount = uint16_t;
 using CompComparisonStamp = uint32_t;
@@ -162,6 +165,8 @@ using ComponentImageInfo =
                CompOptions, ReqCompActivationMethod, CompLocationOffset,
                CompSize, CompVersion>;
 using ComponentImageInfos = std::vector<ComponentImageInfo>;
+// Component Opaque Data (Rev 1.2.0)
+using CompOpaqueDataLength = uint32_t;
 
 enum class ComponentImageInfoPos : size_t
 {
