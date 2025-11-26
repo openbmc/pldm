@@ -6,8 +6,10 @@
 
 #include <xyz/openbmc_project/BIOSConfig/Manager/client.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Inventory/Item/common.hpp>
 #include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
+#include <xyz/openbmc_project/PLDM/Event/common.hpp>
 
 #include <algorithm>
 #include <array>
@@ -30,6 +32,8 @@ namespace utils
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
 using BIOSConfigManager =
     sdbusplus::client::xyz::openbmc_project::bios_config::Manager<>;
+using PLDMEvent = sdbusplus::common::xyz::openbmc_project::pldm::Event;
+using InventoryItem = sdbusplus::common::xyz::openbmc_project::inventory::Item;
 
 constexpr const char* MCTP_INTERFACE_CC = "au.com.codeconstruct.MCTP.Endpoint1";
 constexpr const char* MCTP_ENDPOINT_RECOVER_METHOD = "Recover";
@@ -311,9 +315,9 @@ void reportError(const char* errorMsg)
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
                 sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
                     Error);
-        auto method = bus.new_method_call(LoggingCreate::default_service,
-                                          LoggingCreate::instance_path,
-                                          LoggingCreate::interface, "Create");
+        auto method = bus.new_method_call(
+            LoggingCreate::default_service, LoggingCreate::instance_path,
+            LoggingCreate::interface, LoggingCreate::method_names::create);
 
         std::map<std::string, std::string> addlData{};
         method.append(errorMsg, severity, addlData);
@@ -554,9 +558,9 @@ int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
     try
     {
         auto& bus = DBusHandler::getBus();
-        auto msg = bus.new_signal("/xyz/openbmc_project/pldm",
-                                  "xyz.openbmc_project.PLDM.Event",
-                                  "StateSensorEvent");
+        auto msg =
+            bus.new_signal("/xyz/openbmc_project/pldm", PLDMEvent::interface,
+                           PLDMEvent::signal_names::state_sensor_event);
         msg.append(tid, sensorId, sensorOffset, eventState, previousEventState);
 
         msg.signal_send();
@@ -687,13 +691,11 @@ std::string getCurrentSystemTime()
 bool checkForFruPresence(const std::string& objPath)
 {
     bool isPresent = false;
-    static constexpr auto presentInterface =
-        "xyz.openbmc_project.Inventory.Item";
-    static constexpr auto presentProperty = "Present";
     try
     {
         auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
-            objPath.c_str(), presentProperty, presentInterface);
+            objPath.c_str(), InventoryItem::property_names::present,
+            InventoryItem::interface);
         isPresent = std::get<bool>(propVal);
     }
     catch (const sdbusplus::exception::SdBusError& e)
@@ -714,8 +716,8 @@ void setFruPresence(const std::string& fruObjPath, bool present)
     pldm::utils::PropertyValue value{present};
     pldm::utils::DBusMapping dbusMapping;
     dbusMapping.objectPath = fruObjPath;
-    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
-    dbusMapping.propertyName = "Present";
+    dbusMapping.interface = InventoryItem::interface;
+    dbusMapping.propertyName = InventoryItem::property_names::present;
     dbusMapping.propertyType = "bool";
     try
     {
@@ -916,9 +918,6 @@ std::vector<pldm::pdr::EffecterID> findEffecterIds(
 
 void setBiosAttr(const PendingAttributesList& biosAttrList)
 {
-    static constexpr auto SYSTEMD_PROPERTY_INTERFACE =
-        "org.freedesktop.DBus.Properties";
-
     for (const auto& [attrName, biosAttrDetails] : biosAttrList)
     {
         auto& bus = DBusHandler::getBus();
@@ -928,7 +927,7 @@ void setBiosAttr(const PendingAttributesList& biosAttrList)
                 biosConfigPath, BIOSConfigManager::interface);
             auto method =
                 bus.new_method_call(service.c_str(), biosConfigPath,
-                                    SYSTEMD_PROPERTY_INTERFACE, "Set");
+                                    "org.freedesktop.DBus.Properties", "Set");
             method.append(BIOSConfigManager::interface,
                           BIOSConfigManager::property_names::pending_attributes,
                           std::variant<PendingAttributesList>(biosAttrList));
