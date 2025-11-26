@@ -16,6 +16,24 @@
       "message": "This patch is breaking the PLDM bundle update flow when no targets are provided. \n\nEach PLDM software object should not create xyz.openbmc_project.Software.MultipartUpdate on its own. \nIt should only be created by /xyz/openbmc_project/software/pldm.\n\n```\nNov 26 13:09:26 nvl32-obmc bmcweb[277]: [update_service.hpp:968] Found 31 MultipartUpdate objects, expected exactly 1\nNov 26 13:09:26 nvl32-obmc bmcweb[277]: [error_messages.cpp:1253] Internal Error ../git/redfish-core/lib/update_service.hpp(969:32) `void redfish::handleMultipartManagerUpdate(const std::shared_ptr\u003cbmcweb::AsyncResp\u003e\u0026, task::Payload, const MemoryFileDescriptor\u0026, const std::string\u0026, const boost::system::error_code\u0026, const dbus::utility::MapperGetSubTreeResponse\u0026)`:\n```",
       "revId": "31fb074db388b3dce551ed728c14d1b662e9c88f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bce0e936_7219f4fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 70
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-11-26T13:28:58Z",
+      "side": 1,
+      "message": "The multipart interface should exist only at the root /xyz/openbmc_project/pldm",
+      "parentUuid": "a055ce03_8bce1e41",
+      "revId": "31fb074db388b3dce551ed728c14d1b662e9c88f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
