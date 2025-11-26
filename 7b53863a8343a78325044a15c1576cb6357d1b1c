@@ -70,6 +70,24 @@
       "parentUuid": "21e8fa01_4692e569",
       "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c50a1c64_3ef3c2dd",
+        "filename": "meson.options",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-11-26T11:49:43Z",
+      "side": 1,
+      "message": "Not all platforms require a 60-second setting, so the default value doesn’t need to be that high. However, increasing the maximum allowed value would at least give platforms the flexibility to choose what they need.\n\nThe 60 seconds was just a conservative number I tried; in practice, something between 10 and 60 seconds might be sufficient.\nOr do you think initially setting it to the same as the default 25 seconds would be more acceptable? \n\nPreviously, when I set it to 10 seconds, I saw this log:\n```\nOct 24 09:23:42 bmc pldmd[583]: Error reading MCTP Endpoint property at path \u0027/au/com/codeconstruct/mctp1/networks/1/endpoints/10\u0027 and service \u0027au.com.codeconstruct.MCTP1\u0027, error - sd_bus_call: org.freedesktop.DBus.Error.Timeout: Connection timed out\n```\nThis corresponds to [getMctpEndpointProps].\n\n[getMctpEndpointProps]: https://github.com/openbmc/pldm/blob/e4faeec87be4ae16b6e4c3eb59333a4004d8d90e/requester/mctp_endpoint_discovery.cpp#L122",
+      "parentUuid": "30362353_d769356b",
+      "revId": "7b53863a8343a78325044a15c1576cb6357d1b1c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
