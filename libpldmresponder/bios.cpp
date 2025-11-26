@@ -3,6 +3,8 @@
 #include "common/utils.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Time/EpochTime/common.hpp>
+#include <xyz/openbmc_project/Time/Synchronization/common.hpp>
 
 #include <array>
 #include <chrono>
@@ -13,6 +15,10 @@
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
+
+using EpochTime = sdbusplus::common::xyz::openbmc_project::time::EpochTime;
+using TimeSynchronization =
+    sdbusplus::common::xyz::openbmc_project::time::Synchronization;
 
 using namespace pldm::utils;
 
@@ -117,7 +123,6 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     uint8_t month = 0;
     uint16_t year = 0;
 
-    constexpr auto timeInterface = "xyz.openbmc_project.Time.EpochTime";
     constexpr auto bmcTimePath = "/xyz/openbmc_project/time/bmc";
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES, 0);
     auto responsePtr = new (response.data()) pldm_msg;
@@ -126,13 +131,14 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     try
     {
         timeUsec = pldm::utils::DBusHandler().getDbusProperty<EpochTimeUS>(
-            bmcTimePath, "Elapsed", timeInterface);
+            bmcTimePath, EpochTime::property_names::elapsed,
+            EpochTime::interface);
     }
     catch (const sdbusplus::exception_t& e)
     {
         error(
             "Error getting time from Elapsed property at path '{PATH}' on interface '{INTERFACE}': {ERROR}",
-            "PATH", bmcTimePath, "INTERFACE", timeInterface, "ERROR", e);
+            "PATH", bmcTimePath, "INTERFACE", EpochTime::interface, "ERROR", e);
         return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
 
@@ -165,16 +171,14 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     std::time_t timeSec;
 
     constexpr auto timeSyncPath = "/xyz/openbmc_project/time/sync_method";
-    constexpr auto timeSyncInterface =
-        "xyz.openbmc_project.Time.Synchronization";
-    constexpr auto timeSyncProperty = "TimeSyncMethod";
 
     // The time is correct on BMC when in NTP mode, so we do not want to
     // try and set the time again and cause potential time drifts.
     try
     {
         auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
-            timeSyncPath, timeSyncProperty, timeSyncInterface);
+            timeSyncPath, TimeSynchronization::property_names::time_sync_method,
+            TimeSynchronization::interface);
         const auto& mode = std::get<std::string>(propVal);
 
         if (mode == "xyz.openbmc_project.Time.Synchronization.Method.NTP")
@@ -186,13 +190,12 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     {
         error(
             "Failed to get the time sync property from path {TIME_SYNC_PATH}, interface '{SYNC_INTERFACE}' and property '{SYNC_PROPERTY}', error - '{ERROR}'",
-            "TIME_SYNC_PATH", timeSyncPath, "SYNC_INTERFACE", timeSyncInterface,
-            "SYNC_PROPERTY", timeSyncProperty, "ERROR", e);
+            "TIME_SYNC_PATH", timeSyncPath, "SYNC_INTERFACE",
+            TimeSynchronization::interface, "SYNC_PROPERTY",
+            TimeSynchronization::property_names::time_sync_method, "ERROR", e);
     }
 
-    constexpr auto setTimeInterface = "xyz.openbmc_project.Time.EpochTime";
     constexpr auto setTimePath = "/xyz/openbmc_project/time/bmc";
-    constexpr auto timeSetPro = "Elapsed";
 
     auto rc = decode_set_date_time_req(request, payloadLength, &seconds,
                                        &minutes, &hours, &day, &month, &year);
@@ -208,16 +211,16 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     PropertyValue value{timeUsec};
     try
     {
-        DBusMapping dbusMapping{setTimePath, setTimeInterface, timeSetPro,
-                                "uint64_t"};
+        DBusMapping dbusMapping{setTimePath, EpochTime::interface,
+                                EpochTime::property_names::elapsed, "uint64_t"};
         pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
     }
     catch (const std::exception& e)
     {
         error(
             "Failed to set time at {SET_TIME_PATH}, interface '{TIME_INTERFACE}' and error - {ERROR}",
-            "SET_TIME_PATH", setTimePath, "TIME_INTERFACE", setTimeInterface,
-            "ERROR", e);
+            "SET_TIME_PATH", setTimePath, "TIME_INTERFACE",
+            EpochTime::interface, "ERROR", e);
         return ccOnlyResponse(request, PLDM_ERROR);
     }
 
