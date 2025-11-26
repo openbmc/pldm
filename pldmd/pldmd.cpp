@@ -197,7 +197,7 @@ int main(int argc, char** argv)
 
     InstanceIdDb instanceIdDb;
 
-    Invoker invoker{};
+    Invoker invoker{event};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
                                                       instanceIdDb, verbose);
 
