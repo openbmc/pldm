@@ -133,7 +133,7 @@ UUID MctpDiscovery::getEndpointUUIDProp(const std::string& service,
     try
     {
         auto properties = pldm::utils::DBusHandler().getDbusPropertiesVariant(
-            service.c_str(), path.c_str(), EndpointUUID);
+            service.c_str(), path.c_str(), CommonUUID::interface);
 
         if (properties.contains("UUID"))
         {
@@ -201,7 +201,7 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
     try
     {
         auto service = pldm::utils::DBusHandler().getService(
-            objPath.str.c_str(), EndpointUUID);
+            objPath.str.c_str(), CommonUUID::interface);
         uuid = getEndpointUUIDProp(service, objPath.str);
     }
     catch (const sdbusplus::exception_t& e)
