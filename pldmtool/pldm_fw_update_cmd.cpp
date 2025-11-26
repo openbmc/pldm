@@ -275,13 +275,13 @@ class GetFwParams : public CommandInterface
         {
             capabilitiesDuringUpdate
                 ["Firmware Device Host Functionality during Firmware Update"] =
-                    "Device will not revert to previous component image upon failure, timeout or cancellation of the transfer";
+                    "Device host functionality will be reduced, perhaps becoming inaccessible, during Firmware Update.";
         }
         else
         {
             capabilitiesDuringUpdate
                 ["Firmware Device Host Functionality during Firmware Update"] =
-                    "Device will revert to previous component image upon failure, timeout or cancellation of the transfer";
+                    "Device host functionality is not reduced during Firmware Update.";
         }
 
         if (fwParams.capabilities_during_update.bits.bit3)
