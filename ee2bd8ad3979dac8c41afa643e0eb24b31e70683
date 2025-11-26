@@ -16,6 +16,24 @@
       "message": "@unive.tien.wiwynn@gmail.com what tests were done on this patch?",
       "revId": "ee2bd8ad3979dac8c41afa643e0eb24b31e70683",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "386a9841_a1c74e2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-11-26T01:38:00Z",
+      "side": 1,
+      "message": "Tested:\n\n- Passed OpenBMC CI\n- Build passed for Yosemite V4\n- PLDM starts up successfully on Yosemite V4\n\nThere\u0027s no consumer yet for this function so no function to test, it would be consumed by the next patch ([#74774]).\n\nSorry for missing this in the commit message.\n\n[#74774]: https://gerrit.openbmc.org/c/openbmc/pldm/+/74774",
+      "parentUuid": "55a69469_97a2ab3c",
+      "revId": "ee2bd8ad3979dac8c41afa643e0eb24b31e70683",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
