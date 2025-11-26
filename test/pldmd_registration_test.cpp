@@ -2,6 +2,9 @@
 
 #include <libpldm/base.h>
 
+#include <sdeventplus/event.hpp>
+
+#include <array>
 #include <stdexcept>
 
 #include <gtest/gtest.h>
@@ -43,28 +46,35 @@ TEST(CcOnlyResponse, testEncode)
 
 TEST(Registration, testSuccess)
 {
-    Invoker invoker{};
+    auto event = sdeventplus::Event::get_default();
+    Invoker invoker{event};
     invoker.registerHandler(testType, std::make_unique<TestHandler>());
-    auto result = invoker.handle(tid, testType, testCmd, nullptr, 0);
+    const std::array<uint8_t, sizeof(pldm_msg)> dummyRequestData = {
+        0x01, 0x02, 0x03};
+    const pldm_msg* dummyRequest =
+        reinterpret_cast<const pldm_msg*>(dummyRequestData.data());
+
+    auto result = invoker.handle(tid, testType, testCmd, dummyRequest, 0);
     ASSERT_EQ(result[0], 100);
     ASSERT_EQ(result[1], 200);
 }
 
 TEST(Registration, testFailure)
 {
-    Invoker invoker{};
+    auto event = sdeventplus::Event::get_default();
+    Invoker invoker{event};
     const Response kExpectedBadTypeResponse = {0x01, 0x02, 0x03,
                                                PLDM_ERROR_INVALID_PLDM_TYPE};
-    const std::array<uint8_t, sizeof(pldm_msg)> kDummyPldmRequestBacking = {
+    const std::array<uint8_t, sizeof(pldm_msg)> dummyRequestData = {
         0x01, 0x02, 0x03};
-    const pldm_msg* kDummyPldmRequest =
-        reinterpret_cast<const pldm_msg*>(kDummyPldmRequestBacking.data());
+    const pldm_msg* dummyRequest =
+        reinterpret_cast<const pldm_msg*>(dummyRequestData.data());
 
-    EXPECT_EQ(invoker.handle(tid, testType, testCmd, kDummyPldmRequest, 0),
+    EXPECT_EQ(invoker.handle(tid, testType, testCmd, dummyRequest, 0),
               kExpectedBadTypeResponse);
 
     invoker.registerHandler(testType, std::make_unique<TestHandler>());
     uint8_t badCmd = 0xFE;
-    ASSERT_THROW(invoker.handle(tid, testType, badCmd, nullptr, 0),
+    ASSERT_THROW(invoker.handle(tid, testType, badCmd, dummyRequest, 0),
                  std::out_of_range);
 }

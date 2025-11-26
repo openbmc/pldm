@@ -15,6 +15,7 @@ foreach t : tests
                 libpldm_dep,
                 nlohmann_json_dep,
                 phosphor_logging_dep,
+                sdeventplus,
                 test_src,
             ],
         ),
