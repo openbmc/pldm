@@ -34,6 +34,24 @@
       "parentUuid": "7bea9c0f_a6595206",
       "revId": "a1205bbf4a45322382a87504199265a0a55adc5f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "230c9c2a_e3f0ebd2",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-11-26T09:48:12Z",
+      "side": 1,
+      "message": "Okay.",
+      "parentUuid": "c44f911a_eb6378b1",
+      "revId": "a1205bbf4a45322382a87504199265a0a55adc5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
