@@ -71,6 +71,10 @@ PHOSPHOR_LOG2_USING;
 #include "oem/ampere/oem_ampere.hpp"
 #endif
 
+#ifdef OEM_NVIDIA
+#include "oem/nvidia/oem_nvidia.hpp"
+#endif
+
 constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
 
 using namespace pldm;
@@ -328,6 +332,11 @@ int main(int argc, char** argv)
 #ifdef OEM_META
     pldm::oem_meta::OemMETA oemMETA(&dbusHandler, invoker,
                                     platformHandler.get());
+#endif
+
+#ifdef OEM_NVIDIA
+    pldm::oem_nvidia::OemNVIDIA oemNVIDIA(platformHandler.get(),
+                                          platformManager.get());
 #endif
 
 #ifdef OEM_IBM
