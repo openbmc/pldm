@@ -208,6 +208,10 @@ if get_option('oem-meta').allowed()
     add_project_arguments('-DOEM_META', language: 'cpp')
 endif
 
+if get_option('oem-nvidia').allowed()
+    add_project_arguments('-DOEM_NVIDIA', language: 'cpp')
+endif
+
 libpldmutils_headers = ['.']
 libpldmutils = library(
     'pldmutils',
@@ -248,6 +252,10 @@ endif
 
 if get_option('oem-meta').allowed()
     subdir('oem/meta')
+endif
+
+if get_option('oem-nvidia').allowed()
+    subdir('oem/nvidia')
 endif
 
 if get_option('libpldmresponder').allowed()
