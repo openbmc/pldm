@@ -198,6 +198,14 @@ option(
     value: 'enabled',
 )
 
+## OEM NVIDIA Options
+option(
+    'oem-nvidia',
+    type: 'feature',
+    description: 'Enable NVIDIA OEM PLDM',
+    value: 'enabled',
+)
+
 ## Default Sensor Update Interval Options
 option(
     'default-sensor-update-interval',
