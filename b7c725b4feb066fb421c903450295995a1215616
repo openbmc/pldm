@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74ff29d6_8a29fade",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-11-27T08:03:00Z",
+      "side": 1,
+      "message": "Redfish test results are required to understand if there are bmcweb patches needed.",
+      "revId": "b7c725b4feb066fb421c903450295995a1215616",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
