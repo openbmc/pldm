@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "892cac6c_dc89f3db",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-11-28T07:33:59Z",
+      "side": 1,
+      "message": "Where is this function called from?",
+      "revId": "2d9d21129175b1a0d71c2ad004a60dee6ec2b837",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
