@@ -20,6 +20,7 @@
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <span>
 #include <sstream>
 #include <tuple>
 #include <unordered_map>
@@ -35,7 +36,9 @@ using namespace sdeventplus::source;
 using namespace pldm;
 
 using DeviceIDRecordOffset = size_t;
-using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
+using IsDownstreamDeviceID = bool;
+using DeviceUpdaterInfo =
+    std::tuple<mctp_eid_t, IsDownstreamDeviceID, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
@@ -49,13 +52,25 @@ class UpdateManager
     UpdateManager& operator=(UpdateManager&&) = delete;
     virtual ~UpdateManager() = default;
 
+    /** @brief Constructor for UpdateManager
+     *
+     *  @param[in] event - Reference to PLDM daemon's main event loop
+     *  @param[in] handler - PLDM request handler
+     *  @param[in] instanceIdDb - Managing instance ID for PLDM requests
+     *  @param[in] descriptorMap - Firmware identifiers for the FDs
+     *  @param[in] downstreamDescriptorMap - Downstream device identifiers
+     *  @param[in] componentInfoMap - Component info for the FDs
+     */
     explicit UpdateManager(
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
+        const DownstreamDescriptorMap& downstreamDescriptorMap,
         const ComponentInfoMap& componentInfoMap) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
-        descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
+        descriptorMap(descriptorMap),
+        downstreamDescriptorMap(downstreamDescriptorMap),
+        componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
               [this](std::string& packageFilePath) {
@@ -121,7 +136,9 @@ class UpdateManager
      */
     DeviceUpdaterInfos associatePkgToDevices(
         const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const DownstreamDeviceIDRecords& downstreamDeviceIDRecords,
         const DescriptorMap& descriptorMap,
+        const DownstreamDescriptorMap& downstreamDescriptorMap,
         TotalComponentUpdates& totalNumComponentUpdates);
 
     /** @brief Generate a unique software ID based on current timestamp
@@ -141,6 +158,8 @@ class UpdateManager
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
+    /** @brief Downstream identifiers of the managed FDs */
+    const DownstreamDescriptorMap& downstreamDescriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
 #ifdef FW_UPDATE_INOTIFY_ENABLED
@@ -154,7 +173,15 @@ class UpdateManager
 
     std::filesystem::path fwPackageFilePath;
     std::unique_ptr<PackageParser> parser;
-    std::ifstream package;
+
+    /** @brief RAII handler for memory-mapped package file */
+    std::unique_ptr<pldm::utils::MMapHandler> packageMMapHandler;
+
+    /** @brief Memory-mapped package data (pointer from MMapHandler) */
+    uint8_t* packageMap = nullptr;
+
+    /** @brief Size of the package (from MMapHandler) */
+    uintmax_t packageSize = 0;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
         deviceUpdaterMap;
