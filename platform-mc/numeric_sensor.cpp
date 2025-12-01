@@ -381,8 +381,8 @@ NumericSensor::NumericSensor(
             throw sdbusplus::xyz::openbmc_project::Common::Error::
                 InvalidArgument();
         }
-        thresholdWarningIntf->warningHigh(unitModifier(warningHigh));
-        thresholdWarningIntf->warningLow(unitModifier(warningLow));
+        thresholdWarningIntf->warningHigh(unitModifier(conversionFormula(warningHigh)));
+        thresholdWarningIntf->warningLow(unitModifier(conversionFormula(warningLow)));
     }
 
     if (hasCriticalThresholds && !useMetricInterface)
@@ -400,8 +400,8 @@ NumericSensor::NumericSensor(
             throw sdbusplus::xyz::openbmc_project::Common::Error::
                 InvalidArgument();
         }
-        thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
-        thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
+        thresholdCriticalIntf->criticalHigh(unitModifier(conversionFormula(criticalHigh)));
+        thresholdCriticalIntf->criticalLow(unitModifier(conversionFormula(criticalLow)));
     }
 
     if (hasFatalThresholds && !useMetricInterface)
@@ -419,8 +419,8 @@ NumericSensor::NumericSensor(
             throw sdbusplus::xyz::openbmc_project::Common::Error::
                 InvalidArgument();
         }
-        thresholdHardShutdownIntf->hardShutdownHigh(unitModifier(fatalHigh));
-        thresholdHardShutdownIntf->hardShutdownLow(unitModifier(fatalLow));
+        thresholdHardShutdownIntf->hardShutdownHigh(unitModifier(conversionFormula(fatalHigh)));
+        thresholdHardShutdownIntf->hardShutdownLow(unitModifier(conversionFormula(fatalLow)));
     }
 }
 
@@ -624,8 +624,8 @@ NumericSensor::NumericSensor(
             throw sdbusplus::xyz::openbmc_project::Common::Error::
                 InvalidArgument();
         }
-        thresholdWarningIntf->warningHigh(unitModifier(warningHigh));
-        thresholdWarningIntf->warningLow(unitModifier(warningLow));
+        thresholdWarningIntf->warningHigh(unitModifier(conversionFormula(warningHigh)));
+        thresholdWarningIntf->warningLow(unitModifier(conversionFormula(warningLow)));
     }
 
     if (hasCriticalThresholds && !useMetricInterface)
@@ -643,8 +643,8 @@ NumericSensor::NumericSensor(
             throw sdbusplus::xyz::openbmc_project::Common::Error::
                 InvalidArgument();
         }
-        thresholdCriticalIntf->criticalHigh(unitModifier(criticalHigh));
-        thresholdCriticalIntf->criticalLow(unitModifier(criticalLow));
+        thresholdCriticalIntf->criticalHigh(unitModifier(conversionFormula(criticalHigh)));
+        thresholdCriticalIntf->criticalLow(unitModifier(conversionFormula(criticalLow)));
     }
 
     if (hasFatalThresholds && !useMetricInterface)
@@ -662,8 +662,8 @@ NumericSensor::NumericSensor(
             throw sdbusplus::xyz::openbmc_project::Common::Error::
                 InvalidArgument();
         }
-        thresholdHardShutdownIntf->hardShutdownHigh(unitModifier(fatalHigh));
-        thresholdHardShutdownIntf->hardShutdownLow(unitModifier(fatalLow));
+        thresholdHardShutdownIntf->hardShutdownHigh(unitModifier(conversionFormula(fatalHigh)));
+        thresholdHardShutdownIntf->hardShutdownLow(unitModifier(conversionFormula(fatalLow)));
     }
 }
 
