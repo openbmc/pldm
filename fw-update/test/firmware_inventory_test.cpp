@@ -40,6 +40,7 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
     DescriptorMap firmwareDescriptorMap{};
     ComponentInfo firmwareComponentInfo;
     ComponentInfoMap firmwareComponentInfoMap{};
+    DownstreamDescriptorMap downstreamDescriptorMap{};
     SoftwareVersionPurpose expectedPurpose = SoftwareVersionPurpose::Unknown;
 
     Event event(sdeventplus::Event::get_default());
@@ -49,7 +50,7 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
 
     AggregateUpdateManager updateManager(
         event, handler, instanceIdDb, firmwareDescriptorMap,
-        firmwareComponentInfoMap);
+        downstreamDescriptorMap, firmwareComponentInfoMap);
 
     FirmwareInventoryTest inventory(
         softwareIdentifier, expectedSoftwarePath, expectedSoftwareHash,
