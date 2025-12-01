@@ -28,9 +28,10 @@ class AggregateUpdateManager : public UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
+        const DownstreamDescriptorMap& downstreamDescriptorMap,
         const ComponentInfoMap& componentInfoMap) :
         UpdateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                      downstreamDescriptorMap, componentInfoMap)
     {}
 
     /**
