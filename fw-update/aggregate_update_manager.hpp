@@ -22,6 +22,7 @@ class AggregateUpdateManager : public UpdateManager
      * @param[in] handler - PLDM request handler
      * @param[in] instanceIdDb - Reference to the instance ID database
      * @param[in] descriptorMap - Descriptor map for the update manager
+     * @param[in] downstreamDescriptorMap - Downstream device identifiers
      * @param[in] componentInfoMap - Component information map for the update
      * manager
      */
@@ -29,9 +30,10 @@ class AggregateUpdateManager : public UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
+        const DownstreamDescriptorMap& downstreamDescriptorMap,
         const ComponentInfoMap& componentInfoMap) :
         UpdateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                      downstreamDescriptorMap, componentInfoMap)
     {}
 
     /**
