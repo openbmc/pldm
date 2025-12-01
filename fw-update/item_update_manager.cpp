@@ -43,18 +43,10 @@ bool ItemUpdateManager::processPackage()
 
     auto buffer = std::vector<uint8_t>(packageMap->getBytes().begin(),
                                        packageMap->getBytes().end());
-    parser = parsePkgHeader(buffer);
-    if (parser == nullptr)
-    {
-        error("Invalid PLDM package header information");
-        inProgressActivation->activation(
-            software::Activation::Activations::Invalid);
-        packageMap.reset();
-        return false;
-    }
     try
     {
-        parser->parse(buffer, buffer.size());
+        parser = std::make_unique<PackageParser>(
+            std::span<const uint8_t>(buffer.data(), buffer.size()));
     }
     catch (const std::exception& e)
     {
@@ -62,6 +54,14 @@ bool ItemUpdateManager::processPackage()
         inProgressActivation->activation(
             software::Activation::Activations::Invalid);
         parser.reset();
+        packageMap.reset();
+        return false;
+    }
+    if (parser == nullptr)
+    {
+        error("Invalid PLDM package header information");
+        inProgressActivation->activation(
+            software::Activation::Activations::Invalid);
         packageMap.reset();
         return false;
     }
@@ -81,11 +81,8 @@ bool ItemUpdateManager::processPackage()
     const auto& compImageInfos = parser->getComponentImageInfos();
     static constexpr uint32_t MAXIMUM_TRANSFER_SIZE = 4096;
 
-    auto packageSpan = packageMap->getChars();
-    packageDataStream =
-        std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
-        eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
+        eid, DeviceIDRecord{fwDeviceIDRecords[*deviceIdRecordOffset]},
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     inProgressActivation->activation(software::Activation::Activations::Ready);
     activationProgress = std::make_unique<ActivationProgress>(
