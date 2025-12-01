@@ -1,5 +1,6 @@
 #pragma once
 
+#include "instance_id.hpp"
 #include "types.hpp"
 
 #include <libpldm/base.h>
@@ -22,9 +23,11 @@
 #include <cstdint>
 #include <deque>
 #include <exception>
+#include <expected>
 #include <filesystem>
 #include <iostream>
 #include <map>
+#include <span>
 #include <string>
 #include <variant>
 #include <vector>
@@ -166,6 +169,28 @@ T decimalToBcd(T decimal)
     }
 
     return bcd;
+}
+
+/**
+ * @brief Unwraps the result of InstanceId allocation and logs errors.
+ *
+ * Logs errors if present, but always returns the original result so the caller
+ * can choose to handle the error (return, throw, etc).
+ *
+ * @tparam T      Instance ID value type.
+ * @param[in] result  The result from InstanceIdDb::next().
+ * @return std::expected<T, InstanceIdError>
+ *     Returns the original result (value or error).
+ */
+template <typename T>
+std::expected<T, pldm::InstanceIdError> getInstanceId(
+    const std::expected<T, pldm::InstanceIdError>& result)
+{
+    if (!result)
+    {
+        std::cerr << result.error().msg() << std::endl;
+    }
+    return result;
 }
 
 struct DBusMapping
@@ -754,6 +779,114 @@ std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
  *             to be set
  */
 void setBiosAttr(const PendingAttributesList& biosAttrList);
+
+/** @brief RAII class to handle mmap and munmap */
+class MMapHandler
+{
+  public:
+    /** @brief Constructor to handle mmap with file descriptor
+     *
+     *  @param[in] fd - file descriptor to be mapped
+     *  @param[in] size - size to be mapped (optional)
+     *
+     *  @note The file descriptor is not owned by MMapHandler and will not be
+     *        closed in the destructor when constructed with this method.
+     */
+    MMapHandler(int fd, std::optional<size_t> size = std::nullopt);
+
+    /** @brief Constructor to handle mmap with file path
+     *
+     *  Opens the file, memory maps it, and manages the file descriptor
+     * lifecycle.
+     *
+     *  @param[in] path - filesystem path to the file to be opened and mapped
+     *  @param[in] size - size to be mapped (optional)
+     *
+     *  @note The file descriptor is owned by MMapHandler and will be
+     *        automatically closed in the destructor.
+     */
+    explicit MMapHandler(const std::filesystem::path& path,
+                         std::optional<size_t> size = std::nullopt);
+
+    /** @brief Destructor to handle munmap and optionally close file descriptor
+     *
+     *  Unmaps the memory and closes the file descriptor if it was opened
+     *  by MMapHandler (i.e., constructed with file path).
+     */
+    ~MMapHandler();
+ 
+    /** @brief Copy operations (deleted)
+     *
+     *  Copying is not allowed because the mapped memory region is owned
+     *  by a single MMapHandler instance to prevent double munmap.
+     */
+    MMapHandler(const MMapHandler&) = delete;
+    MMapHandler& operator=(const MMapHandler&) = delete;
+
+    /** @brief Move operations
+     *
+     *  Transfers ownership of the mapped memory and file descriptor,
+     *  leaving the source object in a valid but empty state.
+     */
+    MMapHandler(MMapHandler&& other) noexcept;
+    MMapHandler& operator=(MMapHandler&& other) noexcept;
+
+    /** @brief Get the data pointer and size of the mapped data
+     *
+     *  @return char* - pointer to the mapped data
+     */
+    char* data();
+
+    /** @brief Get the const data pointer and size of the mapped data
+     *
+     *  @return const char* - const pointer to the mapped data
+     */
+    const char* data() const;
+
+    /** @brief Get the size of the mapped data
+     *
+     *  @return size_t - size of the mapped data
+     */
+    size_t size() const;
+
+    /** @brief Get a read-only view of the mapped data as bytes
+     *
+     *  @return std::span<const uint8_t> - read-only byte view of mapped data
+     *
+     *  @note The caller is responsible for parsing and interpreting the bytes,
+     *        including handling endianness, alignment, and data validation.
+     */
+    std::span<const uint8_t> getBytes() const
+    {
+        if (!data_)
+        {
+            return {};
+        }
+        return {reinterpret_cast<const uint8_t*>(data_), size_};
+    }
+
+    /** @brief Get a mutable view of the mapped data as bytes
+     *
+     *  @return std::span<uint8_t> - mutable byte view of mapped data
+     *
+     *  @note The caller is responsible for writing valid data,
+     *        including handling endianness, alignment, and data validation.
+     */
+    std::span<uint8_t> getBytes()
+    {
+        if (!data_)
+        {
+            return {};
+        }
+        return {reinterpret_cast<uint8_t*>(data_), size_};
+    }
+
+  private:
+    int fd_;
+    size_t size_;
+    char* data_ = nullptr;
+    bool ownsFd_ = false;
+};
 
 } // namespace utils
 } // namespace pldm
