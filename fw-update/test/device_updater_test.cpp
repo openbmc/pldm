@@ -3,15 +3,11 @@
 #include "fw-update/device_updater.hpp"
 #include "fw-update/package_parser.hpp"
 #include "requester/handler.hpp"
-
 #include <libpldm/firmware_update.h>
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
 using namespace pldm;
 using namespace pldm::fw_update;
-
 class DeviceUpdaterTest : public testing::Test
 {
   protected:
@@ -27,48 +23,66 @@ class DeviceUpdaterTest : public testing::Test
                                    0x15, 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49,
                                    0xD6, 0x75}}},
             {}};
-        compImageInfos = {
-            {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
+        compImage.resize(1024);
+        package.seekg(139);
+        package.read(reinterpret_cast<char*>(compImage.data()), 1024);
+        package.seekg(0);
+        pldm_package_component_image_information compImageInfo = {
+            .component_classification = 10,
+            .component_identifier = 100,
+            .component_comparison_stamp = 0xFFFFFFFF,
+            .component_options = {0},
+            .requested_component_activation_method = {0},
+            .component_image = {compImage.data(), compImage.size()},
+            .component_version_string_type = PLDM_STR_TYPE_ASCII,
+            .component_version_string =
+                {reinterpret_cast<const uint8_t*>("VersionString3"), 15},
+            .component_opaque_data = {nullptr, 0}};
+        compImageInfos.emplace_back(
+            std::make_tuple(compImageInfo, compImage, "VersionString3"));
         compInfo = {{std::make_pair(10, 100), 1}};
     }
-
     int fd = -1;
+    CompImage compImage;
     std::ifstream package;
     FirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
 };
-
 TEST_F(DeviceUpdaterTest, validatePackage)
 {
     constexpr uintmax_t testPkgSize = 1163;
+    package.seekg(0, std::ios::end);
     uintmax_t packageSize = package.tellg();
     EXPECT_EQ(packageSize, testPkgSize);
-
     package.seekg(0);
-    std::vector<uint8_t> packageHeader(testPkgSize);
-    package.read(new (packageHeader.data()) char, testPkgSize);
-
-    auto parser = parsePkgHeader(packageHeader);
-    EXPECT_NE(parser, nullptr);
-
+    std::vector<uint8_t> packageData(testPkgSize);
+    package.read(new (packageData.data()) char, testPkgSize);
+    auto parser = PackageParser{packageData};
     package.seekg(0);
-
-    parser->parse(packageHeader, packageSize);
-    const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
-    const auto& testPkgCompImageInfos = parser->getComponentImageInfos();
-
+    const auto& fwDeviceIDRecords = parser.getFwDeviceIDRecords();
+    const auto& testPkgCompImageInfos = parser.getComponentImageInfos();
     EXPECT_EQ(fwDeviceIDRecords.size(), 1);
-    EXPECT_EQ(compImageInfos.size(), 1);
     EXPECT_EQ(fwDeviceIDRecords[0], fwDeviceIDRecord);
-    EXPECT_EQ(testPkgCompImageInfos, compImageInfos);
+    EXPECT_EQ(testPkgCompImageInfos.size(), 1);
+    const auto& outCompImageInfoTuple = testPkgCompImageInfos[0];
+    const auto& outCompImageInfo =
+        std::get<pldm_package_component_image_information>(
+            outCompImageInfoTuple);
+    const auto& outCompImage = std::get<CompImage>(outCompImageInfoTuple);
+    const auto& outCompVersion = std::get<CompVersion>(outCompImageInfoTuple);
+    EXPECT_EQ(outCompImageInfo.component_classification, 10);
+    EXPECT_EQ(outCompImageInfo.component_identifier, 100);
+    EXPECT_EQ(outCompImageInfo.component_comparison_stamp, 0xFFFFFFFF);
+    EXPECT_EQ(outCompImageInfo.component_options.value, 0);
+    EXPECT_EQ(outCompImageInfo.requested_component_activation_method.value, 0);
+    EXPECT_EQ(outCompImage, compImage);
+    EXPECT_EQ(outCompVersion, "VersionString3");
 }
-
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
-
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
         reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,
@@ -79,7 +93,6 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
     auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
     auto response = deviceUpdater.requestFwData(
         requestMsg, sizeof(pldm_request_firmware_data_req));
-
     EXPECT_EQ(response.size(),
               sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
     auto responeMsg = reinterpret_cast<const pldm_msg*>(response.data());
@@ -88,7 +101,6 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
     EXPECT_EQ(responeMsg->hdr.type, PLDM_FWUP);
     EXPECT_EQ(responeMsg->hdr.command, PLDM_REQUEST_FIRMWARE_DATA);
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], completionCode);
-
     const std::vector<uint8_t> compFirst512B{
         0x0A, 0x05, 0x15, 0x00, 0x48, 0xD2, 0x1E, 0x80, 0x2E, 0x77, 0x71, 0x2C,
         0x8E, 0xE3, 0x1F, 0x6F, 0x30, 0x76, 0x65, 0x08, 0xB8, 0x1B, 0x4B, 0x03,
