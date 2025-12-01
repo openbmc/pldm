@@ -1,38 +1,29 @@
-#pragma once
+#include "utils.hpp"
 
-#include "types.hpp"
-
-#include <libpldm/base.h>
-#include <libpldm/bios.h>
-#include <libpldm/entity.h>
+#include <fcntl.h>
 #include <libpldm/pdr.h>
-#include <libpldm/platform.h>
-#include <libpldm/utils.h>
-#include <systemd/sd-bus.h>
-#include <unistd.h>
+#include <libpldm/pldm_types.h>
+#include <linux/mctp.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 
-#include <nlohmann/json.hpp>
-#include <phosphor-logging/lg2.hpp>
-#include <sdbusplus/server.hpp>
-#include <xyz/openbmc_project/BIOSConfig/Manager/common.hpp>
-#include <xyz/openbmc_project/Inventory/Manager/client.hpp>
-#include <xyz/openbmc_project/Logging/Entry/server.hpp>
+#include <xyz/openbmc_project/BIOSConfig/Manager/client.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
+#include <xyz/openbmc_project/Logging/Create/client.hpp>
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
-#include <cstdint>
-#include <deque>
-#include <exception>
-#include <filesystem>
+#include <algorithm>
+#include <array>
+#include <cctype>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
-#include <variant>
+#include <system_error>
 #include <vector>
-
-constexpr uint64_t dbusTimeout =
-    std::chrono::duration_cast<std::chrono::microseconds>(
-        std::chrono::seconds(DBUS_TIMEOUT))
-        .count();
 
 PHOSPHOR_LOG2_USING;
 
@@ -41,719 +32,1073 @@ namespace pldm
 namespace utils
 {
 
-enum class Level
-{
-    WARNING,
-    CRITICAL,
-    PERFORMANCELOSS,
-    SOFTSHUTDOWN,
-    HARDSHUTDOWN,
-    ERROR
-};
-enum class Direction
-{
-    HIGH,
-    LOW,
-    ERROR
-};
-
-const std::set<std::string_view> dbusValueTypeNames = {
-    "bool",    "uint8_t",  "int16_t",         "uint16_t",
-    "int32_t", "uint32_t", "int64_t",         "uint64_t",
-    "double",  "string",   "vector<uint8_t>", "vector<string>"};
-const std::set<std::string_view> dbusValueNumericTypeNames = {
-    "uint8_t",  "int16_t", "uint16_t", "int32_t",
-    "uint32_t", "int64_t", "uint64_t", "double"};
-
-namespace fs = std::filesystem;
-using Json = nlohmann::json;
-constexpr bool Tx = true;
-constexpr bool Rx = false;
 using ObjectMapper = sdbusplus::client::xyz::openbmc_project::ObjectMapper<>;
-using inventoryManager =
-    sdbusplus::client::xyz::openbmc_project::inventory::Manager<>;
+using BIOSConfigManager =
+    sdbusplus::client::xyz::openbmc_project::bios_config::Manager<>;
 
-constexpr auto dbusProperties = "org.freedesktop.DBus.Properties";
-constexpr auto mapperService = ObjectMapper::default_service;
-constexpr auto inventoryPath = "/xyz/openbmc_project/inventory";
+constexpr const char* MCTP_INTERFACE_CC = "au.com.codeconstruct.MCTP.Endpoint1";
+constexpr const char* MCTP_ENDPOINT_RECOVER_METHOD = "Recover";
 
-/** @struct CustomFD
- *
- *  RAII wrapper for file descriptor.
- */
-struct CustomFD
+std::vector<std::vector<uint8_t>> findStateEffecterPDR(
+    uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
+    const pldm_pdr* repo)
 {
-    CustomFD(const CustomFD&) = delete;
-    CustomFD& operator=(const CustomFD&) = delete;
-    CustomFD(CustomFD&&) = delete;
-    CustomFD& operator=(CustomFD&&) = delete;
-
-    CustomFD(int fd) : fd(fd) {}
-
-    ~CustomFD()
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record{};
+    std::vector<std::vector<uint8_t>> pdrs;
+    try
     {
-        if (fd >= 0)
+        do
         {
-            close(fd);
+            record = pldm_pdr_find_record_by_type(repo, PLDM_STATE_EFFECTER_PDR,
+                                                  record, &outData, &size);
+            if (record)
+            {
+                auto pdr = new (outData) pldm_state_effecter_pdr;
+                auto compositeEffecterCount = pdr->composite_effecter_count;
+                auto possible_states_start = pdr->possible_states;
+
+                for (auto effecters = 0x00; effecters < compositeEffecterCount;
+                     effecters++)
+                {
+                    auto possibleStates = new (possible_states_start)
+                        state_effecter_possible_states;
+                    auto setId = possibleStates->state_set_id;
+                    auto possibleStateSize =
+                        possibleStates->possible_states_size;
+
+                    if (pdr->entity_type == entityID && setId == stateSetId)
+                    {
+                        std::vector<uint8_t> effecter_pdr(&outData[0],
+                                                          &outData[size]);
+                        pdrs.emplace_back(std::move(effecter_pdr));
+                        break;
+                    }
+                    possible_states_start += possibleStateSize + sizeof(setId) +
+                                             sizeof(possibleStateSize);
+                }
+            }
+
+        } while (record);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to obtain a record, error - {ERROR}", "ERROR", e);
+    }
+
+    return pdrs;
+}
+
+std::vector<std::vector<uint8_t>> findStateSensorPDR(
+    uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
+    const pldm_pdr* repo)
+{
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record{};
+    std::vector<std::vector<uint8_t>> pdrs;
+    try
+    {
+        do
+        {
+            record = pldm_pdr_find_record_by_type(repo, PLDM_STATE_SENSOR_PDR,
+                                                  record, &outData, &size);
+            if (record)
+            {
+                auto pdr = new (outData) pldm_state_sensor_pdr;
+                auto compositeSensorCount = pdr->composite_sensor_count;
+                auto possible_states_start = pdr->possible_states;
+
+                for (auto sensors = 0x00; sensors < compositeSensorCount;
+                     sensors++)
+                {
+                    auto possibleStates = new (possible_states_start)
+                        state_sensor_possible_states;
+                    auto setId = possibleStates->state_set_id;
+                    auto possibleStateSize =
+                        possibleStates->possible_states_size;
+
+                    if (pdr->entity_type == entityID && setId == stateSetId)
+                    {
+                        std::vector<uint8_t> sensor_pdr(&outData[0],
+                                                        &outData[size]);
+                        pdrs.emplace_back(std::move(sensor_pdr));
+                        break;
+                    }
+                    possible_states_start += possibleStateSize + sizeof(setId) +
+                                             sizeof(possibleStateSize);
+                }
+            }
+
+        } while (record);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to obtain a record with entity ID '{ENTITYID}', error - {ERROR}",
+            "ENTITYID", entityID, "ERROR", e);
+    }
+
+    return pdrs;
+}
+
+uint8_t readHostEID()
+{
+    uint8_t eid{};
+    std::ifstream eidFile{HOST_EID_PATH};
+    if (!eidFile.good())
+    {
+        error("Failed to open remote terminus EID file at path '{PATH}'",
+              "PATH", static_cast<std::string>(HOST_EID_PATH));
+    }
+    else
+    {
+        std::string eidStr;
+        eidFile >> eidStr;
+        if (!eidStr.empty())
+        {
+            eid = atoi(eidStr.c_str());
+        }
+        else
+        {
+            error("Remote terminus EID file was empty");
         }
     }
 
-    int operator()() const
+    return eid;
+}
+
+bool isValidEID(eid mctpEid)
+{
+    if (mctpEid == MCTP_ADDR_NULL || mctpEid < MCTP_START_VALID_EID ||
+        mctpEid == MCTP_ADDR_ANY)
     {
-        return fd;
+        return false;
     }
 
-  private:
-    int fd = -1;
-};
+    return true;
+}
 
-/** @brief Calculate the pad for PLDM data
- *
- *  @param[in] data - Length of the data
- *  @return - uint8_t - number of pad bytes
- */
-uint8_t getNumPadBytes(uint32_t data);
+uint8_t getNumPadBytes(uint32_t data)
+{
+    uint8_t pad;
+    pad = ((data % 4) ? (4 - data % 4) : 0);
+    return pad;
+} // end getNumPadBytes
 
-/** @brief Convert uint64 to date
- *
- *  @param[in] data - time date of uint64
- *  @param[out] year - year number in dec
- *  @param[out] month - month number in dec
- *  @param[out] day - day of the month in dec
- *  @param[out] hour - number of hours in dec
- *  @param[out] min - number of minutes in dec
- *  @param[out] sec - number of seconds in dec
- *  @return true if decode success, false if decode failed
- */
 bool uintToDate(uint64_t data, uint16_t* year, uint8_t* month, uint8_t* day,
-                uint8_t* hour, uint8_t* min, uint8_t* sec);
+                uint8_t* hour, uint8_t* min, uint8_t* sec)
+{
+    constexpr uint64_t max_data = 29991231115959;
+    constexpr uint64_t min_data = 19700101000000;
+    if (data < min_data || data > max_data)
+    {
+        return false;
+    }
 
-/** @brief Convert effecter data to structure of set_effecter_state_field
- *
- *  @param[in] effecterData - the date of effecter
- *  @param[in] effecterCount - the number of individual sets of effecter
- *                              information
- *  @return[out] parse success and get a valid set_effecter_state_field
- *               structure, return nullopt means parse failed
- */
+    *year = data / 10000000000;
+    data = data % 10000000000;
+    *month = data / 100000000;
+    data = data % 100000000;
+    *day = data / 1000000;
+    data = data % 1000000;
+    *hour = data / 10000;
+    data = data % 10000;
+    *min = data / 100;
+    *sec = data % 100;
+
+    return true;
+}
+
 std::optional<std::vector<set_effecter_state_field>> parseEffecterData(
-    const std::vector<uint8_t>& effecterData, uint8_t effecterCount);
-
-/**
- *  @brief creates an error log
- *  @param[in] errorMsg - the error message
- */
-void reportError(const char* errorMsg);
-
-/** @brief Convert any Decimal number to BCD
- *
- *  @tparam[in] decimal - Decimal number
- *  @return Corresponding BCD number
- */
-template <typename T>
-T decimalToBcd(T decimal)
+    const std::vector<uint8_t>& effecterData, uint8_t effecterCount)
 {
-    T bcd = 0;
-    T rem = 0;
-    auto cnt = 0;
+    std::vector<set_effecter_state_field> stateField;
 
-    while (decimal)
+    if (effecterData.size() != effecterCount * 2)
     {
-        rem = decimal % 10;
-        bcd = bcd + (rem << cnt);
-        decimal = decimal / 10;
-        cnt += 4;
+        return std::nullopt;
     }
 
-    return bcd;
+    for (uint8_t i = 0; i < effecterCount; ++i)
+    {
+        uint8_t set_request = effecterData[i * 2] == PLDM_REQUEST_SET
+                                  ? PLDM_REQUEST_SET
+                                  : PLDM_NO_CHANGE;
+        set_effecter_state_field filed{set_request, effecterData[i * 2 + 1]};
+        stateField.emplace_back(std::move(filed));
+    }
+
+    return std::make_optional(std::move(stateField));
 }
 
-struct DBusMapping
+std::string DBusHandler::getService(const char* path,
+                                    const char* interface) const
 {
-    std::string objectPath;   //!< D-Bus object path
-    std::string interface;    //!< D-Bus interface
-    std::string propertyName; //!< D-Bus property name
-    std::string propertyType; //!< D-Bus property type
-};
+    using DbusInterfaceList = std::vector<std::string>;
+    std::map<std::string, std::vector<std::string>> mapperResponse;
+    auto& bus = DBusHandler::getBus();
 
-using PropertyValue =
-    std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t,
-                 uint64_t, double, std::string, std::vector<uint8_t>,
-                 std::vector<uint64_t>, std::vector<std::string>>;
-using DbusProp = std::string;
-using DbusChangedProps = std::map<DbusProp, PropertyValue>;
-using DBusInterfaceAdded = std::vector<
-    std::pair<pldm::dbus::Interface,
-              std::vector<std::pair<pldm::dbus::Property,
-                                    std::variant<pldm::dbus::Property>>>>>;
+    auto mapper = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_object);
 
-using ObjectPath = std::string;
-using EntityName = std::string;
-using Entities = std::vector<pldm_entity_node*>;
-using EntityAssociations = std::vector<Entities>;
-using ObjectPathMaps = std::map<fs::path, pldm_entity_node*>;
-using EntityMaps = std::map<pldm::pdr::EntityType, EntityName>;
-
-using ServiceName = std::string;
-using Interfaces = std::vector<std::string>;
-using MapperServiceMap = std::vector<std::pair<ServiceName, Interfaces>>;
-using GetSubTreeResponse = std::vector<std::pair<ObjectPath, MapperServiceMap>>;
-using GetSubTreePathsResponse = std::vector<std::string>;
-using GetAssociatedSubTreeResponse =
-    std::map<std::string, std::map<std::string, std::vector<std::string>>>;
-using GetAncestorsResponse =
-    std::vector<std::pair<ObjectPath, MapperServiceMap>>;
-using PropertyMap = std::map<std::string, PropertyValue>;
-using InterfaceMap = std::map<std::string, PropertyMap>;
-using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
-using AttributeName = std::string;
-using AttributeType = std::string;
-using AttributeValue = std::variant<std::string, int64_t>;
-using PendingAttributesList = std::vector<
-    std::pair<AttributeName, std::tuple<AttributeType, AttributeValue>>>;
-
-using SensorPDR = std::vector<uint8_t>;
-using SensorPDRs = std::vector<SensorPDR>;
-using EffecterPDR = std::vector<uint8_t>;
-using EffecterPDRs = std::vector<EffecterPDR>;
-
-constexpr auto EnumAttribute =
-    "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Enumeration";
-
-/**
- * @brief The interface for DBusHandler
- */
-class DBusHandlerInterface
-{
-  public:
-    virtual ~DBusHandlerInterface() = default;
-
-    virtual std::string getService(const char* path,
-                                   const char* interface) const = 0;
-    virtual GetSubTreeResponse getSubtree(
-        const std::string& path, int depth,
-        const std::vector<std::string>& ifaceList) const = 0;
-
-    virtual GetSubTreePathsResponse getSubTreePaths(
-        const std::string& objectPath, int depth,
-        const std::vector<std::string>& ifaceList) const = 0;
-
-    virtual GetAncestorsResponse getAncestors(
-        const std::string& path,
-        const std::vector<std::string>& ifaceList) const = 0;
-
-    virtual void setDbusProperty(const DBusMapping& dBusMap,
-                                 const PropertyValue& value) const = 0;
-
-    virtual PropertyValue getDbusPropertyVariant(
-        const char* objPath, const char* dbusProp,
-        const char* dbusInterface) const = 0;
-
-    virtual PropertyMap getDbusPropertiesVariant(
-        const char* serviceName, const char* objPath,
-        const char* dbusInterface) const = 0;
-
-    virtual GetAssociatedSubTreeResponse getAssociatedSubTree(
-        const sdbusplus::message::object_path& objectPath,
-        const sdbusplus::message::object_path& subtree, int depth,
-        const std::vector<std::string>& ifaceList) const = 0;
-};
-
-/**
- *  @class DBusHandler
- *
- *  Wrapper class to handle the D-Bus calls
- *
- *  This class contains the APIs to handle the D-Bus calls
- *  to cater the request from pldm requester.
- *  A class is created to mock the apis in the test cases
- */
-class DBusHandler : public DBusHandlerInterface
-{
-  public:
-    /** @brief Get the bus connection. */
-    static auto& getBus()
+    if (interface)
     {
-        static auto bus = sdbusplus::bus::new_default();
-        return bus;
+        mapper.append(path, DbusInterfaceList({interface}));
+    }
+    else
+    {
+        mapper.append(path, DbusInterfaceList({}));
     }
 
-    /**
-     *  @brief Get the DBUS Service name for the input dbus path
-     *
-     *  @param[in] path - DBUS object path
-     *  @param[in] interface - DBUS Interface
-     *
-     *  @return std::string - the dbus service name
-     *
-     *  @throw sdbusplus::exception_t when it fails
-     */
-    std::string getService(const char* path,
-                           const char* interface) const override;
-
-    /**
-     *  @brief Get the Subtree response from the mapper
-     *
-     *  @param[in] path - DBUS object path
-     *  @param[in] depth - Search depth
-     *  @param[in] ifaceList - list of the interface that are being
-     *                         queried from the mapper
-     *
-     *  @return GetSubTreeResponse - the mapper subtree response
-     *
-     *  @throw sdbusplus::exception_t when it fails
-     */
-    GetSubTreeResponse getSubtree(
-        const std::string& path, int depth,
-        const std::vector<std::string>& ifaceList) const override;
-
-    /** @brief Get Subtree path response from the mapper
-     *
-     *  @param[in] path - DBUS object path
-     *  @param[in] depth - Search depth
-     *  @param[in] ifaceList - list of the interface that are being
-     *                         queried from the mapper
-     *
-     *  @return std::vector<std::string> vector of subtree paths
-     */
-    GetSubTreePathsResponse getSubTreePaths(
-        const std::string& objectPath, int depth,
-        const std::vector<std::string>& ifaceList) const override;
-
-    /**
-     *  @brief Get the Ancestors response from the mapper
-     *
-     *  @param[in] path - D-Bus object path
-     *  @param[in] ifaceList - an optional list of interfaces to constrain the
-     *                         search to queried from the mapper
-     *
-     *  @return GetAncestorsResponse - the mapper GetAncestors response
-     *
-     *  @throw sdbusplus::exception_t when it fails
-     */
-    GetAncestorsResponse getAncestors(
-        const std::string& path,
-        const std::vector<std::string>& ifaceList) const override;
-
-    /** @brief Get property(type: variant) from the requested dbus
-     *
-     *  @param[in] objPath - The Dbus object path
-     *  @param[in] dbusProp - The property name to get
-     *  @param[in] dbusInterface - The Dbus interface
-     *
-     *  @return The value of the property(type: variant)
-     *
-     *  @throw sdbusplus::exception_t when it fails
-     */
-    PropertyValue getDbusPropertyVariant(
-        const char* objPath, const char* dbusProp,
-        const char* dbusInterface) const override;
-
-    /** @brief Get All properties(type: variant) from the requested dbus
-     *
-     *  @param[in] serviceName - The Dbus service name
-     *  @param[in] objPath - The Dbus object path
-     *  @param[in] dbusInterface - The Dbus interface
-     *
-     *  @return The values of the properties(type: variant)
-     *
-     *  @throw sdbusplus::exception_t when it fails
-     */
-    PropertyMap getDbusPropertiesVariant(
-        const char* serviceName, const char* objPath,
-        const char* dbusInterface) const override;
-
-    /** @brief The template function to get property from the requested dbus
-     *         path
-     *
-     *  @tparam Property - Excepted type of the property on dbus
-     *
-     *  @param[in] objPath - The Dbus object path
-     *  @param[in] dbusProp - The property name to get
-     *  @param[in] dbusInterface - The Dbus interface
-     *
-     *  @return The value of the property
-     *
-     *  @throw sdbusplus::exception_t when dbus request fails
-     *         std::bad_variant_access when \p Property and property on dbus do
-     *         not match
-     */
-    template <typename Property>
-    auto getDbusProperty(const char* objPath, const char* dbusProp,
-                         const char* dbusInterface)
-    {
-        auto VariantValue =
-            getDbusPropertyVariant(objPath, dbusProp, dbusInterface);
-        return std::get<Property>(VariantValue);
-    }
-
-    /** @brief Get the associated subtree from the mapper
-     *
-     * @param[in] path - The D-Bus object path
-     *
-     * @param[in] interface - The D-Bus interface
-     *
-     * @return GetAssociatedSubtreeResponse - The associated subtree
-     */
-    GetAssociatedSubTreeResponse getAssociatedSubTree(
-        const sdbusplus::message::object_path& objectPath,
-        const sdbusplus::message::object_path& subtree, int depth,
-        const std::vector<std::string>& ifaceList) const override;
-
-    /** @brief Set Dbus property
-     *
-     *  @param[in] dBusMap - Object path, property name, interface and property
-     *                       type for the D-Bus object
-     *  @param[in] value - The value to be set
-     *
-     *  @throw sdbusplus::exception_t when it fails
-     */
-    void setDbusProperty(const DBusMapping& dBusMap,
-                         const PropertyValue& value) const override;
-
-    /** @brief This function retrieves the properties of an object managed
-     *         by the specified D-Bus service located at the given object path.
-     *
-     *  @param[in] service - The D-Bus service providing the managed object
-     *  @param[in] value - The object path of the managed object
-     *
-     *  @return A hierarchical structure representing the properties of the
-     *          managed object.
-     *  @throw sdbusplus::exception_t when it fails
-     */
-    static ObjectValueTree getManagedObj(const char* service, const char* path);
-
-    /** @brief Retrieve the inventory objects managed by a specified class.
-     *         The retrieved inventory objects are cached statically
-     *         and returned upon subsequent calls to this function.
-     *
-     *  @tparam ClassType - The class type that manages the inventory objects.
-     *
-     *  @return A reference to the cached inventory objects.
-     */
-    template <typename ClassType>
-    static auto& getInventoryObjects()
-    {
-        static ObjectValueTree object = ClassType::getManagedObj(
-            inventoryManager::interface, inventoryPath);
-        return object;
-    }
-};
-
-/** @brief Fetch parent D-Bus object based on pathname
- *
- *  @param[in] dbusObj - child D-Bus object
- *
- *  @return std::string - the parent D-Bus object path
- */
-inline std::string findParent(const std::string& dbusObj)
-{
-    fs::path p(dbusObj);
-    return p.parent_path().string();
+    auto mapperResponseMsg = bus.call(mapper, dbusTimeout);
+    mapperResponseMsg.read(mapperResponse);
+    return mapperResponse.begin()->first;
 }
 
-/** @brief Read (static) MCTP EID of host firmware from a file
- *
- *  @return uint8_t - MCTP EID
- */
-uint8_t readHostEID();
+GetSubTreeResponse DBusHandler::getSubtree(
+    const std::string& searchPath, int depth,
+    const std::vector<std::string>& ifaceList) const
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
+    method.append(searchPath, depth, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+    auto response = reply.unpack<GetSubTreeResponse>();
 
-/** @brief Validate the MCTP EID of MCTP endpoint
- *         In `Table 2 - Special endpoint IDs` of DSP0236. EID 0 is NULL_EID.
- *         EID from 1 to 7 is reserved EID. EID 0xFF is broadcast EID.
- *         Those are invalid EID of one MCTP Endpoint.
- *
- * @param[in] eid - MCTP EID
- *
- * @return true if the MCTP EID is valid otherwise return false.
- */
-bool isValidEID(eid mctpEid);
+    return response;
+}
 
-/** @brief Convert a value in the JSON to a D-Bus property value
- *
- *  @param[in] type - type of the D-Bus property
- *  @param[in] value - value in the JSON file
- *
- *  @return PropertyValue - the D-Bus property value
- */
+GetSubTreePathsResponse DBusHandler::getSubTreePaths(
+    const std::string& objectPath, int depth,
+    const std::vector<std::string>& ifaceList) const
+{
+    std::vector<std::string> paths;
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface,
+        ObjectMapper::method_names::get_sub_tree_paths);
+    method.append(objectPath, depth, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+
+    reply.read(paths);
+    return paths;
+}
+
+GetAncestorsResponse DBusHandler::getAncestors(
+    const std::string& path, const std::vector<std::string>& ifaceList) const
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_ancestors);
+    method.append(path, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+    auto response = reply.unpack<GetAncestorsResponse>();
+
+    return response;
+}
+
+void reportError(const char* errorMsg)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    using LoggingCreate =
+        sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+    try
+    {
+        using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+        auto severity =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
+                    Error);
+        auto method = bus.new_method_call(LoggingCreate::default_service,
+                                          LoggingCreate::instance_path,
+                                          LoggingCreate::interface, "Create");
+
+        std::map<std::string, std::string> addlData{};
+        method.append(errorMsg, severity, addlData);
+        bus.call_noreply(method, dbusTimeout);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to do dbus call for creating error log for '{ERRMSG}' at path '{PATH}' and interface '{INTERFACE}', error - {ERROR}",
+            "ERRMSG", errorMsg, "PATH", LoggingCreate::instance_path,
+            "INTERFACE", LoggingCreate::interface, "ERROR", e);
+    }
+}
+
+void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
+                                  const PropertyValue& value) const
+{
+    auto setDbusValue = [&dBusMap, this](const auto& variant) {
+        auto& bus = getBus();
+        auto service =
+            getService(dBusMap.objectPath.c_str(), dBusMap.interface.c_str());
+        auto method = bus.new_method_call(
+            service.c_str(), dBusMap.objectPath.c_str(), dbusProperties, "Set");
+        method.append(dBusMap.interface.c_str(), dBusMap.propertyName.c_str(),
+                      variant);
+        bus.call_noreply(method, dbusTimeout);
+    };
+
+    if (dBusMap.propertyType == "uint8_t")
+    {
+        std::variant<uint8_t> v = std::get<uint8_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "bool")
+    {
+        std::variant<bool> v = std::get<bool>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "int16_t")
+    {
+        std::variant<int16_t> v = std::get<int16_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "uint16_t")
+    {
+        std::variant<uint16_t> v = std::get<uint16_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "int32_t")
+    {
+        std::variant<int32_t> v = std::get<int32_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "uint32_t")
+    {
+        std::variant<uint32_t> v = std::get<uint32_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "int64_t")
+    {
+        std::variant<int64_t> v = std::get<int64_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "uint64_t")
+    {
+        std::variant<uint64_t> v = std::get<uint64_t>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "double")
+    {
+        std::variant<double> v = std::get<double>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "string")
+    {
+        std::variant<std::string> v = std::get<std::string>(value);
+        setDbusValue(v);
+    }
+    else if (dBusMap.propertyType == "array[string]")
+    {
+        std::variant<std::vector<std::string>> v =
+            std::get<std::vector<std::string>>(value);
+        setDbusValue(v);
+    }
+    else
+    {
+        error("Unsupported property type '{TYPE}'", "TYPE",
+              dBusMap.propertyType);
+        throw std::invalid_argument("UnSupported Dbus Type");
+    }
+}
+
+PropertyValue DBusHandler::getDbusPropertyVariant(
+    const char* objPath, const char* dbusProp, const char* dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto service = getService(objPath, dbusInterface);
+    auto method =
+        bus.new_method_call(service.c_str(), objPath, dbusProperties, "Get");
+    method.append(dbusInterface, dbusProp);
+    return bus.call(method, dbusTimeout).unpack<PropertyValue>();
+}
+
+GetAssociatedSubTreeResponse DBusHandler::getAssociatedSubTree(
+    const sdbusplus::message::object_path& objectPath,
+    const sdbusplus::message::object_path& subtree, int depth,
+    const std::vector<std::string>& ifaceList) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface,
+        ObjectMapper::method_names::get_associated_sub_tree);
+    method.append(objectPath, subtree, depth, ifaceList);
+    auto reply = bus.call(method, dbusTimeout);
+    auto response = reply.unpack<GetAssociatedSubTreeResponse>();
+
+    return response;
+}
+
+ObjectValueTree DBusHandler::getManagedObj(const char* service,
+                                           const char* rootPath)
+{
+    auto& bus = DBusHandler::getBus();
+    auto method = bus.new_method_call(service, rootPath,
+                                      "org.freedesktop.DBus.ObjectManager",
+                                      "GetManagedObjects");
+    return bus.call(method).unpack<ObjectValueTree>();
+}
+
+PropertyMap DBusHandler::getDbusPropertiesVariant(
+    const char* serviceName, const char* objPath,
+    const char* dbusInterface) const
+{
+    auto& bus = DBusHandler::getBus();
+    auto method =
+        bus.new_method_call(serviceName, objPath, dbusProperties, "GetAll");
+    method.append(dbusInterface);
+    return bus.call(method, dbusTimeout).unpack<PropertyMap>();
+}
+
 PropertyValue jsonEntryToDbusVal(std::string_view type,
-                                 const nlohmann::json& value);
+                                 const nlohmann::json& value)
+{
+    PropertyValue propValue{};
+    if (type == "uint8_t")
+    {
+        propValue = static_cast<uint8_t>(value);
+    }
+    else if (type == "uint16_t")
+    {
+        propValue = static_cast<uint16_t>(value);
+    }
+    else if (type == "uint32_t")
+    {
+        propValue = static_cast<uint32_t>(value);
+    }
+    else if (type == "uint64_t")
+    {
+        propValue = static_cast<uint64_t>(value);
+    }
+    else if (type == "int16_t")
+    {
+        propValue = static_cast<int16_t>(value);
+    }
+    else if (type == "int32_t")
+    {
+        propValue = static_cast<int32_t>(value);
+    }
+    else if (type == "int64_t")
+    {
+        propValue = static_cast<int64_t>(value);
+    }
+    else if (type == "bool")
+    {
+        propValue = static_cast<bool>(value);
+    }
+    else if (type == "double")
+    {
+        propValue = static_cast<double>(value);
+    }
+    else if (type == "string")
+    {
+        propValue = static_cast<std::string>(value);
+    }
+    else
+    {
+        error("Unknown D-Bus property type '{TYPE}'", "TYPE", type);
+    }
 
-/** @brief Find State Effecter PDR
- *  @param[in] tid - PLDM terminus ID.
- *  @param[in] entityID - entity that can be associated with PLDM State set.
- *  @param[in] stateSetId - value that identifies PLDM State set.
- *  @param[in] repo - pointer to BMC's primary PDR repo.
- *  @return array[array[uint8_t]] - StateEffecterPDRs
- */
-std::vector<std::vector<uint8_t>> findStateEffecterPDR(
-    uint8_t tid, uint16_t entityID, uint16_t stateSetId, const pldm_pdr* repo);
-/** @brief Find State Sensor PDR
- *  @param[in] tid - PLDM terminus ID.
- *  @param[in] entityID - entity that can be associated with PLDM State set.
- *  @param[in] stateSetId - value that identifies PLDM State set.
- *  @param[in] repo - pointer to BMC's primary PDR repo.
- *  @return array[array[uint8_t]] - StateSensorPDRs
- */
-std::vector<std::vector<uint8_t>> findStateSensorPDR(
-    uint8_t tid, uint16_t entityID, uint16_t stateSetId, const pldm_pdr* repo);
+    return propValue;
+}
 
-/** @brief Find sensor id from a state sensor PDR
- *
- *  @param[in] pdrRepo - PDR repository
- *  @param[in] tid - terminus id
- *  @param[in] entityType - entity type
- *  @param[in] entityInstance - entity instance number
- *  @param[in] containerId - container id
- *  @param[in] stateSetId - state set id
- *
- *  @return uint16_t - the sensor id
- */
-uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
-                           uint16_t entityType, uint16_t entityInstance,
-                           uint16_t containerId, uint16_t stateSetId);
-
-/** @brief Find effecter id from a state effecter pdr
- *  @param[in] pdrRepo - PDR repository
- *  @param[in] entityType - entity type
- *  @param[in] entityInstance - entity instance number
- *  @param[in] containerId - container id
- *  @param[in] stateSetId - state set id
- *  @param[in] localOrRemote - true for checking local repo and false for remote
- *                             repo
- *
- *  @return uint16_t - the effecter id
- */
 uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                              uint16_t entityInstance, uint16_t containerId,
-                             uint16_t stateSetId, bool localOrRemote);
+                             uint16_t stateSetId, bool localOrRemote)
+{
+    uint8_t* pdrData = nullptr;
+    uint32_t pdrSize{};
+    const pldm_pdr_record* record{};
+    do
+    {
+        record = pldm_pdr_find_record_by_type(pdrRepo, PLDM_STATE_EFFECTER_PDR,
+                                              record, &pdrData, &pdrSize);
+        if (record && (localOrRemote ^ pldm_pdr_record_is_remote(record)))
+        {
+            auto pdr = new (pdrData) pldm_state_effecter_pdr;
+            auto compositeEffecterCount = pdr->composite_effecter_count;
+            auto possible_states_start = pdr->possible_states;
 
-/** @brief Method to find all state sensor PDRs by type
- *
- *  @param[in] entityType - the entity type
- *  @param[in] repo - opaque pointer acting as a PDR repo handle
- *
- *  @return vector of vector of all state sensor PDRs
- */
-SensorPDRs getStateSensorPDRsByType(uint16_t entityType, const pldm_pdr* repo);
+            for (auto effecters = 0x00; effecters < compositeEffecterCount;
+                 effecters++)
+            {
+                auto possibleStates = new (possible_states_start)
+                    state_effecter_possible_states;
+                auto setId = possibleStates->state_set_id;
+                auto possibleStateSize = possibleStates->possible_states_size;
 
-/** @brief method to find sensor IDs based on the pldm_entity
- *
- *  @param[in] pdrRepo - opaque pointer acting as a PDR repo handle
- *  @param[in] entityType - the entity type
- *  @param[in] entityInstance - the entity instance number
- *  @param[in] containerId - the container ID
- *
- *  @return vector of all sensor IDs
- */
-std::vector<pldm::pdr::SensorID> findSensorIds(
-    const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
-    uint16_t containerId);
+                if (entityType == pdr->entity_type &&
+                    entityInstance == pdr->entity_instance &&
+                    containerId == pdr->container_id && stateSetId == setId)
+                {
+                    return pdr->effecter_id;
+                }
+                possible_states_start += possibleStateSize + sizeof(setId) +
+                                         sizeof(possibleStateSize);
+            }
+        }
+    } while (record);
 
-/** @brief Method to find all state effecter PDRs by type
- *
- *  @param[in] entityType - the entity type
- *  @param[in] repo - opaque pointer acting as a PDR repo handle
- *
- *  @return vector of vector of all state effecter PDRs
- */
-EffecterPDRs getStateEffecterPDRsByType(uint16_t entityType,
-                                        const pldm_pdr* repo);
+    return PLDM_INVALID_EFFECTER_ID;
+}
 
-/** @brief method to find effecter IDs based on the pldm_entity
- *
- *  @param[in] pdrRepo - opaque pointer acting as a PDR repo handle
- *  @param[in] entityType - the entity type
- *  @param[in] entityInstance - the entity instance number
- *  @param[in] containerId - the container ID
- *
- *  @return vector of all effecter IDs
- */
-std::vector<pldm::pdr::EffecterID> findEffecterIds(
-    const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
-    uint16_t containerId);
-
-/** @brief Emit the sensor event signal
- *
- *	@param[in] tid - the terminus id
- *  @param[in] sensorId - sensorID value of the sensor
- *  @param[in] sensorOffset - Identifies which state sensor within a
- * composite state sensor the event is being returned for
- *  @param[in] eventState - The event state value from the state change that
- * triggered the event message
- *  @param[in] previousEventState - The event state value for the state from
- * which the present event state was entered.
- *  @return PLDM completion code
- */
 int emitStateSensorEventSignal(uint8_t tid, uint16_t sensorId,
                                uint8_t sensorOffset, uint8_t eventState,
-                               uint8_t previousEventState);
-
-/**
- *  @brief call Recover() method to recover an MCTP Endpoint
- *  @param[in] MCTP Endpoint's object path
- */
-void recoverMctpEndpoint(const std::string& endpointObjPath);
-
-/** @brief Print the buffer
- *
- *  @param[in]  isTx - True if the buffer is an outgoing PLDM message, false if
-                       the buffer is an incoming PLDM message
- *  @param[in]  buffer - Buffer to print
- *
- *  @return - None
- */
-void printBuffer(bool isTx, const std::vector<uint8_t>& buffer);
-
-/** @brief Convert the buffer to std::string
- *
- *  If there are characters that are not printable characters, it is replaced
- *  with space(0x20).
- *
- *  @param[in] var - pointer to data and length of the data
- *
- *  @return std::string equivalent of variable field
- */
-std::string toString(const struct variable_field& var);
-
-/** @brief Split strings according to special identifiers
- *
- *  We can split the string according to the custom identifier(';', ',', '&' or
- *  others) and store it to vector.
- *
- *  @param[in] srcStr       - The string to be split
- *  @param[in] delim        - The custom identifier
- *  @param[in] trimStr      - The first and last string to be trimmed
- *
- *  @return std::vector<std::string> Vectors are used to store strings
- */
-std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
-                               std::string_view trimStr = "");
-/** @brief Get the current system time in readable format
- *
- *  @return - std::string equivalent of the system time
- */
-std::string getCurrentSystemTime();
-
-/** @brief checks if the FRU is actually present.
- *  @param[in] objPath - FRU object path.
- *
- *  @return bool to indicate presence or absence of FRU.
- */
-bool checkForFruPresence(const std::string& objPath);
-
-/** @brief Method to check if the logical bit is set
- *
- *  @param[containerId] - container id of the entity
- *
- *  @return true or false based on the logic bit set
- */
-bool checkIfLogicalBitSet(const uint16_t& containerId);
-
-/** @brief setting the present property
- *
- *  @param[in] objPath - the object path of the fru
- *  @param[in] present - status to set either true/false
- */
-void setFruPresence(const std::string& fruObjPath, bool present);
-
-/** @brief Trim `\0` in string and replace ` ` by `_` to use name in D-Bus
- *         object path
- *
- *  @param[in] name - the input string
- *
- *  @return the result string
- */
-std::string_view trimNameForDbus(std::string& name);
-
-/** @brief Convert the number type D-Bus Value to the double
- *
- *  @param[in] type - string type should in dbusValueNumericTypeNames list
- *  @param[in] value - DBus PropertyValue variant
- *  @param[out] doubleValue - response value
- *
- *  @return true if data type is corrected and converting is successful
- *          otherwise return false.
- */
-bool dbusPropValuesToDouble(const std::string_view& type,
-                            const pldm::utils::PropertyValue& value,
-                            double* doubleValue);
-
-/** @brief Convert the Fru String bytes from PLDM Fru to std::string
- *
- *  @param[in] value - the Fru String bytes
- *  @param[in] length - Number of bytes
- *
- *  @return Fru string or nullopt.
- */
-std::optional<std::string> fruFieldValuestring(const uint8_t* value,
-                                               const uint8_t& length);
-
-/** @brief Convert the Fru Uint32 raw data from PLDM Fru to uint32_t
- *
- *  @param[in] value - the Fru uint32 raw data
- *  @param[in] length - Number of bytes
- *
- *  @return Fru uint32_t or nullopt.
- */
-std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
-                                          const uint8_t& length);
-
-/**
- * @brief Get a random ID for firmware inventory entry
- * @return Random ID as long integer
- */
-long int generateSwId();
-
-constexpr auto biosConfigPath = "/xyz/openbmc_project/bios_config/manager";
-
-/** @brief Method to get the value from a bios attribute
- *
- *  @param[in] dbusAttrName - the bios attribute name from
- *             which the value must be retrieved
- *
- *  @return the attribute value
- */
-template <typename T>
-std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
+                               uint8_t previousEventState)
 {
-    using BIOSConfigManager =
-        sdbusplus::common::xyz::openbmc_project::bios_config::Manager;
+    try
+    {
+        auto& bus = DBusHandler::getBus();
+        auto msg = bus.new_signal("/xyz/openbmc_project/pldm",
+                                  "xyz.openbmc_project.PLDM.Event",
+                                  "StateSensorEvent");
+        msg.append(tid, sensorId, sensorOffset, eventState, previousEventState);
 
-    std::string var1;
-    std::variant<std::string, int64_t> var2, var3;
+        msg.signal_send();
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to emit pldm event signal, error - {ERROR}", "ERROR", e);
+        return PLDM_ERROR;
+    }
+
+    return PLDM_SUCCESS;
+}
+
+void recoverMctpEndpoint(const std::string& endpointObjPath)
+{
+#ifdef MCTP_RECOVERY
     auto& bus = DBusHandler::getBus();
     try
     {
-        auto service = pldm::utils::DBusHandler().getService(
-            biosConfigPath, BIOSConfigManager::interface);
+        std::string service = DBusHandler().getService(endpointObjPath.c_str(),
+                                                       MCTP_INTERFACE_CC);
+
         auto method = bus.new_method_call(
-            service.c_str(), biosConfigPath, BIOSConfigManager::interface,
-            BIOSConfigManager::method_names::get_attribute);
-        method.append(dbusAttrName);
-        auto reply = bus.call(method, dbusTimeout);
-        reply.read(var1, var2, var3);
-        if (auto ptr = std::get_if<T>(&var2))
+            service.c_str(), endpointObjPath.c_str(), MCTP_INTERFACE_CC,
+            MCTP_ENDPOINT_RECOVER_METHOD);
+        bus.call_noreply(method, dbusTimeout);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "failed to make a D-Bus call to recover MCTP Endpoint, ERROR {ERR_EXCEP}",
+            "ERR_EXCEP", e);
+    }
+#else
+    [[maybe_unused]] auto& _endpointObjPath = endpointObjPath;
+#endif
+}
+
+uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
+                           uint16_t entityType, uint16_t entityInstance,
+                           uint16_t containerId, uint16_t stateSetId)
+{
+    auto pdrs = findStateSensorPDR(tid, entityType, stateSetId, pdrRepo);
+    for (auto pdr : pdrs)
+    {
+        auto sensorPdr = new (pdr.data()) pldm_state_sensor_pdr;
+        auto compositeSensorCount = sensorPdr->composite_sensor_count;
+        auto possible_states_start = sensorPdr->possible_states;
+
+        for (auto sensors = 0x00; sensors < compositeSensorCount; sensors++)
         {
-            return *ptr;
+            auto possibleStates = new (possible_states_start)
+                state_sensor_possible_states;
+            auto setId = possibleStates->state_set_id;
+            auto possibleStateSize = possibleStates->possible_states_size;
+            if (entityType == sensorPdr->entity_type &&
+                entityInstance == sensorPdr->entity_instance &&
+                stateSetId == setId && containerId == sensorPdr->container_id)
+            {
+                return sensorPdr->sensor_id;
+            }
+            possible_states_start +=
+                possibleStateSize + sizeof(setId) + sizeof(possibleStateSize);
         }
+    }
+    return PLDM_INVALID_EFFECTER_ID;
+}
+
+void printBuffer(bool isTx, const std::vector<uint8_t>& buffer)
+{
+    if (buffer.empty())
+    {
+        return;
+    }
+
+    std::cout << (isTx ? "Tx: " : "Rx: ");
+
+    std::ranges::for_each(buffer, [](uint8_t byte) {
+        std::cout << std::format("{:02x} ", byte);
+    });
+
+    std::cout << std::endl;
+}
+
+std::string toString(const struct variable_field& var)
+{
+    if (var.ptr == nullptr || !var.length)
+    {
+        return "";
+    }
+
+    std::string str(reinterpret_cast<const char*>(var.ptr), var.length);
+    std::replace_if(
+        str.begin(), str.end(), [](const char& c) { return !isprint(c); }, ' ');
+    return str;
+}
+
+std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
+                               std::string_view trimStr)
+{
+    std::vector<std::string> out;
+    size_t start = 0;
+    size_t end = 0;
+
+    while ((start = srcStr.find_first_not_of(delim, end)) != std::string::npos)
+    {
+        end = srcStr.find(delim, start);
+        std::string_view dstStr = srcStr.substr(start, end - start);
+        if (!trimStr.empty())
+        {
+            dstStr.remove_prefix(dstStr.find_first_not_of(trimStr));
+            dstStr.remove_suffix(
+                dstStr.size() - 1 - dstStr.find_last_not_of(trimStr));
+        }
+
+        if (!dstStr.empty())
+        {
+            out.emplace_back(dstStr);
+        }
+    }
+
+    return out;
+}
+
+std::string getCurrentSystemTime()
+{
+    const auto zonedTime{std::chrono::zoned_time{
+        std::chrono::current_zone(), std::chrono::system_clock::now()}};
+    return std::format("{:%F %Z %T}", zonedTime);
+}
+
+bool checkForFruPresence(const std::string& objPath)
+{
+    bool isPresent = false;
+    static constexpr auto presentInterface =
+        "xyz.openbmc_project.Inventory.Item";
+    static constexpr auto presentProperty = "Present";
+    try
+    {
+        auto propVal = pldm::utils::DBusHandler().getDbusPropertyVariant(
+            objPath.c_str(), presentProperty, presentInterface);
+        isPresent = std::get<bool>(propVal);
     }
     catch (const sdbusplus::exception::SdBusError& e)
     {
-        info("Error getting the bios attribute {BIOS_ATTR}: {ERR_EXCEP}",
-             "BIOS_ATTR", dbusAttrName, "ERR_EXCEP", e);
+        error("Failed to check for FRU presence at {PATH}, error - {ERROR}",
+              "PATH", objPath, "ERROR", e);
     }
-
-    return std::nullopt;
+    return isPresent;
 }
 
-/** @brief Method to set the specified bios attribute with
- *         specified value
- *
- *  @param[in] PendingAttributesList - the list of bios attribute and values
- *             to be set
- */
-void setBiosAttr(const PendingAttributesList& biosAttrList);
+bool checkIfLogicalBitSet(const uint16_t& containerId)
+{
+    return !(containerId & 0x8000);
+}
+
+void setFruPresence(const std::string& fruObjPath, bool present)
+{
+    pldm::utils::PropertyValue value{present};
+    pldm::utils::DBusMapping dbusMapping;
+    dbusMapping.objectPath = fruObjPath;
+    dbusMapping.interface = "xyz.openbmc_project.Inventory.Item";
+    dbusMapping.propertyName = "Present";
+    dbusMapping.propertyType = "bool";
+    try
+    {
+        pldm::utils::DBusHandler().setDbusProperty(dbusMapping, value);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to set the present property on path '{PATH}', error - {ERROR}.",
+            "PATH", fruObjPath, "ERROR", e);
+    }
+}
+
+std::string_view trimNameForDbus(std::string& name)
+{
+    std::replace(name.begin(), name.end(), ' ', '_');
+    auto nullTerminatorPos = name.find('\0');
+    if (nullTerminatorPos != std::string::npos)
+    {
+        name.erase(nullTerminatorPos);
+    }
+    return name;
+}
+
+bool dbusPropValuesToDouble(const std::string_view& type,
+                            const pldm::utils::PropertyValue& value,
+                            double* doubleValue)
+{
+    if (!dbusValueNumericTypeNames.contains(type))
+    {
+        return false;
+    }
+
+    if (!doubleValue)
+    {
+        return false;
+    }
+
+    try
+    {
+        if (type == "uint8_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint8_t>(value));
+        }
+        else if (type == "int16_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int16_t>(value));
+        }
+        else if (type == "uint16_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint16_t>(value));
+        }
+        else if (type == "int32_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int32_t>(value));
+        }
+        else if (type == "uint32_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint32_t>(value));
+        }
+        else if (type == "int64_t")
+        {
+            *doubleValue = static_cast<double>(std::get<int64_t>(value));
+        }
+        else if (type == "uint64_t")
+        {
+            *doubleValue = static_cast<double>(std::get<uint64_t>(value));
+        }
+        else if (type == "double")
+        {
+            *doubleValue = static_cast<double>(std::get<double>(value));
+        }
+        else
+        {
+            return false;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+std::optional<std::string> fruFieldValuestring(const uint8_t* value,
+                                               const uint8_t& length)
+{
+    if (!value || !length)
+    {
+        return std::nullopt;
+    }
+
+    return std::string(reinterpret_cast<const char*>(value), length);
+}
+
+std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
+                                          const uint8_t& length)
+{
+    if (!value || length != sizeof(uint32_t))
+    {
+        lg2::error("Fru data to u32 invalid data.");
+        return std::nullopt;
+    }
+
+    uint32_t ret;
+    std::memcpy(&ret, value, length);
+    return ret;
+}
+
+SensorPDRs getStateSensorPDRsByType(uint16_t entityType, const pldm_pdr* repo)
+{
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record = nullptr;
+    SensorPDRs pdrs;
+
+    if (repo)
+    {
+        while ((record = pldm_pdr_find_record_by_type(
+                    repo, PLDM_STATE_SENSOR_PDR, record, &outData, &size)))
+        {
+            auto pdr = new (outData) pldm_state_sensor_pdr;
+            if (pdr && pdr->entity_type == entityType)
+            {
+                pdrs.emplace_back(outData, outData + size);
+            }
+        }
+    }
+
+    return pdrs;
+}
+
+std::vector<pldm::pdr::SensorID> findSensorIds(
+    const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
+    uint16_t containerId)
+{
+    std::vector<uint16_t> sensorIDs;
+    auto pdrs = getStateSensorPDRsByType(entityType, pdrRepo);
+
+    for (const auto& pdr : pdrs)
+    {
+        auto sensorPdr =
+            reinterpret_cast<const pldm_state_sensor_pdr*>(pdr.data());
+
+        if (sensorPdr && sensorPdr->entity_type == entityType &&
+            sensorPdr->entity_instance == entityInstance &&
+            sensorPdr->container_id == containerId)
+        {
+            sensorIDs.emplace_back(sensorPdr->sensor_id);
+        }
+    }
+
+    return sensorIDs;
+}
+
+EffecterPDRs getStateEffecterPDRsByType(uint16_t entityType,
+                                        const pldm_pdr* repo)
+{
+    uint8_t* outData = nullptr;
+    uint32_t size{};
+    const pldm_pdr_record* record = nullptr;
+    EffecterPDRs pdrs;
+    if (repo)
+    {
+        while ((record = pldm_pdr_find_record_by_type(
+                    repo, PLDM_STATE_EFFECTER_PDR, record, &outData, &size)))
+        {
+            auto pdr = new (outData) pldm_state_effecter_pdr;
+            if (pdr && pdr->entity_type == entityType)
+            {
+                pdrs.emplace_back(outData, outData + size);
+            }
+        }
+    }
+    return pdrs;
+}
+
+std::vector<pldm::pdr::EffecterID> findEffecterIds(
+    const pldm_pdr* pdrRepo, uint16_t entityType, uint16_t entityInstance,
+    uint16_t containerId)
+{
+    std::vector<uint16_t> effecterIDs;
+    auto pdrs = getStateEffecterPDRsByType(entityType, pdrRepo);
+    for (const auto& pdr : pdrs)
+    {
+        auto effecterPdr =
+            reinterpret_cast<const pldm_state_effecter_pdr*>(pdr.data());
+        if (effecterPdr && effecterPdr->entity_type == entityType &&
+            effecterPdr->entity_instance == entityInstance &&
+            effecterPdr->container_id == containerId)
+        {
+            effecterIDs.emplace_back(effecterPdr->effecter_id);
+        }
+    }
+    return effecterIDs;
+}
+
+void setBiosAttr(const PendingAttributesList& biosAttrList)
+{
+    static constexpr auto SYSTEMD_PROPERTY_INTERFACE =
+        "org.freedesktop.DBus.Properties";
+
+    for (const auto& [attrName, biosAttrDetails] : biosAttrList)
+    {
+        auto& bus = DBusHandler::getBus();
+        try
+        {
+            auto service = pldm::utils::DBusHandler().getService(
+                biosConfigPath, BIOSConfigManager::interface);
+            auto method =
+                bus.new_method_call(service.c_str(), biosConfigPath,
+                                    SYSTEMD_PROPERTY_INTERFACE, "Set");
+            method.append(BIOSConfigManager::interface,
+                          BIOSConfigManager::property_names::pending_attributes,
+                          std::variant<PendingAttributesList>(biosAttrList));
+            bus.call_noreply(method, dbusTimeout);
+        }
+        catch (const sdbusplus::exception::SdBusError& e)
+        {
+            AttributeType attrType;
+            AttributeValue attrValue;
+            std::tie(attrType, attrValue) = biosAttrDetails;
+            if (attrType ==
+                "xyz.openbmc_project.BIOSConfig.Manager.AttributeType.Integer")
+            {
+                info(
+                    "Error setting the value {VALUE} to bios attribute {BIOS_ATTR}: {ERR_EXCEP}",
+                    "VALUE", std::get<int64_t>(attrValue), "BIOS_ATTR",
+                    attrName, "ERR_EXCEP", e);
+            }
+            else
+            {
+                info(
+                    "Error setting the value {VALUE} to bios attribute {BIOS_ATTR}: {ERR_EXCEP}",
+                    "VALUE", std::get<std::string>(attrValue), "BIOS_ATTR",
+                    attrName, "ERR_EXCEP", e);
+            }
+        }
+    }
+}
+
+long int generateSwId()
+{
+    return random() % 10000;
+}
+
+MMapHandler::MMapHandler(int fd, std::optional<size_t> size) :
+    fd_(fd), ownsFd_(false) // External fd, not owned by MMapHandler
+{
+    struct stat sb;
+    if (fstat(fd, &sb) == -1)
+    {
+        error("Failed to get the actual file size");
+        data_ = nullptr;
+        throw std::runtime_error("Failed to get the actual file size");
+    }
+    
+    // Use exact user-provided size or file size if not specified
+    if (size.has_value())
+    {
+        size_ = size.value();
+    }
+    else
+    {
+        size_ = static_cast<size_t>(sb.st_size);
+    }
+
+    data_ =
+        static_cast<char*>(mmap(nullptr, size_, PROT_READ, MAP_PRIVATE, fd, 0));
+    if (data_ == MAP_FAILED)
+    {
+        data_ = nullptr;
+        int savedErrno = errno;
+        error("mmap failed: requested {REQ} bytes but file is {ACTUAL} bytes",
+              "REQ", size_, "ACTUAL", sb.st_size);
+        throw std::system_error(savedErrno, std::system_category(),
+                                "mmap failed");
+    }
+}
+
+MMapHandler::MMapHandler(const std::filesystem::path& path,
+                         std::optional<size_t> size) :
+    ownsFd_(true) // MMapHandler owns this fd and will close it
+{
+    // Open the file
+    fd_ = open(path.c_str(), O_RDONLY);
+    if (fd_ < 0)
+    {
+        int savedErrno = errno;
+        error("Failed to open file: {PATH}, error: {ERROR}", "PATH",
+              path.c_str(), "ERROR", savedErrno);
+        throw std::system_error(savedErrno, std::system_category(),
+                                "Failed to open file: " + path.string());
+    }
+
+    try
+    {
+        // Get file size using fstat
+        struct stat sb;
+        if (fstat(fd_, &sb) == -1)
+        {
+            int savedErrno = errno;
+            close(fd_);
+            fd_ = -1;
+            error("Failed to fstat file: {ERROR}", "ERROR", savedErrno);
+            throw std::system_error(savedErrno, std::system_category(),
+                                    "Failed to fstat file");
+        }
+
+        // Use exact user-provided size or file size if not specified
+        if (size.has_value())
+        {
+            size_ = size.value();
+        }
+        else
+        {
+            size_ = static_cast<size_t>(sb.st_size);
+        }
+
+        // Memory map the file
+        data_ = static_cast<char*>(
+            mmap(nullptr, size_, PROT_READ, MAP_PRIVATE, fd_, 0));
+        if (data_ == MAP_FAILED)
+        {
+            int savedErrno = errno;
+            close(fd_);
+            fd_ = -1;
+            data_ = nullptr;
+            error("mmap failed: {ERROR}", "ERROR", savedErrno);
+            throw std::system_error(savedErrno, std::system_category(),
+                                    "mmap failed");
+        }
+    }
+    catch (...)
+    {
+        // Ensure fd is closed if any exception occurs
+        if (fd_ >= 0)
+        {
+            close(fd_);
+            fd_ = -1;
+        }
+        throw;
+    }
+}
+
+MMapHandler::~MMapHandler()
+{
+    if (data_)
+    {
+        munmap(data_, size_);
+    }
+
+    // Only close fd if we own it (opened via path constructor)
+    if (ownsFd_ && fd_ >= 0)
+    {
+        close(fd_);
+    }
+}
+
+char* MMapHandler::data()
+{
+    return data_;
+}
+
+const char* MMapHandler::data() const
+{
+    return data_;
+}
+
+size_t MMapHandler::size() const
+{
+    return size_;
+}
 
 } // namespace utils
 } // namespace pldm
