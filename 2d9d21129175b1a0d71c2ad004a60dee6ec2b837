@@ -16,6 +16,24 @@
       "message": "Where is this function called from?",
       "revId": "2d9d21129175b1a0d71c2ad004a60dee6ec2b837",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8592d90e_c4a5fb85",
+        "filename": "libpldmresponder/fru.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2025-12-01T05:31:21Z",
+      "side": 1,
+      "message": "It is called from the next commit @deepak.kodihalli.83@gmail.com - https://gerrit.openbmc.org/c/openbmc/pldm/+/83864 , I have seperated it out so that it is easier for review rework.",
+      "parentUuid": "892cac6c_dc89f3db",
+      "revId": "2d9d21129175b1a0d71c2ad004a60dee6ec2b837",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
