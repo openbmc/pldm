@@ -1,8 +1,11 @@
 #include "utils.hpp"
 
+#include <fcntl.h>
 #include <libpldm/pdr.h>
 #include <libpldm/pldm_types.h>
 #include <linux/mctp.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 
 #include <xyz/openbmc_project/BIOSConfig/Manager/client.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
@@ -14,12 +17,14 @@
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <stdexcept>
 #include <string>
+#include <system_error>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
@@ -960,6 +965,139 @@ void setBiosAttr(const PendingAttributesList& biosAttrList)
 long int generateSwId()
 {
     return random() % 10000;
+}
+
+MMapHandler::MMapHandler(int fd, std::optional<size_t> size) :
+    fd_(fd), ownsFd_(false) // External fd, not owned by MMapHandler
+{
+    struct stat sb;
+    if (fstat(fd, &sb) == -1)
+    {
+        error("Failed to get the actual file size");
+        data_ = nullptr;
+        throw std::runtime_error("Failed to get the actual file size");
+    }
+
+    if (size.has_value())
+    {
+        if (size.value() < static_cast<size_t>(sb.st_size))
+        {
+            warning("The provided size is smaller than the actual file size");
+        }
+        size_ = std::min(size.value(), static_cast<size_t>(sb.st_size));
+    }
+    else
+    {
+        size_ = static_cast<size_t>(sb.st_size);
+    }
+
+    data_ =
+        static_cast<char*>(mmap(nullptr, size_, PROT_READ, MAP_PRIVATE, fd, 0));
+    if (data_ == MAP_FAILED)
+    {
+        data_ = nullptr;
+        error("mmap failed");
+        throw std::runtime_error("mmap failed");
+    }
+}
+
+MMapHandler::MMapHandler(const std::filesystem::path& path,
+                         std::optional<size_t> size) :
+    ownsFd_(true) // MMapHandler owns this fd and will close it
+{
+    // Open the file
+    fd_ = open(path.c_str(), O_RDONLY);
+    if (fd_ < 0)
+    {
+        int savedErrno = errno;
+        error("Failed to open file: {PATH}, error: {ERROR}", "PATH",
+              path.c_str(), "ERROR", savedErrno);
+        throw std::system_error(savedErrno, std::system_category(),
+                                "Failed to open file: " + path.string());
+    }
+
+    try
+    {
+        // Get file size using fstat
+        struct stat sb;
+        if (fstat(fd_, &sb) == -1)
+        {
+            int savedErrno = errno;
+            close(fd_);
+            fd_ = -1;
+            error("Failed to fstat file: {ERROR}", "ERROR", savedErrno);
+            throw std::system_error(savedErrno, std::generic_category(),
+                                    "Failed to fstat file");
+        }
+
+        // Determine the size to map
+        if (size.has_value())
+        {
+            if (size.value() < static_cast<size_t>(sb.st_size))
+            {
+                warning(
+                    "The provided size is smaller than the actual file size");
+            }
+            size_ = std::min(size.value(), static_cast<size_t>(sb.st_size));
+        }
+        else
+        {
+            size_ = static_cast<size_t>(sb.st_size);
+        }
+
+        // Memory map the file
+        data_ = static_cast<char*>(
+            mmap(nullptr, size_, PROT_READ, MAP_PRIVATE, fd_, 0));
+        if (data_ == MAP_FAILED)
+        {
+            int savedErrno = errno;
+            close(fd_);
+            fd_ = -1;
+            data_ = nullptr;
+            error("mmap failed: {ERROR}", "ERROR", savedErrno);
+            throw std::system_error(savedErrno, std::generic_category(),
+                                    "mmap failed");
+        }
+    }
+    catch (...)
+    {
+        // Ensure fd is closed if any exception occurs
+        if (fd_ >= 0)
+        {
+            close(fd_);
+            fd_ = -1;
+        }
+        throw;
+    }
+}
+
+MMapHandler::~MMapHandler()
+{
+    if (data_ && data_ != MAP_FAILED)
+    {
+        munmap(data_, size_);
+    }
+
+    // Only close fd if we own it (opened via path constructor)
+    if (ownsFd_ && fd_ >= 0)
+    {
+        close(fd_);
+    }
+}
+
+char* MMapHandler::data()
+{
+    return data_;
+}
+
+const char* MMapHandler::data() const
+{
+    return data_;
+}
+
+size_t MMapHandler::size() const
+{
+    return size_;
 }
 
 } // namespace utils
