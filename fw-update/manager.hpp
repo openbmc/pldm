@@ -45,14 +45,16 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      * @param[in] instanceIdDb - Reference to the InstanceId database for
      * managing PLDM instance IDs
      */
-    explicit Manager(const pldm::utils::DBusHandler* dbusHandler, Event& event,
+    explicit Manager(const pldm::utils::DBusHandler* dbusHandler,
+                     Event& event,
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap),
         inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
-                     downstreamDescriptorMap, componentInfoMap, configurations,
-                     updateManager)
+                     downstreamDescriptorMap, componentInfoMap, configurations),
+        updateManager(event, handler, instanceIdDb, descriptorMap,
+                      downstreamDescriptorMap, componentInfoMap)
     {}
 
     /** @brief Helper function to invoke registered handlers for
