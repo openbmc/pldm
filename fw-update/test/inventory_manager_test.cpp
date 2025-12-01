@@ -20,7 +20,7 @@ class InventoryManagerTest : public testing::Test
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
         updateManager(event, reqHandler, instanceIdDb, outDescriptorMap,
-                      outComponentInfoMap),
+                      outDownstreamDescriptorMap, outComponentInfoMap),
         inventoryManager(&dBusHandler, reqHandler, instanceIdDb,
                          outDescriptorMap, outDownstreamDescriptorMap,
                          outComponentInfoMap, configurations, updateManager)

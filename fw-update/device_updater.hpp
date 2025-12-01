@@ -42,9 +42,7 @@ class DeviceUpdater
     /** @brief Constructor
      *
      *  @param[in] eid - Endpoint ID of the firmware device
-     *  @param[in] package - File stream for firmware update package
-     *  @param[in] fwDeviceIDRecord - FirmwareDeviceIDRecord in the fw update
-     *                                package that matches this firmware device
+     *  @param[in] package deviceIDRecord - DeviceIDRecord in the fw update
      *  @param[in] compImageInfos - Component image information for all the
      *                              components in the fw update package
      *  @param[in] compInfo - Component info for the components in this FD
@@ -54,16 +52,11 @@ class DeviceUpdater
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
      */
-    explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
-                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+    explicit DeviceUpdater(mctp_eid_t eid, const DeviceIDRecord& deviceIDRecord,
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
                            uint32_t maxTransferSize,
-                           UpdateManager* updateManager) :
-        eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
-        compImageInfos(compImageInfos), compInfo(compInfo),
-        maxTransferSize(maxTransferSize), updateManager(updateManager)
-    {}
+                           UpdateManager* updateManager);
 
     /** @brief Start the firmware update flow for the FD
      *
@@ -198,13 +191,14 @@ class DeviceUpdater
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 
-    /** @brief File stream for firmware update package */
-    std::istream& package;
+    /** @brief Applicable components for this firmware device */
+    ApplicableComponents applicableComponents;
 
-    /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
-     *         firmware device
-     */
-    const FirmwareDeviceIDRecord& fwDeviceIDRecord;
+    /** @brief Firmware device package data */
+    FirmwareDevicePackageData firmwareDevicePackageData;
+
+    /** @brief Component image set version string */
+    ComponentImageSetVersion componentImageSetVersion;
 
     /** @brief Component image information for all the components in the fw
      *         update package
