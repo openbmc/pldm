@@ -1,4 +1,5 @@
 #pragma once
+#include <libpldm/firmware_update.h>
 
 #include <sdbusplus/message/types.hpp>
 
@@ -112,14 +113,16 @@ using VendorDefinedDescriptorTitle = std::string;
 using VendorDefinedDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorInfo =
     std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
-using Descriptors =
-    std::multimap<DescriptorType,
-                  std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+using DescriptorValue =
+    std::variant<DescriptorData, VendorDefinedDescriptorInfo>;
+using Descriptor = std::pair<DescriptorType, DescriptorValue>;
+using Descriptors = std::multimap<DescriptorType, DescriptorValue>;
 using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
     std::unordered_map<DownstreamDeviceIndex, Descriptors>;
 
 using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DownstreamDescriptorIndex = std::pair<eid, DownstreamDeviceIndex>;
 using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 
 // Component information
@@ -148,32 +151,25 @@ using FirmwareDeviceIDRecord =
                ComponentImageSetVersion, Descriptors,
                FirmwareDevicePackageData>;
 using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
+using SelfContainedActivationMinVersionComparisonStamp =
+    std::optional<uint32_t>;
+using SelfContainedActivationMinVersion = std::optional<std::string>;
 
 // ComponentImageInformation
 using ComponentImageCount = uint16_t;
 using CompComparisonStamp = uint32_t;
 using CompOptions = std::bitset<16>;
 using ReqCompActivationMethod = std::bitset<16>;
-using CompLocationOffset = uint32_t;
-using CompSize = uint32_t;
-using CompVersion = std::string;
-using ComponentImageInfo =
-    std::tuple<CompClassification, CompIdentifier, CompComparisonStamp,
-               CompOptions, ReqCompActivationMethod, CompLocationOffset,
-               CompSize, CompVersion>;
-using ComponentImageInfos = std::vector<ComponentImageInfo>;
 
-enum class ComponentImageInfoPos : size_t
-{
-    CompClassificationPos = 0,
-    CompIdentifierPos = 1,
-    CompComparisonStampPos = 2,
-    CompOptionsPos = 3,
-    ReqCompActivationMethodPos = 4,
-    CompLocationOffsetPos = 5,
-    CompSizePos = 6,
-    CompVersionPos = 7,
-};
+using CompVersion = std::string;
+using CompImage = std::vector<uint8_t>;
+// We're saving the image and version string externally
+// because the data field inside will be released after
+// leaving the iteration of the parser.
+using ComponentImageInfos =
+    std::vector<std::tuple<pldm_package_component_image_information, CompImage,
+                           CompVersion>>;
+
 
 } // namespace fw_update
 
