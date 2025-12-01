@@ -1,8 +1,11 @@
 #include "utils.hpp"
 
+#include <fcntl.h>
 #include <libpldm/pdr.h>
 #include <libpldm/pldm_types.h>
 #include <linux/mctp.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 
 #include <xyz/openbmc_project/BIOSConfig/Manager/client.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
@@ -13,12 +16,14 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <stdexcept>
 #include <string>
+#include <system_error>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
@@ -959,6 +964,161 @@ void setBiosAttr(const PendingAttributesList& biosAttrList)
 long int generateSwId()
 {
     return random() % 10000;
+}
+
+MMapHandler::MMapHandler(int fd, std::optional<size_t> size)
+{
+    struct stat sb;
+    if (fstat(fd, &sb) == -1)
+    {
+        error("Failed to get the actual file size");
+        data = nullptr;
+        throw std::runtime_error("Failed to get the actual file size");
+    }
+
+    if (size.has_value())
+    {
+        this->size = size.value();
+        if (this->size > static_cast<size_t>(sb.st_size))
+        {
+            error("Requested size {REQSIZE} exceeds file size {FILESIZE}",
+                  "REQSIZE", this->size, "FILESIZE", sb.st_size);
+            data = nullptr;
+            throw std::invalid_argument("Requested size exceeds file size");
+        }
+    }
+    else
+    {
+        this->size = static_cast<size_t>(sb.st_size);
+    }
+
+    data = static_cast<const char*>(
+        mmap(nullptr, this->size, PROT_READ, MAP_PRIVATE, fd, 0));
+    if (data == MAP_FAILED)
+    {
+        int savedErrno = errno;
+        data = nullptr;
+        error("mmap failed: size {SIZE}, error: {ERROR}", "SIZE", this->size,
+              "ERROR", savedErrno);
+        throw std::system_error(savedErrno, std::system_category(),
+                                "mmap failed");
+    }
+}
+
+MMapHandler::MMapHandler(const std::filesystem::path& path,
+                         std::optional<size_t> size)
+{
+    int localFd = open(path.c_str(), O_RDONLY);
+    if (localFd < 0)
+    {
+        int savedErrno = errno;
+        error("Failed to open file: {PATH}, error: {ERROR}", "PATH",
+              path.c_str(), "ERROR", savedErrno);
+        throw std::system_error(savedErrno, std::system_category(),
+                                "Failed to open file: " + path.string());
+    }
+
+    struct stat sb;
+    if (fstat(localFd, &sb) == -1)
+    {
+        int savedErrno = errno;
+        close(localFd);
+        error("Failed to fstat file: {ERROR}", "ERROR", savedErrno);
+        throw std::system_error(savedErrno, std::system_category(),
+                                "Failed to fstat file");
+    }
+
+    if (size.has_value())
+    {
+        this->size = size.value();
+        if (this->size > static_cast<size_t>(sb.st_size))
+        {
+            close(localFd);
+            error("Requested size {REQSIZE} exceeds file size {FILESIZE}",
+                  "REQSIZE", this->size, "FILESIZE", sb.st_size);
+            throw std::invalid_argument("Requested size exceeds file size");
+        }
+    }
+    else
+    {
+        this->size = static_cast<size_t>(sb.st_size);
+    }
+
+    data = static_cast<const char*>(
+        mmap(nullptr, this->size, PROT_READ, MAP_PRIVATE, localFd, 0));
+    // mmap() adds its own reference to the file; close fd immediately
+    close(localFd);
+
+    if (data == MAP_FAILED)
+    {
+        int savedErrno = errno;
+        data = nullptr;
+        error("mmap failed: size {SIZE}, error: {ERROR}", "SIZE", this->size,
+              "ERROR", savedErrno);
+        throw std::system_error(savedErrno, std::system_category(),
+                                "mmap failed");
+    }
+}
+
+MMapHandler::MMapHandler(MMapHandler&& other) noexcept :
+    size(other.size), data(other.data)
+{
+    other.data = nullptr;
+    other.size = 0;
+}
+
+MMapHandler& MMapHandler::operator=(MMapHandler&& other) noexcept
+{
+    if (this != &other)
+    {
+        if (data)
+        {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+            munmap(const_cast<char*>(data), size);
+        }
+        data = other.data;
+        size = other.size;
+        other.data = nullptr;
+        other.size = 0;
+    }
+    return *this;
+}
+
+MMapHandler::~MMapHandler()
+{
+    if (data)
+    {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+        munmap(const_cast<char*>(data), size);
+    }
+}
+
+const char* MMapHandler::getData() const
+{
+    return data;
+}
+
+std::span<const uint8_t> MMapHandler::getBytes() const
+{
+    if (!data)
+    {
+        return {};
+    }
+    return {std::bit_cast<const uint8_t*>(data), size};
+}
+
+std::span<const char> MMapHandler::getChars() const
+{
+    if (!data)
+    {
+        return {};
+    }
+    return {data, size};
+}
+
+size_t MMapHandler::getSize() const
+{
+    return size;
 }
 
 } // namespace utils
