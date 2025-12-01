@@ -122,6 +122,22 @@ class Terminus
         return terminusName;
     }
 
+    /** @brief The setter to set inventory's name */
+    void setInventoryName(const EntityName& iName)
+    {
+        inventoryName = iName;
+    }
+
+    /** @brief The getter to get inventory name */
+    std::optional<std::string_view> getInventoryName()
+    {
+        if (inventoryName.empty())
+        {
+            return std::nullopt;
+        }
+        return inventoryName;
+    }
+
     /** @brief Parse record data from FRU table
      *
      *  @param[in] fruData - pointer to FRU record table
@@ -295,6 +311,9 @@ class Terminus
     /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
         nullptr;
+
+    /** @brief Inventory name */
+    EntityName inventoryName{};
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
