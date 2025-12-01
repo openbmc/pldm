@@ -25,6 +25,7 @@
 #include <filesystem>
 #include <iostream>
 #include <map>
+#include <span>
 #include <string>
 #include <variant>
 #include <vector>
@@ -754,6 +755,105 @@ std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
  *             to be set
  */
 void setBiosAttr(const PendingAttributesList& biosAttrList);
+
+/** @brief RAII class to handle mmap and munmap */
+class MMapHandler
+{
+  public:
+    /** @brief Constructor to handle mmap with file descriptor
+     *
+     *  @param[in] fd - file descriptor to be mapped
+     *  @param[in] size - size to be mapped (optional)
+     *
+     *  @note The file descriptor is not owned by MMapHandler and will not be
+     *        closed in the destructor when constructed with this method.
+     */
+    MMapHandler(int fd, std::optional<size_t> size = std::nullopt);
+
+    /** @brief Constructor to handle mmap with file path
+     *
+     *  Opens the file, memory maps it, and manages the file descriptor lifecycle.
+     *
+     *  @param[in] path - filesystem path to the file to be opened and mapped
+     *  @param[in] size - size to be mapped (optional)
+     *
+     *  @note The file descriptor is owned by MMapHandler and will be
+     *        automatically closed in the destructor.
+     */
+    explicit MMapHandler(const std::filesystem::path& path, 
+                        std::optional<size_t> size = std::nullopt);
+
+    /** @brief Destructor to handle munmap and optionally close file descriptor
+     *
+     *  Unmaps the memory and closes the file descriptor if it was opened
+     *  by MMapHandler (i.e., constructed with file path).
+     */
+    ~MMapHandler();
+
+    /** @brief Get the data pointer and size of the mapped data
+     *
+     *  @return char* - pointer to the mapped data
+     */
+    char* data();
+
+    /** @brief Get the const data pointer and size of the mapped data
+     *
+     *  @return const char* - const pointer to the mapped data
+     */
+    const char* data() const;
+
+    /** @brief Get the size of the mapped data
+     *
+     *  @return size_t - size of the mapped data
+     */
+    size_t size() const;
+
+    /** @brief Get a span of type T from the mapped data
+     *
+     *  @tparam T - type of the span elements
+     *  @return std::span<T> - span of type T
+     */
+    template <typename T>
+    std::span<T> getSpan()
+    {
+        if (!data_)
+        {
+            return {};
+        }
+        size_t n = size_ / sizeof(T);
+        auto p = new (data_) T;
+        return {p, n};
+    }
+
+    /** @brief Convert the mapped data to a vector of type T
+     *
+     *  @tparam T - type of the vector elements
+     *  @return std::vector<T> - vector of type T
+     */
+    template <typename T>
+    std::vector<T> toVector() const
+    {
+        if (!data_)
+        {
+            return {};
+        }
+        size_t count = size_ / sizeof(T);
+        std::vector<T> vec;
+        vec.reserve(count);
+        T* ptr = new (data_) T;
+        for (size_t i = 0; i < count; ++i)
+        {
+            vec.push_back(ptr[i]);
+        }
+        return vec;
+    }
+
+  private:
+    int fd_;
+    size_t size_;
+    char* data_ = nullptr;
+    bool ownsFd_ = false;  //!< True if MMapHandler owns the fd and should close it
+};
 
 } // namespace utils
 } // namespace pldm
