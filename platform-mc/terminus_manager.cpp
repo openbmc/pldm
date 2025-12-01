@@ -268,6 +268,65 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
     }
 }
 
+std::string getInventoryDeviceName(uint8_t networkId, uint8_t eid)
+{
+    // Construct MCTP endpoint object path
+    std::string epPath = std::format(
+        "/au/com/codeconstruct/mctp1/networks/{}/endpoints/{}", networkId, eid);
+
+    auto bus = sdbusplus::bus::new_default_system();
+
+    try
+    {
+        // Call org.freedesktop.DBus.Properties.Get
+        auto method = bus.new_method_call(
+            "xyz.openbmc_project.MCTPReactor", // service
+            epPath.c_str(),                    // object path
+            "org.freedesktop.DBus.Properties", // interface
+            "Get");                            // method
+
+        method.append("xyz.openbmc_project.Association.Definitions",
+                      "Associations");
+
+        std::variant<
+            std::vector<std::tuple<std::string, std::string, std::string>>>
+            associations;
+        auto reply = bus.call(method);
+        reply.read(associations);
+
+        auto assocVec = std::get<
+            std::vector<std::tuple<std::string, std::string, std::string>>>(
+            associations);
+
+        for (auto& entry : assocVec)
+        {
+            const auto& path = std::get<2>(entry);
+
+            // Split DBus object path by '/'
+            std::vector<std::string> parts;
+            std::stringstream ss(path);
+            std::string item;
+            while (std::getline(ss, item, '/'))
+            {
+                if (!item.empty())
+                    parts.push_back(item);
+            }
+
+            // Return second last element as device name
+            if (parts.size() >= 2)
+                return parts[parts.size() - 2];
+        }
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error(
+            "Failed to assign EID {EID}, networkId {NETWORK}, error {ERROR}",
+            "EID", eid, "NETWORK", networkId, "ERROR", e);
+    }
+
+    return "";
+}
+
 exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
 {
     mctp_eid_t eid = std::get<0>(mctpInfo);
@@ -439,6 +498,15 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         lg2::info("Terminus {TID} has default Terminus Name {NAME}", "NAME",
                   mctpInfoName.value(), "TID", tid);
         termini[tid]->setTerminusName(mctpInfoName.value());
+
+        auto terminusMctpInfo = toMctpInfo(tid);
+        auto& info = *terminusMctpInfo;
+        auto eid = std::get<0>(info);
+        auto networkId = std::get<3>(info);
+
+        std::string invName = getInventoryDeviceName(networkId, eid);
+
+        termini[tid]->setInventoryName(invName);
     }
 
     co_return PLDM_SUCCESS;

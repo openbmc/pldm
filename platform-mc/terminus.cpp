@@ -213,8 +213,12 @@ void Terminus::parseTerminusPDRs()
     {
         terminusName = std::format("Terminus_{}", tid);
     }
+    auto iName = getInventoryName();
+    auto inventoryName = iName.has_value() && !iName->empty()
+                             ? std::string(*iName)
+                             : std::string(terminusName);
 
-    if (createInventoryPath(terminusName))
+    if (createInventoryPath(inventoryName))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
                   tid, "PATH", inventoryPath);
