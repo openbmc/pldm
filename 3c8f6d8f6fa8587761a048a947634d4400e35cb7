@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "273b83b3_829ce569",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-01T14:53:09Z",
+      "side": 1,
+      "message": "there was prior work from @chaul@amperecomputing.com at https://gerrit.openbmc.org/q/topic:%22pldm_state_sensor%22 - can you both please collaborate and drive this effort forward ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 12,
+        "endLine": 7,
+        "endChar": 52
+      },
+      "revId": "3c8f6d8f6fa8587761a048a947634d4400e35cb7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5636416_2bbf0176",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-01T14:53:09Z",
+      "side": 1,
+      "message": "this needs to be first added to design at openbmc/docs/pldm-stack.md",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 34
+      },
+      "revId": "3c8f6d8f6fa8587761a048a947634d4400e35cb7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9346dc88_d0090c75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-01T14:53:09Z",
+      "side": 1,
+      "message": "to which state sets and to what values these are mapped to ? and why they are mapped the way they are ? we need an agreement that the mapping is okay - via the openbmc/docs/pldm-stack document.",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 21,
+        "endChar": 18
+      },
+      "revId": "3c8f6d8f6fa8587761a048a947634d4400e35cb7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af882d6a_06a16ca3",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
