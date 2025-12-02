@@ -8,6 +8,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Association/common.hpp>
 #include <xyz/openbmc_project/Software/Version/client.hpp>
 
 #include <optional>
@@ -18,6 +19,7 @@ PHOSPHOR_LOG2_USING;
 
 using SoftwareVersion =
     sdbusplus::common::xyz::openbmc_project::software::Version;
+using Association = sdbusplus::common::xyz::openbmc_project::Association;
 
 namespace pldm
 {
@@ -237,7 +239,8 @@ std::string FruImpl::populatefwVersion()
         auto method =
             bus.new_method_call(pldm::utils::mapperService, fwFunctionalObjPath,
                                 pldm::utils::dbusProperties, "Get");
-        method.append("xyz.openbmc_project.Association", "endpoints");
+        method.append(Association::interface,
+                      Association::property_names::endpoints);
         std::variant<std::vector<std::string>> paths;
         auto reply = bus.call(method, dbusTimeout);
         reply.read(paths);

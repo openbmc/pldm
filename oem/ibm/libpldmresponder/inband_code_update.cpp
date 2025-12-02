@@ -10,10 +10,13 @@
 #include <nlohmann/json.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Association/common.hpp>
 #include <xyz/openbmc_project/Dump/NewDump/server.hpp>
 
 #include <exception>
 #include <fstream>
+
+using Association = sdbusplus::common::xyz::openbmc_project::Association;
 
 PHOSPHOR_LOG2_USING;
 
@@ -204,7 +207,8 @@ void CodeUpdate::setVersions()
     {
         auto method = bus.new_method_call(mapperService, functionalObjPath,
                                           propIntf, "Get");
-        method.append("xyz.openbmc_project.Association", "endpoints");
+        method.append(Association::interface,
+                      Association::property_names::endpoints);
         std::variant<std::vector<std::string>> paths;
 
         auto reply = bus.call(method, dbusTimeout);
@@ -217,7 +221,8 @@ void CodeUpdate::setVersions()
 
         auto method1 =
             bus.new_method_call(mapperService, activeObjPath, propIntf, "Get");
-        method1.append("xyz.openbmc_project.Association", "endpoints");
+        method1.append(Association::interface,
+                       Association::property_names::endpoints);
 
         auto reply1 = bus.call(method1, dbusTimeout);
         reply1.read(paths);
