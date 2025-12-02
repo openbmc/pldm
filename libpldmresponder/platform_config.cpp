@@ -1,6 +1,10 @@
 #include "platform_config.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Inventory/Decorator/Compatible/common.hpp>
+
+using InventoryDecoratorCompatible =
+    sdbusplus::common::xyz::openbmc_project::inventory::decorator::Compatible;
 
 PHOSPHOR_LOG2_USING;
 
@@ -24,20 +28,22 @@ void Handler::systemCompatibleCallback(sdbusplus::message_t& msg)
 
     msg.read(path, interfaceMap);
 
-    if (!interfaceMap.contains(compatibleInterface))
+    if (!interfaceMap.contains(InventoryDecoratorCompatible::interface))
     {
         return;
     }
     // Get the "Name" property value of the
     // "xyz.openbmc_project.Inventory.Decorator.Compatible" interface
-    const auto& properties = interfaceMap.at(compatibleInterface);
+    const auto& properties =
+        interfaceMap.at(InventoryDecoratorCompatible::interface);
 
-    if (!properties.contains(namesProperty))
+    if (!properties.contains(
+            InventoryDecoratorCompatible::property_names::names))
     {
         return;
     }
-    auto names =
-        std::get<pldm::utils::Interfaces>(properties.at(namesProperty));
+    auto names = std::get<pldm::utils::Interfaces>(
+        properties.at(InventoryDecoratorCompatible::property_names::names));
 
     if (!names.empty())
     {
@@ -76,7 +82,8 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
 
     static constexpr auto searchpath = "/xyz/openbmc_project/";
     int depth = 0;
-    std::vector<std::string> systemCompatible = {compatibleInterface};
+    std::vector<std::string> systemCompatible = {
+        InventoryDecoratorCompatible::interface};
 
     try
     {
@@ -98,7 +105,9 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
                     auto method = bus.new_method_call(
                         entityMangerService.c_str(), objectPath.c_str(),
                         "org.freedesktop.DBus.Properties", "Get");
-                    method.append(compatibleInterface, namesProperty);
+                    method.append(
+                        InventoryDecoratorCompatible::interface,
+                        InventoryDecoratorCompatible::property_names::names);
                     auto propSystemList =
                         bus.call(method, dbusTimeout).unpack<PropertyValue>();
                     auto systemList =
@@ -122,8 +131,8 @@ std::optional<std::filesystem::path> Handler::getPlatformName()
             {
                 error(
                     "Failed to get Names property at '{PATH}' on interface '{INTERFACE}', error - {ERROR}",
-                    "PATH", objectPath, "INTERFACE", compatibleInterface,
-                    "ERROR", e);
+                    "PATH", objectPath, "INTERFACE",
+                    InventoryDecoratorCompatible::interface, "ERROR", e);
             }
         }
     }
