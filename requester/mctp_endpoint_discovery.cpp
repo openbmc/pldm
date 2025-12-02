@@ -316,8 +316,18 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
 
         if (key == MCTPConnectivityProp)
         {
-            service = pldm::utils::DBusHandler().getService(
-                objPath.c_str(), MCTPEndpoint::interface);
+            try
+            {
+                service = pldm::utils::DBusHandler().getService(
+                    objPath.c_str(), MCTPEndpoint::interface);
+            }
+            catch (const sdbusplus::exception_t& e)
+            {
+                error(
+                    "Error getting service for path '{PATH}', error - {ERROR}",
+                    "PATH", objPath, "ERROR", e);
+                return;
+            }
             const MctpEndpointProps& epProps =
                 getMctpEndpointProps(service, objPath);
 
