@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9561e4aa_ca9ebc46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002643
+      },
+      "writtenOn": "2025-12-03T19:56:25Z",
+      "side": 1,
+      "message": "Build failure seems to be unrelated to this change.",
+      "revId": "a74a7594c76685a91ced5c93edcb01f5727be621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
