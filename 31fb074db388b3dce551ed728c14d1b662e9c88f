@@ -34,6 +34,24 @@
       "parentUuid": "a055ce03_8bce1e41",
       "revId": "31fb074db388b3dce551ed728c14d1b662e9c88f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44969212_748ff62a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 70
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-12-03T08:05:58Z",
+      "side": 1,
+      "message": "Removed multipart interface from the item update code.",
+      "parentUuid": "bce0e936_7219f4fa",
+      "revId": "31fb074db388b3dce551ed728c14d1b662e9c88f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

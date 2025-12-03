@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcd95afa_e373a7d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 66
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-12-03T08:05:58Z",
+      "side": 1,
+      "message": "\u003e Hi Unive, could you please confirm that your patch does not impact the existing PLDM bundle update flow?\n\nTested update via the exsisting flow.\n\n\u003e Also, have you tested back-to-back updates, and verified that a previously failed update doesn’t affect a new update?\n\nTested, the new update task won\u0027t be affect by the previous failed task.\n\nCommit message updated.",
+      "parentUuid": "eb05334c_0544a317",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97df3147_0d766404",
@@ -367,6 +385,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fad4870f_cf334d41",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-12-03T08:05:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee103787_af3eeead",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2700fa4_6b60065d",
@@ -520,6 +556,24 @@
       "writtenOn": "2025-11-18T19:17:05Z",
       "side": 1,
       "message": "You cannot rely on activation state of current firmware version as that will always be Active. Please add some local state in this class to gate this. You can refer to https://grok.openbmc.org/xref/openbmc/phosphor-bmc-code-mgmt/common/src/software_update.cpp?r\u003df9cfdca9c11096d12b0a7bb8063823792ed9ad30#48.",
+      "revId": "810bae1452455e54149310c54e6efe1258eeb808",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b465f770_a97f1580",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 66
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2025-12-03T08:05:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ccd6a1f_a948f73c",
       "revId": "810bae1452455e54149310c54e6efe1258eeb808",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
