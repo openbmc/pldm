@@ -50,6 +50,74 @@
       "message": "@unive.tien.wiwynn@gmail.com Please make sure to test the multipart image flow via Redfish and add that as a bullet item in this list.",
       "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30814ea3_6d30d555",
+        "filename": "common/utils.hpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 830,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-12-04T05:29:15Z",
+      "side": 1,
+      "message": "Please follow the coding guidelines for variable names as per https://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md#variables.",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59d2ff9b_54d9d65b",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-12-04T05:29:15Z",
+      "side": 1,
+      "message": "Can you please rename softwareHash to something better? probably uniqueId or generatedId? Do it at other places too.",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c4c66d1_7f450850",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-12-04T05:29:15Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com You cannot override the activation object in the existing object as the existing one will have the status as Active and thats what BMCWeb uses to show software status.\nAs part of StartUpdate API call you need to create a all new Object which encapsulates Version, Activation, ActivationProgress, Update and other related interfaces on a new objectPath.",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4cef37d_d02b0421",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-12-04T05:29:15Z",
+      "side": 1,
+      "message": "Rename to objPathWithSwId",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
