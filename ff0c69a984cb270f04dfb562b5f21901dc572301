@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0720f425_ce391389",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 76
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-12-04T04:49:02Z",
+      "side": 1,
+      "message": "xyz.openbmc_project.Software.Update`",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57c7447e_55adf714",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 76
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-12-04T04:49:02Z",
+      "side": 1,
+      "message": "Which existing method you are referring it here (Is it dir inotify based flow?), lets call that out rather than mentioning existing flow?",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a870fe3c_e9c2e308",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 76
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-12-04T04:49:02Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com Please make sure to test the multipart image flow via Redfish and add that as a bullet item in this list.",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
