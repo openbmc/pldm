@@ -81,6 +81,24 @@
       "parentUuid": "3d65a401_8681fe58",
       "revId": "036a9a62454a985c28a6c550416067d03f7e55cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ebfc8d3_0082d5b5",
+        "filename": "tools/fw-update/metadata-example.json",
+        "patchSetId": 12
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-04T08:38:07Z",
+      "side": 1,
+      "message": "Hi @deepak.kodihalli.83@gmail.com, I have added PLDM header JSON examples for each version, and added support for Component Opaque Data and Reference Manifest Data.",
+      "parentUuid": "a4b8ae8e_b1117bd7",
+      "revId": "036a9a62454a985c28a6c550416067d03f7e55cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
