@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13b0d63f_1683f2b7",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-04T01:21:42Z",
+      "side": 1,
+      "message": "doxygen all the things",
+      "revId": "bd688691e919048f8d03a71cfba2265866508bde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91290008_08342852",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-04T01:21:42Z",
+      "side": 1,
+      "message": "review this logic, it works but it looks goofy, this can probably be simplified.",
+      "revId": "bd688691e919048f8d03a71cfba2265866508bde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0372b9e2_6822e842",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-04T01:21:42Z",
+      "side": 1,
+      "message": "get rid of these",
+      "revId": "bd688691e919048f8d03a71cfba2265866508bde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
