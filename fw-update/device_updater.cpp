@@ -39,6 +39,16 @@ void DeviceUpdater::startFwUpdateFlow()
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_request_update_req) +
         compImgSetVerStrInfo.length);
     auto requestMsg = new (request.data()) pldm_msg;
+    progress.clear();
+
+    // create as many progress objects as there are components
+    // and initialize them with the size of each component
+    for (const auto& applicableComponent : applicableComponents)
+    {
+        const auto& componentSize =
+            std::get<6>(compImageInfos[applicableComponent]);
+        progress.emplace_back(componentSize);
+    }
 
     auto rc = encode_request_update_req(
         instanceId, maxTransferSize, applicableComponents.size(),
@@ -455,6 +465,8 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     }
 
     response.resize(sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
+    progress[componentIndex].reportFwUpdate(length);
+    updateManager->updateActivationProgress();
     responseMsg = new (response.data()) pldm_msg;
     package.seekg(compOffset + offset);
     package.read(
@@ -594,7 +606,8 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     const auto& compVersion = std::get<7>(comp);
-
+    progress[componentIndex].updateState(UpdateProgress::state::Verify);
+    updateManager->updateActivationProgress();
     if (verifyResult == PLDM_FWUP_VERIFY_SUCCESS)
     {
         info(
@@ -664,6 +677,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' with '{COMPONENT_VERSION}' apply complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        progress[componentIndex].updateState(UpdateProgress::state::Apply);
         updateManager->updateActivationProgress();
         if (componentIndex == applicableComponents.size() - 1)
         {

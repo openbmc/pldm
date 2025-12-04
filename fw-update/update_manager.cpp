@@ -330,10 +330,24 @@ void UpdateManager::clearActivationInfo()
 
 void UpdateManager::updateActivationProgress()
 {
-    compUpdateCompletedCount++;
-    auto progressPercent = static_cast<uint8_t>(std::floor(
-        (100 * compUpdateCompletedCount) / totalNumComponentUpdates));
-    activationProgress->progress(progressPercent);
+    if (deviceUpdaterMap.empty())
+    {
+        return;
+    }
+
+    const auto totalProgress = std::accumulate(
+        deviceUpdaterMap.begin(), deviceUpdaterMap.end(), uint64_t{0},
+        [](uint64_t sum,
+           const std::pair<const mctp_eid_t, std::unique_ptr<DeviceUpdater>>&
+               d) { return sum + d.second->getProgress(); });
+
+    const uint64_t totalPossibleProgress =
+        static_cast<uint64_t>(100) * deviceUpdaterMap.size();
+    auto percentage = static_cast<uint8_t>(std::floor(
+        (static_cast<double>(totalProgress) / totalPossibleProgress) * 100.0));
+
+    percentage = std::min(static_cast<uint8_t>(100), percentage);
+    activationProgress->progress(percentage);
 }
 
 } // namespace fw_update

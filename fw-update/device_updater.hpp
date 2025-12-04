@@ -9,6 +9,7 @@
 #include <sdeventplus/source/event.hpp>
 
 #include <fstream>
+#include <numeric>
 
 namespace pldm
 {
@@ -23,6 +24,84 @@ namespace fw_update
 using ComponentUpdateStatusMap = std::map<size_t, bool>;
 
 class UpdateManager;
+
+class UpdateProgress
+{
+  public:
+    enum class state
+    {
+        Update,
+        Verify,
+        Apply,
+    };
+
+    UpdateProgress(uint32_t totalSize) :
+        progress{}, totalSize{totalSize}, totalUpdated{},
+        currentState{state::Update}
+    {}
+    ~UpdateProgress() = default;
+    UpdateProgress& operator=(UpdateProgress&&) = default;
+    UpdateProgress& operator=(const UpdateProgress&) = delete;
+    UpdateProgress(UpdateProgress&&) = default;
+    UpdateProgress(const UpdateProgress&) = delete;
+
+    bool updateState(state new_state)
+    {
+        switch (new_state)
+        {
+            case state::Update:
+                break;
+            case state::Verify:
+                progress = 90;
+                break;
+            case state::Apply:
+                progress = 100;
+                break;
+            default:
+                return false;
+        };
+        return true;
+    }
+
+    bool reportFwUpdate(uint32_t amountUpdated)
+    {
+        if (currentState != state::Update)
+        {
+            return false;
+        }
+
+        if (amountUpdated > totalSize)
+        {
+            return false;
+        }
+
+        // TODO check for overflow before this
+        if (amountUpdated + totalUpdated > totalSize)
+        {
+            return false;
+        }
+
+        totalUpdated += amountUpdated;
+        progress =
+            static_cast<uint8_t>(std::floor(67.0 * totalUpdated / totalSize));
+        return true;
+    }
+
+    uint8_t getProgress() const
+    {
+        return progress;
+    }
+    uint32_t getTotalSize() const
+    {
+        return totalSize;
+    }
+
+  private:
+    uint8_t progress;
+    uint32_t totalSize;
+    uint32_t totalUpdated;
+    state currentState;
+};
 
 /** @class DeviceUpdater
  *
@@ -65,6 +144,36 @@ class DeviceUpdater
         maxTransferSize(maxTransferSize), updateManager(updateManager)
     {}
 
+    uint32_t getProgress() const
+    {
+        if (progress.empty())
+        {
+            return 0;
+        }
+
+        const auto totalSize =
+            std::accumulate(progress.begin(), progress.end(), uint64_t{0},
+                            [](uint64_t sum, const UpdateProgress& c) {
+                                return sum + c.getTotalSize();
+                            });
+
+        if (totalSize == 0)
+        {
+            return 0;
+        }
+
+        const auto weightedProgress = std::accumulate(
+            progress.begin(), progress.end(), uint64_t{0},
+            [](uint64_t sum, const UpdateProgress& c) {
+                return sum + static_cast<uint64_t>(c.getProgress()) *
+                                 c.getTotalSize();
+            });
+
+        const double percentage = static_cast<double>(weightedProgress) /
+                                  static_cast<double>(totalSize);
+
+        return static_cast<uint32_t>(std::floor(percentage));
+    }
     /** @brief Start the firmware update flow for the FD
      *
      *  To start the update flow RequestUpdate command is sent to the FD.
@@ -252,6 +361,7 @@ class DeviceUpdater
      *
      */
     std::unique_ptr<sdbusplus::Timer> reqFwDataTimer;
+    std::vector<UpdateProgress> progress;
 };
 
 } // namespace fw_update

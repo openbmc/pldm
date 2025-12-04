@@ -1,10 +1,10 @@
 #pragma once
-
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
 #include "fw-update/update.hpp"
+
 #ifdef FW_UPDATE_INOTIFY_ENABLED
 #include "fw-update/watch.hpp"
 #endif
