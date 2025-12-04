@@ -9,6 +9,7 @@
 #include <sdeventplus/source/event.hpp>
 
 #include <fstream>
+#include <numeric>
 
 namespace pldm
 {
@@ -23,6 +24,92 @@ namespace fw_update
 using ComponentUpdateStatusMap = std::map<size_t, bool>;
 
 class UpdateManager;
+
+/** @class UpdateProgress
+ *
+ *  Attempts to provide accurate reporting of firmware update progress
+ *  Called at the various phases of firmware update.
+ *  A single UpdateProgress object represents a component of a pldm package
+ */
+class UpdateProgress
+{
+  public:
+    /** @brief an enum to define the different states of progress
+     *
+     */
+    enum class state
+    {
+        Update,
+        Verify,
+        Apply,
+    };
+
+    /** @brief Construct an UpdateProgress object given to the total component
+     * size
+     *
+     * @param[in] totalSize the size in bytes of a component for a given device
+     */
+    UpdateProgress(uint32_t totalSize) :
+        progress{}, totalSize{totalSize}, totalUpdated{},
+        currentState{state::Update}
+    {}
+    ~UpdateProgress() = default;
+    UpdateProgress& operator=(UpdateProgress&&) = default;
+    UpdateProgress& operator=(const UpdateProgress&) = delete;
+    UpdateProgress(UpdateProgress&&) = default;
+    UpdateProgress(const UpdateProgress&) = delete;
+
+    /** @brief Called when switching between phases of firmware update
+     *
+     * @param[in] newState the state that we are entering. See
+     * UpdateProgress::state
+     * @return true on success, false on failure
+     */
+    bool updateState(state newState);
+
+    /** @brief called when servicing RequestFirmwareData commands
+     *
+     * @param[in] amountUpdate the length of firmware transmitted, in bytes
+     * @return true on success, false on failure
+     */
+    bool reportFwUpdate(uint32_t amountUpdated);
+
+    /** @brief get the progress as a percentage of this component
+     *
+     * @return the progress of this component as an int in [0-100]
+     */
+    uint8_t getProgress() const
+    {
+        return progress;
+    }
+
+    /** @brief get the total size of the firmware component in bytes
+     *
+     * @return the total number of bytes for the component
+     */
+    uint32_t getTotalSize() const
+    {
+        return totalSize;
+    }
+
+  private:
+    /**
+     * @brief progress of firmware update in percentage [0-100]
+     */
+    uint8_t progress;
+    /**
+     * @brief the total size in bytes of this component
+     */
+    uint32_t totalSize;
+    /**
+     * @brief the total number of bytes sent
+     */
+    uint32_t totalUpdated;
+    /**
+     * @brief the current state of update for this component
+     */
+    state currentState;
+};
 
 /** @class DeviceUpdater
  *
@@ -59,11 +146,16 @@ class DeviceUpdater
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
                            uint32_t maxTransferSize,
-                           UpdateManager* updateManager) :
-        eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
-        compImageInfos(compImageInfos), compInfo(compInfo),
-        maxTransferSize(maxTransferSize), updateManager(updateManager)
-    {}
+                           UpdateManager* updateManager);
+
+    /** @brief Get the progress of updating this device as percentage
+     *
+     * Goes through each component for this device and calculates
+     *   the percentage we are through the update process
+     *
+     * @return The percentage as an int [0-100], 0 is no progress, 100 is done.
+     */
+    uint8_t getProgress() const;
 
     /** @brief Start the firmware update flow for the FD
      *
@@ -252,6 +344,11 @@ class DeviceUpdater
      *
      */
     std::unique_ptr<sdbusplus::Timer> reqFwDataTimer;
+    /**
+     * @brief a list of UpdateProgress objects, one for each firmware component
+     *         applicable to this device
+     */
+    std::vector<UpdateProgress> progress;
 };
 
 } // namespace fw_update
