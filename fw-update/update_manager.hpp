@@ -1,10 +1,10 @@
 #pragma once
-
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
 #include "fw-update/update.hpp"
+
 #ifdef FW_UPDATE_INOTIFY_ENABLED
 #include "fw-update/watch.hpp"
 #endif
@@ -173,6 +173,12 @@ class UpdateManager
     size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
     std::unique_ptr<sdeventplus::source::Defer> updateDeferHandler;
+
+    /** @brief The last progress that was calculated. Used to avoid spamming
+     * dbus
+     *
+     */
+    uint8_t last_progress;
 };
 
 } // namespace fw_update
