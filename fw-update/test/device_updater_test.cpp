@@ -134,4 +134,46 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
         0xC4, 0x12, 0xD7, 0x3C, 0x65, 0x6C, 0xE1, 0x5A, 0x32, 0xAA, 0x0B, 0xA3,
         0xA2, 0x72, 0x33, 0x00, 0x3C, 0x7E, 0x28, 0x36, 0x10, 0x90, 0x38, 0xFB};
     EXPECT_EQ(response, compFirst512B);
+    EXPECT_EQ(deviceUpdater.getProgress(), 49);
+}
+
+TEST_F(DeviceUpdaterTest, FullUpdateProgress)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,
+                     0x00, 0x00, 0x02, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
+    auto response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_EQ(deviceUpdater.getProgress(), 49);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq2{0x8B, 0x05, 0x15, 0x00, 0x02, 0x00,
+                      0x00, 0x00, 0x02, 0x00, 0x00};
+    requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq2.data());
+    response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_EQ(deviceUpdater.getProgress(), 98);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> verifyComplete = {
+        0x8C, 0x05, 0x17, 0x0};
+    requestMsg = reinterpret_cast<const pldm_msg*>(verifyComplete.data());
+    response = deviceUpdater.verifyComplete(requestMsg, 1);
+
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_EQ(deviceUpdater.getProgress(), 99);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> applyComplete = {
+        0x8D, 0x05, 0x18, 0x0, 0x0, 0x0};
+    requestMsg = reinterpret_cast<const pldm_msg*>(applyComplete.data());
+    response = deviceUpdater.applyComplete(requestMsg, 3);
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }

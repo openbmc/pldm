@@ -17,6 +17,97 @@ namespace pldm
 namespace fw_update
 {
 
+static constexpr uint8_t componentXferProgressPercent = 98;
+static constexpr uint8_t componentVerifyProgressPercent = 99;
+static constexpr uint8_t componentApplyProgressPercent = 100;
+
+UpdateProgress::UpdateProgress(uint32_t totalSize, mctp_eid_t eid) :
+    progress{}, eid{eid}, totalSize{totalSize}, totalUpdated{},
+    currentState{state::Update}
+{}
+
+uint32_t UpdateProgress::getTotalSize() const
+{
+    return totalSize;
+}
+uint8_t UpdateProgress::getProgress() const
+{
+    return progress;
+}
+
+bool UpdateProgress::updateState(state newState)
+{
+    switch (newState)
+    {
+        case state::Update:
+            break;
+        case state::Verify:
+            progress = componentVerifyProgressPercent;
+            break;
+        case state::Apply:
+            progress = componentApplyProgressPercent;
+            break;
+        default:
+            return false;
+    };
+    return true;
+}
+
+bool UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
+{
+    if (currentState != state::Update)
+    {
+        error("invalid state when updating progress: eid {EID}", "EID", eid);
+        return false;
+    }
+
+    if (amountUpdated > totalSize)
+    {
+        error("invalid size when updating progress: eid {EID}", "EID", eid);
+        return false;
+    }
+
+    if (amountUpdated + totalUpdated > totalSize)
+    {
+        error("invalid total size when updating progress: eid {EID}", "EID",
+              eid);
+        return false;
+    }
+
+    if (totalSize == 0)
+    {
+        error("invalid package size when updating progress: eid {EID}", "EID",
+              eid);
+        return false;
+    }
+
+    totalUpdated += amountUpdated;
+    progress = static_cast<uint8_t>(std::floor(
+        1.0 * componentXferProgressPercent * totalUpdated / totalSize));
+    return true;
+}
+
+DeviceUpdater::DeviceUpdater(
+    mctp_eid_t eid, std::istream& package,
+    const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+    const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
+    uint32_t maxTransferSize, UpdateManager* updateManager) :
+    eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
+    compImageInfos(compImageInfos), compInfo(compInfo),
+    maxTransferSize(maxTransferSize), updateManager(updateManager)
+{
+    const auto& applicableComponents =
+        std::get<ApplicableComponents>(fwDeviceIDRecord);
+    // create as many progress objects as there are components
+    // and initialize them with the size of each component
+    for (const auto& applicableComponent : applicableComponents)
+    {
+        const auto& componentSize =
+            std::get<6>(compImageInfos[applicableComponent]);
+        progress.emplace_back(componentSize, eid);
+    }
+}
+
 void DeviceUpdater::startFwUpdateFlow()
 {
     auto instanceId = updateManager->instanceIdDb.next(eid);
@@ -454,6 +545,17 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         padBytes = offset + length - compSize;
     }
 
+    if (componentIndex < progress.size())
+    {
+        // technically this should never happen, as its an invariant
+        // but check to prefer a failed fw update over a pldm crash
+        progress[componentIndex].reportFwUpdate(length);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateActivationProgress();
+        }
+    }
+
     response.resize(sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
     responseMsg = new (response.data()) pldm_msg;
     package.seekg(compOffset + offset);
@@ -594,7 +696,14 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     const auto& compVersion = std::get<7>(comp);
-
+    if (componentIndex < progress.size())
+    {
+        progress[componentIndex].updateState(UpdateProgress::state::Verify);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateActivationProgress();
+        }
+    }
     if (verifyResult == PLDM_FWUP_VERIFY_SUCCESS)
     {
         info(
@@ -664,24 +773,38 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' with '{COMPONENT_VERSION}' apply complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
-        updateManager->updateActivationProgress();
+        if (componentIndex < progress.size())
+        {
+            progress[componentIndex].updateState(UpdateProgress::state::Apply);
+            if (updateManager != nullptr)
+            {
+                updateManager->updateActivationProgress();
+            }
+        }
         if (componentIndex == applicableComponents.size() - 1)
         {
             componentIndex = 0;
             componentUpdateStatus.clear();
             componentUpdateStatus[componentIndex] = true;
-            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                updateManager->event,
-                std::bind(&DeviceUpdater::sendActivateFirmwareRequest, this));
+            if (updateManager != nullptr)
+            {
+                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                    updateManager->event,
+                    std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
+                              this));
+            }
         }
         else
         {
             componentIndex++;
             componentUpdateStatus[componentIndex] = true;
-            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                updateManager->event,
-                std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                          componentIndex));
+            if (updateManager != nullptr)
+            {
+                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                    updateManager->event,
+                    std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
+                              componentIndex));
+            }
         }
     }
     else
@@ -689,7 +812,10 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         error(
             "Failed to apply component endpoint ID '{EID}' and version '{COMPONENT_VERSION}', error - {ERROR}",
             "EID", eid, "COMPONENT_VERSION", compVersion, "ERROR", applyResult);
-        updateManager->updateDeviceCompletion(eid, false);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateDeviceCompletion(eid, false);
+        }
         componentUpdateStatus[componentIndex] = false;
         sendCancelUpdateComponentRequest();
     }
@@ -875,6 +1001,38 @@ void DeviceUpdater::cancelUpdateComponent(
                       componentIndex));
     }
     return;
+}
+
+uint8_t DeviceUpdater::getProgress() const
+{
+    if (progress.empty())
+    {
+        return 0;
+    }
+
+    const uint32_t totalSize =
+        std::accumulate(progress.begin(), progress.end(), uint64_t{0},
+                        [](uint64_t sum, const UpdateProgress& c) {
+                            return sum + c.getTotalSize();
+                        });
+
+    if (totalSize == 0)
+    {
+        error("total component size is 0 on eid {EID}", "EID", eid);
+        return 0;
+    }
+
+    const uint64_t weightedProgress = std::accumulate(
+        progress.begin(), progress.end(), uint64_t{0},
+        [](uint64_t sum, const UpdateProgress& c) {
+            return sum +
+                   static_cast<uint64_t>(c.getProgress()) * c.getTotalSize();
+        });
+
+    const double percentage =
+        static_cast<double>(weightedProgress) / static_cast<double>(totalSize);
+
+    return static_cast<uint8_t>(std::floor(percentage));
 }
 
 } // namespace fw_update
