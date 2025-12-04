@@ -241,6 +241,7 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
         {
             if (!status)
             {
+                info("Firmware update failed on eid {EID}", "EID", eid);
                 activation->activation(
                     software::Activation::Activations::Failed);
                 return;
@@ -325,15 +326,27 @@ void UpdateManager::clearActivationInfo()
     parser.reset();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
-    compUpdateCompletedCount = 0;
 }
 
 void UpdateManager::updateActivationProgress()
 {
-    compUpdateCompletedCount++;
-    auto progressPercent = static_cast<uint8_t>(std::floor(
-        (100 * compUpdateCompletedCount) / totalNumComponentUpdates));
-    activationProgress->progress(progressPercent);
+    using mapEl = std::pair<const mctp_eid_t, std::unique_ptr<DeviceUpdater>>;
+    auto min = std::ranges::min_element(
+        deviceUpdaterMap, [](const mapEl& lhs, const mapEl& rhs) {
+            return lhs.second->getProgress() < rhs.second->getProgress();
+        });
+
+    if (min == deviceUpdaterMap.end())
+    {
+        return;
+    }
+
+    uint8_t progress = min->second->getProgress();
+    if (progress != lastProgress)
+    {
+        activationProgress->progress(progress);
+        lastProgress = progress;
+    }
 }
 
 } // namespace fw_update

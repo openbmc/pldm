@@ -1,10 +1,10 @@
 #pragma once
-
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
 #include "fw-update/update.hpp"
+
 #ifdef FW_UPDATE_INOTIFY_ENABLED
 #include "fw-update/watch.hpp"
 #endif
@@ -67,7 +67,7 @@ class UpdateManager
                                          "/xyz/openbmc_project/software/pldm",
                                          this)),
 #endif
-        totalNumComponentUpdates(0), compUpdateCompletedCount(0)
+        totalNumComponentUpdates(0)
     {}
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -165,14 +165,14 @@ class UpdateManager
      */
     size_t totalNumComponentUpdates;
 
-    /** @brief FW update package can contain updates for multiple firmware
-     *         devices and each device can have multiple components. Once
-     *         each component is updated (Transfer completed, Verified and
-     *         Applied) ActivationProgress is updated.
-     */
-    size_t compUpdateCompletedCount;
     decltype(std::chrono::steady_clock::now()) startTime;
     std::unique_ptr<sdeventplus::source::Defer> updateDeferHandler;
+
+    /** @brief The last progress that was calculated. Used to avoid spamming
+     * dbus
+     *
+     */
+    uint8_t lastProgress;
 };
 
 } // namespace fw_update
