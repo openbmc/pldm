@@ -330,10 +330,21 @@ void UpdateManager::clearActivationInfo()
 
 void UpdateManager::updateActivationProgress()
 {
-    compUpdateCompletedCount++;
-    auto progressPercent = static_cast<uint8_t>(std::floor(
-        (100 * compUpdateCompletedCount) / totalNumComponentUpdates));
-    activationProgress->progress(progressPercent);
+    auto min = std::ranges::min_element(
+        deviceUpdaterMap,
+        [](const std::pair<const mctp_eid_t, std::unique_ptr<DeviceUpdater>>&
+               lhs,
+           const std::pair<const mctp_eid_t, std::unique_ptr<DeviceUpdater>>&
+               rhs) {
+            return lhs.second->getProgress() < rhs.second->getProgress();
+        });
+
+    if (min == deviceUpdaterMap.end())
+    {
+        return;
+    }
+
+    activationProgress->progress(min->second->getProgress());
 }
 
 } // namespace fw_update
