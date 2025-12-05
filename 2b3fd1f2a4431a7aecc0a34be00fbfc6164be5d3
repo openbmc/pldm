@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f7d93a2_ec53fd1f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-05T01:40:00Z",
+      "side": 1,
+      "message": "In practice, this step curve is a bit jumpy, probably put Verify and Apply 98 and 100. With large disparities between total components, this pretty much jumps between 67 and 100 faster than you can get a redfish call in from bmcweb\u0027s perspective.",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134bfc65_d2447648",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-05T01:40:00Z",
+      "side": 1,
+      "message": "look into just making one UpdateProgress per device and basing it off the total component length, when the last component is in verify and apply, finish off the percentage. This is a bit complicated.",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d004ac65_968f6dba",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 2
