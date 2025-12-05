@@ -369,6 +369,7 @@ exec::task<int> SensorManager::getSensorReading(
             break;
         case PLDM_SENSOR_DISABLED:
             sensor->updateReading(false, true, value);
+            co_await handleSetNumericSensorEnable(tid, sensorId);
             co_return completionCode;
         case PLDM_SENSOR_FAILED:
             sensor->updateReading(true, false, value);
@@ -406,6 +407,98 @@ exec::task<int> SensorManager::getSensorReading(
 
     sensor->updateReading(true, true, value);
     co_return completionCode;
+}
+
+exec::task<int> SensorManager::setNumericSensorEnable(
+    pldm_tid_t tid, SensorID sensorId, uint8_t sensorOperationalState,
+    uint8_t sensorEventMessageEnable)
+{
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_SET_NUMERIC_SENSOR_ENABLE_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    auto rc = encode_set_numeric_sensor_enable_req(
+        0, sensorId, sensorOperationalState, sensorEventMessageEnable,
+        requestMsg);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request SetNumericSensorEnable for terminus ID {TID}, sensor ID {SENSOR}, error {RC}",
+            "TID", tid, "SENSOR", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send SetNumericSensorEnable message for terminus {TID}, sensor ID {SENSOR}, error {RC}",
+            "TID", tid, "SENSOR", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    rc = decode_set_numeric_sensor_enable_resp(responseMsg, responseLen,
+                                               &completionCode);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response SetNumericSensorEnable for terminus ID {TID}, sensor ID {SENSOR}, error {RC}",
+            "TID", tid, "SENSOR", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : SetNumericSensorEnable for terminus ID {TID}, sensor ID {SENSOR}, complete code {CC}.",
+            "TID", tid, "SENSOR", sensorId, "CC", completionCode);
+        co_return completionCode;
+    }
+
+    co_return completionCode;
+}
+
+exec::task<void> SensorManager::handleSetNumericSensorEnable(pldm_tid_t tid,
+                                                             SensorID sensorId)
+{
+    if (!termini.contains(tid))
+    {
+        lg2::error("Terminus {TID} not found", "TID", tid);
+        co_return;
+    }
+
+    auto& terminus = termini[tid];
+    if (!terminus)
+    {
+        lg2::error("Terminus {TID} has invalid terminus object", "TID", tid);
+        co_return;
+    }
+
+    // Check if terminus supports SetNumericSensorEnable command
+    if (!terminus->doesSupportCommand(PLDM_PLATFORM,
+                                      PLDM_SET_NUMERIC_SENSOR_ENABLE))
+    {
+        lg2::error(
+            "Terminus {TID} does not support SetNumericSensorEnable command",
+            "TID", tid);
+        co_return;
+    }
+
+    // Call the lower-level function to enable the specific sensor
+    auto rc = co_await setNumericSensorEnable(
+        tid, sensorId, PLDM_SENSOR_ENABLED, PLDM_EVENT_MESSAGE_NO_CHANGE);
+
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to enable numeric sensor {SENSOR} for terminus {TID}, error {RC}",
+            "SENSOR", sensorId, "TID", tid, "RC", rc);
+    }
+
+    co_return;
 }
 
 } // namespace platform_mc
