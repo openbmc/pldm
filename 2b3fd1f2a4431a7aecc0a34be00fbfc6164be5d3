@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d58f26eb_9d100ff0",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-12-05T20:33:08Z",
+      "side": 1,
+      "message": "nit: magic number?",
+      "range": {
+        "startLine": 62,
+        "startChar": 40,
+        "endLine": 62,
+        "endChar": 44
+      },
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcb6df6f_50d3a3db",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-12-05T20:33:08Z",
+      "side": 1,
+      "message": "Type?",
+      "range": {
+        "startLine": 82,
+        "startChar": 21,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "134bfc65_d2447648",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 2
@@ -31,6 +77,46 @@
       "writtenOn": "2025-12-05T01:40:00Z",
       "side": 1,
       "message": "look into just making one UpdateProgress per device and basing it off the total component length, when the last component is in verify and apply, finish off the percentage. This is a bit complicated.",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "370de276_f65d5d26",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-12-05T20:33:08Z",
+      "side": 1,
+      "message": "nit, consistently put in cpp or hpp, don\u0027t split.",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e7e292e_a8c019f0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-12-05T20:33:08Z",
+      "side": 1,
+      "message": "nit, using above could make this easier to read.",
+      "range": {
+        "startLine": 335,
+        "startChar": 11,
+        "endLine": 335,
+        "endChar": 76
+      },
       "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
