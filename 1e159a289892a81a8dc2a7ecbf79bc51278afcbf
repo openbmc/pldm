@@ -1,0 +1,303 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26ddb92e_58ff4348",
+        "filename": "common/types.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "this is added back at a different place without a change.",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 32
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60dbc048_d181b22f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "replace struct stat sb with std::filesystem::file_size , this could simply a lot of things below.",
+      "range": {
+        "startLine": 973,
+        "startChar": 3,
+        "endLine": 973,
+        "endChar": 19
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86f0f2fe_70c5d3c4",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "Right now, the user may believe they mapped the requested size, but you truncate.I think it\u0027s better to use exactly user-provided size and let mmap fail.",
+      "range": {
+        "startLine": 987,
+        "startChar": 7,
+        "endLine": 988,
+        "endChar": 5
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b49082a6_fafa7a21",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "consider using `std::filesystem::file_size()`",
+      "range": {
+        "startLine": 1022,
+        "startChar": 7,
+        "endLine": 1022,
+        "endChar": 23
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40022da_013fe6c2",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "shoudn\u0027t this also be system_catergory() ?",
+      "range": {
+        "startLine": 1029,
+        "startChar": 53,
+        "endLine": 1029,
+        "endChar": 69
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fe6aa15_6892f26d",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "may be using std::clamp is much better and readable ?",
+      "range": {
+        "startLine": 1041,
+        "startChar": 11,
+        "endLine": 1041,
+        "endChar": 76
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "205b8b18_6200b926",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "can we add a comment here for better understanding on \"if the passed size is larger than the file size, you silently clamp it to file size — but mmap will succeed only up to actual file length.\"",
+      "range": {
+        "startLine": 1033,
+        "startChar": 8,
+        "endLine": 1046,
+        "endChar": 9
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36bbbf48_62a40d1e",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "isn\u0027t this redundant ? data_ is already set to nullptr on failures right ?",
+      "range": {
+        "startLine": 1076,
+        "startChar": 17,
+        "endLine": 1076,
+        "endChar": 36
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f20985e3_e8e0115f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "not a true RAII if we have missing deleted copy/move operations",
+      "range": {
+        "startLine": 760,
+        "startChar": 0,
+        "endLine": 760,
+        "endChar": 17
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9721e69_92e0bf8b",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "doesn\u0027t this return a mutable span even when the underlying mmap is read only ? allowing users to write through the span and trigger a segmentation fault ?",
+      "range": {
+        "startLine": 818,
+        "startChar": 17,
+        "endLine": 818,
+        "endChar": 26
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97d82a97_a6b49cc7",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "isn\u0027t this defeating the purpose ? \n\ndata_ contains raw bytes from the file. You do not want to construct T into that memory do you ? we should reinterpret the memory as an array of T right ? This seems to construct a T object at the beginning of the mmap buffer, overwriting bytes in the mapped file.",
+      "range": {
+        "startLine": 825,
+        "startChar": 5,
+        "endLine": 825,
+        "endChar": 31
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80cce9ad_f7015206",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "doesn\u0027t this produce a span\u003cT\u003e that pretends to cover many T objects, but only the first one is validly constructed.",
+      "range": {
+        "startLine": 826,
+        "startChar": 8,
+        "endLine": 826,
+        "endChar": 22
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc5a0368_e16362f2",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-07T02:50:10Z",
+      "side": 1,
+      "message": "we have similar problems as above here as well.",
+      "range": {
+        "startLine": 844,
+        "startChar": 8,
+        "endLine": 847,
+        "endChar": 34
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
