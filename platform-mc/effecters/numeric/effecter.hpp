@@ -124,6 +124,12 @@ class NumericEffecter
      */
     void setEffecterUnit(uint8_t baseUnit);
 
+    /** @brief Set effecter interface based on baseUnit
+     *
+     *  @param[in] baseUnit - The PLDM defined baseUnit enum
+     */
+    void setEffecterInterface(uint8_t baseUnit);
+
     /** @brief Convert raw value to effecter unit value
      *  Raw value is the value stored in the PDR.
      *  Conversion: effecterUnit = raw * resolution + offset
