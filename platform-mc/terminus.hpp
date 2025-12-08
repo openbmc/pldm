@@ -2,7 +2,7 @@
 
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
-#include "numeric_effecter.hpp"
+#include "effecters/numeric/effecter.hpp"
 #include "numeric_sensor.hpp"
 #include "requester/handler.hpp"
 

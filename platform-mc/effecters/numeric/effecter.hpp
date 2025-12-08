@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/types.hpp"
-#include "platform-mc/numeric_effecter_dbus_interface.hpp"
+#include "platform-mc/effecters/numeric/dbus_intf.hpp"
 
 #include <libpldm/platform.h>
 
@@ -122,6 +122,12 @@ class NumericEffecter
      *  @param[in] baseUnit - The PLDM defined baseUnit enum
      */
     void setEffecterUnit(uint8_t baseUnit);
+
+    /** @brief Set effecter interface based on baseUnit
+     *
+     *  @param[in] baseUnit - The PLDM defined baseUnit enum
+     */
+    void setEffecterInterface(uint8_t baseUnit);
 
     /** @brief Convert raw value to effecter unit value
      *  Raw value is the value stored in the PDR.
