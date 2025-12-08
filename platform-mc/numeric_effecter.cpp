@@ -3,6 +3,7 @@
 #include "libpldm/platform.h"
 
 #include "common/utils.hpp"
+#include "platform-mc/numeric_effecter_power_cap_dbus_interface.hpp"
 #include "platform-mc/terminus_manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -47,7 +48,34 @@ static inline double getEffecterDataValue(uint8_t effecter_data_size,
 void NumericEffecter::setEffecterUnit(uint8_t baseUnit)
 {
     this->baseUnit = baseUnit;
-    effecterNameSpace = "/xyz/openbmc_project/control/";
+    switch (baseUnit)
+    {
+        case PLDM_SENSOR_UNIT_WATTS:
+            effecterNameSpace = "/xyz/openbmc_project/control/power/";
+            try
+            {
+                auto& bus = pldm::utils::DBusHandler::getBus();
+
+                // Get min/max values in base units (watts)
+                double maxValue = rawToBase(getEffecterDataValue(
+                    pdr->effecter_data_size, pdr->max_settable));
+                double minValue = rawToBase(getEffecterDataValue(
+                    pdr->effecter_data_size, pdr->min_settable));
+
+                registerInterface(std::make_unique<NumericEffecterPowerCapIntf>(
+                    *this, bus, path, minValue, maxValue));
+
+                lg2::info("Registered power cap handler for effecter {NAME}",
+                          "NAME", name);
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error(
+                    "Failed to register power cap handler for {NAME}: {ERROR}",
+                    "NAME", name, "ERROR", e.what());
+            }
+            break;
+    }
 }
 
 void NumericEffecter::registerInterface(
