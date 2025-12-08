@@ -287,6 +287,7 @@ executable(
     'platform-mc/oem_plugin_manager.cpp',
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
+    'platform-mc/numeric_effecter_power_cap_handler.cpp',
     oem_files,
     'requester/mctp_endpoint_discovery.cpp',
     implicit_include_directories: false,
