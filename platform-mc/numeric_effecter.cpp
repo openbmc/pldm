@@ -23,6 +23,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <cmath>
 #include <limits>
 #include <regex>
 
@@ -63,6 +64,53 @@ void NumericEffecter::setEffecterUnit(uint8_t baseUnit)
 {
     this->baseUnit = baseUnit;
     effecterNameSpace = "/xyz/openbmc_project/control/";
+}
+
+void NumericEffecter::registerHandler(
+    std::unique_ptr<NumericEffecterDbusHandler> handler)
+{
+    if (handler)
+    {
+        handlers.push_back(std::move(handler));
+    }
+}
+
+double NumericEffecter::rawToUnit(double value)
+{
+    double convertedValue = value;
+    convertedValue *= std::isnan(resolution) ? 1 : resolution;
+    convertedValue += std::isnan(offset) ? 0 : offset;
+
+    return convertedValue;
+}
+
+double NumericEffecter::unitToRaw(double value)
+{
+    if (resolution == 0)
+    {
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+    double convertedValue = value;
+    convertedValue -= std::isnan(offset) ? 0 : offset;
+    convertedValue /= std::isnan(resolution) ? 1 : resolution;
+
+    return convertedValue;
+}
+
+double NumericEffecter::unitToBase(double value)
+{
+    double convertedValue = value;
+    convertedValue *= std::pow(10, unitModifier);
+
+    return convertedValue;
+}
+
+double NumericEffecter::baseToUnit(double value)
+{
+    double convertedValue = value;
+    convertedValue *= std::pow(10, -unitModifier);
+
+    return convertedValue;
 }
 
 NumericEffecter::NumericEffecter(
@@ -191,6 +239,25 @@ void NumericEffecter::updateValue(pldm_effecter_oper_state effecterOperState,
     {
         operationalStatusIntf->functional(functional);
     }
+
+    // Notify all registered handlers of the value change
+    for (auto& handler : handlers)
+    {
+        if (handler)
+        {
+            try
+            {
+                handler->handleValueChange(*this, effecterOperState,
+                                           rawToBase(pendingValue),
+                                           rawToBase(presentValue));
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error("Exception in effecter handler for {NAME}: {ERROR}",
+                           "NAME", effecterName, "ERROR", e.what());
+            }
+        }
+    }
 }
 
 void NumericEffecter::handleErrGetNumericEffecterValue()
@@ -203,6 +270,24 @@ void NumericEffecter::handleErrGetNumericEffecterValue()
     if (operationalStatusIntf)
     {
         operationalStatusIntf->functional(false);
+    }
+
+    // Notify all registered handlers of the error
+    for (auto& handler : handlers)
+    {
+        if (handler)
+        {
+            try
+            {
+                handler->handleError(*this);
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error(
+                    "Exception in effecter error handler for {NAME}: {ERROR}",
+                    "NAME", effecterName, "ERROR", e.what());
+            }
+        }
     }
 }
 
