@@ -1,6 +1,7 @@
 #include "terminus.hpp"
 
 #include "dbus_impl_fru.hpp"
+#include "manager.hpp"
 #include "terminus_manager.hpp"
 
 #include <libpldm/platform.h>
@@ -656,6 +657,13 @@ void Terminus::addNumericEffecter(
         auto effecter = std::make_shared<NumericEffecter>(
             tid, false, pdr, effecterName, inventoryPath, terminusManager);
         lg2::info("Created NumericEffecter {NAME}", "NAME", effecterName);
+
+        // Notify all registered OEM plugins
+        if (auto* mgr = terminusManager.getManager())
+        {
+            mgr->getPluginManager().invokeEffecterCreated(effecter, pdr);
+        }
+
         numericEffecters.emplace_back(effecter);
     }
     catch (const std::exception& e)

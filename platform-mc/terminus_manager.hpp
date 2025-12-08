@@ -181,6 +181,15 @@ class TerminusManager
     std::optional<mctp_eid_t> getActiveEidByName(
         const std::string& terminusName);
 
+    /** @brief Get the Manager instance
+     *
+     *  @return Manager* - Pointer to the Manager
+     */
+    Manager* getManager()
+    {
+        return manager;
+    }
+
   private:
     /** @brief Find the terminus object pointer in termini list.
      *

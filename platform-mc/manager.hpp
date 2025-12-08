@@ -3,6 +3,7 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "event_manager.hpp"
+#include "oem_plugin_manager.hpp"
 #include "platform_manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
@@ -266,6 +267,17 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return terminusManager.getActiveEidByName(terminusName);
     }
 
+    /** @brief Get the plugin manager
+     *
+     *  Provides access to the plugin manager for registering OEM plugins.
+     *
+     *  @return PluginManager& - Reference to the plugin manager
+     */
+    OemPluginManager& getPluginManager()
+    {
+        return pluginManager;
+    }
+
   private:
     /** @brief List of discovered termini */
     TerminiMapper termini{};
@@ -284,6 +296,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     /** @brief map of PLDM event type to EventHandlers */
     PollHandlers pollHandlers;
+
+    /** @brief Plugin manager for OEM platform plugins */
+    OemPluginManager pluginManager;
 };
 } // namespace platform_mc
 } // namespace pldm
