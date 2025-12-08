@@ -11,6 +11,10 @@
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
 
+#ifdef OEM_NVIDIA
+#include "oem/nvidia/platform-mc/nvidia_oem_platform_plugin.hpp"
+#endif
+
 #include <err.h>
 #include <getopt.h>
 #include <libpldm/base.h>
@@ -224,6 +228,13 @@ int main(int argc, char** argv)
 
     std::unique_ptr<platform_mc::Manager> platformManager =
         std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
+
+#ifdef OEM_NVIDIA
+    // Register NVIDIA OEM platform plugin
+    platformManager->getPluginManager().registerPlugin(
+        std::make_unique<pldm::platform_mc::nvidia::NvidiaOemPlatformPlugin>());
+    info("Registered NVIDIA OEM platform plugin");
+#endif
 
     std::unique_ptr<pldm::host_effecters::HostEffecterParser>
         hostEffecterParser =
