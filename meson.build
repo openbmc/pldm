@@ -290,6 +290,7 @@ executable(
     'platform-mc/effecters/numeric/effecter.cpp',
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
+    'platform-mc/effecters/numeric/power_cap_dbus_intf.cpp',
     oem_files,
     'requester/mctp_endpoint_discovery.cpp',
     implicit_include_directories: false,
