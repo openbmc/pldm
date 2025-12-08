@@ -3,6 +3,7 @@
 #include "libpldm/platform.h"
 
 #include "common/utils.hpp"
+#include "platform-mc/effecters/numeric/power_cap_dbus_intf.hpp"
 #include "platform-mc/terminus_manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -17,10 +18,77 @@ namespace pldm
 namespace platform_mc
 {
 
+static inline double getEffecterDataValue(uint8_t effecter_data_size,
+                                          union_effecter_data_size value)
+{
+    double ret = std::numeric_limits<double>::quiet_NaN();
+    switch (effecter_data_size)
+    {
+        case PLDM_EFFECTER_DATA_SIZE_UINT8:
+            ret = value.value_u8;
+            break;
+        case PLDM_EFFECTER_DATA_SIZE_SINT8:
+            ret = value.value_s8;
+            break;
+        case PLDM_EFFECTER_DATA_SIZE_UINT16:
+            ret = value.value_u16;
+            break;
+        case PLDM_EFFECTER_DATA_SIZE_SINT16:
+            ret = value.value_s16;
+            break;
+        case PLDM_EFFECTER_DATA_SIZE_UINT32:
+            ret = value.value_u32;
+            break;
+        case PLDM_EFFECTER_DATA_SIZE_SINT32:
+            ret = value.value_s32;
+            break;
+    }
+    return ret;
+}
+
 void NumericEffecter::setEffecterUnit(uint8_t baseUnit)
 {
     this->baseUnit = baseUnit;
-    effecterNameSpace = "/xyz/openbmc_project/controls/";
+    switch (baseUnit)
+    {
+        case PLDM_SENSOR_UNIT_WATTS:
+            effecterNameSpace = "/xyz/openbmc_project/controls/power/";
+            break;
+        default:
+            effecterNameSpace = "/xyz/openbmc_project/controls/";
+            break;
+    }
+}
+
+void NumericEffecter::setEffecterInterface(uint8_t baseUnit)
+{
+    switch (baseUnit)
+    {
+        case PLDM_SENSOR_UNIT_WATTS:
+            try
+            {
+                auto& bus = pldm::utils::DBusHandler::getBus();
+
+                // Get min/max values in base units (watts)
+                double maxValue = rawToBase(getEffecterDataValue(
+                    pdr->effecter_data_size, pdr->max_settable));
+                double minValue = rawToBase(getEffecterDataValue(
+                    pdr->effecter_data_size, pdr->min_settable));
+
+                registerInterface(std::make_unique<NumericEffecterPowerCapIntf>(
+                    *this, bus, path, minValue, maxValue));
+
+                lg2::info("Registered power cap handler for effecter {NAME}",
+                          "NAME", name);
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error(
+                    "Failed to register power cap handler for {NAME}: {ERROR}",
+                    "NAME", name, "ERROR", e.what());
+            }
+            break;
+    }
 }
 
 void NumericEffecter::registerInterface(
@@ -114,6 +182,8 @@ NumericEffecter::NumericEffecter(
     }
     associationDefinitionsIntf->associations(
         {{"chassis", reverseAssociation.c_str(), associationPath.c_str()}});
+
+    setEffecterInterface(pdr->base_unit);
 
     lg2::info("Created Numeric Effecter {NAME}.", "NAME", effecterName);
 }
