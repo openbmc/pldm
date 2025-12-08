@@ -17,6 +17,7 @@
 #pragma once
 
 #include "common/types.hpp"
+#include "platform-mc/numeric_effecter_dbus_handler.hpp"
 
 #include <libpldm/platform.h>
 
@@ -27,12 +28,16 @@
 #include <xyz/openbmc_project/State/Decorator/Availability/server.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
+#include <memory>
+#include <vector>
+
 namespace pldm
 {
 namespace platform_mc
 {
 
 class TerminusManager;
+class NumericEffecterDbusHandler;
 
 using SensorUnit = sdbusplus::xyz::openbmc_project::Sensor::server::Value::Unit;
 using Associations =
@@ -150,6 +155,67 @@ class NumericEffecter
      */
     void setEffecterUnit(uint8_t baseUnit);
 
+    /** @brief Convert raw value to effecter unit value
+     *  Raw value is the value stored in the PDR.
+     *  Conversion: effecterUnit = raw * resolution + offset
+     *
+     *  @param[in] value - raw value
+     *  @return double - converted effecter unit value
+     */
+    double rawToUnit(double value);
+
+    /** @brief Convert effecter unit value to raw value
+     *  Conversion: raw = (effecterUnit - offset) / resolution
+     *
+     *  @param[in] value - effecter unit value
+     *  @return double - converted raw value
+     */
+    double unitToRaw(double value);
+
+    /** @brief Convert effecter unit value to base unit value
+     *  Conversion: baseUnit = effecterUnit * 10^unitModifier
+     *
+     *  @param[in] value - effecter unit value
+     *  @return double - converted base unit value
+     */
+    double unitToBase(double value);
+
+    /** @brief Convert base unit value to effecter unit value
+     *  Conversion: effecterUnit = baseUnit * 10^(-unitModifier)
+     *
+     *  @param[in] value - base unit value
+     *  @return double - converted effecter unit value
+     */
+    double baseToUnit(double value);
+
+    /** @brief Convert raw value to base unit value
+     *  Convenience method: baseUnit = unitToBase(rawToUnit(raw))
+     *
+     *  @param[in] value - raw value
+     *  @return double - converted base unit value
+     */
+    inline double rawToBase(double value)
+    {
+        return unitToBase(rawToUnit(value));
+    }
+
+    /** @brief Convert base unit value to raw value
+     *  Convenience method: raw = unitToRaw(baseToUnit(baseUnit))
+     *
+     *  @param[in] value - base unit value
+     *  @return double - converted raw value
+     */
+    inline double baseToRaw(double value)
+    {
+        return unitToRaw(baseToUnit(value));
+    }
+
+    /** @brief Register a handler for effecter value changes
+     *
+     *  @param[in] handler - Unique pointer to the handler interface
+     */
+    void registerHandler(std::unique_ptr<NumericEffecterDbusHandler> handler);
+
     /** @brief Terminus ID which the effecter belongs to */
     pldm_tid_t tid;
 
@@ -199,6 +265,9 @@ class NumericEffecter
 
     /** @brief baseUnit of numeric effecter */
     uint8_t baseUnit;
+
+    /** @brief Registered handlers for value changes */
+    std::vector<std::unique_ptr<NumericEffecterDbusHandler>> handlers;
 };
 } // namespace platform_mc
 } // namespace pldm
