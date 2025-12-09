@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97784b39_057e321a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-12-09T09:20:00Z",
+      "side": 1,
+      "message": "We should not be adding IDE-specific entries to gitignore files anymore. git has a way for users to add a global ignore list and that’s what they should be using for user-specific settings like IDE ignore lists.",
+      "revId": "1e58365ab947ed4e93d98117c4268d8952d14434",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
