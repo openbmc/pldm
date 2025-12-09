@@ -16,6 +16,24 @@
       "message": "Build failure seems to be unrelated to this change.",
       "revId": "a74a7594c76685a91ced5c93edcb01f5727be621",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1841139d_39f2ef93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-09T04:50:59Z",
+      "side": 1,
+      "message": "it is related to the commit message - please fix it.\n\n```\n    Running commit_gitlint (0.19.1)\n1: T3 Title has trailing punctuation (.): \".gitignore: Adds .idea to ignorefile.\"\n    commit_gitlint - FAILED\n```",
+      "parentUuid": "9561e4aa_ca9ebc46",
+      "revId": "a74a7594c76685a91ced5c93edcb01f5727be621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
