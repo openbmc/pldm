@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a46c35d_ac9fa662",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-09T04:56:57Z",
+      "side": 1,
+      "message": "In the context of upstream, Backward compatibility is not relevant Since this code doesn\u0027t exist before. So reward it in such a way that adding OEM CPER event class support for supporting the Nvidia existing platforms Or sin similar lines.",
+      "range": {
+        "startLine": 10,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 19
+      },
+      "revId": "eaa0b59c6f411422e5494de5d10912973cbaf8d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5268e40d_06b942b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-09T04:56:57Z",
+      "side": 1,
+      "message": "NIT: This may be over written and not required.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 57
+      },
+      "revId": "eaa0b59c6f411422e5494de5d10912973cbaf8d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67b4b7d2_9feef668",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-09T04:56:57Z",
+      "side": 1,
+      "message": "Add unit test section",
+      "revId": "eaa0b59c6f411422e5494de5d10912973cbaf8d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d53cc65_5424b839",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-09T04:56:57Z",
+      "side": 1,
+      "message": "Few minor comments. Please fix it.",
+      "revId": "eaa0b59c6f411422e5494de5d10912973cbaf8d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc6b869_caed99b9",
+        "filename": "oem/nvidia/oem_nvidia.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-09T04:56:57Z",
+      "side": 1,
+      "message": "mctp_eid is not there in actual caller - Remove this",
+      "revId": "eaa0b59c6f411422e5494de5d10912973cbaf8d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6af9828f_f6934870",
+        "filename": "oem/nvidia/oem_nvidia.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-09T04:56:57Z",
+      "side": 1,
+      "message": "Multiple place this has been used, Consider defining the constexpr insdie class to avoid magic number.",
+      "range": {
+        "startLine": 80,
+        "startChar": 11,
+        "endLine": 80,
+        "endChar": 16
+      },
+      "revId": "eaa0b59c6f411422e5494de5d10912973cbaf8d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

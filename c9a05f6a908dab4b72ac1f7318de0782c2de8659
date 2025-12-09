@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75205a55_3673fea1",
+        "filename": "oem/nvidia/meson.build",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-09T04:56:57Z",
+      "side": 1,
+      "message": "Is this file needed? Since There is only header file which is included in regular file, We don\u0027t need meson.build file. This can be added when needed.",
+      "revId": "c9a05f6a908dab4b72ac1f7318de0782c2de8659",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
