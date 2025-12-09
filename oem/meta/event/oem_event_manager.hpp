@@ -112,9 +112,9 @@ class OemEventManager
      *
      *  @return The hex string representation of the byte.
      */
-    inline auto to_hex_string(uint8_t value, size_t len = 2) const
+    inline auto to_hex_string(uint32_t value, size_t len = 2) const
     {
-        return std::format("{:02x}", value, len);
+        return std::format("{:0{}x}", value, len);
     }
 
     /** @brief Convert CPU, channel, and slot to a DIMM string.
