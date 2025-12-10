@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "432fc5a3_d818ac60",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2025-12-10T05:51:41Z",
+      "side": 1,
+      "message": "I\u0027ve made the changes thanks.",
+      "parentUuid": "d53a8b28_6acd1783",
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d45f6334_dc7c8702",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-09T16:40:34Z",
       "side": 1,
       "message": "Looks like a typo.\nlg2::error(",
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "239302c6_8b2ae335",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2025-12-10T05:51:41Z",
+      "side": 1,
+      "message": "Made the changes thanks",
+      "parentUuid": "d45f6334_dc7c8702",
       "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
