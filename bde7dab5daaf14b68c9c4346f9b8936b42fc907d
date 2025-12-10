@@ -3,6 +3,80 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4db6d8ee_94d51da1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-10T14:24:34Z",
+      "side": 1,
+      "message": "Why? On what business logic we are enabling it? This is design flaw to blindly enable all sensors - Please check my other comment.\n\nImplementing SetNumericSensorEnable API as per spec seems ok but caller should have some business logic.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eda3e8bb_d5b99d6c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-10T14:24:34Z",
+      "side": 1,
+      "message": "Missing unit test update - Add them in sensor_manager_test.cpp",
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb08f7c4_f5540a9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-10T14:24:34Z",
+      "side": 1,
+      "message": "There seems to be some design flaw - needs work",
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27067f58_36f2ebc9",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-10T14:24:34Z",
+      "side": 1,
+      "message": "-1: Design flaw - Blindly enabling all disabled sensors of PLDM terminus is not correct. There be must be some business logic to enable disabled sensors. PLDM responder device might be intentionally disable some sensors being monitored and forcing those to enable without any conditions is not acceptable.",
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d53a8b28_6acd1783",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 2
@@ -38,6 +112,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da1caf3c_898ace00",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-10T14:24:34Z",
+      "side": 1,
+      "message": "Its \"completion code\" - Also change in other places too. Be consistent with logging pattern for easy debugging.",
+      "range": {
+        "startLine": 456,
+        "startChar": 87,
+        "endLine": 456,
+        "endChar": 99
+      },
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0679eeb_acf6f437",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-10T14:24:34Z",
+      "side": 1,
+      "message": "This function must return the error - There are many scenario\u0027s this operation can fail and which should be informed to called for handling it appropriately.",
+      "range": {
+        "startLine": 464,
+        "startChar": 11,
+        "endLine": 464,
+        "endChar": 15
+      },
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d45f6334_dc7c8702",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 2
@@ -67,6 +187,29 @@
       "side": 1,
       "message": "Made the changes thanks",
       "parentUuid": "d45f6334_dc7c8702",
+      "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64b001cd_c053739b",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-10T14:24:34Z",
+      "side": 1,
+      "message": "Why enabling numeric Sensor with No Event Support? We need to have conditions for enable/disable events.",
+      "range": {
+        "startLine": 492,
+        "startChar": 44,
+        "endLine": 492,
+        "endChar": 72
+      },
       "revId": "bde7dab5daaf14b68c9c4346f9b8936b42fc907d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
