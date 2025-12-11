@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df6d7873_f4e90517",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 101
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T02:55:20Z",
+      "side": 1,
+      "message": "I’ve completed both the targeted and multipart update tests. Please let me know if you need any additional information.",
+      "parentUuid": "c1fe1ee5_574e23da",
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26ddb92e_58ff4348",
