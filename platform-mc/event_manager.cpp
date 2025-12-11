@@ -60,6 +60,13 @@ int EventManager::handlePlatformEvent(
                                                  sensorDataLength);
             }
             case PLDM_STATE_SENSOR_STATE:
+            {
+                const uint8_t* sensorData = eventData + eventClassDataOffset;
+                size_t sensorDataLength = eventDataSize - eventClassDataOffset;
+                processStateSensorEvent(tid, sensorId, sensorData,
+                                        sensorDataLength);
+                return PLDM_SUCCESS;
+            }
             case PLDM_SENSOR_OP_STATE:
             default:
                 lg2::info(
@@ -638,6 +645,58 @@ exec::task<int> EventManager::pollForPlatformEventMessage(
     }
 
     co_return completionCode;
+}
+
+void EventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
+                                           const uint8_t* sensorData,
+                                           size_t sensorDataLength)
+{
+    uint8_t sensorOffset;
+    uint8_t eventState;
+    uint8_t previousEventState;
+    auto rc =
+        decode_state_sensor_data(sensorData, sensorDataLength, &sensorOffset,
+                                 &eventState, &previousEventState);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to decode state sensor event data for terminus ID {TID} sensor ID {SID}, error {RC}",
+            "TID", tid, "SID", sensorId, "RC", rc);
+        return;
+    }
+
+    lg2::info(
+        "State sensor event: TID={TID}, sensorId={SID}, offset={OFFSET}, eventState={ESTATE}, previousEventState={PESTATE}",
+        "TID", tid, "SID", sensorId, "OFFSET",
+        static_cast<unsigned int>(sensorOffset), "ESTATE",
+        static_cast<unsigned int>(eventState), "PESTATE",
+        static_cast<unsigned int>(previousEventState));
+
+    auto it = termini.find(tid);
+    if (it == termini.end())
+    {
+        lg2::error(
+            "Received state sensor event for unknown terminus ID {TID}, sensor ID {SID}",
+            "TID", tid, "SID", sensorId);
+        return;
+    }
+
+    auto& terminus = it->second;
+    auto sensorIterator = std::find_if(
+        terminus->stateSensors.begin(), terminus->stateSensors.end(),
+        [&sensorId](const auto& sensor) {
+            return sensor->getSensorId() == sensorId;
+        });
+
+    if (sensorIterator == terminus->stateSensors.end())
+    {
+        lg2::error("State sensor ID {SID} not found for terminus ID {TID}",
+                   "SID", sensorId, "TID", tid);
+        return;
+    }
+
+    (*sensorIterator)
+        ->handleSensorEvent(sensorOffset, eventState, previousEventState);
 }
 
 } // namespace platform_mc

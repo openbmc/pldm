@@ -426,5 +426,112 @@ void StateSensor::emitStateSensorEvent(uint8_t sensorOffset, uint8_t eventState,
     }
 }
 
+void StateSensor::handleSensorEvent(uint8_t sensorOffset, uint8_t eventState,
+                                    uint8_t previousEventState)
+{
+    if (sensorOffset >= compositeSensorCount)
+    {
+        lg2::error(
+            "Invalid sensor offset {OFFSET} for sensor {NAME} (max offset: {MAX})",
+            "OFFSET", sensorOffset, "NAME", sensorName, "MAX",
+            compositeSensorCount - 1);
+        return;
+    }
+
+    // Update current and previous states
+    previousStates[sensorOffset] = previousEventState;
+    currentStates[sensorOffset] = eventState;
+
+    // Update StateSet object if it exists
+    if (sensorOffset < stateSets.size() && stateSets[sensorOffset])
+    {
+        auto& stateSet = stateSets[sensorOffset];
+        stateSet->setValue(eventState);
+
+        // Get state type name from the StateSet
+        std::string stateTypeName = stateSet->getStateTypeName();
+
+        // Get event data (messageID, message, level, resolution,
+        // additionalData)
+        auto [messageID, message, level, resolution,
+              additionalData] = stateSet->getEventData();
+
+        if (!messageID.empty())
+        {
+            lg2::info(
+                "State sensor {NAME} offset {OFFSET} type {TYPE}: {PREV_NAME} -> {CURR_NAME}",
+                "NAME", sensorName, "OFFSET", sensorOffset, "TYPE",
+                stateTypeName, "PREV_NAME",
+                (previousEventState == PLDM_SENSOR_UNKNOWN
+                     ? "Unknown"
+                     : stateSet->getStateValueName()),
+                "CURR_NAME", stateSet->getStateValueName());
+
+            // Create log entry with sensor name and state type as first
+            // argument
+            std::string arg1 = sensorName + " " + stateTypeName;
+            createLogEntry(messageID, arg1, message, resolution, level);
+        }
+        else
+        {
+            lg2::info(
+                "State sensor event for {NAME} offset {OFFSET} - no logging configured",
+                "NAME", sensorName, "OFFSET", sensorOffset);
+        }
+    }
+    else
+    {
+        lg2::info(
+            "State sensor {NAME} offset {OFFSET} changed from {PREV} to {CURR}",
+            "NAME", sensorName, "OFFSET", sensorOffset, "PREV",
+            previousEventState, "CURR", eventState);
+    }
+
+    // Emit state sensor event signal
+    emitStateSensorEvent(sensorOffset, eventState, previousEventState);
+}
+
+void StateSensor::createLogEntry(
+    const std::string& messageID, const std::string& sensorName,
+    const std::string& arg2, const std::string& resolution, Level level)
+{
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
+
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto service =
+            pldm::utils::DBusHandler().getService(logObjPath, logInterface);
+
+        // Convert level to string for D-Bus
+        auto severity =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                level);
+
+        // Prepare additional data for Redfish message
+        std::map<std::string, std::string> addData;
+        addData["REDFISH_MESSAGE_ID"] = messageID;
+        addData["REDFISH_MESSAGE_ARGS"] = sensorName + "," + arg2;
+        addData["xyz.openbmc_project.Logging.Entry.Resolution"] = resolution;
+
+        // Create the log entry
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "Create");
+        method.append(messageID, severity, addData);
+        bus.call_noreply(method);
+
+        lg2::info(
+            "Created log entry: messageID={MID}, severity={SEV}, args={ARGS}",
+            "MID", messageID, "SEV", severity, "ARGS", sensorName + "," + arg2);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error(
+            "Failed to create log entry for state sensor {NAME}: {ERROR}",
+            "NAME", sensorName, "ERROR", e);
+    }
+}
+
 } // namespace platform_mc
 } // namespace pldm
