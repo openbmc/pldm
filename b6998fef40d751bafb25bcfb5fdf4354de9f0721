@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aeec3f21_41b04df6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-11T20:45:37Z",
+      "side": 1,
+      "message": "Moved Effecters as sperate commit \u0026 addressed it. https://gerrit.openbmc.org/c/openbmc/pldm/+/85941",
+      "parentUuid": "57293e74_b217750e",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 18
+      },
+      "revId": "b6998fef40d751bafb25bcfb5fdf4354de9f0721",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cf8da55_903eba9d",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-10-31T10:20:42Z",
       "side": 1,
       "message": "I think you have not committed these changes yet. I can\u0027t see them in the code.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 60
+      },
+      "revId": "b6998fef40d751bafb25bcfb5fdf4354de9f0721",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3914160d_363be9ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-11T20:45:37Z",
+      "side": 1,
+      "message": "Same as above",
+      "parentUuid": "6cf8da55_903eba9d",
       "range": {
         "startLine": 25,
         "startChar": 0,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3652348f_f757b35d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1111,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-11T20:45:37Z",
+      "side": 1,
+      "message": "Agree, This existing code can be improved. Will see as separate patch.",
+      "parentUuid": "02a23b44_c635a5ab",
+      "revId": "b6998fef40d751bafb25bcfb5fdf4354de9f0721",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57787dcf_c71699b7",
@@ -77,6 +143,24 @@
       "writtenOn": "2025-10-31T10:20:42Z",
       "side": 1,
       "message": "I think you forget to support 64b here? As you already update `union_effecter_data_size` with the new 64b type in the libpldm patch. Please note that you can\u0027t cast 64b to \u003cunsigned\u003e because it only works for 32b. Please use static_cast instead.",
+      "revId": "b6998fef40d751bafb25bcfb5fdf4354de9f0721",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85a12960_26633542",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1115,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-11T20:45:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57787dcf_c71699b7",
       "revId": "b6998fef40d751bafb25bcfb5fdf4354de9f0721",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
