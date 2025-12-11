@@ -218,13 +218,9 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
                                             const uint8_t* sensorData,
                                             size_t sensorDataLength)
 {
-    uint8_t eventState = 0;
-    uint8_t previousEventState = 0;
-    uint8_t sensorDataSize = 0;
-    uint32_t presentReading;
-    auto rc = decode_numeric_sensor_data(
-        sensorData, sensorDataLength, &eventState, &previousEventState,
-        &sensorDataSize, &presentReading);
+    struct pldm_numeric_sensor_event_data eventData;
+    auto rc = decode_numeric_sensor_event_data(sensorData, sensorDataLength,
+                                               &eventData);
     if (rc)
     {
         lg2::error(
@@ -233,11 +229,40 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         return rc;
     }
 
-    double value = static_cast<double>(presentReading);
+    double reading = 0.0;
+    switch (eventData.sensor_data_size)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            reading = static_cast<double>(eventData.present_reading.value_u8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            reading = static_cast<double>(eventData.present_reading.value_s8);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            reading = static_cast<double>(eventData.present_reading.value_u16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            reading = static_cast<double>(eventData.present_reading.value_s16);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            reading = static_cast<double>(eventData.present_reading.value_u32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            reading = static_cast<double>(eventData.present_reading.value_s32);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_UINT64:
+            reading = static_cast<double>(eventData.present_reading.value_u64);
+            break;
+        case PLDM_SENSOR_DATA_SIZE_SINT64:
+            reading = static_cast<double>(eventData.present_reading.value_s64);
+            break;
+        default:
+            break;
+    }
     lg2::error(
         "processNumericSensorEvent tid {TID}, sensorID {SID} value {VAL} previousState {PSTATE} eventState {ESTATE}",
-        "TID", tid, "SID", sensorId, "VAL", value, "PSTATE", previousEventState,
-        "ESTATE", eventState);
+        "TID", tid, "SID", sensorId, "VAL", reading, "PSTATE",
+        eventData.previous_event_state, "ESTATE", eventData.event_state);
 
     if (!termini.contains(tid) || !termini[tid])
     {
@@ -262,8 +287,9 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
             return sensor->triggerThresholdEvent(level, direction, rawValue,
                                                  newAlarm, assert);
         };
-    rc = triggerNumericSensorThresholdEvent(sensorHandler, previousEventState,
-                                            eventState, value);
+    rc = triggerNumericSensorThresholdEvent(
+        sensorHandler, eventData.previous_event_state, eventData.event_state,
+        reading);
     if (rc)
     {
         lg2::error(
