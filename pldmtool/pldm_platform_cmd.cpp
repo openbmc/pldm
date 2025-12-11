@@ -1111,6 +1111,22 @@ class GetPDR : public CommandInterface
                 output["maxSettable"] = unsigned(pdr->max_settable.value_s32);
                 output["minSettable"] = unsigned(pdr->min_settable.value_s32);
                 break;
+            case PLDM_EFFECTER_DATA_SIZE_UINT64:
+            {
+                uint64_t maxSettable = pdr->max_settable.value_u64;
+                uint64_t minSettable = pdr->min_settable.value_u64;
+                output["maxSettable"] = maxSettable;
+                output["minSettable"] = minSettable;
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_SINT64:
+            {
+                int64_t maxSettable = pdr->max_settable.value_s64;
+                int64_t minSettable = pdr->min_settable.value_s64;
+                output["maxSettable"] = maxSettable;
+                output["minSettable"] = minSettable;
+                break;
+            }
             default:
                 break;
         }
@@ -1169,6 +1185,34 @@ class GetPDR : public CommandInterface
                 output["ratedMax"] = unsigned(pdr->rated_max.value_f32);
                 output["ratedMin"] = unsigned(pdr->rated_min.value_f32);
                 break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT64:
+            {
+                uint64_t nominalValue = pdr->nominal_value.value_u64;
+                uint64_t normalMax = pdr->normal_max.value_u64;
+                uint64_t normalMin = pdr->normal_min.value_u64;
+                uint64_t ratedMax = pdr->rated_max.value_u64;
+                uint64_t ratedMin = pdr->rated_min.value_u64;
+                output["nominalValue"] = nominalValue;
+                output["normalMax"] = normalMax;
+                output["normalMin"] = normalMin;
+                output["ratedMax"] = ratedMax;
+                output["ratedMin"] = ratedMin;
+                break;
+            }
+            case PLDM_RANGE_FIELD_FORMAT_SINT64:
+            {
+                int64_t nominalValue = pdr->nominal_value.value_s64;
+                int64_t normalMax = pdr->normal_max.value_s64;
+                int64_t normalMin = pdr->normal_min.value_s64;
+                int64_t ratedMax = pdr->rated_max.value_s64;
+                int64_t ratedMin = pdr->rated_min.value_s64;
+                output["nominalValue"] = nominalValue;
+                output["normalMax"] = normalMax;
+                output["normalMin"] = normalMin;
+                output["ratedMax"] = ratedMax;
+                output["ratedMin"] = ratedMin;
+                break;
+            }
             default:
                 break;
         }
@@ -1840,7 +1884,7 @@ class SetNumericEffecterValue : public CommandInterface
         app->add_option("-s, --size", effecterDataSize,
                         "The bit width and format of the setting value for the "
                         "effecter. enum value: {uint8, sint8, uint16, sint16, "
-                        "uint32, sint32}\n")
+                        "uint32, sint32, uint64, sint64}\n")
             ->required();
         app->add_option("-d,--data", maxEffecterValue,
                         "The setting value of numeric effecter being "
@@ -1852,7 +1896,7 @@ class SetNumericEffecterValue : public CommandInterface
     {
         std::vector<uint8_t> requestMsg(
             sizeof(pldm_msg_hdr) +
-            PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 3);
+            PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 7);
 
         uint8_t* effecterValue = (uint8_t*)&maxEffecterValue;
 
@@ -1865,10 +1909,15 @@ class SetNumericEffecterValue : public CommandInterface
         {
             payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 1;
         }
-        if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
-            effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT32)
+        else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT32 ||
+                 effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT32)
         {
             payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 3;
+        }
+        else if (effecterDataSize == PLDM_EFFECTER_DATA_SIZE_UINT64 ||
+                 effecterDataSize == PLDM_EFFECTER_DATA_SIZE_SINT64)
+        {
+            payload_length = PLDM_SET_NUMERIC_EFFECTER_VALUE_MIN_REQ_BYTES + 7;
         }
         auto rc = encode_set_numeric_effecter_value_req(
             0, effecterId, effecterDataSize, effecterValue, request,
@@ -2272,12 +2321,12 @@ class GetNumericEffecterValue : public CommandInterface
         uint8_t completionCode = 0;
         uint8_t effecterDataSize = 0;
         uint8_t effecterOperationalState = 0;
-        std::array<uint8_t, sizeof(uint32_t)>
-            pendingValue{}; // maximum size for the pending Value is uint32
-                            // according to spec DSP0248
-        std::array<uint8_t, sizeof(uint32_t)>
-            presentValue{}; // maximum size for the present Value is uint32
-                            // according to spec DSP0248
+        std::array<uint8_t, sizeof(uint64_t)>
+            pendingValue{}; // maximum size for the pending Value is uint64
+                            // according to spec DSP0248 v1.3.0
+        std::array<uint8_t, sizeof(uint64_t)>
+            presentValue{}; // maximum size for the present Value is uint64
+                            // according to spec DSP0248 v1.3.0
 
         auto rc = decode_get_numeric_effecter_value_resp(
             responsePtr, payloadLength, &completionCode, &effecterDataSize,
@@ -2345,6 +2394,22 @@ class GetNumericEffecterValue : public CommandInterface
                     *(reinterpret_cast<int32_t*>(pendingValue.data()));
                 output["presentValue"] =
                     *(reinterpret_cast<int32_t*>(presentValue.data()));
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_UINT64:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<uint64_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<uint64_t*>(presentValue.data()));
+                break;
+            }
+            case PLDM_EFFECTER_DATA_SIZE_SINT64:
+            {
+                output["pendingValue"] =
+                    *(reinterpret_cast<int64_t*>(pendingValue.data()));
+                output["presentValue"] =
+                    *(reinterpret_cast<int64_t*>(presentValue.data()));
                 break;
             }
             default:
