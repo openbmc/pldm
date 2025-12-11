@@ -136,6 +136,15 @@ class StateSensor
      */
     bool isStateSupported(uint8_t sensorOffset, uint8_t state) const;
 
+    /** @brief Handle state sensor event from platform event message
+     *
+     * @param[in] sensorOffset - offset within composite sensor
+     * @param[in] eventState - current event state
+     * @param[in] previousEventState - previous event state
+     */
+    void handleSensorEvent(uint8_t sensorOffset, uint8_t eventState,
+                          uint8_t previousEventState);
+
     /** @brief Get StateSet object for a sensor offset
      *
      * @param[in] sensorOffset - offset within composite sensor
@@ -174,6 +183,18 @@ class StateSensor
         const std::string& associationPath, const std::string& sensorName,
         const uint16_t entityType, const uint16_t entityInstanceNum,
         const uint16_t containerId);
+
+    /** @brief Create a log entry for state sensor event
+     *
+     * @param[in] messageID - Redfish message ID
+     * @param[in] sensorName - Name of the sensor
+     * @param[in] arg2 - Second message argument
+     * @param[in] resolution - Resolution text
+     * @param[in] level - Log severity level
+     */
+    void createLogEntry(const std::string& messageID,
+                       const std::string& sensorName, const std::string& arg2,
+                       const std::string& resolution, Level level);
 
     /** @brief Emit state sensor event signal for state changes
      *
