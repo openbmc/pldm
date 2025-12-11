@@ -1920,6 +1920,16 @@ class GetPDR : public CommandInterface
                 output["maxReadable"] = pdr.max_readable.value_s32;
                 output["minReadable"] = pdr.min_readable.value_s32;
                 break;
+            case PLDM_SENSOR_DATA_SIZE_UINT64:
+                output["hysteresis"] = pdr.hysteresis.value_u64;
+                output["maxReadable"] = pdr.max_readable.value_u64;
+                output["minReadable"] = pdr.min_readable.value_u64;
+                break;
+            case PLDM_SENSOR_DATA_SIZE_SINT64:
+                output["hysteresis"] = pdr.hysteresis.value_s64;
+                output["maxReadable"] = pdr.max_readable.value_s64;
+                output["minReadable"] = pdr.min_readable.value_s64;
+                break;
             default:
                 break;
         }
@@ -2010,6 +2020,28 @@ class GetPDR : public CommandInterface
                 output["criticalLow"] = pdr.critical_low.value_f32;
                 output["fatalHigh"] = pdr.fatal_high.value_f32;
                 output["fatalLow"] = pdr.fatal_low.value_f32;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_UINT64:
+                output["nominalValue"] = pdr.nominal_value.value_u64;
+                output["normalMax"] = pdr.normal_max.value_u64;
+                output["normalMin"] = pdr.normal_min.value_u64;
+                output["warningHigh"] = pdr.warning_high.value_u64;
+                output["warningLow"] = pdr.warning_low.value_u64;
+                output["criticalHigh"] = pdr.critical_high.value_u64;
+                output["criticalLow"] = pdr.critical_low.value_u64;
+                output["fatalHigh"] = pdr.fatal_high.value_u64;
+                output["fatalLow"] = pdr.fatal_low.value_u64;
+                break;
+            case PLDM_RANGE_FIELD_FORMAT_SINT64:
+                output["nominalValue"] = pdr.nominal_value.value_s64;
+                output["normalMax"] = pdr.normal_max.value_s64;
+                output["normalMin"] = pdr.normal_min.value_s64;
+                output["warningHigh"] = pdr.warning_high.value_s64;
+                output["warningLow"] = pdr.warning_low.value_s64;
+                output["criticalHigh"] = pdr.critical_high.value_s64;
+                output["criticalLow"] = pdr.critical_low.value_s64;
+                output["fatalHigh"] = pdr.fatal_high.value_s64;
+                output["fatalLow"] = pdr.fatal_low.value_s64;
                 break;
             default:
                 break;
@@ -2517,9 +2549,9 @@ class GetSensorReading : public CommandInterface
         uint8_t presentState = 0;
         uint8_t previousState = 0;
         uint8_t eventState = 0;
-        std::array<uint8_t, sizeof(uint32_t)>
-            presentReading{}; // maximum size for the present Value is uint32
-                              // according to spec DSP0248
+        std::array<uint8_t, sizeof(uint64_t)>
+            presentReading{}; // maximum size for the present Value is uint64
+                              // according to spec DSP0248 v1.3.0
 
         auto rc = decode_get_sensor_reading_resp(
             responsePtr, payloadLength, &completionCode, &sensorDataSize,
@@ -2584,6 +2616,18 @@ class GetSensorReading : public CommandInterface
                     *(reinterpret_cast<int32_t*>(presentReading.data()));
                 break;
             }
+            case PLDM_SENSOR_DATA_SIZE_UINT64:
+            {
+                output["presentReading"] =
+                    *(reinterpret_cast<uint64_t*>(presentReading.data()));
+                break;
+            }
+            case PLDM_SENSOR_DATA_SIZE_SINT64:
+            {
+                output["presentReading"] =
+                    *(reinterpret_cast<int64_t*>(presentReading.data()));
+                break;
+            }
             default:
             {
                 std::cerr << "Unknown Sensor Data Size : "
@@ -2601,11 +2645,13 @@ class GetSensorReading : public CommandInterface
 
     const std::map<uint8_t, std::string> sensorDataSz = {
         {PLDM_SENSOR_DATA_SIZE_UINT8, "uint8"},
-        {PLDM_SENSOR_DATA_SIZE_SINT8, "uint8"},
+        {PLDM_SENSOR_DATA_SIZE_SINT8, "int8"},
         {PLDM_SENSOR_DATA_SIZE_UINT16, "uint16"},
-        {PLDM_SENSOR_DATA_SIZE_SINT16, "uint16"},
+        {PLDM_SENSOR_DATA_SIZE_SINT16, "int16"},
         {PLDM_SENSOR_DATA_SIZE_UINT32, "uint32"},
-        {PLDM_SENSOR_DATA_SIZE_SINT32, "uint32"}};
+        {PLDM_SENSOR_DATA_SIZE_SINT32, "int32"},
+        {PLDM_SENSOR_DATA_SIZE_UINT64, "uint64"},
+        {PLDM_SENSOR_DATA_SIZE_SINT64, "int64"}};
 
     static inline const std::map<uint8_t, std::string> sensorEventMsgEnable{
         {PLDM_NO_EVENT_GENERATION, "Sensor No Event Generation"},
