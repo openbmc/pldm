@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84cd3b1f_398e7856",
+        "filename": "common/types.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "It’s a bit strange. In my editor the variable doesn’t appear to be updated, but in Gerrit it shows as changed.",
+      "parentUuid": "26ddb92e_58ff4348",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 32
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60dbc048_d181b22f",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3740a2f9_e4f296a7",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "Thank you for the suggestion. I\u0027ve kept fstat() for both constructors for consistency. The fd-based constructor cannot use std::filesystem::file_size() (it requires a path, not an fd), so using fstat() in both constructors maintains a uniform approach.",
+      "parentUuid": "60dbc048_d181b22f",
+      "range": {
+        "startLine": 973,
+        "startChar": 3,
+        "endLine": 973,
+        "endChar": 19
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "86f0f2fe_70c5d3c4",
         "filename": "common/utils.cpp",
         "patchSetId": 101
@@ -77,6 +125,30 @@
       "writtenOn": "2025-12-07T02:50:10Z",
       "side": 1,
       "message": "Right now, the user may believe they mapped the requested size, but you truncate.I think it\u0027s better to use exactly user-provided size and let mmap fail.",
+      "range": {
+        "startLine": 987,
+        "startChar": 7,
+        "endLine": 988,
+        "endChar": 5
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4106029_57f8d937",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "You are right, but when I checked the mmap doc., I found that mmap does not fail if the requested size exceeds the file size (see https://man7.org/linux/man-pages/man2/mmap.2.html, described in the first paragraph of the NOTES section).\n\nTherefore, I decided that the Handler will first check if the requested size is greater than the file size. If it is, it will throw an exception (fail) and notify the user.",
+      "parentUuid": "86f0f2fe_70c5d3c4",
       "range": {
         "startLine": 987,
         "startChar": 7,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "009d2864_54e81c62",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "Reason is as described above.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/80194/comment/60dbc048_d181b22f/",
+      "parentUuid": "b49082a6_fafa7a21",
+      "range": {
+        "startLine": 1022,
+        "startChar": 7,
+        "endLine": 1022,
+        "endChar": 23
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d40022da_013fe6c2",
         "filename": "common/utils.cpp",
         "patchSetId": 101
@@ -123,6 +219,30 @@
       "writtenOn": "2025-12-07T02:50:10Z",
       "side": 1,
       "message": "shoudn\u0027t this also be system_catergory() ?",
+      "range": {
+        "startLine": 1029,
+        "startChar": 53,
+        "endLine": 1029,
+        "endChar": 69
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cfc936f_5ea2a2df",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "you\u0027re right,done.",
+      "parentUuid": "d40022da_013fe6c2",
       "range": {
         "startLine": 1029,
         "startChar": 53,
@@ -156,6 +276,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9698e79_add58c31",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "Reason is as described above.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/80194/comment/86f0f2fe_70c5d3c4/",
+      "parentUuid": "8fe6aa15_6892f26d",
+      "range": {
+        "startLine": 1041,
+        "startChar": 11,
+        "endLine": 1041,
+        "endChar": 76
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "205b8b18_6200b926",
@@ -169,6 +313,30 @@
       "writtenOn": "2025-12-07T02:50:10Z",
       "side": 1,
       "message": "can we add a comment here for better understanding on \"if the passed size is larger than the file size, you silently clamp it to file size — but mmap will succeed only up to actual file length.\"",
+      "range": {
+        "startLine": 1033,
+        "startChar": 8,
+        "endLine": 1046,
+        "endChar": 9
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15709048_f4428ae9",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "Reason is as described above. https://gerrit.openbmc.org/c/openbmc/pldm/+/80194/comment/86f0f2fe_70c5d3c4/",
+      "parentUuid": "205b8b18_6200b926",
       "range": {
         "startLine": 1033,
         "startChar": 8,
@@ -202,6 +370,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f26b03c5_8974113e",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36bbbf48_62a40d1e",
+      "range": {
+        "startLine": 1076,
+        "startChar": 17,
+        "endLine": 1076,
+        "endChar": 36
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f20985e3_e8e0115f",
@@ -215,6 +407,30 @@
       "writtenOn": "2025-12-07T02:50:10Z",
       "side": 1,
       "message": "not a true RAII if we have missing deleted copy/move operations",
+      "range": {
+        "startLine": 760,
+        "startChar": 0,
+        "endLine": 760,
+        "endChar": 17
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f46e6bdb_3ec297d2",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "Added deleted copy/move operations",
+      "parentUuid": "f20985e3_e8e0115f",
       "range": {
         "startLine": 760,
         "startChar": 0,
@@ -248,6 +464,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1ed090d_d093b6b2",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "The vector API was removed because it was not needed, and getSpan was replaced by getBytes.",
+      "parentUuid": "b9721e69_92e0bf8b",
+      "range": {
+        "startLine": 818,
+        "startChar": 17,
+        "endLine": 818,
+        "endChar": 26
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97d82a97_a6b49cc7",
@@ -261,6 +501,30 @@
       "writtenOn": "2025-12-07T02:50:10Z",
       "side": 1,
       "message": "isn\u0027t this defeating the purpose ? \n\ndata_ contains raw bytes from the file. You do not want to construct T into that memory do you ? we should reinterpret the memory as an array of T right ? This seems to construct a T object at the beginning of the mmap buffer, overwriting bytes in the mapped file.",
+      "range": {
+        "startLine": 825,
+        "startChar": 5,
+        "endLine": 825,
+        "endChar": 31
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96d27042_a65b9b9f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "I have removed all APIs related to type T. The MMapHandler now only provides byte views of the mapped data, which avoids type misuse and prevents accidental overwriting of mmap contents.\n\nbeacuse I believe MMapHandler should only manage resources and expose raw data. File content parsing or type analysis should be done by the user or a separate handler, following the single responsibility principle.",
+      "parentUuid": "97d82a97_a6b49cc7",
       "range": {
         "startLine": 825,
         "startChar": 5,
@@ -294,6 +558,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "486ee237_df74c87f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "Reason is as described above.",
+      "parentUuid": "80cce9ad_f7015206",
+      "range": {
+        "startLine": 826,
+        "startChar": 8,
+        "endLine": 826,
+        "endChar": 22
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc5a0368_e16362f2",
@@ -307,6 +595,30 @@
       "writtenOn": "2025-12-07T02:50:10Z",
       "side": 1,
       "message": "we have similar problems as above here as well.",
+      "range": {
+        "startLine": 844,
+        "startChar": 8,
+        "endLine": 847,
+        "endChar": 34
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be34712_b9474157",
+        "filename": "common/utils.hpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-11T01:34:03Z",
+      "side": 1,
+      "message": "The vector API was removed because it was not needed, and getSpan was replaced by getBytes.",
+      "parentUuid": "fc5a0368_e16362f2",
       "range": {
         "startLine": 844,
         "startChar": 8,
