@@ -157,8 +157,8 @@ TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
         new (getPldmTypesResp0.data()) pldm_msg, sizeof(getPldmTypesResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
-    pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    pldm::TerminusInfos mctpInfos{};
+    mctpInfos.emplace(1, pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -202,8 +202,8 @@ TEST_F(TerminusManagerTest, negativeDiscoverMctpTerminusTest)
         new (getTidResp0.data()) pldm_msg, sizeof(getTidResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
-    pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    pldm::TerminusInfos mctpInfos{};
+    mctpInfos.emplace(1, pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(0, termini.size());
 
@@ -278,8 +278,8 @@ TEST_F(TerminusManagerTest, doesSupportTypeTest)
         new (getPldmTypesResp0.data()) pldm_msg, sizeof(getPldmTypesResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
-    pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    pldm::TerminusInfos mctpInfos{};
+    mctpInfos.emplace(1, pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -464,8 +464,8 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
         sizeof(getPldmCommandFruResp0));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
-    pldm::MctpInfos mctpInfos{};
-    mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    pldm::TerminusInfos mctpInfos{};
+    mctpInfos.emplace(1, pldm::MctpInfo(12, "", "", 1, std::nullopt));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
     EXPECT_EQ(true, termini.contains(1));
