@@ -409,6 +409,15 @@ class Handler
     stdexec::sender_of<stdexec::set_value_t(SendRecvCoResp)> auto sendRecvMsg(
         mctp_eid_t eid, pldm::Request&& request);
 
+    /** @brief Get the underlying transport for TID mapping
+     *
+     * @return Pointer to the PldmTransport instance
+     */
+    PldmTransport* getTransport() const
+    {
+        return pldmTransport;
+    }
+
   private:
     PldmTransport* pldmTransport; //!< PLDM transport object
     sdeventplus::Event& event; //!< reference to PLDM daemon's main event loop
