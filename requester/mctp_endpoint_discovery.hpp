@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/transport.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
@@ -45,6 +46,19 @@ class MctpDiscoveryHandlerIntf
     virtual void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) = 0;
     virtual void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                                 Availability availability) = 0;
+    /** @brief Allocate or get TID for an MCTP endpoint
+     *
+     *  @param[in] mctpInfo - MCTP endpoint information
+     *  @return TID if successful, nullopt otherwise
+     */
+    virtual std::optional<pldm_tid_t> allocateOrGetTid(
+        const MctpInfo& mctpInfo) = 0;
+
+    /** @brief Get transport for TID mapping
+     *
+     *  @return Pointer to PldmTransport instance
+     */
+    virtual PldmTransport* getTransport() = 0;
     /** @brief Get Active EIDs.
      *
      *  @param[in] addr - MCTP address of terminus
