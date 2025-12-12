@@ -61,8 +61,20 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
      */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos)
+    void handleMctpEndpoints(const TerminusInfos& mctpInfos) override
     {
+        // Map TID to (EID, network) in transport layer before discovering
+        // terminus
+        for (const auto& [tid, mctpInfo] : mctpInfos)
+        {
+            auto eid = std::get<pldm::eid>(mctpInfo);
+            auto network = std::get<NetworkId>(mctpInfo);
+
+            if (auto* transport = terminusManager.getTransport())
+            {
+                transport->mapTid(tid, network, eid);
+            }
+        }
         terminusManager.discoverMctpTerminus(mctpInfos);
     }
 
@@ -71,8 +83,16 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos)
+    void handleRemovedMctpEndpoints(const TerminusInfos& mctpInfos) override
     {
+        // Unmap TID from transport layer
+        for (const auto& [tid, mctpInfo] : mctpInfos)
+        {
+            if (auto* transport = terminusManager.getTransport())
+            {
+                transport->unmapTid(tid);
+            }
+        }
         terminusManager.removeMctpTerminus(mctpInfos);
     }
 
@@ -83,7 +103,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] availability - new availability status
      */
     void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
-                                        Availability availability)
+                                        Availability availability) override
     {
         /* Get TID of initialized terminus */
         auto tid = terminusManager.toTid(mctpInfo);
@@ -261,9 +281,29 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] terminiNames - MCTP terminus name
      */
     std::optional<mctp_eid_t> getActiveEidByName(
-        const std::string& terminusName)
+        const std::string& terminusName) override
     {
         return terminusManager.getActiveEidByName(terminusName);
+    }
+
+    /** @brief Allocate or get TID for the MCTP endpoint
+     *
+     *  @param[in] mctpInfo - information of the target endpoint
+     *  @return TID if allocation or retrieval is successful, nullopt otherwise
+     */
+    std::optional<pldm_tid_t> allocateOrGetTid(
+        const MctpInfo& mctpInfo) override
+    {
+        return terminusManager.mapTid(mctpInfo);
+    }
+
+    /** @brief Get the PLDM transport layer
+     *
+     *  @return Pointer to the PLDM transport layer
+     */
+    PldmTransport* getTransport() override
+    {
+        return terminusManager.getTransport();
     }
 
   private:
