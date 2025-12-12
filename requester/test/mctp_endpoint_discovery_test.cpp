@@ -69,7 +69,7 @@ TEST(MctpEndpointDiscoveryTest, goodAddToExistingMctpInfos)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
+    const pldm::TerminusInfos& mctpInfos = {
         pldm::MctpInfo(11, pldm::emptyUUID, "", 1, std::nullopt),
         pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, std::nullopt)};
 
@@ -87,7 +87,7 @@ TEST(MctpEndpointDiscoveryTest, badAddToExistingMctpInfos)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
+    const pldm::TerminusInfos& mctpInfos = {
         pldm::MctpInfo(11, pldm::emptyUUID, "", 1, std::nullopt)};
 
     auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
@@ -100,7 +100,7 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveFromExistingMctpInfos)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
+    const pldm::TerminusInfos& mctpInfos = {
         pldm::MctpInfo(11, pldm::emptyUUID, "def", 2, std::nullopt),
         pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, std::nullopt)};
 
@@ -112,8 +112,8 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveFromExistingMctpInfos)
     EXPECT_EQ(std::get<0>(mctpInfo), 12);
     EXPECT_EQ(std::get<2>(mctpInfo), "abc");
     EXPECT_EQ(std::get<3>(mctpInfo), 1);
-    pldm::MctpInfos removedInfos;
-    pldm::MctpInfos remainMctpInfos;
+    pldm::TerminusInfos removedInfos;
+    pldm::TerminusInfos remainMctpInfos;
     remainMctpInfos.emplace_back(
         pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, std::nullopt));
 
@@ -135,7 +135,7 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
+    const pldm::TerminusInfos& mctpInfos = {
         pldm::MctpInfo(11, pldm::emptyUUID, "def", 2, std::nullopt),
         pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, std::nullopt)};
 
@@ -160,7 +160,7 @@ TEST(MctpEndpointDiscoveryTest, goodSearchConfigurationFor)
     MockdBusHandler mockedDbusHandler;
     auto& bus = mockedDbusHandler.getBus();
     pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
+    const pldm::TerminusInfos& mctpInfos = {
         pldm::MctpInfo(10, pldm::emptyUUID, "abc", 1, std::nullopt)};
 
     constexpr auto mockedDbusPath =
@@ -207,7 +207,7 @@ TEST(MctpEndpointDiscoveryTest, badSearchConfigurationFor)
     MockdBusHandler mockedDbusHandler;
     auto& bus = mockedDbusHandler.getBus();
     pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
+    const pldm::TerminusInfos& mctpInfos = {
         pldm::MctpInfo(10, pldm::emptyUUID, "abc", 1, std::nullopt)};
 
     constexpr auto mockedDbusPath =
