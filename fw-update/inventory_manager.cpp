@@ -17,12 +17,12 @@ namespace fw_update
 {
 void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
-    for (const auto& mctpInfo : mctpInfos)
+    for (const auto& [tid, mctpInfo] : mctpInfos)
     {
         auto eid = std::get<pldm::eid>(mctpInfo);
         try
         {
-            sendQueryDeviceIdentifiersRequest(eid);
+            sendQueryDeviceIdentifiersRequest(tid);
         }
         catch (const std::exception& e)
         {
@@ -35,14 +35,13 @@ void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 
 void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
 {
-    for (const auto& mctpInfo : mctpInfos)
+    for (const auto& [tid, mctpInfo] : mctpInfos)
     {
-        auto eid = std::get<pldm::eid>(mctpInfo);
-        firmwareDeviceNameMap.erase(eid);
-        descriptorMap.erase(eid);
-        downstreamDescriptorMap.erase(eid);
-        componentInfoMap.erase(eid);
-        firmwareInventoryManager.deleteFirmwareEntry(eid);
+        firmwareDeviceNameMap.erase(tid);
+        descriptorMap.erase(tid);
+        downstreamDescriptorMap.erase(tid);
+        componentInfoMap.erase(tid);
+        firmwareInventoryManager.deleteFirmwareEntry(tid);
     }
 }
 
