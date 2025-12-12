@@ -11,10 +11,10 @@ namespace pldm
 class MockManager : public pldm::MctpDiscoveryHandlerIntf
 {
   public:
-    MOCK_METHOD(void, handleMctpEndpoints, (const MctpInfos& mctpInfos),
+    MOCK_METHOD(void, handleMctpEndpoints, (const TerminusInfos& mctpInfos),
                 (override));
-    MOCK_METHOD(void, handleRemovedMctpEndpoints, (const MctpInfos& mctpInfos),
-                (override));
+    MOCK_METHOD(void, handleRemovedMctpEndpoints,
+                (const TerminusInfos& mctpInfos), (override));
     MOCK_METHOD(void, updateMctpEndpointAvailability,
                 (const MctpInfo& mctpInfo, Availability availability),
                 (override));
