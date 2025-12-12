@@ -65,7 +65,7 @@ class InventoryManager
      *
      *  @param[in] mctpInfos - List of MCTP endpoint information
      */
-    void discoverFDs(const MctpInfos& mctpInfos);
+    void discoverFDs(const TerminusInfos& mctpInfos);
 
     /** @brief Remove the firmware identifiers and component details of FDs
      *
@@ -74,7 +74,7 @@ class InventoryManager
      *
      *  @param[in] mctpInfos - List of MCTP endpoint information
      */
-    void removeFDs(const MctpInfos& mctpInfos);
+    void removeFDs(const TerminusInfos& mctpInfos);
 
     /** @brief Handler for QueryDeviceIdentifiers command response
      *
