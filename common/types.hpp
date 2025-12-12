@@ -18,6 +18,7 @@ namespace pldm
 
 using Availability = bool;
 using eid = uint8_t;
+using tid = uint8_t;
 using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
@@ -58,9 +59,9 @@ using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId, MctpInfoName>;
  */
 using MctpEndpointProps = std::tuple<NetworkId, eid, MCTPMsgTypes>;
 
-/** @brief Type defined for list of MCTP interface information
+/** @brief Type definition of map of TID to MCTP endpoint information
  */
-using MctpInfos = std::vector<MctpInfo>;
+using MctpInfos = std::map<tid, MctpInfo>;
 
 /**
  * In `Table 2 - Special endpoint IDs` of DSP0236.

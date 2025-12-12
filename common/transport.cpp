@@ -74,17 +74,6 @@ static constexpr uint8_t MCTP_EID_VALID_MAX = 255;
         return nullptr;
     }
 
-    for (const auto eid :
-         std::views::iota(MCTP_EID_VALID_MIN, MCTP_EID_VALID_MAX))
-    {
-        int rc = pldm_transport_af_mctp_map_tid(impl.af_mctp, eid, eid);
-        if (rc)
-        {
-            pldm_transport_af_mctp_destroy(impl.af_mctp);
-            return nullptr;
-        }
-    }
-
     /* Listen for requests on any interface */
     if (listening && pldm_transport_af_mctp_bind(impl.af_mctp, nullptr, 0))
     {
@@ -157,4 +146,22 @@ pldm_requester_rc_t PldmTransport::sendRecvMsg(
     pldm_tid_t tid, const void* tx, size_t txLen, void*& rx, size_t& rxLen)
 {
     return pldm_transport_send_recv_msg(transport, tid, tx, txLen, &rx, &rxLen);
+}
+
+int PldmTransport::mapTid(pldm_tid_t tid, mctp_eid_t eid, uint32_t network)
+{
+#if defined(PLDM_TRANSPORT_WITH_AF_MCTP)
+    return pldm_transport_af_mctp_map_tid(impl.af_mctp, tid, eid, network);
+#else
+    return -ENOTSUP;
+#endif
+}
+
+int PldmTransport::unmapTid(pldm_tid_t tid)
+{
+#if defined(PLDM_TRANSPORT_WITH_AF_MCTP)
+    return pldm_transport_af_mctp_unmap_tid(impl.af_mctp, tid);
+#else
+    return -ENOTSUP;
+#endif
 }
