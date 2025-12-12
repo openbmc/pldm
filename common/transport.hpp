@@ -88,6 +88,24 @@ class PldmTransport
     pldm_requester_rc_t sendRecvMsg(pldm_tid_t tid, const void* tx,
                                     size_t txLen, void*& rx, size_t& rxLen);
 
+    /** @brief Map a TID to its MCTP endpoint address (EID and network)
+     *
+     * @param[in] tid - The terminus ID
+     * @param[in] eid - The MCTP endpoint ID
+     * @param[in] network - The MCTP network ID
+     *
+     * @return 0 on success, otherwise an error code
+     */
+    int mapTid(pldm_tid_t tid, mctp_eid_t eid, uint32_t network);
+
+    /** @brief Unmap a TID from the transport layer
+     *
+     * @param[in] tid - The terminus ID to unmap
+     *
+     * @return 0 on success, otherwise an error code
+     */
+    int unmapTid(pldm_tid_t tid);
+
   private:
     /** @brief A pollfd object for holding a file descriptor from the libpldm
      *         transport implementation
