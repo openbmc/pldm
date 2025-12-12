@@ -47,7 +47,23 @@ MctpDiscovery::MctpDiscovery(
             // Only add the available endpoints to the terminus
             // Let the propertiesChanged signal tells us when it comes back
             // to Available again
-            addToExistingMctpInfos(MctpInfos(1, mapIt.first));
+            TerminusInfos singleInfo;
+            // Need TID here - get from TID pool
+            for (auto* handler : handlers)
+            {
+                if (auto tid = handler->allocateOrGetTid(mapIt.first))
+                {
+                    auto eid = std::get<pldm::eid>(mapIt.first);
+                    auto network = std::get<NetworkId>(mapIt.first);
+                    if (auto* transport = handler->getTransport())
+                    {
+                        transport->mapTid(tid.value(), network, eid);
+                    }
+                    singleInfo[tid.value()] = mapIt.first;
+                    break;
+                }
+            }
+            addToExistingMctpInfos(singleInfo);
         }
     }
     handleMctpEndpoints(existingMctpInfos);
@@ -175,7 +191,7 @@ Availability MctpDiscovery::getEndpointConnectivityProp(const std::string& path)
 }
 
 void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
-                                      MctpInfos& mctpInfos)
+                                      TerminusInfos& mctpInfos)
 {
     using ObjectPath = sdbusplus::message::object_path;
     ObjectPath objPath;
@@ -244,43 +260,63 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                         MctpInfo(eid, uuid, "", networkId, std::nullopt);
                     searchConfigurationFor(pldm::utils::DBusHandler(),
                                            mctpInfo);
-                    mctpInfos.emplace_back(std::move(mctpInfo));
+                    for (auto* handler : handlers)
+                    {
+                        if (auto tid = handler->allocateOrGetTid(mctpInfo))
+                        {
+                            if (auto* transport = handler->getTransport())
+                            {
+                                transport->mapTid(tid.value(), networkId, eid);
+                            }
+                            mctpInfos[tid.value()] = std::move(mctpInfo);
+                            break;
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-void MctpDiscovery::addToExistingMctpInfos(const MctpInfos& addedInfos)
+void MctpDiscovery::addToExistingMctpInfos(const TerminusInfos& addedInfos)
 {
-    for (const auto& mctpInfo : addedInfos)
+    for (const auto& [tid, mctpInfo] : addedInfos)
     {
-        if (std::find(existingMctpInfos.begin(), existingMctpInfos.end(),
-                      mctpInfo) == existingMctpInfos.end())
+        if (!existingMctpInfos.contains(tid))
         {
-            existingMctpInfos.emplace_back(mctpInfo);
+            existingMctpInfos[tid] = mctpInfo;
         }
     }
 }
 
-void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                                MctpInfos& removedInfos)
+void MctpDiscovery::removeFromExistingMctpInfos(TerminusInfos& mctpInfos,
+                                                TerminusInfos& removedInfos)
 {
-    for (const auto& mctpInfo : existingMctpInfos)
+    for (const auto& [tid, mctpInfo] : existingMctpInfos)
     {
-        if (std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo) ==
-            mctpInfos.end())
+        if (!mctpInfos.contains(tid))
         {
-            removedInfos.emplace_back(mctpInfo);
+            removedInfos[tid] = mctpInfo;
         }
     }
-    for (const auto& mctpInfo : removedInfos)
+
+    for (const auto& [tid, mctpInfo] : removedInfos)
     {
-        info("Removing Endpoint networkId '{NETWORK}' and  EID '{EID}'",
-             "NETWORK", std::get<3>(mctpInfo), "EID", std::get<0>(mctpInfo));
-        existingMctpInfos.erase(std::remove(existingMctpInfos.begin(),
-                                            existingMctpInfos.end(), mctpInfo),
-                                existingMctpInfos.end());
+        info(
+            "Removing Endpoint TID '{TID}' networkId '{NETWORK}' and EID '{EID}'",
+            "TID", tid, "NETWORK", std::get<3>(mctpInfo), "EID",
+            std::get<0>(mctpInfo));
+        existingMctpInfos.erase(tid);
+
+        // Unmap from transport
+        for (auto* handler : handlers)
+        {
+            if (auto* transport = handler->getTransport())
+            {
+                transport->unmapTid(tid);
+                break;
+            }
+        }
     }
 }
 
@@ -341,7 +377,17 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             MctpInfo mctpInfo(std::get<eid>(epProps), uuid, "",
                               std::get<NetworkId>(epProps), std::nullopt);
             searchConfigurationFor(pldm::utils::DBusHandler(), mctpInfo);
-            if (!std::ranges::contains(existingMctpInfos, mctpInfo))
+
+            bool found = false;
+            for (const auto& [existingTid, existingInfo] : existingMctpInfos)
+            {
+                if (existingInfo == mctpInfo)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
             {
                 if (availability)
                 {
@@ -351,8 +397,25 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
                         "Adding Endpoint networkId {NETWORK} ID {EID} by propertiesChanged signal",
                         "NETWORK", std::get<3>(mctpInfo), "EID",
                         unsigned(std::get<0>(mctpInfo)));
-                    addToExistingMctpInfos(MctpInfos(1, mctpInfo));
-                    handleMctpEndpoints(MctpInfos(1, mctpInfo));
+                    // Allocate TID for this new endpoint
+                    TerminusInfos singleInfo;
+                    for (auto* handler : handlers)
+                    {
+                        if (auto tid = handler->allocateOrGetTid(mctpInfo))
+                        {
+                            // Map TID in transport layer
+                            if (auto* transport = handler->getTransport())
+                            {
+                                transport->mapTid(tid.value(),
+                                                  std::get<3>(mctpInfo),
+                                                  std::get<0>(mctpInfo));
+                            }
+                            singleInfo[tid.value()] = mctpInfo;
+                            break;
+                        }
+                    }
+                    addToExistingMctpInfos(singleInfo);
+                    handleMctpEndpoints(singleInfo);
                 }
             }
             else
@@ -366,7 +429,7 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
 
 void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
 {
-    MctpInfos addedInfos;
+    TerminusInfos addedInfos;
     getAddedMctpInfos(msg, addedInfos);
     addToExistingMctpInfos(addedInfos);
     handleMctpEndpoints(addedInfos);
@@ -374,20 +437,28 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
 
 void MctpDiscovery::removeEndpoints(sdbusplus::message_t&)
 {
-    MctpInfos mctpInfos;
-    MctpInfos removedInfos;
+    TerminusInfos mctpInfos;
+    TerminusInfos removedInfos;
     std::map<MctpInfo, Availability> currentMctpInfoMap;
     getMctpInfos(currentMctpInfoMap);
-    for (const auto& mapIt : currentMctpInfoMap)
+    // Build mctpInfos map by finding TIDs from existingMctpInfos
+    for (const auto& [tid, existingInfo] : existingMctpInfos)
     {
-        mctpInfos.push_back(mapIt.first);
+        for (const auto& [currentInfo, availability] : currentMctpInfoMap)
+        {
+            if (existingInfo == currentInfo)
+            {
+                mctpInfos[tid] = currentInfo;
+                break;
+            }
+        }
     }
     removeFromExistingMctpInfos(mctpInfos, removedInfos);
     handleRemovedMctpEndpoints(removedInfos);
     removeConfigs(removedInfos);
 }
 
-void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)
+void MctpDiscovery::handleMctpEndpoints(const TerminusInfos& mctpInfos)
 {
     for (const auto& handler : handlers)
     {
@@ -399,7 +470,7 @@ void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)
     }
 }
 
-void MctpDiscovery::handleRemovedMctpEndpoints(const MctpInfos& mctpInfos)
+void MctpDiscovery::handleRemovedMctpEndpoints(const TerminusInfos& mctpInfos)
 {
     for (const auto& handler : handlers)
     {
@@ -510,9 +581,9 @@ void MctpDiscovery::searchConfigurationFor(
     }
 }
 
-void MctpDiscovery::removeConfigs(const MctpInfos& removedInfos)
+void MctpDiscovery::removeConfigs(const TerminusInfos& removedInfos)
 {
-    for (const auto& mctpInfo : removedInfos)
+    for (const auto& [tid, mctpInfo] : removedInfos)
     {
         const auto eidToRemove = std::get<eid>(mctpInfo);
         const auto netToRemove = std::get<NetworkId>(mctpInfo);

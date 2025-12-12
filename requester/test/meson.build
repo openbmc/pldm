@@ -1,5 +1,9 @@
 test_src = declare_dependency(
-    sources: ['../mctp_endpoint_discovery.cpp', '../../common/utils.cpp'],
+    sources: [
+        '../mctp_endpoint_discovery.cpp',
+        '../../common/utils.cpp',
+        '../../common/transport.cpp',
+    ],
 )
 
 tests = ['handler_test', 'request_test', 'mctp_endpoint_discovery_test']
