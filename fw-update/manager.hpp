@@ -50,6 +50,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      pldm::InstanceIdDb& instanceIdDb) :
         updateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap),
+        handler(handler),
         inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap, configurations,
                      updateManager)
@@ -60,8 +61,18 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of discovered MCTP endpoints
      */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos) override
+    void handleMctpEndpoints(const TerminusInfos& mctpInfos) override
     {
+        for (const auto& [tid, mctpInfo] : mctpInfos)
+        {
+            auto eid = std::get<pldm::eid>(mctpInfo);
+            auto network = std::get<NetworkId>(mctpInfo);
+
+            if (auto* transport = handler.getTransport())
+            {
+                transport->mapTid(tid, network, eid);
+            }
+        }
         inventoryMgr.discoverFDs(mctpInfos);
     }
 
@@ -80,8 +91,15 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) override
+    void handleRemovedMctpEndpoints(const TerminusInfos& mctpInfos) override
     {
+        for (const auto& [tid, mctpInfo] : mctpInfos)
+        {
+            if (auto* transport = handler.getTransport())
+            {
+                transport->unmapTid(tid);
+            }
+        }
         inventoryMgr.removeFDs(mctpInfos);
     }
 
@@ -121,6 +139,18 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return std::nullopt;
     }
 
+    std::optional<pldm_tid_t> allocateOrGetTid(
+        const MctpInfo& /*mctpInfo*/) override
+    {
+        // FW update doesn't manage TIDs
+        return std::nullopt;
+    }
+
+    PldmTransport* getTransport() override
+    {
+        return handler.getTransport();
+    }
+
   private:
     /** Descriptor information of all the discovered MCTP endpoints */
     DescriptorMap descriptorMap;
@@ -137,6 +167,9 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
     /** @brief PLDM firmware update manager */
     AggregateUpdateManager updateManager;
+
+    /** @brief Reference to the PLDM request handler */
+    requester::Handler<requester::Request>& handler;
 
     /** @brief PLDM firmware inventory manager */
     InventoryManager inventoryMgr;
