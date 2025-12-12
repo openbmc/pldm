@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8890c2d0_4f676a65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-12T01:20:39Z",
+      "side": 1,
+      "message": "I’ve replied to @deepak.kodihalli.83@gmail.com comment. (marked resolved)",
+      "parentUuid": "e859bf2f_11e053eb",
+      "revId": "4f41a7cdcda27130ff32c198422d5eedad5e12ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d4d1ce0_215c5244",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "@rushtotom@gmail.com - are you with this ?",
       "parentUuid": "aa6c0359_948b0786",
+      "revId": "4f41a7cdcda27130ff32c198422d5eedad5e12ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68e3c5ee_902e49be",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2025-12-12T01:20:39Z",
+      "side": 1,
+      "message": "Hi @rushtotom@gmail.com,\nI’ve added the JSON examples for each PLDM version (DSP0267 v1.0.0 to v1.3.0), and updated `README.md` with usage instructions.\nCould you please check if this meets your requirements?\nIf anything needs to be adjusted, please let me know.",
+      "parentUuid": "c9a43607_2d076035",
       "revId": "4f41a7cdcda27130ff32c198422d5eedad5e12ab",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
