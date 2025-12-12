@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/transport.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 
@@ -41,10 +42,24 @@ const std::vector<std::string> interfaceFilter = {
 class MctpDiscoveryHandlerIntf
 {
   public:
-    virtual void handleMctpEndpoints(const MctpInfos& mctpInfos) = 0;
-    virtual void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) = 0;
+    virtual void handleMctpEndpoints(const TerminusInfos& mctpInfos) = 0;
+    virtual void handleRemovedMctpEndpoints(const TerminusInfos& mctpInfos) = 0;
     virtual void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                                 Availability availability) = 0;
+    /** @brief Allocate or get TID for an MCTP endpoint
+     *
+     *  @param[in] mctpInfo - MCTP endpoint information
+     *  @return TID if successful, nullopt otherwise
+     */
+    virtual std::optional<pldm_tid_t> allocateOrGetTid(
+        const MctpInfo& mctpInfo) = 0;
+
+    /** @brief Get transport for TID mapping
+     *
+     *  @return Pointer to PldmTransport instance
+     */
+    virtual PldmTransport* getTransport() = 0;
+
     /** @brief Get Active EIDs.
      *
      *  @param[in] addr - MCTP address of terminus
@@ -95,7 +110,7 @@ class MctpDiscovery
     std::vector<MctpDiscoveryHandlerIntf*> handlers;
 
     /** @brief The existing MCTP endpoints */
-    MctpInfos existingMctpInfos;
+    TerminusInfos existingMctpInfos;
 
     /** @brief Callback function when the propertiesChanged D-Bus
      * signal is triggered for MCTP endpoint's properties.
@@ -123,14 +138,14 @@ class MctpDiscovery
      *
      *  @param[in] mctpInfos - information of discovered MCTP endpoints
      */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos);
+    void handleMctpEndpoints(const TerminusInfos& mctpInfos);
 
     /** @brief Helper function to invoke registered handlers for
      *  the removed MCTP endpoints
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos);
+    void handleRemovedMctpEndpoints(const TerminusInfos& mctpInfos);
 
     /** @brief Helper function to invoke registered handlers for
      *  updating the availability status of the MCTP endpoint
@@ -141,33 +156,34 @@ class MctpDiscovery
     void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                         Availability availability);
 
-    /** @brief Get list of MctpInfos in MCTP control interface.
+    /** @brief Get list of TerminusInfos in MCTP control interface.
      *
      *  @param[in] mctpInfoMap - information of discovered MCTP endpoints
      *  and the availability status of each endpoint
      */
     void getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap);
 
-    /** @brief Get list of new MctpInfos in addedInterace D-Bus signal message.
+    /** @brief Get list of new TerminusInfos in addedInterace D-Bus signal
+     * message.
      *
      *  @param[in] msg - addedInterace D-Bus signal message
      *  @param[in] mctpInfos - information of added MCTP endpoints
      */
-    void getAddedMctpInfos(sdbusplus::message_t& msg, MctpInfos& mctpInfos);
+    void getAddedMctpInfos(sdbusplus::message_t& msg, TerminusInfos& mctpInfos);
 
-    /** @brief Add new MctpInfos to existingMctpInfos.
+    /** @brief Add new TerminusInfos to existingMctpInfos.
      *
      *  @param[in] mctpInfos - information of new MCTP endpoints
      */
-    void addToExistingMctpInfos(const MctpInfos& mctpInfos);
+    void addToExistingMctpInfos(const TerminusInfos& mctpInfos);
 
     /** @brief Erase the removed MCTP endpoint from existingMctpInfos.
      *
      *  @param[in] mctpInfos - the remaining MCTP endpoints
      *  @param[out] removedInfos - the removed MCTP endpoints
      */
-    void removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                     MctpInfos& removedInfos);
+    void removeFromExistingMctpInfos(TerminusInfos& mctpInfos,
+                                     TerminusInfos& removedInfos);
 
     friend class ::TestMctpDiscovery;
 
@@ -225,7 +241,7 @@ class MctpDiscovery
      *
      *  @param[in] removedInfos - the removed MCTP endpoints
      */
-    void removeConfigs(const MctpInfos& removedInfos);
+    void removeConfigs(const TerminusInfos& removedInfos);
 
     /** @brief An internal helper function to get the name property from the
      * properties
