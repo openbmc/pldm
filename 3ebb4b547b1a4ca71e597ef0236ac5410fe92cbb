@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9be60c08_9ddcb388",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-14T08:10:25Z",
+      "side": 1,
+      "message": "Which sensors out of these benefit from the 64-bit support?",
+      "range": {
+        "startLine": 34,
+        "startChar": 49,
+        "endLine": 35,
+        "endChar": 33
+      },
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "aedc0b03_0d4a7248",
@@ -121,6 +144,46 @@
       "side": 1,
       "message": "Thanks for addressing my comments. I left some comments on your patch.\nAnd yes, I will send a patch to update oem/ampere when we have the decode function merged to libpldm.",
       "parentUuid": "49a02295_391b4f95",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6ebf59_6e369b21",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-14T08:10:25Z",
+      "side": 1,
+      "message": "Are these static_casts per type are actually necessary? What was wrong with the previous code?",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 80
+      },
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b75b697a_fdecd4bf",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-14T08:10:25Z",
+      "side": 1,
+      "message": "What was the behavior without this case for 64 bit sensors? I ask because you anyway read the value as a double below.",
       "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
