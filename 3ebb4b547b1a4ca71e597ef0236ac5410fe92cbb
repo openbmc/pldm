@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c92d337b_c2f357ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-15T14:41:26Z",
+      "side": 1,
+      "message": "64Bit sensors support doesn\u0027t exist in CX devices and it\u0027s verified with CPU. But on alon8 verified the existing sensors and all looks intact.",
+      "parentUuid": "9be60c08_9ddcb388",
+      "range": {
+        "startLine": 34,
+        "startChar": 49,
+        "endLine": 35,
+        "endChar": 33
+      },
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "aedc0b03_0d4a7248",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -171,6 +195,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8992d2f0_3641cad1",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-15T14:41:26Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com - You are reviewing the old patchset. This code moved to new commit. https://gerrit.openbmc.org/c/openbmc/pldm/+/85940/2/platform-mc/event_manager.cpp  Can you please review new and add your comments on it?",
+      "parentUuid": "8b6ebf59_6e369b21",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 80
+      },
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b75b697a_fdecd4bf",
@@ -184,6 +232,24 @@
       "writtenOn": "2025-12-14T08:10:25Z",
       "side": 1,
       "message": "What was the behavior without this case for 64 bit sensors? I ask because you anyway read the value as a double below.",
+      "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09e10fbe_43dc90b6",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-15T14:41:26Z",
+      "side": 1,
+      "message": "New API added in LibPLDM for event data decode. can you review this: https://gerrit.openbmc.org/c/openbmc/pldm/+/85940/2/platform-mc/event_manager.cpp",
+      "parentUuid": "b75b697a_fdecd4bf",
       "revId": "3ebb4b547b1a4ca71e597ef0236ac5410fe92cbb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
