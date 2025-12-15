@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7e24072_b9e8a919",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-12-15T09:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f815e293_d1670332",
+      "revId": "8bd75a8b03719a49afde70c726cac0f89a02a848",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4ad584a_7529ba7c",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-11T07:26:44Z",
       "side": 1,
       "message": "Will suggest using `std::format` here.",
+      "revId": "8bd75a8b03719a49afde70c726cac0f89a02a848",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f6f6491_fbef953e",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-12-15T09:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4ad584a_7529ba7c",
       "revId": "8bd75a8b03719a49afde70c726cac0f89a02a848",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb70582_07bd10ac",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-12-15T09:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9494cf2c_c16ea53c",
+      "revId": "8bd75a8b03719a49afde70c726cac0f89a02a848",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "330eefdb_9557d8ac",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-12-11T07:26:44Z",
       "side": 1,
       "message": "Use `lg2::error` here.",
+      "revId": "8bd75a8b03719a49afde70c726cac0f89a02a848",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c951aab_5f5457f5",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-12-15T09:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "330eefdb_9557d8ac",
       "revId": "8bd75a8b03719a49afde70c726cac0f89a02a848",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
