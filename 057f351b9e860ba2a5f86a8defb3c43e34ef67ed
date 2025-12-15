@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96015bff_31718a5f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-12-15T13:35:33Z",
+      "side": 1,
+      "message": "I should have pointed this out earlier. But is it possible to use `std::filesystem` APIs here, instead of manually parsing? \n\nSomething like this:\n\n```\n    std::filesystem::path p(path);\n\n    if (!p.has_parent_path())\n        return {};\n\n    return p.parent_path().filename().string();\n```",
+      "revId": "057f351b9e860ba2a5f86a8defb3c43e34ef67ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbe51c5d_d29a6575",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-12-15T13:35:33Z",
+      "side": 1,
+      "message": "Why is the second last element considered the device name? Will this apply to all termini? This seems platform specific.",
+      "revId": "057f351b9e860ba2a5f86a8defb3c43e34ef67ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acf49df1_57b42622",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-12-15T13:35:33Z",
+      "side": 1,
+      "message": "If we already have the `mctpInfoName` which is retrieved from mctpReactor. Why can\u0027t that name be used? Maybe I am not understanding this correctly. Can you please elaborate on your example in the commit message?",
+      "revId": "057f351b9e860ba2a5f86a8defb3c43e34ef67ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
