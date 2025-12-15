@@ -16,6 +16,24 @@
       "message": "If you\u0027re unable to test this on Redfish, please state the reason and the plan to test.",
       "revId": "4320b14e9d04c9231404010810f9600c5aaa524e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "655fe1d4_95070b28",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-12-15T09:30:00Z",
+      "side": 1,
+      "message": "With this patch a Redfish user should be able to download the CPER payload.",
+      "parentUuid": "22442997_170e8a82",
+      "revId": "4320b14e9d04c9231404010810f9600c5aaa524e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
