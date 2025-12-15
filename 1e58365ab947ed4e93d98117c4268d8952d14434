@@ -34,6 +34,24 @@
       "parentUuid": "97784b39_057e321a",
       "revId": "1e58365ab947ed4e93d98117c4268d8952d14434",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de7731aa_9ac68c5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-15T09:28:22Z",
+      "side": 1,
+      "message": "Ack. @lstrz@google.com did you try suggested alternative ? I am planning to do the cleanup and remove even the vscode ones along with jetbrains.",
+      "parentUuid": "97784b39_057e321a",
+      "revId": "1e58365ab947ed4e93d98117c4268d8952d14434",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
