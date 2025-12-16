@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b46082b_d2660a1f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-12-16T05:46:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96015bff_31718a5f",
+      "revId": "057f351b9e860ba2a5f86a8defb3c43e34ef67ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbe51c5d_d29a6575",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-15T13:35:33Z",
       "side": 1,
       "message": "Why is the second last element considered the device name? Will this apply to all termini? This seems platform specific.",
+      "revId": "057f351b9e860ba2a5f86a8defb3c43e34ef67ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "803824b3_ebbdeea2",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2025-12-16T05:46:49Z",
+      "side": 1,
+      "message": "Yes, you are right. I didn’t consider multiple termini. It will apply to all termini. Thanks for your review.",
+      "parentUuid": "bbe51c5d_d29a6575",
       "revId": "057f351b9e860ba2a5f86a8defb3c43e34ef67ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
