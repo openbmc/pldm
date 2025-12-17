@@ -360,6 +360,30 @@
       },
       "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7596147_bb72c54d",
+        "filename": "common/utils.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-12-17T06:19:48Z",
+      "side": 1,
+      "message": "ah, I did not realize, that makes sense.\n\nI can put up a patch in phosphor-logging change, unless anyone wants to \u0026 beats me to it. And I see no reason to block this review with this comment as that could go in parallel",
+      "parentUuid": "75044b0d_ed942c49",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 18
+      },
+      "revId": "f7e37ceb8f4793f14dde8d5d3128dfeb15140c63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
