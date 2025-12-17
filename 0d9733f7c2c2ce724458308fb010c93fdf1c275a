@@ -1,0 +1,267 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ede616c_daac813a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "I understand this is a WIP patch, still starting with a detailed commit message helps the reviewer.🙂",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbdb6a6a_1c23f1f0",
+        "filename": "common/transport.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "Please remove commented code.",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2c24cde_f42886ed",
+        "filename": "common/types.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "This map is not just MctpInfos any more. Why don\u0027t you rename it as `TidToMctpInfoMap`, `TerminusInfos` or something like that.",
+      "range": {
+        "startLine": 64,
+        "startChar": 6,
+        "endLine": 64,
+        "endChar": 16
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ccc6c28_632ef569",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "nit: I would say the code is self-descriptive and the comment is not adding any extra information.",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ded354_f2503af2",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "comment seems un-necessary.",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8db6181c_7451ae74",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "Looks un-intentionally commented out.",
+      "range": {
+        "startLine": 281,
+        "startChar": 1,
+        "endLine": 286,
+        "endChar": 8
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9095e76_ae336c32",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "if mappedTid is not used. this code also can be removed.",
+      "range": {
+        "startLine": 331,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 0
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24759dc1_d68f9fce",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "is this commented code is not needed. please remove,",
+      "range": {
+        "startLine": 341,
+        "startChar": 9,
+        "endLine": 341,
+        "endChar": 11
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17107ff0_45ee7f9a",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "Why don\u0027t you use the NetworkId alias type?",
+      "range": {
+        "startLine": 478,
+        "startChar": 4,
+        "endLine": 478,
+        "endChar": 13
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74969f71_18a1bc10",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "same here. please use alias.",
+      "range": {
+        "startLine": 530,
+        "startChar": 4,
+        "endLine": 530,
+        "endChar": 13
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c97acb_df826c47",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "`get from TID pool` would be more understandable for the reviewer.",
+      "range": {
+        "startLine": 51,
+        "startChar": 40,
+        "endLine": 51,
+        "endChar": 47
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4f6af48_491c2fee",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "Probably un-necessary comment.",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a9d463_21fc1124",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2025-12-17T16:15:42Z",
+      "side": 1,
+      "message": "nit: Please add an empty line after function.",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
