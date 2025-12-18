@@ -15,7 +15,7 @@ enum class RecordType : uint8_t
 enum class SystemError : uint8_t
 {
     SYSTEM_PROCESSOR_ERR = 0x7,
-    SYSTEM_POST_ERR = 0x2B,
+    SYSTEM_POST_ERR = 0x1E,
     SYSTEM_CXL_ERR = 0xC1,
     SYSTEM_CXL_ERR_2_0 = 0xC2,
 };
@@ -35,6 +35,11 @@ enum class CxlError2 : uint8_t
 enum class ProcessorError : uint8_t
 {
     MACHINE_CHK_ERR = 0x40,
+};
+
+enum class SystemPostError : uint8_t
+{
+    SYSTEM_FIRMWARE_ERROR = 0x2B,
 };
 
 enum class ProcessorSeverity : uint8_t
