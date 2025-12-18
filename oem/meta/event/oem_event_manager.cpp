@@ -132,24 +132,31 @@ void OemEventManager::handleSystemEvent(const uint8_t* eventData,
         }
         case SystemError::SYSTEM_POST_ERR:
         {
-            errorLog += "POST_ERROR:";
-            if ((eventData[11] & 0x0F) == 0x0)
-                errorLog += ", System Firmware Error";
-
-            if (((eventData[11] >> 6) & 0x03) == 0x2)
+            switch (auto spe = static_cast<SystemPostError>(eventData[9]); spe)
             {
-                errorLog += ", OEM Post Code 0x" +
-                            to_hex_string(eventData[13]) +
-                            to_hex_string(eventData[12]);
-            }
+                case SystemPostError::SYSTEM_FIRMWARE_ERROR:
+                    errorLog += "POST_ERROR:";
+                    if ((eventData[11] & 0x0F) == 0x0)
+                        errorLog += ", System Firmware Error";
 
-            if (((eventData[13] << 8) | eventData[12]) == 0xD9)
-            {
-                errorLog +=
-                    ", Error loading Boot Option (Load image returned error)";
+                    if (((eventData[11] >> 6) & 0x03) == 0x2)
+                    {
+                        errorLog += ", OEM Post Code 0x" +
+                                    to_hex_string(eventData[13]) +
+                                    to_hex_string(eventData[12]);
+                    }
+
+                    if (((eventData[13] << 8) | eventData[12]) == 0xD9)
+                    {
+                        errorLog +=
+                            ", Error loading Boot Option (Load image returned error)";
+                    }
+                default:
+                    break;
             }
             break;
         }
+
         case SystemError::SYSTEM_CXL_ERR:
         {
             errorLog += "CXL 1.1 Error, ";
