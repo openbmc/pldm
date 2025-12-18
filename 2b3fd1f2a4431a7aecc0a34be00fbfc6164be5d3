@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37019faa_136f2df0",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-18T00:45:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f7d93a2_ec53fd1f",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d58f26eb_9d100ff0",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-12-05T20:33:08Z",
       "side": 1,
       "message": "nit: magic number?",
+      "range": {
+        "startLine": 62,
+        "startChar": 40,
+        "endLine": 62,
+        "endChar": 44
+      },
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecdbaca7_4b119388",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-18T00:45:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d58f26eb_9d100ff0",
       "range": {
         "startLine": 62,
         "startChar": 40,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a151f42b_be81ef55",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-18T00:45:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fcb6df6f_50d3a3db",
+      "range": {
+        "startLine": 82,
+        "startChar": 21,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "134bfc65_d2447648",
@@ -81,6 +147,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a572e6d2_d52caf03",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-18T00:45:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134bfc65_d2447648",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "370de276_f65d5d26",
@@ -94,6 +178,24 @@
       "writtenOn": "2025-12-05T20:33:08Z",
       "side": 1,
       "message": "nit, consistently put in cpp or hpp, don\u0027t split.",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41a5d06a_30b04ed4",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-18T00:45:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "370de276_f65d5d26",
       "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -121,6 +223,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be527650_324d7863",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-18T00:45:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7e7e292e_a8c019f0",
+      "range": {
+        "startLine": 335,
+        "startChar": 11,
+        "endLine": 335,
+        "endChar": 76
+      },
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d004ac65_968f6dba",
@@ -134,6 +260,24 @@
       "writtenOn": "2025-12-04T23:40:30Z",
       "side": 1,
       "message": "we probably want to cache this, if we\u0027re not already inside of this call.",
+      "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a66f39_34b72d0d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-18T00:45:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d004ac65_968f6dba",
       "revId": "2b3fd1f2a4431a7aecc0a34be00fbfc6164be5d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
