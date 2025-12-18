@@ -140,6 +140,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "727b944d_26bd8a65",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2025-12-18T02:04:26Z",
+      "side": 1,
+      "message": "mappedTid is not used yes, but mapTid() is used to storeTerminusInfo which does the internal mapping to store the TID info for platform-mc. So I dont think we should remove the calling of the function",
+      "parentUuid": "c9095e76_ae336c32",
+      "range": {
+        "startLine": 331,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 0
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24759dc1_d68f9fce",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 1
