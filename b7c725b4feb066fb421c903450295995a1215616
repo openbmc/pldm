@@ -16,6 +16,24 @@
       "message": "Redfish test results are required to understand if there are bmcweb patches needed.",
       "revId": "b7c725b4feb066fb421c903450295995a1215616",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae7f301_bf1fefef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-19T19:06:34Z",
+      "side": 1,
+      "message": "Currently upstream platform doesn\u0027t have right associations to show it on redfish side. I will work on proposal to create platform EM config to map the right D-Bus object association.\n\nMarking it as WIP for now.",
+      "parentUuid": "74ff29d6_8a29fade",
+      "revId": "b7c725b4feb066fb421c903450295995a1215616",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
