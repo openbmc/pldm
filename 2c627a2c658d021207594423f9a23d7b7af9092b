@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b4eae82_50244847",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-23T16:46:59Z",
+      "side": 1,
+      "message": "Can you elaborate on the issues here?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b30c3bb4_22a0a7b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-23T16:46:59Z",
+      "side": 1,
+      "message": "Can you share more details on testing (D-Bus/Redfish snippets) related to progress percentage?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f589c8c4_8915598f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-23T16:46:59Z",
+      "side": 1,
+      "message": "How did we come up with these constants? Can we add some comments here?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 61
+      },
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b6f136c_91aeca9d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-23T16:46:59Z",
+      "side": 1,
+      "message": "Why do we need to pass the eid? All these components belong to the same device so eid should be same?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68fb4a38_ad406518",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-23T16:46:59Z",
+      "side": 1,
+      "message": "Do we need any corner case checks here?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a16dc439_79e739b8",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2025-12-23T16:46:59Z",
+      "side": 1,
+      "message": "How is each entry associated with a specific component?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
