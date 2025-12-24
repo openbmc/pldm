@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75d4b424_b08029e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-24T22:36:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b4eae82_50244847",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b30c3bb4_22a0a7b6",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-23T16:46:59Z",
       "side": 1,
       "message": "Can you share more details on testing (D-Bus/Redfish snippets) related to progress percentage?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aafdb4e9_67d2d4b8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-24T22:36:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b30c3bb4_22a0a7b6",
       "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -60,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fedd63f6_735868ed",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-24T22:36:49Z",
+      "side": 1,
+      "message": "sure. it was by monitoring firmware update so that it was relatively constant progress, nothing magic here. This assumes that for larger transfers, the component transfer portion will be the majority of update time, which was true in my tests.",
+      "parentUuid": "f589c8c4_8915598f",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 61
+      },
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b6f136c_91aeca9d",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 5
@@ -71,6 +131,24 @@
       "writtenOn": "2025-12-23T16:46:59Z",
       "side": 1,
       "message": "Why do we need to pass the eid? All these components belong to the same device so eid should be same?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96e8d62c_0d78535a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-24T22:36:49Z",
+      "side": 1,
+      "message": "just for logging.",
+      "parentUuid": "5b6f136c_91aeca9d",
       "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -94,6 +172,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bf286b0_e6309789",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-24T22:36:49Z",
+      "side": 1,
+      "message": "what did you have in mind. We\u0027re already checking that we\u0027re not dividing by zero above.",
+      "parentUuid": "68fb4a38_ad406518",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a16dc439_79e739b8",
         "filename": "fw-update/device_updater.hpp",
         "patchSetId": 5
@@ -105,6 +201,24 @@
       "writtenOn": "2025-12-23T16:46:59Z",
       "side": 1,
       "message": "How is each entry associated with a specific component?",
+      "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e858b47_3933f271",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2025-12-24T22:36:49Z",
+      "side": 1,
+      "message": "by order of component, using the existing method of tracking which component is being transferred, index.",
+      "parentUuid": "a16dc439_79e739b8",
       "revId": "2c627a2c658d021207594423f9a23d7b7af9092b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
