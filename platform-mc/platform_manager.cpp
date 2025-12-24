@@ -14,7 +14,7 @@ namespace pldm
 namespace platform_mc
 {
 
-exec::task<int> PlatformManager::initTerminus()
+sdbusplus::async::task<int> PlatformManager::initTerminus()
 {
     for (auto& [tid, terminus] : termini)
     {
@@ -125,7 +125,7 @@ exec::task<int> PlatformManager::initTerminus()
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
+sdbusplus::async::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
 {
     if (!termini.contains(tid))
     {
@@ -221,7 +221,8 @@ exec::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
+sdbusplus::async::task<int> PlatformManager::getPDRs(
+    std::shared_ptr<Terminus> terminus)
 {
     pldm_tid_t tid = terminus->getTid();
 
@@ -334,7 +335,7 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> PlatformManager::getPDR(
+sdbusplus::async::task<int> PlatformManager::getPDR(
     const pldm_tid_t tid, const uint32_t recordHndl,
     const uint32_t dataTransferHndl, const uint8_t transferOpFlag,
     const uint16_t requestCnt, const uint16_t recordChgNum,
@@ -390,7 +391,7 @@ exec::task<int> PlatformManager::getPDR(
     co_return completionCode;
 }
 
-exec::task<int> PlatformManager::getPDRRepositoryInfo(
+sdbusplus::async::task<int> PlatformManager::getPDRRepositoryInfo(
     const pldm_tid_t tid, uint8_t& repositoryState, uint32_t& recordCount,
     uint32_t& repositorySize, uint32_t& largestRecordSize)
 {
@@ -446,7 +447,7 @@ exec::task<int> PlatformManager::getPDRRepositoryInfo(
     co_return completionCode;
 }
 
-exec::task<int> PlatformManager::eventMessageBufferSize(
+sdbusplus::async::task<int> PlatformManager::eventMessageBufferSize(
     pldm_tid_t tid, uint16_t receiverMaxBufferSize,
     uint16_t& terminusBufferSize)
 {
@@ -497,7 +498,7 @@ exec::task<int> PlatformManager::eventMessageBufferSize(
     co_return completionCode;
 }
 
-exec::task<int> PlatformManager::setEventReceiver(
+sdbusplus::async::task<int> PlatformManager::setEventReceiver(
     pldm_tid_t tid, pldm_event_message_global_enable eventMessageGlobalEnable,
     pldm_transport_protocol_type protocolType, uint16_t heartbeatTimer)
 {
@@ -558,7 +559,7 @@ exec::task<int> PlatformManager::setEventReceiver(
     co_return completionCode;
 }
 
-exec::task<int> PlatformManager::eventMessageSupported(
+sdbusplus::async::task<int> PlatformManager::eventMessageSupported(
     pldm_tid_t tid, uint8_t formatVersion, uint8_t& synchronyConfiguration,
     bitfield8_t& synchronyConfigurationSupported,
     uint8_t& numberEventClassReturned, std::vector<uint8_t>& eventClass)
@@ -615,8 +616,8 @@ exec::task<int> PlatformManager::eventMessageSupported(
     co_return completionCode;
 }
 
-exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
-                                                           uint16_t* total)
+sdbusplus::async::task<int> PlatformManager::getFRURecordTableMetadata(
+    pldm_tid_t tid, uint16_t* total)
 {
     Request request(
         sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_METADATA_REQ_BYTES);
@@ -682,7 +683,7 @@ exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
     co_return rc;
 }
 
-exec::task<int> PlatformManager::getFRURecordTable(
+sdbusplus::async::task<int> PlatformManager::getFRURecordTable(
     pldm_tid_t tid, const uint32_t dataTransferHndl,
     const uint8_t transferOpFlag, uint32_t* nextDataTransferHndl,
     uint8_t* transferFlag, size_t* responseCnt,
@@ -759,7 +760,7 @@ void PlatformManager::updateInventoryWithFru(
     termini[tid]->updateInventoryWithFru(fruData, fruLen);
 }
 
-exec::task<int> PlatformManager::getFRURecordTables(
+sdbusplus::async::task<int> PlatformManager::getFRURecordTables(
     pldm_tid_t tid, const uint16_t& totalTableRecords,
     std::vector<uint8_t>& fruData)
 {

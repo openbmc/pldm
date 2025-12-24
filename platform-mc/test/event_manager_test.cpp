@@ -377,7 +377,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     // should finish immediately
-    stdexec::sync_wait(platformManager.initTerminus());
+    sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
     // Run event loop for a few seconds to let sensor creation
     // defer tasks be run. May increase time when sensor num is large
     utils::runEventLoopForSeconds(event, 1);
@@ -503,7 +503,8 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
 
     // start task to poll event from terminus
     // should finish immediately
-    stdexec::sync_wait(eventManager.pollForPlatformEventTask(tid, 0x0000));
+    sdbusplus::async::execution::sync_wait(
+        eventManager.pollForPlatformEventTask(tid, 0x0000));
 }
 
 TEST(EventManagerNumericEventTest, HandleNormalToUpperWarning)

@@ -8,7 +8,7 @@ namespace pldm
 {
 namespace platform_mc
 {
-exec::task<int> Manager::beforeDiscoverTerminus()
+sdbusplus::async::task<int> Manager::beforeDiscoverTerminus()
 {
     // Add any setup or checks needed before discovering a terminus
     // If any setup/check fails, return the appropriate error code
@@ -16,7 +16,7 @@ exec::task<int> Manager::beforeDiscoverTerminus()
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> Manager::afterDiscoverTerminus()
+sdbusplus::async::task<int> Manager::afterDiscoverTerminus()
 {
     auto rc = co_await platformManager.initTerminus();
     if (rc != PLDM_SUCCESS)
@@ -31,7 +31,7 @@ exec::task<int> Manager::afterDiscoverTerminus()
     co_return rc;
 }
 
-exec::task<int> Manager::pollForPlatformEvent(
+sdbusplus::async::task<int> Manager::pollForPlatformEvent(
     pldm_tid_t tid, uint16_t /* pollEventId */, uint32_t pollDataTransferHandle)
 {
     auto it = termini.find(tid);
@@ -45,7 +45,7 @@ exec::task<int> Manager::pollForPlatformEvent(
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> Manager::oemPollForPlatformEvent(pldm_tid_t tid)
+sdbusplus::async::task<int> Manager::oemPollForPlatformEvent(pldm_tid_t tid)
 {
     for (auto& handler : pollHandlers)
     {

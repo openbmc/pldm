@@ -158,13 +158,16 @@ void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
         {
             return;
         }
-        stdexec::sync_wait(scope.on_empty());
+        sdbusplus::async::execution::sync_wait(scope.on_empty());
         discoverMctpTerminusTaskHandle.reset();
     }
     auto& [scope, rcOpt] = discoverMctpTerminusTaskHandle.emplace();
     scope.spawn(discoverMctpTerminusTask() |
-                    stdexec::then([&](int rc) { rcOpt.emplace(rc); }),
-                exec::default_task_context<void>(stdexec::inline_scheduler{}));
+                    sdbusplus::async::execution::then([&](int rc) {
+                        rcOpt.emplace(rc);
+                    }),
+                exec::default_task_context<void>(
+                    sdbusplus::async::execution::inline_scheduler{}));
 }
 
 TerminiMapper::iterator TerminusManager::findTerminusPtr(
@@ -183,7 +186,7 @@ TerminiMapper::iterator TerminusManager::findTerminusPtr(
     return foundIter;
 }
 
-exec::task<int> TerminusManager::discoverMctpTerminusTask()
+sdbusplus::async::task<int> TerminusManager::discoverMctpTerminusTask()
 {
     std::vector<pldm_tid_t> addedTids;
 
@@ -268,7 +271,8 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
     }
 }
 
-exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
+sdbusplus::async::task<int> TerminusManager::initMctpTerminus(
+    const MctpInfo& mctpInfo)
 {
     mctp_eid_t eid = std::get<0>(mctpInfo);
     pldm_tid_t tid = 0;
@@ -444,7 +448,7 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
+sdbusplus::async::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
     mctp_eid_t eid, Request& request, const pldm_msg** responseMsg,
     size_t* responseLen)
 {
@@ -472,7 +476,8 @@ exec::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
     co_return rc;
 }
 
-exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
+sdbusplus::async::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid,
+                                                            pldm_tid_t* tid)
 {
     auto instanceId = instanceIdDb.next(eid);
     Request request(sizeof(pldm_msg_hdr));
@@ -518,7 +523,8 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
     co_return completionCode;
 }
 
-exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
+sdbusplus::async::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid,
+                                                            pldm_tid_t tid)
 {
     auto instanceId = instanceIdDb.next(eid);
     Request request(sizeof(pldm_msg_hdr) + sizeof(pldm_set_tid_req));
@@ -555,8 +561,8 @@ exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
     co_return responseMsg->payload[0];
 }
 
-exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
-                                              uint64_t& supportedTypes)
+sdbusplus::async::task<int> TerminusManager::getPLDMTypes(
+    pldm_tid_t tid, uint64_t& supportedTypes)
 {
     Request request(sizeof(pldm_msg_hdr));
     auto requestMsg = new (request.data()) pldm_msg;
@@ -602,7 +608,7 @@ exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
     co_return completionCode;
 }
 
-exec::task<int> TerminusManager::getPLDMCommands(
+sdbusplus::async::task<int> TerminusManager::getPLDMCommands(
     pldm_tid_t tid, uint8_t type, ver32_t version, bitfield8_t* supportedCmds)
 {
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES);
@@ -652,7 +658,7 @@ exec::task<int> TerminusManager::getPLDMCommands(
     co_return completionCode;
 }
 
-exec::task<int> TerminusManager::sendRecvPldmMsg(
+sdbusplus::async::task<int> TerminusManager::sendRecvPldmMsg(
     pldm_tid_t tid, Request& request, const pldm_msg** responseMsg,
     size_t* responseLen)
 {
@@ -713,8 +719,8 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
     co_return rc;
 }
 
-exec::task<int> TerminusManager::getPLDMVersion(pldm_tid_t tid, uint8_t type,
-                                                ver32_t* version)
+sdbusplus::async::task<int> TerminusManager::getPLDMVersion(
+    pldm_tid_t tid, uint8_t type, ver32_t* version)
 {
     Request request(sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_REQ_BYTES);
     auto requestMsg = new (request.data()) pldm_msg;

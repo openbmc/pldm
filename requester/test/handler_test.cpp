@@ -163,7 +163,7 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
 
 TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
 {
-    exec::async_scope scope;
+    sdbusplus::async::async_scope scope;
     Handler<NiceMock<MockRequest>> reqHandler(
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
@@ -172,32 +172,37 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
     EXPECT_EQ(instanceId, 0);
 
     scope.spawn(
-        stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
-            pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
-            const pldm_msg* responseMsg;
-            size_t responseLen;
-            int rc = PLDM_SUCCESS;
+        sdbusplus::async::execution::just() |
+            sdbusplus::async::execution::let_value(
+                [&] -> sdbusplus::async::task<void> {
+                    pldm::Request request(
+                        sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
+                    const pldm_msg* responseMsg;
+                    size_t responseLen;
+                    int rc = PLDM_SUCCESS;
 
-            auto requestPtr = new (request.data()) pldm_msg;
-            requestPtr->hdr.instance_id = instanceId;
+                    auto requestPtr = new (request.data()) pldm_msg;
+                    requestPtr->hdr.instance_id = instanceId;
 
-            try
-            {
-                std::tie(rc, responseMsg, responseLen) =
-                    co_await reqHandler.sendRecvMsg(eid, std::move(request));
-            }
-            catch (...)
-            {
-                std::rethrow_exception(std::current_exception());
-            }
+                    try
+                    {
+                        std::tie(rc, responseMsg, responseLen) =
+                            co_await reqHandler.sendRecvMsg(eid,
+                                                            std::move(request));
+                    }
+                    catch (...)
+                    {
+                        std::rethrow_exception(std::current_exception());
+                    }
 
-            EXPECT_NE(responseLen, 0);
+                    EXPECT_NE(responseLen, 0);
 
-            this->pldmResponseCallBack(eid, responseMsg, responseLen);
+                    this->pldmResponseCallBack(eid, responseMsg, responseLen);
 
-            EXPECT_EQ(validResponse, true);
-        }),
-        exec::default_task_context<void>(stdexec::inline_scheduler{}));
+                    EXPECT_EQ(validResponse, true);
+                }),
+        exec::default_task_context<void>(
+            sdbusplus::async::execution::inline_scheduler{}));
 
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
     auto mockResponsePtr =
@@ -205,12 +210,12 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
     reqHandler.handleResponse(eid, instanceId, 0, 0, mockResponsePtr,
                               mockResponse.size() - sizeof(pldm_msg_hdr));
 
-    stdexec::sync_wait(scope.on_empty());
+    sdbusplus::async::execution::sync_wait(scope.on_empty());
 }
 
 TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
 {
-    exec::async_scope scope;
+    sdbusplus::async::async_scope scope;
     Handler<NiceMock<MockRequest>> reqHandler(
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
@@ -220,33 +225,38 @@ TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
     bool stopped = false;
 
     scope.spawn(
-        stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
-            pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
-            pldm::Response response;
+        sdbusplus::async::execution::just() |
+            sdbusplus::async::execution::let_value(
+                [&] -> sdbusplus::async::task<void> {
+                    pldm::Request request(
+                        sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
+                    pldm::Response response;
 
-            auto requestPtr = new (request.data()) pldm_msg;
-            requestPtr->hdr.instance_id = instanceId;
+                    auto requestPtr = new (request.data()) pldm_msg;
+                    requestPtr->hdr.instance_id = instanceId;
 
-            co_await reqHandler.sendRecvMsg(eid, std::move(request));
+                    co_await reqHandler.sendRecvMsg(eid, std::move(request));
 
-            EXPECT_TRUE(false); // unreachable
-        }) | stdexec::upon_stopped([&] { stopped = true; }),
-        exec::default_task_context<void>(stdexec::inline_scheduler{}));
+                    EXPECT_TRUE(false); // unreachable
+                }) |
+            sdbusplus::async::execution::upon_stopped([&] { stopped = true; }),
+        exec::default_task_context<void>(
+            sdbusplus::async::execution::inline_scheduler{}));
 
     scope.request_stop();
 
     EXPECT_TRUE(stopped);
 
-    stdexec::sync_wait(scope.on_empty());
+    sdbusplus::async::execution::sync_wait(scope.on_empty());
 }
 
 TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 {
     struct _
     {
-        static exec::task<uint8_t> getTIDTask(Handler<MockRequest>& handler,
-                                              mctp_eid_t eid,
-                                              uint8_t instanceId, uint8_t& tid)
+        static sdbusplus::async::task<uint8_t> getTIDTask(
+            Handler<MockRequest>& handler, mctp_eid_t eid, uint8_t instanceId,
+            uint8_t& tid)
         {
             pldm::Request request(sizeof(pldm_msg_hdr), 0);
             auto requestMsg = new (request.data()) pldm_msg;
@@ -268,7 +278,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
         }
     };
 
-    exec::async_scope scope;
+    sdbusplus::async::async_scope scope;
     Handler<MockRequest> reqHandler(pldmTransport, event, instanceIdDb, false,
                                     seconds(1), 2, milliseconds(100));
     auto instanceId = instanceIdDb.next(eid);
@@ -277,15 +287,18 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 
     // Execute a coroutine to send getTID command. The coroutine is suspended
     // until reqHandler.handleResponse() is received.
-    scope.spawn(stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
-                    uint8_t respTid = 0;
+    scope.spawn(sdbusplus::async::execution::just() |
+                    sdbusplus::async::execution::let_value(
+                        [&] -> sdbusplus::async::task<void> {
+                            uint8_t respTid = 0;
 
-                    co_await _::getTIDTask(reqHandler, eid, instanceId,
-                                           respTid);
+                            co_await _::getTIDTask(reqHandler, eid, instanceId,
+                                                   respTid);
 
-                    EXPECT_EQ(expectedTid, respTid);
-                }),
-                exec::default_task_context<void>(stdexec::inline_scheduler{}));
+                            EXPECT_EQ(expectedTid, respTid);
+                        }),
+                exec::default_task_context<void>(
+                    sdbusplus::async::execution::inline_scheduler{}));
 
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES,
                                 0);
@@ -300,5 +313,5 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
                               mockResponseMsg,
                               mockResponse.size() - sizeof(pldm_msg_hdr));
 
-    stdexec::sync_wait(scope.on_empty());
+    sdbusplus::async::execution::sync_wait(scope.on_empty());
 }

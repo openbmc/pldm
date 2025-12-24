@@ -292,7 +292,7 @@ class OemEventManager
      *  @param[in] tid - the destination TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> oemPollForPlatformEvent(pldm_tid_t tid);
+    sdbusplus::async::task<int> oemPollForPlatformEvent(pldm_tid_t tid);
 
   protected:
     /** @brief Create prefix string for logging message.

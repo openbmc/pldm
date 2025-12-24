@@ -471,7 +471,7 @@ void EventManager::callPolledEventHandlers(pldm_tid_t tid, uint8_t eventClass,
     }
 }
 
-exec::task<int> EventManager::pollForPlatformEventTask(
+sdbusplus::async::task<int> EventManager::pollForPlatformEventTask(
     pldm_tid_t tid, uint32_t pollDataTransferHandle)
 {
     uint8_t rc = 0;
@@ -508,7 +508,7 @@ exec::task<int> EventManager::pollForPlatformEventTask(
             lg2::info(
                 "Terminus ID {TID} is not available for PLDM request from {NOW}.",
                 "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
-            co_await stdexec::just_stopped();
+            co_await sdbusplus::async::execution::just_stopped();
         }
 
         rc = co_await pollForPlatformEventMessage(
@@ -575,7 +575,7 @@ exec::task<int> EventManager::pollForPlatformEventTask(
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> EventManager::pollForPlatformEventMessage(
+sdbusplus::async::task<int> EventManager::pollForPlatformEventMessage(
     pldm_tid_t tid, uint8_t formatVersion, uint8_t transferOperationFlag,
     uint32_t dataTransferHandle, uint16_t eventIdToAcknowledge,
     uint8_t& completionCode, uint8_t& eventTid, uint16_t& eventId,
@@ -603,7 +603,7 @@ exec::task<int> EventManager::pollForPlatformEventMessage(
         lg2::info(
             "Terminus ID {TID} is not available for PLDM request from {NOW}.",
             "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
-        co_await stdexec::just_stopped();
+        co_await sdbusplus::async::execution::just_stopped();
     }
 
     const pldm_msg* responseMsg = nullptr;

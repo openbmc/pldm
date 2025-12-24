@@ -39,14 +39,14 @@ class PlatformManager
      *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> initTerminus();
+    sdbusplus::async::task<int> initTerminus();
 
     /** @brief Helper to get the supported event messages and set event receiver
      *
      *  @param[in] tid - Destination TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> configEventReceiver(pldm_tid_t tid);
+    sdbusplus::async::task<int> configEventReceiver(pldm_tid_t tid);
 
   private:
     /** @brief Fetch all PDRs from terminus.
@@ -54,7 +54,7 @@ class PlatformManager
      *  @param[in] terminus - The terminus object to store fetched PDRs
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getPDRs(std::shared_ptr<Terminus> terminus);
+    sdbusplus::async::task<int> getPDRs(std::shared_ptr<Terminus> terminus);
 
     /** @brief Fetch PDR from terminus
      *
@@ -72,7 +72,7 @@ class PlatformManager
      *  @param[out] transferCrc - CRC value when record data is last part of PDR
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getPDR(
+    sdbusplus::async::task<int> getPDR(
         const pldm_tid_t tid, const uint32_t recordHndl,
         const uint32_t dataTransferHndl, const uint8_t transferOpFlag,
         const uint16_t requestCnt, const uint16_t recordChgNum,
@@ -90,7 +90,7 @@ class PlatformManager
      * *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getPDRRepositoryInfo(
+    sdbusplus::async::task<int> getPDRRepositoryInfo(
         const pldm_tid_t tid, uint8_t& repositoryState, uint32_t& recordCount,
         uint32_t& repositorySize, uint32_t& largestRecordSize);
 
@@ -107,7 +107,7 @@ class PlatformManager
      *             elapsing of which the terminus shall emit a heartbeat event.
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> setEventReceiver(
+    sdbusplus::async::task<int> setEventReceiver(
         pldm_tid_t tid,
         pldm_event_message_global_enable eventMessageGlobalEnable,
         pldm_transport_protocol_type protocolType, uint16_t heartbeatTimer);
@@ -118,9 +118,9 @@ class PlatformManager
      *  @param[out] terminusBufferSize
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> eventMessageBufferSize(pldm_tid_t tid,
-                                           uint16_t receiverMaxBufferSize,
-                                           uint16_t& terminusBufferSize);
+    sdbusplus::async::task<int> eventMessageBufferSize(
+        pldm_tid_t tid, uint16_t receiverMaxBufferSize,
+        uint16_t& terminusBufferSize);
 
     /** @brief  send eventMessageSupported
      *  @param[in] tid - Destination TID
@@ -134,7 +134,7 @@ class PlatformManager
      *  @param[out] eventClass - vector of eventClass the device can generate
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> eventMessageSupported(
+    sdbusplus::async::task<int> eventMessageSupported(
         pldm_tid_t tid, uint8_t formatVersion, uint8_t& synchronyConfiguration,
         bitfield8_t& synchronyConfigurationSupported,
         uint8_t& numerEventClassReturned, std::vector<uint8_t>& eventClass);
@@ -145,8 +145,8 @@ class PlatformManager
      *  @param[in] total - Total number of record in table
      *  @param[out] fruData - Returned fru record table data
      */
-    exec::task<int> getFRURecordTables(pldm_tid_t tid, const uint16_t& total,
-                                       std::vector<uint8_t>& fruData);
+    sdbusplus::async::task<int> getFRURecordTables(
+        pldm_tid_t tid, const uint16_t& total, std::vector<uint8_t>& fruData);
 
     /** @brief Fetch FRU Record Data from terminus
      *
@@ -160,7 +160,7 @@ class PlatformManager
      *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getFRURecordTable(
+    sdbusplus::async::task<int> getFRURecordTable(
         pldm_tid_t tid, const uint32_t dataTransferHndl,
         const uint8_t transferOpFlag, uint32_t* nextDataTransferHndl,
         uint8_t* transferFlag, size_t* responseCnt,
@@ -171,7 +171,8 @@ class PlatformManager
      *  @param[in] tid - Destination TID
      *  @param[out] total - Total number of record in table
      */
-    exec::task<int> getFRURecordTableMetadata(pldm_tid_t tid, uint16_t* total);
+    sdbusplus::async::task<int> getFRURecordTableMetadata(pldm_tid_t tid,
+                                                          uint16_t* total);
 
     /** @brief Parse record data from FRU table
      *

@@ -87,9 +87,9 @@ class TerminusManager
      *  @param[out] responseLen - length of response PLDM message
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> sendRecvPldmMsg(pldm_tid_t tid, Request& request,
-                                    const pldm_msg** responseMsg,
-                                    size_t* responseLen);
+    sdbusplus::async::task<int> sendRecvPldmMsg(
+        pldm_tid_t tid, Request& request, const pldm_msg** responseMsg,
+        size_t* responseLen);
 
     /** @brief Send request PLDM message to eid. The function will
      *         return when received the response message from terminus.
@@ -100,7 +100,7 @@ class TerminusManager
      *  @param[out] responseLen - length of response PLDM message
      *  @return coroutine return_value - PLDM completion code
      */
-    virtual exec::task<int> sendRecvPldmMsgOverMctp(
+    virtual sdbusplus::async::task<int> sendRecvPldmMsgOverMctp(
         mctp_eid_t eid, Request& request, const pldm_msg** responseMsg,
         size_t* responseLen);
 
@@ -192,7 +192,7 @@ class TerminusManager
      *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> discoverMctpTerminusTask();
+    sdbusplus::async::task<int> discoverMctpTerminusTask();
 
     /** @brief Initialize terminus and then instantiate terminus object to keeps
      *         the data fetched from terminus
@@ -200,7 +200,7 @@ class TerminusManager
      *  @param[in] mctpInfo - information of the MCTP endpoints
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> initMctpTerminus(const MctpInfo& mctpInfo);
+    sdbusplus::async::task<int> initMctpTerminus(const MctpInfo& mctpInfo);
 
     /** @brief Send getTID PLDM command to destination EID and then return the
      *         value of tid in reference parameter.
@@ -209,7 +209,7 @@ class TerminusManager
      *  @param[out] tid - Terminus TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid);
+    sdbusplus::async::task<int> getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid);
 
     /** @brief Send setTID command to destination EID.
      *
@@ -217,7 +217,7 @@ class TerminusManager
      *  @param[in] tid - Destination TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid);
+    sdbusplus::async::task<int> setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid);
 
     /** @brief Send getPLDMTypes command to destination TID and then return the
      *         value of supportedTypes in reference parameter.
@@ -226,7 +226,8 @@ class TerminusManager
      *  @param[out] supportedTypes - Supported Types returned from terminus
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getPLDMTypes(pldm_tid_t tid, uint64_t& supportedTypes);
+    sdbusplus::async::task<int> getPLDMTypes(pldm_tid_t tid,
+                                             uint64_t& supportedTypes);
 
     /** @brief Send getPLDMVersion command to destination TID and then return
      *         the version of the PLDM supported type.
@@ -236,8 +237,8 @@ class TerminusManager
      *  @param[out] version - PLDM Type version
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getPLDMVersion(pldm_tid_t tid, uint8_t type,
-                                   ver32_t* version);
+    sdbusplus::async::task<int> getPLDMVersion(pldm_tid_t tid, uint8_t type,
+                                               ver32_t* version);
 
     /** @brief Send getPLDMCommands command to destination TID and then return
      *         the value of supportedCommands in reference parameter.
@@ -249,9 +250,9 @@ class TerminusManager
      *                             for specific type
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getPLDMCommands(pldm_tid_t tid, uint8_t type,
-                                    ver32_t version,
-                                    bitfield8_t* supportedCmds);
+    sdbusplus::async::task<int> getPLDMCommands(pldm_tid_t tid, uint8_t type,
+                                                ver32_t version,
+                                                bitfield8_t* supportedCmds);
 
     /** @brief Reference to a Handler object that manages the request/response
      *         logic.
@@ -277,7 +278,7 @@ class TerminusManager
     std::queue<MctpInfos> queuedMctpInfos{};
 
     /** @brief coroutine handle of discoverTerminusTask */
-    std::optional<std::pair<exec::async_scope, std::optional<int>>>
+    std::optional<std::pair<sdbusplus::async::async_scope, std::optional<int>>>
         discoverMctpTerminusTaskHandle{};
 
     /** @brief A Manager interface for calling the hook functions **/

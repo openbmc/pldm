@@ -126,39 +126,44 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                      std::forward_as_tuple())
             .first->second;
     scope.spawn(
-        stdexec::just() | stdexec::let_value([this, &rcOpt,
-                                              tid] -> exec::task<void> {
-            auto res =
-                co_await stdexec::stopped_as_optional(doSensorPollingTask(tid));
-            if (res.has_value())
-            {
-                rcOpt = *res;
-            }
-            else
-            {
-                lg2::info("Stopped polling for Terminus ID {TID}", "TID", tid);
-                try
+        sdbusplus::async::execution::just() |
+            sdbusplus::async::execution::let_value([this, &rcOpt, tid]
+                                                   -> sdbusplus::async::task<
+                                                       void> {
+                auto res =
+                    co_await sdbusplus::async::execution::stopped_as_optional(
+                        doSensorPollingTask(tid));
+                if (res.has_value())
                 {
-                    if (sensorPollTimers.contains(tid) &&
-                        sensorPollTimers[tid] &&
-                        sensorPollTimers[tid]->isRunning())
+                    rcOpt = *res;
+                }
+                else
+                {
+                    lg2::info("Stopped polling for Terminus ID {TID}", "TID",
+                              tid);
+                    try
                     {
-                        sensorPollTimers[tid]->stop();
+                        if (sensorPollTimers.contains(tid) &&
+                            sensorPollTimers[tid] &&
+                            sensorPollTimers[tid]->isRunning())
+                        {
+                            sensorPollTimers[tid]->stop();
+                        }
                     }
+                    catch (const std::exception& e)
+                    {
+                        lg2::error(
+                            "Terminus ID {TID}: Failed to stop polling timer. Exception: {EXCEPTION}",
+                            "TID", tid, "EXCEPTION", e);
+                    }
+                    rcOpt = PLDM_SUCCESS;
                 }
-                catch (const std::exception& e)
-                {
-                    lg2::error(
-                        "Terminus ID {TID}: Failed to stop polling timer. Exception: {EXCEPTION}",
-                        "TID", tid, "EXCEPTION", e);
-                }
-                rcOpt = PLDM_SUCCESS;
-            }
-        }),
-        exec::default_task_context<void>(stdexec::inline_scheduler{}));
+            }),
+        exec::default_task_context<void>(
+            sdbusplus::async::execution::inline_scheduler{}));
 }
 
-exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
+sdbusplus::async::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
 {
     uint64_t t0 = 0;
     uint64_t t1 = 0;
@@ -188,7 +193,7 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             lg2::info(
                 "Terminus ID {TID} is not available for PLDM request from {NOW}.",
                 "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
-            co_await stdexec::just_stopped();
+            co_await sdbusplus::async::execution::just_stopped();
         }
 
         if (!termini.contains(tid))
@@ -237,7 +242,7 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
                 lg2::info(
                     "Terminus ID {TID} is not available for PLDM request from {NOW}.",
                     "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
-                co_await stdexec::just_stopped();
+                co_await sdbusplus::async::execution::just_stopped();
             }
 
             if (sensorIt >= numericSensors.size())
@@ -284,7 +289,7 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
     co_return PLDM_SUCCESS;
 }
 
-exec::task<int> SensorManager::getSensorReading(
+sdbusplus::async::task<int> SensorManager::getSensorReading(
     std::shared_ptr<NumericSensor> sensor)
 {
     if (!sensor)
@@ -311,7 +316,7 @@ exec::task<int> SensorManager::getSensorReading(
         lg2::info(
             "Terminus ID {TID} is not available for PLDM request from {NOW}.",
             "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
-        co_await stdexec::just_stopped();
+        co_await sdbusplus::async::execution::just_stopped();
     }
 
     const pldm_msg* responseMsg = nullptr;

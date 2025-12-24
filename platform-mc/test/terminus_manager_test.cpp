@@ -703,7 +703,7 @@ TEST_F(TerminusManagerTest, getActiveEidByNameTest)
     mockTerminusManager.updateMctpEndpointAvailability(mctpInfo, true);
     terminusManager.updateMctpEndpointAvailability(mctpInfo, true);
 
-    stdexec::sync_wait(platformManager.initTerminus());
+    sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(2, terminus->pdrs.size());
     EXPECT_EQ(1, termini.size());

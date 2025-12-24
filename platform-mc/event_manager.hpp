@@ -111,8 +111,8 @@ class EventManager
      *             pldmMessagePollEvent event
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> pollForPlatformEventTask(pldm_tid_t tid,
-                                             uint32_t pollDataTransferHandle);
+    sdbusplus::async::task<int> pollForPlatformEventTask(
+        pldm_tid_t tid, uint32_t pollDataTransferHandle);
 
     /** @brief Register response handler for the polled events from
      *         PollForPlatFormEventMessage
@@ -187,7 +187,7 @@ class EventManager
      *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> pollForPlatformEventMessage(
+    sdbusplus::async::task<int> pollForPlatformEventMessage(
         pldm_tid_t tid, uint8_t formatVersion, uint8_t transferOperationFlag,
         uint32_t dataTransferHandle, uint16_t eventIdToAcknowledge,
         uint8_t& completionCode, uint8_t& eventTid, uint16_t& eventId,

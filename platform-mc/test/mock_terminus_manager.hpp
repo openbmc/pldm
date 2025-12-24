@@ -21,7 +21,7 @@ class MockTerminusManager : public TerminusManager
                         pldm::BmcMctpEid)
     {}
 
-    exec::task<int> sendRecvPldmMsgOverMctp(
+    sdbusplus::async::task<int> sendRecvPldmMsgOverMctp(
         mctp_eid_t /*eid*/, Request& /*request*/, const pldm_msg** responseMsg,
         size_t* responseLen) override
     {

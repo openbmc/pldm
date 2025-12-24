@@ -1005,7 +1005,8 @@ int OemEventManager::handlepldmMessagePollEvent(
     return PLDM_SUCCESS;
 }
 
-exec::task<int> OemEventManager::oemPollForPlatformEvent(pldm_tid_t tid)
+sdbusplus::async::task<int> OemEventManager::oemPollForPlatformEvent(
+    pldm_tid_t tid)
 {
     uint64_t t0 = 0;
 

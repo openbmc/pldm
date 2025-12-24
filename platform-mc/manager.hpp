@@ -16,7 +16,7 @@ namespace pldm
 namespace platform_mc
 {
 
-using PollHandler = std::function<exec::task<int>(pldm_tid_t tid)>;
+using PollHandler = std::function<sdbusplus::async::task<int>(pldm_tid_t tid)>;
 using PollHandlers = std::vector<PollHandler>;
 
 /**
@@ -48,13 +48,13 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> beforeDiscoverTerminus();
+    sdbusplus::async::task<int> beforeDiscoverTerminus();
 
     /** @brief Helper function to do the actions after discovering terminus
      *
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> afterDiscoverTerminus();
+    sdbusplus::async::task<int> afterDiscoverTerminus();
 
     /** @brief Helper function to invoke registered handlers for
      *         the added MCTP endpoints
@@ -207,8 +207,8 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *             pldmMessagePollEvent event
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> pollForPlatformEvent(pldm_tid_t tid, uint16_t pollEventId,
-                                         uint32_t pollDataTransferHandle);
+    sdbusplus::async::task<int> pollForPlatformEvent(
+        pldm_tid_t tid, uint16_t pollEventId, uint32_t pollDataTransferHandle);
 
     /** @brief Handle Polled CPER event
      *
@@ -253,7 +253,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] tid - Destination TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> oemPollForPlatformEvent(pldm_tid_t tid);
+    sdbusplus::async::task<int> oemPollForPlatformEvent(pldm_tid_t tid);
 
     /** @brief Get Active EIDs.
      *

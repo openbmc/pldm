@@ -406,8 +406,9 @@ class Handler
      *          Return [PLDM_ERROR_NOT_READY, nullptr, 0] if timed out.
      *          Return [PLDM_SUCCESS, resp, len] if succeeded
      */
-    stdexec::sender_of<stdexec::set_value_t(SendRecvCoResp)> auto sendRecvMsg(
-        mctp_eid_t eid, pldm::Request&& request);
+    sdbusplus::async::execution::sender_of<
+        sdbusplus::async::execution::set_value_t(SendRecvCoResp)> auto
+        sendRecvMsg(mctp_eid_t eid, pldm::Request&& request);
 
   private:
     PldmTransport* pldmTransport; //!< PLDM transport object
@@ -463,9 +464,9 @@ class Handler
  *  Represents the state and logic for a single send/receive message operation
  *
  * @tparam RequestInterface - Request class type
- * @tparam stdexec::receiver - Execute receiver
+ * @tparam sdbusplus::async::execution::receiver - Execute receiver
  */
-template <class RequestInterface, stdexec::receiver R>
+template <class RequestInterface, sdbusplus::async::execution::receiver R>
 struct SendRecvMsgOperation
 {
     SendRecvMsgOperation() = delete;
@@ -496,14 +497,17 @@ struct SendRecvMsgOperation
      *
      *  @return Execute errors
      */
-    friend void tag_invoke(stdexec::start_t, SendRecvMsgOperation& op) noexcept
+    friend void tag_invoke(sdbusplus::async::execution::start_t,
+                           SendRecvMsgOperation& op) noexcept
     {
-        auto stopToken = stdexec::get_stop_token(stdexec::get_env(op.receiver));
+        auto stopToken = sdbusplus::async::execution::get_stop_token(
+            sdbusplus::async::execution::get_env(op.receiver));
 
         // operation already cancelled
         if (stopToken.stop_requested())
         {
-            return stdexec::set_stopped(std::move(op.receiver));
+            return sdbusplus::async::execution::set_stopped(
+                std::move(op.receiver));
         }
 
         using namespace std::placeholders;
@@ -513,9 +517,9 @@ struct SendRecvMsgOperation
             std::bind(&SendRecvMsgOperation::onComplete, &op, _1, _2, _3));
         if (rc)
         {
-            return stdexec::set_value(std::move(op.receiver), rc,
-                                      static_cast<const pldm_msg*>(nullptr),
-                                      static_cast<size_t>(0));
+            return sdbusplus::async::execution::set_value(
+                std::move(op.receiver), rc,
+                static_cast<const pldm_msg*>(nullptr), static_cast<size_t>(0));
         }
 
         if (stopToken.stop_possible())
@@ -533,7 +537,7 @@ struct SendRecvMsgOperation
     {
         handler.unregisterRequest(requestKey.eid, requestKey.instanceId,
                                   requestKey.type, requestKey.command);
-        return stdexec::set_stopped(std::move(receiver));
+        return sdbusplus::async::execution::set_stopped(std::move(receiver));
     }
 
     /** @brief This function resets the stop callback. Validates the response
@@ -554,8 +558,8 @@ struct SendRecvMsgOperation
         {
             rc = PLDM_ERROR_NOT_READY;
         }
-        return stdexec::set_value(std::move(receiver), static_cast<int>(rc),
-                                  response, respMsgLen);
+        return sdbusplus::async::execution::set_value(
+            std::move(receiver), static_cast<int>(rc), response, respMsgLen);
     }
 
   private:
@@ -588,8 +592,9 @@ struct SendRecvMsgOperation
     /** @brief An optional callback that handles stopping the operation if
      *         requested.
      */
-    std::optional<typename stdexec::stop_token_of_t<
-        stdexec::env_of_t<R>>::template callback_type<std::function<void()>>>
+    std::optional<typename sdbusplus::async::execution::stop_token_of_t<
+        sdbusplus::async::execution::env_of_t<R>>::
+                      template callback_type<std::function<void()>>>
         stopCallback = std::nullopt;
 };
 
@@ -611,15 +616,18 @@ struct SendRecvMsgSender
         handler(handler), eid(eid), request(std::move(request))
     {}
 
-    friend auto tag_invoke(stdexec::get_completion_signatures_t,
-                           const SendRecvMsgSender&, auto)
-        -> stdexec::completion_signatures<
-            stdexec::set_value_t(int, const pldm_msg*, size_t),
-            stdexec::set_stopped_t()>;
+    friend auto tag_invoke(
+        sdbusplus::async::execution::get_completion_signatures_t,
+        const SendRecvMsgSender&, auto)
+        -> sdbusplus::async::execution::completion_signatures<
+            sdbusplus::async::execution::set_value_t(int, const pldm_msg*,
+                                                     size_t),
+            sdbusplus::async::execution::set_stopped_t()>;
 
     /** @brief Execute the sending the request message */
-    template <stdexec::receiver R>
-    friend auto tag_invoke(stdexec::connect_t, SendRecvMsgSender&& self, R r)
+    template <sdbusplus::async::execution::receiver R>
+    friend auto tag_invoke(sdbusplus::async::execution::connect_t,
+                           SendRecvMsgSender&& self, R r)
     {
         return SendRecvMsgOperation<RequestInterface, R>(
             self.handler, self.eid, std::move(self.request), std::move(r));
@@ -648,14 +656,16 @@ struct SendRecvMsgSender
  *          Return [PLDM_SUCCESS, resp, len] if succeeded
  */
 template <class RequestInterface>
-stdexec::sender_of<stdexec::set_value_t(SendRecvCoResp)> auto
+sdbusplus::async::execution::sender_of<
+    sdbusplus::async::execution::set_value_t(SendRecvCoResp)> auto
     Handler<RequestInterface>::sendRecvMsg(mctp_eid_t eid,
                                            pldm::Request&& request)
 {
     return SendRecvMsgSender(*this, eid, std::move(request)) |
-           stdexec::then([](int rc, const pldm_msg* resp, size_t respLen) {
-               return std::make_tuple(rc, resp, respLen);
-           });
+           sdbusplus::async::execution::then(
+               [](int rc, const pldm_msg* resp, size_t respLen) {
+                   return std::make_tuple(rc, resp, respLen);
+               });
 }
 
 } // namespace requester

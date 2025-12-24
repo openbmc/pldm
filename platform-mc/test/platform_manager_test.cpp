@@ -187,7 +187,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     mockTerminusManager.updateMctpEndpointAvailability(
         pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
 
-    stdexec::sync_wait(platformManager.initTerminus());
+    sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(true, terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_GET_PDR));
     EXPECT_EQ(2, terminus->pdrs.size());
@@ -353,7 +353,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
     mockTerminusManager.updateMctpEndpointAvailability(
         pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
 
-    stdexec::sync_wait(platformManager.initTerminus());
+    sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(2, terminus->pdrs.size());
     EXPECT_EQ("S0", terminus->getTerminusName().value());
@@ -473,7 +473,7 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
                                              sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
-    stdexec::sync_wait(platformManager.initTerminus());
+    sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(0, terminus->pdrs.size());
 }
@@ -488,7 +488,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
         tid, 1 << PLDM_BASE, event);
     auto terminus = termini[tid];
 
-    stdexec::sync_wait(platformManager.initTerminus());
+    sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
     // Run event loop for a few seconds to let sensor creation
     // defer tasks be run. May increase time when sensor num is large
     utils::runEventLoopForSeconds(event, 1);
@@ -524,7 +524,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
                                              sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
-    stdexec::sync_wait(platformManager.initTerminus());
+    sdbusplus::async::execution::sync_wait(platformManager.initTerminus());
     // Run event loop for a few seconds to let sensor creation
     // defer tasks be run. May increase time when sensor num is large
     utils::runEventLoopForSeconds(event, 1);

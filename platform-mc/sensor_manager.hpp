@@ -87,14 +87,15 @@ class SensorManager
      *  @param[in] tid - Destination TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> doSensorPollingTask(pldm_tid_t tid);
+    sdbusplus::async::task<int> doSensorPollingTask(pldm_tid_t tid);
 
     /** @brief Sending getSensorReading command for the sensor
      *
      *  @param[in] sensor - the sensor to be updated
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getSensorReading(std::shared_ptr<NumericSensor> sensor);
+    sdbusplus::async::task<int> getSensorReading(
+        std::shared_ptr<NumericSensor> sensor);
 
     /** @brief Reference to to PLDM daemon's main event loop.
      */
@@ -113,7 +114,8 @@ class SensorManager
     std::map<pldm_tid_t, std::unique_ptr<sdbusplus::Timer>> sensorPollTimers;
 
     /** @brief coroutine handle of doSensorPollingTasks */
-    std::map<pldm_tid_t, std::pair<exec::async_scope, std::optional<int>>>
+    std::map<pldm_tid_t,
+             std::pair<sdbusplus::async::async_scope, std::optional<int>>>
         doSensorPollingTaskHandles;
 
     /** @brief Available state for pldm request of terminus */
