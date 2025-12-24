@@ -162,6 +162,7 @@ sdbusplus = dependency('sdbusplus')
 sdeventplus = dependency('sdeventplus')
 stdplus = dependency('stdplus')
 phosphor_logging_dep = dependency('phosphor-logging')
+stdexec_dep = dependency('stdexec', include_type: 'system')
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 
@@ -242,6 +243,7 @@ deps = [
     phosphor_logging_dep,
     sdbusplus,
     sdeventplus,
+    stdexec_dep,
     stdplus,
 ]
 

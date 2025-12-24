@@ -8,11 +8,14 @@
 #include <libpldm/base.h>
 #include <sys/socket.h>
 
+#include <exec/async_scope.hpp>
+#include <exec/task.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/timer.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <stdexec/execution.hpp>
 
 #include <cassert>
 #include <chrono>

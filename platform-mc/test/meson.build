@@ -41,6 +41,7 @@ foreach t : tests
                 phosphor_logging_dep,
                 sdbusplus,
                 sdeventplus,
+                stdexec_dep,
                 test_src,
             ],
         ),

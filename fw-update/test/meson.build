@@ -40,6 +40,7 @@ foreach t : tests
                 phosphor_logging_dep,
                 sdbusplus,
                 sdeventplus,
+                stdexec_dep,
             ],
         ),
         workdir: meson.current_source_dir(),

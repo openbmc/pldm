@@ -13,8 +13,11 @@
 
 #include <libpldm/base.h>
 
+#include <exec/async_scope.hpp>
+#include <exec/task.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <stdexec/execution.hpp>
 #include <xyz/openbmc_project/Software/Activation/server.hpp>
 
 #include <chrono>

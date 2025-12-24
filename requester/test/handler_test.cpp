@@ -8,7 +8,10 @@
 #include <libpldm/base.h>
 #include <libpldm/transport.h>
 
+#include <exec/async_scope.hpp>
+#include <exec/task.hpp>
 #include <sdbusplus/async.hpp>
+#include <stdexec/execution.hpp>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
