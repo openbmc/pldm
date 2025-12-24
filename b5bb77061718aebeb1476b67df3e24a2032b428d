@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd16b1c1_aaa8613f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-12-24T23:10:15Z",
+      "side": 1,
+      "message": "Can elaborate why this is a good thing to do?  Is there a compile issue?",
+      "revId": "b5bb77061718aebeb1476b67df3e24a2032b428d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "005a9049_792b2b60",
         "filename": "requester/handler.hpp",
         "patchSetId": 1
