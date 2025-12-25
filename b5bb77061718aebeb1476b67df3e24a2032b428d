@@ -87,6 +87,24 @@
       "parentUuid": "e6161266_8db15f0f",
       "revId": "b5bb77061718aebeb1476b67df3e24a2032b428d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d37a02c_d2017c77",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-12-25T12:19:12Z",
+      "side": 1,
+      "message": "\u003e Most of the pldm code uses primitives from exec directly. So should they be moved to sdbusplus/async? \n\nYes, I’d be for that.",
+      "parentUuid": "1311866b_04f6d4ab",
+      "revId": "b5bb77061718aebeb1476b67df3e24a2032b428d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
