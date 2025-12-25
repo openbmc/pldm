@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35773396_ea934714",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-12-25T05:48:37Z",
+      "side": 1,
+      "message": "Yes, the CI is failing for pldm. I realised I didn\u0027t mention it. I will add it to the commit message.",
+      "parentUuid": "bd16b1c1_aaa8613f",
+      "revId": "b5bb77061718aebeb1476b67df3e24a2032b428d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "005a9049_792b2b60",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-24T23:08:57Z",
       "side": 1,
       "message": "I’d prefer you don’t do this. Once C++26 is implemented we will likely migrate off stdexec (since it is a reference implementation). The reason for the sdbusplus/async.hpp is as an abstraction.",
+      "revId": "b5bb77061718aebeb1476b67df3e24a2032b428d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6161266_8db15f0f",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2025-12-25T05:48:37Z",
+      "side": 1,
+      "message": "Most of the pldm code uses primitives from `exec` directly. So should they be moved to sdbusplus/async? For e.g `exec::task` -\u003e `sdbusplus::async::task`",
+      "parentUuid": "005a9049_792b2b60",
       "revId": "b5bb77061718aebeb1476b67df3e24a2032b428d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
