@@ -730,7 +730,7 @@ std::optional<SoftwareName> obtainDeviceNameFromConfigurations(
     {
         if (std::get<pldm::eid>(mctpInfo) == eid)
         {
-            auto nameOption = std::get<std::optional<std::string>>(mctpInfo);
+            auto nameOption = std::get<4>(mctpInfo);
             if (nameOption)
             {
                 return *nameOption;
