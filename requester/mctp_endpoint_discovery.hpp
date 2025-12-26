@@ -218,8 +218,7 @@ class MctpDiscovery
      *
      *  @param[in] mctpInfo - information of discovered MCTP endpoint
      */
-    void searchConfigurationFor(const pldm::utils::DBusHandler& handler,
-                                MctpInfo& mctpInfo);
+    void searchConfigurationFor(MctpInfo& mctpInfo);
 
     /** @brief Remove configuration associated with the removed MCTP endpoint.
      *
@@ -238,6 +237,14 @@ class MctpDiscovery
      * information.
      */
     Configurations configurations;
+
+    /** @brief Map to store D-Bus match objects for deferred association discovery */
+    std::map<std::string, std::unique_ptr<sdbusplus::bus::match_t>> associationMatches;
+
+    /** @brief Resolve the association for the MCTP endpoint and update the
+     * internal configuration map if the association is found.
+     */
+    bool resolveAssociation(MctpInfo& mctpInfo);
 };
 
 } // namespace pldm

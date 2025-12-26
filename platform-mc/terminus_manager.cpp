@@ -387,12 +387,26 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         co_return PLDM_ERROR;
     }
 
+    /**
+     * Create a weak_ptr to track the lifecycle of the Terminus object.
+     * This prevents accessing a dangling pointer if the endpoint is removed
+     * from the 'termini' map during async operations.
+     */
+    std::weak_ptr<Terminus> terminusWeak = termini[tid];
+
     uint8_t type = PLDM_BASE;
     auto size = PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8);
     std::vector<uint8_t> pldmCmds(size);
     while ((type < PLDM_MAX_TYPES))
     {
-        if (!termini[tid]->doesSupportType(type))
+        auto terminus = terminusWeak.lock();
+        if (!terminus)
+        {
+            lg2::error("Terminus {TID} removed during discovery. Aborting.", "TID", tid);
+            co_return PLDM_ERROR;
+        }
+
+        if (!terminus->doesSupportType(type))
         {
             type++;
             continue;
@@ -406,7 +420,19 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
                 "Failed to Get PLDM Version for terminus {TID}, PLDM Type {TYPE}, error {ERROR}",
                 "TID", tid, "TYPE", type, "ERROR", rc);
         }
-        termini[tid]->setSupportedTypeVersions(type, version);
+
+        // Check if the terminus is still in the map to handle removal logic.
+        // Although local 'terminus' keeps the object alive,
+        // if the system removed it from the map, we should stop discovery.
+        if (termini.find(tid) == termini.end())
+        {
+             lg2::error("Terminus {TID} removed from map during version fetch.", "TID", tid);
+             co_return PLDM_ERROR;
+        }
+
+        // Safe to access via local pointer
+        terminus->setSupportedTypeVersions(type, version);
+
         std::vector<bitfield8_t> cmds(PLDM_MAX_CMDS_PER_TYPE / 8);
         rc = co_await getPLDMCommands(tid, type, version, cmds.data());
         if (rc)
@@ -430,15 +456,32 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         }
         type++;
     }
-    termini[tid]->setSupportedCommands(pldmCmds);
 
-    /* Use the MCTP target name as the default terminus name */
-    MctpInfoName mctpInfoName = std::get<4>(mctpInfo);
-    if (mctpInfoName.has_value())
+    // Lock again to ensure object exists before final updates
+    if (auto terminus = terminusWeak.lock())
     {
-        lg2::info("Terminus {TID} has default Terminus Name {NAME}", "NAME",
-                  mctpInfoName.value(), "TID", tid);
-        termini[tid]->setTerminusName(mctpInfoName.value());
+        terminus->setSupportedCommands(pldmCmds);
+
+        MctpInfoName mctpInfoName = std::get<4>(mctpInfo);
+        if (mctpInfoName.has_value())
+        {
+            lg2::info("Terminus {TID} has default Terminus Name {NAME}", "NAME",
+                    mctpInfoName.value(), "TID", tid);
+            terminus->setTerminusName(mctpInfoName.value());
+        }
+
+        AssociatedPath associatedPath = std::get<5>(mctpInfo);
+        if (associatedPath.has_value())
+        {
+            lg2::info("Terminus {TID} has associated path {PATH}", "PATH",
+                    associatedPath.value(), "TID", tid);
+            terminus->setAssociatedPath(associatedPath.value());
+        }
+    }
+    else
+    {
+        lg2::warning("Terminus {TID} removed before final configuration.", "TID", tid);
+        co_return PLDM_ERROR;
     }
 
     co_return PLDM_SUCCESS;
