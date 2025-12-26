@@ -441,6 +441,14 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         termini[tid]->setTerminusName(mctpInfoName.value());
     }
 
+    AssociatedPath associatedPath = std::get<5>(mctpInfo);
+    if (associatedPath.has_value())
+    {
+        lg2::info("Terminus {TID} has associated path {PATH}", "PATH",
+                  associatedPath.value(), "TID", tid);
+        termini[tid]->setAssociatedPath(associatedPath.value());
+    }
+
     co_return PLDM_SUCCESS;
 }
 
