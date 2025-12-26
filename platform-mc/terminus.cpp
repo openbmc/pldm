@@ -201,6 +201,12 @@ void Terminus::parseTerminusPDRs()
         }
     }
 
+    auto rc = fetchEntityManagerConfiguration();
+    if (rc != 0)
+    {
+        lg2::info("fetchEntityManagerConfiguration failed with {RC}", "RC", rc);
+    }
+
     auto tName = findTerminusName();
     if (tName && !tName.value().empty())
     {
@@ -214,7 +220,18 @@ void Terminus::parseTerminusPDRs()
         terminusName = std::format("Terminus_{}", tid);
     }
 
-    if (createInventoryPath(terminusName))
+    auto iName = getInventoryName();
+    std::string inventoryName;
+    if (iName && !iName->empty())
+    {
+        inventoryName = std::string(*iName);
+    }
+    else
+    {
+        inventoryName = terminusName;
+    }
+
+    if (createInventoryPath(inventoryName))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
                   tid, "PATH", inventoryPath);
@@ -236,23 +253,49 @@ void Terminus::addNextSensorFromPDRs()
     }
 
     auto pdrIt = sensorPdrIt;
+    std::weak_ptr<Terminus> weakSelf = weak_from_this();
 
     if (pdrIt < numericSensorPdrs.size())
     {
         const auto& pdr = numericSensorPdrs[pdrIt];
         // Defer adding the next Numeric Sensor
-        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
-            event,
-            std::bind(std::mem_fn(&Terminus::addNumericSensor), this, pdr));
+        sensorCreationEvent = std::make_unique<
+            sdeventplus::source::Defer>(event, [weakSelf, pdr](
+                                                   sdeventplus::source::
+                                                       EventBase& /*source*/) {
+            // Try to lock the weak pointer
+            if (auto self = weakSelf.lock())
+            {
+                // Object is alive! Safe to call addNumericSensor
+                self->addNumericSensor(pdr);
+            }
+            else
+            {
+                // Object is dead. Do nothing
+                lg2::info(
+                    "Terminus destroyed, skipping deferred sensor creation.");
+            }
+        });
     }
     else if (pdrIt < numericSensorPdrs.size() + compactNumericSensorPdrs.size())
     {
         pdrIt -= numericSensorPdrs.size();
         const auto& pdr = compactNumericSensorPdrs[pdrIt];
         // Defer adding the next Compact Numeric Sensor
-        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
-            event, std::bind(std::mem_fn(&Terminus::addCompactNumericSensor),
-                             this, pdr));
+        sensorCreationEvent = std::make_unique<
+            sdeventplus::source::Defer>(event, [weakSelf, pdr](
+                                                   sdeventplus::source::
+                                                       EventBase& /*source*/) {
+            if (auto self = weakSelf.lock())
+            {
+                self->addCompactNumericSensor(pdr);
+            }
+            else
+            {
+                lg2::info(
+                    "Terminus destroyed, skipping deferred sensor creation.");
+            }
+        });
     }
     else
     {
@@ -792,6 +835,147 @@ std::vector<std::string> Terminus::getSensorNames(const SensorID& sensorId)
     }
 
     return sensorNames;
+}
+
+int Terminus::fetchEntityManagerConfiguration()
+{
+    auto path = getAssociatedPath();
+    if (!path.has_value())
+    {
+        lg2::error("Associated path is empty for terminus {TID}", "TID", tid);
+        return -1;
+    }
+
+    const std::string filterPath(*path);
+
+    auto bus = sdbusplus::bus::new_default();
+    auto method = bus.new_method_call(
+        "xyz.openbmc_project.EntityManager", "/xyz/openbmc_project/inventory",
+        "org.freedesktop.DBus.ObjectManager", "GetManagedObjects");
+
+    pldm::utils::ObjectValueTree objects;
+
+    try
+    {
+        auto reply = bus.call(method);
+        reply.read(objects);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("GetManagedObjects failed: {ERR}", "ERR", e);
+        return -1;
+    }
+
+    for (const auto& [objPath, interfaces] : objects)
+    {
+        if (!objPath.str.starts_with(filterPath))
+        {
+            continue;
+        }
+
+        for (const auto& [ifName, props] : interfaces)
+        {
+            // Replace inventory if defined in Entity Manager
+            if (std::find(interfaceFilter.begin(), interfaceFilter.end(),
+                          ifName) != interfaceFilter.end())
+            {
+                lg2::info("Found interface {IF} on path {PATH}", "IF", ifName,
+                          "PATH", objPath.str);
+                auto invIt = props.find("Inventory");
+
+                if (invIt != props.end() &&
+                    std::holds_alternative<std::string>(invIt->second))
+                {
+                    lg2::info(
+                        "Setting inventory name from Entity Manager: {NAME} on {PATH}",
+                        "NAME", std::get<std::string>(invIt->second), "PATH",
+                        objPath.str);
+                    setInventoryName(std::get<std::string>(invIt->second));
+                }
+            }
+
+            // Retrieve sensor names from PLDMSensors interface and update
+            // sensorAuxiliaryNamesTbl
+            bool isSensorInterface = false;
+            for (const auto& filter : interfaceFilter)
+            {
+                if (ifName.starts_with(filter + ".PLDMSensors"))
+                {
+                    isSensorInterface = true;
+                    break;
+                }
+            }
+            if (!isSensorInterface)
+                continue;
+
+            auto nameIt = props.find("Name");
+            auto sidIt = props.find("ID");
+
+            if (nameIt == props.end() || sidIt == props.end())
+            {
+                lg2::warning("SensorsMap missing Name or SensorID on {PATH}",
+                             "PATH", objPath.str);
+                continue;
+            }
+
+            if (!std::holds_alternative<std::string>(nameIt->second) ||
+                !std::holds_alternative<uint64_t>(sidIt->second))
+            {
+                lg2::warning("SensorsMap invalid property type on {PATH}",
+                             "PATH", objPath.str);
+                continue;
+            }
+
+            uint64_t sensorId = std::get<uint64_t>(sidIt->second);
+            if (sensorId > std::numeric_limits<uint16_t>::max())
+            {
+                lg2::warning("SensorID overflow: {SID} on {PATH}", "SID",
+                             sensorId, "PATH", objPath.str);
+                continue;
+            }
+
+            const auto& name = std::get<std::string>(nameIt->second);
+
+            // Try update first
+            bool updated = false;
+            for (auto& aux : sensorAuxiliaryNamesTbl)
+            {
+                auto& storedSid = std::get<0>(*aux);
+                auto& namesVec = std::get<2>(*aux);
+
+                if (storedSid == static_cast<uint16_t>(sensorId))
+                {
+                    // Update existing entry
+                    namesVec.clear();
+                    namesVec.emplace_back(
+                        std::vector<std::pair<NameLanguageTag, SensorName>>{
+                            {"en", name}});
+
+                    lg2::info(
+                        "EM sensor rename updated: SID={SID}, Name={NAME}",
+                        "SID", sensorId, "NAME", name);
+
+                    updated = true;
+                    break;
+                }
+            }
+
+            if (!updated)
+            {
+                sensorAuxiliaryNamesTbl.emplace_back(
+                    std::make_shared<SensorAuxiliaryNames>(
+                        static_cast<uint16_t>(sensorId), 1,
+                        std::vector<std::vector<
+                            std::pair<NameLanguageTag, SensorName>>>{
+                            {{"en", name}}}));
+
+                lg2::info("EM sensor rename applied: SID={SID}, Name={NAME}",
+                          "SID", sensorId, "NAME", name);
+            }
+        }
+    }
+
+    return 0;
 }
 
 } // namespace platform_mc

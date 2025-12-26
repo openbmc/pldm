@@ -16,8 +16,27 @@ namespace platform_mc
 
 exec::task<int> PlatformManager::initTerminus()
 {
-    for (auto& [tid, terminus] : termini)
+    // To avoid iterator invalidation, first collect all TIDs
+    // if devices are removed during the async operations
+    std::vector<pldm_tid_t> tids;
+    tids.reserve(termini.size());
+    for (const auto& [tid, _] : termini)
     {
+        tids.push_back(tid);
+    }
+
+    // Process each terminus asynchronously
+    for (const auto& tid : tids)
+    {
+        if (!termini.contains(tid))
+        {
+            lg2::info("Terminus {TID} removed before initialization, skipping.",
+                      "TID", tid);
+            continue;
+        }
+
+        auto terminus = termini[tid];
+
         if (terminus->initialized)
         {
             continue;
@@ -30,6 +49,16 @@ exec::task<int> PlatformManager::initTerminus()
         {
             auto rc =
                 co_await getFRURecordTableMetadata(tid, &totalTableRecords);
+
+            // check if the terminus is still valid after co_await
+            if (!termini.contains(tid))
+            {
+                lg2::error(
+                    "Terminus {TID} removed during getFRURecordTableMetadata",
+                    "TID", tid);
+                continue;
+            }
+
             if (rc)
             {
                 lg2::error(
@@ -48,6 +77,15 @@ exec::task<int> PlatformManager::initTerminus()
         {
             auto rc =
                 co_await getFRURecordTables(tid, totalTableRecords, fruData);
+
+            // check if the terminus is still valid after co_await
+            if (!termini.contains(tid))
+            {
+                lg2::error("Terminus {TID} removed during getFRURecordTables",
+                           "TID", tid);
+                continue;
+            }
+
             if (rc)
             {
                 lg2::error(
@@ -59,6 +97,13 @@ exec::task<int> PlatformManager::initTerminus()
         if (terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_GET_PDR))
         {
             auto rc = co_await getPDRs(terminus);
+            // check if the terminus is still valid after co_await
+            if (!termini.contains(tid))
+            {
+                lg2::error("Terminus {TID} removed during getPDRs", "TID", tid);
+                continue;
+            }
+
             if (rc)
             {
                 lg2::error(
@@ -76,6 +121,13 @@ exec::task<int> PlatformManager::initTerminus()
          */
         if (fruData.size())
         {
+            if (!termini.contains(tid))
+            {
+                lg2::error(
+                    "Terminus {TID} removed during eventMessageBufferSize",
+                    "TID", tid);
+                continue;
+            }
             updateInventoryWithFru(tid, fruData.data(), fruData.size());
         }
 
@@ -90,6 +142,15 @@ exec::task<int> PlatformManager::initTerminus()
             /* Get maxBufferSize use PLDM command eventMessageBufferSize */
             auto rc = co_await eventMessageBufferSize(
                 tid, terminus->maxBufferSize, terminusMaxBufferSize);
+
+            if (!termini.contains(tid))
+            {
+                lg2::error(
+                    "Terminus {TID} removed during eventMessageBufferSize",
+                    "TID", tid);
+                continue;
+            }
+
             if (rc != PLDM_SUCCESS)
             {
                 lg2::error(
@@ -99,10 +160,18 @@ exec::task<int> PlatformManager::initTerminus()
                     PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE;
             }
         }
+
+        if (!termini.contains(tid))
+            continue;
+
         terminus->maxBufferSize =
             std::min(terminus->maxBufferSize, terminusMaxBufferSize);
 
         auto rc = co_await configEventReceiver(tid);
+
+        if (!termini.contains(tid))
+            continue;
+
         if (rc)
         {
             lg2::error(
