@@ -61,7 +61,7 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
     pldm::NetworkId endpointNetId = 0;
     pldm::MctpInfoName endpointName = "BMC";
     pldm::MctpInfo endpointInfo = std::make_tuple(
-        endpointId, endpointUuid, endpointMedium, endpointNetId, endpointName);
+        endpointId, endpointUuid, endpointMedium, endpointNetId, endpointName, std::nullopt);
     configurations[boardInventoryPath] = endpointInfo;
 
     FirmwareInventoryManagerTest inventoryManager(&mockHandler, configurations);
