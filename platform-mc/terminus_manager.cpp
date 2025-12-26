@@ -186,7 +186,6 @@ TerminiMapper::iterator TerminusManager::findTerminusPtr(
 exec::task<int> TerminusManager::discoverMctpTerminusTask()
 {
     std::vector<pldm_tid_t> addedTids;
-
     while (!queuedMctpInfos.empty())
     {
         bool terminusInitFailed = false;
@@ -199,6 +198,45 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
         for (const auto& mctpInfo : mctpInfos)
         {
             auto it = findTerminusPtr(mctpInfo);
+
+            if (it != termini.end())
+            {
+                auto tid = it->first;
+                auto existingTerminus = it->second;
+
+                // Check for Deferred Association
+                auto newPath = std::get<5>(mctpInfo);
+                auto currentPath = existingTerminus->getAssociatedPath();
+
+                if (newPath.has_value() && !currentPath.has_value())
+                {
+                    lg2::info(
+                        "Deferred Association detected for TID {TID}. Re-initializing...",
+                        "TID", tid);
+
+                    // Remove the old Terminus
+                    this->unmapTid(tid);
+                    auto termIt = termini.find(tid);
+                    if (termIt != termini.end())
+                    {
+                        termini.erase(termIt);
+                    }
+
+                    // Remove from availability table if exists,
+                    // since the terminus is going to be re-initialized with new
+                    // path
+                    if (mctpInfoAvailTable.contains(mctpInfo))
+                    {
+                        mctpInfoAvailTable.erase(mctpInfo);
+                    }
+
+                    // The new MctpInfo with the associated path will be added
+                    // as a new terminus after this block, so we just need to
+                    // clean up the old one here.
+                    it = termini.end();
+                }
+            }
+
             if (it == termini.end())
             {
                 mctpInfoAvailTable[mctpInfo] = true;
@@ -439,6 +477,14 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         lg2::info("Terminus {TID} has default Terminus Name {NAME}", "NAME",
                   mctpInfoName.value(), "TID", tid);
         termini[tid]->setTerminusName(mctpInfoName.value());
+    }
+
+    AssociatedPath associatedPath = std::get<5>(mctpInfo);
+    if (associatedPath.has_value())
+    {
+        lg2::info("Terminus {TID} has associated path {PATH}", "PATH",
+                  associatedPath.value(), "TID", tid);
+        termini[tid]->setAssociatedPath(associatedPath.value());
     }
 
     co_return PLDM_SUCCESS;
