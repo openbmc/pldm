@@ -36,7 +36,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
 {
     // Add terminus
     auto mappedTid =
-        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
@@ -185,7 +185,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     mockTerminusManager.updateMctpEndpointAvailability(
-        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+        pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt), true);
 
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
@@ -202,7 +202,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
 {
     // Add terminus
     auto mappedTid =
-        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
@@ -351,7 +351,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     mockTerminusManager.updateMctpEndpointAvailability(
-        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+        pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt), true);
 
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
@@ -363,7 +363,7 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
 {
     // Add terminus
     auto mappedTid =
-        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
@@ -482,7 +482,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest1)
 {
     // terminus doesn't Type2 support
     auto mappedTid =
-        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE, event);
@@ -501,7 +501,7 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
 {
     // terminus responses error
     auto mappedTid =
-        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);

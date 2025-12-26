@@ -38,6 +38,10 @@ using NetworkId = uint32_t;
  */
 using MctpInfoName = std::optional<std::string>;
 
+/** @brief Type definition of MCTP name association path in string
+ */
+using AssociatedPath = std::optional<std::string>;
+
 /** @brief Type definition of MCTP interface information between two endpoints.
  *         eid : Endpoint EID in byte. Defined to match with MCTP D-Bus
  *               interface
@@ -46,7 +50,7 @@ using MctpInfoName = std::optional<std::string>;
  *         NetworkId: MCTP network index
  *         name: Alias name of the endpoint, e.g. BMC, NIC, etc.
  */
-using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId, MctpInfoName>;
+using MctpInfo = std::tuple<eid, UUID, MctpMedium, NetworkId, MctpInfoName, AssociatedPath>;
 
 /** @brief Type definition of MCTP endpoint D-Bus properties in
  *         xyz.openbmc_project.MCTP.Endpoint D-Bus interface.
