@@ -84,9 +84,9 @@ void MctpDiscovery::getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap)
             if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                 types.end())
             {
-                auto mctpInfo =
-                    MctpInfo(std::get<eid>(epProps), uuid, "",
-                             std::get<NetworkId>(epProps), std::nullopt);
+                auto mctpInfo = MctpInfo(std::get<eid>(epProps), uuid, "",
+                                         std::get<NetworkId>(epProps),
+                                         std::nullopt, std::nullopt);
                 searchConfigurationFor(pldm::utils::DBusHandler(), mctpInfo);
                 mctpInfoMap[std::move(mctpInfo)] = availability;
             }
@@ -240,8 +240,8 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                     info(
                         "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
                         "NETWORK", networkId, "EID", eid, "UUID", uuid);
-                    auto mctpInfo =
-                        MctpInfo(eid, uuid, "", networkId, std::nullopt);
+                    auto mctpInfo = MctpInfo(eid, uuid, "", networkId,
+                                             std::nullopt, std::nullopt);
                     searchConfigurationFor(pldm::utils::DBusHandler(),
                                            mctpInfo);
                     mctpInfos.emplace_back(std::move(mctpInfo));
@@ -339,7 +339,8 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             const UUID& uuid = getEndpointUUIDProp(service, objPath);
 
             MctpInfo mctpInfo(std::get<eid>(epProps), uuid, "",
-                              std::get<NetworkId>(epProps), std::nullopt);
+                              std::get<NetworkId>(epProps), std::nullopt,
+                              std::nullopt);
             searchConfigurationFor(pldm::utils::DBusHandler(), mctpInfo);
             if (!std::ranges::contains(existingMctpInfos, mctpInfo))
             {
@@ -497,8 +498,9 @@ void MctpDiscovery::searchConfigurationFor(
         auto name = getNameFromProperties(mctpTargetProperties);
         if (!name.empty())
         {
-            std::get<std::optional<std::string>>(mctpInfo) = name;
+            std::get<4>(mctpInfo) = name;
         }
+        std::get<5>(mctpInfo) = associatedObjPath;
         configurations.emplace(associatedObjPath, mctpInfo);
     }
     catch (const std::exception& e)
