@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1078f77c_a530566f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-26T15:53:54Z",
+      "side": 1,
+      "message": "Not reviewed fully but added few comments. You can address them. Also think of splitting this bug commit if possible*.",
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d74e10b7_1b2503c5",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-26T15:53:54Z",
+      "side": 1,
+      "message": "Lot of function in this file are unused - Or may be not required, Do cross check once.",
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "039f770f_c5bc62fe",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-26T15:53:54Z",
+      "side": 1,
+      "message": "Where are these used?",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 0
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7abe134_a43e3c22",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-26T15:53:54Z",
+      "side": 1,
+      "message": "const std::string\u0026",
+      "range": {
+        "startLine": 75,
+        "startChar": 1,
+        "endLine": 75,
+        "endChar": 60
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a879edd1_102c2c32",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-26T15:53:54Z",
+      "side": 1,
+      "message": "```suggestion\n        if (intf)\n        {\n            return;\n        }\n```",
+      "range": {
+        "startLine": 126,
+        "startChar": 8,
+        "endLine": 127,
+        "endChar": 9
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eabd89f_fe2c2993",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-26T15:53:54Z",
+      "side": 1,
+      "message": "Same here for better readability",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 9
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa71c4fd_67926982",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2025-12-26T15:53:54Z",
+      "side": 1,
+      "message": "Here also we need to refresh the value using \"co_await getNumericEffecterValue();\" Else it might have different value if error is only with response decode.",
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
