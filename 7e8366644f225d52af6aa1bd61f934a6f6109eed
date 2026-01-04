@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bce17c95_1e5c25c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:25:56Z",
+      "side": 1,
+      "message": "This was fixed in Patchset #21",
+      "parentUuid": "f519c172_25ab8c8b",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 11
+      },
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "403912af_571ce2da",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-12-26T15:31:19Z",
       "side": 1,
       "message": "Add Default case",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 5
+      },
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b204e2d_855bda15",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:25:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "403912af_571ce2da",
       "range": {
         "startLine": 53,
         "startChar": 0,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff5392ca_d7802148",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:25:56Z",
+      "side": 1,
+      "message": "The constructor already checks for the validity of PDR; As this method will be called after the constructor is called it is confirmed that the pdr won\u0027t be null.",
+      "parentUuid": "bed85f52_8ae2e380",
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d57453ed_451b234b",
@@ -77,6 +143,24 @@
       "writtenOn": "2025-12-26T15:31:19Z",
       "side": 1,
       "message": "File name is too big, better to name it some shorter one - How about power_effecter.cpp or create if you see many base unit specific effecters come in future, Put then under its own folder platform-mc/numeric_effecter/power_cap.xxp?",
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17b84bc3_047cb52b",
+        "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:25:56Z",
+      "side": 1,
+      "message": "Later folder structure makes sense. I will follow it.",
+      "parentUuid": "d57453ed_451b234b",
       "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -106,6 +190,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8dffe9b5_1d18757d",
+        "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:25:56Z",
+      "side": 1,
+      "message": "This is just setting the property to disabled. What would be the ideal value if there\u0027s an error?",
+      "parentUuid": "c85aeda2_b61a3f9b",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 42
+      },
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e3df4050_5d70204b",
         "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
         "patchSetId": 14
@@ -117,6 +225,24 @@
       "writtenOn": "2025-12-26T15:31:19Z",
       "side": 1,
       "message": "This will return the stale value, Not new value. Start_detach and return stale value doesn\u0027t sit together",
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c299a545_4378088c",
+        "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:25:56Z",
+      "side": 1,
+      "message": "What would be the alternative to `start_detach`?",
+      "parentUuid": "e3df4050_5d70204b",
       "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
