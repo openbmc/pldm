@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abce010b_0d926064",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:26:06Z",
+      "side": 1,
+      "message": "This was fixed in latest patchset #19.",
+      "parentUuid": "d74e10b7_1b2503c5",
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "039f770f_c5bc62fe",
@@ -48,6 +66,30 @@
       "writtenOn": "2025-12-26T15:53:54Z",
       "side": 1,
       "message": "Where are these used?",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 0
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75cb34b7_bb6ef47a",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:26:06Z",
+      "side": 1,
+      "message": "This is used in the `rawToBase` function.",
+      "parentUuid": "039f770f_c5bc62fe",
       "range": {
         "startLine": 57,
         "startChar": 0,
@@ -81,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f223719f_6c0329ba",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7abe134_a43e3c22",
+      "range": {
+        "startLine": 75,
+        "startChar": 1,
+        "endLine": 75,
+        "endChar": 60
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a879edd1_102c2c32",
@@ -94,6 +160,30 @@
       "writtenOn": "2025-12-26T15:53:54Z",
       "side": 1,
       "message": "```suggestion\n        if (intf)\n        {\n            return;\n        }\n```",
+      "range": {
+        "startLine": 126,
+        "startChar": 8,
+        "endLine": 127,
+        "endChar": 9
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a97d464f_2c8f0759",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:26:06Z",
+      "side": 1,
+      "message": "Did you mean `if (!intf)`? I have made the change.",
+      "parentUuid": "a879edd1_102c2c32",
       "range": {
         "startLine": 126,
         "startChar": 8,
@@ -127,6 +217,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8caf6921_379a6cd0",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8eabd89f_fe2c2993",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 9
+      },
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa71c4fd_67926982",
@@ -140,6 +254,24 @@
       "writtenOn": "2025-12-26T15:53:54Z",
       "side": 1,
       "message": "Here also we need to refresh the value using \"co_await getNumericEffecterValue();\" Else it might have different value if error is only with response decode.",
+      "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2a78f1d_f47e48cc",
+        "filename": "platform-mc/numeric_effecter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-04T16:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa71c4fd_67926982",
       "revId": "675e8e45094f4107c89fde572c83040ae51a41d9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
