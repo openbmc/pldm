@@ -88,6 +88,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dec9fe0d_f4de95ae",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T16:10:45Z",
+      "side": 1,
+      "message": "instead of calling updateActivationProgress for every chunk, can we call it only when progress actually changed\n\n```\nuint8_t oldProgress \u003d progress[componentIndex].getProgress();\nprogress[componentIndex].reportFwUpdate(length);\nif (progress[componentIndex].getProgress() !\u003d oldProgress \u0026\u0026\n    updateManager !\u003d nullptr)\n{\n    updateManager-\u003eupdateActivationProgress();\n}\n```",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a86b6c1d_d3bc1ec4",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 7
@@ -99,6 +116,23 @@
       "writtenOn": "2026-01-07T15:49:02Z",
       "side": 1,
       "message": "Accumulating into uint64_t but storing result in uint32_t here \n-\u003e we can use const uint64_t totalSize instead",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c148ef8f_73b18a7f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T16:10:45Z",
+      "side": 1,
+      "message": "Can we use one loop for calculating both totalSize and weightedProgress instead of two ?",
       "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
