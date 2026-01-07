@@ -307,6 +307,28 @@ class GetFwParams : public CommandInterface
                     "No host OS environment restriction for update mode";
         }
 
+        if (fwParams.capabilities_during_update.bits.bit8)
+        {
+            capabilitiesDuringUpdate["Firmware device downgrade restrictions"] =
+                "Firmware Device supports downgrade restrictions, and each component image will report whether a downgrade to an older component image can occur.";
+        }
+        else
+        {
+            capabilitiesDuringUpdate["Firmware device downgrade restrictions"] =
+                    "Firmware Device does not have downgrade restrictions which may prevent a component image from being downgraded.";
+        }
+
+        if (fwParams.capabilities_during_update.bits.bit9)
+        {
+            capabilitiesDuringUpdate["Security revision number update request support"] =
+                "Firmware Device may have components with a security revision number capability.";
+        }
+        else
+        {
+            capabilitiesDuringUpdate["Security revision number update request support"] =
+                    "Firmware Device does not support control of component's security revision number update.";
+        }
+
         ordered_json data;
         data["CapabilitiesDuringUpdate"] = capabilitiesDuringUpdate;
         data["ComponentCount"] = static_cast<uint16_t>(fwParams.comp_count);
