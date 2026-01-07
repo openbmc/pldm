@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83964e3d_8ce37ad1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T16:48:28Z",
+      "side": 1,
+      "message": "To clarify my concerns further- \n1. We are creating too many D-Bus logs with this change.\n2. It will be difficult to interpret meaningful information from the task because these new logs will flood the task. (There’s a plan to add different update message registries to the firmware update task to provide meaningful firmware update information)\n3. we should verify if these computations impact pldm CPU usage. The effect may be negligible on platforms with fewer devices, but platforms with a lot devices could see issues.",
+      "parentUuid": "14526afd_994044cb",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33d1b4c5_d39331f1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
