@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "753a27db_8ba8577d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "I\u0027ll wait for deepak, but it seems easier to avoid flaky updates by just reporting 0-100 rather that try to guess what is granular enough on any given firmware update. 100 dbus calls across a firmware update doesn\u0027t seem terribly unreasonable.",
+      "parentUuid": "14526afd_994044cb",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33d1b4c5_d39331f1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
@@ -72,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bf2fc757_0f398069",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "yeah, you\u0027re right.",
+      "parentUuid": "5f093f48_c24272d9",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "42146643_ca188575",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 7
@@ -83,6 +119,24 @@
       "writtenOn": "2026-01-07T15:49:02Z",
       "side": 1,
       "message": "We are updating progress here and not the state -\u003e should we rename the method ?\n\nOr shall we update the currentState to nextState here ?",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbf18d1c_94333a76",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "yeah good catch, this should set the state at the bottom.",
+      "parentUuid": "42146643_ca188575",
       "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -106,6 +160,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f306d28f_310a7e69",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "sure, I\u0027m fine with it returning void.",
+      "parentUuid": "5d1ff248_2156bc69",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dec9fe0d_f4de95ae",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 7
@@ -117,6 +189,24 @@
       "writtenOn": "2026-01-07T16:10:45Z",
       "side": 1,
       "message": "instead of calling updateActivationProgress for every chunk, can we call it only when progress actually changed\n\n```\nuint8_t oldProgress \u003d progress[componentIndex].getProgress();\nprogress[componentIndex].reportFwUpdate(length);\nif (progress[componentIndex].getProgress() !\u003d oldProgress \u0026\u0026\n    updateManager !\u003d nullptr)\n{\n    updateManager-\u003eupdateActivationProgress();\n}\n```",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47d5cda5_178cfbb2",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "we cache in updateManager.",
+      "parentUuid": "dec9fe0d_f4de95ae",
       "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -140,6 +230,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7f9203b_2a873859",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "sure, we can\u0027t be larger than uint32_t since thats all the pldm package supports, but we can make both uint64_t.",
+      "parentUuid": "a86b6c1d_d3bc1ec4",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c148ef8f_73b18a7f",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 7
@@ -151,6 +259,24 @@
       "writtenOn": "2026-01-07T16:10:45Z",
       "side": 1,
       "message": "Can we use one loop for calculating both totalSize and weightedProgress instead of two ?",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc795c24_9f404fca",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "we can, the performance hit of iterating over a vector twice versus once is going be negligable, and this seemed easier to read, but if you prefer combining this into one for loop, I can do that.",
+      "parentUuid": "c148ef8f_73b18a7f",
       "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -174,6 +300,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8db9563_27e01a95",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "I\u0027ve been given the exact opposite feedback in other places. I\u0027ll make a using directive for this verbose type.",
+      "parentUuid": "0f9737cc_048bec6d",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "791286ae_19e6feda",
         "filename": "fw-update/update_manager.hpp",
         "patchSetId": 7
@@ -185,6 +329,24 @@
       "writtenOn": "2026-01-07T15:49:02Z",
       "side": 1,
       "message": "nit- please use camelCase (lastProgress)",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e31aeb6_bfad7f13",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1002504
+      },
+      "writtenOn": "2026-01-07T16:54:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "791286ae_19e6feda",
       "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
