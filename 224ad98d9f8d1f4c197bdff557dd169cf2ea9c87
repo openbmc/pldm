@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12a7461e_1e2003b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-01-07T17:21:22Z",
+      "side": 1,
+      "message": "Can we get some data to show there\u0027s no impact to FW update perf/CPU usage with this change? That should tell us about 1 and 3.\n\n2 - do we have some kind of limit here that you are concerned about @ranjan.rajeev1609@gmail.com? We also have severity to filter out things.",
+      "parentUuid": "753a27db_8ba8577d",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33d1b4c5_d39331f1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
