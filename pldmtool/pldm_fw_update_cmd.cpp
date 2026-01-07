@@ -396,23 +396,23 @@ class GetFwParams : public CommandInterface
             {
                 componentActivationMethods.push_back("Automatic");
             }
-            else if (compEntry.comp_activation_methods.bits.bit1)
+            if (compEntry.comp_activation_methods.bits.bit1)
             {
                 componentActivationMethods.push_back("Self-Contained");
             }
-            else if (compEntry.comp_activation_methods.bits.bit2)
+            if (compEntry.comp_activation_methods.bits.bit2)
             {
                 componentActivationMethods.push_back("Medium-specific reset");
             }
-            else if (compEntry.comp_activation_methods.bits.bit3)
+            if (compEntry.comp_activation_methods.bits.bit3)
             {
                 componentActivationMethods.push_back("System reboot");
             }
-            else if (compEntry.comp_activation_methods.bits.bit4)
+            if (compEntry.comp_activation_methods.bits.bit4)
             {
                 componentActivationMethods.push_back("DC power cycel");
             }
-            else if (compEntry.comp_activation_methods.bits.bit5)
+            if (compEntry.comp_activation_methods.bits.bit5)
             {
                 componentActivationMethods.push_back("AC power cycle");
             }
