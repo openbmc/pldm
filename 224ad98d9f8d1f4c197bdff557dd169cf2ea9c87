@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14526afd_994044cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T15:49:02Z",
+      "side": 1,
+      "message": "Isn’t this too granular? Feels like we’re spamming the task.\n\n++ @deepak.kodihalli.83@gmail.com for feedback",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f093f48_c24272d9",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T15:49:02Z",
+      "side": 1,
+      "message": "shouldn\u0027t we set to 100 after sending Activate firmware ? (we should reserve 100% for truly complete state)",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42146643_ca188575",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T15:49:02Z",
+      "side": 1,
+      "message": "We are updating progress here and not the state -\u003e should we rename the method ?\n\nOr shall we update the currentState to nextState here ?",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d1ff248_2156bc69",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T15:49:02Z",
+      "side": 1,
+      "message": "Should the return type of reportFwUpdate be boolean or void? \n\nvoid seems appropriate since failures are logged internally and callers can continue regardless.",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a86b6c1d_d3bc1ec4",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T15:49:02Z",
+      "side": 1,
+      "message": "Accumulating into uint64_t but storing result in uint32_t here \n-\u003e we can use const uint64_t totalSize instead",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f9737cc_048bec6d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T15:49:02Z",
+      "side": 1,
+      "message": "nit- (const auto\u0026 lhs, const auto\u0026 rhs)",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "791286ae_19e6feda",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-01-07T15:49:02Z",
+      "side": 1,
+      "message": "nit- please use camelCase (lastProgress)",
+      "revId": "224ad98d9f8d1f4c197bdff557dd169cf2ea9c87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
