@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "175074ad_87c99b92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ede616c_daac813a",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbdb6a6a_1c23f1f0",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-17T16:15:42Z",
       "side": 1,
       "message": "Please remove commented code.",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea620290_11c750c0",
+        "filename": "common/transport.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbdb6a6a_1c23f1f0",
       "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -75,6 +111,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d710f613_ed8076ab",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ccc6c28_632ef569",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55ded354_f2503af2",
@@ -92,6 +146,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a47b0bf6_20be36e8",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55ded354_f2503af2",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8db6181c_7451ae74",
@@ -105,6 +177,30 @@
       "writtenOn": "2025-12-17T16:15:42Z",
       "side": 1,
       "message": "Looks un-intentionally commented out.",
+      "range": {
+        "startLine": 281,
+        "startChar": 1,
+        "endLine": 286,
+        "endChar": 8
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a93b934_50787a31",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8db6181c_7451ae74",
       "range": {
         "startLine": 281,
         "startChar": 1,
@@ -162,6 +258,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c19251e_a8665600",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "727b944d_26bd8a65",
+      "range": {
+        "startLine": 331,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 0
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24759dc1_d68f9fce",
@@ -175,6 +295,30 @@
       "writtenOn": "2025-12-17T16:15:42Z",
       "side": 1,
       "message": "is this commented code is not needed. please remove,",
+      "range": {
+        "startLine": 341,
+        "startChar": 9,
+        "endLine": 341,
+        "endChar": 11
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f3ca61_39f168bd",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24759dc1_d68f9fce",
       "range": {
         "startLine": 341,
         "startChar": 9,
@@ -208,6 +352,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08b0508b_5be66a53",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17107ff0_45ee7f9a",
+      "range": {
+        "startLine": 478,
+        "startChar": 4,
+        "endLine": 478,
+        "endChar": 13
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74969f71_18a1bc10",
@@ -221,6 +389,30 @@
       "writtenOn": "2025-12-17T16:15:42Z",
       "side": 1,
       "message": "same here. please use alias.",
+      "range": {
+        "startLine": 530,
+        "startChar": 4,
+        "endLine": 530,
+        "endChar": 13
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fa21b45_064cfdad",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74969f71_18a1bc10",
       "range": {
         "startLine": 530,
         "startChar": 4,
@@ -254,6 +446,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19fdb04b_1a8ee56f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8c97acb_df826c47",
+      "range": {
+        "startLine": 51,
+        "startChar": 40,
+        "endLine": 51,
+        "endChar": 47
+      },
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4f6af48_491c2fee",
@@ -271,6 +487,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "275af0f2_4b7604bf",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4f6af48_491c2fee",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13a9d463_21fc1124",
@@ -284,6 +518,24 @@
       "writtenOn": "2025-12-17T16:15:42Z",
       "side": 1,
       "message": "nit: Please add an empty line after function.",
+      "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "536d4168_f46b7296",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-08T10:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13a9d463_21fc1124",
       "revId": "0d9733f7c2c2ce724458308fb010c93fdf1c275a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
