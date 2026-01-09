@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3edc082_ca068e99",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1330,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-01-09T05:43:32Z",
+      "side": 1,
+      "message": "Can we use the\"new\" operator other than reinterpret cast everywhere below?",
+      "range": {
+        "startLine": 1330,
+        "startChar": 16,
+        "endLine": 1330,
+        "endChar": 33
+      },
+      "revId": "bcaff7c8d963cb952d7e27e315253a05c02282cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "892abcd5_33e0b13b",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1507,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-01-09T05:43:32Z",
+      "side": 1,
+      "message": "Which function in utils does this unit test?",
+      "revId": "bcaff7c8d963cb952d7e27e315253a05c02282cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
