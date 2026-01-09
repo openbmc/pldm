@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35af0c1c_a9c9da6f",
+        "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-01-09T05:47:58Z",
+      "side": 1,
+      "message": "Since you have a global namespace added, lg2 here is not needed, just info() would be good.",
+      "range": {
+        "startLine": 32,
+        "startChar": 7,
+        "endLine": 32,
+        "endChar": 12
+      },
+      "revId": "04c671d852a86b75a1e27fc9155dbc23dff6dc9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
