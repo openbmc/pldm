@@ -12,10 +12,33 @@ using InventoryItemBoard =
 using SoftwareVersion =
     sdbusplus::common::xyz::openbmc_project::software::Version;
 
+constexpr auto inventoryItemPlatformInterface =
+    "xyz.openbmc_project.Inventory.Item.Platform";
+
 PHOSPHOR_LOG2_USING;
 
 namespace pldm::fw_update
 {
+
+/** @brief Sanitize a string for use in a D-Bus object path
+ *
+ *  D-Bus object paths only allow [A-Za-z0-9_]. This function replaces
+ *  any invalid characters with underscores.
+ *
+ *  @param[in] name - The string to sanitize
+ *  @return Sanitized string safe for D-Bus object paths
+ */
+static std::string sanitizeForDbusPath(const std::string& name)
+{
+    std::string result = name;
+    std::replace_if(
+        result.begin(), result.end(),
+        [](char c) {
+            return !std::isalnum(static_cast<unsigned char>(c)) && c != '_';
+        },
+        '_');
+    return result;
+}
 
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
@@ -31,22 +54,25 @@ void FirmwareInventoryManager::createFirmwareEntry(
     // has provided a mapping, use it; otherwise fall back to a default
     // placeholder path so that a software object can still be created.
 
-    std::optional<std::filesystem::path> boardPath;
-
     auto& eid = softwareIdentifier.first;
     const auto inventoryPath = getInventoryPath(eid);
+
+    std::optional<std::filesystem::path> boardPath;
     if (inventoryPath)
     {
         boardPath = getBoardPath(*dbusHandler, *inventoryPath);
     }
-    else
+
+    if (!boardPath)
     {
         boardPath = "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     }
+
     const auto boardName = boardPath->filename().string();
+    const auto sanitizedName = sanitizeForDbusPath(softwareName);
     const auto softwarePath =
         std::format("{}/{}_{}_{}", SoftwareVersion::namespace_path, boardName,
-                    softwareName, utils::generateSwId());
+                    sanitizedName, utils::generateSwId());
 
     softwareMap.insert_or_assign(
         softwareIdentifier,
@@ -67,29 +93,31 @@ void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
 std::optional<std::filesystem::path> getBoardPath(
     const pldm::utils::DBusHandler& handler, const InventoryPath& path)
 {
-    pldm::utils::GetAncestorsResponse response;
+    // Try to find an ancestor with Board or Platform interface
+    static const std::array<const char*, 2> parentInterfaces = {
+        InventoryItemBoard::interface, inventoryItemPlatformInterface};
 
-    try
+    for (const auto& interface : parentInterfaces)
     {
-        response =
-            handler.getAncestors(path.c_str(), {InventoryItemBoard::interface});
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Failed to get ancestors for path {PATH}: {ERROR}", "PATH", path,
-              "ERROR", e);
-        return std::nullopt;
-    }
-
-    if (response.empty())
-    {
-        error(
-            "Failed to get unique board path for Inventory path {PATH}, found: {SIZE}",
-            "PATH", path, "SIZE", response.size());
-        return std::nullopt;
+        try
+        {
+            auto response = handler.getAncestors(path.c_str(), {interface});
+            if (!response.empty())
+            {
+                return std::get<ObjectPath>(response.front());
+            }
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            error(
+                "Failed to get ancestors for path {PATH} with interface {INTF}: {ERROR}",
+                "PATH", path, "INTF", interface, "ERROR", e);
+        }
     }
 
-    return std::get<ObjectPath>(response.front());
+    error("No Board or Platform ancestor found for Inventory path {PATH}",
+          "PATH", path);
+    return std::nullopt;
 }
 
 std::optional<InventoryPath> FirmwareInventoryManager::getInventoryPath(
