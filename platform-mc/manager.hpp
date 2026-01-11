@@ -147,9 +147,12 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
                          eventDataOffset;
         auto eventDataSize = payloadLength - eventDataOffset;
-        eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
-                                         PLDM_SENSOR_EVENT, eventData,
-                                         eventDataSize);
+        if (!termini.empty())
+        {
+            eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
+                                             PLDM_SENSOR_EVENT, eventData,
+                                             eventDataSize);
+        }
         return PLDM_SUCCESS;
     }
 
