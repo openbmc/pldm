@@ -29,9 +29,9 @@ int EventManager::handlePlatformEvent(
     /* Only handle the event of the discovered termini*/
     if (!termini.contains(tid))
     {
-        lg2::error("Terminus ID {TID} is not in the managing list.", "TID",
+        lg2::info("Terminus ID {TID} is not in the managing list.", "TID",
                    tid);
-        return PLDM_ERROR;
+        return PLDM_SUCCESS;
     }
 
     /* EventClass sensorEvent `Table 11 - PLDM Event Types` DSP0248 */
