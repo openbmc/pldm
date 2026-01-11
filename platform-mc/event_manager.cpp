@@ -26,14 +26,6 @@ int EventManager::handlePlatformEvent(
     pldm_tid_t tid, uint16_t eventId, uint8_t eventClass,
     const uint8_t* eventData, size_t eventDataSize)
 {
-    /* Only handle the event of the discovered termini*/
-    if (!termini.contains(tid))
-    {
-        lg2::error("Terminus ID {TID} is not in the managing list.", "TID",
-                   tid);
-        return PLDM_ERROR;
-    }
-
     /* EventClass sensorEvent `Table 11 - PLDM Event Types` DSP0248 */
     if (eventClass == PLDM_SENSOR_EVENT)
     {
