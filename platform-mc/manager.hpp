@@ -147,9 +147,12 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
                          eventDataOffset;
         auto eventDataSize = payloadLength - eventDataOffset;
-        eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
-                                         PLDM_SENSOR_EVENT, eventData,
-                                         eventDataSize);
+        if (termini.contains(tid))
+        {
+            eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
+                                             PLDM_SENSOR_EVENT, eventData,
+                                             eventDataSize);
+        }
         return PLDM_SUCCESS;
     }
 
@@ -170,9 +173,12 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         auto eventData =
             const_cast<const uint8_t*>(request->payload) + eventDataOffset;
         auto eventDataSize = payloadLength - eventDataOffset;
-        eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
-                                         PLDM_CPER_EVENT, eventData,
-                                         eventDataSize);
+        if (termini.contains(tid))
+        {
+            eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
+                                             PLDM_CPER_EVENT, eventData,
+                                             eventDataSize);
+        }
         return PLDM_SUCCESS;
     }
 
@@ -193,9 +199,12 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         auto eventData = reinterpret_cast<const uint8_t*>(request->payload) +
                          eventDataOffset;
         auto eventDataSize = payloadLength - eventDataOffset;
-        eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
-                                         PLDM_MESSAGE_POLL_EVENT, eventData,
-                                         eventDataSize);
+        if (termini.contains(tid))
+        {
+            eventManager.handlePlatformEvent(tid, PLDM_PLATFORM_EVENT_ID_NULL,
+                                             PLDM_MESSAGE_POLL_EVENT, eventData,
+                                             eventDataSize);
+        }
         return PLDM_SUCCESS;
     }
 
@@ -221,8 +230,12 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     int handlePolledCperEvent(pldm_tid_t tid, uint16_t eventId,
                               const uint8_t* eventData, size_t eventDataSize)
     {
-        return eventManager.handlePlatformEvent(tid, eventId, PLDM_CPER_EVENT,
-                                                eventData, eventDataSize);
+        if (termini.contains(tid))
+        {
+            return eventManager.handlePlatformEvent(
+                tid, eventId, PLDM_CPER_EVENT, eventData, eventDataSize);
+        }
+        return PLDM_ERROR;
     }
 
     /** @brief The helper function to allow register the handler function for
