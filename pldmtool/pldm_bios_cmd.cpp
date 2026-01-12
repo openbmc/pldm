@@ -72,9 +72,9 @@ class GetDateTime : public CommandInterface
 
         std::stringstream dt;
         ordered_json data;
-        dt << bcd2dec16(year) << "-" << setWidth(month) << "-" << setWidth(day)
-           << " " << setWidth(hours) << ":" << setWidth(minutes) << ":"
-           << setWidth(seconds);
+        dt << pldm_bcd_bcd2dec16(year) << "-" << setWidth(month) << "-"
+           << setWidth(day) << " " << setWidth(hours) << ":"
+           << setWidth(minutes) << ":" << setWidth(seconds);
         data["Response"] = dt.str();
         pldmtool::helper::DisplayInJson(data);
     }
