@@ -1,0 +1,177 @@
+{
+    "record_details": {
+        "fru_record_type": 254,
+        "fru_encoding_type": 1,
+        "dbus_interface_name": "xyz.openbmc_project.Inventory.Item.System"
+    },
+    "fru_fields": [
+        {
+            "fru_field_type": 2,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D0",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 3,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D1",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 4,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D2",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 5,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D3",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 6,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D4",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 7,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D5",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 8,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D6",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 9,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D7",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 10,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D8",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 11,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "D9",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 12,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F0",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 13,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F1",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 14,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F2",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 15,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F3",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 16,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F4",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 17,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F5",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 18,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F6",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 19,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F7",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 20,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F8",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 21,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "F9",
+                "property_type": "bytearray"
+            }
+        },
+        {
+            "fru_field_type": 22,
+            "dbus": {
+                "interface": "com.ibm.ipzvpd.UTIL",
+                "property_name": "RT",
+                "property_type": "bytearray"
+            }
+        }
+    ]
+}
