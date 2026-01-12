@@ -329,6 +329,24 @@
       "parentUuid": "e3df4050_5d70204b",
       "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c14f505c_3e1c88f2",
+        "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-12T07:14:52Z",
+      "side": 1,
+      "message": "Currently, in the latest patch I am using `scope.spawn`. If we add to that `scope.on_empty` to wait for the set operation to finish, it\u0027s a deadlock as this is a single threaded event loop. There doesn\u0027t seem to be any other alternative. I think it should be fine if the updated value is reflected after some time.",
+      "parentUuid": "c299a545_4378088c",
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
