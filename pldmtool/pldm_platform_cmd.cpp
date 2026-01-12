@@ -455,6 +455,7 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_SOUTH_BRIDGE, "South Bridge"},
         {PLDM_ENTITY_REAL_TIME_CLOCK, "Real Time Clock (RTC)"},
         {PLDM_ENTITY_FPGA_CPLD_DEVICE, "FPGA/CPLD Configurable Logic Device"},
+        {PLDM_ENTITY_PROCESSOR_CORE, "Processor Core"},
         {PLDM_ENTITY_OTHER_BUS, "Other Bus"},
         {PLDM_ENTITY_SYS_BUS, "System Bus"},
         {PLDM_ENTITY_I2C_BUS, "I2C Bus"},
