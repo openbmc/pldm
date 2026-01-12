@@ -183,6 +183,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "465b980c_e8abe416",
+        "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-12T06:56:48Z",
+      "side": 1,
+      "message": "Done. The new path is `platform-mc/effecters/numeric/power_cap_dbus_intf.hpp`",
+      "parentUuid": "dffe89fd_1e65bbc4",
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c85aeda2_b61a3f9b",
@@ -244,6 +262,30 @@
       "side": 1,
       "message": "Ideally it should be existing value if set fails. Set Operation status is false.",
       "parentUuid": "8dffe9b5_1d18757d",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 42
+      },
+      "revId": "7e8366644f225d52af6aa1bd61f934a6f6109eed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b94ba0fe_7ea602a4",
+        "filename": "platform-mc/numeric_effecter_power_cap_dbus_interface.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-12T06:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1202ab97_0d244925",
       "range": {
         "startLine": 107,
         "startChar": 0,
