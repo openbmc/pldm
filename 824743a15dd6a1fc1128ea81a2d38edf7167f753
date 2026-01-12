@@ -33,6 +33,24 @@
       "message": "It isn\u0027t in the context that the termini list is empty that we don\u0027t forward the event to EventManager but when the termini list does not contain the tid of terminus where the request comes from.\n\nAs we already have the check in `handlePlatformEvent()`, I think we should resolve this annoying logging issue there.\n\nConsidering that we register `handleSensorEvent` for all sensor events to BMC in pldmd no matter which terminus they come from, we should not treat a request from an unmanaged TID as an error and log error message. I suggest in EventManager::handlePlatformEvent(), we handle as follows (we can even omit the logging part but I think it\u0027s informational):\n\n```\n    /* Only handle the event of the discovered termini*/\n    if (!termini.contains(tid))\n    {\n        lg2::debug(\"Terminus ID {TID} is not in the managing list.\", \"TID\",\n                   tid);\n        return PLDM_SUCCESS;\n    }\n```\n\nBecause if you choose to handle here, you would have to take care of all the places in this class that pass the request down to EventManager (handleCperEvent,...).",
       "revId": "824743a15dd6a1fc1128ea81a2d38edf7167f753",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93ceb6c6_101e1550",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-01-12T15:51:35Z",
+      "side": 1,
+      "message": "Would it make sense to add the ```if(!termini.empty())``` check for all \nfunctions(I count 4) that pass the ```handlePlatformEvent()``` seeing as\n we will still see this log irrespective of log level change? I agree \nthat the log is needed and informational.\nI observe these logs in huge number during host poweron and changing the\n log level wouldn\u0027t help unless we actually change log filtering.",
+      "parentUuid": "b97b86fd_0356570b",
+      "revId": "824743a15dd6a1fc1128ea81a2d38edf7167f753",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
