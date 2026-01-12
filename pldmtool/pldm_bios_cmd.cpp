@@ -84,7 +84,7 @@ class GetDateTime : public CommandInterface
     {
         std::stringstream s;
         s << std::setfill('0') << std::setw(2)
-          << static_cast<uint32_t>(bcd2dec8(data));
+          << static_cast<uint32_t>(pldm_bcd_bcd2dec8(data));
         return s.str();
     }
 };
