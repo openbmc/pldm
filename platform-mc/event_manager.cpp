@@ -2,8 +2,8 @@
 
 #include "terminus_manager.hpp"
 
+#include <libpldm/edac.h>
 #include <libpldm/platform.h>
-#include <libpldm/utils.h>
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Dump/Create/common.hpp>
