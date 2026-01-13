@@ -26,7 +26,6 @@ namespace pldmtool
 namespace helper
 {
 
-constexpr uint8_t PLDM_ENTITY_ID = 8;
 using ordered_json = nlohmann::ordered_json;
 
 /** @brief print the input message if pldmverbose is enabled
@@ -88,10 +87,13 @@ class CommandInterface
   public:
     explicit CommandInterface(const char* type, const char* name,
                               CLI::App* app) :
-        pldmType(type), commandName(name), mctp_eid(PLDM_ENTITY_ID),
+        pldmType(type), commandName(name), mctp_eid(0), network_id(0),
         pldmVerbose(false), instanceId(0)
     {
-        app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");
+        app->add_option("-l,--mctp_network", network_id, "MCTP Network id")
+            ->required();
+        app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID")
+            ->required();
         app->add_flag("-v, --verbose", pldmVerbose);
         app->add_option("-n, --retry-count", numRetries,
                         "Number of retry when PLDM request message is failed");
@@ -144,6 +146,7 @@ class CommandInterface
     const std::string pldmType;
     const std::string commandName;
     uint8_t mctp_eid;
+    uint32_t network_id;
     bool pldmVerbose;
 
   protected:
