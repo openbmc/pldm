@@ -3,8 +3,8 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/platform.hpp"
 
+#include <libpldm/edac.h>
 #include <libpldm/entity.h>
-#include <libpldm/utils.h>
 #include <systemd/sd-journal.h>
 
 #include <phosphor-logging/lg2.hpp>

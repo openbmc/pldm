@@ -4,8 +4,8 @@
 #include "common/utils.hpp"
 #include "pldm_cmd_helper.hpp"
 
+#include <libpldm/bcd.h>
 #include <libpldm/bios_table.h>
-#include <libpldm/utils.h>
 
 #include <map>
 #include <optional>
