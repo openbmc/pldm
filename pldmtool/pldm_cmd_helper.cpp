@@ -136,6 +136,15 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
 
     auto tid = mctp_eid;
     PldmTransport pldmTransport(false);
+
+    int tidMapRC = pldmTransport.mapTid(tid, network_id, mctp_eid);
+    if (tidMapRC != 0 && tidMapRC != -ENOTSUP)
+    {
+        std::cerr << "Failed to map TID " << unsigned(tid) << " to EID "
+                  << unsigned(mctp_eid) << ", error " << tidMapRC << std::endl;
+        return PLDM_ERROR;
+    }
+
     uint8_t retry = 0;
     int rc = PLDM_ERROR;
 
