@@ -2,7 +2,7 @@
 
 #include "pldm_cmd_helper.hpp"
 
-#include <libpldm/utils.h>
+#include <libpldm/base.h>
 
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/file_io.h>
@@ -232,7 +232,7 @@ class GetPLDMVersion : public CommandInterface
         if (cc == PLDM_SUCCESS)
         {
             char buffer[16] = {0};
-            ver2str(&version, buffer, sizeof(buffer));
+            pldm_base_ver2str(&version, buffer, sizeof(buffer));
             auto it = std::find_if(pldmTypes.begin(), pldmTypes.end(),
                                    [&](const auto& typePair) {
                                        return typePair.second == pldmType;
