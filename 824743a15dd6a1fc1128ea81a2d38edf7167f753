@@ -69,6 +69,24 @@
       "parentUuid": "93ceb6c6_101e1550",
       "revId": "824743a15dd6a1fc1128ea81a2d38edf7167f753",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87cb75f5_ce9e6a8b",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-01-13T09:11:00Z",
+      "side": 1,
+      "message": "So I add the check if ```(termini.contains(tid))``` and not \nif ```(!termini.contains(tid))``` before I pass it to EventManager::handlePlatformEvent()?\nSome more context,\nIn IBM, termini discovery is done statically in host-bmc and events are also forwarded to platform-mc handlers, bombing the journal, so this was my way of trying to suppress those logs without removing the logs themselves for other OEMs.",
+      "parentUuid": "5bb97171_cdf7eeb6",
+      "revId": "824743a15dd6a1fc1128ea81a2d38edf7167f753",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
