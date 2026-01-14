@@ -76,12 +76,6 @@ inline double getSensorDataValue(uint8_t sensor_data_size,
         case PLDM_SENSOR_DATA_SIZE_SINT32:
             ret = value.value_s32;
             break;
-        case PLDM_SENSOR_DATA_SIZE_UINT64:
-            ret = value.value_u64;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT64:
-            ret = value.value_s64;
-            break;
     }
     return ret;
 }
@@ -112,12 +106,6 @@ inline double getRangeFieldValue(uint8_t range_field_format,
             break;
         case PLDM_RANGE_FIELD_FORMAT_REAL32:
             ret = value.value_f32;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_UINT64:
-            ret = value.value_u64;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_SINT64:
-            ret = value.value_s64;
             break;
     }
     return ret;
