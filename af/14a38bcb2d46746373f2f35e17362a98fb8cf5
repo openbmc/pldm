@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Code-Review+1: <apuli@nvidia.com>
+Submitted-by: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Submitted-at: Wed, 14 Jan 2026 12:04:11 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/86650
+Comments-Total: 1
+Project: openbmc/pldm
+Branch: refs/heads/master
