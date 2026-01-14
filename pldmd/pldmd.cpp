@@ -210,6 +210,9 @@ int main(int argc, char** argv)
     sdbusplus::server::manager_t sensorObjManager(
         bus, "/xyz/openbmc_project/sensors");
 
+    sdbusplus::server::manager_t metricObjManager(
+        bus, "/xyz/openbmc_project/metric");
+    
     InstanceIdDb instanceIdDb;
     sdbusplus::server::manager_t inventoryManager(
         bus, "/xyz/openbmc_project/inventory");
