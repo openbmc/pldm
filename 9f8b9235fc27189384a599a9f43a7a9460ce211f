@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "095e8d57_634830d7",
+        "filename": "meson.build",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-15T10:41:18Z",
+      "side": 1,
+      "message": "missed similar change here intentionally ?",
+      "range": {
+        "startLine": 174,
+        "startChar": 16,
+        "endLine": 174,
+        "endChar": 35
+      },
+      "revId": "9f8b9235fc27189384a599a9f43a7a9460ce211f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
