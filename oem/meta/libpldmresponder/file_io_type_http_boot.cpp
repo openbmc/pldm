@@ -1,6 +1,7 @@
 #include "file_io_type_http_boot.hpp"
 
 #include <fcntl.h>
+#include <libpldm/edac.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
