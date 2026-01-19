@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "967fb0d0_6d887a85",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-01-19T10:44:39Z",
+      "side": 1,
+      "message": "Yes we are implementing what ever mentioned as points. Correcting the sentence.",
+      "parentUuid": "4e62f1e8_422d5305",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 46
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68946e2d_a50825d1",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2026-01-19T08:07:06Z",
       "side": 1,
       "message": "can you elaborate why they are needed for this system and why they are not needed in the older ones ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 40
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff2397c3_38c47e9f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-01-19T10:44:39Z",
+      "side": 1,
+      "message": "Most of these are newly added, I am adding specific info of all",
+      "parentUuid": "68946e2d_a50825d1",
       "range": {
         "startLine": 13,
         "startChar": 2,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a45f05d2_a652e378",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-01-19T10:44:39Z",
+      "side": 1,
+      "message": "We could test what ever the newly added code. Will correct this.",
+      "parentUuid": "612bbfcc_791820cb",
+      "range": {
+        "startLine": 18,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84a6d515_ba82ee92",
         "filename": "configurations/pdr/com.ibm.Hardware.Chassis.Model.Huygens/11.json",
         "patchSetId": 2
@@ -83,6 +155,24 @@
       "writtenOn": "2026-01-19T08:07:06Z",
       "side": 1,
       "message": "are any of these common across platforms ? or are they only specific to huygens system ?",
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98994b08_034fdddd",
+        "filename": "configurations/pdr/com.ibm.Hardware.Chassis.Model.Huygens/11.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-01-19T10:44:39Z",
+      "side": 1,
+      "message": "All these changes are specific to Huygens systems only as the inventory paths are new here",
+      "parentUuid": "84a6d515_ba82ee92",
       "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
