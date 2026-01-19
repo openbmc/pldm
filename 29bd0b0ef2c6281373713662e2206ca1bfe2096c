@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e62f1e8_422d5305",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-19T08:07:06Z",
+      "side": 1,
+      "message": "`some` ? so we are not implementing few which we stated in commit message ? if not please correct it.",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 46
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68946e2d_a50825d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-19T08:07:06Z",
+      "side": 1,
+      "message": "can you elaborate why they are needed for this system and why they are not needed in the older ones ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 40
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "612bbfcc_791820cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-19T08:07:06Z",
+      "side": 1,
+      "message": "`most` -\u003e does this mean we have not tested everything ?",
+      "range": {
+        "startLine": 18,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84a6d515_ba82ee92",
+        "filename": "configurations/pdr/com.ibm.Hardware.Chassis.Model.Huygens/11.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-19T08:07:06Z",
+      "side": 1,
+      "message": "are any of these common across platforms ? or are they only specific to huygens system ?",
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
