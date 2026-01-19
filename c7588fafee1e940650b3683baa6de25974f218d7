@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82d4f039_35ac01d4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-19T03:30:51Z",
+      "side": 1,
+      "message": "Hi @manojkiran.eda@gmail.com, Can we merge this patch? I will push the commit that uses the alternative to `wstring_convert` later. Busy with other patches currently. Thanks!",
+      "parentUuid": "a3077548_d89b6641",
+      "range": {
+        "startLine": 9,
+        "startChar": 19,
+        "endLine": 9,
+        "endChar": 39
+      },
+      "revId": "c7588fafee1e940650b3683baa6de25974f218d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "173a45b5_37b57bf4",
@@ -71,6 +95,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b020bcaf_11d18760",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-19T03:30:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "173a45b5_37b57bf4",
+      "range": {
+        "startLine": 338,
+        "startChar": 19,
+        "endLine": 338,
+        "endChar": 43
+      },
+      "revId": "c7588fafee1e940650b3683baa6de25974f218d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c35e08c_c60073c9",
@@ -84,6 +132,30 @@
       "writtenOn": "2025-10-27T10:36:53Z",
       "side": 1,
       "message": "same as above.",
+      "range": {
+        "startLine": 411,
+        "startChar": 9,
+        "endLine": 412,
+        "endChar": 37
+      },
+      "revId": "c7588fafee1e940650b3683baa6de25974f218d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1b25f75_125be5be",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-01-19T03:30:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c35e08c_c60073c9",
       "range": {
         "startLine": 411,
         "startChar": 9,
