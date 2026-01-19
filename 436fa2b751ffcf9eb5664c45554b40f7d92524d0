@@ -16,6 +16,24 @@
       "message": "I feel like the network parameter should be ordered-before the eid parameter.",
       "revId": "436fa2b751ffcf9eb5664c45554b40f7d92524d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e855f87_d4a9c4ac",
+        "filename": "common/transport.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-19T03:32:14Z",
+      "side": 1,
+      "message": "You are right. I will reorder them",
+      "parentUuid": "4e94d3ae_0ccffc35",
+      "revId": "436fa2b751ffcf9eb5664c45554b40f7d92524d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
