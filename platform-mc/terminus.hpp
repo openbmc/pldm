@@ -87,7 +87,7 @@ class Terminus
     inline bool setSupportedTypeVersions(const uint8_t type,
                                          const ver32_t version)
     {
-        if (type > PLDM_MAX_TYPES || type >= supportedTypeVersions.size())
+        if (type > PLDM_MAX_TYPES)
         {
             return false;
         }
