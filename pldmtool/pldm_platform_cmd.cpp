@@ -1903,25 +1903,12 @@ class GetStateSensorReadings : public CommandInterface
                 output.emplace(("sensorOpState[" + std::to_string(i) + "]"),
                                sensorOpState.at(stateField[i].sensor_op_state));
             }
-
-            if (sensorPresState.contains(stateField[i].present_state))
-            {
-                output.emplace(("presentState[" + std::to_string(i) + "]"),
-                               sensorPresState.at(stateField[i].present_state));
-            }
-
-            if (sensorPresState.contains(stateField[i].previous_state))
-            {
-                output.emplace(
-                    ("previousState[" + std::to_string(i) + "]"),
-                    sensorPresState.at(stateField[i].previous_state));
-            }
-
-            if (sensorPresState.contains(stateField[i].event_state))
-            {
-                output.emplace(("eventState[" + std::to_string(i) + "]"),
-                               sensorPresState.at(stateField[i].event_state));
-            }
+            output.emplace(("presentState[" + std::to_string(i) + "]"),
+                           std::to_string(stateField[i].present_state));
+            output.emplace(("previousState[" + std::to_string(i) + "]"),
+                           std::to_string(stateField[i].previous_state));
+            output.emplace(("eventState[" + std::to_string(i) + "]"),
+                           std::to_string(stateField[i].event_state));
         }
 
         pldmtool::helper::DisplayInJson(output);
