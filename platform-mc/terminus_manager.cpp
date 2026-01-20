@@ -304,25 +304,41 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo,
             }
             else
             {
-                /* ToDo:
-                 * Maybe the terminus supports multiple medium interfaces
-                 * Or the TID is used by other terminus.
-                 * Check the UUID to confirm.
+                /* Check UUID to determine if it's the same device with
+                 * multiple medium interfaces or a TID conflict
                  */
-                isMapped = false;
+                if (terminusMctpInfo && std::get<1>(terminusMctpInfo.value()) ==
+                                            std::get<1>(mctpInfo))
+                {
+                    // Same device with multiple interfaces
+                    lg2::info(
+                        "Terminus {TID} detected via multiple medium interfaces with same UUID {UUID}",
+                        "TID", responseTid, "UUID", std::get<1>(mctpInfo));
+
+                    // Free the pre-allocated TID if it was allocated for this
+                    // interface
+                    if (tid != responseTid && tidPool[tid])
+                    {
+                        unmapTid(tid);
+                    }
+                    co_return PLDM_SUCCESS;
+                }
+                else
+                {
+                    // Different device using same TID
+                    lg2::info(
+                        "TID conflict: TID {TID} used by different devices with different UUIDs",
+                        "TID", responseTid);
+                    isMapped = false;
+                }
             }
         }
         /* Use the terminus TID for mapping */
         else
         {
-            auto mappedTid = storeTerminusInfo(mctpInfo, responseTid);
-            if (!mappedTid)
-            {
-                lg2::error("Failed to store Terminus Info for terminus {TID}.",
-                           "TID", responseTid);
-                co_return PLDM_ERROR;
-            }
-            isMapped = true;
+            // No terminus with responseTid exists - ignore it, use
+            // pre-allocated tid
+            isMapped = false;
         }
     }
 
