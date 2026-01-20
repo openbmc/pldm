@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1993f8_4d487892",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-20T06:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "967fb0d0_6d887a85",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 46
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68946e2d_a50825d1",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Most of these are newly added, I am adding specific info of all",
       "parentUuid": "68946e2d_a50825d1",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 40
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "471ce2c4_90226ade",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-20T06:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff2397c3_38c47e9f",
       "range": {
         "startLine": 13,
         "startChar": 2,
@@ -142,6 +190,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "caf92d3e_72ba5121",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-20T06:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a45f05d2_a652e378",
+      "range": {
+        "startLine": 18,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84a6d515_ba82ee92",
@@ -173,6 +245,24 @@
       "side": 1,
       "message": "All these changes are specific to Huygens systems only as the inventory paths are new here",
       "parentUuid": "84a6d515_ba82ee92",
+      "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "134aea7c_e2884a76",
+        "filename": "configurations/pdr/com.ibm.Hardware.Chassis.Model.Huygens/11.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-20T06:08:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98994b08_034fdddd",
       "revId": "29bd0b0ef2c6281373713662e2206ca1bfe2096c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
