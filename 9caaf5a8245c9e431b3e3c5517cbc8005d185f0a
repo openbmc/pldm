@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd4abad_acbfa333",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2026-01-21T13:56:09Z",
+      "side": 1,
+      "message": "Relevant libpldm changes\n\n86731: entity: Fix typos in enums | https://gerrit.openbmc.org/c/openbmc/libpldm/+/86731\n\n86729: state-set: Add new enums for state sets | https://gerrit.openbmc.org/c/openbmc/libpldm/+/86729",
+      "revId": "9caaf5a8245c9e431b3e3c5517cbc8005d185f0a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
