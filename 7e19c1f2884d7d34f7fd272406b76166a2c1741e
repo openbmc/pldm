@@ -16,6 +16,24 @@
       "message": "I think this should be PLDM_SUCCESS too, as platform-mc should not respond ERROR to a request that it does not handle. What do you think anh @thu@os.amperecomputing.com",
       "revId": "7e19c1f2884d7d34f7fd272406b76166a2c1741e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdd82148_ac2d4100",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-01-21T14:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d10fb2a_0e8b3994",
+      "revId": "7e19c1f2884d7d34f7fd272406b76166a2c1741e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
