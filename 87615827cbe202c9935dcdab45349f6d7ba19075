@@ -16,6 +16,24 @@
       "message": "can you please add the pldmtool output of how this looks like ?",
       "revId": "87615827cbe202c9935dcdab45349f6d7ba19075",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "112cf8b6_ebfa159f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2026-01-22T15:18:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6756812_4d60964b",
+      "revId": "87615827cbe202c9935dcdab45349f6d7ba19075",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
