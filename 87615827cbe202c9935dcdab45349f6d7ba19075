@@ -34,6 +34,24 @@
       "parentUuid": "b6756812_4d60964b",
       "revId": "87615827cbe202c9935dcdab45349f6d7ba19075",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ff070f5_c93d6851",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2026-01-22T15:28:31Z",
+      "side": 1,
+      "message": "Just in case, after some changes to libpldm whould be accepted, I want to add possibility of parsing to the GetStateSensorReadings command:\n```\n~# pldmtool platform GetStateSensorReadings --help\nget the state sensor readings\nUsage: pldmtool platform GetStateSensorReadings [OPTIONS]\n\nOptions:\n  ...\n  -s,--state_set_id UINT      State Set ID that should be used for data interpretation\n```\nSo the example from the description could be translated to a more human-readable output:\n```\n~# pldmtool platform GetStateSensorReadings --sensor_id\u003d203 --rearm\u003d0 -m 10 --state_set_id 33\n{\n    \"compositeSensorCount\": 1,\n    \"sensorOpState[0]\": \"Sensor Enabled\",\n    \"presentState[0]\": \"Disconnected(2)\",\n    \"previousState[0]\": \"0\",\n    \"eventState[0]\": \"Disconnected(2)\"\n}\n```",
+      "parentUuid": "112cf8b6_ebfa159f",
+      "revId": "87615827cbe202c9935dcdab45349f6d7ba19075",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
