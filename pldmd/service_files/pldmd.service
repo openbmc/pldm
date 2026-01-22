@@ -7,6 +7,7 @@ After=xyz.openbmc_project.biosconfig_manager.service
 Restart=always
 Type=dbus
 BusName=xyz.openbmc_project.PLDM
+Environment="PLDMD_ARGS="
 EnvironmentFile=-/etc/default/pldmd
 ExecStart=/usr/bin/pldmd $PLDMD_ARGS
 
