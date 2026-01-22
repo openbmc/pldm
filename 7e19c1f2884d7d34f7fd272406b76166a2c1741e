@@ -34,6 +34,24 @@
       "parentUuid": "0d10fb2a_0e8b3994",
       "revId": "7e19c1f2884d7d34f7fd272406b76166a2c1741e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "742efadc_21cf915b",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-01-22T11:21:07Z",
+      "side": 1,
+      "message": "I think may be `PLDM_ERROR_NOT_READY` might be a good choice in all the available errors ? since event delivery requires prior negotiation/context \u0026 state establishment usually through SetEventReceiver. NOT_READY would indicate that the \"responder is not in a state to process this request”",
+      "parentUuid": "cdd82148_ac2d4100",
+      "revId": "7e19c1f2884d7d34f7fd272406b76166a2c1741e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
