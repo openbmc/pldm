@@ -33,6 +33,69 @@
       "message": "LGTM",
       "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c66fb74a_c64b1de1",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-01-23T11:09:44Z",
+      "side": 1,
+      "message": "This must be error - If a terminus is not discovered, Then any transactions to unmanaged terminus is error.",
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfcfa8f4_9ad00403",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-01-23T11:09:44Z",
+      "side": 1,
+      "message": "This check is redundant - Already its done as first check in handlePlatformEvent()\n\nhttps://github.com/openbmc/pldm/blob/master/platform-mc/event_manager.cpp#L30-L35",
+      "range": {
+        "startLine": 150,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "673ec02c_8c03a09c",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-01-23T11:09:44Z",
+      "side": 1,
+      "message": "Same above and other place too. Its redundant check",
+      "range": {
+        "startLine": 176,
+        "startChar": 7,
+        "endLine": 177,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
