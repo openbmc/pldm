@@ -50,6 +50,7 @@ enum class EventType : uint8_t
     OS_LOAD_WDT_PWR_CYCLE = 0x26,
     MTIA_FAULT = 0x27,
     POST_TIMEOUTED = 0x28,
+    RAINBOW_FAULT = 0x29,
 };
 
 enum class EventAssert : uint8_t

@@ -59,6 +59,7 @@ static constexpr auto eventList = std::to_array({
     " OS LOAD WDT PWR_CYCLE",
     " MTIA FAULT",
     " Post-Timeouted",
+    " RAINBOW FAULT",
 });
 
 static constexpr auto pmic_event_type = std::to_array({
@@ -113,7 +114,7 @@ static const auto vr_source = std::to_array<VRSource>({
     {" PVPP_CD_ASIC2", false},
 });
 
-const std::vector<FaultDesc> faultsList = {
+const std::vector<FaultDesc> mtiaFaultsList = {
     {" MTIA FAULT", 0x00, "MTIA_P3V3",
      "/xyz/openbmc_project/inventory/system/board/Minerva_Aegis/p3v3",
      "VoltageRegulatorFault"},
@@ -248,12 +249,165 @@ const std::vector<FaultDesc> faultsList = {
      "DeviceOverOperatingTemperatureFault"},
 };
 
-const FaultDesc* lookupFaultByIndex(uint8_t index)
+const std::vector<FaultDesc> rainbowFaultsList = {
+    {" RAINBOW FAULT", 0x00, "RAINBOW_HAMSA_VDDHRXTX_PCIE",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/hamsa_vddhrxtx_pcie",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x01, "RAINBOW_HAMSA_AVDD_PCIE",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/hamsa_avdd_pcie",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x02, "RAINBOW_OWL_W_TRVDD0P75",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/owl_w_trvdd0p75",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x03, "RAINBOW_OWL_E_TRVDD0P75",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/owl_e_trvdd0p75",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x04, "RAINBOW_OWL_W_TRVDD0P9",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/owl_w_trvdd0p9",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x05, "RAINBOW_OWL_E_TRVDD0P9",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/owl_e_trvdd0p9",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x06, "RAINBOW_MAX_N_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/max_n_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x07, "RAINBOW_MAX_M_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/max_m_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x08, "RAINBOW_MAX_S_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/max_s_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x09, "RAINBOW_HAMSA_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/hamsa_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x0A, "RAINBOW_OWL_W_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/owl_w_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x0B, "RAINBOW_OWL_E_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/owl_e_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x0C, "RAINBOW_MEDHA0_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/medha0_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x0D, "RAINBOW_MEDHA1_VDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/medha1_vdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x0E, "RAINBOW_VDDPHY_HBM1_HBM3_HBM5_HBM7",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vddphy_hbm1_hbm3_hbm5_hbm7",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x0F, "RAINBOW_VPP_HBM1_HBM3_HBM5_HBM7",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vpp_hbm1_hbm3_hbm5_hbm7",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x10, "RAINBOW_VDDQC_HBM1_HBM3_HBM5_HBM7",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vddqc_hbm1_hbm3_hbm5_hbm7",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x11, "RAINBOW_VDDQL_HBM1_HBM3_HBM5_HBM7",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vddql_hbm1_hbm3_hbm5_hbm7",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x12, "RAINBOW_VDDPHY_HBM0_HBM2_HBM4_HBM6",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vddphy_hbm0_hbm2_hbm4_hbm6",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x13, "RAINBOW_VPP_HBM0_HBM2_HBM4_HBM6",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vpp_hbm0_hbm2_hbm4_hbm6",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x14, "RAINBOW_VDDQC_HBM0_HBM2_HBM4_HBM6",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vddqc_hbm0_hbm2_hbm4_hbm6",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x15, "RAINBOW_VDDQL_HBM0_HBM2_HBM4_HBM6",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/vddql_hbm0_hbm2_hbm4_hbm6",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x16, "RAINBOW_P1V5_W_RVDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p1v5_w_rvdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x17, "RAINBOW_P1V5_E_RVDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p1v5_e_rvdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x18, "RAINBOW_P0V9_OWL_W_PVDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p0v9_owl_w_pvdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x19, "RAINBOW_P0V9_OWL_E_PVDD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p0v9_owl_e_pvdd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x1A, "RAINBOW_PLL_VDDA15_HBM5_HBM7",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/pll_vdda15_hbm5_hbm7",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x1B, "RAINBOW_PLL_VDDA15_HBM1_HBM3",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/pll_vdda15_hbm1_hbm3",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x1C, "RAINBOW_PLL_VDDA15_HBM4_HBM6",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/pll_vdda15_hbm4_hbm6",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x1D, "RAINBOW_PLL_VDDA15_HBM0_HBM2",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/pll_vdda15_hbm0_hbm2",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x1E, "RAINBOW_PVDD1P5",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/pvdd1p5",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x1F, "RAINBOW_P1V5_PLL_VDDA_SOC",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p1v5_pll_vdda_soc",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x20, "RAINBOW_P1V5_PLL_VDDA_OWL",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p1v5_pll_vdda_owl",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x21, "RAINBOW_LDO_IN_1V2",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/ldo_in_1v2",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x22, "RAINBOW_P1V8",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p1v8",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x23, "RAINBOW_P3V3",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p3v3",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x24, "RAINBOW_P5V",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p5v",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x25, "RAINBOW_P12V_UBC_PWRGD",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p12v_ubc_pwrgd",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x26, "RAINBOW_P0V75_AVDD_HCSL ",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p0v75_avdd_hcsl",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x27, "RAINBOW_P4V2",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/p4v2",
+     "VoltageRegulatorFault"},
+    {" RAINBOW FAULT", 0x50, "RAINBOW_POWER_ON_SEQUENCE_FAIL",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/power_on_sequence_fail",
+     "PowerRailFault"},
+    {" RAINBOW FAULT", 0x51, "RAINBOW_FM_ASIC_0_THERMTRIP_N",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/fm_asic_0_thermtrip_n",
+     "DeviceOverOperatingTemperatureFault"},
+    {" RAINBOW FAULT", 0x52, "RAINBOW_MEDHA1_HBM_CATTRIP_LS_LVC33_ALARM",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/medha1_hbm_cattrip_ls_lvc33_alarm",
+     "DeviceOverOperatingTemperatureFault"},
+    {" RAINBOW FAULT", 0x53, "RAINBOW_MEDHA0_HBM_CATTRIP_LS_LVC33_ALARM",
+     "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/medha0_hbm_cattrip_ls_lvc33_alarm",
+     "DeviceOverOperatingTemperatureFault"},
+};
+
+static const std::map<EventType, const std::vector<FaultDesc>*> faultListMap = {
+    {EventType::MTIA_FAULT, &mtiaFaultsList},
+    {EventType::RAINBOW_FAULT, &rainbowFaultsList},
+};
+
+const std::vector<FaultDesc>* getFaultList(EventType eventType)
 {
+    if (auto it = faultListMap.find(eventType); it != faultListMap.end())
+        return it->second;
+    return nullptr;
+}
+
+const FaultDesc* lookupFaultByIndex(EventType eventType, uint8_t index)
+{
+    const auto* faultsList = getFaultList(eventType);
+    if (!faultsList)
+    {
+        return nullptr;
+    }
+
     auto it = std::find_if(
-        faultsList.begin(), faultsList.end(),
+        faultsList->begin(), faultsList->end(),
         [index](const auto& fault) { return fault.index == index; });
-    return it != faultsList.end() ? &(*it) : nullptr;
+    return it != faultsList->end() ? &(*it) : nullptr;
 }
 
 void recordEventLog(const FaultDesc& fault, EventAssert eventStatus,
@@ -476,6 +630,7 @@ const std::string EventLogHandler::handleEventType(
         case EventType::OS_LOAD_WDT_PWR_CYCLE:
         case EventType::MTIA_FAULT:
         case EventType::POST_TIMEOUTED:
+        case EventType::RAINBOW_FAULT:
         {
             event = eventList[static_cast<int>(eventType)];
             break;
@@ -575,7 +730,7 @@ void EventLogHandler::addSystemEventLogAndJournal(
         {
             EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
             const auto index = eventData[2];
-            const auto* faultEvent = lookupFaultByIndex(index);
+            const auto* faultEvent = lookupFaultByIndex(eventType, index);
             if (!faultEvent)
             {
                 error("Invalid MTIA fault source 0x{SOURCE:X}", "SOURCE",
@@ -585,6 +740,66 @@ void EventLogHandler::addSystemEventLogAndJournal(
 
             FaultData data{eventData[3], eventData[4]};
             recordEventLog(*faultEvent, eventStatus, data);
+            break;
+        }
+        case EventType::RAINBOW_FAULT:
+        {
+            EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
+            const auto index = eventData[2];
+
+            const auto* faultEvent = lookupFaultByIndex(eventType, index);
+            if (!faultEvent)
+            {
+                error("Invalid Rainbow fault source 0x{SOURCE:X}", "SOURCE",
+                    static_cast<int>(index));
+                break;
+            }
+
+            int slot = -1;
+            switch (tid)
+            {
+                case 10:
+                    slot = 0;
+                    break;
+                case 20:
+                    slot = 1;
+                    break;
+                case 30:
+                    slot = 2;
+                    break;
+                case 40:
+                    slot = 3;
+                    break;
+                default:
+                    error("Invalid TID {TID} for rainbow slot mapping", "TID",
+                        tid);
+                    break;
+            }
+
+            FaultDesc updatedFault = *faultEvent;
+
+            if (slot != -1)
+            {
+                constexpr std::string_view needle = "/Santabarbara_Rainbow";
+
+                std::string newPath = updatedFault.object_path;
+                size_t pos = newPath.find(needle);
+
+                if (pos != std::string::npos)
+                {
+                    newPath.insert(pos + needle.size(),
+                                  "_" + std::to_string(slot));
+                }
+                else
+                {
+                    newPath += "_" + std::to_string(slot);
+                }
+
+                updatedFault.object_path = std::move(newPath);
+            }
+
+            FaultData data{eventData[3], eventData[4]};
+            recordEventLog(updatedFault, eventStatus, data);
             break;
         }
         case EventType::PMALERT_ASSERTION:
