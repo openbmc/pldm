@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0ee2ed9_32b31dfb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-27T05:15:12Z",
+      "side": 1,
+      "message": "ackowledged",
+      "parentUuid": "05f3cbb8_d3a7891b",
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d72d3e8c_b5d77149",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 5
@@ -31,6 +49,30 @@
       "writtenOn": "2026-01-23T12:25:55Z",
       "side": 1,
       "message": "else if (...)",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 66
+      },
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cba3843_e5053129",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-27T05:15:12Z",
+      "side": 1,
+      "message": "acknowledged",
+      "parentUuid": "d72d3e8c_b5d77149",
       "range": {
         "startLine": 305,
         "startChar": 0,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba638450_ec2791f9",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-27T05:15:12Z",
+      "side": 1,
+      "message": "Agreed. I will add this UUID comparison logic during the discovery phase so that there is no duplicate device in the mapping",
+      "parentUuid": "4143f7d1_81296f62",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 332,
+        "endChar": 21
+      },
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "677e488c_b072fd77",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 5
@@ -77,6 +143,30 @@
       "writtenOn": "2026-01-23T12:25:55Z",
       "side": 1,
       "message": "With your current changes \"isMapped\" is always false - But that seems to be wrong - Correct the logic as per other comment.",
+      "range": {
+        "startLine": 354,
+        "startChar": 4,
+        "endLine": 354,
+        "endChar": 18
+      },
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd5df7c6_c50bea40",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-27T05:15:12Z",
+      "side": 1,
+      "message": "I will revert the back the 317 line change so this should be solved. But in af-mctp case it will still be the case as you said since we will be forcing preallocated TID always.",
+      "parentUuid": "677e488c_b072fd77",
       "range": {
         "startLine": 354,
         "startChar": 4,

@@ -22,6 +22,30 @@
       },
       "revId": "436fa2b751ffcf9eb5664c45554b40f7d92524d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35c2f1aa_f6b4a86f",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-27T05:15:12Z",
+      "side": 0,
+      "message": "the response tid may not correspond to our preallocated tid always.\n\nIf we change the preallocated tid, we will have to change it for all devices. \n\nHence preallocated TID was forced for all devices.\n\nBut I agree the logic should stay for mctp demux side\n\nSince for demux response tid will always match since they do a tid \u003d eid mapping. \n\nI will put a #IFDEF so that this logic wont be used for af-mctp pldm",
+      "parentUuid": "2a9ed971_9e227cb5",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 13
+      },
+      "revId": "436fa2b751ffcf9eb5664c45554b40f7d92524d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
