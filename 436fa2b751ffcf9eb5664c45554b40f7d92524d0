@@ -46,6 +46,30 @@
       },
       "revId": "436fa2b751ffcf9eb5664c45554b40f7d92524d0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb163bd8_3a88291c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-01-27T05:29:20Z",
+      "side": 0,
+      "message": "Hi @manojkiran.eda@gmail.com\n\nCould you please confirm whether this logic is required for PLDM when using mctp-dmux, or if it can be safely removed?",
+      "parentUuid": "35c2f1aa_f6b4a86f",
+      "range": {
+        "startLine": 318,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 13
+      },
+      "revId": "436fa2b751ffcf9eb5664c45554b40f7d92524d0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
