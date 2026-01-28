@@ -77,6 +77,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e01874f_e972fc5b",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-01-28T04:19:27Z",
+      "side": 1,
+      "message": "I would like to keep this check before calling `handlePlatformEvent()`\nWill remove the check from there instead of here to remove redundancy per your suggestion",
+      "parentUuid": "dfcfa8f4_9ad00403",
+      "range": {
+        "startLine": 150,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "673ec02c_8c03a09c",
         "filename": "platform-mc/manager.hpp",
         "patchSetId": 8
@@ -88,6 +112,30 @@
       "writtenOn": "2026-01-23T11:09:44Z",
       "side": 1,
       "message": "Same above and other place too. Its redundant check",
+      "range": {
+        "startLine": 176,
+        "startChar": 7,
+        "endLine": 177,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3db07a64_1ac8f060",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-01-28T04:19:27Z",
+      "side": 1,
+      "message": "Will remove the check from `handlePlatformEvent()` instead of here to remove as well",
+      "parentUuid": "673ec02c_8c03a09c",
       "range": {
         "startLine": 176,
         "startChar": 7,
