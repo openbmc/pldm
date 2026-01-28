@@ -34,6 +34,23 @@
       "parentUuid": "d9a39667_c396dd0c",
       "revId": "ff52acbd1ba33bc274d9c4acc0c0450098e74981",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a93b64c8_1c3fe5a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000941
+      },
+      "writtenOn": "2026-01-28T02:09:49Z",
+      "side": 1,
+      "message": "I\u0027m not in a position to confirm if this is the absolute fix for the root cause, but looking at the code structure, I see the current approach uses nested loops to find and erase items one by one. I was wondering: is there a specific requirement to handle the removals sequentially?\n\nThe nested loops (for + std::find_if) result in O(N*M) complexity. Also, since erase is inside the for loop, it might be called multiple times, which causes the vector to shift elements repeatedly.\n\nHow about using a pattern like this:\n\n1. Create a temporary std::unordered_set to store the keys from toAddMctpInfo. This would make the search much faster.\n2. Use the \"Erase-remove idiom\" (std::remove_if) to process existingMctpInfos in a single pass. This ensures we only move the vector elements once.",
+      "revId": "ff52acbd1ba33bc274d9c4acc0c0450098e74981",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
