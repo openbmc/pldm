@@ -70,6 +70,24 @@
       "parentUuid": "742efadc_21cf915b",
       "revId": "7e19c1f2884d7d34f7fd272406b76166a2c1741e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56dc268b_b08b0c07",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-01-28T05:11:36Z",
+      "side": 1,
+      "message": "\u003e In IBM, termini discovery is done statically in host-bmc and events are also forwarded to platform-mc handlers, bombing the journal, so this was my way of trying to suppress those logs without removing the logs themselves for other OEMs.\n\nAbove is the context Rahul gave. We are registering platform-mc\u0027s handlers for all the platform events coming to BMC whether the terminus are in the managed list or not. If we respond with error for those events, how the terminus is gonna react? What if in his systems, he never aims for the terminus to be discovered by platform-mc? I personally don\u0027t think platform-mc should return error just because it does not manage the terminus. Please correct me if my point is wrong.",
+      "parentUuid": "b7217458_1687fe68",
+      "revId": "7e19c1f2884d7d34f7fd272406b76166a2c1741e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
