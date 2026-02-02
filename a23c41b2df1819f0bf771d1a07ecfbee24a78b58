@@ -124,6 +124,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e39f4232_7abe5741",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T07:43:50Z",
+      "side": 1,
+      "message": "Right, but how do we know mctpreactor and mapper have completed their processing for the associated EM configuration object to exist when pldmd looks for it here?",
+      "parentUuid": "7ea6c766_b2d87793",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8568a54_85b6960c",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 12
