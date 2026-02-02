@@ -16,6 +16,24 @@
       "message": "Is this a pattern followed elsewhere too? Is the actual issue not having defaults?",
       "revId": "367756e23ee29bc3c171f93814260e6968b4a1d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1350dbdc_0b5d4d76",
+        "filename": "pldmd/service_files/pldmd.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-02-02T09:53:15Z",
+      "side": 1,
+      "message": "Seems so. \n\n```\n[Service]\nType\u003dnotify-reload\nEnvironment\u003d\"SSHD_OPTS\u003d\"\nEnvironmentFile\u003d-/etc/default/ssh\nExecStartPre\u003d@BASE_BINDIR@/mkdir -p /var/run/sshd\nExecStart\u003d-@SBINDIR@/sshd -D $SSHD_OPTS\n```\n\nThis is a sample from https://github.com/openbmc/openbmc/blob/c957f192aff069078187a820402efc737f443e05/poky/meta/recipes-connectivity/openssh/openssh/sshd.service#L9\n\n-----\n\nSeems like they are using the same pattern",
+      "parentUuid": "1c6314e8_2acefbb2",
+      "revId": "367756e23ee29bc3c171f93814260e6968b4a1d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
