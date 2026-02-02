@@ -160,6 +160,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ea0a0ce_bcf80ed3",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T09:36:21Z",
+      "side": 1,
+      "message": "I\u0027ll let Andrew comment as well, but I think atm you need to subscribe to two signals - the MCTP.Endpoint and the association interface on the /configured_by object. Only when you receive both can you access the EM config from the association object. I\u0027ve done something similar in a set of dbus-sensor patches for nvidia-gpu. Open to better approaches.",
+      "parentUuid": "2bbcdc65_011a6ed4",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8568a54_85b6960c",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 12
