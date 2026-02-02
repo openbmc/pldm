@@ -34,6 +34,24 @@
       "parentUuid": "1c6314e8_2acefbb2",
       "revId": "367756e23ee29bc3c171f93814260e6968b4a1d3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b646cbc2_dd823179",
+        "filename": "pldmd/service_files/pldmd.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-02-02T11:04:51Z",
+      "side": 1,
+      "message": "That\u0027s right, its the missing default \u0026 the fact that `/etc` is writable and if the `/etc/default/pldmd` file is not present/deleted , then the PLDM_ARGS isn\u0027t defaulted which causes the warning(does not do any harm though). I did follow sshd \u0026 did similar thing to mitigate the warning in pldm.",
+      "parentUuid": "1350dbdc_0b5d4d76",
+      "revId": "367756e23ee29bc3c171f93814260e6968b4a1d3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
