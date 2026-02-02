@@ -125,6 +125,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0176d061_ce4c69b1",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-02-02T06:29:47Z",
+      "side": 1,
+      "message": "\u003eWhen a platform event comes from a terminus not in the managed list\n\u003ethe platform MC cannot associate the event with a valid terminus,\n\u003ewhich results in numerous\n\u003e\"Terminus ID is not in the managing list\" errors in the journal.\n\u003eIn IBM, termini discovery is done statically in host-bmc and events are \n\u003ealso forwarded to platform-mc handlers, bombarding the journal",
+      "parentUuid": "0c533df3_77b09910",
+      "range": {
+        "startLine": 150,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "673ec02c_8c03a09c",
         "filename": "platform-mc/manager.hpp",
         "patchSetId": 8
@@ -184,6 +208,30 @@
       "side": 1,
       "message": "Again it\u0027s not cleary why. Need details in the commit message on what we are tying to solve.",
       "parentUuid": "3db07a64_1ac8f060",
+      "range": {
+        "startLine": 176,
+        "startChar": 7,
+        "endLine": 177,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13466493_ba62a674",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-02-02T06:29:47Z",
+      "side": 1,
+      "message": "Updated commit message with more context",
+      "parentUuid": "87ac0513_5a8a2d75",
       "range": {
         "startLine": 176,
         "startChar": 7,

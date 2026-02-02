@@ -33,6 +33,24 @@
       "message": "It looks like the check should happen in an upper layer than introducing in several methods here.",
       "revId": "f494e197149b7da5e27d6bdf0cad486b582921fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27df54f6_a63fc9e4",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-02-02T06:29:47Z",
+      "side": 1,
+      "message": "Only adding multiple checks because I want to prevent logs \"Terminus ID is not in the managing list\" from bombarding,\nhttps://github.com/openbmc/pldm/blob/c0c2a01c871e4ebd23c351da511d8804550cbe07/platform-mc/event_manager.cpp#L32",
+      "parentUuid": "4a32e2ac_656c7e08",
+      "revId": "f494e197149b7da5e27d6bdf0cad486b582921fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
