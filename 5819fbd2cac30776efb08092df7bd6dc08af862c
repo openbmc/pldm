@@ -101,6 +101,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c533df3_77b09910",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T06:05:05Z",
+      "side": 1,
+      "message": "Why is a sensor event specific check better?",
+      "parentUuid": "3e01874f_e972fc5b",
+      "range": {
+        "startLine": 150,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "673ec02c_8c03a09c",
         "filename": "platform-mc/manager.hpp",
         "patchSetId": 8
@@ -136,6 +160,30 @@
       "side": 1,
       "message": "Will remove the check from `handlePlatformEvent()` instead of here to remove as well",
       "parentUuid": "673ec02c_8c03a09c",
+      "range": {
+        "startLine": 176,
+        "startChar": 7,
+        "endLine": 177,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87ac0513_5a8a2d75",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T06:05:05Z",
+      "side": 1,
+      "message": "Again it\u0027s not cleary why. Need details in the commit message on what we are tying to solve.",
+      "parentUuid": "3db07a64_1ac8f060",
       "range": {
         "startLine": 176,
         "startChar": 7,
