@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b89ddf9_48ed9034",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T05:35:42Z",
+      "side": 1,
+      "message": "Why is there a need to replace? Can you add that in the commit message?",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b502223b_9760bc83",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T05:35:42Z",
+      "side": 1,
+      "message": "Testing details are required.",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93113cb7_32a9797c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T05:35:42Z",
+      "side": 1,
+      "message": "How are we sure the config exists at this point of time?",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e464008_f93e4ded",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T05:35:42Z",
+      "side": 1,
+      "message": "I have some comments on the EM patch.",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c53c37_dbecddbd",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T05:35:42Z",
+      "side": 1,
+      "message": "How do we know the associated path exists at this point of time?",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8568a54_85b6960c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 915,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-02T05:35:42Z",
+      "side": 1,
+      "message": "Any possible race here? How do we know sensorAuxiliaryNamesTbl is populated?",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
