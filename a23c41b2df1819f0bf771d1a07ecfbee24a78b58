@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74e2627f_ee7ec6e2",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-02-02T07:29:12Z",
+      "side": 1,
+      "message": "The MCTP reactor periodically polls the Entity Manager I2C/I3C target interface to trigger the mctpEndpointAdded signal.\n\nI extended the MCTPTarget structure to include PLDMSensors, ensuring that sensor information is available in time and avoiding potential timing issues.",
+      "parentUuid": "93113cb7_32a9797c",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e464008_f93e4ded",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 12
@@ -82,6 +100,24 @@
       "writtenOn": "2026-02-02T05:35:42Z",
       "side": 1,
       "message": "How do we know the associated path exists at this point of time?",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ea6c766_b2d87793",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-02-02T07:29:12Z",
+      "side": 1,
+      "message": "This will be ensured by the MCTP reactor.",
+      "parentUuid": "10c53c37_dbecddbd",
       "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
