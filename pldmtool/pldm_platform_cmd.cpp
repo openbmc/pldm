@@ -723,6 +723,137 @@ class GetPDR : public CommandInterface
         // Add other types
     };
 
+    const std::map<uint8_t, std::string> setBaseUnit = {
+        {PLDM_SENSOR_UNIT_NONE, "None"},
+        {PLDM_SENSOR_UNIT_UNSPECIFIED, "Unspecified"},
+        {PLDM_SENSOR_UNIT_DEGRESS_C, "Degrees C"},
+        {PLDM_SENSOR_UNIT_DEGRESS_F, "Degrees F"},
+        {PLDM_SENSOR_UNIT_KELVINS, "Kelvins"},
+        {PLDM_SENSOR_UNIT_VOLTS, "Volts"},
+        {PLDM_SENSOR_UNIT_AMPS, "Amps"},
+        {PLDM_SENSOR_UNIT_WATTS, "Watts"},
+        {PLDM_SENSOR_UNIT_JOULES, "Joules"},
+        {PLDM_SENSOR_UNIT_COULOMBS, "Coulombs"},
+        {PLDM_SENSOR_UNIT_VA, "VA"},
+        {PLDM_SENSOR_UNIT_NITS, "Nits"},
+        {PLDM_SENSOR_UNIT_LUMENS, "Lumens"},
+        {PLDM_SENSOR_UNIT_LUX, "Lux"},
+        {PLDM_SENSOR_UNIT_CANDELAS, "Candelas"},
+        {PLDM_SENSOR_UNIT_KPA, "kPa"},
+        {PLDM_SENSOR_UNIT_PSI, "PSI"},
+        {PLDM_SENSOR_UNIT_NEWTONS, "Newtons"},
+        {PLDM_SENSOR_UNIT_CFM, "CFM"},
+        {PLDM_SENSOR_UNIT_RPM, "RPM"},
+        {PLDM_SENSOR_UNIT_HERTZ, "Hertz"},
+        {PLDM_SENSOR_UNIT_SECONDS, "Seconds"},
+        {PLDM_SENSOR_UNIT_MINUTES, "Minutes"},
+        {PLDM_SENSOR_UNIT_HOURS, "Hours"},
+        {PLDM_SENSOR_UNIT_DAYS, "Days"},
+        {PLDM_SENSOR_UNIT_WEEKS, "Weeks"},
+        {PLDM_SENSOR_UNIT_MILS, "Mils"},
+        {PLDM_SENSOR_UNIT_INCHES, "Inches"},
+        {PLDM_SENSOR_UNIT_FEET, "Feet"},
+        {PLDM_SENSOR_UNIT_CUBIC_INCHES, "Cubic Inches"},
+        {PLDM_SENSOR_UNIT_CUBIC_FEET, "Cubic Feet"},
+        {PLDM_SENSOR_UNIT_METERS, "Meters"},
+        {PLDM_SENSOR_UNIT_CUBIC_CENTERMETERS, "Cubic Centimeters"},
+        {PLDM_SENSOR_UNIT_CUBIC_METERS, "Cubic Meters"},
+        {PLDM_SENSOR_UNIT_LITERS, "Liters"},
+        {PLDM_SENSOR_UNIT_FLUID_OUNCES, "Fluid Ounces"},
+        {PLDM_SENSOR_UNIT_RADIANS, "Radians"},
+        {PLDM_SENSOR_UNIT_STERADIANS, "Steradians"},
+        {PLDM_SENSOR_UNIT_REVOLUTIONS, "Revolutions"},
+        {PLDM_SENSOR_UNIT_CYCLES, "Cycles"},
+        {PLDM_SENSOR_UNIT_GRAVITIES, "Gravities"},
+        {PLDM_SENSOR_UNIT_OUNCES, "Ounces"},
+        {PLDM_SENSOR_UNIT_POUNDS, "Pounds"},
+        {PLDM_SENSOR_UNIT_FOOT_POUNDS, "Foot-Pounds"},
+        {PLDM_SENSOR_UNIT_OUNCE_INCHES, "Ounce-Inches"},
+        {PLDM_SENSOR_UNIT_GUESS, "Gauss"},
+        {PLDM_SENSOR_UNIT_GILBERTS, "Gilberts"},
+        {PLDM_SENSOR_UNIT_HENRIES, "Henries"},
+        {PLDM_SENSOR_UNIT_FARADS, "Farads"},
+        {PLDM_SENSOR_UNIT_OHMS, "Ohms"},
+        {PLDM_SENSOR_UNIT_SIEMENS, "Siemens"},
+        {PLDM_SENSOR_UNIT_MOLES, "Moles"},
+        {PLDM_SENSOR_UNIT_BECQUERELS, "Becquerels"},
+        {PLDM_SENSOR_UNIT_PPM, "PPM"},
+        {PLDM_SENSOR_UNIT_DECIBELS, "Decibels"},
+        {PLDM_SENSOR_UNIT_DBA, "DbA"},
+        {PLDM_SENSOR_UNIT_DBC, "DbC"},
+        {PLDM_SENSOR_UNIT_GRAYS, "Grays"},
+        {PLDM_SENSOR_UNIT_SIEVERTS, "Sieverts"},
+        {PLDM_SENSOR_UNIT_COLOR_TEMPERATURE_DEGRESS_K,
+         "Color Temperature Degrees K"},
+        {PLDM_SENSOR_UNIT_BITS, "Bits"},
+        {PLDM_SENSOR_UNIT_BYTES, "Bytes"},
+        {PLDM_SENSOR_UNIT_WORDS, "Words (data)"},
+        {PLDM_SENSOR_UNIT_DOUBLE_WORDS, "DoubleWords"},
+        {PLDM_SENSOR_UNIT_QUAD_WORDS, "QuadWords"},
+        {PLDM_SENSOR_UNIT_PERCENTAGE, "Percentage"},
+        {PLDM_SENSOR_UNIT_PASCALS, "Pascals"},
+        {PLDM_SENSOR_UNIT_COUNTS, "Counts"},
+        {PLDM_SENSOR_UNIT_GRAMS, "Grams"},
+        {PLDM_SENSOR_UNIT_NEWTON_METERS, "Newton-meters"},
+        {PLDM_SENSOR_UNIT_HITS, "Hits"},
+        {PLDM_SENSOR_UNIT_MISSES, "Misses"},
+        {PLDM_SENSOR_UNIT_RETRIES, "Retries"},
+        {PLDM_SENSOR_UNIT_OVERRUNS_OVERFLOWS, "Overruns/Overflows"},
+        {PLDM_SENSOR_UNIT_UNDERRUNS, "Underruns"},
+        {PLDM_SENSOR_UNIT_COLLISIONS, "Collisions"},
+        {PLDM_SENSOR_UNIT_PACKETS, "Packets"},
+        {PLDM_SENSOR_UNIT_MESSAGES, "Messages"},
+        {PLDM_SENSOR_UNIT_CHARATERS, "Characters"},
+        {PLDM_SENSOR_UNIT_ERRORS, "Errors"},
+        {PLDM_SENSOR_UNIT_CORRECTED_ERRORS, "Corrected Errors"},
+        {PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS, "Uncorrectable Errors"},
+        {PLDM_SENSOR_UNIT_SQUARE_MILS, "Square Mils"},
+        {PLDM_SENSOR_UNIT_SQUARE_INCHES, "Square Inches"},
+        {PLDM_SENSOR_UNIT_SQUARE_FEET, "Square Feet"},
+        {PLDM_SENSOR_UNIT_SQUARE_CENTIMETERS, "Square Centimeters"},
+        {PLDM_SENSOR_UNIT_SQUARE_METERS, "Square Meters"},
+        {PLDM_SENSOR_UNIT_OEMUNIT, "OEMUnit"},
+    };
+
+    const std::map<uint8_t, std::string> setRateUnit = {
+        {PLDM_RATE_UNIT_NONE, "None"},
+        {PLDM_RATE_UNIT_PER_MICRO_SECOND, "Per MicroSecond"},
+        {PLDM_RATE_UNIT_PER_MILLI_SECOND, "Per MilliSecond"},
+        {PLDM_RATE_UNIT_PER_SECOND, "Per Second"},
+        {PLDM_RATE_UNIT_PER_MINUTE, "Per Minute"},
+        {PLDM_RATE_UNIT_PER_HOUR, "Per Hour"},
+        {PLDM_RATE_UNIT_PER_DAY, "Per Day"},
+        {PLDM_RATE_UNIT_PER_WEEK, "Per Week"},
+        {PLDM_RATE_UNIT_PER_MONTH, "Per Month"},
+        {PLDM_RATE_UNIT_PER_YEAR, "Per Year"},
+    };
+
+    std::string getBaseUnitName(const uint8_t base_unit)
+    {
+        auto typeString = std::to_string(base_unit);
+        try
+        {
+            return setBaseUnit.at(base_unit) + "(" + typeString + ")";
+        }
+        catch (const std::out_of_range& e)
+        {
+            return "Reserved(" + typeString + ")";
+        }
+    }
+
+    std::string getRateUnitName(const uint8_t rate_unit)
+    {
+        auto typeString = std::to_string(rate_unit);
+        try
+        {
+            return setRateUnit.at(rate_unit) + "(" + typeString + ")";
+        }
+        catch (const std::out_of_range& e)
+        {
+            return typeString;
+        }
+    }
+
     bool isLogicalBitSet(const uint16_t entity_type)
     {
         return entity_type & 0x8000;
@@ -1348,13 +1479,13 @@ class GetPDR : public CommandInterface
         output["sensorInit"] = pdr.sensor_init;
         output["sensorAuxiliaryNamesPDR"] =
             (pdr.sensor_auxiliary_names_pdr) ? true : false;
-        output["baseUnit"] = pdr.base_unit;
+        output["baseUnit"] = getBaseUnitName(pdr.base_unit);
         output["unitModifier"] = pdr.unit_modifier;
-        output["rateUnit"] = pdr.rate_unit;
+        output["rateUnit"] = getRateUnitName(pdr.rate_unit);
         output["baseOEMUnitHandle"] = pdr.base_oem_unit_handle;
-        output["auxUnit"] = pdr.aux_unit;
+        output["auxUnit"] = getBaseUnitName(pdr.aux_unit);
         output["auxUnitModifier"] = pdr.aux_unit_modifier;
-        output["auxrateUnit"] = pdr.aux_rate_unit;
+        output["auxrateUnit"] = getRateUnitName(pdr.aux_rate_unit);
         output["rel"] = pdr.rel;
         output["auxOEMUnitHandle"] = pdr.aux_oem_unit_handle;
         output["isLinear"] = (pdr.is_linear) ? true : false;
@@ -1526,7 +1657,7 @@ class GetPDR : public CommandInterface
                               pdr->sensor_name_length);
             output["Name"] = sTemp;
         }
-        output["baseUnit"] = unsigned(pdr->base_unit);
+        output["baseUnit"] = getBaseUnitName(pdr->base_unit);
         output["unitModifier"] = signed(pdr->unit_modifier);
         output["occurrenceRate"] = unsigned(pdr->occurrence_rate);
         output["rangeFieldSupport"] = unsigned(pdr->range_field_support.byte);
