@@ -38,6 +38,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11e64fbb_02984b60",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2026-02-03T08:35:40Z",
+      "side": 1,
+      "message": "1) Is there a guarantee that PLDM support is the same between the different mediums?\n\n2) This would prioritize mediums that are available at stand-by over others. For example for a plug-n-play PCIe card this could prioritize slow I2C medium over fast PCIe VDM.",
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d72d3e8c_b5d77149",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 5
