@@ -178,6 +178,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4ddc8198_8f4e7a13",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-02-03T10:12:42Z",
+      "side": 1,
+      "message": "If we monitor the configured_by object, it means the Entity Manager I2C/I3C target configuration is required. Is this what you expected?\n\nCould you please check the implementation method as follows?\nvoid MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t\u0026 msg,\n                                      MctpInfos\u0026 mctpInfos)\n{\n    using ObjectPath \u003d sdbusplus::message::object_path;\n    ObjectPath objPath;\n    using pldm::utils::PropertyMap;\n    std::map\u003cstd::string, PropertyMap\u003e interfaces;\n    std::string uuid \u003d emptyUUID;\n\n    try\n    {\n        msg.read(objPath, interfaces);\n    }\n    catch (const std::exception\u0026 e)\n    {\n        lg2::error(\"Failed to read InterfacesAdded message: {ERROR}\", \"ERROR\",\n                   e.what());\n        return;\n    }\n\n    const std::string mctpInterface \u003d MCTPEndpoint::interface;\n    const std::string assocInterface \u003d\n        \"xyz.openbmc_project.Association.Definitions\";\n\n    bool hasEndpointInSignal \u003d interfaces.contains(mctpInterface);\n    bool hasAssocInSignal \u003d interfaces.contains(assocInterface);\n\n    // Only proceed if the signal contains either Endpoint or Association\n    if (!hasEndpointInSignal \u0026\u0026 !hasAssocInSignal)\n    {\n        return;\n    }\n\n    pldm::utils::DBusHandler dbusHandler;\n\n    // Verification of Association\n    // If Association is not in the current signal, check if it exists on D-Bus\n    if (!hasAssocInSignal)\n    {\n        try\n        {\n            dbusHandler.getService(objPath.str.c_str(), assocInterface.c_str());\n        }\n        catch (const std::exception\u0026 e)\n        {\n            lg2::info(\n                \"MCTP Path \u0027{PATH}\u0027 is missing Association. Waiting for MCTPReactor signal.\",\n                \"PATH\", objPath.str);\n            return;\n        }\n    }\n\n    // Retrieval of MCTP Endpoint Properties\n    PropertyMap properties;\n    if (hasEndpointInSignal)\n    {\n        properties \u003d interfaces.at(mctpInterface);\n    }\n    else\n    {\n        try\n        {\n            auto service \u003d dbusHandler.getService(objPath.str.c_str(),\n                                                 mctpInterface.c_str());\n            properties \u003d dbusHandler.getDbusPropertiesVariant(\n                service.c_str(), objPath.str.c_str(), mctpInterface.c_str());\n        }\n        catch (const std::exception\u0026 e)\n        {\n            lg2::info(\n                \"MCTP Path \u0027{PATH}\u0027 is missing Endpoint data. Waiting for MCTPD signal.\",\n                \"PATH\", objPath.str);\n            return;\n        }\n    }\n\nThanks.",
+      "parentUuid": "6ea0a0ce_bcf80ed3",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8568a54_85b6960c",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 12
