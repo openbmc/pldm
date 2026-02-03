@@ -56,7 +56,7 @@ int OemEventManager::processOemMetaEvent(
     std::string source = "/xyz/openbmc_project/state/host" + slotNumber;
     {
         namespace Errors = sdbusplus::error::com::meta::ipmi::UnifiedSEL;
-        lg2::commit(Errors::UnifiedSELEvent("SOURCE", source, "EVENT", errorLog,
+        lg2::commit(Errors::UnifiedSELEvent("SOURCE", source, "EVENT", message,
                                             "RAW_EVENT", rawLog));
     }
 
@@ -230,7 +230,7 @@ void OemEventManager::handleSystemEvent(const uint8_t* eventData,
 void OemEventManager::handleUnifiedBIOSEvent(const uint8_t* eventData,
                                              std::string& errorLog) const
 {
-    errorLog = "Meta Unified SEL (0xFB), ";
+    errorLog = "Facebook Unified SEL (0xFB), ";
 
     DimmInfo dimmInfo = {
         static_cast<uint8_t>((eventData[6] >> 4) & 0x03), // Sled
