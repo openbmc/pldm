@@ -24,8 +24,11 @@ using namespace pldmtool::helper;
 
 std::vector<std::unique_ptr<CommandInterface>> commands;
 const std::map<const char*, pldm_supported_types> pldmTypes{
-    {"base", PLDM_BASE}, {"platform", PLDM_PLATFORM},    {"bios", PLDM_BIOS},
-    {"fru", PLDM_FRU},   {"firmware update", PLDM_FWUP}, {"oem", PLDM_OEM},
+    {"base", PLDM_BASE},         {"smbios", PLDM_SMBIOS},
+    {"platform", PLDM_PLATFORM}, {"bios", PLDM_BIOS},
+    {"fru", PLDM_FRU},           {"firmware update", PLDM_FWUP},
+    {"RDE", PLDM_RDE},           {"file transfer", PLDM_FILE},
+    {"oem", PLDM_OEM},
 };
 
 const std::map<const char*, pldm_supported_commands> pldmBaseCmds{
