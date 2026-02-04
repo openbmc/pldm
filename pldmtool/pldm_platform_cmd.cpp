@@ -240,6 +240,7 @@ class GetPDR : public CommandInterface
             recordHandle = 0;
             uint32_t prevRecordHandle = 0;
             std::map<uint32_t, uint32_t> recordsSeen;
+            isFirstPDR = true;
             do
             {
                 CommandInterface::exec();
@@ -263,12 +264,6 @@ class GetPDR : public CommandInterface
                     return;
                 }
                 prevRecordHandle = recordHandle;
-
-                if (recordHandle != 0)
-                {
-                    // close the array
-                    std::cout << ",";
-                }
             } while (recordHandle != 0);
 
             // close the array
@@ -1642,6 +1637,16 @@ class GetPDR : public CommandInterface
             default:
                 break;
         }
+
+        // Print comma separator between PDRs in array output
+        if (!pdrRecType.empty() || allPDRs)
+        {
+            if (!isFirstPDR)
+            {
+                std::cout << ",\n";
+            }
+            isFirstPDR = false;
+        }
         pldmtool::helper::DisplayInJson(output);
     }
 
@@ -1660,6 +1665,7 @@ class GetPDR : public CommandInterface
     uint16_t recordChangeNumber;
     std::vector<uint8_t> recordData;
     bool nextPartRequired;
+    bool isFirstPDR = true;
 };
 
 class SetStateEffecter : public CommandInterface
