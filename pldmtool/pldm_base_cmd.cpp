@@ -173,9 +173,13 @@ class GetPLDMTypes : public CommandInterface
                 if (it != pldmTypes.end())
                 {
                     jarray["PLDM Type"] = it->first;
-                    jarray["PLDM Type Code"] = i;
-                    jPldmTypes.emplace_back(jarray);
                 }
+                else
+                {
+                    jarray["PLDM Type"] = "unknown";
+                }
+                jarray["PLDM Type Code"] = i;
+                jPldmTypes.emplace_back(jarray);
             }
         }
         data["PLDMTypes"] = jPldmTypes;
