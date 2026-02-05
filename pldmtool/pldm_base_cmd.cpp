@@ -369,9 +369,13 @@ class GetPLDMCommands : public CommandInterface
             [i](const auto& typePair) { return typePair.second == i; });
         if (it != commandMap.end())
         {
-            jarray["PLDM Command Code"] = i;
             jarray["PLDM Command"] = it->first;
         }
+        else
+        {
+            jarray["PLDM Command"] = "unknown";
+        }
+        jarray["PLDM Command Code"] = i;
     }
 
     void printPldmCommands(std::vector<bitfield8_t>& cmdTypes,
@@ -402,9 +406,11 @@ class GetPLDMCommands : public CommandInterface
 #ifdef OEM_IBM
                         printCommand(pldmIBMHostCmds, i, cmdinfo);
                         printCommand(pldmIBMFileIOCmds, i, cmdinfo);
-#endif
                         break;
+#endif
                     default:
+                        std::map<char*, int> emptyMap;
+                        printCommand(emptyMap, i, cmdinfo);
                         break;
                 }
                 output.emplace_back(cmdinfo);
