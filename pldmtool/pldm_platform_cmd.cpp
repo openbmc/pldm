@@ -3,6 +3,7 @@
 #include "common/utils.hpp"
 #include "pldm_cmd_helper.hpp"
 
+#include <libpldm/base.h>
 #include <libpldm/entity.h>
 #include <libpldm/platform.h>
 #include <libpldm/state_set.h>
@@ -942,6 +943,8 @@ class GetPDR : public CommandInterface
         {PLDM_NUMERIC_EFFECTER_INITIALIZATION_PDR,
          "Numeric Effecter Initialization PDR"},
         {PLDM_COMPACT_NUMERIC_SENSOR_PDR, "Compact Numeric Sensor PDR"},
+        {PLDM_REDFISH_RESOURCE_PDR, "Redfish Resource PDR"},
+        {PLDM_REDFISH_ACTION_PDR, "Redfish Action PDR"},
         {PLDM_STATE_EFFECTER_PDR, "State Effecter PDR"},
         {PLDM_STATE_EFFECTER_INITIALIZATION_PDR,
          "State Effecter Initialization PDR"},
@@ -1158,6 +1161,33 @@ class GetPDR : public CommandInterface
         {
             return typeString;
         }
+    }
+
+    std::string parseRedfishResourcePDRResourceFlags(
+        const bitfield8_t* resourceFlags)
+    {
+        std::string resourceFlagsString;
+        if (resourceFlags->bits.bit0)
+        {
+            resourceFlagsString += "Device Root";
+        }
+        if (resourceFlags->bits.bit1)
+        {
+            if (!resourceFlagsString.empty())
+            {
+                resourceFlagsString += "|";
+            }
+            resourceFlagsString += "Contained in collection";
+        }
+        if (resourceFlags->bits.bit2)
+        {
+            if (!resourceFlagsString.empty())
+            {
+                resourceFlagsString += "|";
+            }
+            resourceFlagsString += "Collection";
+        }
+        return resourceFlagsString;
     }
 
     std::string getPDRType(uint8_t type)
@@ -1622,6 +1652,159 @@ class GetPDR : public CommandInterface
         return false;
     }
 
+    void printRedfishActionPDR(const uint8_t* data, const uint16_t data_length,
+                               ordered_json& output)
+    {
+        struct pldm_platform_redfish_action_pdr pdr;
+        int rc =
+            decode_pldm_platform_redfish_action_pdr(data, data_length, &pdr);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to decode Redfish Action PDR" << std::endl;
+            return;
+        }
+
+        output["ActionPDRIndex"] = pdr.action_pdr_index;
+        output["RelatedResourceCount"] = pdr.related_resource_count;
+        uint16_t related_resource_count = 0;
+        uint32_t related_resource_id;
+        foreach_pldm_platform_redfish_action_pdr_related_resource_id(
+            pdr, related_resource_id, rc)
+        {
+            output["RelatedResourceID[" +
+                   std::to_string(related_resource_count) + "]"] =
+                related_resource_id;
+            related_resource_count++;
+        }
+        if (rc)
+        {
+            std::cerr << "Failed to parse Host Resource Information area"
+                      << std::endl;
+            return;
+        }
+
+        output["ActionCount"] = pdr.action_count;
+        uint8_t action_count = 0;
+        struct pldm_platform_redfish_action_pdr_action action;
+        foreach_pldm_platform_redfish_action_pdr_action(pdr, action, rc)
+        {
+            output["ActionNameLengthBytes[" + std::to_string(action_count) +
+                   "]"] = action.name.length;
+            output["ActionName[" + std::to_string(action_count) + "]"] =
+                std::string((const char*)(action.name.ptr));
+            output["ActionPathLengthBytes[" + std::to_string(action_count) +
+                   "]"] = action.path.length;
+            output["ActionPath[" + std::to_string(action_count) + "]"] =
+                std::string((const char*)(action.path.ptr));
+            action_count++;
+        }
+        if (rc)
+        {
+            std::cerr << "Failed to parse Action Information area" << std::endl;
+            return;
+        }
+    }
+
+    void printRedfishResourcePDR(const uint8_t* data,
+                                 const uint16_t data_length,
+                                 ordered_json& output)
+    {
+        struct pldm_platform_redfish_resource_pdr pdr;
+        int rc =
+            decode_pldm_platform_redfish_resource_pdr(data, data_length, &pdr);
+        if (rc != PLDM_SUCCESS)
+        {
+            std::cerr << "Failed to decode Redfish Resource PDR" << std::endl;
+            return;
+        }
+
+        output["ResourceID"] = pdr.resource_id;
+        std::string resourceFlagsString =
+            parseRedfishResourcePDRResourceFlags(&pdr.resource_flags);
+        if (!resourceFlagsString.empty())
+        {
+            output["ResourceFlags"] =
+                resourceFlagsString + "(" +
+                std::to_string(pdr.resource_flags.byte) + ")";
+        }
+        else
+        {
+            output["ResourceFlags"] = std::to_string(pdr.resource_flags.byte);
+        }
+        output["ContainingResourceID"] = pdr.containing_resource_id;
+        output["ProposedContainingResourceLengthBytes"] =
+            pdr.proposed_containing_resource_name.length;
+        output["ProposedContainingResourceName"] = std::string(
+            (const char*)(pdr.proposed_containing_resource_name.ptr));
+        output["SubURILengthBytes"] = pdr.sub_uri.length;
+        output["SubURI"] = std::string((const char*)(pdr.sub_uri.ptr));
+
+        output["AdditionalResourceIDCount"] = pdr.additional_resource_id_count;
+
+        uint16_t additional_resource_id_count = 0;
+        struct pldm_platform_redfish_resource_pdr_additional_resource
+            additional_resource;
+        foreach_pldm_platform_redfish_resource_pdr_additional_resource(
+            pdr, additional_resource, rc)
+        {
+            output["AdditionalResourceID[" +
+                   std::to_string(additional_resource_id_count) + "]"] =
+                additional_resource.id;
+            output["AdditionalResourceSubURILengthBytes[" +
+                   std::to_string(additional_resource_id_count) + "]"] =
+                additional_resource.sub_uri.length;
+            output["AdditionalResourceSubURI[" +
+                   std::to_string(additional_resource_id_count) + "]"] =
+                std::string((const char*)(additional_resource.sub_uri.ptr));
+            additional_resource_id_count++;
+        }
+        if (rc)
+        {
+            std::cerr << "Failed to parse Additional Resources area"
+                      << std::endl;
+            return;
+        }
+
+        char buffer[16] = {0};
+        if ((pdr.major_schema_version.major != 0xff) &&
+            (pdr.major_schema_version.minor != 0xff) &&
+            (pdr.major_schema_version.update != 0xff) &&
+            (pdr.major_schema_version.alpha != 0xff))
+        {
+            pldm_base_ver2str(&(pdr.major_schema_version), buffer,
+                              sizeof(buffer));
+            output["MajorSchemaVersion"] = buffer;
+        }
+        else
+        {
+            output["MajorSchemaVersion"] = "Unversioned";
+        }
+        output["MajorSchemaDictionaryLengthBytes"] =
+            pdr.major_schema_dictionary_length_bytes;
+        output["MajorSchemaDictionarySignature"] =
+            pdr.major_schema_dictionary_signature;
+        output["MajorSchemaNameLength"] = pdr.major_schema_name.length;
+        output["MajorSchemaName"] =
+            std::string((const char*)(pdr.major_schema_name.ptr));
+
+        output["OEMCount"] = pdr.oem_count;
+        struct pldm_platform_redfish_resource_pdr_oem_name oem_name;
+        uint16_t oem_count = 0;
+        foreach_pldm_platform_redfish_resource_pdr_oem_name(pdr, oem_name, rc)
+        {
+            output["OEMNameLengthBytes[" + std::to_string(oem_count) + "]"] =
+                oem_name.name.length;
+            output["OEMName[" + std::to_string(oem_count) + "]"] =
+                std::string((const char*)(oem_name.name.ptr));
+            oem_count++;
+        }
+        if (rc)
+        {
+            std::cerr << "Failed to parse OEM Names area" << std::endl;
+            return;
+        }
+    }
+
     void printTerminusLocatorPDR(const uint8_t* data, ordered_json& output)
     {
         const std::array<std::string_view, 4> terminusLocatorType = {
@@ -1978,6 +2161,12 @@ class GetPDR : public CommandInterface
                 break;
             case PLDM_COMPACT_NUMERIC_SENSOR_PDR:
                 printCompactNumericSensorPDR(data, output);
+                break;
+            case PLDM_REDFISH_RESOURCE_PDR:
+                printRedfishResourcePDR(data, respCnt, output);
+                break;
+            case PLDM_REDFISH_ACTION_PDR:
+                printRedfishActionPDR(data, respCnt, output);
                 break;
             default:
                 break;
