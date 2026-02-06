@@ -707,7 +707,7 @@ TEST_F(TerminusManagerTest, getActiveEidByNameTest)
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(2, terminus->pdrs.size());
     EXPECT_EQ(1, termini.size());
-    EXPECT_EQ("S0", terminus->getTerminusName().value());
-    EXPECT_EQ(10, terminusManager.getActiveEidByName("S0").value());
+    EXPECT_EQ("S0_1", terminus->getTerminusName().value());
+    EXPECT_EQ(10, terminusManager.getActiveEidByName("S0_1").value());
     EXPECT_EQ(false, terminusManager.getActiveEidByName("S1").has_value());
 }

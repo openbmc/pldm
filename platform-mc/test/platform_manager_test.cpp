@@ -195,7 +195,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
     // defer tasks be run. May increase time when sensor num is large
     utils::runEventLoopForSeconds(event, 1);
     EXPECT_EQ(1, terminus->numericSensors.size());
-    EXPECT_EQ("S0", terminus->getTerminusName().value());
+    EXPECT_EQ("S0_1", terminus->getTerminusName().value());
 }
 
 TEST_F(PlatformManagerTest, parseTerminusNameTest)
@@ -356,7 +356,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
     stdexec::sync_wait(platformManager.initTerminus());
     EXPECT_EQ(true, terminus->initialized);
     EXPECT_EQ(2, terminus->pdrs.size());
-    EXPECT_EQ("S0", terminus->getTerminusName().value());
+    EXPECT_EQ("S0_1", terminus->getTerminusName().value());
 }
 
 TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
