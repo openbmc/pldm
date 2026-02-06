@@ -109,6 +109,27 @@ uint16_t Terminus::findTerminusEntityType()
     return 0;
 }
 
+EntityInstance Terminus::findTerminusEntityInstanceIdx()
+{
+    auto it = std::find_if(
+        entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
+        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+            const auto& [key, entityNames] = *entityAuxiliaryNames;
+            return (
+                entityAuxiliaryNames &&
+                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
+                entityNames.size());
+        });
+
+    if (it != entityAuxiliaryNamesTbl.end())
+    {
+        const auto& [key, entityNames] = **it;
+        return key.instanceIdx;
+    }
+
+    return 0;
+}
+
 bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
 {
     if (tName.empty())
@@ -227,7 +248,8 @@ void Terminus::parseTerminusPDRs()
     {
         lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
                   "NAME", tName.value());
-        terminusName = static_cast<std::string>(tName.value());
+        terminusName = std::format("{}_{}", tName.value(),
+                                   findTerminusEntityInstanceIdx());
     }
 
     if (terminusName.empty())
