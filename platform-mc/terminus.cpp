@@ -57,7 +57,7 @@ bool Terminus::doesSupportCommand(uint8_t type, uint8_t command)
     return false;
 }
 
-std::optional<std::string_view> Terminus::findTerminusName()
+std::optional<std::string> Terminus::findTerminusName()
 {
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
@@ -81,7 +81,7 @@ std::optional<std::string_view> Terminus::findTerminusName()
         {
             return std::nullopt;
         }
-        return entityNames[0].second;
+        return std::format("{}_{}", entityNames[0].second, key.instanceIdx);
     }
 
     return std::nullopt;
@@ -206,7 +206,8 @@ void Terminus::parseTerminusPDRs()
     {
         lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
                   "NAME", tName.value());
-        terminusName = static_cast<std::string>(tName.value());
+        terminusName = static_cast<std::string>(
+            tName.value()); // To add entity instance number
     }
 
     if (terminusName.empty())
