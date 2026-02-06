@@ -258,6 +258,15 @@ class Terminus
      */
     uint16_t findTerminusEntityType();
 
+    /** @brief Find the entity instance index of the overall terminus entity.
+     *
+     *  Uses the same Entity Auxiliary Names PDR lookup as findTerminusName()
+     *  (i.e. the entry whose containerId is the system container).
+     *
+     *  @return entity instance number, or 0 if not found
+     */
+    EntityInstance findTerminusEntityInstanceIdx();
+
     /** @brief Get sensor names from Sensor Auxiliary Names PDRs
      *
      *  @param[in] sensorId - Sensor ID
