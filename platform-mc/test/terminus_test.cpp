@@ -108,7 +108,7 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesPDRTest)
     EXPECT_EQ("en", names[0][0].first);
     EXPECT_EQ("TEMP1", names[0][0].second);
     EXPECT_EQ(2, t1.pdrs.size());
-    EXPECT_EQ("S0", t1.getTerminusName().value());
+    EXPECT_EQ("S0_1", t1.getTerminusName().value());
 }
 
 TEST(TerminusTest, parseSensorAuxiliaryMultiNamesPDRTest)
@@ -228,7 +228,7 @@ TEST(TerminusTest, parseSensorAuxiliaryMultiNamesPDRTest)
     EXPECT_EQ("fr", names[0][2].first);
     EXPECT_EQ("TEMP12", names[0][2].second);
     EXPECT_EQ(2, t1.pdrs.size());
-    EXPECT_EQ("S0", t1.getTerminusName().value());
+    EXPECT_EQ("S0_1", t1.getTerminusName().value());
 }
 
 TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
@@ -350,7 +350,7 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
     EXPECT_EQ("fr", names[1][1].first);
     EXPECT_EQ("TEMP12", names[1][1].second);
     EXPECT_EQ(2, t1.pdrs.size());
-    EXPECT_EQ("S0", t1.getTerminusName().value());
+    EXPECT_EQ("S0_1", t1.getTerminusName().value());
 }
 
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
