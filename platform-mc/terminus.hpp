@@ -181,7 +181,7 @@ class Terminus
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
      *  @return terminus name in string option
      */
-    std::optional<std::string_view> findTerminusName();
+    std::optional<std::string> findTerminusName();
 
     /** @brief Construct the NumericSensor sensor class for the PLDM sensor.
      *         The NumericSensor class will handle create D-Bus object path,
