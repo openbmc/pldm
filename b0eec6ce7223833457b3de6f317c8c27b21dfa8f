@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fc27d83_f4d2fb57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002640
+      },
+      "writtenOn": "2026-02-09T04:34:00Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com.\nI have added additional context, given how the journal is bombarded with lots of logs for sensor events from unmanaged termini, do you think the change is appropriate?",
+      "revId": "b0eec6ce7223833457b3de6f317c8c27b21dfa8f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
