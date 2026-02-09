@@ -297,6 +297,30 @@
       },
       "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3cb1732_d489e4c8",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-09T17:34:15Z",
+      "side": 1,
+      "message": "\u003e If these are internal to pldmd, why even expose on D-Bus?\n\nI had this same question as I reviewed the code. Further, we have the file size in two places because it is also included in the Pldm.File interface as a property is it not?\n\n\u003e  with none empty object path.\n\nCouldn\u0027t the code that assumes a non-empty path be enhanced to cope with an empty path?",
+      "parentUuid": "fbc40171_6c467224",
+      "range": {
+        "startLine": 161,
+        "startChar": 59,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "771af740a6149b9aa1476ac2c2606bbf5c5b55c7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
