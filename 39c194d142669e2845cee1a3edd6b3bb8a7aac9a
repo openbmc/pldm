@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "602db049_a52da6e8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-02-10T13:02:00Z",
+      "side": 1,
+      "message": "Please make sure author and committer match.",
+      "revId": "39c194d142669e2845cee1a3edd6b3bb8a7aac9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "261e19f0_d63e0733",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-02-10T13:02:00Z",
+      "side": 1,
+      "message": "While you are at it, can you please make this log grammatically correct by changing it to: `\"Can\u0027t find request for EID \u0027{EID}\u0027 using InstanceID \u0027{INSTANCEID}\u0027 in the endpoint message queue.\"`",
+      "range": {
+        "startLine": 343,
+        "startChar": 56,
+        "endLine": 343,
+        "endChar": 58
+      },
+      "revId": "39c194d142669e2845cee1a3edd6b3bb8a7aac9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc8fc5a6_5fcf9afa",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1002723
+      },
+      "writtenOn": "2026-02-10T13:02:00Z",
+      "side": 1,
+      "message": "What do you think about using if-initializer here? Something like this? \n\n```suggestion\nif (auto it \u003d std::ranges::find_if(\n        requestQueue,\n        [\u0026key](const auto\u0026 msg) { return msg-\u003ekey \u003d\u003d key; });\n    it !\u003d requestQueue.end())\n{\n    requestQueue.erase(it);\n    instanceIdDb.free(key.eid, key.instanceId);\n    return PLDM_SUCCESS;\n}\n```",
+      "range": {
+        "startLine": 348,
+        "startChar": 0,
+        "endLine": 357,
+        "endChar": 13
+      },
+      "revId": "39c194d142669e2845cee1a3edd6b3bb8a7aac9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
