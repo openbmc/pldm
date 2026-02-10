@@ -149,6 +149,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1468773_6052beed",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-10T08:12:55Z",
+      "side": 1,
+      "message": "Hi @rahulds.rahul@gmail.com. You just want to get rid of the annoying logs, how about just following the suggestions and keeping the check here and removing the checks you added in event_manager? You can just remove the logging part here and change the returned error code to PLDM_SUCCESS\u003e",
+      "parentUuid": "0176d061_ce4c69b1",
+      "range": {
+        "startLine": 150,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 9
+      },
+      "revId": "5819fbd2cac30776efb08092df7bd6dc08af862c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "673ec02c_8c03a09c",
         "filename": "platform-mc/manager.hpp",
         "patchSetId": 8
