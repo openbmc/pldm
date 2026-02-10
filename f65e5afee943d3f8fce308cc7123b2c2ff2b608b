@@ -16,6 +16,24 @@
       "message": "@chaul@amperecomputing.com - I am okay with the changes made from PLDM file numeric sensor perspective - whether exposing the size of a file via metric/file_size segment path is acceptable or not should be debated via PDI(as that would be a common understanding across companies) - lets get it added to the PDI, then we can merge this change.",
       "revId": "f65e5afee943d3f8fce308cc7123b2c2ff2b608b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d53e7960_5cb68b29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-10T10:19:48Z",
+      "side": 1,
+      "message": "Regarding the latest comment in this section https://gerrit.openbmc.org/c/openbmc/pldm/+/83780/comment/3d84de94_70bc9a3d/, This patch no longer involves the new namespace.",
+      "parentUuid": "fc1ac204_9b1d4aa6",
+      "revId": "f65e5afee943d3f8fce308cc7123b2c2ff2b608b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
