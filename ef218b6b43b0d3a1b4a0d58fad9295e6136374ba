@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "940d66a7_e321e89b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-02-10T05:42:36Z",
+      "side": 1,
+      "message": "This part of the code was added when IBM was the only contributor to the pldm repository. Thanks for cleaning this up!",
+      "revId": "ef218b6b43b0d3a1b4a0d58fad9295e6136374ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
