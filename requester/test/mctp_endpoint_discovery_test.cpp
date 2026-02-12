@@ -22,6 +22,10 @@ class TestMctpDiscovery : public ::testing::Test
     {
         mctpDiscovery.searchConfigurationFor(handler, mctpInfo);
     }
+    static auto parseMctpEndpointPath(const std::string& path)
+    {
+        return pldm::MctpDiscovery::parseMctpEndpointPath(path);
+    }
 };
 
 TEST(MctpEndpointDiscoveryTest, SingleHandleMctpEndpoint)
@@ -94,63 +98,70 @@ TEST(MctpEndpointDiscoveryTest, badAddToExistingMctpInfos)
     EXPECT_NE(mctpDiscoveryHandler->existingMctpInfos.size(), 2);
 }
 
-TEST(MctpEndpointDiscoveryTest, goodRemoveFromExistingMctpInfos)
+TEST(MctpEndpointDiscoveryTest, parseMctpEndpointPathGood)
 {
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
-        pldm::MctpInfo(11, pldm::emptyUUID, "def", 2, std::nullopt),
-        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, std::nullopt)};
+    // Standard codeconstruct path
+    auto result = TestMctpDiscovery::parseMctpEndpointPath(
+        "/au/com/codeconstruct/mctp1/networks/1/endpoints/10");
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->first, 1);
+    EXPECT_EQ(result->second, 10);
 
-    auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
-        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
-    mctpDiscoveryHandler->addToExistingMctpInfos(mctpInfos);
-    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 2);
-    pldm::MctpInfo mctpInfo = mctpDiscoveryHandler->existingMctpInfos.back();
-    EXPECT_EQ(std::get<0>(mctpInfo), 12);
-    EXPECT_EQ(std::get<2>(mctpInfo), "abc");
-    EXPECT_EQ(std::get<3>(mctpInfo), 1);
-    pldm::MctpInfos removedInfos;
-    pldm::MctpInfos remainMctpInfos;
-    remainMctpInfos.emplace_back(
-        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, std::nullopt));
+    // Different networkId and EID
+    result = TestMctpDiscovery::parseMctpEndpointPath(
+        "/au/com/codeconstruct/mctp1/networks/3/endpoints/25");
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->first, 3);
+    EXPECT_EQ(result->second, 25);
 
-    mctpDiscoveryHandler->removeFromExistingMctpInfos(remainMctpInfos,
-                                                      removedInfos);
-    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 1);
-    mctpInfo = mctpDiscoveryHandler->existingMctpInfos.back();
-    EXPECT_EQ(std::get<0>(mctpInfo), 12);
-    EXPECT_EQ(std::get<2>(mctpInfo), "abc");
-    EXPECT_EQ(std::get<3>(mctpInfo), 1);
-    EXPECT_EQ(removedInfos.size(), 1);
-    mctpInfo = removedInfos.back();
-    EXPECT_EQ(std::get<0>(mctpInfo), 11);
-    EXPECT_EQ(std::get<2>(mctpInfo), "def");
-    EXPECT_EQ(std::get<3>(mctpInfo), 2);
+    // NetworkId 0
+    result = TestMctpDiscovery::parseMctpEndpointPath(
+        "/au/com/codeconstruct/mctp1/networks/0/endpoints/1");
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->first, 0);
+    EXPECT_EQ(result->second, 1);
 }
 
-TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
+TEST(MctpEndpointDiscoveryTest, parseMctpEndpointPathBad)
 {
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    pldm::MockManager manager;
-    const pldm::MctpInfos& mctpInfos = {
-        pldm::MctpInfo(11, pldm::emptyUUID, "def", 2, std::nullopt),
-        pldm::MctpInfo(12, pldm::emptyUUID, "abc", 1, std::nullopt)};
+    // Empty path
+    EXPECT_FALSE(TestMctpDiscovery::parseMctpEndpointPath("").has_value());
 
-    auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
-        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
-    mctpDiscoveryHandler->addToExistingMctpInfos(mctpInfos);
-    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 2);
-    pldm::MctpInfo mctpInfo = mctpDiscoveryHandler->existingMctpInfos.back();
-    EXPECT_EQ(std::get<0>(mctpInfo), 12);
-    EXPECT_EQ(std::get<2>(mctpInfo), "abc");
-    EXPECT_EQ(std::get<3>(mctpInfo), 1);
-    sdbusplus::message_t msg = sdbusplus::bus::new_default().new_method_call(
-        "xyz.openbmc_project.sdbusplus.test.Object",
-        "/xyz/openbmc_project/sdbusplus/test/object",
-        "xyz.openbmc_project.sdbusplus.test.Object", "Unused");
-    mctpDiscoveryHandler->removeEndpoints(msg);
-    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 0);
+    // Missing /networks/ segment
+    EXPECT_FALSE(TestMctpDiscovery::parseMctpEndpointPath(
+                     "/au/com/codeconstruct/mctp1/endpoints/10")
+                     .has_value());
+
+    // Missing /endpoints/ segment
+    EXPECT_FALSE(TestMctpDiscovery::parseMctpEndpointPath(
+                     "/au/com/codeconstruct/mctp1/networks/1")
+                     .has_value());
+
+    // Reversed order: endpoints before networks
+    EXPECT_FALSE(
+        TestMctpDiscovery::parseMctpEndpointPath("/endpoints/10/networks/1")
+            .has_value());
+
+    // Trailing slash after EID
+    EXPECT_FALSE(TestMctpDiscovery::parseMctpEndpointPath(
+                     "/au/com/codeconstruct/mctp1/networks/1/endpoints/10/")
+                     .has_value());
+
+    // Extra path segment after EID
+    EXPECT_FALSE(
+        TestMctpDiscovery::parseMctpEndpointPath(
+            "/au/com/codeconstruct/mctp1/networks/1/endpoints/10/extra")
+            .has_value());
+
+    // Non-numeric networkId
+    EXPECT_FALSE(TestMctpDiscovery::parseMctpEndpointPath(
+                     "/au/com/codeconstruct/mctp1/networks/abc/endpoints/10")
+                     .has_value());
+
+    // Non-numeric EID
+    EXPECT_FALSE(TestMctpDiscovery::parseMctpEndpointPath(
+                     "/au/com/codeconstruct/mctp1/networks/1/endpoints/xyz")
+                     .has_value());
 }
 
 TEST(MctpEndpointDiscoveryTest, goodSearchConfigurationFor)
