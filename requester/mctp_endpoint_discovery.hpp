@@ -10,6 +10,7 @@
 #include <xyz/openbmc_project/MCTP/Endpoint/client.hpp>
 
 #include <initializer_list>
+#include <unordered_map>
 #include <vector>
 
 using MCTPEndpoint = sdbusplus::common::xyz::openbmc_project::mctp::Endpoint;
@@ -160,14 +161,6 @@ class MctpDiscovery
      */
     void addToExistingMctpInfos(const MctpInfos& mctpInfos);
 
-    /** @brief Erase the removed MCTP endpoint from existingMctpInfos.
-     *
-     *  @param[in] mctpInfos - the remaining MCTP endpoints
-     *  @param[out] removedInfos - the removed MCTP endpoints
-     */
-    void removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                     MctpInfos& removedInfos);
-
     friend class ::TestMctpDiscovery;
 
   private:
@@ -219,6 +212,11 @@ class MctpDiscovery
      */
     void searchConfigurationFor(const pldm::utils::DBusHandler& handler,
                                 MctpInfo& mctpInfo);
+
+    /** @brief Cached mapping from D-Bus object path to {networkId, EID}.
+     *  Populated during discovery, used by removeEndpoints for lookup.
+     */
+    std::unordered_map<std::string, std::pair<NetworkId, eid>> endpointsByPath;
 
     /** @brief Remove configuration associated with the removed MCTP endpoint.
      *
