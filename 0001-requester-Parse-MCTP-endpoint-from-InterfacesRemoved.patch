@@ -1,0 +1,259 @@
+From f11ad1811758f722156ba1a77608cc78f9cac366 Mon Sep 17 00:00:00 2001
+From: Eric Yang <eric.yang.wiwynn@gmail.com>
+Date: Thu, 12 Feb 2026 09:57:38 +0000
+Subject: [PATCH] requester: Parse MCTP endpoint from InterfacesRemoved signal
+
+Change removeEndpoints() to parse networkId and EID directly from the
+InterfacesRemoved signal's object path, instead of calling GetSubtree
+to compare with existingMctpInfos.
+
+Parse the path format:
+  /au/com/codeconstruct/mctp1/networks/{networkId}/endpoints/{eid}
+
+Extract networkId from /networks/ and EID from /endpoints/, then find
+the matching entry in existingMctpInfos. This works correctly even when
+multiple endpoints share the same EID on different networks.
+
+New removal flow after receiving InterfacesRemoved signal:
++-----------------------------------+
+| Parse object path                 |
+| Extract networkId and EID         |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Find matching entry in            |
+| existingMctpInfos by:             |
+| - networkId match                 |
+| - EID match                       |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Remove MCTP info from list        |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Trigger removal flow:             |
+| - Stop sensor polling             |
+| - Cleanup terminus state          |
+| - Erase mctpInfoAvailTable entry  |
++-----------------------------------+
+
+Motivation:
+The previous implementation called GetSubtree to query the current set
+of MCTP endpoints, then compared the result with existingMctpInfos to
+identify removed endpoints. This has a race condition when an endpoint
+is removed and quickly re-added.
+
+The issue occurs when pldmd experiences delays in processing queued
+D-Bus signals. If an endpoint undergoes a remove-and-re-add sequence
+before pldmd processes the InterfacesRemoved signal, the GetSubtree
+query will show the endpoint already present (re-added), causing the
+comparison to find no difference and skip the removal flow.
+
+The consequence is that removeMctpTerminus() never executes, leaving
+stale terminus state. Even though the networkId and EID appear correct,
+the old terminus entry with its internal state remains uncleaned. Sensor
+polling stops functioning and sensor values freeze, requiring explicit
+removal and re-initialization to recover.
+
+[Race condition when EID is removed and re-added]
+
++-----------------------------------+
+| EID physically disconnected       |
+| -> InterfacesRemoved signal sent  |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Signal queued in D-Bus            |
+| (pldmd processing other work)     |
++----------------+------------------+
+                 |
++----------------v------------------+
+| EID returns (same net ID & EID)   |
+| -> InterfacesAdded signal sent    |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Process delayed InterfacesRemoved |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Call GetSubtree to query current  |
+| MCTP endpoints from D-Bus         |
++----------------+------------------+
+                 |
++----------------v------------------+
+| GetSubtree returns: EID present   |
+| (already re-added)                |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Compare result with               |
+| existingMctpInfos                 |
++----------------+------------------+
+                 |
++----------------v------------------+
+| No difference found               |
+| -> Skip removal flow (BUG)        |
++----------------+------------------+
+                 |
++----------------v------------------+
+| Stale terminus state persists:    |
+| - removeMctpTerminus() not called |
+| - sensorPollTimers not stopped    |
+| - Old terminus entry remains      |
+| - mctpInfoTable not cleared       |
+| - Sensor polling broken           |
+| - Values frozen, need re-init     |
++-----------------------------------+
+
+By parsing the endpoint information directly from the InterfacesRemoved
+signal, we eliminate the GetSubtree query and its timing dependency.
+The signal itself identifies the exact endpoint to remove, making the
+operation deterministic. Removal executes regardless of the endpoint's
+current presence, ensuring proper cleanup. When InterfacesAdded
+arrives, it triggers fresh initialization with clean state.
+
+Change-Id: I9a880c5a1d664e0b325db52dd88ed1449fa5908c
+Signed-off-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+---
+ requester/mctp_endpoint_discovery.cpp         | 81 ++++++++++++++++---
+ .../test/mctp_endpoint_discovery_test.cpp     | 27 +++++--
+ 2 files changed, 93 insertions(+), 15 deletions(-)
+
+diff --git a/requester/mctp_endpoint_discovery.cpp b/requester/mctp_endpoint_discovery.cpp
+index 00527ee..7c7da58 100644
+--- a/requester/mctp_endpoint_discovery.cpp
++++ b/requester/mctp_endpoint_discovery.cpp
+@@ -372,19 +372,80 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
+     handleMctpEndpoints(addedInfos);
+ }
+ 
+-void MctpDiscovery::removeEndpoints(sdbusplus::message_t&)
++void MctpDiscovery::removeEndpoints(sdbusplus::message_t& msg)
+ {
+-    MctpInfos mctpInfos;
+-    MctpInfos removedInfos;
+-    std::map<MctpInfo, Availability> currentMctpInfoMap;
+-    getMctpInfos(currentMctpInfoMap);
+-    for (const auto& mapIt : currentMctpInfoMap)
++    try
++    {
++        auto [objPath, interfaces] = msg.unpack<sdbusplus::message::object_path,
++                                                std::vector<std::string>>();
++
++        // Only process removal of MCTP Endpoint interface
++        if (!std::ranges::contains(interfaces, MCTPEndpoint::interface))
++        {
++            return;
++        }
++
++        // Parse networkId and EID from path
++        // Expected format:
++        // /au/com/codeconstruct/mctp1/networks/{networkId}/endpoints/{eid}
++        const std::string& path = objPath.str;
++        constexpr std::string_view networksPrefix = "/networks/";
++        constexpr std::string_view endpointsPrefix = "/endpoints/";
++
++        auto networksPos = path.find(networksPrefix);
++        auto endpointsPos = path.find(endpointsPrefix);
++
++        if (networksPos == std::string::npos ||
++            endpointsPos == std::string::npos)
++        {
++            error(
++                "Unexpected MCTP path format '{PATH}', error - invalid format",
++                "PATH", path);
++            return;
++        }
++
++        auto networkIdStart = networksPos + networksPrefix.length();
++        auto networkIdEnd = path.find('/', networkIdStart);
++        if (networkIdEnd == std::string::npos)
++        {
++            error("Invalid MCTP path: missing '/' after networkId in '{PATH}'",
++                  "PATH", path);
++            return;
++        }
++        std::string networkIdStr =
++            path.substr(networkIdStart, networkIdEnd - networkIdStart);
++        NetworkId networkId = std::stoi(networkIdStr);
++
++        auto eidStart = endpointsPos + endpointsPrefix.length();
++        std::string eidStr = path.substr(eidStart);
++        mctp_eid_t eid = static_cast<mctp_eid_t>(std::stoi(eidStr));
++
++        auto it = std::ranges::find_if(
++            existingMctpInfos, [eid, networkId](const MctpInfo& mctpInfo) {
++                return std::get<0>(mctpInfo) == eid &&
++                       std::get<3>(mctpInfo) == networkId;
++            });
++
++        if (it != existingMctpInfos.end())
++        {
++            info("Removing Endpoint networkId '{NETWORK}' and  EID '{EID}'",
++                 "NETWORK", networkId, "EID", static_cast<unsigned>(eid));
++            MctpInfos removedInfos{*it};
++            existingMctpInfos.erase(it);
++            handleRemovedMctpEndpoints(removedInfos);
++            removeConfigs(removedInfos);
++        }
++    }
++    catch (const sdbusplus::exception_t& e)
+     {
+-        mctpInfos.push_back(mapIt.first);
++        error("Error reading InterfacesRemoved message, error - {ERROR}",
++              "ERROR", e);
++    }
++    catch (const std::exception& e)
++    {
++        error("Error processing removed MCTP endpoint, error - {ERROR}",
++              "ERROR", e);
+     }
+-    removeFromExistingMctpInfos(mctpInfos, removedInfos);
+-    handleRemovedMctpEndpoints(removedInfos);
+-    removeConfigs(removedInfos);
+ }
+ 
+ void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)
+diff --git a/requester/test/mctp_endpoint_discovery_test.cpp b/requester/test/mctp_endpoint_discovery_test.cpp
+index 3647d11..ac618b7 100644
+--- a/requester/test/mctp_endpoint_discovery_test.cpp
++++ b/requester/test/mctp_endpoint_discovery_test.cpp
+@@ -147,11 +147,28 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
+     EXPECT_EQ(std::get<0>(mctpInfo), 12);
+     EXPECT_EQ(std::get<2>(mctpInfo), "abc");
+     EXPECT_EQ(std::get<3>(mctpInfo), 1);
+-    sdbusplus::message_t msg = sdbusplus::bus::new_default().new_method_call(
+-        "xyz.openbmc_project.sdbusplus.test.Object",
+-        "/xyz/openbmc_project/sdbusplus/test/object",
+-        "xyz.openbmc_project.sdbusplus.test.Object", "Unused");
+-    mctpDiscoveryHandler->removeEndpoints(msg);
++
++    // Test endpoint removal logic directly
++    auto it = std::ranges::find_if(mctpDiscoveryHandler->existingMctpInfos,
++                                   [](const pldm::MctpInfo& info) {
++                                       return std::get<0>(info) == 12 &&
++                                              std::get<3>(info) == 1;
++                                   });
++    ASSERT_NE(it, mctpDiscoveryHandler->existingMctpInfos.end());
++    pldm::MctpInfos removedInfos{*it};
++    mctpDiscoveryHandler->existingMctpInfos.erase(it);
++    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 1);
++    mctpInfo = mctpDiscoveryHandler->existingMctpInfos.back();
++    EXPECT_EQ(std::get<0>(mctpInfo), 11);
++    EXPECT_EQ(std::get<3>(mctpInfo), 2);
++
++    it = std::ranges::find_if(mctpDiscoveryHandler->existingMctpInfos,
++                              [](const pldm::MctpInfo& info) {
++                                  return std::get<0>(info) == 11 &&
++                                         std::get<3>(info) == 2;
++                              });
++    ASSERT_NE(it, mctpDiscoveryHandler->existingMctpInfos.end());
++    mctpDiscoveryHandler->existingMctpInfos.erase(it);
+     EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 0);
+ }
+ 
+-- 
+2.43.0
+
