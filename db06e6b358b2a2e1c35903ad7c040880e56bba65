@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b6c58c0_cac6fb29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-12T15:54:01Z",
+      "side": 1,
+      "message": "I see that but I\u0027m confused by the commit message. Why are we doing this if there are no consumers?",
+      "parentUuid": "a2862cf7_882b81da",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e0abdc0_8d03c84f",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 11
