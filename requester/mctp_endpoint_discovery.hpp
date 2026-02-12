@@ -161,14 +161,6 @@ class MctpDiscovery
      */
     void addToExistingMctpInfos(const MctpInfos& mctpInfos);
 
-    /** @brief Erase the removed MCTP endpoint from existingMctpInfos.
-     *
-     *  @param[in] mctpInfos - the remaining MCTP endpoints
-     *  @param[out] removedInfos - the removed MCTP endpoints
-     */
-    void removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                     MctpInfos& removedInfos);
-
     friend class ::TestMctpDiscovery;
 
   private:
