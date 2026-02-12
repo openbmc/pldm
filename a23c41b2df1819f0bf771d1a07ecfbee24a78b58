@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "151094a1_8c2cd8da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-02-12T06:26:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b89ddf9_48ed9034",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b502223b_9760bc83",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-02-02T05:35:42Z",
       "side": 1,
       "message": "Testing details are required.",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "456578b6_e78e580f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-02-12T06:26:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b502223b_9760bc83",
       "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -225,6 +261,24 @@
       "writtenOn": "2026-02-02T05:35:42Z",
       "side": 1,
       "message": "Any possible race here? How do we know sensorAuxiliaryNamesTbl is populated?",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7e02b99_fa3d9b2b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 915,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-02-12T06:26:30Z",
+      "side": 1,
+      "message": "My understanding is that SensorAuxNames is added at the beginning of the function.\n\nfor (auto\u0026 pdr : pdrs)\n    {\n        auto pdrHdr \u003d new (pdr.data()) pldm_pdr_hdr;\n        switch (pdrHdr-\u003etype)\n        {\n            case PLDM_SENSOR_AUXILIARY_NAMES_PDR:\n            {\n                auto sensorAuxNames \u003d parseSensorAuxiliaryNamesPDR(pdr);\n                if (!sensorAuxNames)\n                {\n                    lg2::error(\n                        \"Failed to parse PDR with type {TYPE} handle {HANDLE}\",\n                        \"TYPE\", pdrHdr-\u003etype, \"HANDLE\",\n                        static_cast\u003cuint32_t\u003e(pdrHdr-\u003erecord_handle));\n                    continue;\n                }\n                sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));\n                break;\n            }",
+      "parentUuid": "e8568a54_85b6960c",
       "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
