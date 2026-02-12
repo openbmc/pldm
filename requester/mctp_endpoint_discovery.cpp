@@ -259,27 +259,6 @@ void MctpDiscovery::addToExistingMctpInfos(const MctpInfos& addedInfos)
     }
 }
 
-void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                                MctpInfos& removedInfos)
-{
-    for (const auto& mctpInfo : existingMctpInfos)
-    {
-        if (std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo) ==
-            mctpInfos.end())
-        {
-            removedInfos.emplace_back(mctpInfo);
-        }
-    }
-    for (const auto& mctpInfo : removedInfos)
-    {
-        info("Removing Endpoint networkId '{NETWORK}' and  EID '{EID}'",
-             "NETWORK", std::get<3>(mctpInfo), "EID", std::get<0>(mctpInfo));
-        existingMctpInfos.erase(std::remove(existingMctpInfos.begin(),
-                                            existingMctpInfos.end(), mctpInfo),
-                                existingMctpInfos.end());
-    }
-}
-
 void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
 {
     using Interface = std::string;
@@ -368,19 +347,95 @@ void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
     handleMctpEndpoints(addedInfos);
 }
 
-void MctpDiscovery::removeEndpoints(sdbusplus::message_t&)
+std::optional<std::pair<NetworkId, eid>> MctpDiscovery::parseMctpEndpointPath(
+    const std::string& path)
 {
-    MctpInfos mctpInfos;
-    MctpInfos removedInfos;
-    std::map<MctpInfo, Availability> currentMctpInfoMap;
-    getMctpInfos(currentMctpInfoMap);
-    for (const auto& mapIt : currentMctpInfoMap)
+    constexpr std::string_view networksPrefix = "/networks/";
+    constexpr std::string_view endpointsPrefix = "/endpoints/";
+
+    auto networksPos = path.find(networksPrefix);
+    auto endpointsPos = path.find(endpointsPrefix);
+
+    if (networksPos == std::string::npos || endpointsPos == std::string::npos ||
+        networksPos >= endpointsPos)
     {
-        mctpInfos.push_back(mapIt.first);
+        return std::nullopt;
     }
-    removeFromExistingMctpInfos(mctpInfos, removedInfos);
-    handleRemovedMctpEndpoints(removedInfos);
-    removeConfigs(removedInfos);
+
+    auto networkIdStart = networksPos + networksPrefix.length();
+    auto networkIdEnd = path.find('/', networkIdStart);
+    if (networkIdEnd == std::string::npos)
+    {
+        return std::nullopt;
+    }
+
+    auto eidStart = endpointsPos + endpointsPrefix.length();
+    auto eidEnd = path.find('/', eidStart);
+    if (eidEnd != std::string::npos)
+    {
+        return std::nullopt;
+    }
+
+    try
+    {
+        NetworkId networkId = static_cast<NetworkId>(std::stoi(
+            path.substr(networkIdStart, networkIdEnd - networkIdStart)));
+        eid eidVal = static_cast<eid>(std::stoi(path.substr(eidStart)));
+        return std::make_pair(networkId, eidVal);
+    }
+    catch (const std::exception&)
+    {
+        return std::nullopt;
+    }
+}
+
+void MctpDiscovery::removeEndpoints(sdbusplus::message_t& msg)
+{
+    try
+    {
+        auto [objPath, interfaces] =
+            msg.unpack<sdbusplus::object_path, std::vector<std::string>>();
+
+        // Only process removal of MCTP Endpoint interface
+        if (!std::ranges::contains(interfaces, MCTPEndpoint::interface))
+        {
+            return;
+        }
+
+        auto parsed = parseMctpEndpointPath(objPath.str);
+        if (!parsed)
+        {
+            error(
+                "Unexpected MCTP path format '{PATH}', error - invalid format",
+                "PATH", objPath.str);
+            return;
+        }
+        auto [networkId, eid] = *parsed;
+
+        auto it = std::ranges::find_if(
+            existingMctpInfos, [eid, networkId](const MctpInfo& mctpInfo) {
+                return std::get<0>(mctpInfo) == eid &&
+                       std::get<3>(mctpInfo) == networkId;
+            });
+
+        if (it != existingMctpInfos.end())
+        {
+            info("Removing Endpoint networkId '{NETWORK}' and EID '{EID}'",
+                 "NETWORK", networkId, "EID", static_cast<unsigned>(eid));
+            MctpInfos removedInfos{*it};
+            existingMctpInfos.erase(it);
+            handleRemovedMctpEndpoints(removedInfos);
+            removeConfigs(removedInfos);
+        }
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error reading InterfacesRemoved message: {ERROR}", "ERROR", e);
+    }
+    catch (const std::exception& e)
+    {
+        error("Error processing removed MCTP endpoint: {ERROR}", "ERROR", e);
+    }
 }
 
 void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)

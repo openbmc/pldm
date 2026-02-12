@@ -160,14 +160,6 @@ class MctpDiscovery
      */
     void addToExistingMctpInfos(const MctpInfos& mctpInfos);
 
-    /** @brief Erase the removed MCTP endpoint from existingMctpInfos.
-     *
-     *  @param[in] mctpInfos - the remaining MCTP endpoints
-     *  @param[out] removedInfos - the removed MCTP endpoints
-     */
-    void removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                     MctpInfos& removedInfos);
-
     friend class ::TestMctpDiscovery;
 
   private:
@@ -219,6 +211,17 @@ class MctpDiscovery
      */
     void searchConfigurationFor(const pldm::utils::DBusHandler& handler,
                                 MctpInfo& mctpInfo);
+
+    /** @brief Parse networkId and EID from MCTP endpoint object path.
+     *
+     *  Expected path format:
+     *  /au/com/codeconstruct/mctp1/networks/{networkId}/endpoints/{eid}
+     *
+     *  @param[in] path - the MCTP endpoint D-Bus object path
+     *  @return pair of {networkId, eid} on success, std::nullopt on failure
+     */
+    static std::optional<std::pair<NetworkId, eid>> parseMctpEndpointPath(
+        const std::string& path);
 
     /** @brief Remove configuration associated with the removed MCTP endpoint.
      *
