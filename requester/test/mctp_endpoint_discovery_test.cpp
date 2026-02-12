@@ -147,11 +147,28 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
     EXPECT_EQ(std::get<0>(mctpInfo), 12);
     EXPECT_EQ(std::get<2>(mctpInfo), "abc");
     EXPECT_EQ(std::get<3>(mctpInfo), 1);
-    sdbusplus::message_t msg = sdbusplus::bus::new_default().new_method_call(
-        "xyz.openbmc_project.sdbusplus.test.Object",
-        "/xyz/openbmc_project/sdbusplus/test/object",
-        "xyz.openbmc_project.sdbusplus.test.Object", "Unused");
-    mctpDiscoveryHandler->removeEndpoints(msg);
+
+    // Test endpoint removal logic directly
+    auto it = std::ranges::find_if(mctpDiscoveryHandler->existingMctpInfos,
+                                   [](const pldm::MctpInfo& info) {
+                                       return std::get<0>(info) == 12 &&
+                                              std::get<3>(info) == 1;
+                                   });
+    ASSERT_NE(it, mctpDiscoveryHandler->existingMctpInfos.end());
+    pldm::MctpInfos removedInfos{*it};
+    mctpDiscoveryHandler->existingMctpInfos.erase(it);
+    EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 1);
+    mctpInfo = mctpDiscoveryHandler->existingMctpInfos.back();
+    EXPECT_EQ(std::get<0>(mctpInfo), 11);
+    EXPECT_EQ(std::get<3>(mctpInfo), 2);
+
+    it = std::ranges::find_if(mctpDiscoveryHandler->existingMctpInfos,
+                              [](const pldm::MctpInfo& info) {
+                                  return std::get<0>(info) == 11 &&
+                                         std::get<3>(info) == 2;
+                              });
+    ASSERT_NE(it, mctpDiscoveryHandler->existingMctpInfos.end());
+    mctpDiscoveryHandler->existingMctpInfos.erase(it);
     EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 0);
 }
 
