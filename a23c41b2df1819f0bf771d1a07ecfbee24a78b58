@@ -196,6 +196,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7db8c407_d57b168d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-02-12T02:09:03Z",
+      "side": 1,
+      "message": "Add a MATCH to handle the MCTP reactor interface add signal.",
+      "parentUuid": "4ddc8198_8f4e7a13",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8568a54_85b6960c",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 12
