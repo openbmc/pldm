@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2862cf7_882b81da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-12T14:26:06Z",
+      "side": 1,
+      "message": "@chaul@amperecomputing.com before this patch, this code has an assumption that every sensor has a corresponding dbus interface.  Next time, I would write a patch that first removes that assumption, and then write a second patch that adds the support for non-dbus sensors.  This is known as refactor, then enhance.\n\nI\u0027ve left some suggestions that I think might make the code easier to understand but feel free to mark them as resolved without implementing them (unless of course the maintainers ask for them).  What you have here certainly works.\n\n@deepak.kodihalli.83@gmail.com and @manojkiran.eda@gmail.com the dbus api for file sizes has been removed so I don\u0027t think there is anything pending on this patch.",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e0abdc0_8d03c84f",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-12T14:26:06Z",
+      "side": 1,
+      "message": "another helper function might be good here.  Maybe something like:\n\n```\nisPLDMSensorSupported(pdr)\n```",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74b4c7f3_b34c3339",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-12T14:26:06Z",
+      "side": 1,
+      "message": "Consider this logic:\n\n```\nif (metricIntf)\n{\n    return metricIntf-\u003evalue();\n}\nif(sensorIntf)\n{\n    return sensorIntf-\u003evalue();\n}\nreturn sensorValue;\n```\n\nwhich avoids accidental nullptr deference and removes need for the extraneous dbusSensor and useMetricInterface variables.",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 9
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03be992e_95e9f6b9",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-12T14:26:06Z",
+      "side": 1,
+      "message": "NumericSensor can have either a SensorUnit or MetricUnit but not both.  Given that, should we have something like:\n\n```\n/** @brief PLDM Sensor Unit */\nstd::variant\u003cSensorUnit, MetricUnit\u003e unit;\n```\n\nThe same could be said for the DBus interface pointers as well, although that is pre-existing.",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62c8b27c_d59a1ede",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-12T14:26:06Z",
+      "side": 1,
+      "message": "can we deduce this from the dbus interface pointers valueIntf or metricIntf (if both are null, this sensor isn\u0027t on DBus)?",
+      "range": {
+        "startLine": 500,
+        "startChar": 0,
+        "endLine": 501,
+        "endChar": 28
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
