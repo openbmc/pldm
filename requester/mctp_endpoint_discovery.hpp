@@ -10,6 +10,7 @@
 #include <xyz/openbmc_project/MCTP/Endpoint/client.hpp>
 
 #include <initializer_list>
+#include <utility>
 #include <vector>
 
 using MCTPEndpoint = sdbusplus::common::xyz::openbmc_project::mctp::Endpoint;
@@ -32,6 +33,16 @@ const std::vector<std::string> interfaceFilter = {
     "xyz.openbmc_project.Configuration.MCTPI2CTarget",
     "xyz.openbmc_project.Configuration.MCTPI3CTarget",
     "xyz.openbmc_project.Configuration.MCTPUSBDevice"};
+
+/** @brief An MctpInfo paired with the D-Bus object path of the MCTP endpoint it
+ *         was discovered at. The object path identifies the endpoint: it is
+ *         the key used to avoid adding the same endpoint twice, to find a
+ *         tracked endpoint when its Connectivity changes and to find it when
+ *         its D-Bus object is removed. Entries are matched by comparing the
+ *         path as an opaque string, its layout is not parsed.
+ */
+using MctpInfoWithPath = std::pair<dbus::ObjectPath, MctpInfo>;
+using MctpInfosWithPath = std::vector<MctpInfoWithPath>;
 
 /** @class MctpDiscoveryHandlerIntf
  *
@@ -94,8 +105,8 @@ class MctpDiscovery
      * Endpoint is Added/Removed */
     std::vector<MctpDiscoveryHandlerIntf*> handlers;
 
-    /** @brief The existing MCTP endpoints */
-    MctpInfos existingMctpInfos;
+    /** @brief The existing MCTP endpoints and their D-Bus object paths */
+    MctpInfosWithPath existingMctpInfos;
 
     /** @brief Callback function when the propertiesChanged D-Bus
      * signal is triggered for MCTP endpoint's properties.
@@ -144,30 +155,28 @@ class MctpDiscovery
     /** @brief Get list of MctpInfos in MCTP control interface.
      *
      *  @param[in] mctpInfoMap - information of discovered MCTP endpoints
-     *  and the availability status of each endpoint
+     *  and the D-Bus object path and availability status of each endpoint
      */
-    void getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap);
+    void getMctpInfos(
+        std::map<MctpInfo, std::pair<dbus::ObjectPath, Availability>>&
+            mctpInfoMap);
 
     /** @brief Get list of new MctpInfos in addedInterace D-Bus signal message.
      *
      *  @param[in] msg - addedInterace D-Bus signal message
-     *  @param[in] mctpInfos - information of added MCTP endpoints
+     *  @param[in] mctpInfos - information and D-Bus object paths of added MCTP
+     *  endpoints
      */
-    void getAddedMctpInfos(sdbusplus::message_t& msg, MctpInfos& mctpInfos);
+    void getAddedMctpInfos(sdbusplus::message_t& msg,
+                           MctpInfosWithPath& mctpInfos);
 
-    /** @brief Add new MctpInfos to existingMctpInfos.
+    /** @brief Add new MCTP endpoints to existingMctpInfos. An endpoint whose
+     *  D-Bus object path is already in existingMctpInfos is not added again.
      *
-     *  @param[in] mctpInfos - information of new MCTP endpoints
+     *  @param[in] mctpInfos - information and D-Bus object paths of new MCTP
+     *  endpoints
      */
-    void addToExistingMctpInfos(const MctpInfos& mctpInfos);
-
-    /** @brief Erase the removed MCTP endpoint from existingMctpInfos.
-     *
-     *  @param[in] mctpInfos - the remaining MCTP endpoints
-     *  @param[out] removedInfos - the removed MCTP endpoints
-     */
-    void removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                     MctpInfos& removedInfos);
+    void addToExistingMctpInfos(const MctpInfosWithPath& mctpInfos);
 
     friend class ::TestMctpDiscovery;
 
