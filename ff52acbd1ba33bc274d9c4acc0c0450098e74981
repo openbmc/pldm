@@ -69,6 +69,23 @@
       "parentUuid": "a93b64c8_1c3fe5a4",
       "revId": "ff52acbd1ba33bc274d9c4acc0c0450098e74981",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "288a3af1_70c131d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-02-12T10:20:01Z",
+      "side": 1,
+      "message": "Consider adopting Gerrit change [87426] as the solution for this race condition.\nChange [87426] parses networkId/EID directly from the InterfacesRemoved signal object path, avoiding the GetSubtree-based race.\n\n[87426]: https://gerrit.openbmc.org/c/openbmc/pldm/+/87426",
+      "revId": "ff52acbd1ba33bc274d9c4acc0c0450098e74981",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
