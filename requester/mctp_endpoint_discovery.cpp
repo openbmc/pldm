@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <map>
 #include <string>
-#include <string_view>
 #include <vector>
 
 using namespace sdbusplus::match_rules;
@@ -19,6 +18,15 @@ PHOSPHOR_LOG2_USING;
 
 namespace pldm
 {
+namespace
+{
+auto findByObjectPath(const MctpInfosWithPath& mctpInfos,
+                      const dbus::ObjectPath& objPath)
+{
+    return std::ranges::find(mctpInfos, objPath, &MctpInfoWithPath::first);
+}
+} // namespace
+
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
     std::initializer_list<MctpDiscoveryHandlerIntf*> list) :
@@ -34,22 +42,25 @@ MctpDiscovery::MctpDiscovery(
         [this](sdbusplus::message_t& msg) { this->propertiesChangedCb(msg); }),
     handlers(list)
 {
-    std::map<MctpInfo, Availability> currentMctpInfoMap;
+    std::map<MctpInfo, std::pair<dbus::ObjectPath, Availability>>
+        currentMctpInfoMap;
     getMctpInfos(currentMctpInfoMap);
-    for (const auto& mapIt : currentMctpInfoMap)
+    for (const auto& [mctpInfo, pathAndAvailability] : currentMctpInfoMap)
     {
-        if (mapIt.second)
+        const auto& [path, availability] = pathAndAvailability;
+        if (availability)
         {
             // Only add the available endpoints to the terminus
             // Let the propertiesChanged signal tells us when it comes back
             // to Available again
-            addToExistingMctpInfos(MctpInfos(1, mapIt.first));
+            addToExistingMctpInfos(MctpInfosWithPath(1, {path, mctpInfo}));
         }
     }
     handleMctpEndpoints(existingMctpInfos);
 }
 
-void MctpDiscovery::getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap)
+void MctpDiscovery::getMctpInfos(
+    std::map<MctpInfo, std::pair<dbus::ObjectPath, Availability>>& mctpInfoMap)
 {
     // Find all implementations of the MCTP Endpoint interface
     pldm::utils::GetSubTreeResponse mapperResponse;
@@ -84,7 +95,7 @@ void MctpDiscovery::getMctpInfos(std::map<MctpInfo, Availability>& mctpInfoMap)
                     MctpInfo(std::get<eid>(epProps), uuid, "",
                              std::get<NetworkId>(epProps), std::nullopt);
                 searchConfigurationFor(pldm::utils::DBusHandler(), mctpInfo);
-                mctpInfoMap[std::move(mctpInfo)] = availability;
+                mctpInfoMap[std::move(mctpInfo)] = {path, availability};
             }
         }
     }
@@ -171,7 +182,7 @@ Availability MctpDiscovery::getEndpointConnectivityProp(const std::string& path)
 }
 
 void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
-                                      MctpInfos& mctpInfos)
+                                      MctpInfosWithPath& mctpInfos)
 {
     using ObjectPath = sdbusplus::object_path;
     ObjectPath objPath;
@@ -248,43 +259,22 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                         MctpInfo(eid, uuid, "", networkId, std::nullopt);
                     searchConfigurationFor(pldm::utils::DBusHandler(),
                                            mctpInfo);
-                    mctpInfos.emplace_back(std::move(mctpInfo));
+                    mctpInfos.emplace_back(objPath.str, std::move(mctpInfo));
                 }
             }
         }
     }
 }
 
-void MctpDiscovery::addToExistingMctpInfos(const MctpInfos& addedInfos)
+void MctpDiscovery::addToExistingMctpInfos(const MctpInfosWithPath& addedInfos)
 {
-    for (const auto& mctpInfo : addedInfos)
+    for (const auto& addedInfo : addedInfos)
     {
-        if (std::find(existingMctpInfos.begin(), existingMctpInfos.end(),
-                      mctpInfo) == existingMctpInfos.end())
+        if (findByObjectPath(existingMctpInfos, addedInfo.first) ==
+            existingMctpInfos.end())
         {
-            existingMctpInfos.emplace_back(mctpInfo);
+            existingMctpInfos.emplace_back(addedInfo);
         }
-    }
-}
-
-void MctpDiscovery::removeFromExistingMctpInfos(MctpInfos& mctpInfos,
-                                                MctpInfos& removedInfos)
-{
-    for (const auto& mctpInfo : existingMctpInfos)
-    {
-        if (std::find(mctpInfos.begin(), mctpInfos.end(), mctpInfo) ==
-            mctpInfos.end())
-        {
-            removedInfos.emplace_back(mctpInfo);
-        }
-    }
-    for (const auto& mctpInfo : removedInfos)
-    {
-        info("Removing Endpoint networkId '{NETWORK}' and  EID '{EID}'",
-             "NETWORK", std::get<3>(mctpInfo), "EID", std::get<0>(mctpInfo));
-        existingMctpInfos.erase(std::remove(existingMctpInfos.begin(),
-                                            existingMctpInfos.end(), mctpInfo),
-                                existingMctpInfos.end());
     }
 }
 
@@ -320,6 +310,16 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
 
         if (key == MCTPConnectivityProp)
         {
+            auto existingIt = findByObjectPath(existingMctpInfos, objPath);
+            if (existingIt != existingMctpInfos.end())
+            {
+                // The endpoint already in existingMctpInfos, the signal has
+                // all that is needed so do not read its properties again
+                updateMctpEndpointAvailability(existingIt->second,
+                                               availability);
+                continue;
+            }
+
             try
             {
                 service = pldm::utils::DBusHandler().getService(
@@ -345,24 +345,17 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             MctpInfo mctpInfo(std::get<eid>(epProps), uuid, "",
                               std::get<NetworkId>(epProps), std::nullopt);
             searchConfigurationFor(pldm::utils::DBusHandler(), mctpInfo);
-            if (!std::ranges::contains(existingMctpInfos, mctpInfo))
+            if (availability)
             {
-                if (availability)
-                {
-                    // The endpoint not in existingMctpInfos and is
-                    // available Add it to existingMctpInfos
-                    info(
-                        "Adding Endpoint networkId {NETWORK} ID {EID} by propertiesChanged signal",
-                        "NETWORK", std::get<3>(mctpInfo), "EID",
-                        unsigned(std::get<0>(mctpInfo)));
-                    addToExistingMctpInfos(MctpInfos(1, mctpInfo));
-                    handleMctpEndpoints(MctpInfos(1, mctpInfo));
-                }
-            }
-            else
-            {
-                // The endpoint already in existingMctpInfos
-                updateMctpEndpointAvailability(mctpInfo, availability);
+                // The endpoint not in existingMctpInfos and is
+                // available Add it to existingMctpInfos
+                info(
+                    "Adding Endpoint networkId {NETWORK} ID {EID} by propertiesChanged signal",
+                    "NETWORK", std::get<3>(mctpInfo), "EID",
+                    unsigned(std::get<0>(mctpInfo)));
+                const MctpInfosWithPath addedInfo(1, {objPath, mctpInfo});
+                addToExistingMctpInfos(addedInfo);
+                handleMctpEndpoints(addedInfo);
             }
         }
     }
@@ -370,29 +363,49 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
 
 void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
 {
-    MctpInfos addedInfos;
-    getAddedMctpInfos(msg, addedInfos);
-    addToExistingMctpInfos(addedInfos);
-    handleMctpEndpoints(addedInfos);
+    MctpInfosWithPath addedInfosWithPath;
+    getAddedMctpInfos(msg, addedInfosWithPath);
+    addToExistingMctpInfos(addedInfosWithPath);
+    handleMctpEndpoints(addedInfosWithPath);
 }
 
-void MctpDiscovery::removeEndpoints(sdbusplus::message_t&)
+void MctpDiscovery::removeEndpoints(sdbusplus::message_t& msg)
 {
-    MctpInfos mctpInfos;
-    MctpInfos removedInfos;
-    std::map<MctpInfo, Availability> currentMctpInfoMap;
-    getMctpInfos(currentMctpInfoMap);
-    for (const auto& mapIt : currentMctpInfoMap)
+    sdbusplus::object_path objPath;
+    try
     {
-        mctpInfos.push_back(mapIt.first);
+        msg.read(objPath);
     }
-    removeFromExistingMctpInfos(mctpInfos, removedInfos);
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Error reading InterfacesRemoved message: {ERROR}", "ERROR", e);
+        return;
+    }
+
+    auto it = findByObjectPath(existingMctpInfos, objPath.str);
+    if (it == existingMctpInfos.end())
+    {
+        // Not an endpoint we are tracking
+        return;
+    }
+
+    const MctpInfo mctpInfo = it->second;
+    info("Removing Endpoint networkId '{NETWORK}' and EID '{EID}'", "NETWORK",
+         std::get<3>(mctpInfo), "EID", std::get<0>(mctpInfo));
+    MctpInfos removedInfos{mctpInfo};
+    existingMctpInfos.erase(it);
     handleRemovedMctpEndpoints(removedInfos);
     removeConfigs(removedInfos);
 }
 
-void MctpDiscovery::handleMctpEndpoints(const MctpInfos& mctpInfos)
+void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
 {
+    MctpInfos mctpInfos;
+    for (const auto& endpoint : endpoints)
+    {
+        mctpInfos.emplace_back(endpoint.second);
+    }
+
     for (const auto& handler : handlers)
     {
         if (handler)
