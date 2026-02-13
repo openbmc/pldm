@@ -433,7 +433,7 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_CD_DVD_DRIVE, "CD/DVD Drive"},
         {PLDM_ENTITY_OTHER_SILICON_STORAGE_DEVICE,
          "Other Silicon Storage Device"},
-        {PLDM_ENTITY_SOLID_STATE_SRIVE, "Solid State Drive"},
+        {PLDM_ENTITY_SOLID_STATE_DRIVE, "Solid State Drive"},
         {PLDM_ENTITY_POWER_SUPPLY, "Power supply"},
         {PLDM_ENTITY_BATTERY, "Battery"},
         {PLDM_ENTITY_SUPER_CAPACITOR, "Super Capacitor"},
