@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74bb840e_538ca8bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-13T16:41:52Z",
+      "side": 1,
+      "message": "Unfortunately this is spelled wrong in libpldm entity.h so you\u0027d have to fix it there first.  @andrew@codeconstruct.com.au is that even possible without doing a backward incompatible library revision?",
+      "revId": "eccfdc7a0555ee061d55b727c09d25eb2dda32f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
