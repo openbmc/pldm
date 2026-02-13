@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e7cdd20_dc2107ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-13T15:18:25Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com yes I suppose:\n\n\u003e as they are not consumed anywhere\n\ncould be more accurately stated as\n\n`as they are not consumed outside pldmd`\n\nThey are consumed by pldmd in a later patch in this series to implement the file size property proposed here: https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/81694/12/yaml/xyz/openbmc_project/PLDM/File.interface.yaml",
+      "parentUuid": "5b6c58c0_cac6fb29",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e0abdc0_8d03c84f",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 11
