@@ -73,6 +73,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1b02ed2_fc9f8ba6",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-14T11:54:51Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to set newValue to NaN again. You are already doing it at L771 and it only gets modified inside the if condition at L772.",
+      "range": {
+        "startLine": 782,
+        "startChar": 2,
+        "endLine": 786,
+        "endChar": 9
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b64a52be_8e2761d5",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1129,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-14T11:54:51Z",
+      "side": 1,
+      "message": "This can be the first check in the function before even initializing local variables.",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c0c0df2_b393bd0f",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1135,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-14T11:54:51Z",
+      "side": 1,
+      "message": "```suggestion\n    if ((!useMetricInterface \u0026\u0026 !valueIntf) ||\n         (useMetricInterface \u0026\u0026 !metricIntf))\n```\nYou already have a check at L1129 which will return if `dbusSensor` is false. So, you might not need another check here.",
+      "range": {
+        "startLine": 1133,
+        "startChar": 1,
+        "endLine": 1135,
+        "endChar": 19
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74b4c7f3_b34c3339",
         "filename": "platform-mc/numeric_sensor.hpp",
         "patchSetId": 11
