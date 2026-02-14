@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "56ceb844_5f03652d",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-14T13:09:31Z",
+      "side": 1,
+      "message": "\u003e1) Is there a guarantee that PLDM support is the same between the different mediums?\n\nGood question. It is possible that a device can choose to provide different level of PLDM support over different bindings. \n- Such a device will have single TL PDR or multiple? \n- Also, any thoughts on how TID assignment will happen in such cases? \n\n\n\u003e 2) This would prioritize mediums that are available at stand-by over others. For example for a plug-n-play PCIe card this could prioritize slow I2C medium over fast PCIe VDM.\n\nYou are right. This is something which we are also interested to implement.\n \nPLDM should choose available higher‑bandwidth MCTP binding mediums/network to communicate —for example, PCIe would rank above I2C/I3C as you mentioned.\n\nAnother point is that both the mediums might not be available all the time. For instance, an I2C path to a PCIe card may be available earlier, while the PCIe path becomes usable only after PCIe enumeration completes. In such cases, PLDM could begin communication over I2C and then switch to PCIe once it becomes available.\n\n\n@jk@ozlabs.org Is it feasible to expose MCTP binding information under each MCTP device object paths to implement something like above? If not binding information, another option I can think of is the max speed/bandwidth of the network/binding.",
+      "parentUuid": "11e64fbb_02984b60",
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d72d3e8c_b5d77149",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 5
