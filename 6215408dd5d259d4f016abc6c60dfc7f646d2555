@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9235f17e_3711a4be",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2026-02-16T03:41:33Z",
+      "side": 1,
+      "message": "\u003e @jk@ozlabs.org Is it feasible to expose MCTP binding information under each MCTP device object paths to implement something like above?\n\nYes, but it\u0027s not as simple as you\u0027re proposing:\n\n - an EID-referenced endpoint object may have *no* physical binding associated (eg., where it is bridged)\n - an EID-referenced endpoint object may have *multiple* physical bindings associated (eg., where there are multiple paths to the endpoint, like DSP0236 Figure 9(A) \u0026 Figure 14)\n\nThere seem to be two use-cases above:\n\n 1. Where the endpoint\u0027s MCTP interfaces are the same across two transport types, and the transports should be selected based on some desired performance metric\n \n 2. Where the endpoint\u0027s MCTP interfaces vary across the two transports, so the transport must be selected on some application-level logic\n\nWhich influences the routing \u0026 EID allocation setup:\n \nFor (2), we would require separate EIDs to be assigned across those two transports, so that the application logic has some chance of determining which remote interface to interact with.\n \nIn this case, you would need some sort of policy to select an EID in the application layer, right? Or are you proposing we rely on mctpd\u0027s dbus objects to determine this (ie, using the proposed transport type data, noting that won\u0027t work for bridged cases)\n\nFor (1), I would suggest using the same EID across both transports on the remote; the selection of the \"best\" interface would then be a kernel routing decision, with no application awareness required.\n\nIn this case, nothing needs to consume the transport type data, it\u0027s only used at routing setup time.",
+      "parentUuid": "56ceb844_5f03652d",
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d72d3e8c_b5d77149",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 5
