@@ -19,6 +19,11 @@ class PelHandler : public FileHandler
      */
     PelHandler(uint32_t fileHandle) : FileHandler(fileHandle) {}
 
+    PelHandler(const PelHandler&) = delete;
+    PelHandler& operator=(const PelHandler&) = delete;
+    PelHandler(PelHandler&&) = default;
+    PelHandler& operator=(PelHandler&&) = default;
+
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address,
                                 oem_platform::Handler* /*oemPlatformHandler*/);

@@ -80,7 +80,7 @@ class GetEventReceiver : public CommandInterface
     ~GetEventReceiver() = default;
     GetEventReceiver() = delete;
     GetEventReceiver(const GetEventReceiver&) = delete;
-    GetEventReceiver(GetEventReceiver&&) = default;
+    GetEventReceiver(GetEventReceiver&&) = delete;
     GetEventReceiver& operator=(const GetEventReceiver&) = delete;
     GetEventReceiver& operator=(GetEventReceiver&&) = delete;
 
@@ -138,7 +138,7 @@ class GetPDR : public CommandInterface
     ~GetPDR() = default;
     GetPDR() = delete;
     GetPDR(const GetPDR&) = delete;
-    GetPDR(GetPDR&&) = default;
+    GetPDR(GetPDR&&) = delete;
     GetPDR& operator=(const GetPDR&) = delete;
     GetPDR& operator=(GetPDR&&) = delete;
 
@@ -1668,7 +1668,7 @@ class SetStateEffecter : public CommandInterface
     ~SetStateEffecter() = default;
     SetStateEffecter() = delete;
     SetStateEffecter(const SetStateEffecter&) = delete;
-    SetStateEffecter(SetStateEffecter&&) = default;
+    SetStateEffecter(SetStateEffecter&&) = delete;
     SetStateEffecter& operator=(const SetStateEffecter&) = delete;
     SetStateEffecter& operator=(SetStateEffecter&&) = delete;
 
@@ -1762,7 +1762,7 @@ class SetNumericEffecterValue : public CommandInterface
     ~SetNumericEffecterValue() = default;
     SetNumericEffecterValue() = delete;
     SetNumericEffecterValue(const SetNumericEffecterValue&) = delete;
-    SetNumericEffecterValue(SetNumericEffecterValue&&) = default;
+    SetNumericEffecterValue(SetNumericEffecterValue&&) = delete;
     SetNumericEffecterValue& operator=(const SetNumericEffecterValue&) = delete;
     SetNumericEffecterValue& operator=(SetNumericEffecterValue&&) = delete;
 
@@ -1845,7 +1845,7 @@ class GetStateSensorReadings : public CommandInterface
     ~GetStateSensorReadings() = default;
     GetStateSensorReadings() = delete;
     GetStateSensorReadings(const GetStateSensorReadings&) = delete;
-    GetStateSensorReadings(GetStateSensorReadings&&) = default;
+    GetStateSensorReadings(GetStateSensorReadings&&) = delete;
     GetStateSensorReadings& operator=(const GetStateSensorReadings&) = delete;
     GetStateSensorReadings& operator=(GetStateSensorReadings&&) = delete;
 
@@ -1926,7 +1926,7 @@ class GetSensorReading : public CommandInterface
     ~GetSensorReading() = default;
     GetSensorReading() = delete;
     GetSensorReading(const GetSensorReading&) = delete;
-    GetSensorReading(GetSensorReading&&) = default;
+    GetSensorReading(GetSensorReading&&) = delete;
     GetSensorReading& operator=(const GetSensorReading&) = delete;
     GetSensorReading& operator=(GetSensorReading&&) = delete;
 
@@ -2082,7 +2082,7 @@ class GetStateEffecterStates : public CommandInterface
     ~GetStateEffecterStates() = default;
     GetStateEffecterStates() = delete;
     GetStateEffecterStates(const GetStateEffecterStates&) = delete;
-    GetStateEffecterStates(GetStateEffecterStates&&) = default;
+    GetStateEffecterStates(GetStateEffecterStates&&) = delete;
     GetStateEffecterStates& operator=(const GetStateEffecterStates&) = delete;
     GetStateEffecterStates& operator=(GetStateEffecterStates&&) = delete;
 
@@ -2151,7 +2151,7 @@ class GetNumericEffecterValue : public CommandInterface
     ~GetNumericEffecterValue() = default;
     GetNumericEffecterValue() = delete;
     GetNumericEffecterValue(const GetNumericEffecterValue&) = delete;
-    GetNumericEffecterValue(GetNumericEffecterValue&&) = default;
+    GetNumericEffecterValue(GetNumericEffecterValue&&) = delete;
     GetNumericEffecterValue& operator=(const GetNumericEffecterValue&) = delete;
     GetNumericEffecterValue& operator=(GetNumericEffecterValue&&) = delete;
 

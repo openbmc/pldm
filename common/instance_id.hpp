@@ -101,6 +101,11 @@ class InstanceIdDb
         }
     }
 
+    InstanceIdDb(const InstanceIdDb&) = delete;
+    InstanceIdDb& operator=(const InstanceIdDb&) = delete;
+    InstanceIdDb(InstanceIdDb&&) = default;
+    InstanceIdDb& operator=(InstanceIdDb&&) = default;
+
     ~InstanceIdDb()
     {
         /*

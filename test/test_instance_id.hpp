@@ -14,6 +14,10 @@ class TestInstanceIdDb : public pldm::InstanceIdDb
   public:
     TestInstanceIdDb() : TestInstanceIdDb(createDb()) {}
 
+    TestInstanceIdDb(const TestInstanceIdDb&) = delete;
+    TestInstanceIdDb& operator=(const TestInstanceIdDb&) = delete;
+    TestInstanceIdDb(TestInstanceIdDb&&) = default;
+    TestInstanceIdDb& operator=(TestInstanceIdDb&&) = default;
     ~TestInstanceIdDb()
     {
         std::filesystem::remove(dbPath);
