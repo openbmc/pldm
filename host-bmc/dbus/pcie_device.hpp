@@ -29,6 +29,8 @@ class PCIeDevice : public ItemDevice
     ~PCIeDevice() = default;
     PCIeDevice(const PCIeDevice&) = delete;
     PCIeDevice& operator=(const PCIeDevice&) = delete;
+    PCIeDevice(PCIeDevice&&) = delete;
+    PCIeDevice& operator=(PCIeDevice&&) = delete;
 
     PCIeDevice(sdbusplus::bus_t& bus, const std::string& objPath) :
         ItemDevice(bus, objPath.c_str())

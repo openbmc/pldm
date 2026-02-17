@@ -52,6 +52,11 @@ class LidHandler : public FileHandler
         }
     }
 
+    LidHandler(const LidHandler&) = delete;
+    LidHandler& operator=(const LidHandler&) = delete;
+    LidHandler(LidHandler&&) = default;
+    LidHandler& operator=(LidHandler&&) = default;
+
     /** @brief Method to construct the LID path based on current boot side
      *  @param[in] oemPlatformHandler - OEM platform handler
      *  @return bool - true if a new path is constructed
