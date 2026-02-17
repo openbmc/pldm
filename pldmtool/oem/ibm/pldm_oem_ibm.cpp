@@ -35,7 +35,7 @@ class GetAlertStatus : public CommandInterface
     ~GetAlertStatus() = default;
     GetAlertStatus() = delete;
     GetAlertStatus(const GetAlertStatus&) = delete;
-    GetAlertStatus(GetAlertStatus&&) = default;
+    GetAlertStatus(GetAlertStatus&&) = delete;
     GetAlertStatus& operator=(const GetAlertStatus&) = delete;
     GetAlertStatus& operator=(GetAlertStatus&&) = delete;
 
@@ -97,7 +97,7 @@ class GetFileTable : public CommandInterface
     ~GetFileTable() = default;
     GetFileTable() = delete;
     GetFileTable(const GetFileTable&) = delete;
-    GetFileTable(GetFileTable&&) = default;
+    GetFileTable(GetFileTable&&) = delete;
     GetFileTable& operator=(const GetFileTable&) = delete;
     GetFileTable& operator=(GetFileTable&&) = delete;
 

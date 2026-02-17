@@ -129,7 +129,10 @@ class RepoInterface
 {
   public:
     RepoInterface(pldm_pdr* repo) : repo(repo) {}
-
+    RepoInterface(const RepoInterface&) = delete;
+    RepoInterface& operator=(const RepoInterface&) = delete;
+    RepoInterface(RepoInterface&&) = default;
+    RepoInterface& operator=(RepoInterface&&) = default;
     virtual ~RepoInterface() = default;
 
     /** @brief Get an opaque pldm_pdr structure

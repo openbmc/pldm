@@ -122,7 +122,7 @@ class GetStatus : public CommandInterface
     ~GetStatus() = default;
     GetStatus() = delete;
     GetStatus(const GetStatus&) = delete;
-    GetStatus(GetStatus&&) = default;
+    GetStatus(GetStatus&&) = delete;
     GetStatus& operator=(const GetStatus&) = delete;
     GetStatus& operator=(GetStatus&&) = delete;
 
@@ -212,7 +212,7 @@ class GetFirmwareParameters : public CommandInterface
     ~GetFirmwareParameters() = default;
     GetFirmwareParameters() = delete;
     GetFirmwareParameters(const GetFirmwareParameters&) = delete;
-    GetFirmwareParameters(GetFirmwareParameters&&) = default;
+    GetFirmwareParameters(GetFirmwareParameters&&) = delete;
     GetFirmwareParameters& operator=(const GetFirmwareParameters&) = delete;
     GetFirmwareParameters& operator=(GetFirmwareParameters&&) = delete;
 
@@ -458,7 +458,7 @@ class QueryDeviceIdentifiers : public CommandInterface
     ~QueryDeviceIdentifiers() = default;
     QueryDeviceIdentifiers() = delete;
     QueryDeviceIdentifiers(const QueryDeviceIdentifiers&) = delete;
-    QueryDeviceIdentifiers(QueryDeviceIdentifiers&&) = default;
+    QueryDeviceIdentifiers(QueryDeviceIdentifiers&&) = delete;
     QueryDeviceIdentifiers& operator=(const QueryDeviceIdentifiers&) = delete;
     QueryDeviceIdentifiers& operator=(QueryDeviceIdentifiers&&) = delete;
 

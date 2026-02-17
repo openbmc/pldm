@@ -225,6 +225,11 @@ constexpr auto EnumAttribute =
 class DBusHandlerInterface
 {
   public:
+    DBusHandlerInterface() = default;
+    DBusHandlerInterface(const DBusHandlerInterface&) = delete;
+    DBusHandlerInterface& operator=(const DBusHandlerInterface&) = delete;
+    DBusHandlerInterface(DBusHandlerInterface&&) = default;
+    DBusHandlerInterface& operator=(DBusHandlerInterface&&) = default;
     virtual ~DBusHandlerInterface() = default;
 
     virtual std::string getService(const char* path,

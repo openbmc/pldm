@@ -13,6 +13,7 @@ class AggregateUpdateManager : public UpdateManager
     AggregateUpdateManager(AggregateUpdateManager&&) = delete;
     AggregateUpdateManager& operator=(const AggregateUpdateManager&) = delete;
     AggregateUpdateManager& operator=(AggregateUpdateManager&&) = delete;
+    ~AggregateUpdateManager() = default;
 
     /**
      * @brief Constructor for AggregateUpdateManager
