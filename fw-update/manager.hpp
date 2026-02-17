@@ -31,7 +31,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     Manager(Manager&&) = delete;
     Manager& operator=(const Manager&) = delete;
     Manager& operator=(Manager&&) = delete;
-    ~Manager() = default;
+    ~Manager() override = default;
 
     /**
      * @brief Constructor for the PLDM Firmware Update Manager

@@ -119,7 +119,7 @@ uint8_t convertStringTypeToUInt8(std::string compImgVerStrType)
 class GetStatus : public CommandInterface
 {
   public:
-    ~GetStatus() = default;
+    ~GetStatus() override = default;
     GetStatus() = delete;
     GetStatus(const GetStatus&) = delete;
     GetStatus(GetStatus&&) = delete;
@@ -209,7 +209,7 @@ const std::map<uint16_t, std::string> componentClassification{
 class GetFwParams : public CommandInterface
 {
   public:
-    ~GetFwParams() = default;
+    ~GetFwParams() override = default;
     GetFwParams() = delete;
     GetFwParams(const GetFwParams&) = delete;
     GetFwParams(GetFwParams&&) = delete;
@@ -455,7 +455,7 @@ class GetFwParams : public CommandInterface
 class QueryDeviceIdentifiers : public CommandInterface
 {
   public:
-    ~QueryDeviceIdentifiers() = default;
+    ~QueryDeviceIdentifiers() override = default;
     QueryDeviceIdentifiers() = delete;
     QueryDeviceIdentifiers(const QueryDeviceIdentifiers&) = delete;
     QueryDeviceIdentifiers(QueryDeviceIdentifiers&&) = delete;
@@ -658,7 +658,7 @@ void QueryDeviceIdentifiers::parseResponseMsg(pldm_msg* responsePtr,
 class RequestUpdate : public CommandInterface
 {
   public:
-    ~RequestUpdate() = default;
+    ~RequestUpdate() override = default;
     RequestUpdate() = delete;
     RequestUpdate(const RequestUpdate&) = delete;
     RequestUpdate(RequestUpdate&&) = delete;
@@ -807,7 +807,7 @@ class RequestUpdate : public CommandInterface
 class PassComponentTable : public CommandInterface
 {
   public:
-    ~PassComponentTable() = default;
+    ~PassComponentTable() override = default;
     PassComponentTable() = delete;
     PassComponentTable(const PassComponentTable&) = delete;
     PassComponentTable(PassComponentTable&&) = delete;
@@ -967,7 +967,7 @@ class PassComponentTable : public CommandInterface
 class UpdateComponent : public CommandInterface
 {
   public:
-    ~UpdateComponent() = default;
+    ~UpdateComponent() override = default;
     UpdateComponent() = delete;
     UpdateComponent(const UpdateComponent&) = delete;
     UpdateComponent(UpdateComponent&&) = delete;
@@ -1156,7 +1156,7 @@ class UpdateComponent : public CommandInterface
 class ActivateFirmware : public CommandInterface
 {
   public:
-    ~ActivateFirmware() = default;
+    ~ActivateFirmware() override = default;
     ActivateFirmware() = delete;
     ActivateFirmware(const ActivateFirmware&) = delete;
     ActivateFirmware(ActivateFirmware&&) = delete;
@@ -1218,7 +1218,7 @@ class ActivateFirmware : public CommandInterface
 class CancelUpdateComponent : public CommandInterface
 {
   public:
-    ~CancelUpdateComponent() = default;
+    ~CancelUpdateComponent() override = default;
     CancelUpdateComponent() = delete;
     CancelUpdateComponent(const CancelUpdateComponent&) = delete;
     CancelUpdateComponent(CancelUpdateComponent&&) = delete;
@@ -1259,7 +1259,7 @@ class CancelUpdateComponent : public CommandInterface
 class CancelUpdate : public CommandInterface
 {
   public:
-    ~CancelUpdate() = default;
+    ~CancelUpdate() override = default;
     CancelUpdate() = delete;
     CancelUpdate(const CancelUpdate&) = delete;
     CancelUpdate(CancelUpdate&&) = delete;

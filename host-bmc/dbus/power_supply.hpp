@@ -18,7 +18,7 @@ class PowerSupply : public ItemPowerSupply
 {
   public:
     PowerSupply() = delete;
-    ~PowerSupply() = default;
+    ~PowerSupply() override = default;
     PowerSupply(const PowerSupply&) = delete;
     PowerSupply& operator=(const PowerSupply&) = delete;
     PowerSupply(PowerSupply&&) = delete;

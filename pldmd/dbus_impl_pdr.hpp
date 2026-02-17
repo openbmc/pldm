@@ -31,7 +31,7 @@ class Pdr : public PdrIntf
     Pdr& operator=(const Pdr&) = delete;
     Pdr(Pdr&&) = delete;
     Pdr& operator=(Pdr&&) = delete;
-    virtual ~Pdr() = default;
+    ~Pdr() override = default;
 
     /** @brief Constructor to put object onto bus at a dbus path.
      *  @param[in] bus - Bus to attach to.

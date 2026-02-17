@@ -22,7 +22,7 @@ class PCIeSlot : public ItemSlot
 {
   public:
     PCIeSlot() = delete;
-    ~PCIeSlot() = default;
+    ~PCIeSlot() override = default;
     PCIeSlot(const PCIeSlot&) = delete;
     PCIeSlot& operator=(const PCIeSlot&) = delete;
     PCIeSlot(PCIeSlot&&) = delete;

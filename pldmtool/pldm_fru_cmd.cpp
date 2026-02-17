@@ -29,7 +29,7 @@ std::vector<std::unique_ptr<CommandInterface>> commands;
 class GetFruRecordTableMetadata : public CommandInterface
 {
   public:
-    ~GetFruRecordTableMetadata() = default;
+    ~GetFruRecordTableMetadata() override = default;
     GetFruRecordTableMetadata() = delete;
     GetFruRecordTableMetadata(const GetFruRecordTableMetadata&) = delete;
     GetFruRecordTableMetadata(GetFruRecordTableMetadata&&) = delete;
@@ -315,7 +315,7 @@ class FRUTablePrint
 class GetFRURecordByOption : public CommandInterface
 {
   public:
-    ~GetFRURecordByOption() = default;
+    ~GetFRURecordByOption() override = default;
     GetFRURecordByOption() = delete;
     GetFRURecordByOption(const GetFRURecordByOption&) = delete;
     GetFRURecordByOption(GetFRURecordByOption&&) = delete;
@@ -401,7 +401,7 @@ class GetFRURecordByOption : public CommandInterface
 class GetFruRecordTable : public CommandInterface
 {
   public:
-    ~GetFruRecordTable() = default;
+    ~GetFruRecordTable() override = default;
     GetFruRecordTable() = delete;
     GetFruRecordTable(const GetFruRecordTable&) = delete;
     GetFruRecordTable(GetFruRecordTable&&) = delete;

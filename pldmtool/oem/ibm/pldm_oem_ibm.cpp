@@ -32,7 +32,7 @@ constexpr uint8_t CHKSUM_PADDING = 8;
 class GetAlertStatus : public CommandInterface
 {
   public:
-    ~GetAlertStatus() = default;
+    ~GetAlertStatus() override = default;
     GetAlertStatus() = delete;
     GetAlertStatus(const GetAlertStatus&) = delete;
     GetAlertStatus(GetAlertStatus&&) = delete;
@@ -94,7 +94,7 @@ class GetAlertStatus : public CommandInterface
 class GetFileTable : public CommandInterface
 {
   public:
-    ~GetFileTable() = default;
+    ~GetFileTable() override = default;
     GetFileTable() = delete;
     GetFileTable(const GetFileTable&) = delete;
     GetFileTable(GetFileTable&&) = delete;

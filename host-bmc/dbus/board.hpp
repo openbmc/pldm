@@ -18,7 +18,7 @@ class Board : public ItemBoard
 {
   public:
     Board() = delete;
-    ~Board() = default;
+    ~Board() override = default;
     Board(const Board&) = delete;
     Board& operator=(const Board&) = delete;
     Board(Board&&) = delete;

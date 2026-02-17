@@ -43,7 +43,7 @@ class Update : public UpdateIntf
     Update(Update&&) = delete;
     Update& operator=(Update&&) = delete;
 
-    virtual sdbusplus::message::object_path startUpdate(
+    sdbusplus::message::object_path startUpdate(
         sdbusplus::message::unix_fd image,
         ApplyTimeIntf::RequestedApplyTimes applyTime) override;
 

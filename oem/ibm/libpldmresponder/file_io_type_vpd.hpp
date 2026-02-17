@@ -25,51 +25,50 @@ class keywordHandler : public FileHandler
     keywordHandler(keywordHandler&&) = default;
     keywordHandler& operator=(keywordHandler&&) = default;
 
-    virtual int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
-                                uint64_t /*address*/,
-                                oem_platform::Handler* /*oemPlatformHandler*/)
+    int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
+                        uint64_t /*address*/,
+                        oem_platform::Handler* /*oemPlatformHandler*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    virtual int readIntoMemory(uint32_t /*offset*/, uint32_t /*length*/,
-                               uint64_t /*address*/,
-                               oem_platform::Handler* /*oemPlatformHandler*/)
+    int readIntoMemory(uint32_t /*offset*/, uint32_t /*length*/,
+                       uint64_t /*address*/,
+                       oem_platform::Handler* /*oemPlatformHandler*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    virtual int read(uint32_t offset, uint32_t& length, Response& response,
-                     oem_platform::Handler* /*oemPlatformHandler*/);
-    virtual int write(const char* /*buffer*/, uint32_t /*offset*/,
-                      uint32_t& /*length*/,
-                      oem_platform::Handler* /*oemPlatformHandler*/)
+    int read(uint32_t offset, uint32_t& length, Response& response,
+             oem_platform::Handler* /*oemPlatformHandler*/) override;
+    int write(const char* /*buffer*/, uint32_t /*offset*/, uint32_t& /*length*/,
+              oem_platform::Handler* /*oemPlatformHandler*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    virtual int fileAck(uint8_t /*fileStatus*/)
+    int fileAck(uint8_t /*fileStatus*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    virtual int newFileAvailable(uint64_t /*length*/)
+    int newFileAvailable(uint64_t /*length*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    virtual int fileAckWithMetaData(
-        uint8_t /*fileStatus*/, uint32_t /*metaDataValue1*/,
-        uint32_t /*metaDataValue2*/, uint32_t /*metaDataValue3*/,
-        uint32_t /*metaDataValue4*/)
+    int fileAckWithMetaData(uint8_t /*fileStatus*/, uint32_t /*metaDataValue1*/,
+                            uint32_t /*metaDataValue2*/,
+                            uint32_t /*metaDataValue3*/,
+                            uint32_t /*metaDataValue4*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
-    virtual int newFileAvailableWithMetaData(
+    int newFileAvailableWithMetaData(
         uint64_t /*length*/, uint32_t /*metaDataValue1*/,
         uint32_t /*metaDataValue2*/, uint32_t /*metaDataValue3*/,
-        uint32_t /*metaDataValue4*/)
+        uint32_t /*metaDataValue4*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
     /** @brief keywordHandler destructor
      */
-    ~keywordHandler() {}
+    ~keywordHandler() override {}
 };
 } // namespace responder
 } // namespace pldm
