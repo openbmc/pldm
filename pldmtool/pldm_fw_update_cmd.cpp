@@ -124,7 +124,7 @@ class GetStatus : public CommandInterface
     GetStatus(const GetStatus&) = delete;
     GetStatus(GetStatus&&) = default;
     GetStatus& operator=(const GetStatus&) = delete;
-    GetStatus& operator=(GetStatus&&) = delete;
+    GetStatus& operator=(GetStatus&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -214,7 +214,7 @@ class GetFirmwareParameters : public CommandInterface
     GetFirmwareParameters(const GetFirmwareParameters&) = delete;
     GetFirmwareParameters(GetFirmwareParameters&&) = default;
     GetFirmwareParameters& operator=(const GetFirmwareParameters&) = delete;
-    GetFirmwareParameters& operator=(GetFirmwareParameters&&) = delete;
+    GetFirmwareParameters& operator=(GetFirmwareParameters&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -460,7 +460,7 @@ class QueryDeviceIdentifiers : public CommandInterface
     QueryDeviceIdentifiers(const QueryDeviceIdentifiers&) = delete;
     QueryDeviceIdentifiers(QueryDeviceIdentifiers&&) = default;
     QueryDeviceIdentifiers& operator=(const QueryDeviceIdentifiers&) = delete;
-    QueryDeviceIdentifiers& operator=(QueryDeviceIdentifiers&&) = delete;
+    QueryDeviceIdentifiers& operator=(QueryDeviceIdentifiers&&) = default;
 
     /**
      * @brief Implementation of createRequestMsg for QueryDeviceIdentifiers
@@ -661,9 +661,9 @@ class RequestUpdate : public CommandInterface
     ~RequestUpdate() = default;
     RequestUpdate() = delete;
     RequestUpdate(const RequestUpdate&) = delete;
-    RequestUpdate(RequestUpdate&&) = delete;
+    RequestUpdate(RequestUpdate&&) = default;
     RequestUpdate& operator=(const RequestUpdate&) = delete;
-    RequestUpdate& operator=(RequestUpdate&&) = delete;
+    RequestUpdate& operator=(RequestUpdate&&) = default;
 
     explicit RequestUpdate(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
@@ -810,9 +810,9 @@ class PassComponentTable : public CommandInterface
     ~PassComponentTable() = default;
     PassComponentTable() = delete;
     PassComponentTable(const PassComponentTable&) = delete;
-    PassComponentTable(PassComponentTable&&) = delete;
+    PassComponentTable(PassComponentTable&&) = default;
     PassComponentTable& operator=(const PassComponentTable&) = delete;
-    PassComponentTable& operator=(PassComponentTable&&) = delete;
+    PassComponentTable& operator=(PassComponentTable&&) = default;
 
     explicit PassComponentTable(const char* type, const char* name,
                                 CLI::App* app) :
@@ -970,9 +970,9 @@ class UpdateComponent : public CommandInterface
     ~UpdateComponent() = default;
     UpdateComponent() = delete;
     UpdateComponent(const UpdateComponent&) = delete;
-    UpdateComponent(UpdateComponent&&) = delete;
+    UpdateComponent(UpdateComponent&&) = default;
     UpdateComponent& operator=(const UpdateComponent&) = delete;
-    UpdateComponent& operator=(UpdateComponent&&) = delete;
+    UpdateComponent& operator=(UpdateComponent&&) = default;
 
     explicit UpdateComponent(const char* type, const char* name,
                              CLI::App* app) : CommandInterface(type, name, app)
@@ -1159,9 +1159,9 @@ class ActivateFirmware : public CommandInterface
     ~ActivateFirmware() = default;
     ActivateFirmware() = delete;
     ActivateFirmware(const ActivateFirmware&) = delete;
-    ActivateFirmware(ActivateFirmware&&) = delete;
+    ActivateFirmware(ActivateFirmware&&) = default;
     ActivateFirmware& operator=(const ActivateFirmware&) = delete;
-    ActivateFirmware& operator=(ActivateFirmware&&) = delete;
+    ActivateFirmware& operator=(ActivateFirmware&&) = default;
 
     explicit ActivateFirmware(const char* type, const char* name,
                               CLI::App* app) : CommandInterface(type, name, app)
@@ -1221,9 +1221,9 @@ class CancelUpdateComponent : public CommandInterface
     ~CancelUpdateComponent() = default;
     CancelUpdateComponent() = delete;
     CancelUpdateComponent(const CancelUpdateComponent&) = delete;
-    CancelUpdateComponent(CancelUpdateComponent&&) = delete;
+    CancelUpdateComponent(CancelUpdateComponent&&) = default;
     CancelUpdateComponent& operator=(const CancelUpdateComponent&) = delete;
-    CancelUpdateComponent& operator=(CancelUpdateComponent&&) = delete;
+    CancelUpdateComponent& operator=(CancelUpdateComponent&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -1262,9 +1262,9 @@ class CancelUpdate : public CommandInterface
     ~CancelUpdate() = default;
     CancelUpdate() = delete;
     CancelUpdate(const CancelUpdate&) = delete;
-    CancelUpdate(CancelUpdate&&) = delete;
+    CancelUpdate(CancelUpdate&&) = default;
     CancelUpdate& operator=(const CancelUpdate&) = delete;
-    CancelUpdate& operator=(CancelUpdate&&) = delete;
+    CancelUpdate& operator=(CancelUpdate&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -1319,9 +1319,9 @@ class UpdateSecurityRevision : public CommandInterface
     ~UpdateSecurityRevision() = default;
     UpdateSecurityRevision() = delete;
     UpdateSecurityRevision(const UpdateSecurityRevision&) = delete;
-    UpdateSecurityRevision(UpdateSecurityRevision&&) = delete;
+    UpdateSecurityRevision(UpdateSecurityRevision&&) = default;
     UpdateSecurityRevision& operator=(const UpdateSecurityRevision&) = delete;
-    UpdateSecurityRevision& operator=(UpdateSecurityRevision&&) = delete;
+    UpdateSecurityRevision& operator=(UpdateSecurityRevision&&) = default;
 
     explicit UpdateSecurityRevision(const char* type, const char* name,
                                     CLI::App* app) :

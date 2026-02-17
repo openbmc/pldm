@@ -26,6 +26,8 @@ class Cable : public ItemCable
     ~Cable() = default;
     Cable(const Cable&) = delete;
     Cable& operator=(const Cable&) = delete;
+    Cable(Cable&&) = delete;
+    Cable& operator=(Cable&&) = delete;
 
     Cable(sdbusplus::bus_t& bus, const std::string& objPath) :
         ItemCable(bus, objPath.c_str())

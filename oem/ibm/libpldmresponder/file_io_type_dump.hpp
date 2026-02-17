@@ -16,6 +16,10 @@ using DumpEntryInterface = std::string;
 class DumpHandler : public FileHandler
 {
   public:
+    DumpHandler(const DumpHandler&) = delete;
+    DumpHandler& operator=(const DumpHandler&) = delete;
+    DumpHandler(DumpHandler&&) = default;
+    DumpHandler& operator=(DumpHandler&&) = default;
     /** @brief DumpHandler constructor
      */
     DumpHandler(uint32_t fileHandle, uint16_t fileType) :

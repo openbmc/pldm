@@ -22,6 +22,10 @@ using CertMap = std::map<CertType, CertDetails>;
 class CertHandler : public FileHandler
 {
   public:
+    CertHandler(const CertHandler&) = delete;
+    CertHandler& operator=(const CertHandler&) = delete;
+    CertHandler(CertHandler&&) = default;
+    CertHandler& operator=(CertHandler&&) = default;
     /** @brief CertHandler constructor
      */
     CertHandler(uint32_t fileHandle, uint16_t fileType) :

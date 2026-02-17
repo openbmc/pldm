@@ -100,6 +100,10 @@ class CommandInterface
         app->callback([&]() { exec(); });
     }
 
+    CommandInterface(const CommandInterface&) = delete;
+    CommandInterface& operator=(const CommandInterface&) = delete;
+    CommandInterface(CommandInterface&&) = default;
+    CommandInterface& operator=(CommandInterface&&) = default;
     virtual ~CommandInterface() = default;
 
     virtual std::pair<int, std::vector<uint8_t>> createRequestMsg() = 0;

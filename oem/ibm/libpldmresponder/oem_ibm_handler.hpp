@@ -227,6 +227,11 @@ class Handler : public oem_platform::Handler
             });
     }
 
+    Handler(const Handler&) = delete;
+    Handler& operator=(const Handler&) = delete;
+    Handler(Handler&&) = delete;
+    Handler& operator=(Handler&&) = delete;
+
     int getOemStateSensorReadingsHandler(
         pldm::pdr::EntityType entityType,
         pldm::pdr::EntityInstance entityInstance,
