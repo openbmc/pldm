@@ -26,7 +26,7 @@ class PCIeDevice : public ItemDevice
 {
   public:
     PCIeDevice() = delete;
-    ~PCIeDevice() = default;
+    ~PCIeDevice() override = default;
     PCIeDevice(const PCIeDevice&) = delete;
     PCIeDevice& operator=(const PCIeDevice&) = delete;
     PCIeDevice(PCIeDevice&&) = delete;

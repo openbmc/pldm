@@ -25,7 +25,7 @@ class PowerControlHandler : public FileHandler
         tid(tid), dBusIntf(dBusIntf)
     {}
 
-    ~PowerControlHandler() = default;
+    ~PowerControlHandler() override = default;
 
     /** @brief Method to add handler for write-file command
      *         "SLED_CYCLE, 12V-CYCLE and DC-cycle" to let

@@ -19,7 +19,7 @@ class Asset : public ItemAsset
 {
   public:
     Asset() = delete;
-    ~Asset() = default;
+    ~Asset() override = default;
     Asset(const Asset&) = delete;
     Asset& operator=(const Asset&) = delete;
     Asset(Asset&&) = delete;

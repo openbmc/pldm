@@ -55,14 +55,14 @@ class Handler : public oem_fru::Handler
      *
      *  @return success or failure
      */
-    int processOEMFRUTable(const std::vector<uint8_t>& fruData);
+    int processOEMFRUTable(const std::vector<uint8_t>& fruData) override;
 
     virtual const AssociatedEntityMap& getAssociateEntityMap()
     {
         return fruHandler->getAssociateEntityMap();
     }
 
-    ~Handler() = default;
+    ~Handler() override = default;
 
   private:
     /** @brief pointer to BMC's primary PDR repo */

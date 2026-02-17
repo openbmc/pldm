@@ -23,7 +23,7 @@ class Motherboard : public ItemMotherboard
 {
   public:
     Motherboard() = delete;
-    ~Motherboard() = default;
+    ~Motherboard() override = default;
     Motherboard(const Motherboard&) = delete;
     Motherboard& operator=(const Motherboard&) = delete;
     Motherboard(Motherboard&&) = delete;

@@ -36,7 +36,7 @@ const std::map<const char*, pldm_bios_table_types> pldmBIOSTableTypes{
 class GetDateTime : public CommandInterface
 {
   public:
-    ~GetDateTime() = default;
+    ~GetDateTime() override = default;
     GetDateTime() = delete;
     GetDateTime(const GetDateTime&) = delete;
     GetDateTime(GetDateTime&&) = delete;
@@ -92,7 +92,7 @@ class GetDateTime : public CommandInterface
 class SetDateTime : public CommandInterface
 {
   public:
-    ~SetDateTime() = default;
+    ~SetDateTime() override = default;
     SetDateTime() = delete;
     SetDateTime(const SetDateTime&) = delete;
     SetDateTime(SetDateTime&&) = delete;
@@ -162,7 +162,7 @@ class SetDateTime : public CommandInterface
 class GetBIOSTableHandler : public CommandInterface
 {
   public:
-    ~GetBIOSTableHandler() = default;
+    ~GetBIOSTableHandler() override = default;
     GetBIOSTableHandler() = delete;
     GetBIOSTableHandler(const GetBIOSTableHandler&) = delete;
     GetBIOSTableHandler(GetBIOSTableHandler&&) = delete;
@@ -445,7 +445,7 @@ class GetBIOSTableHandler : public CommandInterface
 class GetBIOSTable : public GetBIOSTableHandler
 {
   public:
-    ~GetBIOSTable() = default;
+    ~GetBIOSTable() override = default;
     GetBIOSTable() = delete;
     GetBIOSTable(const GetBIOSTable&) = delete;
     GetBIOSTable(GetBIOSTable&&) = delete;
@@ -671,7 +671,7 @@ class GetBIOSTable : public GetBIOSTableHandler
 class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
 {
   public:
-    ~GetBIOSAttributeCurrentValueByHandle() = default;
+    ~GetBIOSAttributeCurrentValueByHandle() override = default;
     GetBIOSAttributeCurrentValueByHandle(
         const GetBIOSAttributeCurrentValueByHandle&) = delete;
     GetBIOSAttributeCurrentValueByHandle(
@@ -689,7 +689,7 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
             ->required();
     }
 
-    void exec()
+    void exec() override
     {
         auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
         auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
@@ -761,7 +761,7 @@ class GetBIOSAttributeCurrentValueByHandle : public GetBIOSTableHandler
 class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
 {
   public:
-    ~SetBIOSAttributeCurrentValue() = default;
+    ~SetBIOSAttributeCurrentValue() override = default;
     SetBIOSAttributeCurrentValue() = delete;
     SetBIOSAttributeCurrentValue(const SetBIOSAttributeCurrentValue&) = delete;
     SetBIOSAttributeCurrentValue(SetBIOSAttributeCurrentValue&&) = delete;
@@ -781,7 +781,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
         // -v is conflict with --verbose in class CommandInterface, so used -d
     }
 
-    void exec()
+    void exec() override
     {
         auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
         auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);

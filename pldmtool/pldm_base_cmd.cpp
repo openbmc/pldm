@@ -120,7 +120,7 @@ const std::map<const char*, pldm_fileio_commands> pldmIBMFileIOCmds{
 class GetPLDMTypes : public CommandInterface
 {
   public:
-    ~GetPLDMTypes() = default;
+    ~GetPLDMTypes() override = default;
     GetPLDMTypes() = delete;
     GetPLDMTypes(const GetPLDMTypes&) = delete;
     GetPLDMTypes(GetPLDMTypes&&) = delete;
@@ -192,7 +192,7 @@ class GetPLDMTypes : public CommandInterface
 class GetPLDMVersion : public CommandInterface
 {
   public:
-    ~GetPLDMVersion() = default;
+    ~GetPLDMVersion() override = default;
     GetPLDMVersion() = delete;
     GetPLDMVersion(const GetPLDMVersion&) = delete;
     GetPLDMVersion(GetPLDMVersion&&) = delete;
@@ -258,7 +258,7 @@ class GetPLDMVersion : public CommandInterface
 class GetTID : public CommandInterface
 {
   public:
-    ~GetTID() = default;
+    ~GetTID() override = default;
     GetTID() = delete;
     GetTID(const GetTID&) = delete;
     GetTID(GetTID&&) = delete;
@@ -296,7 +296,7 @@ class GetTID : public CommandInterface
 class GetPLDMCommands : public CommandInterface
 {
   public:
-    ~GetPLDMCommands() = default;
+    ~GetPLDMCommands() override = default;
     GetPLDMCommands() = delete;
     GetPLDMCommands(const GetPLDMCommands&) = delete;
     GetPLDMCommands(GetPLDMCommands&&) = delete;
@@ -423,7 +423,7 @@ class GetPLDMCommands : public CommandInterface
 class SetTID : public CommandInterface
 {
   public:
-    ~SetTID() = default;
+    ~SetTID() override = default;
     SetTID() = delete;
     SetTID(const SetTID&) = delete;
     SetTID(SetTID&&) = delete;

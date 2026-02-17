@@ -50,7 +50,7 @@ class PldmEntityReq :
     PldmEntityReq& operator=(const PldmEntityReq&) = delete;
     PldmEntityReq(PldmEntityReq&&) = delete;
     PldmEntityReq& operator=(PldmEntityReq&&) = delete;
-    virtual ~PldmEntityReq() = default;
+    ~PldmEntityReq() override = default;
 
     /** @brief Constructor to put object onto bus at a dbus path.
      *  @param[in] bus - Bus to attach to.
@@ -62,34 +62,34 @@ class PldmEntityReq :
         BoardIntf(bus, path.c_str()) {};
 
     /** @brief Set value of partNumber in Decorator.Asset */
-    std::string partNumber(std::string value);
+    std::string partNumber(std::string value) override;
 
     /** @brief Set value of serialNumber in Decorator.Asset */
-    std::string serialNumber(std::string value);
+    std::string serialNumber(std::string value) override;
 
     /** @brief Set value of manufacturer in Decorator.Asset */
-    std::string manufacturer(std::string value);
+    std::string manufacturer(std::string value) override;
 
     /** @brief Set value of buildDate in Decorator.Asset */
-    std::string buildDate(std::string value);
+    std::string buildDate(std::string value) override;
 
     /** @brief Set value of model in Decorator.Asset */
-    std::string model(std::string value);
+    std::string model(std::string value) override;
 
     /** @brief Set value of subModel in Decorator.Asset */
-    std::string subModel(std::string value);
+    std::string subModel(std::string value) override;
 
     /** @brief Set value of sparePartNumber in Decorator.Asset */
-    std::string sparePartNumber(std::string value);
+    std::string sparePartNumber(std::string value) override;
 
     /** @brief Set value of assetTag in Decorator.AssetTag */
-    std::string assetTag(std::string value);
+    std::string assetTag(std::string value) override;
 
     /** @brief Set value of version in Decorator.Revision */
-    std::string version(std::string value);
+    std::string version(std::string value) override;
 
     /** @brief Set value of names in in Decorator.Compatible */
-    std::vector<std::string> names(std::vector<std::string> values);
+    std::vector<std::string> names(std::vector<std::string> values) override;
 };
 
 } // namespace dbus_api

@@ -18,7 +18,7 @@ class FabricAdapter : public ItemFabricAdapter
 {
   public:
     FabricAdapter() = delete;
-    ~FabricAdapter() = default;
+    ~FabricAdapter() override = default;
     FabricAdapter(const FabricAdapter&) = delete;
     FabricAdapter& operator=(const FabricAdapter&) = delete;
     FabricAdapter(FabricAdapter&&) = delete;

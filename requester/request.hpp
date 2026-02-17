@@ -137,7 +137,7 @@ class Request final : public RequestRetryTimer
     Request(Request&&) = delete;
     Request& operator=(const Request&) = delete;
     Request& operator=(Request&&) = delete;
-    ~Request() = default;
+    ~Request() override = default;
 
     /** @brief Constructor
      *
@@ -169,7 +169,7 @@ class Request final : public RequestRetryTimer
      *
      *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
      */
-    int send() const
+    int send() const override
     {
         if (verbose)
         {

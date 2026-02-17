@@ -237,12 +237,13 @@ class Handler : public oem_platform::Handler
         pldm::pdr::EntityInstance entityInstance,
         pldm::pdr::ContainerID containerId, pldm::pdr::StateSetId stateSetId,
         pldm::pdr::CompositeCount compSensorCnt, uint16_t sensorId,
-        std::vector<get_sensor_state_field>& stateField);
+        std::vector<get_sensor_state_field>& stateField) override;
 
     int oemSetStateEffecterStatesHandler(
         uint16_t entityType, uint16_t entityInstance, uint16_t stateSetId,
         uint8_t compEffecterCnt,
-        std::vector<set_effecter_state_field>& stateField, uint16_t effecterId);
+        std::vector<set_effecter_state_field>& stateField,
+        uint16_t effecterId) override;
 
     /** @brief Method to set the platform handler in the
      *         oem_ibm_handler class
@@ -285,7 +286,7 @@ class Handler : public oem_platform::Handler
      *
      * @param[in] repo - instance of concrete implementation of Repo
      */
-    void buildOEMPDR(pdr_utils::Repo& repo);
+    void buildOEMPDR(pdr_utils::Repo& repo) override;
 
     /** @brief Method to send code update event to host
      * @param[in] sensorId - sendor ID
@@ -329,33 +330,33 @@ class Handler : public oem_platform::Handler
     void _processSystemReboot(sdeventplus::source::EventBase& source);
 
     /*keeps track how many times setEventReceiver is sent */
-    void countSetEventReceiver()
+    void countSetEventReceiver() override
     {
         setEventReceiverCnt++;
     }
 
     /* disables watchdog if running and Host is up */
-    void checkAndDisableWatchDog();
+    void checkAndDisableWatchDog() override;
 
     /** @brief To check if the watchdog app is running
      *
      *  @return the running status of watchdog app
      */
-    bool watchDogRunning();
+    bool watchDogRunning() override;
 
     /** @brief Method to reset the Watchdog timer on receiving platform Event
      *  Message for heartbeat elapsed time from Hostboot
      */
-    void resetWatchDogTimer();
+    void resetWatchDogTimer() override;
 
     /** @brief To disable to the watchdog timer on host poweron completion*/
-    void disableWatchDogTimer();
+    void disableWatchDogTimer() override;
 
     /** @brief to check the BMC state*/
-    int checkBMCState();
+    int checkBMCState() override;
 
     /** @brief update the dbus object paths */
-    void updateOemDbusPaths(std::string& dbusPath);
+    void updateOemDbusPaths(std::string& dbusPath) override;
 
     /** @brief Method to fetch the last BMC record from the PDR repo
      *
@@ -363,7 +364,7 @@ class Handler : public oem_platform::Handler
      *
      * @return the last BMC record from the repo
      */
-    const pldm_pdr_record* fetchLastBMCRecord(const pldm_pdr* repo);
+    const pldm_pdr_record* fetchLastBMCRecord(const pldm_pdr* repo) override;
 
     /** @brief Method to check if the record handle passed is in remote PDR
      *         record handle range
@@ -372,10 +373,10 @@ class Handler : public oem_platform::Handler
      *
      *  @return true if record handle passed is in host PDR record handle range
      */
-    bool checkRecordHandleInRange(const uint32_t& record_handle);
+    bool checkRecordHandleInRange(const uint32_t& record_handle) override;
 
     /** *brief Method to call the setEventReceiver command*/
-    void processSetEventReceiver();
+    void processSetEventReceiver() override;
 
     /** @brief Method to call the setEventReceiver through the platform
      *   handler
@@ -393,13 +394,13 @@ class Handler : public oem_platform::Handler
      * @param[in] value - true or false, to indicate if the timer is
      *                    running or not
      */
-    void setSurvTimer(uint8_t tid, bool value);
+    void setSurvTimer(uint8_t tid, bool value) override;
 
     /** @brief To handle the boot types bios attributes at power on*/
-    void handleBootTypesAtPowerOn();
+    void handleBootTypesAtPowerOn() override;
 
     /** @brief To handle the boot types bios attributes at shutdown*/
-    void handleBootTypesAtChassisOff();
+    void handleBootTypesAtChassisOff() override;
 
     /** @brief To set the boot types bios attributes based on the RestartCause
      *  of host
@@ -421,7 +422,7 @@ class Handler : public oem_platform::Handler
     /** @brief Method to process virtual platform/partition SAI update*/
     void processSAIUpdate();
 
-    ~Handler() = default;
+    ~Handler() override = default;
 
     pldm::responder::CodeUpdate* codeUpdate; //!< pointer to CodeUpdate object
 
@@ -518,7 +519,7 @@ class Handler : public oem_bios::Handler
   public:
     Handler() {}
 
-    void processOEMBaseBiosTable(const BaseBIOSTable& biosTable)
+    void processOEMBaseBiosTable(const BaseBIOSTable& biosTable) override
     {
         for (const auto& [attrName, biostabObj] : biosTable)
         {

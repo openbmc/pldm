@@ -24,7 +24,7 @@ std::vector<std::unique_ptr<CommandInterface>> commands;
 class RawOp : public CommandInterface
 {
   public:
-    ~RawOp() = default;
+    ~RawOp() override = default;
     RawOp() = delete;
     RawOp(const RawOp&) = delete;
     RawOp(RawOp&&) = delete;

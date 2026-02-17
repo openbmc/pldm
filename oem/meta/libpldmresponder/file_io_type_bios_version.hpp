@@ -26,7 +26,7 @@ class BIOSVersionHandler : public FileHandler
         tid(tid), dBusIntf(dBusIntf)
     {}
 
-    ~BIOSVersionHandler() = default;
+    ~BIOSVersionHandler() override = default;
 
     /** @brief Method to set Host's BIOS version.
      *  @param[in] data - BIOS version raw data.

@@ -18,7 +18,7 @@ class VRM : public ItemVRM
 {
   public:
     VRM() = delete;
-    ~VRM() = default;
+    ~VRM() override = default;
     VRM(const VRM&) = delete;
     VRM& operator=(const VRM&) = delete;
     VRM(VRM&&) = delete;

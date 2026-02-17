@@ -18,7 +18,7 @@ class Connector : public ItemConnector
 {
   public:
     Connector() = delete;
-    ~Connector() = default;
+    ~Connector() override = default;
     Connector(const Connector&) = delete;
     Connector& operator=(const Connector&) = delete;
     Connector(Connector&&) = delete;
