@@ -20,6 +20,11 @@ class ProgressCodeHandler : public FileHandler
      */
     ProgressCodeHandler(uint32_t fileHandle) : FileHandler(fileHandle) {}
 
+    ProgressCodeHandler(const ProgressCodeHandler&) = delete;
+    ProgressCodeHandler& operator=(const ProgressCodeHandler&) = delete;
+    ProgressCodeHandler(ProgressCodeHandler&&) = default;
+    ProgressCodeHandler& operator=(ProgressCodeHandler&&) = default;
+
     int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
                         uint64_t /*address*/,
                         oem_platform::Handler* /*oemPlatformHandler*/) override

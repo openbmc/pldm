@@ -83,7 +83,7 @@ class GetEventReceiver : public CommandInterface
     GetEventReceiver(const GetEventReceiver&) = delete;
     GetEventReceiver(GetEventReceiver&&) = default;
     GetEventReceiver& operator=(const GetEventReceiver&) = delete;
-    GetEventReceiver& operator=(GetEventReceiver&&) = delete;
+    GetEventReceiver& operator=(GetEventReceiver&&) = default;
 
     explicit GetEventReceiver(const char* type, const char* name,
                               CLI::App* app) : CommandInterface(type, name, app)
@@ -409,7 +409,7 @@ class GetPDR : public CommandInterface
     GetPDR(const GetPDR&) = delete;
     GetPDR(GetPDR&&) = default;
     GetPDR& operator=(const GetPDR&) = delete;
-    GetPDR& operator=(GetPDR&&) = delete;
+    GetPDR& operator=(GetPDR&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -2015,7 +2015,7 @@ class SetStateEffecter : public CommandInterface
     SetStateEffecter(const SetStateEffecter&) = delete;
     SetStateEffecter(SetStateEffecter&&) = default;
     SetStateEffecter& operator=(const SetStateEffecter&) = delete;
-    SetStateEffecter& operator=(SetStateEffecter&&) = delete;
+    SetStateEffecter& operator=(SetStateEffecter&&) = default;
 
     // compositeEffecterCount(value: 0x01 to 0x08) * stateField(2)
     static constexpr auto maxEffecterDataSize = 16;
@@ -2113,7 +2113,7 @@ class SetNumericEffecterValue : public CommandInterface
     SetNumericEffecterValue(const SetNumericEffecterValue&) = delete;
     SetNumericEffecterValue(SetNumericEffecterValue&&) = default;
     SetNumericEffecterValue& operator=(const SetNumericEffecterValue&) = delete;
-    SetNumericEffecterValue& operator=(SetNumericEffecterValue&&) = delete;
+    SetNumericEffecterValue& operator=(SetNumericEffecterValue&&) = default;
 
     explicit SetNumericEffecterValue(const char* type, const char* name,
                                      CLI::App* app) :
@@ -2196,7 +2196,7 @@ class GetStateSensorReadings : public CommandInterface
     GetStateSensorReadings(const GetStateSensorReadings&) = delete;
     GetStateSensorReadings(GetStateSensorReadings&&) = default;
     GetStateSensorReadings& operator=(const GetStateSensorReadings&) = delete;
-    GetStateSensorReadings& operator=(GetStateSensorReadings&&) = delete;
+    GetStateSensorReadings& operator=(GetStateSensorReadings&&) = default;
 
     explicit GetStateSensorReadings(const char* type, const char* name,
                                     CLI::App* app) :
@@ -2290,7 +2290,7 @@ class GetSensorReading : public CommandInterface
     GetSensorReading(const GetSensorReading&) = delete;
     GetSensorReading(GetSensorReading&&) = default;
     GetSensorReading& operator=(const GetSensorReading&) = delete;
-    GetSensorReading& operator=(GetSensorReading&&) = delete;
+    GetSensorReading& operator=(GetSensorReading&&) = default;
 
     explicit GetSensorReading(const char* type, const char* name,
                               CLI::App* app) : CommandInterface(type, name, app)
@@ -2446,7 +2446,7 @@ class GetStateEffecterStates : public CommandInterface
     GetStateEffecterStates(const GetStateEffecterStates&) = delete;
     GetStateEffecterStates(GetStateEffecterStates&&) = default;
     GetStateEffecterStates& operator=(const GetStateEffecterStates&) = delete;
-    GetStateEffecterStates& operator=(GetStateEffecterStates&&) = delete;
+    GetStateEffecterStates& operator=(GetStateEffecterStates&&) = default;
 
     explicit GetStateEffecterStates(const char* type, const char* name,
                                     CLI::App* app) :
@@ -2515,7 +2515,7 @@ class GetNumericEffecterValue : public CommandInterface
     GetNumericEffecterValue(const GetNumericEffecterValue&) = delete;
     GetNumericEffecterValue(GetNumericEffecterValue&&) = default;
     GetNumericEffecterValue& operator=(const GetNumericEffecterValue&) = delete;
-    GetNumericEffecterValue& operator=(GetNumericEffecterValue&&) = delete;
+    GetNumericEffecterValue& operator=(GetNumericEffecterValue&&) = default;
 
     explicit GetNumericEffecterValue(const char* type, const char* name,
                                      CLI::App* app) :

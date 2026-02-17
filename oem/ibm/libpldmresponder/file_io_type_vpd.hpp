@@ -20,9 +20,13 @@ class keywordHandler : public FileHandler
     keywordHandler(uint32_t fileHandle, uint16_t /* fileType */) :
         FileHandler(fileHandle)
     {}
-    virtual int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
-                                uint64_t /*address*/,
-                                oem_platform::Handler* /*oemPlatformHandler*/)
+    keywordHandler(const keywordHandler&) = delete;
+    keywordHandler(keywordHandler&&) = default;
+    keywordHandler& operator=(const keywordHandler&) = delete;
+    keywordHandler& operator=(keywordHandler&&) = default;
+    int writeFromMemory(uint32_t /*offset*/, uint32_t /*length*/,
+                        uint64_t /*address*/,
+                        oem_platform::Handler* /*oemPlatformHandler*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }

@@ -62,6 +62,10 @@ class NumericSensor
                   std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr,
                   std::string& sensorName, std::string& associationPath);
 
+    NumericSensor(const NumericSensor&) = delete;
+    NumericSensor(NumericSensor&&) = default;
+    NumericSensor& operator=(const NumericSensor&) = delete;
+    NumericSensor& operator=(NumericSensor&&) = default;
     ~NumericSensor() {};
 
     /** @brief The function called by Sensor Manager to set sensor to

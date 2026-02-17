@@ -221,7 +221,7 @@ class GetPLDMTypes : public CommandInterface
     GetPLDMTypes(const GetPLDMTypes&) = delete;
     GetPLDMTypes(GetPLDMTypes&&) = default;
     GetPLDMTypes& operator=(const GetPLDMTypes&) = delete;
-    GetPLDMTypes& operator=(GetPLDMTypes&&) = delete;
+    GetPLDMTypes& operator=(GetPLDMTypes&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -293,7 +293,7 @@ class GetPLDMVersion : public CommandInterface
     GetPLDMVersion(const GetPLDMVersion&) = delete;
     GetPLDMVersion(GetPLDMVersion&&) = default;
     GetPLDMVersion& operator=(const GetPLDMVersion&) = delete;
-    GetPLDMVersion& operator=(GetPLDMVersion&&) = delete;
+    GetPLDMVersion& operator=(GetPLDMVersion&&) = default;
 
     explicit GetPLDMVersion(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
@@ -359,7 +359,7 @@ class GetTID : public CommandInterface
     GetTID(const GetTID&) = delete;
     GetTID(GetTID&&) = default;
     GetTID& operator=(const GetTID&) = delete;
-    GetTID& operator=(GetTID&&) = delete;
+    GetTID& operator=(GetTID&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -397,7 +397,7 @@ class GetPLDMCommands : public CommandInterface
     GetPLDMCommands(const GetPLDMCommands&) = delete;
     GetPLDMCommands(GetPLDMCommands&&) = default;
     GetPLDMCommands& operator=(const GetPLDMCommands&) = delete;
-    GetPLDMCommands& operator=(GetPLDMCommands&&) = delete;
+    GetPLDMCommands& operator=(GetPLDMCommands&&) = default;
 
     explicit GetPLDMCommands(const char* type, const char* name,
                              CLI::App* app) : CommandInterface(type, name, app)
@@ -536,7 +536,7 @@ class SetTID : public CommandInterface
     SetTID(const SetTID&) = delete;
     SetTID(SetTID&&) = default;
     SetTID& operator=(const SetTID&) = delete;
-    SetTID& operator=(SetTID&&) = delete;
+    SetTID& operator=(SetTID&&) = default;
 
     explicit SetTID(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)

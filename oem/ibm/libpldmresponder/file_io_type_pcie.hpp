@@ -140,6 +140,10 @@ class PCIeInfoHandler : public FileHandler
     /** @brief PCIeInfoHandler constructor
      */
     PCIeInfoHandler(uint32_t fileHandle, uint16_t fileType);
+    PCIeInfoHandler(const PCIeInfoHandler&) = delete;
+    PCIeInfoHandler& operator=(const PCIeInfoHandler&) = delete;
+    PCIeInfoHandler(PCIeInfoHandler&&) = default;
+    PCIeInfoHandler& operator=(PCIeInfoHandler&&) = default;
 
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address,

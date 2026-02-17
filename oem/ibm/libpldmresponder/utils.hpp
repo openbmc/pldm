@@ -67,6 +67,11 @@ class Handler : public oem_utils::Handler
         oem_utils::Handler(dBusIntf), dBusIntf(dBusIntf)
     {}
 
+    Handler(const Handler&) = delete;
+    Handler& operator=(const Handler&) = delete;
+    Handler(Handler&&) = default;
+    Handler& operator=(Handler&&) = default;
+
     /** @brief Collecting core count data and setting to Dbus properties
      *
      *  @param[in] associations - the data of entity association

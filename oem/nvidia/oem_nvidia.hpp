@@ -19,9 +19,11 @@ class OemNVIDIA
 {
   public:
     OemNVIDIA() = delete;
+    OemNVIDIA(const OemNVIDIA&) = delete;
     OemNVIDIA& operator=(const OemNVIDIA&) = delete;
     OemNVIDIA(OemNVIDIA&&) = delete;
     OemNVIDIA& operator=(OemNVIDIA&&) = delete;
+    ~OemNVIDIA() = default;
 
   public:
     /** Constructs OemNVIDIA object

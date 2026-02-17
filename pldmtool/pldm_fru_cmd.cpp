@@ -32,7 +32,7 @@ class GetFruRecordTableMetadata : public CommandInterface
     GetFruRecordTableMetadata(GetFruRecordTableMetadata&&) = default;
     GetFruRecordTableMetadata& operator=(const GetFruRecordTableMetadata&) =
         delete;
-    GetFruRecordTableMetadata& operator=(GetFruRecordTableMetadata&&) = delete;
+    GetFruRecordTableMetadata& operator=(GetFruRecordTableMetadata&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -315,8 +315,9 @@ class GetFRURecordByOption : public CommandInterface
     ~GetFRURecordByOption() = default;
     GetFRURecordByOption() = delete;
     GetFRURecordByOption(const GetFRURecordByOption&) = delete;
+    GetFRURecordByOption(GetFRURecordByOption&&) = default;
     GetFRURecordByOption& operator=(const GetFRURecordByOption&) = delete;
-    GetFRURecordByOption& operator=(GetFRURecordByOption&&) = delete;
+    GetFRURecordByOption& operator=(GetFRURecordByOption&&) = default;
 
     explicit GetFRURecordByOption(const char* type, const char* name,
                                   CLI::App* app) :
@@ -402,7 +403,7 @@ class GetFruRecordTable : public CommandInterface
     GetFruRecordTable(const GetFruRecordTable&) = delete;
     GetFruRecordTable(GetFruRecordTable&&) = default;
     GetFruRecordTable& operator=(const GetFruRecordTable&) = delete;
-    GetFruRecordTable& operator=(GetFruRecordTable&&) = delete;
+    GetFruRecordTable& operator=(GetFruRecordTable&&) = default;
 
     using CommandInterface::CommandInterface;
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override

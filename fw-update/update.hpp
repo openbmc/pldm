@@ -37,6 +37,10 @@ class Update : public UpdateIntf
         UpdateIntf(bus, path.c_str()), updateManager(updateManager),
         objPath(path)
     {}
+    Update(const Update&) = delete;
+    Update(Update&&) = delete;
+    Update& operator=(const Update&) = delete;
+    Update& operator=(Update&&) = delete;
 
     virtual sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,

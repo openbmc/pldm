@@ -41,7 +41,7 @@ class GetDateTime : public CommandInterface
     GetDateTime(const GetDateTime&) = delete;
     GetDateTime(GetDateTime&&) = default;
     GetDateTime& operator=(const GetDateTime&) = delete;
-    GetDateTime& operator=(GetDateTime&&) = delete;
+    GetDateTime& operator=(GetDateTime&&) = default;
 
     using CommandInterface::CommandInterface;
 
@@ -97,7 +97,7 @@ class SetDateTime : public CommandInterface
     SetDateTime(const SetDateTime&) = delete;
     SetDateTime(SetDateTime&&) = default;
     SetDateTime& operator=(const SetDateTime&) = delete;
-    SetDateTime& operator=(SetDateTime&&) = delete;
+    SetDateTime& operator=(SetDateTime&&) = default;
 
     explicit SetDateTime(const char* type, const char* name, CLI::App* app) :
         CommandInterface(type, name, app)
@@ -165,9 +165,9 @@ class GetBIOSTableHandler : public CommandInterface
     ~GetBIOSTableHandler() = default;
     GetBIOSTableHandler() = delete;
     GetBIOSTableHandler(const GetBIOSTableHandler&) = delete;
-    GetBIOSTableHandler(GetBIOSTableHandler&&) = delete;
+    GetBIOSTableHandler(GetBIOSTableHandler&&) = default;
     GetBIOSTableHandler& operator=(const GetBIOSTableHandler&) = delete;
-    GetBIOSTableHandler& operator=(GetBIOSTableHandler&&) = delete;
+    GetBIOSTableHandler& operator=(GetBIOSTableHandler&&) = default;
 
     using Table = std::vector<uint8_t>;
 

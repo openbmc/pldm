@@ -35,6 +35,11 @@ class BIOSAttribute
     BIOSAttribute(const Json& entry,
                   pldm::utils::DBusHandler* const dbusHandler);
 
+    BIOSAttribute(const BIOSAttribute&) = delete;
+    BIOSAttribute& operator=(const BIOSAttribute&) = delete;
+    BIOSAttribute(BIOSAttribute&&) = default;
+    BIOSAttribute& operator=(BIOSAttribute&&) = default;
+
     /** Virtual destructor
      */
     virtual ~BIOSAttribute() = default;
