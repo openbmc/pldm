@@ -15,6 +15,10 @@ class Handler : public CmdHandler
 {
   public:
     Handler(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf) {}
+    Handler(const Handler&) = delete;
+    Handler& operator=(const Handler&) = delete;
+    Handler(Handler&&) = default;
+    Handler& operator=(Handler&&) = default;
 
     /** @brief Interface to get the state sensor readings requested by pldm
      *  requester for OEM types. Each specific type should implement a handler
@@ -145,7 +149,10 @@ class Handler : public CmdHandler
 {
   public:
     Handler() {}
-
+    Handler(const Handler&) = delete;
+    Handler& operator=(const Handler&) = delete;
+    Handler(Handler&&) = default;
+    Handler& operator=(Handler&&) = default;
     /** @brief Process OEM FRU record
      *
      * @param[in] fruData - the data of the fru
@@ -166,6 +173,10 @@ using namespace pldm::utils;
 class Handler : public CmdHandler
 {
   public:
+    Handler(const Handler&) = delete;
+    Handler& operator=(const Handler&) = delete;
+    Handler(Handler&&) = default;
+    Handler& operator=(Handler&&) = default;
     Handler(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf) {}
 
     /** @brief Collecting core count data and setting to Dbus properties
@@ -193,6 +204,11 @@ class Handler : public CmdHandler
 {
   public:
     Handler() {}
+
+    Handler(const Handler&) = delete;
+    Handler& operator=(const Handler&) = delete;
+    Handler(Handler&&) = default;
+    Handler& operator=(Handler&&) = default;
 
     /** @brief Process BaseBiosTable and update the locally cached attributes
      *  @param[in] biosTable - Bios table

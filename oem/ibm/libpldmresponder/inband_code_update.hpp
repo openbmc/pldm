@@ -59,6 +59,11 @@ class CodeUpdate
         imageActivationMatch = nullptr;
     }
 
+    CodeUpdate(const CodeUpdate&) = delete;
+    CodeUpdate& operator=(const CodeUpdate&) = delete;
+    CodeUpdate(CodeUpdate&&) = default;
+    CodeUpdate& operator=(CodeUpdate&&) = default;
+
     /* @brief Method to return the current boot side
      */
     std::string fetchCurrentBootSide();

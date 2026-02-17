@@ -55,6 +55,14 @@ class MctpDiscoveryHandlerIntf
 
     virtual void handleConfigurations(const Configurations& /*configurations*/)
     {}
+
+    MctpDiscoveryHandlerIntf() = default;
+    MctpDiscoveryHandlerIntf(const MctpDiscoveryHandlerIntf&) = delete;
+    MctpDiscoveryHandlerIntf& operator=(const MctpDiscoveryHandlerIntf&) =
+        delete;
+    MctpDiscoveryHandlerIntf(MctpDiscoveryHandlerIntf&&) = default;
+    MctpDiscoveryHandlerIntf& operator=(MctpDiscoveryHandlerIntf&&) = default;
+
     virtual ~MctpDiscoveryHandlerIntf() {}
 };
 

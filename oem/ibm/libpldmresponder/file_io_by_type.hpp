@@ -146,6 +146,11 @@ class FileHandler
      */
     FileHandler(uint32_t fileHandle) : fileHandle(fileHandle) {}
 
+    FileHandler(const FileHandler&) = delete;
+    FileHandler& operator=(const FileHandler&) = delete;
+    FileHandler(FileHandler&&) = default;
+    FileHandler& operator=(FileHandler&&) = default;
+
     /** FileHandler destructor
      */
     virtual ~FileHandler() {}

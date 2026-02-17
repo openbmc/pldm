@@ -25,6 +25,8 @@ class PCIeSlot : public ItemSlot
     ~PCIeSlot() = default;
     PCIeSlot(const PCIeSlot&) = delete;
     PCIeSlot& operator=(const PCIeSlot&) = delete;
+    PCIeSlot(PCIeSlot&&) = delete;
+    PCIeSlot& operator=(PCIeSlot&&) = delete;
 
     PCIeSlot(sdbusplus::bus_t& bus, const std::string& objPath) :
         ItemSlot(bus, objPath.c_str())

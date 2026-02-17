@@ -25,9 +25,11 @@ class OemAMPERE
 {
   public:
     OemAMPERE() = delete;
+    OemAMPERE(const OemAMPERE&) = delete;
     OemAMPERE& operator=(const OemAMPERE&) = delete;
     OemAMPERE(OemAMPERE&&) = delete;
     OemAMPERE& operator=(OemAMPERE&&) = delete;
+    ~OemAMPERE() = default;
 
   public:
     /** Constructs OemAMPERE object
