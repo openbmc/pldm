@@ -130,7 +130,7 @@ class Handler : public CmdHandler
     /** @brief To handle the boot types bios attributes at shutdown*/
     virtual void handleBootTypesAtChassisOff() = 0;
 
-    virtual ~Handler() = default;
+    ~Handler() override = default;
 
   protected:
     const pldm::utils::DBusHandler* dBusIntf;
@@ -154,7 +154,7 @@ class Handler : public CmdHandler
      */
     virtual int processOEMFRUTable(const std::vector<uint8_t>& fruData) = 0;
 
-    virtual ~Handler() = default;
+    ~Handler() override = default;
 };
 
 } // namespace oem_fru
@@ -177,7 +177,7 @@ class Handler : public CmdHandler
     virtual int setCoreCount(const EntityAssociations& associations,
                              const EntityMaps entityMaps) = 0;
 
-    virtual ~Handler() = default;
+    ~Handler() override = default;
 
   protected:
     const pldm::utils::DBusHandler* dBusIntf;
@@ -198,7 +198,7 @@ class Handler : public CmdHandler
     virtual void processOEMBaseBiosTable(
         const pldm::bios::BaseBIOSTable& biosTable) = 0;
 
-    virtual ~Handler() = default;
+    ~Handler() override = default;
 };
 
 } // namespace oem_bios

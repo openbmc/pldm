@@ -53,7 +53,7 @@ class ProgressCodeHandler : public FileHandler
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
 
-    virtual int newFileAvailableWithMetaData(
+    int newFileAvailableWithMetaData(
         uint64_t /*length*/, uint32_t /*metaDataValue1*/,
         uint32_t /*metaDataValue2*/, uint32_t /*metaDataValue3*/,
         uint32_t /*metaDataValue4*/) override
@@ -70,10 +70,10 @@ class ProgressCodeHandler : public FileHandler
         const std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>&
             progressCodeBuffer);
 
-    virtual int fileAckWithMetaData(
-        uint8_t /*fileStatus*/, uint32_t /*metaDataValue1*/,
-        uint32_t /*metaDataValue2*/, uint32_t /*metaDataValue3*/,
-        uint32_t /*metaDataValue4*/) override
+    int fileAckWithMetaData(uint8_t /*fileStatus*/, uint32_t /*metaDataValue1*/,
+                            uint32_t /*metaDataValue2*/,
+                            uint32_t /*metaDataValue3*/,
+                            uint32_t /*metaDataValue4*/) override
     {
         return PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
     }
@@ -81,7 +81,7 @@ class ProgressCodeHandler : public FileHandler
     /** @brief ProgressCodeHandler destructor
      */
 
-    ~ProgressCodeHandler() {}
+    ~ProgressCodeHandler() override {}
 };
 
 } // namespace responder

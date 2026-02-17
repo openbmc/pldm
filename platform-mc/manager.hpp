@@ -32,7 +32,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     Manager(Manager&&) = delete;
     Manager& operator=(const Manager&) = delete;
     Manager& operator=(Manager&&) = delete;
-    ~Manager() = default;
+    ~Manager() override = default;
 
     explicit Manager(sdeventplus::Event& event, RequesterHandler& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
@@ -60,7 +60,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
      */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos)
+    void handleMctpEndpoints(const MctpInfos& mctpInfos) override
     {
         terminusManager.discoverMctpTerminus(mctpInfos);
     }
@@ -70,7 +70,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos)
+    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) override
     {
         terminusManager.removeMctpTerminus(mctpInfos);
     }
@@ -82,7 +82,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] availability - new availability status
      */
     void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
-                                        Availability availability)
+                                        Availability availability) override
     {
         /* Get TID of initialized terminus */
         auto tid = terminusManager.toTid(mctpInfo);
@@ -260,7 +260,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @param[in] terminiNames - MCTP terminus name
      */
     std::optional<mctp_eid_t> getActiveEidByName(
-        const std::string& terminusName)
+        const std::string& terminusName) override
     {
         return terminusManager.getActiveEidByName(terminusName);
     }

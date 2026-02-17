@@ -18,7 +18,7 @@ class Availability : public AvailabilityIntf
 {
   public:
     Availability() = delete;
-    ~Availability() = default;
+    ~Availability() override = default;
     Availability(const Availability&) = delete;
     Availability& operator=(const Availability&) = delete;
     Availability(Availability&&) = delete;

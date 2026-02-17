@@ -18,7 +18,7 @@ class CPUCore : public CoreIntf
 {
   public:
     CPUCore() = delete;
-    ~CPUCore() = default;
+    ~CPUCore() override = default;
     CPUCore(const CPUCore&) = delete;
     CPUCore& operator=(const CPUCore&) = delete;
     CPUCore(CPUCore&&) = delete;

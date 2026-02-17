@@ -21,7 +21,7 @@ class FileIOHandler : public CmdHandler
     FileIOHandler(FileIOHandler&&) = delete;
     FileIOHandler& operator=(const FileIOHandler&) = delete;
     FileIOHandler& operator=(FileIOHandler&&) = delete;
-    virtual ~FileIOHandler() = default;
+    ~FileIOHandler() override = default;
 
     explicit FileIOHandler(const pldm::utils::DBusHandler* dBusHandler) :
         dBusHandler(dBusHandler)

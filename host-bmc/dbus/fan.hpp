@@ -18,7 +18,7 @@ class Fan : public ItemFan
 {
   public:
     Fan() = delete;
-    ~Fan() = default;
+    ~Fan() override = default;
     Fan(const Fan&) = delete;
     Fan& operator=(const Fan&) = delete;
     Fan(Fan&&) = delete;

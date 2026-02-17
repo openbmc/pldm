@@ -18,7 +18,7 @@ class InventoryItem : public ItemIntf
 {
   public:
     InventoryItem() = delete;
-    ~InventoryItem() = default;
+    ~InventoryItem() override = default;
     InventoryItem(const InventoryItem&) = delete;
     InventoryItem& operator=(const InventoryItem&) = delete;
     InventoryItem(InventoryItem&&) = delete;
