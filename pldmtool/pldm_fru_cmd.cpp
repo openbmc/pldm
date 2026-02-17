@@ -318,6 +318,7 @@ class GetFRURecordByOption : public CommandInterface
     ~GetFRURecordByOption() = default;
     GetFRURecordByOption() = delete;
     GetFRURecordByOption(const GetFRURecordByOption&) = delete;
+    GetFRURecordByOption(GetFRURecordByOption&&) = delete;
     GetFRURecordByOption& operator=(const GetFRURecordByOption&) = delete;
     GetFRURecordByOption& operator=(GetFRURecordByOption&&) = delete;
 

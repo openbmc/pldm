@@ -23,6 +23,7 @@ class OemMETA
     OemMETA& operator=(const OemMETA&) = delete;
     OemMETA(OemMETA&&) = delete;
     OemMETA& operator=(OemMETA&&) = delete;
+    ~OemMETA() = default;
 
   public:
     /** @brief Constucts OemMETA object

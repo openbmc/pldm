@@ -23,6 +23,11 @@ using HandlerFunc = std::function<Response(
 class CmdHandler
 {
   public:
+    CmdHandler() = default;
+    CmdHandler(const CmdHandler&) = delete;
+    CmdHandler& operator=(const CmdHandler&) = delete;
+    CmdHandler(CmdHandler&&) = default;
+    CmdHandler& operator=(CmdHandler&&) = default;
     virtual ~CmdHandler() = default;
 
     /** @brief Invoke a PLDM command handler
