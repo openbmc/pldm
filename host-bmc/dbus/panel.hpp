@@ -18,7 +18,7 @@ class Panel : public ItemPanel
 {
   public:
     Panel() = delete;
-    ~Panel() = default;
+    ~Panel() override = default;
     Panel(const Panel&) = delete;
     Panel& operator=(const Panel&) = delete;
     Panel(Panel&&) = delete;

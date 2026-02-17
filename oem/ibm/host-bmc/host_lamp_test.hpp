@@ -31,7 +31,7 @@ class HostLampTest : public HostLampTestInterfaces, public LEDGroupObj
 {
   public:
     HostLampTest() = delete;
-    ~HostLampTest() = default;
+    ~HostLampTest() override = default;
     HostLampTest(const HostLampTest&) = delete;
     HostLampTest& operator=(const HostLampTest&) = delete;
     HostLampTest(HostLampTest&&) = delete;

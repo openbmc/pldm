@@ -20,7 +20,7 @@ class HttpBootHandler : public FileHandler
     HttpBootHandler& operator=(const HttpBootHandler&) = delete;
     HttpBootHandler& operator=(HttpBootHandler&&) = delete;
 
-    ~HttpBootHandler() = default;
+    ~HttpBootHandler() override = default;
 
     /** @brief Method to parse read file IO for Http Boot command (type: 0x03)
      *         and returning the Http boot certification stored in BMC.

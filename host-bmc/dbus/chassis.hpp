@@ -18,7 +18,7 @@ class ItemChassis : public ItemChassisIntf
 {
   public:
     ItemChassis() = delete;
-    ~ItemChassis() = default;
+    ~ItemChassis() override = default;
     ItemChassis(const ItemChassis&) = delete;
     ItemChassis& operator=(const ItemChassis&) = delete;
     ItemChassis(ItemChassis&&) = delete;

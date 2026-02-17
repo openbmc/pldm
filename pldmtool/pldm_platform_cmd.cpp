@@ -79,7 +79,7 @@ using ordered_json = nlohmann::ordered_json;
 class GetEventReceiver : public CommandInterface
 {
   public:
-    ~GetEventReceiver() = default;
+    ~GetEventReceiver() override = default;
     GetEventReceiver() = delete;
     GetEventReceiver(const GetEventReceiver&) = delete;
     GetEventReceiver(GetEventReceiver&&) = default;
@@ -405,7 +405,7 @@ std::vector<std::string> getStateSetPossibleStateNames(
 class GetPDR : public CommandInterface
 {
   public:
-    ~GetPDR() = default;
+    ~GetPDR() override = default;
     GetPDR() = delete;
     GetPDR(const GetPDR&) = delete;
     GetPDR(GetPDR&&) = default;
@@ -2012,7 +2012,7 @@ class GetPDR : public CommandInterface
 class SetStateEffecter : public CommandInterface
 {
   public:
-    ~SetStateEffecter() = default;
+    ~SetStateEffecter() override = default;
     SetStateEffecter() = delete;
     SetStateEffecter(const SetStateEffecter&) = delete;
     SetStateEffecter(SetStateEffecter&&) = default;
@@ -2110,7 +2110,7 @@ class SetStateEffecter : public CommandInterface
 class SetNumericEffecterValue : public CommandInterface
 {
   public:
-    ~SetNumericEffecterValue() = default;
+    ~SetNumericEffecterValue() override = default;
     SetNumericEffecterValue() = delete;
     SetNumericEffecterValue(const SetNumericEffecterValue&) = delete;
     SetNumericEffecterValue(SetNumericEffecterValue&&) = default;
@@ -2193,7 +2193,7 @@ class SetNumericEffecterValue : public CommandInterface
 class GetStateSensorReadings : public CommandInterface
 {
   public:
-    ~GetStateSensorReadings() = default;
+    ~GetStateSensorReadings() override = default;
     GetStateSensorReadings() = delete;
     GetStateSensorReadings(const GetStateSensorReadings&) = delete;
     GetStateSensorReadings(GetStateSensorReadings&&) = default;
@@ -2287,7 +2287,7 @@ class GetStateSensorReadings : public CommandInterface
 class GetSensorReading : public CommandInterface
 {
   public:
-    ~GetSensorReading() = default;
+    ~GetSensorReading() override = default;
     GetSensorReading() = delete;
     GetSensorReading(const GetSensorReading&) = delete;
     GetSensorReading(GetSensorReading&&) = default;
@@ -2443,7 +2443,7 @@ class GetSensorReading : public CommandInterface
 class GetStateEffecterStates : public CommandInterface
 {
   public:
-    ~GetStateEffecterStates() = default;
+    ~GetStateEffecterStates() override = default;
     GetStateEffecterStates() = delete;
     GetStateEffecterStates(const GetStateEffecterStates&) = delete;
     GetStateEffecterStates(GetStateEffecterStates&&) = default;
@@ -2512,7 +2512,7 @@ class GetStateEffecterStates : public CommandInterface
 class GetNumericEffecterValue : public CommandInterface
 {
   public:
-    ~GetNumericEffecterValue() = default;
+    ~GetNumericEffecterValue() override = default;
     GetNumericEffecterValue() = delete;
     GetNumericEffecterValue(const GetNumericEffecterValue&) = delete;
     GetNumericEffecterValue(GetNumericEffecterValue&&) = default;

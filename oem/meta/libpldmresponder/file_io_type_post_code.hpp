@@ -20,7 +20,7 @@ class PostCodeHandler : public FileHandler
 
     explicit PostCodeHandler(pldm_tid_t tid) : tid(tid) {}
 
-    ~PostCodeHandler() = default;
+    ~PostCodeHandler() override = default;
 
     /** @brief Method to store postcode list
      *  @param[in] data - post code
