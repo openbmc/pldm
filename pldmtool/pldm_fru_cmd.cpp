@@ -318,7 +318,6 @@ class GetFRURecordByOption : public CommandInterface
     ~GetFRURecordByOption() = default;
     GetFRURecordByOption() = delete;
     GetFRURecordByOption(const GetFRURecordByOption&) = delete;
-    GetFRURecordByOption(GetFruRecordTableMetadata&&) = delete;
     GetFRURecordByOption& operator=(const GetFRURecordByOption&) = delete;
     GetFRURecordByOption& operator=(GetFRURecordByOption&&) = delete;
 
