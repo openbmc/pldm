@@ -39,7 +39,7 @@ class GetDateTime : public CommandInterface
     ~GetDateTime() = default;
     GetDateTime() = delete;
     GetDateTime(const GetDateTime&) = delete;
-    GetDateTime(GetDateTime&&) = default;
+    GetDateTime(GetDateTime&&) = delete;
     GetDateTime& operator=(const GetDateTime&) = delete;
     GetDateTime& operator=(GetDateTime&&) = delete;
 
@@ -95,7 +95,7 @@ class SetDateTime : public CommandInterface
     ~SetDateTime() = default;
     SetDateTime() = delete;
     SetDateTime(const SetDateTime&) = delete;
-    SetDateTime(SetDateTime&&) = default;
+    SetDateTime(SetDateTime&&) = delete;
     SetDateTime& operator=(const SetDateTime&) = delete;
     SetDateTime& operator=(SetDateTime&&) = delete;
 

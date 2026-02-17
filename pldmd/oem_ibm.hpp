@@ -33,9 +33,11 @@ class OemIBM
 {
   public:
     OemIBM() = delete;
+    OemIBM(const OemIBM&) = delete;
     OemIBM& operator=(const OemIBM&) = delete;
     OemIBM(OemIBM&&) = delete;
     OemIBM& operator=(OemIBM&&) = delete;
+    ~OemIBM() = default;
 
   public:
     /** Constructs OemIBM object

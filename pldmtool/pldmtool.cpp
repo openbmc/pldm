@@ -27,7 +27,7 @@ class RawOp : public CommandInterface
     ~RawOp() = default;
     RawOp() = delete;
     RawOp(const RawOp&) = delete;
-    RawOp(RawOp&&) = default;
+    RawOp(RawOp&&) = delete;
     RawOp& operator=(const RawOp&) = delete;
     RawOp& operator=(RawOp&&) = delete;
 

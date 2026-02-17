@@ -32,7 +32,7 @@ class GetFruRecordTableMetadata : public CommandInterface
     ~GetFruRecordTableMetadata() = default;
     GetFruRecordTableMetadata() = delete;
     GetFruRecordTableMetadata(const GetFruRecordTableMetadata&) = delete;
-    GetFruRecordTableMetadata(GetFruRecordTableMetadata&&) = default;
+    GetFruRecordTableMetadata(GetFruRecordTableMetadata&&) = delete;
     GetFruRecordTableMetadata& operator=(const GetFruRecordTableMetadata&) =
         delete;
     GetFruRecordTableMetadata& operator=(GetFruRecordTableMetadata&&) = delete;
@@ -318,6 +318,7 @@ class GetFRURecordByOption : public CommandInterface
     ~GetFRURecordByOption() = default;
     GetFRURecordByOption() = delete;
     GetFRURecordByOption(const GetFRURecordByOption&) = delete;
+    GetFRURecordByOption(GetFRURecordByOption&&) = delete;
     GetFRURecordByOption& operator=(const GetFRURecordByOption&) = delete;
     GetFRURecordByOption& operator=(GetFRURecordByOption&&) = delete;
 
@@ -403,7 +404,7 @@ class GetFruRecordTable : public CommandInterface
     ~GetFruRecordTable() = default;
     GetFruRecordTable() = delete;
     GetFruRecordTable(const GetFruRecordTable&) = delete;
-    GetFruRecordTable(GetFruRecordTable&&) = default;
+    GetFruRecordTable(GetFruRecordTable&&) = delete;
     GetFruRecordTable& operator=(const GetFruRecordTable&) = delete;
     GetFruRecordTable& operator=(GetFruRecordTable&&) = delete;
 

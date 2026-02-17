@@ -37,6 +37,11 @@ class Handler : public oem_fru::Handler
   public:
     Handler(pldm_pdr* repo) : pdrRepo(repo) {}
 
+    Handler(const Handler&) = delete;
+    Handler& operator=(const Handler&) = delete;
+    Handler(Handler&&) = default;
+    Handler& operator=(Handler&&) = default;
+
     /** @brief Method to set the fru handler in the
      *    oem_ibm_handler class
      *

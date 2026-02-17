@@ -79,6 +79,12 @@ class BIOSTable
 class BIOSStringTableInterface
 {
   public:
+    BIOSStringTableInterface() = default;
+    BIOSStringTableInterface(const BIOSStringTableInterface&) = delete;
+    BIOSStringTableInterface& operator=(const BIOSStringTableInterface&) =
+        delete;
+    BIOSStringTableInterface(BIOSStringTableInterface&&) = default;
+    BIOSStringTableInterface& operator=(BIOSStringTableInterface&&) = default;
     virtual ~BIOSStringTableInterface() = default;
 
     /** @brief Find the string name from the BIOS string table for a string

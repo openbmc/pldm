@@ -123,7 +123,7 @@ class GetPLDMTypes : public CommandInterface
     ~GetPLDMTypes() = default;
     GetPLDMTypes() = delete;
     GetPLDMTypes(const GetPLDMTypes&) = delete;
-    GetPLDMTypes(GetPLDMTypes&&) = default;
+    GetPLDMTypes(GetPLDMTypes&&) = delete;
     GetPLDMTypes& operator=(const GetPLDMTypes&) = delete;
     GetPLDMTypes& operator=(GetPLDMTypes&&) = delete;
 
@@ -195,7 +195,7 @@ class GetPLDMVersion : public CommandInterface
     ~GetPLDMVersion() = default;
     GetPLDMVersion() = delete;
     GetPLDMVersion(const GetPLDMVersion&) = delete;
-    GetPLDMVersion(GetPLDMVersion&&) = default;
+    GetPLDMVersion(GetPLDMVersion&&) = delete;
     GetPLDMVersion& operator=(const GetPLDMVersion&) = delete;
     GetPLDMVersion& operator=(GetPLDMVersion&&) = delete;
 
@@ -261,7 +261,7 @@ class GetTID : public CommandInterface
     ~GetTID() = default;
     GetTID() = delete;
     GetTID(const GetTID&) = delete;
-    GetTID(GetTID&&) = default;
+    GetTID(GetTID&&) = delete;
     GetTID& operator=(const GetTID&) = delete;
     GetTID& operator=(GetTID&&) = delete;
 
@@ -299,7 +299,7 @@ class GetPLDMCommands : public CommandInterface
     ~GetPLDMCommands() = default;
     GetPLDMCommands() = delete;
     GetPLDMCommands(const GetPLDMCommands&) = delete;
-    GetPLDMCommands(GetPLDMCommands&&) = default;
+    GetPLDMCommands(GetPLDMCommands&&) = delete;
     GetPLDMCommands& operator=(const GetPLDMCommands&) = delete;
     GetPLDMCommands& operator=(GetPLDMCommands&&) = delete;
 
@@ -426,7 +426,7 @@ class SetTID : public CommandInterface
     ~SetTID() = default;
     SetTID() = delete;
     SetTID(const SetTID&) = delete;
-    SetTID(SetTID&&) = default;
+    SetTID(SetTID&&) = delete;
     SetTID& operator=(const SetTID&) = delete;
     SetTID& operator=(SetTID&&) = delete;
 
