@@ -33,7 +33,6 @@ class OemIBM
 {
   public:
     OemIBM() = delete;
-    OemIBM(const Pdr&) = delete;
     OemIBM& operator=(const OemIBM&) = delete;
     OemIBM(OemIBM&&) = delete;
     OemIBM& operator=(OemIBM&&) = delete;
