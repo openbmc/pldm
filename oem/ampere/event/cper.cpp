@@ -45,10 +45,10 @@ static void decodeSecAmpere(void* section, EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 
 static void decodeSecArm(void* section, EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 {
-    int len;
-    EFI_ARM_ERROR_RECORD* proc;
-    EFI_ARM_ERROR_INFORMATION_ENTRY* errInfo;
-    EFI_ARM_CONTEXT_INFORMATION_HEADER* ctxInfo;
+    int len = 0;
+    EFI_ARM_ERROR_RECORD* proc = nullptr;
+    EFI_ARM_ERROR_INFORMATION_ENTRY* errInfo = nullptr;
+    EFI_ARM_CONTEXT_INFORMATION_HEADER* ctxInfo = nullptr;
 
     proc = reinterpret_cast<EFI_ARM_ERROR_RECORD*>(section);
     errInfo = reinterpret_cast<EFI_ARM_ERROR_INFORMATION_ENTRY*>(proc + 1);
@@ -184,9 +184,10 @@ void addCperSELLog(pldm_tid_t tid, uint16_t eventID, EFI_AMPERE_ERROR_DATA* p)
 {
     std::vector<uint8_t> evtData;
     std::string message = "PLDM RAS SEL Event";
-    uint8_t recordType;
-    uint8_t evtData1, evtData2, evtData3, evtData4, evtData5, evtData6;
-    uint8_t socket;
+    uint8_t recordType = 0;
+    uint8_t evtData1 = 0, evtData2 = 0, evtData3 = 0, evtData4 = 0,
+            evtData5 = 0, evtData6 = 0;
+    uint8_t socket = 0;
 
     /*
      * OEM IPMI SEL Recode Format for RAS event:

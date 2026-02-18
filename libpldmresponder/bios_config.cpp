@@ -219,14 +219,14 @@ int BIOSConfig::checkAttributeTable(const Table& table)
             case PLDM_BIOS_ENUMERATION:
             case PLDM_BIOS_ENUMERATION_READ_ONLY:
             {
-                uint8_t pvNum;
+                uint8_t pvNum = 0;
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_num(entry, &pvNum);
                 std::vector<uint16_t> pvHandls(pvNum);
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_hdls(
                     entry, pvHandls.data(), pvHandls.size());
-                uint8_t defNum;
+                uint8_t defNum = 0;
                 pldm_bios_table_attr_entry_enum_decode_def_num(entry, &defNum);
                 std::vector<uint8_t> defIndices(defNum);
                 pldm_bios_table_attr_entry_enum_decode_def_indices(
@@ -370,7 +370,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 attributeType = "xyz.openbmc_project.BIOSConfig.Manager."
                                 "AttributeType.Enumeration";
 
-                uint8_t pvNum;
+                uint8_t pvNum = 0;
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry,
                                                               &pvNum);
@@ -402,7 +402,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     currentValue = getValue(pvHandls[handles[i]], *stringTable);
                 }
 
-                uint8_t defNum;
+                uint8_t defNum = 0;
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_def_num(attrEntry,
                                                                &defNum);
@@ -428,8 +428,8 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     pldm_bios_table_attr_value_entry_integer_decode_cv(
                         tableEntry));
 
-                uint64_t lower, upper, def;
-                uint32_t scalar;
+                uint64_t lower = 0, upper = 0, def = 0;
+                uint32_t scalar = 0;
                 pldm_bios_table_attr_entry_integer_decode(
                     attrEntry, &lower, &upper, &scalar, &def);
                 options.push_back(std::make_tuple(
@@ -462,7 +462,7 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     attrEntry);
                 auto max = pldm_bios_table_attr_entry_string_decode_max_length(
                     attrEntry);
-                uint16_t def;
+                uint16_t def = 0;
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_string_decode_def_string_length(
                     attrEntry, &def);
@@ -728,7 +728,7 @@ std::string BIOSConfig::displayStringHandle(
 {
     auto attrEntry = pldm_bios_table_attr_find_by_handle(
         attrTable->data(), attrTable->size(), handle);
-    uint8_t pvNum;
+    uint8_t pvNum = 0;
     int rc = pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry, &pvNum);
     if (rc != PLDM_SUCCESS)
     {

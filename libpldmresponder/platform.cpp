@@ -283,8 +283,8 @@ Response Handler::setStateEffecterStates(const pldm_msg* request,
     Response response(
         sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES, 0);
     auto responsePtr = new (response.data()) pldm_msg;
-    uint16_t effecterId;
-    uint8_t compEffecterCnt;
+    uint16_t effecterId = 0;
+    uint8_t compEffecterCnt = 0;
     constexpr auto maxCompositeEffecterCnt = 8;
     std::vector<set_effecter_state_field> stateField(maxCompositeEffecterCnt,
                                                      {0, 0});
