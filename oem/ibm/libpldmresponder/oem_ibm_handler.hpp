@@ -68,7 +68,6 @@ class Handler : public oem_platform::Handler
                                HYPERVISOR_TID, false))
     {
         codeUpdate->setVersions();
-        setEventReceiverCnt = 0;
 
         using namespace sdbusplus::bus::match::rules;
         hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(

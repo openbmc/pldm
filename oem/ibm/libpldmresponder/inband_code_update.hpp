@@ -50,14 +50,10 @@ class CodeUpdate
     /** @brief Constructor to create an inband codeupdate object
      *  @param[in] dBusIntf - D-Bus handler pointer
      */
-    CodeUpdate(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf)
-    {
-        currBootSide = Tside;
-        nextBootSide = Tside;
-        markerLidSensorId = PLDM_INVALID_EFFECTER_ID;
-        firmwareUpdateSensorId = PLDM_INVALID_EFFECTER_ID;
-        imageActivationMatch = nullptr;
-    }
+    CodeUpdate(const pldm::utils::DBusHandler* dBusIntf) :
+        currBootSide(Tside), nextBootSide(Tside), dBusIntf(dBusIntf),
+        imageActivationMatch(nullptr)
+    {}
 
     CodeUpdate(const CodeUpdate&) = delete;
     CodeUpdate& operator=(const CodeUpdate&) = delete;
@@ -250,10 +246,10 @@ class CodeUpdate
         fwUpdateMatcher; //!< pointer to capture the interface added signal for
                          //!< new image
     pldm::responder::oem_platform::Handler*
-        oemPlatformHandler; //!< oem platform handler
-    uint16_t markerLidSensorId;
-    uint16_t firmwareUpdateSensorId;
-    uint16_t bootSideRenameStateSensorId;
+        oemPlatformHandler{}; //!< oem platform handler
+    uint16_t markerLidSensorId{};
+    uint16_t firmwareUpdateSensorId{};
+    uint16_t bootSideRenameStateSensorId{};
     /** @brief D-Bus property changed signal match for image activation */
     std::unique_ptr<sdbusplus::bus::match_t> imageActivationMatch;
 

@@ -94,10 +94,9 @@ HostPDRHandler::HostPDRHandler(
     pldm::requester::Handler<pldm::requester::Request>* handler) :
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
-    instanceIdDb(instanceIdDb), handler(handler),
+    instanceIdDb(instanceIdDb), handler(handler), mergedHostParents(false),
     entityMaps(parseEntityMap(ENTITY_MAP_JSON)), oemUtilsHandler(nullptr)
 {
-    mergedHostParents = false;
     hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",

@@ -122,9 +122,9 @@ void transport_impl_destroy(TransportImpl& impl)
 #endif
 }
 
-PldmTransport::PldmTransport(bool listening)
+PldmTransport::PldmTransport(bool listening) :
+    transport(transport_impl_init(impl, pfd, listening))
 {
-    transport = transport_impl_init(impl, pfd, listening);
     if (!transport)
     {
         throw std::system_error(ENOMEM, std::generic_category());

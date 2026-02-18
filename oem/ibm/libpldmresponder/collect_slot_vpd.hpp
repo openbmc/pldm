@@ -46,11 +46,11 @@ class SlotHandler
      *
      */
     SlotHandler(const sdeventplus::Event& event, pldm_pdr* repo) :
+        fruPresenceMatch(nullptr),
         timer(event,
               std::bind(std::mem_fn(&SlotHandler::timeOutHandler), this)),
         pdrRepo(repo)
     {
-        fruPresenceMatch = nullptr;
         currentOnGoingSlotEntity.entity_type = 0;
         currentOnGoingSlotEntity.entity_instance_num = 0;
         currentOnGoingSlotEntity.entity_container_id = 0;

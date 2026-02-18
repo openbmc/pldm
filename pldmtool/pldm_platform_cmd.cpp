@@ -145,9 +145,9 @@ class GetPDR : public CommandInterface
     using CommandInterface::CommandInterface;
 
     explicit GetPDR(const char* type, const char* name, CLI::App* app) :
-        CommandInterface(type, name, app), dataTransferHandle(0),
-        operationFlag(PLDM_GET_FIRSTPART), requestCount(UINT16_MAX),
-        recordChangeNumber(0), nextPartRequired(false)
+        CommandInterface(type, name, app), allPDRs(false), pdrRecType(""),
+        dataTransferHandle(0), operationFlag(PLDM_GET_FIRSTPART),
+        requestCount(UINT16_MAX), recordChangeNumber(0), nextPartRequired(false)
     {
         auto pdrOptionGroup = app->add_option_group(
             "Required Option",
@@ -157,7 +157,7 @@ class GetPDR : public CommandInterface
             "retrieve individual PDRs from a PDR Repository\n"
             "eg: The recordHandle value for the PDR to be retrieved and 0 "
             "means get first PDR in the repository.");
-        pdrRecType = "";
+
         std::string supportedPDRTypes = "";
 
         for (const auto& [type, _] : strToPdrType)
@@ -176,7 +176,6 @@ class GetPDR : public CommandInterface
             "retrieve all PDRs of the requested terminusID\n"
             "supported IDs:\n [1, 2, 208...]");
 
-        allPDRs = false;
         pdrOptionGroup->add_flag("-a, --all", allPDRs,
                                  "retrieve all PDRs from a PDR repository");
 

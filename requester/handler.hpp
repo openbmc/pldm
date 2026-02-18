@@ -473,7 +473,8 @@ struct SendRecvMsgOperation
     explicit SendRecvMsgOperation(Handler<RequestInterface>& handler,
                                   mctp_eid_t eid, pldm::Request&& request,
                                   R&& r) :
-        handler(handler), request(std::move(request)), receiver(std::move(r))
+        handler(handler), request(std::move(request)), response(nullptr),
+        respMsgLen(0), receiver(std::move(r))
     {
         auto requestMsg =
             reinterpret_cast<const pldm_msg*>(this->request.data());
@@ -483,8 +484,6 @@ struct SendRecvMsgOperation
             requestMsg->hdr.type,
             requestMsg->hdr.command,
         };
-        response = nullptr;
-        respMsgLen = 0;
     }
 
     /** @brief Checks if the operation has been requested to stop.

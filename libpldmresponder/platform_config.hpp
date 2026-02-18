@@ -16,7 +16,8 @@ using SystemTypeCallback = std::function<void(const std::string&, bool)>;
 class Handler : public CmdHandler
 {
   public:
-    Handler(const fs::path sysDirPath = {}) : sysDirPath(sysDirPath)
+    Handler(const fs::path sysDirPath = {}) :
+        sysTypeCallback(nullptr), sysDirPath(sysDirPath)
     {
         systemCompatibleMatchCallBack =
             std::make_unique<sdbusplus::bus::match_t>(
@@ -26,7 +27,6 @@ class Handler : public CmdHandler
                         "xyz.openbmc_project.EntityManager"),
                 std::bind(&Handler::systemCompatibleCallback, this,
                           std::placeholders::_1));
-        sysTypeCallback = nullptr;
     }
 
     /** @brief Interface to get the system type information using Dbus query

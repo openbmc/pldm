@@ -30,10 +30,9 @@ class LidHandler : public FileHandler
     /** @brief LidHandler constructor
      */
     LidHandler(uint32_t fileHandle, bool permSide, uint8_t lidType = 0) :
-        FileHandler(fileHandle), lidType(lidType)
+        FileHandler(fileHandle), sideToRead(permSide ? Pside : Tside),
+        lidType(lidType)
     {
-        sideToRead = permSide ? Pside : Tside;
-        isPatchDir = false;
         std::string dir = permSide ? LID_ALTERNATE_DIR : LID_RUNNING_DIR;
         std::stringstream stream;
         stream << std::hex << fileHandle;
@@ -334,7 +333,7 @@ class LidHandler : public FileHandler
   protected:
     std::string lidPath;
     std::string sideToRead;
-    bool isPatchDir;
+    bool isPatchDir{};
     static inline MarkerLIDremainingSize markerLIDremainingSize;
     uint8_t lidType;
 };
