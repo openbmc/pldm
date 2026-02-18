@@ -32,7 +32,7 @@ static constexpr auto flightRecorderDumpPath = "/tmp/pldm_flight_recorder";
 class FlightRecorder
 {
   private:
-    FlightRecorder() : index(0)
+    FlightRecorder()
     {
         flightRecorderPolicy = FLIGHT_RECORDER_MAX_ENTRIES ? true : false;
         if (flightRecorderPolicy)
@@ -42,7 +42,7 @@ class FlightRecorder
     }
 
   protected:
-    int index;
+    int index{0};
     FlightRecorderCassette tapeRecorder;
     bool flightRecorderPolicy;
 

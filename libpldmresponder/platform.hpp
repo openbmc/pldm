@@ -65,7 +65,7 @@ class Handler : public CmdHandler
         dbusToPLDMEventHandler(dbusToPLDMEventHandler), fruHandler(fruHandler),
         dBusIntf(dBusIntf), platformConfigHandler(platformConfigHandler),
         handler(handler), event(event), pdrJsonDir(pdrJsonDir),
-        pdrCreated(false), pdrJsonsDir({pdrJsonDir})
+        pdrJsonsDir({pdrJsonDir})
     {
         if (!buildPDRLazily)
         {
@@ -542,7 +542,7 @@ class Handler : public CmdHandler
     pldm::requester::Handler<pldm::requester::Request>* handler;
     sdeventplus::Event& event;
     fs::path pdrJsonDir;
-    bool pdrCreated;
+    bool pdrCreated{false};
     std::vector<fs::path> pdrJsonsDir;
     std::unique_ptr<sdeventplus::source::Defer> deferredGetPDREvent;
 };

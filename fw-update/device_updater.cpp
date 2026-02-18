@@ -24,8 +24,7 @@ static constexpr uint8_t componentApplyProgressPercent = 99;
 static constexpr uint8_t firmwareActivationProgressPercent = 100;
 
 UpdateProgress::UpdateProgress(uint32_t totalSize, mctp_eid_t eid) :
-    progress{}, eid{eid}, totalSize{totalSize}, totalUpdated{},
-    currentState{state::Update}
+    eid{eid}, totalSize{totalSize}
 {}
 
 uint32_t UpdateProgress::getTotalSize() const
