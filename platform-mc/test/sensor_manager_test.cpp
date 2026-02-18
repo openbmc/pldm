@@ -140,7 +140,7 @@ TEST_F(SensorManagerTest, sensorPollingTest)
     termini[tid]->pdrs.push_back(pdr2);
     termini[tid]->parseTerminusPDRs();
 
-    uint64_t t0, t1;
+    uint64_t t0 = 0, t1 = 0;
     ASSERT_TRUE(sd_event_now(event.get(), CLOCK_MONOTONIC, &t0) >= 0);
     ON_CALL(sensorManager, doSensorPolling(tid))
         .WillByDefault([this, &t0, &t1](unsigned char) {

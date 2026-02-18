@@ -123,7 +123,7 @@ Response Handler::getDateTime(const pldm_msg* request, size_t /*payloadLength*/)
     constexpr auto bmcTimePath = "/xyz/openbmc_project/time/bmc";
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_DATE_TIME_RESP_BYTES, 0);
     auto responsePtr = new (response.data()) pldm_msg;
-    EpochTimeUS timeUsec;
+    EpochTimeUS timeUsec = 0;
 
     try
     {
@@ -165,7 +165,7 @@ Response Handler::setDateTime(const pldm_msg* request, size_t payloadLength)
     uint8_t day = 0;
     uint8_t month = 0;
     uint16_t year = 0;
-    std::time_t timeSec;
+    std::time_t timeSec = 0;
 
     constexpr auto timeSyncPath = "/xyz/openbmc_project/time/sync_method";
 
@@ -296,9 +296,9 @@ Response Handler::setBIOSTable(const pldm_msg* request, size_t payloadLength)
 Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
                                                        size_t payloadLength)
 {
-    uint32_t transferHandle;
-    uint8_t transferOpFlag;
-    uint16_t attributeHandle;
+    uint32_t transferHandle = 0;
+    uint8_t transferOpFlag = 0;
+    uint16_t attributeHandle = 0;
 
     auto rc = decode_get_bios_attribute_current_value_by_handle_req(
         request, payloadLength, &transferHandle, &transferOpFlag,
@@ -341,8 +341,8 @@ Response Handler::getBIOSAttributeCurrentValueByHandle(const pldm_msg* request,
 Response Handler::setBIOSAttributeCurrentValue(const pldm_msg* request,
                                                size_t payloadLength)
 {
-    uint32_t transferHandle;
-    uint8_t transferOpFlag;
+    uint32_t transferHandle = 0;
+    uint8_t transferOpFlag = 0;
     variable_field attributeField;
 
     auto rc = decode_set_bios_attribute_current_value_req(

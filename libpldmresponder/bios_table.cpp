@@ -189,7 +189,7 @@ StringField decodeStringEntry(const pldm_bios_attr_table_entry* entry)
     auto strType = pldm_bios_table_attr_entry_string_decode_string_type(entry);
     auto minLength = pldm_bios_table_attr_entry_string_decode_min_length(entry);
     auto maxLength = pldm_bios_table_attr_entry_string_decode_max_length(entry);
-    uint16_t defLength;
+    uint16_t defLength = 0;
     int rc = pldm_bios_table_attr_entry_string_decode_def_string_length(
         entry, &defLength);
     if (rc != PLDM_SUCCESS)
@@ -210,8 +210,8 @@ StringField decodeStringEntry(const pldm_bios_attr_table_entry* entry)
 
 IntegerField decodeIntegerEntry(const pldm_bios_attr_table_entry* entry)
 {
-    uint64_t lower, upper, def;
-    uint32_t scalar;
+    uint64_t lower = 0, upper = 0, def = 0;
+    uint32_t scalar = 0;
 
     pldm_bios_table_attr_entry_integer_decode(entry, &lower, &upper, &scalar,
                                               &def);
@@ -236,7 +236,7 @@ const pldm_bios_attr_table_entry* constructEnumEntry(
 
 EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
 {
-    uint8_t pvNum;
+    uint8_t pvNum = 0;
     int rc = pldm_bios_table_attr_entry_enum_decode_pv_num(entry, &pvNum);
     if (rc != PLDM_SUCCESS)
     {
@@ -250,7 +250,7 @@ EnumField decodeEnumEntry(const pldm_bios_attr_table_entry* entry)
     // Preconditions are upheld therefore no error check necessary
     pldm_bios_table_attr_entry_enum_decode_pv_hdls(entry, pvHdls.data(), pvNum);
     // Preconditions are upheld therefore no error check necessary
-    uint8_t defNum;
+    uint8_t defNum = 0;
     pldm_bios_table_attr_entry_enum_decode_def_num(entry, &defNum);
     std::vector<uint8_t> defIndices(defNum, 0);
     pldm_bios_table_attr_entry_enum_decode_def_indices(entry, defIndices.data(),

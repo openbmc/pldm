@@ -128,11 +128,11 @@ int SoftPowerOff::getHostState()
 
 void SoftPowerOff::hostSoftOffComplete(sdbusplus::message_t& msg)
 {
-    pldm::pdr::TerminusID msgTID;
-    pldm::pdr::SensorID msgSensorID;
-    pldm::pdr::SensorOffset msgSensorOffset;
-    pldm::pdr::EventState msgEventState;
-    pldm::pdr::EventState msgPreviousEventState;
+    pldm::pdr::TerminusID msgTID = 0;
+    pldm::pdr::SensorID msgSensorID = 0;
+    pldm::pdr::SensorOffset msgSensorOffset = 0;
+    pldm::pdr::EventState msgEventState = 0;
+    pldm::pdr::EventState msgPreviousEventState = 0;
 
     // Read the msg and populate each variable
     msg.read(msgTID, msgSensorID, msgSensorOffset, msgEventState,
@@ -275,13 +275,13 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
 {
     constexpr uint8_t effecterCount = 1;
     PldmTransport pldmTransport{};
-    uint8_t mctpEID;
+    uint8_t mctpEID = 0;
 
     mctpEID = pldm::utils::readHostEID();
     // TODO: fix mapping to work around OpenBMC ecosystem deficiencies
     pldm_tid_t pldmTID = static_cast<pldm_tid_t>(mctpEID);
 
-    uint8_t effecterState;
+    uint8_t effecterState = 0;
     auto requestHostTransition =
         pldm::utils::DBusHandler().getDbusProperty<std::string>(
             "/xyz/openbmc_project/state/host0",

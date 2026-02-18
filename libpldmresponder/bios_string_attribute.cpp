@@ -46,7 +46,7 @@ BIOSStringAttribute::BIOSStringAttribute(const Json& entry,
         stringInfo.defString.data(),
     };
 
-    const char* errmsg;
+    const char* errmsg = nullptr;
     auto rc = pldm_bios_table_attr_entry_string_info_check(&info, &errmsg);
     if (rc != PLDM_SUCCESS)
     {

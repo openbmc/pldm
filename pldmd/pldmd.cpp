@@ -364,7 +364,7 @@ int main(int argc, char** argv)
 
         int returnCode = 0;
         void* requestMsg = nullptr;
-        size_t recvDataLength;
+        size_t recvDataLength = 0;
         returnCode = pldmTransport.recvMsg(TID, requestMsg, recvDataLength);
 
         if (returnCode == PLDM_REQUESTER_SUCCESS)
