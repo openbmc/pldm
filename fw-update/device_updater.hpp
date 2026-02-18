@@ -88,7 +88,7 @@ class UpdateProgress
     /**
      * @brief progress of firmware update in percentage [0-100]
      */
-    uint8_t progress;
+    uint8_t progress{};
 
     /**
      * @brief the eid of the device this object tracks
@@ -101,11 +101,11 @@ class UpdateProgress
     /**
      * @brief the total number of bytes sent
      */
-    uint32_t totalUpdated;
+    uint32_t totalUpdated{};
     /**
      * @brief the current state of update for this component
      */
-    state currentState;
+    state currentState{state::Update};
 };
 
 /** @class DeviceUpdater

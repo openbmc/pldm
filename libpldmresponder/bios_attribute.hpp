@@ -102,7 +102,7 @@ class BIOSAttribute
     const std::string name;
 
     /** Weather this attribute is read-only */
-    bool readOnly;
+    bool readOnly{false};
 
     const std::string displayName;
 

@@ -62,12 +62,10 @@ class Handler : public oem_platform::Handler
             sdeventplus::Event& event,
             pldm::requester::Handler<pldm::requester::Request>* handler) :
         oem_platform::Handler(dBusIntf), codeUpdate(codeUpdate),
-        slotHandler(slotHandler), platformHandler(nullptr), mctp_fd(mctp_fd),
-        mctp_eid(mctp_eid), instanceIdDb(instanceIdDb), event(event),
-        handler(handler),
+        slotHandler(slotHandler), mctp_fd(mctp_fd), mctp_eid(mctp_eid),
+        instanceIdDb(instanceIdDb), event(event), handler(handler),
         timer(event, std::bind(std::mem_fn(&Handler::setSurvTimer), this,
-                               HYPERVISOR_TID, false)),
-        hostTransitioningToOff(true)
+                               HYPERVISOR_TID, false))
     {
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
@@ -429,8 +427,8 @@ class Handler : public oem_platform::Handler
     pldm::responder::SlotHandler*
         slotHandler; //!< pointer to SlotHandler object
 
-    pldm::responder::platform::Handler*
-        platformHandler; //!< pointer to PLDM platform handler
+    pldm::responder::platform::Handler* platformHandler{
+        nullptr}; //!< pointer to PLDM platform handler
 
     /** @brief fd of MCTP communications socket */
     int mctp_fd;
@@ -492,7 +490,7 @@ class Handler : public oem_platform::Handler
 
     bool hostOff = true;
 
-    bool hostTransitioningToOff;
+    bool hostTransitioningToOff{true};
 
     int setEventReceiverCnt = 0;
 };

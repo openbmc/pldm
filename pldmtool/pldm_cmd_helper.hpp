@@ -87,9 +87,7 @@ class CommandInterface
 {
   public:
     explicit CommandInterface(const char* type, const char* name,
-                              CLI::App* app) :
-        pldmType(type), commandName(name), mctp_eid(PLDM_ENTITY_ID),
-        pldmVerbose(false), instanceId(0)
+                              CLI::App* app) : pldmType(type), commandName(name)
     {
         app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");
         app->add_flag("-v, --verbose", pldmVerbose);
@@ -147,11 +145,11 @@ class CommandInterface
   private:
     const std::string pldmType;
     const std::string commandName;
-    uint8_t mctp_eid;
-    bool pldmVerbose;
+    uint8_t mctp_eid{PLDM_ENTITY_ID};
+    bool pldmVerbose{false};
 
   protected:
-    uint8_t instanceId;
+    uint8_t instanceId{0};
     pldm::InstanceIdDb instanceIdDb;
     uint8_t numRetries = 0;
 };

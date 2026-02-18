@@ -136,7 +136,7 @@ class Terminus
     bool initialized = false;
 
     /** @brief maximum message buffer size the terminus can send and receive */
-    uint16_t maxBufferSize;
+    uint16_t maxBufferSize{PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE};
 
     /** @brief This value indicates the event messaging styles supported by the
      *         terminus
@@ -150,7 +150,7 @@ class Terminus
      *         message that will require a multipart transfer via the
      *         PollForPlatformEvent command
      */
-    bool pollEvent;
+    bool pollEvent{false};
 
     /** @brief The sensor id is used in pollForPlatformMessage command */
     uint16_t pollEventId;
