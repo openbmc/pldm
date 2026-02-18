@@ -136,7 +136,7 @@ class GetFileTable : public CommandInterface
         uint8_t transferFlag = 0;
         uint32_t nextTransferHandle = 0;
         size_t fileTableDataLength = 0;
-        uint8_t table_data_start_offset;
+        uint8_t table_data_start_offset = 0;
         auto responsePtr = new (responseMsg.data()) pldm_msg;
         auto payloadLength = responseMsg.size() - sizeof(pldm_msg_hdr);
 

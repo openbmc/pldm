@@ -375,7 +375,7 @@ void InventoryManager::queryDownstreamIdentifiers(
     }
 
     DownstreamDeviceInfo initialDownstreamDevices{};
-    DownstreamDeviceInfo* downstreamDevices;
+    DownstreamDeviceInfo* downstreamDevices = nullptr;
     if (!downstreamDescriptorMap.contains(eid) ||
         downstreamIds.transfer_flag == PLDM_START ||
         downstreamIds.transfer_flag == PLDM_START_AND_END)

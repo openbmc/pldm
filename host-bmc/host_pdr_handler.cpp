@@ -877,8 +877,8 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
                             "xyz.openbmc_project.bmc.pldm.InternalFailure");
                     }
 
-                    uint8_t eventState;
-                    uint8_t previousEventState;
+                    uint8_t eventState = 0;
+                    uint8_t previousEventState = 0;
 
                     for (uint8_t sensorOffset = 0;
                          sensorOffset < comp_sensor_count; sensorOffset++)
@@ -1004,11 +1004,11 @@ void HostPDRHandler::getFRURecordTableMetadataByRemote(
         }
 
         uint8_t cc = 0;
-        uint8_t fru_data_major_version, fru_data_minor_version;
-        uint32_t fru_table_maximum_size, fru_table_length;
-        uint16_t total_record_set_identifiers;
-        uint16_t total;
-        uint32_t checksum;
+        uint8_t fru_data_major_version = 0, fru_data_minor_version = 0;
+        uint32_t fru_table_maximum_size = 0, fru_table_length = 0;
+        uint16_t total_record_set_identifiers = 0;
+        uint16_t total = 0;
+        uint32_t checksum = 0;
 
         auto rc = decode_get_fru_record_table_metadata_resp(
             response, respMsgLen, &cc, &fru_data_major_version,

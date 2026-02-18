@@ -181,7 +181,7 @@ bool isValidEID(eid mctpEid)
 
 uint8_t getNumPadBytes(uint32_t data)
 {
-    uint8_t pad;
+    uint8_t pad = 0;
     pad = ((data % 4) ? (4 - data % 4) : 0);
     return pad;
 } // end getNumPadBytes
@@ -823,7 +823,7 @@ std::optional<uint32_t> fruFieldParserU32(const uint8_t* value,
         return std::nullopt;
     }
 
-    uint32_t ret;
+    uint32_t ret = 0;
     std::memcpy(&ret, value, length);
     return ret;
 }

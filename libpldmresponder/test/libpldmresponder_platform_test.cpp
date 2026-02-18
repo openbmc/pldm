@@ -460,7 +460,7 @@ TEST(getNumericEffecterValueHandler, testGoodRequest)
     struct pldm_get_numeric_effecter_value_resp* resp =
         new (responsePtr->payload) pldm_get_numeric_effecter_value_resp;
     ASSERT_EQ(PLDM_SUCCESS, resp->completion_code);
-    uint32_t valPresent;
+    uint32_t valPresent = 0;
     memcpy(&valPresent, &resp->pending_and_present_values[4],
            sizeof(valPresent));
 

@@ -367,7 +367,7 @@ exec::task<int> PlatformManager::getPDR(
         co_return rc;
     }
 
-    uint8_t completionCode;
+    uint8_t completionCode = 0;
     rc = decode_get_pdr_resp(responseMsg, responseLen, &completionCode,
                              &nextRecordHndl, &nextDataTransferHndl,
                              &transferFlag, &responseCnt, recordData.data(),
@@ -475,7 +475,7 @@ exec::task<int> PlatformManager::eventMessageBufferSize(
         co_return rc;
     }
 
-    uint8_t completionCode;
+    uint8_t completionCode = 0;
     rc = decode_event_message_buffer_size_resp(
         responseMsg, responseLen, &completionCode, &terminusBufferSize);
     if (rc)
@@ -536,7 +536,7 @@ exec::task<int> PlatformManager::setEventReceiver(
         co_return rc;
     }
 
-    uint8_t completionCode;
+    uint8_t completionCode = 0;
     rc = decode_set_event_receiver_resp(responseMsg, responseLen,
                                         &completionCode);
     if (rc)
@@ -654,10 +654,10 @@ exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
         co_return rc;
     }
 
-    uint8_t fru_data_major_version, fru_data_minor_version;
-    uint32_t fru_table_maximum_size, fru_table_length;
-    uint16_t total_record_set_identifiers;
-    uint32_t checksum;
+    uint8_t fru_data_major_version = 0, fru_data_minor_version = 0;
+    uint32_t fru_table_maximum_size = 0, fru_table_length = 0;
+    uint16_t total_record_set_identifiers = 0;
+    uint32_t checksum = 0;
     rc = decode_get_fru_record_table_metadata_resp(
         responseMsg, responseLen, &completionCode, &fru_data_major_version,
         &fru_data_minor_version, &fru_table_maximum_size, &fru_table_length,

@@ -29,7 +29,7 @@ sdbusplus::message::object_path Update::startUpdate(
 
     info("Starting update for image {FD}", "FD", image.fd);
     char buffer[4096];
-    ssize_t bytesRead;
+    ssize_t bytesRead = 0;
     imageStream.str(std::string());
 
     while ((bytesRead = read(image, buffer, sizeof(buffer))) > 0)

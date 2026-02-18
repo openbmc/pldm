@@ -232,7 +232,7 @@ EntityMaps parseEntityMap(const fs::path& filePath)
         return entityMaps;
     }
     auto entities = data.value("EntityTypeToDbusStringMap", emptyJson);
-    char* err;
+    char* err = nullptr;
     try
     {
         std::ranges::transform(

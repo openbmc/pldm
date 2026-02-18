@@ -400,7 +400,7 @@ int OemEventManager::processNumericSensorEvent(
     uint8_t eventState = 0;
     uint8_t previousEventState = 0;
     uint8_t sensorDataSize = 0;
-    uint32_t presentReading;
+    uint32_t presentReading = 0;
     auto rc = decode_numeric_sensor_data(
         sensorData, sensorDataLength, &eventState, &previousEventState,
         &sensorDataSize, &presentReading);

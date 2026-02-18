@@ -68,7 +68,7 @@ Entry::Level getEntryLevelFromPEL(const std::string& pelFileName)
         {
             pel.seekg(severityOffset);
 
-            uint8_t sev;
+            uint8_t sev = 0;
             pel.read(reinterpret_cast<char*>(&sev), 1);
 
             // Get the type

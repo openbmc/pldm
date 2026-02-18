@@ -93,7 +93,7 @@ Response Handler::getPLDMTypes(const pldm_msg* request,
 Response Handler::getPLDMCommands(const pldm_msg* request, size_t payloadLength)
 {
     ver32_t version{};
-    Type type;
+    Type type = 0;
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_RESP_BYTES, 0);
     auto responsePtr = new (response.data()) pldm_msg;
@@ -133,9 +133,9 @@ Response Handler::getPLDMCommands(const pldm_msg* request, size_t payloadLength)
 
 Response Handler::getPLDMVersion(const pldm_msg* request, size_t payloadLength)
 {
-    uint32_t transferHandle;
-    Type type;
-    uint8_t transferFlag;
+    uint32_t transferHandle = 0;
+    Type type = 0;
+    uint8_t transferFlag = 0;
 
     Response response(sizeof(pldm_msg_hdr) + PLDM_GET_VERSION_RESP_BYTES, 0);
     auto responsePtr = new (response.data()) pldm_msg;

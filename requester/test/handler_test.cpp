@@ -184,8 +184,8 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
     scope.spawn(
         stdexec::just() | stdexec::let_value([&] -> exec::task<void> {
             pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
-            const pldm_msg* responseMsg;
-            size_t responseLen;
+            const pldm_msg* responseMsg = nullptr;
+            size_t responseLen = 0;
             int rc = PLDM_SUCCESS;
 
             auto requestPtr = new (request.data()) pldm_msg;
@@ -262,8 +262,8 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
         {
             pldm::Request request(sizeof(pldm_msg_hdr), 0);
             auto requestMsg = new (request.data()) pldm_msg;
-            const pldm_msg* responseMsg;
-            size_t responseLen;
+            const pldm_msg* responseMsg = nullptr;
+            size_t responseLen = 0;
 
             auto rc = encode_get_tid_req(instanceId, requestMsg);
             EXPECT_EQ(rc, PLDM_SUCCESS);

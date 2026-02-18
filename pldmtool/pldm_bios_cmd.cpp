@@ -58,8 +58,8 @@ class GetDateTime : public CommandInterface
     {
         uint8_t cc = 0;
 
-        uint8_t seconds, minutes, hours, day, month;
-        uint16_t year;
+        uint8_t seconds = 0, minutes = 0, hours = 0, day = 0, month = 0;
+        uint16_t year = 0;
         auto rc =
             decode_get_date_time_resp(responsePtr, payloadLength, &cc, &seconds,
                                       &minutes, &hours, &day, &month, &year);
@@ -217,7 +217,7 @@ class GetBIOSTableHandler : public CommandInterface
 
         uint8_t cc = 0, transferFlag = 0;
         uint32_t nextTransferHandle = 0;
-        size_t bios_table_offset;
+        size_t bios_table_offset = 0;
         auto responsePtr = new (responseMsg.data()) pldm_msg;
         auto payloadLength = responseMsg.size() - sizeof(pldm_msg_hdr);
 
@@ -332,7 +332,7 @@ class GetBIOSTableHandler : public CommandInterface
         {
             return displayString;
         }
-        uint8_t pvNum;
+        uint8_t pvNum = 0;
         int rc =
             pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry, &pvNum);
         if (rc != PLDM_SUCCESS)
@@ -554,7 +554,7 @@ class GetBIOSTable : public GetBIOSTableHandler
                 case PLDM_BIOS_ENUMERATION:
                 case PLDM_BIOS_ENUMERATION_READ_ONLY:
                 {
-                    uint8_t pvNum;
+                    uint8_t pvNum = 0;
                     // Preconditions are upheld therefore no error check
                     // necessary
                     pldm_bios_table_attr_entry_enum_decode_pv_num(entry,
@@ -564,7 +564,7 @@ class GetBIOSTable : public GetBIOSTableHandler
                     // necessary
                     pldm_bios_table_attr_entry_enum_decode_pv_hdls(
                         entry, pvHandls.data(), pvHandls.size());
-                    uint8_t defNum;
+                    uint8_t defNum = 0;
                     // Preconditions are upheld therefore no error check
                     // necessary
                     pldm_bios_table_attr_entry_enum_decode_def_num(entry,
@@ -595,8 +595,8 @@ class GetBIOSTable : public GetBIOSTableHandler
                 case PLDM_BIOS_INTEGER:
                 case PLDM_BIOS_INTEGER_READ_ONLY:
                 {
-                    uint64_t lower, upper, def;
-                    uint32_t scalar;
+                    uint64_t lower = 0, upper = 0, def = 0;
+                    uint32_t scalar = 0;
                     pldm_bios_table_attr_entry_integer_decode(
                         entry, &lower, &upper, &scalar, &def);
                     attrdata["LowerBound"] = lower;
@@ -617,7 +617,7 @@ class GetBIOSTable : public GetBIOSTableHandler
                     auto max =
                         pldm_bios_table_attr_entry_string_decode_max_length(
                             entry);
-                    uint16_t def;
+                    uint16_t def = 0;
                     // Preconditions are upheld therefore no error check
                     // necessary
                     pldm_bios_table_attr_entry_string_decode_def_string_length(
@@ -815,7 +815,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
             {
                 entryLength =
                     pldm_bios_table_attr_value_entry_encode_enum_length(1);
-                uint8_t pvNum;
+                uint8_t pvNum = 0;
                 // Preconditions are upheld therefore no error check necessary
                 pldm_bios_table_attr_entry_enum_decode_pv_num(attrEntry,
                                                               &pvNum);
@@ -836,7 +836,7 @@ class SetBIOSAttributeCurrentValue : public GetBIOSTableHandler
                 auto valueHandle =
                     pldm_bios_table_string_entry_decode_handle(stringEntry);
 
-                uint8_t i;
+                uint8_t i = 0;
                 for (i = 0; i < pvNum; i++)
                 {
                     if (valueHandle == pvHdls[i])

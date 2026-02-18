@@ -52,10 +52,10 @@ class GetFruRecordTableMetadata : public CommandInterface
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
         uint8_t cc = 0;
-        uint8_t fru_data_major_version, fru_data_minor_version;
-        uint32_t fru_table_maximum_size, fru_table_length;
-        uint16_t total_record_set_identifiers, total_table_records;
-        uint32_t checksum;
+        uint8_t fru_data_major_version = 0, fru_data_minor_version = 0;
+        uint32_t fru_table_maximum_size = 0, fru_table_length = 0;
+        uint16_t total_record_set_identifiers = 0, total_table_records = 0;
+        uint32_t checksum = 0;
 
         auto rc = decode_get_fru_record_table_metadata_resp(
             responsePtr, payloadLength, &cc, &fru_data_major_version,
@@ -290,7 +290,7 @@ class FRUTablePrint
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
     {
         assert(length == 4);
-        uint32_t v;
+        uint32_t v = 0;
         std::memcpy(&v, value, length);
         return std::to_string(le32toh(v));
     }
@@ -372,9 +372,9 @@ class GetFRURecordByOption : public CommandInterface
 
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
-        uint8_t cc;
-        uint32_t dataTransferHandle;
-        uint8_t transferFlag;
+        uint8_t cc = 0;
+        uint32_t dataTransferHandle = 0;
+        uint8_t transferFlag = 0;
         variable_field fruData;
 
         auto rc = decode_get_fru_record_by_option_resp(

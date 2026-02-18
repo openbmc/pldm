@@ -1281,7 +1281,7 @@ class CancelUpdate : public CommandInterface
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
         uint8_t cc = 0;
-        bool8_t nonFunctioningComponentIndication;
+        bool8_t nonFunctioningComponentIndication = 0;
         bitfield64_t nonFunctioningComponentBitmap{0};
         auto rc = decode_cancel_update_resp(responsePtr, payloadLength, &cc,
                                             &nonFunctioningComponentIndication,

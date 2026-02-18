@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 
         void* responseMsg = nullptr;
         size_t responseMsgSize{};
-        pldm_tid_t srcTid;
+        pldm_tid_t srcTid = 0;
         auto rc = pldmTransport.recvMsg(srcTid, responseMsg, responseMsgSize);
         pldm_msg* response = new (responseMsg) pldm_msg;
         if (rc || dstTid != srcTid ||

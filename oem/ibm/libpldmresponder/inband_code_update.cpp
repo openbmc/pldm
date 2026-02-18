@@ -878,7 +878,7 @@ int CodeUpdate::assembleCodeUpdateImage()
     }
     else if (pid > 0)
     {
-        int status;
+        int status = 0;
         if (waitpid(pid, &status, 0) < 0)
         {
             error("Error occurred during waitpid, error number - {ERROR_NUM}",

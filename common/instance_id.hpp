@@ -124,7 +124,7 @@ class InstanceIdDb
      */
     std::expected<uint8_t, InstanceIdError> next(uint8_t tid)
     {
-        uint8_t id;
+        uint8_t id = 0;
         int rc = pldm_instance_id_alloc(pldmInstanceIdDb, tid, &id);
 
         if (rc)
