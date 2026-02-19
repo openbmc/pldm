@@ -1313,6 +1313,82 @@ class CancelUpdate : public CommandInterface
     }
 };
 
+class UpdateSecurityRevision : public CommandInterface
+{
+  public:
+    ~UpdateSecurityRevision() = default;
+    UpdateSecurityRevision() = delete;
+    UpdateSecurityRevision(const UpdateSecurityRevision&) = delete;
+    UpdateSecurityRevision(UpdateSecurityRevision&&) = default;
+    UpdateSecurityRevision& operator=(const UpdateSecurityRevision&) = delete;
+    UpdateSecurityRevision& operator=(UpdateSecurityRevision&&) = delete;
+
+    explicit UpdateSecurityRevision(const char* type, const char* name,
+                                    CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("--component_classification", componentClassification,
+                        "ComponentClassification value")
+            ->required();
+
+        app->add_option("--component_identifier", componentIdentifier,
+                        "ComponentIdentifier value")
+            ->required();
+
+        app->add_option("--component_classification_index",
+                        componentClassificationIndex,
+                        "ComponentClassificationIndex value")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) +
+            PLDM_FWUP_UPDATE_SECURITY_REVISION_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        size_t payload_length = PLDM_FWUP_UPDATE_SECURITY_REVISION_REQ_BYTES;
+        struct pldm_fwup_update_security_revision_req req = {
+            .component_classification = componentClassification,
+            .component_identifier = componentIdentifier,
+            .component_classification_index = componentClassificationIndex};
+
+        auto rc = encode_pldm_fwup_update_security_revision_req(
+            instanceId, &req, request, &payload_length);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = 0;
+
+        auto rc = decode_pldm_fwup_update_security_revision_resp(
+            responsePtr, payloadLength, &completionCode);
+
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc
+                      << ",cc=" << static_cast<int>(completionCode) << "\n";
+            return;
+        }
+
+        ordered_json data;
+        data["CompletionCode"] = completionCode;
+
+        pldmtool::helper::DisplayInJson(data);
+
+        return;
+    }
+
+  private:
+    uint16_t componentClassification = 0;
+    uint16_t componentIdentifier = 0;
+    uint8_t componentClassificationIndex = 0;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -1362,6 +1438,11 @@ void registerCommand(CLI::App& app)
         fwUpdate->add_subcommand("CancelUpdate", "To cancel update");
     commands.push_back(std::make_unique<CancelUpdate>(
         "fw_update", "CancelUpdate", cancelUpdate));
+
+    auto updateSecurityRevision = fwUpdate->add_subcommand(
+        "UpdateSecurityRevision", "To update security revision");
+    commands.push_back(std::make_unique<UpdateSecurityRevision>(
+        "fw_update", "UpdateSecurityRevision", updateSecurityRevision));
 }
 
 } // namespace fw_update
