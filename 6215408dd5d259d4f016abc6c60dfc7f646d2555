@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0e13cf5_acc805b9",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-22T08:00:16Z",
+      "side": 1,
+      "message": "\u003e 1. Where the endpoint\u0027s MCTP interfaces are the same across two transport types, and the transports should be selected based on some desired performance metric\n\nI fully didn\u0027t understand this. I though mctpd always adds separate interfaces to D-Bus for each transport/port medium. Is that not the case?",
+      "parentUuid": "9235f17e_3711a4be",
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d72d3e8c_b5d77149",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 5
