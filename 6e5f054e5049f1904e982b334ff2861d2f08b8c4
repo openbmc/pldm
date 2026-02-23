@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77321b8d_f91e1710",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-02-23T08:42:55Z",
+      "side": 1,
+      "message": "consider reducing the commit title to \u003c\u003d 50 characters\n\nhttps://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#:~:text\u003dCommit%20messages%20should%20follow%20the%2050/72%20rule%3A%20the%20subject%20line%20should%20not%20exceed%2050%20characters%20and%20the%20body%20should%20not%20exceed%2072%20characters.%20This%20is%20common%20practice%20in%20many%20projects%20which%20use%20Git\n\nsome suggestion for title:\n\n`platform-mc: Find File Size sensor from entity info`",
+      "revId": "6e5f054e5049f1904e982b334ff2861d2f08b8c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
