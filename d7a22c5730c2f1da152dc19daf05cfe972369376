@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "907feef1_dbc727b8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-02-23T06:28:05Z",
+      "side": 1,
+      "message": "Suggestion: Instance ID is a good idea, but it needs to be unique across all the different MCTP networks in case of af-mctp. Instead, why not leverage network number and MCTP endpoint ID pair as they can be unique pair and help easy mapping.",
+      "revId": "d7a22c5730c2f1da152dc19daf05cfe972369376",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7ee3ffa_597ff4cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-02-23T06:28:05Z",
+      "side": 1,
+      "message": "Removing new line and merging both paragraphs would help with readability. Character count too needs to be checked which is not highlighted in the suggestion.\n\n```suggestion\nEntity Instance Number can be used when presenting PLDM data as part of the \"name\" of the managed object (here it would terminus name) helps to distinguish between multiple entity instances having same name.\n\n```",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "d7a22c5730c2f1da152dc19daf05cfe972369376",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74dab736_c0eeb810",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-02-23T06:28:05Z",
+      "side": 1,
+      "message": "Minor comment in commit message that needs a fix. Remaining code looks fine to me.",
+      "revId": "d7a22c5730c2f1da152dc19daf05cfe972369376",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
