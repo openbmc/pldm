@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f90ee898_ceaf5eb7",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-02-23T10:34:50Z",
+      "side": 1,
+      "message": "You should change this to \n```suggestion\n        exec::default_task_context\u003cvoid\u003e(stdexec::inline_scheduler{}));\n```\n\nElse you will get build error\n\n```\nerror: \u0027inline_scheduler\u0027 is not a member of \u0027exec\u0027; did you mean \u0027stdexec::inline_scheduler\u0027?\n```\n\nReference: https://gerrit.openbmc.org/c/openbmc/pldm/+/85120",
+      "range": {
+        "startLine": 498,
+        "startChar": 47,
+        "endLine": 498,
+        "endChar": 63
+      },
+      "revId": "2890ae79fe404cdd2c4613158b8fc1e81fdd35af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
