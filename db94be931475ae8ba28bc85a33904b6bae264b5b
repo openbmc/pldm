@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2660b96f_6eea33ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-24T15:57:00Z",
+      "side": 1,
+      "message": "\u003e Is this about entities or termini?\n\nThe spec section quoted is talking about entity. However, the name of the entity which contains the terminus is what we use as terminus name. And a terminus can have multiple entities within it.\n\nAs per my understanding from spec, a terminus is a collection of entities. In that the outer container entity is nothing but the terminus itself.\n\n\n\u003e How is this different from terminus instance?\n\nWhat do you mean by a terminus instance? Could you please provide an example?",
+      "parentUuid": "12a49da4_683cd580",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54399a32_b902abea",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 11
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e61bec2_dd603cf0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-24T15:57:00Z",
+      "side": 1,
+      "message": "If there is only a single terminus, this is not strictly required. However, once we support dynamic configuration, we will no longer have prior knowledge of how many termini exist. It is possible that an additional terminus/entity instance could appear later.\n\nWhile we could choose to omit the entityInstanceNumber for the first available terminus, but there is no guarantee that it will have `entityInstanceNumber \u003d 1`; it could just as easily be a terminus with `entityInstanceNumber \u003d 2`.\n\nTherefore, to maintain consistency in naming, it is better to include the entityInstanceNumber for all termini.",
+      "parentUuid": "54399a32_b902abea",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0bae8970_90a4a9a4",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 11
@@ -48,6 +84,24 @@
       "writtenOn": "2026-02-24T09:52:52Z",
       "side": 1,
       "message": "WHat was the behavior before your fix (which platform was the after/before test done on)?",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd80a680_830420e1",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-02-24T15:57:00Z",
+      "side": 1,
+      "message": "I can’t share the exact platform details but let me describe a similar scenario to better illustrate the problem.\n\nConsider a 2-socket platform, where each CPU is assigned with unique TIDs. Both CPUs may share the same entity name, for example, `IntelCPU`, while still having different `entityInstanceNumber` values.\n\nWithout this change, the BMC would end up creating duplicate D-Bus object paths for entities with identical names. By incorporating the instance number, the resulting D-Bus object paths would look like this:\n\n    /xyz/openbmc_project/inventory/system/board/IntelCPU_1\n    /xyz/openbmc_project/inventory/system/board/IntelCPU_2\n\nHere, `1` and `2` correspond to the respective `entityInstanceNumber`.",
+      "parentUuid": "0bae8970_90a4a9a4",
       "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
