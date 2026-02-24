@@ -386,7 +386,7 @@ class NumericSensor
     /**
      * @brief resolve and clear a log entry
      *
-     * @param[inout] log - dbus path to log entry. The log will be resolve
+     * @param[in/out] log - dbus path to log entry. The log will be resolve
      *               and the optional reset.
      */
     void clearThresholdLog(std::optional<sdbusplus::message::object_path>& log);

@@ -137,13 +137,13 @@ def write_component_bitmap_bit_length(pldm_fw_up_pkg, metadata):
             represent the bitmap in the ApplicableComponents field for a
             matching device
     """
-    # The script supports upto 32 components now
+    # The script supports up to 32 components now
     max_components = 32
     bitmap_multiple = 8
 
     num_components = len(metadata["ComponentImageInformationArea"])
     if num_components > max_components:
-        sys.exit("ERROR: only upto 32 components supported now")
+        sys.exit("ERROR: only up to 32 components supported now")
     component_bitmap_bit_length = bitmap_multiple * math.ceil(
         num_components / bitmap_multiple
     )
@@ -343,7 +343,7 @@ def write_fw_device_identification_area(
     device_id_record_count = len(devices)
     if device_id_record_count > max_device_id_record_count:
         sys.exit(
-            "ERROR: there can be only upto 255 entries in the                "
+            "ERROR: there can be only up to 255 entries in the                "
             " FirmwareDeviceIdentificationArea section"
         )
 

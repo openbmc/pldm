@@ -25,7 +25,7 @@ class OemMETA
     OemMETA& operator=(OemMETA&&) = delete;
 
   public:
-    /** @brief Constucts OemMETA object
+    /** @brief Constructs OemMETA object
      *  @param[in] dBusIntf - D-Bus handler
      *  @param[in] invoker - invoker handler
      *  @param[in] platformHandler - platformHandler handler

@@ -440,7 +440,7 @@ class Handler : public CmdHandler
      *  @param[in] request - PLDM request msg
      *  @param[in] payloadLength - length of the message payload
      *
-     *  @return PLDM response messsage
+     *  @return PLDM response message
      */
     Response newFileAvailableWithMetaData(const pldm_msg* request,
                                           size_t payloadLength);

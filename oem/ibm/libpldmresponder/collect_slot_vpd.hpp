@@ -102,7 +102,7 @@ class SlotHandler
     /** @brief Method to obtain the Adapter dbus Object Path from Slot Adapter
      * path
      *  @param[in] slotObjPath - The slot dbus object path
-     *  @return - if Successfull, returns the adapter dbus object path
+     *  @return - if Successful, returns the adapter dbus object path
      */
     std::optional<std::string> getAdapterObjPath(
         const std::string& slotObjPath);
@@ -156,7 +156,7 @@ class SlotHandler
     pldm::responder::oem_platform::Handler* oemPlatformHandler =
         nullptr; //!< oem platform handler
 
-    /** @brief pointer to tha matcher for Present State for adapter object*/
+    /** @brief pointer to the matcher for Present State for adapter object*/
     std::unique_ptr<sdbusplus::bus::match_t> fruPresenceMatch;
 
     /** @brief Timer used for Slot VPD Collection operation */

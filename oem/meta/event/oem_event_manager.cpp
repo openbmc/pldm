@@ -72,7 +72,7 @@ int OemEventManager::handleOemEvent(
     auto eventDataSize = payloadLength - eventDataOffset;
     if (!pldm::oem_meta::checkMetaIana(tid))
     {
-        lg2::error("Recieve OEM Meta event from not Meta specific device");
+        lg2::error("Receive OEM Meta event from not Meta specific device");
         return PLDM_ERROR;
     }
     if (!processOemMetaEvent(tid, eventData, eventDataSize))

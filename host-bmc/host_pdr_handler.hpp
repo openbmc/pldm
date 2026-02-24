@@ -280,7 +280,7 @@ class HostPDRHandler
      */
     void setPresentPropertyStatus(const std::string& path);
 
-    /** @brief Set the availabilty dbus Property
+    /** @brief Set the availability dbus Property
      *  @param[in] path     - object path
      */
     void setAvailabilityState(const std::string& path);

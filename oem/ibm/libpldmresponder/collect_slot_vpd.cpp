@@ -85,7 +85,7 @@ void SlotHandler::processSlotOperations(const std::string& slotObjectPath,
     info(
         "CM: Found an adapter under the slot, adapter object:{ADAPTER_OBJ_PATH}",
         "ADAPTER_OBJ_PATH", adapterObjPath);
-    // create a presence match for the adpter present property
+    // create a presence match for the adapter present property
     createPresenceMatch(adapterObjPath, entity, stateFieldValue);
 
     // call the VPD Manager to collect/remove VPD objects
