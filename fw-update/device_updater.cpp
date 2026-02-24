@@ -481,9 +481,70 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to update request response for endpoint ID '{EID}', completion code '{CC}'",
             "EID", eid, "CC", completionCode);
-        return;
         updateManager->updateDeviceCompletion(eid, false);
+        return;
     }
+
+    const auto& applicableComponents =
+        std::get<ApplicableComponents>(fwDeviceIDRecord);
+    if (applicableComponents.empty())
+    {
+        error("No applicable components for endpoint ID '{EID}'", "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
+        return;
+    }
+    const auto& comp = compImageInfos[applicableComponents[componentIndex]];
+    const auto& compVersion = std::get<7>(comp);
+
+    if (compCompatibilityResp != PLDM_CCR_COMP_CAN_BE_UPDATED &&
+        compCompatibilityResp != PLDM_CCR_COMP_CANNOT_BE_UPDATED)
+    {
+        error("Unknown compCompatibilityResp '{RESP}' for endpoint ID '{EID}'",
+              "RESP", compCompatibilityResp, "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
+        return;
+    }
+
+    if (compCompatibilityResp == PLDM_CCR_COMP_CANNOT_BE_UPDATED)
+    {
+        info(
+            "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' cannot be updated, response code '{RC}', skipping",
+            "EID", eid, "COMPONENT_VERSION", compVersion, "RC",
+            compCompatibilityRespCode);
+        componentUpdateStatus[componentIndex] = false;
+
+        if (componentIndex == applicableComponents.size() - 1)
+        {
+            for (const auto& compStatus : componentUpdateStatus)
+            {
+                if (compStatus.second)
+                {
+                    componentIndex = 0;
+                    pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                        updateManager->event,
+                        std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
+                                  this));
+                    return;
+                }
+            }
+            updateManager->updateDeviceCompletion(eid, false);
+        }
+        else
+        {
+            componentIndex++;
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event,
+                std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
+                          componentIndex));
+        }
+        return;
+    }
+
+    info(
+        "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' can be updated",
+        "EID", eid, "COMPONENT_VERSION", compVersion);
+    componentUpdateStatus[componentIndex] = true;
+    createRequestFwDataTimer();
 }
 
 void DeviceUpdater::createRequestFwDataTimer()
