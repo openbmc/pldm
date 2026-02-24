@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12a49da4_683cd580",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-24T09:52:52Z",
+      "side": 1,
+      "message": "Is this about entities or termini? How is this different from terminus instance?",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54399a32_b902abea",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-24T09:52:52Z",
+      "side": 1,
+      "message": "Why do we want to do this if there is just one terminus?",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bae8970_90a4a9a4",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-24T09:52:52Z",
+      "side": 1,
+      "message": "WHat was the behavior before your fix (which platform was the after/before test done on)?",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98717504_e0864e56",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-02-24T09:52:52Z",
+      "side": 1,
+      "message": "I would rather do this in a different method? \"Find\" is just suuposed to find the name from aux PDR.",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
