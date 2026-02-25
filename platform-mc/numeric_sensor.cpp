@@ -1059,22 +1059,16 @@ void NumericSensor::createNormalRangeLog(double value)
 void NumericSensor::updateThresholds()
 {
     double value = std::numeric_limits<double>::quiet_NaN();
-
-    if ((!useMetricInterface && !valueIntf) ||
-        (useMetricInterface && !metricIntf))
-    {
-        lg2::error(
-            "Failed to update thresholds sensor {NAME} D-Bus interfaces don't exist.",
-            "NAME", sensorName);
-        return;
-    }
-    if (!useMetricInterface)
+    if (valueIntf)
     {
         value = valueIntf->value();
     }
     else
     {
-        value = metricIntf->value();
+        lg2::error(
+            "Failed to update thresholds sensor {NAME} D-Bus interfaces don't exist.",
+            "NAME", sensorName);
+        return;
     }
 
     for (auto level : allThresholdLevels)
