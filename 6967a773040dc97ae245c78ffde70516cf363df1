@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80a9cb0b_e9de2220",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-25T16:37:41Z",
+      "side": 1,
+      "message": "the modernize version of this seems to be preferred, even though it isn\u0027t explicitly called out in https://gerrit.openbmc.org/c/openbmc/docs/+/82977",
+      "range": {
+        "startLine": 153,
+        "startChar": 4,
+        "endLine": 153,
+        "endChar": 21
+      },
+      "revId": "6967a773040dc97ae245c78ffde70516cf363df1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
