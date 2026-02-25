@@ -206,6 +206,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08134605_260d37f1",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:04:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c372b9f0_802f65f2",
+      "range": {
+        "startLine": 314,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 41
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4150bf47_d50280c2",
@@ -290,6 +314,30 @@
       "side": 1,
       "message": "Terminus only wants to call its TerminusManager\u0027s method so it is taking a TerminusManager to its constructor by raw reference. TerminusManager owns its Terminus and manages their lifetime, but a Terminus can\u0027t prevent its TerminusManager from being destruction, so we can\u0027t say that this is a circular dependency. A Terminus can\u0027t affect a TerminusManager\u0027s lifetime and contribute to its reference count.\n\nA weak pointer can be robust but I think it\u0027s not necessary here when a Terminus can\u0027t outlive its TerminusManager. I think the current is a simpler approach to the target I\u0027m aiming for.",
       "parentUuid": "52eb8937_63337fbe",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 5
+      },
+      "revId": "4dc580deb3868dc49543a444fc80bc6a6b038e37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27860e3c_ac5f998c",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:04:01Z",
+      "side": 1,
+      "message": "Resolved to follow the follow. Please feel free to re-open if necessary.",
+      "parentUuid": "3009f019_25db3796",
       "range": {
         "startLine": 379,
         "startChar": 0,
