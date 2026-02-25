@@ -379,8 +379,8 @@ class NumericSensor
     /** @brief  sensorNameSpace */
     std::string sensorNameSpace;
 
-    /** @brief Sensor Unit */
-    SensorUnit sensorUnit;
+    /** @brief Variant of Sensor or Metric Unit */
+    std::variant<SensorUnit, MetricUnit> sensorUnit;
 
   private:
     /**
@@ -458,7 +458,6 @@ class NumericSensor
 
     /** @brief A power-of-10 multiplier for baseUnit */
     int8_t baseUnitModifier;
-    bool useMetricInterface = false;
 
     /** @brief An internal mapping of thresholds and its associated log
      * entry. */
