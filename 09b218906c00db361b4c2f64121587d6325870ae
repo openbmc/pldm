@@ -22,6 +22,30 @@
       },
       "revId": "09b218906c00db361b4c2f64121587d6325870ae",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5b7bb14_6b3f9b47",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-02-25T07:58:22Z",
+      "side": 1,
+      "message": "I didn\u0027t want people to confuse it with -n (retry count).\n\nIf you feel that wouldn\u0027t be a problem then I can switch it back to -N, which honestly feels better than l.\n\nOnce you confirm I can switch it to -N instead of -l",
+      "parentUuid": "405a84a2_c5ade45b",
+      "range": {
+        "startLine": 93,
+        "startChar": 25,
+        "endLine": 93,
+        "endChar": 27
+      },
+      "revId": "09b218906c00db361b4c2f64121587d6325870ae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
