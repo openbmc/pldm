@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "990b7e4c_d65187fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Since CI does not fail on this, I might just keep the current length to sufficiently dictate the purpose of the commit.",
+      "parentUuid": "beed7583_29e75729",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a2862cf7_882b81da",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 11
@@ -71,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d53ba1a_2d180bc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Just been back from a long national holiday. Thanks @bradleyb@fuzziesquirrel.com for your suggestions. I added 3 commits ahead of this to refactor this class step by step before exposing this file size monitoring sensor as a non-dbus sensor. Can you please help review again?",
+      "parentUuid": "9e7cdd20_dc2107ae",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e0abdc0_8d03c84f",
@@ -84,6 +120,24 @@
       "writtenOn": "2026-02-12T14:26:06Z",
       "side": 1,
       "message": "another helper function might be good here.  Maybe something like:\n\n```\nisPLDMSensorSupported(pdr)\n```",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7bc08eb_812072f5",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Added validateSupportedSensorType. Please help re-check.",
+      "parentUuid": "2e0abdc0_8d03c84f",
       "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -111,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3e59546_102cb33c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 786,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "I decided to leave the logic as is.",
+      "parentUuid": "c1b02ed2_fc9f8ba6",
+      "range": {
+        "startLine": 782,
+        "startChar": 2,
+        "endLine": 786,
+        "endChar": 9
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b64a52be_8e2761d5",
@@ -128,6 +206,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df526edd_596c87a2",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1129,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b64a52be_8e2761d5",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c0c0df2_b393bd0f",
@@ -141,6 +237,30 @@
       "writtenOn": "2026-02-14T11:54:51Z",
       "side": 1,
       "message": "```suggestion\n    if ((!useMetricInterface \u0026\u0026 !valueIntf) ||\n         (useMetricInterface \u0026\u0026 !metricIntf))\n```\nYou already have a check at L1129 which will return if `dbusSensor` is false. So, you might not need another check here.",
+      "range": {
+        "startLine": 1133,
+        "startChar": 1,
+        "endLine": 1135,
+        "endChar": 19
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af08bb8d_a80ac2fa",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1135,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Added 3 commits ahead of this to refactor this class.",
+      "parentUuid": "6c0c0df2_b393bd0f",
       "range": {
         "startLine": 1133,
         "startChar": 1,
@@ -174,6 +294,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf44654_41bbacaf",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Done. Added 3 commits ahead of this to refactor this class.",
+      "parentUuid": "74b4c7f3_b34c3339",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 9
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03be992e_95e9f6b9",
@@ -191,6 +335,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0acb33ea_2ce1b4a2",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Done. Added 3 commits ahead of this to refactor this class.",
+      "parentUuid": "03be992e_95e9f6b9",
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62c8b27c_d59a1ede",
@@ -204,6 +366,30 @@
       "writtenOn": "2026-02-12T14:26:06Z",
       "side": 1,
       "message": "can we deduce this from the dbus interface pointers valueIntf or metricIntf (if both are null, this sensor isn\u0027t on DBus)?",
+      "range": {
+        "startLine": 500,
+        "startChar": 0,
+        "endLine": 501,
+        "endChar": 28
+      },
+      "revId": "db06e6b358b2a2e1c35903ad7c040880e56bba65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c63d1ea3_0c896d57",
+        "filename": "platform-mc/numeric_sensor.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:02:21Z",
+      "side": 1,
+      "message": "Done. Added 3 commits ahead of this to refactor this class.",
+      "parentUuid": "62c8b27c_d59a1ede",
       "range": {
         "startLine": 500,
         "startChar": 0,
