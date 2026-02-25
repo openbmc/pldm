@@ -361,6 +361,24 @@ class NumericSensor
                               pldm::utils::Direction direction, double rawValue,
                               bool newAlarm, bool assert);
 
+    /** @brief Get the current value of the sensor
+     *
+     *  @return The current sensor's value
+     */
+
+    double getSensorValue(void)
+    {
+        if (valueIntf)
+        {
+            return valueIntf->value();
+        }
+        if (metricIntf)
+        {
+            return metricIntf->value();
+        }
+        return sensorValue;
+    }
+
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
 
@@ -417,7 +435,7 @@ class NumericSensor
     /**
      * @brief Update the object units based on the PDR baseUnit
      */
-    void setSensorUnit(uint8_t baseUnit);
+    bool setSensorUnit(uint8_t baseUnit);
 
     /** @brief Create the sensor inventory path.
      *
@@ -458,6 +476,19 @@ class NumericSensor
 
     /** @brief A power-of-10 multiplier for baseUnit */
     int8_t baseUnitModifier;
+
+    /****** Non-D-Bus sensor internal variables *************/
+    /** @brief Current sensor reading */
+    double sensorValue;
+
+    /** @brief Sensor's entity type */
+    uint16_t entityType;
+
+    /** @brief Sensor's entity instance number */
+    uint16_t entityInstanceNum;
+
+    /** @brief Sensor's container ID */
+    uint16_t containerId;
 
     /** @brief An internal mapping of thresholds and its associated log
      * entry. */
