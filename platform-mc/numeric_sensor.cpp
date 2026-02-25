@@ -110,7 +110,14 @@ inline double getRangeFieldValue(uint8_t range_field_format,
     return ret;
 }
 
-void NumericSensor::setSensorUnit(uint8_t baseUnit)
+template <typename T>
+bool validateSupportedSensorType([[maybe_unused]] const std::shared_ptr<T> pdr)
+{
+    // No supported case yet
+    return false;
+}
+
+bool NumericSensor::setSensorUnit(uint8_t baseUnit)
 {
     sensorUnit = SensorUnit::DegreesC;
     switch (baseUnit)
@@ -158,12 +165,10 @@ void NumericSensor::setSensorUnit(uint8_t baseUnit)
             sensorUnit = MetricUnit::Count;
             break;
         default:
-            lg2::error("Sensor {NAME} has Invalid baseUnit {UNIT}.", "NAME",
-                       sensorName, "UNIT", baseUnit);
-            throw sdbusplus::xyz::openbmc_project::Common::Error::
-                InvalidArgument();
-            break;
+            return false;
     }
+
+    return true;
 }
 
 NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
@@ -177,12 +182,26 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
         throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
     }
 
-    setSensorUnit(pdr->base_unit);
-
+    bool dbusSensor = false;
     bool useMetricInterface = false;
-    if (!std::holds_alternative<SensorUnit>(sensorUnit))
+
+    if (setSensorUnit(pdr->base_unit))
     {
-        useMetricInterface = true;
+        dbusSensor = true;
+        if (!std::holds_alternative<SensorUnit>(sensorUnit))
+        {
+            useMetricInterface = true;
+        }
+    }
+    else
+    {
+        if (!validateSupportedSensorType<pldm_numeric_sensor_value_pdr>(pdr))
+        {
+            lg2::error("Sensor {NAME} has Invalid baseUnit {UNIT}.", "NAME",
+                       sensorName, "UNIT", pdr->base_unit);
+            throw sdbusplus::xyz::openbmc_project::Common::Error::
+                InvalidArgument();
+        }
     }
 
     sensorId = pdr->sensor_id;
@@ -199,6 +218,15 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
     if (std::isfinite(pdr->update_interval))
     {
         updateTime = pdr->update_interval * 1000000;
+    }
+
+    if (!dbusSensor)
+    {
+        entityType = pdr->entity_type;
+        entityInstanceNum = pdr->entity_instance_num;
+        containerId = pdr->container_id;
+        sensorValue = std::numeric_limits<double>::quiet_NaN();
+        return;
     }
 
     // D-Bus Sensor Initialization
@@ -450,12 +478,26 @@ NumericSensor::NumericSensor(
         throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
     }
 
-    setSensorUnit(pdr->base_unit);
-
+    bool dbusSensor = false;
     bool useMetricInterface = false;
-    if (!std::holds_alternative<SensorUnit>(sensorUnit))
+
+    if (setSensorUnit(pdr->base_unit))
     {
-        useMetricInterface = true;
+        dbusSensor = true;
+        if (!std::holds_alternative<SensorUnit>(sensorUnit))
+        {
+            useMetricInterface = true;
+        }
+    }
+    else
+    {
+        if (!validateSupportedSensorType<pldm_compact_numeric_sensor_pdr>(pdr))
+        {
+            lg2::error("Sensor {NAME} has Invalid baseUnit {UNIT}.", "NAME",
+                       sensorName, "UNIT", pdr->base_unit);
+            throw sdbusplus::xyz::openbmc_project::Common::Error::
+                InvalidArgument();
+        }
     }
 
     sensorId = pdr->sensor_id;
@@ -470,6 +512,15 @@ NumericSensor::NumericSensor(
      * updateTime is in microseconds
      */
     updateTime = DEFAULT_SENSOR_UPDATER_INTERVAL * 1000;
+
+    if (!dbusSensor)
+    {
+        entityType = pdr->entity_type;
+        entityInstanceNum = pdr->entity_instance;
+        containerId = pdr->container_id;
+        sensorValue = std::numeric_limits<double>::quiet_NaN();
+        return;
+    }
 
     // D-Bus Sensor Initialization
     std::string path;
@@ -723,16 +774,21 @@ double NumericSensor::unitModifier(double value) const
 
 void NumericSensor::updateReading(bool available, bool functional, double value)
 {
-    if (!availabilityIntf || !operationalStatusIntf ||
-        (!valueIntf && !metricIntf))
+    if (!availabilityIntf || !operationalStatusIntf)
     {
-        lg2::error(
-            "Failed to update sensor {NAME} D-Bus interfaces don't exist.",
-            "NAME", sensorName);
-        return;
+        if (valueIntf || metricIntf)
+        {
+            lg2::error(
+                "Failed to update sensor {NAME} D-Bus interfaces don't exist.",
+                "NAME", sensorName);
+            return;
+        }
     }
-    availabilityIntf->available(available);
-    operationalStatusIntf->functional(functional);
+    else
+    {
+        availabilityIntf->available(available);
+        operationalStatusIntf->functional(functional);
+    }
 
     double curValue = 0;
     if (valueIntf)
@@ -742,6 +798,10 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
     else if (metricIntf)
     {
         curValue = metricIntf->value();
+    }
+    else
+    {
+        curValue = sensorValue;
     }
 
     double newValue = std::numeric_limits<double>::quiet_NaN();
@@ -759,6 +819,10 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             {
                 metricIntf->value(newValue);
             }
+            else
+            {
+                sensorValue = newValue;
+            }
         }
     }
     else
@@ -774,28 +838,39 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             {
                 metricIntf->value(std::numeric_limits<double>::quiet_NaN());
             }
+            else
+            {
+                sensorValue = std::numeric_limits<double>::quiet_NaN();
+            }
         }
     }
 }
 
 void NumericSensor::handleErrGetSensorReading()
 {
-    if (!availabilityIntf || !operationalStatusIntf ||
-        (!valueIntf && !metricIntf))
+    if (!valueIntf && !metricIntf)
     {
-        lg2::error("Failed to handle error in get sensor reading {NAME} D-Bus "
-                   "interfaces don't exist.",
-                   "NAME", sensorName);
-        return;
+        sensorValue = std::numeric_limits<double>::quiet_NaN();
     }
-    operationalStatusIntf->functional(false);
-    if (valueIntf)
+    else
     {
-        valueIntf->value(std::numeric_limits<double>::quiet_NaN());
-    }
-    else if (metricIntf)
-    {
-        metricIntf->value(std::numeric_limits<double>::quiet_NaN());
+        if (!availabilityIntf || !operationalStatusIntf)
+        {
+            lg2::error(
+                "Failed to handle error in get sensor reading {NAME} D-Bus "
+                "interfaces don't exist.",
+                "NAME", sensorName);
+            return;
+        }
+        operationalStatusIntf->functional(false);
+        if (valueIntf)
+        {
+            valueIntf->value(std::numeric_limits<double>::quiet_NaN());
+        }
+        else if (metricIntf)
+        {
+            metricIntf->value(std::numeric_limits<double>::quiet_NaN());
+        }
     }
 }
 
@@ -1089,6 +1164,11 @@ void NumericSensor::createNormalRangeLog(double value) const
 
 void NumericSensor::updateThresholds()
 {
+    if (!valueIntf && !metricIntf)
+    {
+        return;
+    }
+
     double value = std::numeric_limits<double>::quiet_NaN();
     if (valueIntf)
     {
@@ -1124,6 +1204,11 @@ int NumericSensor::triggerThresholdEvent(
     pldm::utils::Level eventType, pldm::utils::Direction direction,
     double rawValue, bool newAlarm, bool assert)
 {
+    if (!valueIntf && !metricIntf)
+    {
+        return PLDM_SUCCESS;
+    }
+
     if (!valueIntf)
     {
         lg2::error("Failed to trigger threshold events for sensor {NAME} "
