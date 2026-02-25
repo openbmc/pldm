@@ -22,6 +22,30 @@
       },
       "revId": "2890ae79fe404cdd2c4613158b8fc1e81fdd35af",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5589a766_4f1dce92",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-02-25T15:03:08Z",
+      "side": 1,
+      "message": "Thanks for catching. Updated.",
+      "parentUuid": "f90ee898_ceaf5eb7",
+      "range": {
+        "startLine": 498,
+        "startChar": 47,
+        "endLine": 498,
+        "endChar": 63
+      },
+      "revId": "2890ae79fe404cdd2c4613158b8fc1e81fdd35af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
