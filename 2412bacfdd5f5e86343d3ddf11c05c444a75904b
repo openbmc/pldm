@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd2cd08c_c4a4effc",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-25T14:17:27Z",
+      "side": 1,
+      "message": "prefer misc-unconventional-assign-operator according to https://gerrit.openbmc.org/c/openbmc/docs/+/82977",
+      "revId": "2412bacfdd5f5e86343d3ddf11c05c444a75904b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39bd411c_77cce46f",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-25T14:17:27Z",
+      "side": 1,
+      "message": "prefer the performance-noexcept versions.",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 36
+      },
+      "revId": "2412bacfdd5f5e86343d3ddf11c05c444a75904b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
