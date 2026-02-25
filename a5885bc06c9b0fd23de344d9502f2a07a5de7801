@@ -16,6 +16,24 @@
       "message": "accoding to https://gerrit.openbmc.org/c/openbmc/docs/+/82977 there is a preference for modernize-use-override",
       "revId": "a5885bc06c9b0fd23de344d9502f2a07a5de7801",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "355ae343_c3847ed9",
+        "filename": ".clang-tidy",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-02-25T16:35:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bf731dd_dddb521f",
+      "revId": "a5885bc06c9b0fd23de344d9502f2a07a5de7801",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
