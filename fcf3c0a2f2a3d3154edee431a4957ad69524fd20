@@ -16,6 +16,24 @@
       "message": "Given the `fqe` APIs are in the testing set in libpldm and are therefore not exposed in the stable library ABI, I expect CI is not compiling with `PLDM_TRANSPORT_WITH_AF_MCTP` defined, given it\u0027s passing.",
       "revId": "fcf3c0a2f2a3d3154edee431a4957ad69524fd20",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "364e8f5b_03c49c96",
+        "filename": "common/transport.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-02-26T09:39:13Z",
+      "side": 1,
+      "message": "I see. Is there a way I can make CI compile with `abi-development` mode to test or I shouldn\u0027t have to worry about it?\nI didn\u0027t catch it while testing my latest patch because I was building on `abi-development` mode.",
+      "parentUuid": "dc858932_389a321d",
+      "revId": "fcf3c0a2f2a3d3154edee431a4957ad69524fd20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
