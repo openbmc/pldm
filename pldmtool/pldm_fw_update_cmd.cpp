@@ -206,15 +206,15 @@ const std::map<uint16_t, std::string> componentClassification{
     {PLDM_COMP_SOFTWARE_BUNDLE, "Software Bundle"},
     {PLDM_COMP_DOWNSTREAM_DEVICE, "Downstream Device"}};
 
-class GetFwParams : public CommandInterface
+class GetFirmwareParameters : public CommandInterface
 {
   public:
-    ~GetFwParams() = default;
-    GetFwParams() = delete;
-    GetFwParams(const GetFwParams&) = delete;
-    GetFwParams(GetFwParams&&) = default;
-    GetFwParams& operator=(const GetFwParams&) = delete;
-    GetFwParams& operator=(GetFwParams&&) = delete;
+    ~GetFirmwareParameters() = default;
+    GetFirmwareParameters() = delete;
+    GetFirmwareParameters(const GetFirmwareParameters&) = delete;
+    GetFirmwareParameters(GetFirmwareParameters&&) = default;
+    GetFirmwareParameters& operator=(const GetFirmwareParameters&) = delete;
+    GetFirmwareParameters& operator=(GetFirmwareParameters&&) = delete;
 
     using CommandInterface::CommandInterface;
 
@@ -1324,9 +1324,9 @@ void registerCommand(CLI::App& app)
         std::make_unique<GetStatus>("fw_update", "GetStatus", getStatus));
 
     auto getFwParams = fwUpdate->add_subcommand(
-        "GetFwParams", "To get the component details of the FD");
-    commands.push_back(
-        std::make_unique<GetFwParams>("fw_update", "GetFwParams", getFwParams));
+        "GetFirmwareParameters", "To get the component details of the FD");
+    commands.push_back(std::make_unique<GetFirmwareParameters>(
+        "fw_update", "GetFirmwareParameters", getFwParams));
 
     auto queryDeviceIdentifiers = fwUpdate->add_subcommand(
         "QueryDeviceIdentifiers", "To query device identifiers of the FD");
