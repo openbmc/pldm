@@ -108,8 +108,16 @@ class NumericSensor
     {
         if (associationDefinitionsIntf)
         {
-            associationDefinitionsIntf->associations(
-                {{"chassis", "all_sensors", inventoryPath}});
+            if (useMetricInterface)
+            {
+                associationDefinitionsIntf->associations(
+                    {{"measuring", "measured_by", inventoryPath}});
+            }
+            else
+            {
+                associationDefinitionsIntf->associations(
+                    {{"chassis", "all_sensors", inventoryPath}});
+            }
         }
     }
 
