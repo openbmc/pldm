@@ -34,6 +34,24 @@
       "parentUuid": "dc858932_389a321d",
       "revId": "fcf3c0a2f2a3d3154edee431a4957ad69524fd20",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6068aa72_bcc8a854",
+        "filename": "common/transport.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-02-26T23:21:07Z",
+      "side": 1,
+      "message": "\u003e Is there a way I can make CI compile with abi-development\n\nThis is not allowed, as it dissolves the purpose of the testing set in libpldm. The purpose of the testing set is it allows the libpldm maintainers to merge changes adding new APIs for experimentation, without binding the maintainers to supporting those APIs forever as soon as they\u0027re merged.\n\n\nCI is configured so it _doesn\u0027t_ build against the testing set so we can change those APIs freely in the knowledge that no applications are using them, because they can\u0027t be referenced by any code already merged.\n\n\u003e I shouldn\u0027t have to worry about it?\n\nYou do have to worry about it - you need to propose a change to libpldm that marks them as stable. Please have a read through the following:\n\n- https://github.com/openbmc/libpldm/blob/main/CONTRIBUTING.md#library-background\n- https://github.com/openbmc/libpldm/blob/main/CONTRIBUTING.md#stabilising-an-existing-api",
+      "parentUuid": "364e8f5b_03c49c96",
+      "revId": "fcf3c0a2f2a3d3154edee431a4957ad69524fd20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
