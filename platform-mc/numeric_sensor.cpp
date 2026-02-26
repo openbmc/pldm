@@ -220,8 +220,16 @@ NumericSensor::NumericSensor(
         throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
     }
 
-    associationDefinitionsIntf->associations(
-        {{"chassis", "all_sensors", associationPath}});
+    if (useMetricInterface)
+    {
+        associationDefinitionsIntf->associations(
+            {{"measuring", "measured_by", associationPath}});
+    }
+    else
+    {
+        associationDefinitionsIntf->associations(
+            {{"chassis", "all_sensors", associationPath}});
+    }
 
     double maxValue =
         getSensorDataValue(pdr->sensor_data_size, pdr->max_readable);
@@ -476,8 +484,16 @@ NumericSensor::NumericSensor(
             "PATH", path, "ERROR", e);
         throw sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument();
     }
-    associationDefinitionsIntf->associations(
-        {{"chassis", "all_sensors", associationPath.c_str()}});
+    if (useMetricInterface)
+    {
+        associationDefinitionsIntf->associations(
+            {{"measuring", "measured_by", associationPath.c_str()}});
+    }
+    else
+    {
+        associationDefinitionsIntf->associations(
+            {{"chassis", "all_sensors", associationPath.c_str()}});
+    }
 
     double maxValue = std::numeric_limits<double>::quiet_NaN();
     double minValue = std::numeric_limits<double>::quiet_NaN();
