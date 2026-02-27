@@ -42,6 +42,44 @@
                     ]
                 },
                 {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis0/motherboard/base_op_panel",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis0/motherboard/base_op_panel",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis0/motherboard/lcd_op_panel",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis0/motherboard/lcd_op_panel",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
                     "entity_path": "/xyz/openbmc_project/inventory/system/chassis1",
                     "effecters": [
                         {
@@ -100,7 +138,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 0,
+                    "instance": 1,
                     "container": 3,
                     "effecters": [
                         {
@@ -121,7 +159,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 1,
+                    "instance": 2,
                     "container": 3,
                     "effecters": [
                         {
@@ -142,7 +180,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 2,
+                    "instance": 3,
                     "container": 3,
                     "effecters": [
                         {
@@ -163,7 +201,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 3,
+                    "instance": 4,
                     "container": 3,
                     "effecters": [
                         {
@@ -184,7 +222,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 4,
+                    "instance": 5,
                     "container": 3,
                     "effecters": [
                         {
@@ -205,7 +243,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 5,
+                    "instance": 6,
                     "container": 3,
                     "effecters": [
                         {
@@ -226,7 +264,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 6,
+                    "instance": 7,
                     "container": 3,
                     "effecters": [
                         {
@@ -247,7 +285,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 7,
+                    "instance": 8,
                     "container": 3,
                     "effecters": [
                         {
@@ -268,7 +306,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 8,
+                    "instance": 9,
                     "container": 3,
                     "effecters": [
                         {
@@ -289,7 +327,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 9,
+                    "instance": 10,
                     "container": 3,
                     "effecters": [
                         {
@@ -310,7 +348,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 10,
+                    "instance": 11,
                     "container": 3,
                     "effecters": [
                         {
@@ -331,7 +369,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 11,
+                    "instance": 12,
                     "container": 3,
                     "effecters": [
                         {
@@ -352,7 +390,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 12,
+                    "instance": 13,
                     "container": 3,
                     "effecters": [
                         {
@@ -373,7 +411,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 13,
+                    "instance": 14,
                     "container": 3,
                     "effecters": [
                         {
@@ -394,7 +432,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 14,
+                    "instance": 15,
                     "container": 3,
                     "effecters": [
                         {
@@ -415,7 +453,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 15,
+                    "instance": 16,
                     "container": 3,
                     "effecters": [
                         {
@@ -436,7 +474,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 16,
+                    "instance": 17,
                     "container": 3,
                     "effecters": [
                         {
@@ -457,7 +495,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 17,
+                    "instance": 18,
                     "container": 3,
                     "effecters": [
                         {
@@ -478,7 +516,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 18,
+                    "instance": 19,
                     "container": 3,
                     "effecters": [
                         {
@@ -499,7 +537,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 19,
+                    "instance": 20,
                     "container": 3,
                     "effecters": [
                         {
@@ -520,7 +558,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 20,
+                    "instance": 21,
                     "container": 3,
                     "effecters": [
                         {
@@ -541,7 +579,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 21,
+                    "instance": 22,
                     "container": 3,
                     "effecters": [
                         {
@@ -562,7 +600,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 22,
+                    "instance": 23,
                     "container": 3,
                     "effecters": [
                         {
@@ -583,7 +621,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 23,
+                    "instance": 24,
                     "container": 3,
                     "effecters": [
                         {
@@ -604,7 +642,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 24,
+                    "instance": 25,
                     "container": 3,
                     "effecters": [
                         {
@@ -625,7 +663,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 25,
+                    "instance": 26,
                     "container": 3,
                     "effecters": [
                         {
@@ -646,7 +684,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 26,
+                    "instance": 27,
                     "container": 3,
                     "effecters": [
                         {
@@ -667,7 +705,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 27,
+                    "instance": 28,
                     "container": 3,
                     "effecters": [
                         {
@@ -688,7 +726,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 28,
+                    "instance": 29,
                     "container": 3,
                     "effecters": [
                         {
@@ -709,7 +747,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 29,
+                    "instance": 30,
                     "container": 3,
                     "effecters": [
                         {
@@ -730,7 +768,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 30,
+                    "instance": 31,
                     "container": 3,
                     "effecters": [
                         {
@@ -751,7 +789,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 31,
+                    "instance": 32,
                     "container": 3,
                     "effecters": [
                         {
@@ -790,8 +828,8 @@
                     ]
                 },
                 {
-                    "type": 190,
-                    "instance": 0,
+                    "type": 67,
+                    "instance": 1,
                     "container": 3,
                     "effecters": [
                         {
@@ -1419,6 +1457,44 @@
                     ]
                 },
                 {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/power_supply0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/power_supply0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/power_supply1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/power_supply1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
                     "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/pwr_sequencer_card",
                     "effecters": [
                         {
@@ -1448,6 +1524,120 @@
                             },
                             "dbus": {
                                 "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/smp_det_card",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm2",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm2",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm3",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm3",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm4",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm4",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm5",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/vrm5",
                                 "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
                                 "property_name": "Functional",
                                 "property_type": "bool",
@@ -1515,7 +1705,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 0,
+                    "instance": 1,
                     "container": 3,
                     "effecters": [
                         {
@@ -1536,7 +1726,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 1,
+                    "instance": 2,
                     "container": 3,
                     "effecters": [
                         {
@@ -1557,7 +1747,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 2,
+                    "instance": 3,
                     "container": 3,
                     "effecters": [
                         {
@@ -1578,7 +1768,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 3,
+                    "instance": 4,
                     "container": 3,
                     "effecters": [
                         {
@@ -1599,7 +1789,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 4,
+                    "instance": 5,
                     "container": 3,
                     "effecters": [
                         {
@@ -1620,7 +1810,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 5,
+                    "instance": 6,
                     "container": 3,
                     "effecters": [
                         {
@@ -1641,7 +1831,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 6,
+                    "instance": 7,
                     "container": 3,
                     "effecters": [
                         {
@@ -1662,7 +1852,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 7,
+                    "instance": 8,
                     "container": 3,
                     "effecters": [
                         {
@@ -1683,7 +1873,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 8,
+                    "instance": 9,
                     "container": 3,
                     "effecters": [
                         {
@@ -1704,7 +1894,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 9,
+                    "instance": 10,
                     "container": 3,
                     "effecters": [
                         {
@@ -1725,7 +1915,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 10,
+                    "instance": 11,
                     "container": 3,
                     "effecters": [
                         {
@@ -1746,7 +1936,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 11,
+                    "instance": 12,
                     "container": 3,
                     "effecters": [
                         {
@@ -1767,7 +1957,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 12,
+                    "instance": 13,
                     "container": 3,
                     "effecters": [
                         {
@@ -1788,7 +1978,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 13,
+                    "instance": 14,
                     "container": 3,
                     "effecters": [
                         {
@@ -1809,7 +1999,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 14,
+                    "instance": 15,
                     "container": 3,
                     "effecters": [
                         {
@@ -1830,7 +2020,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 15,
+                    "instance": 16,
                     "container": 3,
                     "effecters": [
                         {
@@ -1851,7 +2041,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 16,
+                    "instance": 17,
                     "container": 3,
                     "effecters": [
                         {
@@ -1872,7 +2062,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 17,
+                    "instance": 18,
                     "container": 3,
                     "effecters": [
                         {
@@ -1893,7 +2083,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 18,
+                    "instance": 19,
                     "container": 3,
                     "effecters": [
                         {
@@ -1914,7 +2104,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 19,
+                    "instance": 20,
                     "container": 3,
                     "effecters": [
                         {
@@ -1935,7 +2125,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 20,
+                    "instance": 21,
                     "container": 3,
                     "effecters": [
                         {
@@ -1956,7 +2146,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 21,
+                    "instance": 22,
                     "container": 3,
                     "effecters": [
                         {
@@ -1977,7 +2167,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 22,
+                    "instance": 23,
                     "container": 3,
                     "effecters": [
                         {
@@ -1998,7 +2188,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 23,
+                    "instance": 24,
                     "container": 3,
                     "effecters": [
                         {
@@ -2019,7 +2209,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 24,
+                    "instance": 25,
                     "container": 3,
                     "effecters": [
                         {
@@ -2040,7 +2230,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 25,
+                    "instance": 26,
                     "container": 3,
                     "effecters": [
                         {
@@ -2061,7 +2251,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 26,
+                    "instance": 27,
                     "container": 3,
                     "effecters": [
                         {
@@ -2082,7 +2272,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 27,
+                    "instance": 28,
                     "container": 3,
                     "effecters": [
                         {
@@ -2103,7 +2293,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 28,
+                    "instance": 29,
                     "container": 3,
                     "effecters": [
                         {
@@ -2124,7 +2314,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 29,
+                    "instance": 30,
                     "container": 3,
                     "effecters": [
                         {
@@ -2145,7 +2335,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 30,
+                    "instance": 31,
                     "container": 3,
                     "effecters": [
                         {
@@ -2166,7 +2356,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 31,
+                    "instance": 32,
                     "container": 3,
                     "effecters": [
                         {
@@ -2205,8 +2395,8 @@
                     ]
                 },
                 {
-                    "type": 190,
-                    "instance": 1,
+                    "type": 67,
+                    "instance": 2,
                     "container": 3,
                     "effecters": [
                         {
@@ -2834,6 +3024,44 @@
                     ]
                 },
                 {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/power_supply0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/power_supply0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/power_supply1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/power_supply1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
                     "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/pwr_sequencer_card",
                     "effecters": [
                         {
@@ -2863,6 +3091,120 @@
                             },
                             "dbus": {
                                 "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/smp_det_card",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm2",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm2",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm3",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm3",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm4",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm4",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm5",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/vrm5",
                                 "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
                                 "property_name": "Functional",
                                 "property_type": "bool",
@@ -2930,7 +3272,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 0,
+                    "instance": 1,
                     "container": 3,
                     "effecters": [
                         {
@@ -2951,7 +3293,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 1,
+                    "instance": 2,
                     "container": 3,
                     "effecters": [
                         {
@@ -2972,7 +3314,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 2,
+                    "instance": 3,
                     "container": 3,
                     "effecters": [
                         {
@@ -2993,7 +3335,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 3,
+                    "instance": 4,
                     "container": 3,
                     "effecters": [
                         {
@@ -3014,7 +3356,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 4,
+                    "instance": 5,
                     "container": 3,
                     "effecters": [
                         {
@@ -3035,7 +3377,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 5,
+                    "instance": 6,
                     "container": 3,
                     "effecters": [
                         {
@@ -3056,7 +3398,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 6,
+                    "instance": 7,
                     "container": 3,
                     "effecters": [
                         {
@@ -3077,7 +3419,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 7,
+                    "instance": 8,
                     "container": 3,
                     "effecters": [
                         {
@@ -3098,7 +3440,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 8,
+                    "instance": 9,
                     "container": 3,
                     "effecters": [
                         {
@@ -3119,7 +3461,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 9,
+                    "instance": 10,
                     "container": 3,
                     "effecters": [
                         {
@@ -3140,7 +3482,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 10,
+                    "instance": 11,
                     "container": 3,
                     "effecters": [
                         {
@@ -3161,7 +3503,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 11,
+                    "instance": 12,
                     "container": 3,
                     "effecters": [
                         {
@@ -3182,7 +3524,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 12,
+                    "instance": 13,
                     "container": 3,
                     "effecters": [
                         {
@@ -3203,7 +3545,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 13,
+                    "instance": 14,
                     "container": 3,
                     "effecters": [
                         {
@@ -3224,7 +3566,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 14,
+                    "instance": 15,
                     "container": 3,
                     "effecters": [
                         {
@@ -3245,7 +3587,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 15,
+                    "instance": 16,
                     "container": 3,
                     "effecters": [
                         {
@@ -3266,7 +3608,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 16,
+                    "instance": 17,
                     "container": 3,
                     "effecters": [
                         {
@@ -3287,7 +3629,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 17,
+                    "instance": 18,
                     "container": 3,
                     "effecters": [
                         {
@@ -3308,7 +3650,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 18,
+                    "instance": 19,
                     "container": 3,
                     "effecters": [
                         {
@@ -3329,7 +3671,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 19,
+                    "instance": 20,
                     "container": 3,
                     "effecters": [
                         {
@@ -3350,7 +3692,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 20,
+                    "instance": 21,
                     "container": 3,
                     "effecters": [
                         {
@@ -3371,7 +3713,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 21,
+                    "instance": 22,
                     "container": 3,
                     "effecters": [
                         {
@@ -3392,7 +3734,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 22,
+                    "instance": 23,
                     "container": 3,
                     "effecters": [
                         {
@@ -3413,7 +3755,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 23,
+                    "instance": 24,
                     "container": 3,
                     "effecters": [
                         {
@@ -3434,7 +3776,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 24,
+                    "instance": 25,
                     "container": 3,
                     "effecters": [
                         {
@@ -3455,7 +3797,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 25,
+                    "instance": 26,
                     "container": 3,
                     "effecters": [
                         {
@@ -3476,7 +3818,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 26,
+                    "instance": 27,
                     "container": 3,
                     "effecters": [
                         {
@@ -3497,7 +3839,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 27,
+                    "instance": 28,
                     "container": 3,
                     "effecters": [
                         {
@@ -3518,7 +3860,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 28,
+                    "instance": 29,
                     "container": 3,
                     "effecters": [
                         {
@@ -3539,7 +3881,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 29,
+                    "instance": 30,
                     "container": 3,
                     "effecters": [
                         {
@@ -3560,7 +3902,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 30,
+                    "instance": 31,
                     "container": 3,
                     "effecters": [
                         {
@@ -3581,7 +3923,7 @@
                 },
                 {
                     "type": 65,
-                    "instance": 31,
+                    "instance": 32,
                     "container": 3,
                     "effecters": [
                         {
@@ -3620,8 +3962,8 @@
                     ]
                 },
                 {
-                    "type": 190,
-                    "instance": 2,
+                    "type": 67,
+                    "instance": 3,
                     "container": 3,
                     "effecters": [
                         {
@@ -4249,6 +4591,44 @@
                     ]
                 },
                 {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/power_supply0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/power_supply0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/power_supply1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/power_supply1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
                     "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/pwr_sequencer_card",
                     "effecters": [
                         {
@@ -4278,6 +4658,1687 @@
                             },
                             "dbus": {
                                 "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/smp_det_card",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm2",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm2",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm3",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm3",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm4",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm4",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm5",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/vrm5",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/clock_card",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/clock_card",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 1,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 2,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 3,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm2",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 4,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm3",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 5,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm4",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 6,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm5",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 7,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm6",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 8,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm7",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 9,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm8",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 10,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm9",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 11,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm10",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 12,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm11",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 13,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm12",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 14,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm13",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 15,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm14",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 16,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm15",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 17,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm16",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 18,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm17",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 19,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm18",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 20,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm19",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 21,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm20",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 22,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm21",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 23,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm22",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 24,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm23",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 25,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm24",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 26,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm25",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 27,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm26",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 28,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm27",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 29,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm28",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 30,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm29",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 31,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm30",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 65,
+                    "instance": 32,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/dimm31",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/fsi_card",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/fsi_card",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": 67,
+                    "instance": 3,
+                    "container": 3,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core2",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core2",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core3",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core3",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core4",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core4",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core5",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core5",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core6",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core6",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core7",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core7",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core8",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core8",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core9",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core9",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core10",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core10",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core11",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core11",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core12",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core12",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core13",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core13",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core14",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core14",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core15",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core15",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core16",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core16",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core17",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core17",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core18",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core18",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core19",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core19",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core20",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core20",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core21",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core21",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core22",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core22",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core23",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core23",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core24",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core24",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core25",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core25",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core26",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core26",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core27",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core27",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core28",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core28",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core29",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core29",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core30",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core30",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core31",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core31",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/power_supply0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/power_supply0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/power_supply1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/power_supply1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/pwr_sequencer_card",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/pwr_sequencer_card",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/smp_det_card",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/smp_det_card",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm0",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm0",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm1",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm1",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm2",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm2",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm3",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm3",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm4",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm4",
+                                "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
+                                "property_name": "Functional",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm5",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 10,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/vrm5",
                                 "interface": "xyz.openbmc_project.State.Decorator.OperationalStatus",
                                 "property_name": "Functional",
                                 "property_type": "bool",
