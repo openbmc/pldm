@@ -532,25 +532,6 @@
         },
         {
             "attribute_type": "enum",
-            "attribute_name": "hb_proc_favor_aggressive_prefetch",
-            "possible_values": ["Disabled", "Enabled"],
-            "value_names": ["Disabled", "Enabled"],
-            "default_values": ["Disabled"],
-            "help_text": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Proc Favor Aggressive Prefetch is disabled or enabled, requires a reboot for a change to be applied.",
-            "display_name": "Proc Favor Aggressive Prefetch (pending)"
-        },
-        {
-            "attribute_type": "enum",
-            "attribute_name": "hb_proc_favor_aggressive_prefetch_current",
-            "possible_values": ["Disabled", "Enabled"],
-            "value_names": ["Disabled", "Enabled"],
-            "default_values": ["Disabled"],
-            "help_text": "Only change this value if instructed by service provider as it might degrade system performance. Specifies if Proc Favor Aggressive Prefetch is disabled or enabled. Do not set this attribute directly; set hb_proc_favor_aggressive_prefetch instead.",
-            "display_name": "Proc Favor Aggressive Prefetch (current)",
-            "read_only": true
-        },
-        {
-            "attribute_type": "enum",
             "attribute_name": "pvm_create_default_lpar",
             "possible_values": ["Disabled", "Enabled"],
             "value_names": ["Disabled", "Enabled"],
