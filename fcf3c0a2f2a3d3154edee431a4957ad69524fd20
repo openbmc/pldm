@@ -70,6 +70,24 @@
       "parentUuid": "6068aa72_bcc8a854",
       "revId": "fcf3c0a2f2a3d3154edee431a4957ad69524fd20",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe7c1c23_b901b9be",
+        "filename": "common/transport.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-02-27T09:21:06Z",
+      "side": 1,
+      "message": "I have pushed a PR on libpldm to stabilize those APIs.\n\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/87906\n\nJust marking it here for tracking purpose.",
+      "parentUuid": "d082c651_af09bfda",
+      "revId": "fcf3c0a2f2a3d3154edee431a4957ad69524fd20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
