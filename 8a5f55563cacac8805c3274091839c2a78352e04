@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a987009c_d18b85b4",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1322,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-03-02T15:30:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ca79181b_8d125f6d",
+      "range": {
+        "startLine": 1322,
+        "startChar": 55,
+        "endLine": 1322,
+        "endChar": 62
+      },
+      "revId": "8a5f55563cacac8805c3274091839c2a78352e04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dba22b4a_198a11e7",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-03-02T12:20:44Z",
       "side": 1,
       "message": "I\u0027m not used to seeing explicit for a multi-argument constructor.  Is there a reason for this?",
+      "range": {
+        "startLine": 1326,
+        "startChar": 4,
+        "endLine": 1326,
+        "endChar": 13
+      },
+      "revId": "8a5f55563cacac8805c3274091839c2a78352e04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3ecab66_deff33e9",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-03-02T15:30:54Z",
+      "side": 1,
+      "message": "It is used to maintain consistent design pattern with other command already implemented in this file. Maybe it could be to prevent implicit conversions via brace initialization.",
+      "parentUuid": "dba22b4a_198a11e7",
       "range": {
         "startLine": 1326,
         "startChar": 4,
