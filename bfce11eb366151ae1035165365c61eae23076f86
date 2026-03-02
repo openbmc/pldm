@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0684f20c_7daece92",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1117,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T13:30:46Z",
+      "side": 1,
+      "message": "stick with the current pattern, or submit a patch that changes to this new pattern, for the sake of readability.",
+      "range": {
+        "startLine": 1116,
+        "startChar": 0,
+        "endLine": 1117,
+        "endChar": 67
+      },
+      "revId": "bfce11eb366151ae1035165365c61eae23076f86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
