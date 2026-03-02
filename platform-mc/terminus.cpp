@@ -325,26 +325,15 @@ std::shared_ptr<SensorAuxiliaryNames> Terminus::parseSensorAuxiliaryNamesPDR(
             std::transform(u16NameString.cbegin(), u16NameString.cend(),
                            u16NameString.begin(),
                            [](uint16_t utf16) { return be16toh(utf16); });
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-            std::string nameString{};
-            try
-            {
-                nameString =
-                    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
-                                         char16_t>{}
-                        .to_bytes(u16NameString);
-            }
-            catch (const std::range_error& e)
+            auto nameString = pldm::utils::utf16ToUtf8(u16NameString);
+            if (!nameString)
             {
                 lg2::error(
-                    "Exception while converting UTF-16 to UTF-8 for sensor auxiliary name: {ERROR}, Skipping this name.",
-                    "ERROR", e.what());
+                    "Failed to convert UTF-16 to UTF-8 for sensor auxiliary name, skipping this name.");
                 continue;
             }
-#pragma GCC diagnostic pop
             nameStrings.emplace_back(std::make_pair(
-                nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
+                nameLanguageTag, pldm::utils::trimNameForDbus(*nameString)));
         }
         sensorAuxNames.emplace_back(std::move(nameStrings));
     }
@@ -400,25 +389,15 @@ std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(
         std::transform(u16NameString.cbegin(), u16NameString.cend(),
                        u16NameString.begin(),
                        [](uint16_t utf16) { return be16toh(utf16); });
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-        std::string nameString{};
-        try
-        {
-            nameString = std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
-                                              char16_t>{}
-                             .to_bytes(u16NameString);
-        }
-        catch (const std::range_error& e)
+        auto nameString = pldm::utils::utf16ToUtf8(u16NameString);
+        if (!nameString)
         {
             lg2::error(
-                "Exception while converting UTF-16 to UTF-8 for entity auxiliary name: {ERROR}, Skipping this name.",
-                "ERROR", e.what());
+                "Failed to convert UTF-16 to UTF-8 for entity auxiliary name, skipping this name.");
             continue;
         }
-#pragma GCC diagnostic pop
         nameStrings.emplace_back(std::make_pair(
-            nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
+            nameLanguageTag, pldm::utils::trimNameForDbus(*nameString)));
     }
 
     EntityKey key{decodedPdr->container.entity_type,

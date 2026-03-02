@@ -962,5 +962,61 @@ long int generateSwId()
     return random() % 10000;
 }
 
+std::optional<std::string> utf16ToUtf8(const std::u16string_view& u16Str)
+{
+    if (u16Str.empty())
+    {
+        return std::string{};
+    }
+
+    /*
+     * PLDM auxiliary name strings are encoded as UTF-16BE/LE on the wire.
+     * It is then converted to host-endian using be16toh().
+     *
+     * Use UCS-2 as the source encoding because the target iconv
+     * implementation does not support UTF-16, but does provide
+     * UCS-2{LE,BE}. Since PLDM names are expected to contain
+     * BMP characters only, UCS-2 is sufficient.
+     */
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    constexpr const char* utf16Encoding = "UCS-2LE";
+#else
+    constexpr const char* utf16Encoding = "UCS-2BE";
+#endif
+
+    iconv_t cd = iconv_open("UTF-8", utf16Encoding);
+    if (cd == (iconv_t)-1)
+    {
+        error("iconv_open failed: {ERR}", "ERR", strerror(errno));
+        return std::nullopt;
+    }
+
+    size_t inBytesLeft = u16Str.size() * sizeof(char16_t);
+
+    /*
+     * iconv requires a non-const pointer to the input buffer, even though
+     * it does not modify the source data (POSIX API limitation)
+     */
+    char* inBuf = reinterpret_cast<char*>(const_cast<char16_t*>(u16Str.data()));
+
+    // UCS-2 (BMP only): max 3 UTF-8 bytes per code unit
+    size_t outBufSize = u16Str.size() * 3;
+    std::string outStr(outBufSize, '\0');
+    char* outBuf = outStr.data();
+    size_t outBytesLeft = outBufSize;
+
+    if (iconv(cd, &inBuf, &inBytesLeft, &outBuf, &outBytesLeft) == (size_t)-1)
+    {
+        error("iconv conversion failed: {ERR}", "ERR", strerror(errno));
+        iconv_close(cd);
+        return std::nullopt;
+    }
+    iconv_close(cd);
+
+    // Trim the output string to the actual number of bytes written
+    outStr.resize(outBufSize - outBytesLeft);
+    return outStr;
+}
+
 } // namespace utils
 } // namespace pldm
