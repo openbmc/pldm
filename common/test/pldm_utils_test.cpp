@@ -1,6 +1,7 @@
 #include "common/utils.hpp"
 #include "mocked_utils.hpp"
 
+#include <endian.h>
 #include <libpldm/platform.h>
 #include <linux/mctp.h>
 
@@ -1507,4 +1508,50 @@ TEST(GenerateSwId, testRandomness)
     }
     // With 50 calls, we should get at least some different values
     EXPECT_GT(ids.size(), 1);
+}
+
+TEST(Utf16ToUtf8, asciiString)
+{
+    // "Hello" in UCS-2BE (big-endian wire format)
+    std::u16string input = {htobe16(u'H'), htobe16(u'e'), htobe16(u'l'),
+                            htobe16(u'l'), htobe16(u'o')};
+    auto result = utf16ToUtf8(input);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(*result, "Hello");
+}
+
+TEST(Utf16ToUtf8, emptyString)
+{
+    std::u16string input;
+    auto result = utf16ToUtf8(input);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_TRUE(result->empty());
+}
+
+TEST(Utf16ToUtf8, threeByteUtf8Characters)
+{
+    // U+4E16 (世) and U+754C (界) encode to 3 bytes each in UTF-8
+    std::u16string input = {htobe16(0x4E16), htobe16(0x754C)};
+    auto result = utf16ToUtf8(input);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(*result, "世界");
+}
+
+TEST(Utf16ToUtf8, mixedAsciiAndMultibyte)
+{
+    // 'A' + ñ (U+00F1) + 世 (U+4E16) in UCS-2BE
+    std::u16string input = {htobe16(0x0041), htobe16(0x00F1), htobe16(0x4E16)};
+    auto result = utf16ToUtf8(input);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(*result, "Añ世");
+}
+
+TEST(Utf16ToUtf8, stringWithEmbeddedNull)
+{
+    // Sensor aux names include the null terminator in the u16string
+    std::u16string input = {htobe16(u'H'), htobe16(u'i'), htobe16(0x0000)};
+    auto result = utf16ToUtf8(input);
+    ASSERT_TRUE(result.has_value());
+    std::string expected("Hi\0", 3);
+    EXPECT_EQ(*result, expected);
 }
