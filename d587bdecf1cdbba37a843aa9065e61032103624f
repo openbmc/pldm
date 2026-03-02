@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "718bfc6f_d1ac7e1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T12:43:22Z",
+      "side": 1,
+      "message": "Nice!  One minor suggestion from me.",
+      "revId": "d587bdecf1cdbba37a843aa9065e61032103624f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "402db426_81b29857",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T12:43:22Z",
+      "side": 1,
+      "message": "getting really picky here but maybe:\n\n`Error reading InterfacesRemoved message: {ERROR}`\n\nfeels a little more natural?",
+      "range": {
+        "startLine": 448,
+        "startChar": 14,
+        "endLine": 448,
+        "endChar": 72
+      },
+      "revId": "d587bdecf1cdbba37a843aa9065e61032103624f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
