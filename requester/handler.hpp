@@ -339,7 +339,7 @@ class Handler
             if (!endpointMessageQueues.contains(eid))
             {
                 error(
-                    "Can't find request for EID '{EID}' is using InstanceID '{INSTANCEID}' in Endpoint message Queue",
+                    "Can't find request for EID '{EID}' using InstanceID '{INSTANCEID}' in the endpoint message queue",
                     "EID", (unsigned)eid, "INSTANCEID", (unsigned)instanceId);
                 return PLDM_ERROR;
             }
