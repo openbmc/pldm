@@ -65,6 +65,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "508f1dc7_71e8c3ec",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T16:54:46Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/87947",
+      "parentUuid": "11cbc9aa_aa56cb52",
+      "range": {
+        "startLine": 343,
+        "startChar": 56,
+        "endLine": 343,
+        "endChar": 58
+      },
+      "revId": "39c194d142669e2845cee1a3edd6b3bb8a7aac9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc8fc5a6_5fcf9afa",
