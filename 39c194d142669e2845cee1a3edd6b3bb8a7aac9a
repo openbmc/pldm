@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11cbc9aa_aa56cb52",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T16:49:26Z",
+      "side": 1,
+      "message": "It\u0027s reasonable to ask someone to make this change, but its out of scope for this patch and shouldn\u0027t hold up this review.",
+      "parentUuid": "261e19f0_d63e0733",
+      "range": {
+        "startLine": 343,
+        "startChar": 56,
+        "endLine": 343,
+        "endChar": 58
+      },
+      "revId": "39c194d142669e2845cee1a3edd6b3bb8a7aac9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc8fc5a6_5fcf9afa",
         "filename": "requester/handler.hpp",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2026-02-10T13:02:00Z",
       "side": 1,
       "message": "What do you think about using if-initializer here? Something like this? \n\n```suggestion\nif (auto it \u003d std::ranges::find_if(\n        requestQueue,\n        [\u0026key](const auto\u0026 msg) { return msg-\u003ekey \u003d\u003d key; });\n    it !\u003d requestQueue.end())\n{\n    requestQueue.erase(it);\n    instanceIdDb.free(key.eid, key.instanceId);\n    return PLDM_SUCCESS;\n}\n```",
+      "range": {
+        "startLine": 348,
+        "startChar": 0,
+        "endLine": 357,
+        "endChar": 13
+      },
+      "revId": "39c194d142669e2845cee1a3edd6b3bb8a7aac9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "534198db_ca78b8bd",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T16:49:26Z",
+      "side": 1,
+      "message": "I like it.  readability is definitely improved.",
+      "parentUuid": "cc8fc5a6_5fcf9afa",
       "range": {
         "startLine": 348,
         "startChar": 0,
