@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f477d75b_fef39bbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T13:27:18Z",
+      "side": 1,
+      "message": "One request from me, which should be easy to fix.",
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84e3c01f_ea6321df",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T13:27:18Z",
+      "side": 1,
+      "message": "is there something wrong with the pattern that was already here?  If there is, submit a patch and fix it first, before moving to something else in this one specific switch leg, for the sake of readability.",
+      "range": {
+        "startLine": 1401,
+        "startChar": 0,
+        "endLine": 1406,
+        "endChar": 52
+      },
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
