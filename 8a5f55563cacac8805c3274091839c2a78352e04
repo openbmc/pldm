@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "859bf42c_01845f2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T12:20:44Z",
+      "side": 1,
+      "message": "Looks good to me.  Just a couple minor comments.",
+      "revId": "8a5f55563cacac8805c3274091839c2a78352e04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca79181b_8d125f6d",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1322,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T12:20:44Z",
+      "side": 1,
+      "message": "it is a little unexpected to find a defaulted move constructor but then move assignment is deleted.  delete the constructor too?",
+      "range": {
+        "startLine": 1322,
+        "startChar": 55,
+        "endLine": 1322,
+        "endChar": 62
+      },
+      "revId": "8a5f55563cacac8805c3274091839c2a78352e04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dba22b4a_198a11e7",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-02T12:20:44Z",
+      "side": 1,
+      "message": "I\u0027m not used to seeing explicit for a multi-argument constructor.  Is there a reason for this?",
+      "range": {
+        "startLine": 1326,
+        "startChar": 4,
+        "endLine": 1326,
+        "endChar": 13
+      },
+      "revId": "8a5f55563cacac8805c3274091839c2a78352e04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
