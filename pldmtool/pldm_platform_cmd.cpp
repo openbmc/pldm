@@ -1279,7 +1279,7 @@ class GetPDR : public CommandInterface
 
         output["PLDMTerminusHandle"] = int(pdr->terminus_handle);
         output["effecterID"] = int(pdr->effecter_id);
-        output["entityType"] = int(pdr->entity_type);
+        output["entityType"] = getEntityName(pdr->entity_type);
         output["entityInstanceNumber"] = int(pdr->entity_instance);
         output["containerID"] = int(pdr->container_id);
         output["effecterSemanticID"] = int(pdr->effecter_semantic_id);
