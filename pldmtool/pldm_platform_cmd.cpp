@@ -1382,18 +1382,16 @@ class GetPDR : public CommandInterface
                     PLDM_STR_UTF_16_MAX_LEN);
                 ptr += (u16NameString.size() + sizeof(nullTerminator)) *
                        sizeof(uint16_t);
-                std::transform(u16NameString.cbegin(), u16NameString.cend(),
-                               u16NameString.begin(),
-                               [](uint16_t utf16) { return be16toh(utf16); });
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-                std::string nameString =
-                    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
-                                         char16_t>{}
-                        .to_bytes(u16NameString);
-#pragma GCC diagnostic pop
+                auto nameString = utf16ToUtf8(u16NameString);
+                if (!nameString)
+                {
+                    std::cerr
+                        << "Failed to convert UTF-16 to UTF-8 for auxiliary name, skipping this name."
+                        << std::endl;
+                    continue;
+                }
                 output[nameLanguageTagKey] = nameLanguageTag;
-                output[entityAuxNameKey] = nameString;
+                output[entityAuxNameKey] = *nameString;
             }
         }
     }

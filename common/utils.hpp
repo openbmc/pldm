@@ -2,6 +2,7 @@
 
 #include "types.hpp"
 
+#include <iconv.h>
 #include <libpldm/base.h>
 #include <libpldm/bios.h>
 #include <libpldm/entity.h>
@@ -753,6 +754,18 @@ std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
  *             to be set
  */
 void setBiosAttr(const PendingAttributesList& biosAttrList);
+
+/** @brief Convert a big-endian UCS-2 string to UTF-8 using iconv
+ *
+ *  Replaces the deprecated std::wstring_convert / std::codecvt_utf8_utf16.
+ *  The input is expected to be in big-endian byte order (PLDM wire format),
+ *  so callers should NOT apply be16toh() before calling this function.
+ *
+ *  @param[in] u16Str - the UCS-2BE input string (big-endian wire format)
+ *
+ *  @return the UTF-8 string, or std::nullopt on conversion failure
+ */
+std::optional<std::string> utf16ToUtf8(const std::u16string_view& u16Str);
 
 } // namespace utils
 } // namespace pldm
