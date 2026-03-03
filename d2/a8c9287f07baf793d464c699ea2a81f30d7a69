@@ -1,0 +1,8 @@
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: sagar srinivas <sagi.040693@gmail.com>
+Submitted-by: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-at: Tue, 03 Mar 2026 16:33:49 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/87518
+Project: openbmc/pldm
+Branch: refs/heads/master
