@@ -221,6 +221,14 @@ class CustomDBus
      */
     void implementVRMInterface(const std::string& path);
 
+    /** @brief Set the present state property
+     *
+     *  @param[in] path   - The object path
+     *
+     *  @param[in] state  - Present state
+     */
+    void setPresentState(const std::string& path, const bool& state);
+
   private:
     std::unordered_map<ObjectPath, std::unique_ptr<Asset>> asset;
     std::unordered_map<ObjectPath, std::unique_ptr<Availability>>

@@ -253,5 +253,17 @@ void CustomDBus::implementVRMInterface(const std::string& path)
     }
 }
 
+void CustomDBus::setPresentState(const std::string& path, const bool& state)
+{
+    if (!presentStatus.contains(path))
+    {
+        presentStatus.emplace(
+            path, std::make_unique<InventoryItem>(
+                      pldm::utils::DBusHandler::getBus(), path.c_str()));
+    }
+
+    presentStatus.at(path)->present(state);
+}
+
 } // namespace dbus
 } // namespace pldm
