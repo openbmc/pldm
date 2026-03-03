@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d827251_f52269c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-03T08:25:39Z",
+      "side": 1,
+      "message": "nit: Some minor readability changes\n\n`This commit adds support for creating...` or `This commit supports creation of Numeric Sen...`",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 62
+      },
+      "revId": "b9c52a550f5040d14d3f08d578316112bb8ad051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d97634a1_8d30d38d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-03T08:25:39Z",
+      "side": 1,
+      "message": "nit: Prefer referring to this as a File Descriptor PDR or File PDR (per DSP0242 terminology) rather than “File Descriptor object”.\n\n```suggestion\nPDR (DSP0242 v1.0.0 Section 8.8.3 File Size Monitoring Sensor).\n```",
+      "revId": "b9c52a550f5040d14d3f08d578316112bb8ad051",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
