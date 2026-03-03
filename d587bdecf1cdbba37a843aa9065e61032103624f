@@ -39,6 +39,30 @@
       },
       "revId": "d587bdecf1cdbba37a843aa9065e61032103624f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c01569cd_30a6def0",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-03-03T03:39:16Z",
+      "side": 1,
+      "message": "Thank you for the review. I\u0027ve updated the error message format as you suggested.\n\nRegarding the `goodRemoveEndpoints` test: After changing `removeEndpoints()` to parse the D-Bus signal directly, this test no longer calls the actual function. Instead, it manually simulates the removal logic because constructing a valid InterfacesRemoved message in unit tests is difficult.\nI noticed that other D-Bus signal handlers like `discoverEndpoints()` (InterfacesAdded) and `handlePropsChanged()` (PropertiesChanged) also don\u0027t have unit tests.\nShould I remove this test case to maintain consistency, or would you prefer to keep it as-is?\n\nThanks!",
+      "parentUuid": "402db426_81b29857",
+      "range": {
+        "startLine": 448,
+        "startChar": 14,
+        "endLine": 448,
+        "endChar": 72
+      },
+      "revId": "d587bdecf1cdbba37a843aa9065e61032103624f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
