@@ -4,6 +4,2438 @@
             "pdrType": 4,
             "entries": [
                 {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core0",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core0",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core1",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core1",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core2",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core2",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core3",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core3",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core4",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core4",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core5",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core5",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core6",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core6",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core7",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core7",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core8",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core8",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core9",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core9",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core10",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core10",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core11",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core11",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core12",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core12",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core13",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core13",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core14",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core14",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core15",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core15",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core16",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core16",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core17",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core17",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core18",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core18",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core19",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core19",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core20",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core20",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core21",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core21",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core22",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core22",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core23",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core23",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core24",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core24",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core25",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core25",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core26",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core26",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core27",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core27",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core28",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core28",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core29",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core29",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core30",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core30",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core31",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/mcm/core31",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core0",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core0",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core1",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core1",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core2",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core2",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core3",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core3",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core4",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core4",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core5",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core5",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core6",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core6",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core7",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core7",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core8",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core8",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core9",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core9",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core10",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core10",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core11",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core11",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core12",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core12",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core13",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core13",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core14",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core14",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core15",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core15",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core16",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core16",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core17",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core17",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core18",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core18",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core19",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core19",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core20",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core20",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core21",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core21",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core22",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core22",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core23",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core23",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core24",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core24",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core25",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core25",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core26",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core26",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core27",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core27",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core28",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core28",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core29",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core29",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core30",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core30",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core31",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/mcm/core31",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core0",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core0",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core1",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core1",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core2",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core2",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core3",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core3",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core4",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core4",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core5",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core5",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core6",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core6",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core7",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core7",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core8",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core8",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core9",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core9",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core10",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core10",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core11",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core11",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core12",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core12",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core13",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core13",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core14",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core14",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core15",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core15",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core16",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core16",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core17",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core17",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core18",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core18",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core19",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core19",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core20",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core20",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core21",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core21",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core22",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core22",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core23",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core23",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core24",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core24",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core25",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core25",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core26",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core26",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core27",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core27",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core28",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core28",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core29",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core29",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core30",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core30",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core31",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/mcm/core31",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core0",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core0",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core1",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core1",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core2",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core2",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core3",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core3",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core4",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core4",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core5",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core5",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core6",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core6",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core7",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core7",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core8",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core8",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core9",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core9",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core10",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core10",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core11",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core11",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core12",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core12",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core13",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core13",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core14",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core14",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core15",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core15",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core16",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core16",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core17",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core17",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core18",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core18",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core19",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core19",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core20",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core20",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core21",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core21",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core22",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core22",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core23",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core23",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core24",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core24",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core25",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core25",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core26",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core26",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core27",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core27",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core28",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core28",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core29",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core29",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core30",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core30",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core31",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 13,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/mcm/core31",
+                                "interface": "xyz.openbmc_project.Inventory.Item",
+                                "property_name": "Present",
+                                "property_type": "bool",
+                                "property_values": [true, false]
+                            }
+                        }
+                    ]
+                },
+                {
                     "entity_path": "/xyz/openbmc_project/inventory/system/chassis0",
                     "sensors": [
                         {
