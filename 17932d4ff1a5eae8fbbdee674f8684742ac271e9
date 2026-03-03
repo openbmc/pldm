@@ -39,6 +39,52 @@
       },
       "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3455a3c4_dc6641ad",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-03T06:13:45Z",
+      "side": 1,
+      "message": "```suggestion\n                output[\"fatalLow\"] \u003d fatalLow;\n```",
+      "range": {
+        "startLine": 1529,
+        "startChar": 24,
+        "endLine": 1529,
+        "endChar": 33
+      },
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67c67243_f22c3ae9",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-03T06:13:45Z",
+      "side": 1,
+      "message": "```suggestion\n                output[\"fatalLow\"] \u003d fatalLow;\n```",
+      "range": {
+        "startLine": 1551,
+        "startChar": 24,
+        "endLine": 1551,
+        "endChar": 33
+      },
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
