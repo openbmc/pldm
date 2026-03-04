@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c4d6b8c_b59b6936",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-04T14:18:15Z",
+      "side": 1,
+      "message": "nice catch!",
+      "parentUuid": "3455a3c4_dc6641ad",
+      "range": {
+        "startLine": 1529,
+        "startChar": 24,
+        "endLine": 1529,
+        "endChar": 33
+      },
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67c67243_f22c3ae9",
         "filename": "pldmtool/pldm_platform_cmd.cpp",
         "patchSetId": 5
