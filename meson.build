@@ -249,6 +249,7 @@ libpldmutils = declare_dependency(
 )
 
 deps = [
+    CLI11_dep,
     libpldm_dep,
     libpldmutils,
     nlohmann_json_dep,

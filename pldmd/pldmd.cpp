@@ -12,7 +12,6 @@
 #include "requester/request.hpp"
 
 #include <err.h>
-#include <getopt.h>
 #include <libpldm/base.h>
 #include <libpldm/bios.h>
 #include <libpldm/pdr.h>
@@ -24,6 +23,7 @@
 #include <sys/un.h>
 #include <unistd.h>
 
+#include <CLI/CLI.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
@@ -172,31 +172,20 @@ static std::optional<Response> processRxMsg(
     return std::nullopt;
 }
 
-void optionUsage(void)
-{
-    info("Usage: pldmd [options]");
-    info("Options:");
-    info(" [--verbose] - would enable verbosity");
-}
-
 int main(int argc, char** argv)
 {
     bool verbose = false;
-    static struct option long_options[] = {
-        {"verbose", no_argument, nullptr, 'v'}, {nullptr, 0, nullptr, 0}};
-
-    auto argflag = getopt_long(argc, argv, "v", long_options, nullptr);
-    switch (argflag)
+    CLI::App app;
+    app.add_flag("-v,--verbose", verbose, "Enable debug logging");
+    try
     {
-        case 'v':
-            verbose = true;
-            break;
-        case -1:
-            break;
-        default:
-            optionUsage();
-            exit(EXIT_FAILURE);
+        app.parse(argc, argv);
     }
+    catch (const CLI::ParseError& e)
+    {
+        return app.exit(e);
+    }
+
     // Setup PLDM requester transport
     auto hostEID = pldm::utils::readHostEID();
     /* To maintain current behaviour until we have the infrastructure to find
