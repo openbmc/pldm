@@ -16,6 +16,24 @@
       "message": "looks like you need to be added to microsoft-ci-authorized.  @sagar.dharia@microsoft.com or @geissonator@yahoo.com ?",
       "revId": "4b44cd095a2fa0030f3272e0fd5024868044e9f5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a45121b_421c3398",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-03-04T17:26:54Z",
+      "side": 1,
+      "message": "Don\u0027t see Gary on the latest Microsoft CLA so yeah, Sagar will have to get him added to the CLA and then he can add him to the gerrit group.",
+      "parentUuid": "2f4de8f5_befca4ff",
+      "revId": "4b44cd095a2fa0030f3272e0fd5024868044e9f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
