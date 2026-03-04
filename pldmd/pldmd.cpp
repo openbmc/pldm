@@ -188,16 +188,14 @@ int main(int argc, char** argv)
     PldmTransport pldmTransport{};
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
-    sdbusplus::server::manager_t objManager(bus,
-                                            "/xyz/openbmc_project/software");
-    sdbusplus::server::manager_t sensorObjManager(
-        bus, "/xyz/openbmc_project/sensors");
-    sdbusplus::server::manager_t metricObjManager(
-        bus, "/xyz/openbmc_project/metric");
+
+    std::array<sdbusplus::server::manager_t, 4> dbusObjectManagers{
+        sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/software"),
+        sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/sensors"),
+        sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/metric"),
+        sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/inventory")};
 
     InstanceIdDb instanceIdDb;
-    sdbusplus::server::manager_t inventoryManager(
-        bus, "/xyz/openbmc_project/inventory");
 
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
