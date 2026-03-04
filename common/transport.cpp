@@ -127,7 +127,7 @@ PldmTransport::PldmTransport(bool listening)
     transport = transport_impl_init(impl, pfd, listening);
     if (!transport)
     {
-        throw std::system_error(ENOMEM, std::generic_category());
+        throw std::runtime_error("Cannot initialize transport layer");
     }
 }
 
