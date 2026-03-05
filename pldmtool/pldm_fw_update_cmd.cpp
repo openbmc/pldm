@@ -410,7 +410,7 @@ class GetFwParams : public CommandInterface
             }
             if (compEntry.comp_activation_methods.bits.bit4)
             {
-                componentActivationMethods.push_back("DC power cycel");
+                componentActivationMethods.push_back("DC power cycle");
             }
             if (compEntry.comp_activation_methods.bits.bit5)
             {
