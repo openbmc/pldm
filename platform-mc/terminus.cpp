@@ -777,7 +777,16 @@ std::vector<std::string> Terminus::getSensorNames(const SensorID& sensorId)
         {
             if (languageTag == "en" && !name.empty())
             {
-                sensorName = std::format("{}_{}", terminusName, name);
+                auto sanitize = [](std::string s) {
+                    std::transform(s.begin(), s.end(), s.begin(),
+                                   [](unsigned char c) {
+                                       return (std::isalnum(c) || c == '_')
+                                                  ? static_cast<char>(c)
+                                                  : '_';
+                                   });
+                    return s;
+                };
+                sensorNames[index] = terminusName + "_" + sanitize(name);
             }
         }
 
