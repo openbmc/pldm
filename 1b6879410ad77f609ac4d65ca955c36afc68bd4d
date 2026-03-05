@@ -16,6 +16,24 @@
       "message": "Maybe a basic test would help? Code change makes sense but would be good to do a basic test OR point to this being a pattern elsewhere.",
       "revId": "1b6879410ad77f609ac4d65ca955c36afc68bd4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd465270_902a8f45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-05T13:21:31Z",
+      "side": 1,
+      "message": "Thanks for the review Deepak.\n\n\u003e Maybe a basic test would help?\n\nHelp what exactly?\n\n\u003e would be good to do a basic test\n\nSure, will do.  I have to say...it seems like a high bar for such a simple refactor.\n\n\u003e OR point to this being a pattern elsewhere.\n\nJust curious why it being a pattern elsewhere would make a difference?  Either you agree it improves the readability or you don\u0027t?",
+      "parentUuid": "4f3e16bb_3e83fb2d",
+      "revId": "1b6879410ad77f609ac4d65ca955c36afc68bd4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
