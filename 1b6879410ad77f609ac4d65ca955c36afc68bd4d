@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f3e16bb_3e83fb2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-03-05T05:41:36Z",
+      "side": 1,
+      "message": "Maybe a basic test would help? Code change makes sense but would be good to do a basic test OR point to this being a pattern elsewhere.",
+      "revId": "1b6879410ad77f609ac4d65ca955c36afc68bd4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
