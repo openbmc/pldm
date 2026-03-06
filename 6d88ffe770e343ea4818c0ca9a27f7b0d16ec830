@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11767e03_d0566f98",
+        "filename": "host-bmc/dbus/custom_dbus.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-06T15:16:19Z",
+      "side": 1,
+      "message": "I don\u0027t understand how this is called.  It seems like dead code.",
+      "revId": "6d88ffe770e343ea4818c0ca9a27f7b0d16ec830",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
