@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3388dc12_73011a1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-09T14:53:05Z",
+      "side": 1,
+      "message": "The word Also in a commit message is usually a sign that you should split your patch into multiple.  I might have first done a patch that reverses the order of the return statement and the call to updateDeviceCompletion, then d a patch that calls createRequestFwDataTimer, and then finally a patch that property handles the comp_cannot_be_updated response.  In this case everything is pretty broken and the bugs are all related so its probably ok as is.  Just something to be aware of...reviewers really like to see patches split because it highlights that you respect their time.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 5
+      },
+      "revId": "f1508cb54a7640e0073a669391e2e4ae1faa83e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c617fcf_85f0d53b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-09T14:53:05Z",
+      "side": 1,
+      "message": "I just had one very minor suggestion about logging.",
+      "revId": "f1508cb54a7640e0073a669391e2e4ae1faa83e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4af4aaf1_799d3173",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-09T14:53:05Z",
+      "side": 1,
+      "message": "From our (the BMC) point of view, this isn\u0027t really an error is it?  We are successfully coping with a legal response as outlined in the protocol spec.  This feels like a debug level trace to me (although pldmd is pretty noisy, so maybe info could work too).",
+      "range": {
+        "startLine": 495,
+        "startChar": 8,
+        "endLine": 495,
+        "endChar": 13
+      },
+      "revId": "f1508cb54a7640e0073a669391e2e4ae1faa83e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
