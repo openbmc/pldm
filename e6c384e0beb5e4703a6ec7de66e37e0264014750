@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "840b0754_4c0359f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-09T16:18:48Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "e6c384e0beb5e4703a6ec7de66e37e0264014750",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff3ef3b2_9b29586f",
@@ -48,6 +65,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "599e549e_d6d2df04",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-09T16:18:48Z",
+      "side": 1,
+      "message": "Yeah that\u0027s fine.",
+      "parentUuid": "f286c9f0_84988099",
+      "range": {
+        "startLine": 831,
+        "startChar": 32,
+        "endLine": 831,
+        "endChar": 38
+      },
+      "revId": "e6c384e0beb5e4703a6ec7de66e37e0264014750",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c9ace8c_a6515f17",
@@ -83,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4923839_9d69da45",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-09T16:18:48Z",
+      "side": 1,
+      "message": "Agree that we should stick to patterns.  I didn\u0027t realize this was also copy/pasted.",
+      "parentUuid": "6a8b5e2a_fa7f6508",
+      "revId": "e6c384e0beb5e4703a6ec7de66e37e0264014750",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dfa66d4_aeaa3353",
@@ -114,6 +173,24 @@
       "side": 1,
       "message": "I think that `Unknown 86` wouldn\u0027t go well with other things in the output.\n\nAt least it should be something like `Unknown(86)` to go with https://github.com/openbmc/pldm/blob/56303403b476c3721ab9f17b51e0f090f1b34ed2/pldmtool/pldm_platform_cmd.cpp#L995 or https://github.com/openbmc/pldm/blob/56303403b476c3721ab9f17b51e0f090f1b34ed2/pldmtool/pldm_platform_cmd.cpp#L1033\n\nBut I\u0027m not sure that we need another text name, like `Unknown` since it can get lost between real values like `None(0)`, `Unspecified(1)`.\n\nAnyway, the code for the statesets that I\u0027ve linked above doesn\u0027t print something like `Unknown`, so I would say if we really would want to change it, we need to do it in a separate commit for all the similar case at once.",
       "parentUuid": "6dfa66d4_aeaa3353",
+      "revId": "e6c384e0beb5e4703a6ec7de66e37e0264014750",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65a3cd07_0d025bf4",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-09T16:18:48Z",
+      "side": 1,
+      "message": "Fair point!",
+      "parentUuid": "d2c1d3a0_dfe6c6c3",
       "revId": "e6c384e0beb5e4703a6ec7de66e37e0264014750",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
