@@ -31,19 +31,15 @@ void FirmwareInventoryManager::createFirmwareEntry(
     // has provided a mapping, use it; otherwise fall back to a default
     // placeholder path so that a software object can still be created.
 
-    std::optional<std::filesystem::path> boardPath;
-
     auto& eid = softwareIdentifier.first;
-    const auto inventoryPath = getInventoryPath(eid);
-    if (inventoryPath)
-    {
-        boardPath = getBoardPath(*dbusHandler, *inventoryPath);
-    }
-    else
-    {
-        boardPath = "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
-    }
-    const auto boardName = boardPath->filename().string();
+    auto boardPath =
+        getInventoryPath(eid)
+            .and_then([&](const auto& path) {
+                return getBoardPath(*dbusHandler, path);
+            })
+            .value_or(std::filesystem::path{
+                "/xyz/openbmc_project/inventory/system/board/PLDM_Device"});
+    const auto boardName = boardPath.filename().string();
     const auto softwarePath =
         std::format("{}/{}_{}_{}", SoftwareVersion::namespace_path, boardName,
                     softwareName, utils::generateSwId());
@@ -51,7 +47,7 @@ void FirmwareInventoryManager::createFirmwareEntry(
     softwareMap.insert_or_assign(
         softwareIdentifier,
         std::make_unique<FirmwareInventory>(softwareIdentifier, softwarePath,
-                                            activeVersion, *boardPath));
+                                            activeVersion, boardPath));
 }
 
 void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
