@@ -39,7 +39,8 @@ void FirmwareInventoryManager::createFirmwareEntry(
     {
         boardPath = getBoardPath(*dbusHandler, *inventoryPath);
     }
-    else
+
+    if (!boardPath)
     {
         boardPath = "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     }
