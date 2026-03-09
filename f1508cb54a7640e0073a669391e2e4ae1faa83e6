@@ -62,6 +62,30 @@
       },
       "revId": "f1508cb54a7640e0073a669391e2e4ae1faa83e6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0337cc4f_a8518816",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-03-09T18:30:02Z",
+      "side": 1,
+      "message": "Done - changed error to info - thanks for catching this!",
+      "parentUuid": "4af4aaf1_799d3173",
+      "range": {
+        "startLine": 495,
+        "startChar": 8,
+        "endLine": 495,
+        "endChar": 13
+      },
+      "revId": "f1508cb54a7640e0073a669391e2e4ae1faa83e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "7c6742b5_84bbe05c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-03-09T18:30:02Z",
+      "side": 1,
+      "message": "Done - see my following comment",
+      "parentUuid": "8b7319c7_4fb34274",
+      "revId": "4b44cd095a2fa0030f3272e0fd5024868044e9f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2f4de8f5_befca4ff",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
