@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf9a312_dc8c9af0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2026-03-09T08:27:49Z",
+      "side": 1,
+      "message": "I think it might be a good idea to also add some tests in `common/test/pldm_utils_test.cpp` as proof that this work",
+      "revId": "aa6bbd1859516f68bd681b6128459e0b5ffca68d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6134fd_bc7226bb",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1001839
+      },
+      "writtenOn": "2026-03-09T08:27:49Z",
+      "side": 1,
+      "message": "I believe we could remove the `transform` and use `UCS-2BE` directly, without roundtriping to Host endian and back to what iconv expect.\n\n(we could also perhaps drop the `std::u16string` and just construct an `std::u16string_view` argument directly to avoid copying and allocation\n\n```cpp\nstd::optional\u003cstd::string\u003e utf16ToUtf8(std::u16string_view u16Str);\n\nauto nameString \u003d pldm::utils::utf16ToUtf8({ decodedPdr-\u003enames[count].name, u16NameStringLen });\n```\n\nbut we are already doing this in the current code, so feel free to ignore)",
+      "range": {
+        "startLine": 387,
+        "startChar": 0,
+        "endLine": 392,
+        "endChar": 66
+      },
+      "revId": "aa6bbd1859516f68bd681b6128459e0b5ffca68d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
