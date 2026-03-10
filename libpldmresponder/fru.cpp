@@ -1,5 +1,6 @@
 #include "fru.hpp"
 
+#include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/platform.hpp"
 

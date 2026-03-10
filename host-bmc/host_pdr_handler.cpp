@@ -1,5 +1,7 @@
 #include "host_pdr_handler.hpp"
 
+#include "common/types.hpp"
+
 #include <libpldm/fru.h>
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>

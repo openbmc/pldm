@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/types.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 
 #include <libpldm/platform.h>
