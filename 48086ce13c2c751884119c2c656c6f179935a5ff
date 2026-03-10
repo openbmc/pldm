@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cd62b8f_8a345de3",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-03-10T08:25:44Z",
+      "side": 1,
+      "message": "Adding a default path as const string:\n\n```suggestion\n    std::optional\u003cstd::filesystem::path\u003e boardPath;\n    static constexpr const char* defaultBoardPath \u003d\n    \"/xyz/openbmc_project/inventory/system/board/PLDM_Device\";\n```",
+      "revId": "48086ce13c2c751884119c2c656c6f179935a5ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ecd96b_01a39c88",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-03-10T08:25:44Z",
+      "side": 1,
+      "message": "Simplifing the boardPath assignment here.\n\n```suggestion\n    boardPath \u003d (inventoryPath) ? getBoardPath(*dbusHandler, *inventoryPath).value_or(defaultBoardPath) : defaultBoardPath;\n```",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 46,
+        "endChar": 5
+      },
+      "revId": "48086ce13c2c751884119c2c656c6f179935a5ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
