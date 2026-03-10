@@ -6,6 +6,7 @@
 #include "requester/handler.hpp"
 #include "terminus.hpp"
 
+#include <libpldm/entity.h>
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
 
@@ -96,6 +97,13 @@ class Terminus
         return true;
     }
 
+    /** @brief Get the inventory path segment for the given PLDM entity type.
+     *
+     *  @param[in] entityType - PLDM entity type from the system container PDR
+     *  @return path segment string (e.g. "board", "gpu", "cpu")
+     */
+    static std::string_view entityTypeToPathSegment(uint16_t entityType);
+
     /** @brief Parse the PDRs stored in the member variable, pdrs.
      */
     void parseTerminusPDRs();
@@ -177,11 +185,12 @@ class Terminus
     std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
 
   private:
-    /** @brief Find the Terminus Name from the Entity Auxiliary name list
-     *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
-     *  @return terminus name in string option
+    /** @brief Find the Terminus Name and entity type from the Entity
+     *         Auxiliary name list. The Entity Auxiliary name list is
+     *         entityAuxiliaryNamesTbl.
+     *  @return pair of terminus name and entity type, or nullopt
      */
-    std::optional<std::string_view> findTerminusName();
+    std::optional<std::pair<std::string_view, uint16_t>> findTerminusName();
 
     /** @brief Construct the NumericSensor sensor class for the PLDM sensor.
      *         The NumericSensor class will handle create D-Bus object path,
@@ -240,14 +249,14 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
         const std::vector<uint8_t>& pdrData);
 
-    /** @brief Create the terminus inventory path to
-     *         /xyz/openbmc_project/inventory/Item/Board/.
+    /** @brief Create the terminus inventory path based on entity type.
      *
      *  @param[in] tName - the terminus name
+     *  @param[in] entityType - PLDM entity type from the system container PDR
      *  @return true/false: True if there is no error in creating inventory path
      *
      */
-    bool createInventoryPath(std::string tName);
+    bool createInventoryPath(std::string tName, uint16_t entityType);
 
     /** @brief Get sensor names from Sensor Auxiliary Names PDRs
      *
@@ -292,9 +301,12 @@ class Terminus
 
     /** @brief Terminus name */
     EntityName terminusName{};
+
+    /** @brief Entity type of the terminus from system container PDR */
+    uint16_t terminusEntityType = PLDM_ENTITY_BOARD;
+
     /* @brief The pointer of inventory D-Bus interface for the terminus */
-    std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
-        nullptr;
+    std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemInft = nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
