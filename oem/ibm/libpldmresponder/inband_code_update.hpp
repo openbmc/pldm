@@ -49,7 +49,8 @@ class CodeUpdate
     /** @brief Constructor to create an inband codeupdate object
      *  @param[in] dBusIntf - D-Bus handler pointer
      */
-    CodeUpdate(const pldm::utils::DBusHandler* dBusIntf) : dBusIntf(dBusIntf)
+    explicit CodeUpdate(const pldm::utils::DBusHandler* dBusIntf) :
+        dBusIntf(dBusIntf)
     {
         currBootSide = Tside;
         nextBootSide = Tside;

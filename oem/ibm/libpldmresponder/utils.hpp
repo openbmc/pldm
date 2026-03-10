@@ -63,7 +63,7 @@ namespace oem_ibm_utils
 class Handler : public oem_utils::Handler
 {
   public:
-    Handler(const pldm::utils::DBusHandler* dBusIntf) :
+    explicit Handler(const pldm::utils::DBusHandler* dBusIntf) :
         oem_utils::Handler(dBusIntf), dBusIntf(dBusIntf)
     {}
 
