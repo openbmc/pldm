@@ -1,6 +1,7 @@
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "mock_sensor_manager.hpp"
+#include "platform-mc/sensor_manager.hpp"
 #include "platform-mc/terminus_manager.hpp"
 #include "test/test_instance_id.hpp"
 #include "utils_test.hpp"
@@ -145,7 +146,7 @@ TEST_F(SensorManagerTest, sensorPollingTest)
     ON_CALL(sensorManager, doSensorPolling(tid))
         .WillByDefault([this, &t0, &t1](unsigned char) {
             ASSERT_TRUE(sd_event_now(event.get(), CLOCK_MONOTONIC, &t1) >= 0);
-            EXPECT_GE(t1 - t0, SENSOR_POLLING_TIME * 1000);
+            EXPECT_GE(t1 - t0, pldm::platform_mc::SENSOR_POLLING_TIME * 1000);
             t0 = t1;
         });
     EXPECT_CALL(sensorManager, doSensorPolling(tid))

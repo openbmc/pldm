@@ -21,6 +21,8 @@ namespace platform_mc
 
 using namespace pldm::pdr;
 
+inline constexpr uint64_t SENSOR_POLLING_TIME = 249;
+
 /**
  * @brief SensorManager
  *

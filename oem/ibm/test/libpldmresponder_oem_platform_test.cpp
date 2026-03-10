@@ -1,4 +1,5 @@
 #include "common/test/mocked_utils.hpp"
+#include "common/types.hpp"
 #include "common/utils.hpp"
 #include "host-bmc/utils.hpp"
 #include "libpldmresponder/event_parser.hpp"
@@ -259,7 +260,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 16);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
     ASSERT_EQ(pdr->container_id, 1);
@@ -286,7 +287,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 16);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 1);
     ASSERT_EQ(pdr->container_id, 1);
@@ -313,7 +314,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 16);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
     ASSERT_EQ(pdr->container_id, 1);
@@ -340,7 +341,7 @@ TEST(generateStateEffecterOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 16);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_REAL_SAI);
     ASSERT_EQ(pdr->entity_instance, 1);
     ASSERT_EQ(pdr->container_id, 1);
@@ -394,7 +395,7 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 14);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
     ASSERT_EQ(pdr->container_id, 1);
@@ -420,7 +421,7 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 14);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 1);
     ASSERT_EQ(pdr->container_id, 1);
@@ -446,7 +447,7 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 14);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE);
     ASSERT_EQ(pdr->entity_instance, 0);
     ASSERT_EQ(pdr->container_id, 1);
@@ -472,7 +473,7 @@ TEST(generateStateSensorOEMPDR, testGoodRequest)
     ASSERT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 14);
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->entity_type, PLDM_OEM_IBM_ENTITY_REAL_SAI);
     ASSERT_EQ(pdr->entity_instance, 1);
     ASSERT_EQ(pdr->container_id, 1);

@@ -1,3 +1,4 @@
+#include "common/types.hpp"
 #include "pdr.hpp"
 
 #include <libpldm/fru.h>
