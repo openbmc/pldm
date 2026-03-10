@@ -19,7 +19,7 @@ union TransportImpl
 class PldmTransport
 {
   public:
-    PldmTransport(bool listening = true);
+    explicit PldmTransport(bool listening = true);
     PldmTransport(const PldmTransport& other) = delete;
     PldmTransport(const PldmTransport&& other) = delete;
     PldmTransport& operator=(const PldmTransport& other) = delete;
