@@ -1,5 +1,6 @@
 #include "platform_manager.hpp"
 
+#include "common/types.hpp"
 #include "manager.hpp"
 #include "terminus_manager.hpp"
 

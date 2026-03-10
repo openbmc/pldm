@@ -45,14 +45,6 @@ option(
                     message before timing out''',
 )
 
-option(
-    'heartbeat-timeout-seconds',
-    type: 'integer',
-    value: 120,
-    description: '''The amount of time host waits for BMC to respond to pings
-                    from host, as part of host-bmc surveillance''',
-)
-
 # Flight Recorder for PLDM Daemon
 option(
     'flightrecorder-max-entries',

@@ -77,6 +77,8 @@ constexpr uint8_t BmcMctpEid = 8;
  */
 #define PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE 256
 
+inline constexpr uint16_t HEARTBEAT_TIMEOUT = 120;
+
 namespace dbus
 {
 
