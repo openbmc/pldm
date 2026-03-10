@@ -57,7 +57,8 @@ bool Terminus::doesSupportCommand(uint8_t type, uint8_t command)
     return false;
 }
 
-std::optional<std::string_view> Terminus::findTerminusName()
+std::optional<std::pair<std::string_view, uint16_t>>
+    Terminus::findTerminusName()
 {
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
@@ -81,13 +82,41 @@ std::optional<std::string_view> Terminus::findTerminusName()
         {
             return std::nullopt;
         }
-        return entityNames[0].second;
+        return std::pair<std::string_view, uint16_t>{
+            entityNames[0].second, key.type};
     }
 
     return std::nullopt;
 }
 
-bool Terminus::createInventoryPath(std::string tName)
+std::string_view Terminus::entityTypeToPathSegment(uint16_t entityType)
+{
+    switch (entityType)
+    {
+        case PLDM_ENTITY_SYSTEM_CHASSIS:
+            return "chassis";
+        case PLDM_ENTITY_BOARD:
+        case PLDM_ENTITY_SYS_BOARD:
+        case PLDM_ENTITY_CARD:
+            return "board";
+        case PLDM_ENTITY_MEMORY_MODULE:
+            return "dimm";
+        case PLDM_ENTITY_FAN:
+            return "fan";
+        case PLDM_ENTITY_POWER_SUPPLY:
+            return "powersupply";
+        case PLDM_ENTITY_PROC:
+            return "cpu";
+        case PLDM_ENTITY_ACCELERATOR:
+            return "accelerator";
+        case PLDM_ENTITY_GPU:
+            return "gpu";
+        default:
+            return "board";
+    }
+}
+
+bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
 {
     if (tName.empty())
     {
@@ -95,24 +124,25 @@ bool Terminus::createInventoryPath(std::string tName)
     }
 
     /* inventory object is created */
-    if (inventoryItemBoardInft)
+    if (inventoryItemInft)
     {
         return false;
     }
 
-    inventoryPath = "/xyz/openbmc_project/inventory/system/board/" + tName;
+    auto segment = entityTypeToPathSegment(entityType);
+    inventoryPath = std::format(
+        "/xyz/openbmc_project/inventory/system/{}/{}", segment, tName);
     try
     {
-        inventoryItemBoardInft =
-            std::make_unique<pldm::dbus_api::PldmEntityReq>(
-                utils::DBusHandler::getBus(), inventoryPath.c_str());
+        inventoryItemInft = std::make_unique<pldm::dbus_api::PldmEntityReq>(
+            utils::DBusHandler::getBus(), inventoryPath.c_str());
         return true;
     }
     catch (const sdbusplus::exception_t& e)
     {
         lg2::error(
-            "Failed to create Inventory Board interface for device {PATH}",
-            "PATH", inventoryPath);
+            "Failed to create Inventory interface for device {PATH}", "PATH",
+            inventoryPath);
     }
 
     return false;
@@ -201,12 +231,17 @@ void Terminus::parseTerminusPDRs()
         }
     }
 
-    auto tName = findTerminusName();
-    if (tName && !tName.value().empty())
+    auto nameAndType = findTerminusName();
+    if (nameAndType)
     {
-        lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
-                  "NAME", tName.value());
-        terminusName = static_cast<std::string>(tName.value());
+        const auto& [name, entityType] = *nameAndType;
+        if (!name.empty())
+        {
+            lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
+                      "NAME", name);
+            terminusName = static_cast<std::string>(name);
+        }
+        terminusEntityType = entityType;
     }
 
     if (terminusName.empty())
@@ -214,7 +249,7 @@ void Terminus::parseTerminusPDRs()
         terminusName = std::format("Terminus_{}", tid);
     }
 
-    if (createInventoryPath(terminusName))
+    if (createInventoryPath(terminusName, terminusEntityType))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
                   tid, "PATH", inventoryPath);
@@ -644,7 +679,8 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
         return;
     }
 
-    if (createInventoryPath(static_cast<std::string>(tmp.value())))
+    if (createInventoryPath(static_cast<std::string>(tmp.value()),
+                            terminusEntityType))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path.", "TID", tid);
     }
@@ -706,25 +742,25 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             switch (tlv->type)
             {
                 case PLDM_FRU_FIELD_TYPE_MODEL:
-                    inventoryItemBoardInft->model(fruField);
+                    inventoryItemInft->model(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_PN:
-                    inventoryItemBoardInft->partNumber(fruField);
+                    inventoryItemInft->partNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_SN:
-                    inventoryItemBoardInft->serialNumber(fruField);
+                    inventoryItemInft->serialNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_MANUFAC:
-                    inventoryItemBoardInft->manufacturer(fruField);
+                    inventoryItemInft->manufacturer(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_NAME:
-                    inventoryItemBoardInft->names({fruField});
+                    inventoryItemInft->names({fruField});
                     break;
                 case PLDM_FRU_FIELD_TYPE_VERSION:
-                    inventoryItemBoardInft->version(fruField);
+                    inventoryItemInft->version(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
-                    inventoryItemBoardInft->assetTag(fruField);
+                    inventoryItemInft->assetTag(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_VENDOR:
                 case PLDM_FRU_FIELD_TYPE_CHASSIS:

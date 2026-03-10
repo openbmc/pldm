@@ -353,6 +353,28 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
     EXPECT_EQ("S0", t1.getTerminusName().value());
 }
 
+TEST(TerminusTest, entityTypeToPathSegmentTest)
+{
+    using T = pldm::platform_mc::Terminus;
+
+    EXPECT_EQ("board", T::entityTypeToPathSegment(PLDM_ENTITY_BOARD));
+    EXPECT_EQ("board", T::entityTypeToPathSegment(PLDM_ENTITY_SYS_BOARD));
+    EXPECT_EQ("board", T::entityTypeToPathSegment(PLDM_ENTITY_CARD));
+    EXPECT_EQ("chassis", T::entityTypeToPathSegment(PLDM_ENTITY_SYSTEM_CHASSIS));
+    EXPECT_EQ("cpu", T::entityTypeToPathSegment(PLDM_ENTITY_PROC));
+    EXPECT_EQ("gpu", T::entityTypeToPathSegment(PLDM_ENTITY_GPU));
+    EXPECT_EQ("accelerator",
+              T::entityTypeToPathSegment(PLDM_ENTITY_ACCELERATOR));
+    EXPECT_EQ("powersupply",
+              T::entityTypeToPathSegment(PLDM_ENTITY_POWER_SUPPLY));
+    EXPECT_EQ("fan", T::entityTypeToPathSegment(PLDM_ENTITY_FAN));
+    EXPECT_EQ("dimm", T::entityTypeToPathSegment(PLDM_ENTITY_MEMORY_MODULE));
+
+    // Unknown entity types fall back to "board"
+    EXPECT_EQ("board", T::entityTypeToPathSegment(0xFFFF));
+    EXPECT_EQ("board", T::entityTypeToPathSegment(999));
+}
+
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
 {
     auto event = sdeventplus::Event::get_default();
