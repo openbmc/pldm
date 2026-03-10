@@ -1,0 +1,9 @@
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-by: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Submitted-at: Tue, 10 Mar 2026 03:32:15 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/87181
+Comments-Total: 10
+Project: openbmc/pldm
+Branch: refs/heads/master
