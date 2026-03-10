@@ -21,9 +21,9 @@ class PldmTransport
   public:
     PldmTransport(bool listening = true);
     PldmTransport(const PldmTransport& other) = delete;
-    PldmTransport(const PldmTransport&& other) = delete;
+    PldmTransport(PldmTransport&& other) = delete;
     PldmTransport& operator=(const PldmTransport& other) = delete;
-    PldmTransport& operator=(const PldmTransport&& other) = delete;
+    PldmTransport& operator=(PldmTransport&& other) = delete;
     ~PldmTransport();
 
     /** @brief Provides a file descriptor that can be polled for readiness.
