@@ -33,7 +33,7 @@ struct PcieConfigSpaceData
 class Handler : public oem_fru::Handler
 {
   public:
-    Handler(pldm_pdr* repo) : pdrRepo(repo) {}
+    explicit Handler(pldm_pdr* repo) : pdrRepo(repo) {}
 
     /** @brief Method to set the fru handler in the
      *    oem_ibm_handler class

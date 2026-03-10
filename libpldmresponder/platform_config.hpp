@@ -16,7 +16,7 @@ using SystemTypeCallback = std::function<void(const std::string&, bool)>;
 class Handler : public CmdHandler
 {
   public:
-    Handler(const fs::path sysDirPath = {}) : sysDirPath(sysDirPath)
+    explicit Handler(const fs::path sysDirPath = {}) : sysDirPath(sysDirPath)
     {
         systemCompatibleMatchCallBack =
             std::make_unique<sdbusplus::bus::match_t>(

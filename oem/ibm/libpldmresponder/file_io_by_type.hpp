@@ -146,7 +146,7 @@ class FileHandler
 
     /** @brief Constructor to create a FileHandler object
      */
-    FileHandler(uint32_t fileHandle) : fileHandle(fileHandle) {}
+    explicit FileHandler(uint32_t fileHandle) : fileHandle(fileHandle) {}
 
     /** FileHandler destructor
      */

@@ -17,7 +17,7 @@ class PelHandler : public FileHandler
   public:
     /** @brief PelHandler constructor
      */
-    PelHandler(uint32_t fileHandle) : FileHandler(fileHandle) {}
+    explicit PelHandler(uint32_t fileHandle) : FileHandler(fileHandle) {}
 
     virtual int writeFromMemory(uint32_t offset, uint32_t length,
                                 uint64_t address,

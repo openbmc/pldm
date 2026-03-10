@@ -15,7 +15,7 @@ namespace base
 class Handler : public CmdHandler
 {
   public:
-    Handler(sdeventplus::Event& event) : event(event)
+    explicit Handler(sdeventplus::Event& event) : event(event)
     {
         handlers.emplace(
             PLDM_GET_PLDM_TYPES,
