@@ -334,7 +334,7 @@ class DeviceUpdater
      * command is received from the FD during component image transfer stage
      *
      */
-    static constexpr int updateTimeoutSeconds = UPDATE_TIMEOUT_SECONDS;
+    static constexpr int updateTimeoutSeconds = 60;
 
     /**
      * @brief Timer to handle RequestFirmwareData timeout(UA_T2)

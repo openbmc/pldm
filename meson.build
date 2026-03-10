@@ -66,11 +66,8 @@ if get_option('libpldmresponder').allowed()
         'EVENTS_JSONS_DIR',
         join_paths(package_datadir, 'events'),
     )
-    conf_data.set('TERMINUS_ID', get_option('terminus-id'))
-    conf_data.set('TERMINUS_HANDLE', get_option('terminus-handle'))
     add_project_arguments('-DLIBPLDMRESPONDER', language: 'cpp')
 endif
-conf_data.set('HEARTBEAT_TIMEOUT', get_option('heartbeat-timeout-seconds'))
 conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))
 if get_option('softoff').allowed()
     conf_data.set(
@@ -107,35 +104,19 @@ if get_option('oem-ibm').allowed()
         'LID_ALTERNATE_PATCH_DIR',
         '/usr/local/share/hostfw/alternate',
     )
-    conf_data.set('DMA_MAXSIZE', get_option('oem-ibm-dma-maxsize'))
     add_project_arguments('-DOEM_IBM', language: 'cpp')
 endif
-conf_data.set(
-    'NUMBER_OF_REQUEST_RETRIES',
-    get_option('number-of-request-retries'),
-)
-conf_data.set(
-    'INSTANCE_ID_EXPIRATION_INTERVAL',
-    get_option('instance-id-expiration-interval'),
-)
 conf_data.set('RESPONSE_TIME_OUT', get_option('response-time-out'))
 conf_data.set(
     'FLIGHT_RECORDER_MAX_ENTRIES',
     get_option('flightrecorder-max-entries'),
 )
 conf_data.set_quoted('HOST_EID_PATH', join_paths(package_datadir, 'host_eid'))
-conf_data.set('MAXIMUM_TRANSFER_SIZE', get_option('maximum-transfer-size'))
 if get_option('transport-implementation') == 'mctp-demux'
     conf_data.set('PLDM_TRANSPORT_WITH_MCTP_DEMUX', 1)
 elif get_option('transport-implementation') == 'af-mctp'
     conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
-conf_data.set(
-    'DEFAULT_SENSOR_UPDATER_INTERVAL',
-    get_option('default-sensor-update-interval'),
-)
-conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
-conf_data.set('UPDATE_TIMEOUT_SECONDS', get_option('update-timeout-seconds'))
 
 # Firmware update inotify option
 if get_option('fw-update-pkg-inotify').allowed()

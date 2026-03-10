@@ -141,9 +141,8 @@ class Handler
     explicit Handler(
         PldmTransport* pldmTransport, sdeventplus::Event& event,
         pldm::InstanceIdDb& instanceIdDb, bool verbose,
-        std::chrono::seconds instanceIdExpiryInterval =
-            std::chrono::seconds(INSTANCE_ID_EXPIRATION_INTERVAL),
-        uint8_t numRetries = static_cast<uint8_t>(NUMBER_OF_REQUEST_RETRIES),
+        std::chrono::seconds instanceIdExpiryInterval = std::chrono::seconds(5),
+        uint8_t numRetries = 2,
         std::chrono::milliseconds responseTimeOut =
             std::chrono::milliseconds(RESPONSE_TIME_OUT)) :
         pldmTransport(pldmTransport), event(event), instanceIdDb(instanceIdDb),
