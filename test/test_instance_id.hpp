@@ -35,7 +35,7 @@ class TestInstanceIdDb : public pldm::InstanceIdDb
         return dbPath;
     };
 
-    TestInstanceIdDb(std::filesystem::path dbPath) :
+    explicit TestInstanceIdDb(std::filesystem::path dbPath) :
         InstanceIdDb(dbPath), dbPath(dbPath)
     {}
 
