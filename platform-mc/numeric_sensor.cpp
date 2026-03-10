@@ -19,6 +19,7 @@ namespace pldm
 namespace platform_mc
 {
 
+static constexpr uint64_t DEFAULT_SENSOR_UPDATER_INTERVAL = 999;
 // This allows code to cleanly iterate through all supported
 // threshold levels and directions.
 static const std::array<pldm::utils::Level, 3> allThresholdLevels = {
@@ -295,7 +296,7 @@ NumericSensor::NumericSensor(
      * DEFAULT_SENSOR_UPDATER_INTERVAL is in milliseconds
      * updateTime is in microseconds
      */
-    updateTime = static_cast<uint64_t>(DEFAULT_SENSOR_UPDATER_INTERVAL * 1000);
+    updateTime = DEFAULT_SENSOR_UPDATER_INTERVAL * 1000;
     if (std::isfinite(pdr->update_interval))
     {
         updateTime = pdr->update_interval * 1000000;
@@ -550,7 +551,7 @@ NumericSensor::NumericSensor(
      * DEFAULT_SENSOR_UPDATER_INTERVAL is in milliseconds
      * updateTime is in microseconds
      */
-    updateTime = static_cast<uint64_t>(DEFAULT_SENSOR_UPDATER_INTERVAL * 1000);
+    updateTime = DEFAULT_SENSOR_UPDATER_INTERVAL * 1000;
 
     if (!useMetricInterface)
     {

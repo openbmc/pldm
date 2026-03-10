@@ -32,7 +32,7 @@ namespace dma
 // The minimum data size of dma transfer in bytes
 constexpr uint32_t minSize = 16;
 
-constexpr size_t maxSize = DMA_MAXSIZE;
+constexpr size_t maxSize = 8384512;
 
 namespace fs = std::filesystem;
 

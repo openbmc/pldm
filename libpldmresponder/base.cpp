@@ -1,5 +1,6 @@
 #include "base.hpp"
 
+#include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 
