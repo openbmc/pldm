@@ -1,5 +1,6 @@
 #include "dbus_to_event_handler.hpp"
 
+#include "common/types.hpp"
 #include "libpldmresponder/pdr.hpp"
 
 #include <phosphor-logging/lg2.hpp>

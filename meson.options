@@ -56,27 +56,6 @@ option(
                     recorder, this feature will be disabled if it is set to 0''',
 )
 
-# PLDM Daemon Terminus options
-option(
-    'terminus-id',
-    type: 'integer',
-    min: 0,
-    max: 255,
-    value: 1,
-    description: '''The terminus id value of the device that is running this
-                    pldm stack''',
-)
-
-option(
-    'terminus-handle',
-    type: 'integer',
-    min: 0,
-    max: 65535,
-    value: 1,
-    description: '''The terminus handle value of the device that is running this
-                    pldm stack''',
-)
-
 # Timing specification options for PLDM messages
 option(
     'number-of-request-retries',

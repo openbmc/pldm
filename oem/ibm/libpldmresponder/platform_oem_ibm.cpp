@@ -1,5 +1,6 @@
 #include "platform_oem_ibm.hpp"
 
+#include "common/types.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 

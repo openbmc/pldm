@@ -66,8 +66,6 @@ if get_option('libpldmresponder').allowed()
         'EVENTS_JSONS_DIR',
         join_paths(package_datadir, 'events'),
     )
-    conf_data.set('TERMINUS_ID', get_option('terminus-id'))
-    conf_data.set('TERMINUS_HANDLE', get_option('terminus-handle'))
     add_project_arguments('-DLIBPLDMRESPONDER', language: 'cpp')
 endif
 conf_data.set('DBUS_TIMEOUT', get_option('dbus-timeout-value'))

@@ -1,4 +1,5 @@
 #include "common/test/mocked_utils.hpp"
+#include "common/types.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
 
@@ -51,7 +52,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 23);
 
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->effecter_id, 1);
     ASSERT_EQ(pdr->entity_type, 33);
     ASSERT_EQ(pdr->entity_instance, 0);
@@ -83,7 +84,7 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     ASSERT_EQ(pdr->hdr.record_change_num, 0);
     ASSERT_EQ(pdr->hdr.length, 24);
 
-    ASSERT_EQ(pdr->terminus_handle, TERMINUS_HANDLE);
+    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
     ASSERT_EQ(pdr->effecter_id, 2);
     ASSERT_EQ(pdr->entity_type, 100);
     ASSERT_EQ(pdr->entity_instance, 0);
