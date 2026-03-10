@@ -39,11 +39,6 @@ package_localstatedir = join_paths(
 conf_data = configuration_data()
 cpp = meson.get_compiler('cpp')
 
-# Enable POSIX poll APIs in libpldm
-if cpp.has_header('poll.h')
-    conf_data.set('PLDM_HAS_POLL', 1)
-endif
-
 conf_data.set_quoted('HOST_JSONS_DIR', join_paths(package_datadir, 'host'))
 
 if get_option('libpldmresponder').allowed()
