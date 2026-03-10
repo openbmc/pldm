@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df18c6bb_8ca3e645",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-10T10:39:00Z",
+      "side": 1,
+      "message": "Is this an assumption or is there a reference that states this?\n\nAny NumericSensor object may or may not have a threshold irrespective of whether they are metric or value interface, right?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "ef66ba4ed88c907d5091051a337de54fe48911a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
