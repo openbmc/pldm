@@ -16,6 +16,24 @@
       "message": "I can see how the change helps in terms of reducing bloat in the file here, but at the same time these were added as configurable because they really are not fixed. Such options exist elsewhere in openbmc repos as well. Once there is a usecase someone will have to add these back again. Are there other strong reasons/guidelines for removing unused (beyond the default value) configs?",
       "revId": "923507c5283ec1325275dac7f2bf0165af40e12f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fee0f2ea_8514027d",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-11T12:48:35Z",
+      "side": 0,
+      "message": "\u003e Such options exist elsewhere in openbmc repos as well\n\nI would open pull requests to remove those as well, but I\u0027m focused on PLDM right now.\n\n\u003e Once there is a usecase someone will have to add these back again.\n\nAssuming it ever happens, which seems unlikely at this point?  And if it did, that wouldn\u0027t be terribly difficult would it?\n\nWe don\u0027t have dead code without users - are config options really any different?  If anything, the dead config options are worse because they are an interface of sorts.\n\n\u003e  Are there other strong reasons/guidelines for removing unused\n\nYes this is a classic example of overengineering.  There are so many shiny knobs and fancy buttons to push that the whole interface becomes complex and confusing.\n\nI think all of these apply to some level:\n\nhttps://en.wikipedia.org/wiki/You_aren\u0027t_gonna_need_it\nhttps://en.wikipedia.org/wiki/KISS_principle\nhttps://en.wikipedia.org/wiki/Worse_is_better\nhttps://en.wikipedia.org/wiki/Overengineering",
+      "parentUuid": "7b7dc202_d57064da",
+      "revId": "923507c5283ec1325275dac7f2bf0165af40e12f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
