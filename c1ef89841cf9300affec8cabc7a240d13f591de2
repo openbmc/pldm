@@ -16,6 +16,24 @@
       "message": "Hey Brad — recently there’s been some work toward establishing a standard clang-tidy configuration for OpenBMC. The proposed configuration is available here:  https://github.com/openbmc/docs/blob/master/style/cpp/.clang-tidy. Would you mind adding the new checks in docs ? \n\nWhen we tried to add new checks, It was suggested that we first document any new checks within the style guide and then gradually apply those checks across the repositories. This approach helps ensure consistent settings across all repositories and improves predictability, particularly when issues arise due to clang version upgrades.",
       "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e9234f5_ab543791",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-11T12:33:21Z",
+      "side": 1,
+      "message": "Thanks Manoj for the review.\n\n\u003e Would you mind adding the new checks in docs ?\n\nThere is already a review in flight: https://gerrit.openbmc.org/c/openbmc/docs/+/82776\n\n\u003e When we tried to add \n\nYou tried?  I\u0027m confused.  Aren\u0027t you the maintainer of this code?  Is there some higher authority you answer to?\n\n\u003e This approach helps ensure consistent settings across all repositories\n\nConsistency is a great thing to strive for.  But I don\u0027t believe it should be an impediment to improving code quality right now.\n\nI worry that unified consensus will take years or never occur (just look at the age of the review I linked above).  Does that mean we should all stop working on adhering to the cpp core guidelines?",
+      "parentUuid": "bfbedb81_c919b83e",
+      "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
