@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40d59d45_0747cc66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002038
+      },
+      "writtenOn": "2026-03-12T20:45:51Z",
+      "side": 1,
+      "message": "One minor comment.",
+      "revId": "6324ab733fd3d7f0f4a67a3bdd40199d483a543d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ff340d_f27b2814",
+        "filename": "utilities/requester/set_state_effecter_async.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1002038
+      },
+      "writtenOn": "2026-03-12T20:45:51Z",
+      "side": 1,
+      "message": "Might be worth logging the errors.",
+      "revId": "6324ab733fd3d7f0f4a67a3bdd40199d483a543d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
