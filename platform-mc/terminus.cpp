@@ -220,6 +220,14 @@ void Terminus::parseTerminusPDRs()
         terminusName = std::format("Terminus_{}", tid);
     }
 
+    if (!createSensors)
+    {
+        lg2::info("Terminus ID {TID}: CreateSensors is false. "
+                  "Skipping inventory and sensor creation.",
+                  "TID", tid);
+        return;
+    }
+
     auto iName = getInventoryName();
     std::string inventoryName;
     if (iName && !iName->empty())
@@ -865,6 +873,16 @@ int Terminus::fetchEntityManagerConfiguration()
                         "NAME", std::get<std::string>(invIt->second), "PATH",
                         objPath.str);
                     setInventoryName(std::get<std::string>(invIt->second));
+                }
+
+                auto csIt = props.find("CreateSensors");
+                if (csIt != props.end() &&
+                    std::holds_alternative<bool>(csIt->second))
+                {
+                    bool flag = std::get<bool>(csIt->second);
+                    lg2::info("Entity Manager CreateSensors={FLAG} on {PATH}",
+                              "FLAG", flag, "PATH", objPath.str);
+                    setCreateSensors(flag);
                 }
             }
 
