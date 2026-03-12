@@ -135,6 +135,18 @@ class Terminus
         return associatedPath;
     }
 
+    /** @brief The setter to set the createSensors flag */
+    void setCreateSensors(bool flag)
+    {
+        createSensors = flag;
+    }
+
+    /** @brief The getter to get the createSensors flag */
+    bool getCreateSensors()
+    {
+        return createSensors;
+    }
+
     /** @brief Parse record data from FRU table
      *
      *  @param[in] fruData - pointer to FRU record table
@@ -341,6 +353,14 @@ class Terminus
 
     /** @brief associated path */
     EntityName associatedPath{};
+
+    /** @brief Flag to control sensor and inventory creation.
+     *        When false, the terminus skips creating inventory paths and
+     *        sensors during PDR parsing. Read from Entity Manager
+     *        MCTPI2CTarget/MCTPI3CTarget "CreateSensors" property.
+     *        Defaults to true for backward compatibility.
+     */
+    bool createSensors = true;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;

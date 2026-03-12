@@ -7,6 +7,7 @@
 
 #include <common/utils.hpp>
 
+#include <algorithm>
 #include <memory>
 #include <ranges>
 
@@ -239,6 +240,14 @@ void Terminus::parseTerminusPDRs()
     if (terminusName.empty())
     {
         terminusName = std::format("Terminus_{}", tid);
+    }
+
+    if (!createSensors)
+    {
+        lg2::info("Terminus ID {TID}: CreateSensors is false. "
+                  "Skipping inventory and sensor creation.",
+                  "TID", tid);
+        return;
     }
 
     auto assocPath = getAssociatedPath();
@@ -884,6 +893,21 @@ int Terminus::fetchEntityManagerConfiguration()
 
         for (const auto& [ifName, props] : interfaces)
         {
+            // Read the optional CreateSensors flag from the MCTP target
+            // configuration
+            if (std::ranges::contains(interfaceFilter, ifName))
+            {
+                auto csIt = props.find("CreateSensors");
+                if (csIt != props.end() &&
+                    std::holds_alternative<bool>(csIt->second))
+                {
+                    bool flag = std::get<bool>(csIt->second);
+                    lg2::info("Entity Manager CreateSensors={FLAG} on {PATH}",
+                              "FLAG", flag, "PATH", objPath.str);
+                    setCreateSensors(flag);
+                }
+            }
+
             // Retrieve sensor names from PLDMSensors interface and update
             // sensorAuxiliaryNamesTbl
             bool isSensorInterface = false;
