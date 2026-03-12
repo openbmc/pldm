@@ -88,6 +88,24 @@
       "parentUuid": "56058b8f_0d234391",
       "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e4ed2ed_2640fa01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-12T19:06:19Z",
+      "side": 1,
+      "message": "\u003e where people put in random clang-tidy checks\n\nBut this isn\u0027t random clang-tidy checks.  It\u0027s cppcoreguidelines-special-member-functions.  So I have to ask again, what possible value could there be in impeding fixing instances of cppcoreguidelines-special-member-functions and ensuring they don\u0027t get re-introduced?\n\n\u003e and weren\u0027t around to help untangle the issues when it was time to upgrade the compiler.\n\nThat makes sense I guess.  I wouldn\u0027t have thought removing a couple lines from a couple .clang-tidy files would be so time consuming but maybe there is more to it.\n\n\u003e As a project we made a conscious decision that we want to vet clang-tidy adds\n\nI\u0027m not in all the forums that you are but based on review feedback I\u0027ve seen and discussions I\u0027ve had with others, I would not come to this conclusion.",
+      "parentUuid": "fe52a354_f029fed4",
+      "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
