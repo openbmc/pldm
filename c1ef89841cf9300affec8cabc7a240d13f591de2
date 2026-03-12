@@ -70,6 +70,24 @@
       "parentUuid": "b1e1b5dc_6a8fc2f5",
       "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe52a354_f029fed4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-12T18:40:57Z",
+      "side": 1,
+      "message": "\u003e What possible value could there be in impeding/delaying that?\n\nThe reason for putting the breaks on clang-tidy stuff is that it can impede our ability to move to a new clang version.  We had many cases in the past where people put in random clang-tidy checks, which have been found to be fragile, and weren\u0027t around to help untangle the issues when it was time to upgrade the compiler.  As a project we made a conscious decision that we want to vet clang-tidy adds, rather than them being a one-off in individual sub-projects.  We are making the trade-off of overall project velocity against potential local bug-catches.\n\nIn this case the consistency isn\u0027t \"we want all the code to look the same\", which you are right, it is never accomplished.  The consistency we\u0027re aiming for in this case is \"we want all the sub-projects to behave the same so we can reason about how we\u0027re going to be able to manage them at a organization level\".  This consistency, I think, is achievable.",
+      "parentUuid": "56058b8f_0d234391",
+      "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
