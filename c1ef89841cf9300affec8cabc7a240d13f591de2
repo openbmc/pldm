@@ -52,6 +52,24 @@
       "parentUuid": "0e9234f5_ab543791",
       "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56058b8f_0d234391",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-12T18:28:34Z",
+      "side": 1,
+      "message": "\u003e There are directions I also don\u0027t like, but we have to work with others.\n\nOk sure, I am probably unfairly putting Manoj in a tight spot.  Sorry Manoj.\n\nMaybe my perspective helps you understand my frustration.  At the end of the day, I\u0027m trying to improve the pldm code by complying with the cpp core guidelines, which are already a stated objective of OpenBMC.  To prevent mistakes going forward, I\u0027m leveraging tooling we already have in place to prevent them.  What possible value could there be in impeding/delaying that?\n\nI\u0027m afraid the answer is consistency and my take there is that consistency is something you forever strive towards, not something that is accomplished and thus, should never get in the way of forward progress.",
+      "parentUuid": "b1e1b5dc_6a8fc2f5",
+      "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
