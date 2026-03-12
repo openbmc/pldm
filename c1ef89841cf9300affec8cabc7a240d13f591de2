@@ -34,6 +34,24 @@
       "parentUuid": "bfbedb81_c919b83e",
       "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1e1b5dc_6a8fc2f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-12T01:06:01Z",
+      "side": 1,
+      "message": "\u003e You tried? I\u0027m confused. Aren\u0027t you the maintainer of this code? Is there some higher authority you answer to?\n\nYou know the answer to this question because it has already been discussed with you on Discord previously with respect to other repositories.\n\nYes, every single maintainer, myself included, answers to the \"higher authority\" of the consensus of the project.  There are directions I also don\u0027t like, but we have to work with others.\n\nExpectations of a subproject owner (aka maintainer) are identified here:\nhttps://github.com/openbmc/docs/blob/master/community-membership.md#subproject-owner\n\nA relevant one for this discussion is (emphasis mine for clarity):\n\u003e Keep abreast of technical changes to the overall project and maintain and/or delegate maintenance of the subproject to _keep it aligned with the overall project_.\n\n---\n\u003e There is already a review in flight: https://gerrit.openbmc.org/c/openbmc/docs/+/82776\n\nI\u0027d also like this stack put in in close proximity because it adds a lot of clarifications on why we\u0027ve chosen specific checks and not others.\n\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/82894\n\nNeither Ed or I have particularly prioritized this work in the last few months.  Since it seems like there is some renewed interest in this, I\u0027ll try to get the feedback addressed for mine and Ed\u0027s commit sequences in the next few days.",
+      "parentUuid": "0e9234f5_ab543791",
+      "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
