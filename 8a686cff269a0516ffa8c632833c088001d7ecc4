@@ -16,6 +16,24 @@
       "message": "The D-Bus interface on these objects will still be a common set (including Board). Is there also a plan to add relevant interfaces based on the entity type? Or is this limited to fixing the human-readability of these paths?",
       "revId": "8a686cff269a0516ffa8c632833c088001d7ecc4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a852ca6_b551b7f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-03-12T16:47:41Z",
+      "side": 1,
+      "message": "See my comment below",
+      "parentUuid": "70d98cba_db9ed60e",
+      "revId": "8a686cff269a0516ffa8c632833c088001d7ecc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
