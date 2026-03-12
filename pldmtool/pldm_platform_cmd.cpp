@@ -132,6 +132,274 @@ class GetEventReceiver : public CommandInterface
     }
 };
 
+static const std::map<uint8_t, std::string> setThermalTrip{
+    {PLDM_STATE_SET_THERMAL_TRIP_STATUS_NORMAL, "Normal"},
+    {PLDM_STATE_SET_THERMAL_TRIP_STATUS_THERMAL_TRIP, "Thermal Trip"}};
+
+static const std::map<uint8_t, std::string> setIdentifyState{
+    {PLDM_STATE_SET_IDENTIFY_STATE_UNASSERTED, "Identify State Unasserted"},
+    {PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED, "Identify State Asserted"}};
+
+static const std::map<uint8_t, std::string> setBootProgressState{
+    {PLDM_STATE_SET_BOOT_PROG_STATE_NOT_ACTIVE, "Boot Not Active"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_COMPLETED, "Boot Completed"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_MEM_INITIALIZATION,
+     "Memory Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_HARD_DISK_INITIALIZATION,
+     "Hard-Disk Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_SEC_PROC_INITIALIZATION,
+     "Secondary Processor(s) Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_USER_AUTHENTICATION, "User Authentication"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_USER_INITIATED_SYSTEM_SETUP,
+     "User-Initiated System Setup"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_USB_RESOURCE_CONFIG,
+     "USB Resource Configuration"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_PCI_RESORUCE_CONFIG,
+     "PCI Resource Configuration"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_OPTION_ROM_INITIALIZATION,
+     "Option ROM Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_VIDEO_INITIALIZATION,
+     "Video Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_CACHE_INITIALIZATION,
+     "Cache Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_SM_BUS_INITIALIZATION,
+     "SM Bus Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_KEYBOARD_CONTROLLER_INITIALIZATION,
+     "Keyboard Controller Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_EC_MC_INITIALIZATION,
+     "Embedded Controller/Management Controller Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_DOCKING_STATION_ATTACHEMENT,
+     "Docking Station Attachment"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_ENABLING_DOCKING_STATION,
+     "Enabling Docking Station"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_DOCKING_STATION_EJECTION,
+     "Docking Station Ejection"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_DISABLING_DOCKING_STATION,
+     "Disabling Docking Station"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_OSSTART,
+     "Calling Operating System Wake-Up Vector"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_STARTING_OP_SYS,
+     "Starting Operating System Boot Process"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_BASE_BOARD_INITIALIZATION,
+     "Baseboard or Motherboard Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_FLOPPY_INITIALIZATION,
+     "Floppy Initialization"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_KEYBOARD_TEST, "Keyboard Test"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_POINTING_DEVICE_TEST,
+     "Pointing Device Test"},
+    {PLDM_STATE_SET_BOOT_PROG_STATE_PRIMARY_PROC_INITIALIZATION,
+     "Primary Processor Initialization"}};
+
+static const std::map<uint8_t, std::string> setOpFaultStatus{
+    {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_NORMAL, "Normal"},
+    {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_ERROR, "Error"},
+    {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_NON_RECOVERABLE_ERROR,
+     "Non Recoverable Error"}};
+
+static const std::map<uint8_t, std::string> setSysPowerState{
+    {PLDM_STATE_SET_SYS_POWER_STATE_ON, "On"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_HIBERNATE, "Hibernate (off-soft)"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_SLEEP_LIGHT, "Sleep – Light"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_SLEEP_DEEP, "Sleep – Deep"},
+    {PLDM_STATE_SET_SYS_POWER_CYCLE_SOFT, "Power Cycle Soft"},
+    {PLDM_STATE_SET_SYS_POWER_CYCLE_HARD, "Power Cycle Hard"},
+    {PLDM_STATE_SET_SYS_POWER_CYCLE_OFF_SOFT_GRACEFUL,
+     "Power Cycle Off-Soft Graceful"},
+    {PLDM_STATE_SET_SYS_POWER_CYCLE_OFF_HARD_GRACEFUL,
+     "Power Cycle Off-Hard Graceful"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_OFF_SOFT_GRACEFUL, "Off-Soft Graceful"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_OFF_HARD_GRACEFUL, "Off-Hard Graceful"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_MASTER_BUS_RESET, "Master Bus Reset"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_MASTER_BUS_RESET_GRACEFUL,
+     "Master Bus Reset (Graceful)"},
+    {PLDM_STATE_SET_SYS_POWER_STATE_NMI, "Diagnostic Interrupt (NMI)"}};
+
+static const std::map<uint8_t, std::string> setSWTerminationStatus{
+    {PLDM_SW_TERM_NORMAL, "Normal"},
+    {PLDM_SW_TERM_SOFTWARE_TERMINATION_DETECTED,
+     "Software Termination Detected"},
+    {PLDM_SW_TERM_CRITICAL_STOP_DURING_LOAD_INITIALIZATION,
+     "Critical Stop during Load/Initialization"},
+    {PLDM_SW_TERM_RUN_TIME_CRITICAL_STOP, "Run-time Critical Stop"},
+    {PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED, "Graceful Shutdown Requested"},
+    {PLDM_SW_TERM_GRACEFUL_RESTART_REQUESTED, "Graceful Restart Requested"},
+    {PLDM_SW_TERM_GRACEFUL_SHUTDOWN, "Graceful Shutdown"},
+    {PLDM_SW_TERM_TERMINATION_REQUEST_FAILED, "Termination Request Failed"}};
+
+static const std::map<uint8_t, std::string> setAvailability{
+    {PLDM_STATE_SET_AVAILABILITY_ENABLED, "Enabled"},
+    {PLDM_STATE_SET_AVAILABILITY_DISABLED, "Disabled"},
+    {PLDM_STATE_SET_AVAILABILITY_SHUTDOWN, "Shutdown"},
+    {PLDM_STATE_SET_AVAILABILITY_OFFLINE, "Offline"},
+    {PLDM_STATE_SET_AVAILABILITY_IN_TEST, "In Test"},
+    {PLDM_STATE_SET_AVAILABILITY_DEFERRED, "Deferred"},
+    {PLDM_STATE_SET_AVAILABILITY_QUIESCENT, "Quiescent"},
+    {PLDM_STATE_SET_AVAILABILITY_REBOOTING, "Rebooting"},
+    {PLDM_STATE_SET_AVAILABILITY_RESETTING, "Resetting"},
+    {PLDM_STATE_SET_AVAILABILITY_FAILED, "Failed"},
+    {PLDM_STATE_SET_AVAILABILITY_NOT_INSTALLED, "Not Installed"},
+    {PLDM_STATE_SET_AVAILABILITY_POWER_SAVE_MODE, "Power Save Mode"},
+    {PLDM_STATE_SET_AVAILABILITY_PAUSED, "Paused"},
+    {PLDM_STATE_SET_AVAILABILITY_SHUTTING_DOWN, "Shutting Down"},
+    {PLDM_STATE_SET_AVAILABILITY_STARTING, "Starting"},
+    {PLDM_STATE_SET_AVAILABILITY_NOT_RESPONDING, "Not Responding"}};
+
+static const std::map<uint8_t, std::string> setPredictiveCondition{
+    {PLDM_STATE_SET_PREDICTIVE_CONDITION_NORMAL, "Normal"},
+    {PLDM_STATE_SET_PREDICTIVE_CONDITION_PREDICTIVE_FAILURE,
+     "Predictive Failure"}};
+
+static const std::map<uint8_t, std::string> setOperationalStressStatus{
+    {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS_NORMAL, "Normal"},
+    {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS_STRESSED, "Stressed"}};
+
+static const std::map<uint8_t, std::string> setPresence{
+    {PLDM_STATE_SET_PRESENCE_PRESENT, "Present"},
+    {PLDM_STATE_SET_PRESENCE_NOT_PRESENT, "Not Present"}};
+
+static const std::map<uint8_t, std::string> setConfigurationState{
+    {PLDM_STATE_SET_CONFIGURATION_STATE_VALID_CONFIGURATION,
+     "Valid Configuration"},
+    {PLDM_STATE_SET_CONFIGURATION_STATE_INVALID_CONFIGURATION,
+     "Invalid Configuration"},
+    {PLDM_STATE_SET_CONFIGURATION_STATE_NOT_CONFIGURED, "Not Configured"},
+    {PLDM_STATE_SET_CONFIGURATION_STATE_MISSING_CONFIGURATION,
+     "Missing Configuration"}};
+
+static const std::map<uint8_t, std::string> setChangedConfiguration{
+    {PLDM_STATE_SET_CHANGED_CONFIGURATION_NORMAL, "Normal"},
+    {PLDM_STATE_SET_CHANGED_CONFIGURATION_CONFIGURATION_CHANGE_DETECTED,
+     "Configuration Change Detected"}};
+
+static const std::map<uint8_t, std::string> setVersion{
+    {PLDM_STATE_SET_VERSION_NORMAL, "Normal"},
+    {PLDM_STATE_SET_VERSION_VERSION_CHANGE_DETECTED_COMPATIBLE,
+     "Version Change Detected – Compatible"},
+    {PLDM_STATE_SET_VERSION_VERSION_CHANGE_DETECTED_INCOMPATIBLE,
+     "Version Change Detected – Incompatible"},
+    {PLDM_STATE_SET_VERSION_VERSION_CHANGE_PENDING, "Version Change Pending"}};
+
+static const std::map<uint8_t, std::string> setLinkState{
+    {PLDM_STATE_SET_LINK_STATE_CONNECTED, "Connected"},
+    {PLDM_STATE_SET_LINK_STATE_DISCONNECTED, "Disconnected"}};
+
+static const std::map<uint8_t, std::string> setCommunicationLeashStatus{
+    {PLDM_STATE_SET_COMMUNICATION_LEASH_STATUS_LEASH_CONNECTED,
+     "Leash Connected"},
+    {PLDM_STATE_SET_COMMUNICATION_LEASH_STATUS_LEASH_DISCONNECTED,
+     "Leash Disconnected"}};
+
+static const std::map<uint8_t, std::string> setBootRestartCause{
+    {PLDM_STATE_SET_BOOT_RESTART_CAUSE_POWERED_UP, "Powered Up"},
+    {PLDM_STATE_SET_BOOT_RESTART_CAUSE_HARD_RESET, "Hard Reset"},
+    {PLDM_STATE_SET_BOOT_RESTART_CAUSE_WARM_RESET, "Warm Reset"},
+    {PLDM_STATE_SET_BOOT_RESTART_CAUSE_MANUAL_HARD_RESET, "Manual Hard Reset"},
+    {PLDM_STATE_SET_BOOT_RESTART_CAUSE_MANUAL_WARM_RESET, "Manual Warm Reset"},
+    {PLDM_STATE_SET_BOOT_RESTART_CAUSE_SYSTEM_RESTART, "System Restart"},
+    {PLDM_STATE_SET_BOOT_RESTART_CAUSE_WATCHDOG_TIMEOUT, "Watchdog Timeout"}};
+
+static const std::map<uint8_t, std::string> setHealthState{
+    {PLDM_STATE_SET_HEALTH_STATE_NORMAL, "Normal"},
+    {PLDM_STATE_SET_HEALTH_STATE_NON_CRITICAL, "Non-Critical"},
+    {PLDM_STATE_SET_HEALTH_STATE_CRITICAL, "Critical"},
+    {PLDM_STATE_SET_HEALTH_STATE_FATAL, "Fatal"},
+    {PLDM_STATE_SET_HEALTH_STATE_UPPER_NON_CRITICAL, "Upper Non-Critical"},
+    {PLDM_STATE_SET_HEALTH_STATE_LOWER_NON_CRITICAL, "Lower Non-Critical"},
+    {PLDM_STATE_SET_HEALTH_STATE_UPPER_CRITICAL, "Upper Critical"},
+    {PLDM_STATE_SET_HEALTH_STATE_LOWER_CRITICAL, "Lower Critical"},
+    {PLDM_STATE_SET_HEALTH_STATE_UPPER_FATAL, "Upper Fatal"},
+    {PLDM_STATE_SET_HEALTH_STATE_LOWER_FATAL, "Lower Fatal"}};
+
+static const std::map<uint8_t, std::string> setOperationalRunningState{
+    {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STARTING, "Starting"},
+    {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STOPPING, "Stopping"},
+    {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STOPPED, "Stopped"},
+    {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_IN_SERVICE, "In Service"},
+    {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_ABORTED, "Aborted"},
+    {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_DORMANT, "Dormant"}};
+
+static const std::map<uint8_t, std::string> setPowerDeviceState{
+    {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_UNKNOWN, "Unknown"},
+    {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_FULLY_ON, "Fully-On"},
+    {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_INTERMEDIATE_1,
+     "Intermediate State-1"},
+    {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_INTERMEDIATE_2,
+     "Intermediate State-2"},
+    {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_OFF, "Off"}};
+
+static const std::map<uint8_t, std::string> setACPIPowerState{
+    {PLDM_STATE_SET_ACPI_POWER_STATE_S0, "S0"},
+    {PLDM_STATE_SET_ACPI_POWER_STATE_S1, "S1"},
+    {PLDM_STATE_SET_ACPI_POWER_STATE_S2, "S2"},
+    {PLDM_STATE_SET_ACPI_POWER_STATE_S3, "S3"},
+    {PLDM_STATE_SET_ACPI_POWER_STATE_S4, "S4"},
+    {PLDM_STATE_SET_ACPI_POWER_STATE_S5, "S5"},
+    {PLDM_STATE_SET_ACPI_POWER_STATE_G3, "G3"}};
+
+static const std::map<uint16_t, const std::map<uint8_t, std::string>>
+    populatePStateMaps{
+        {PLDM_STATE_SET_THERMAL_TRIP, setThermalTrip},
+        {PLDM_STATE_SET_IDENTIFY_STATE, setIdentifyState},
+        {PLDM_STATE_SET_BOOT_PROGRESS, setBootProgressState},
+        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS, setOpFaultStatus},
+        {PLDM_STATE_SET_SYSTEM_POWER_STATE, setSysPowerState},
+        {PLDM_STATE_SET_SW_TERMINATION_STATUS, setSWTerminationStatus},
+        {PLDM_STATE_SET_AVAILABILITY, setAvailability},
+        {PLDM_STATE_SET_PREDICTIVE_CONDITION, setPredictiveCondition},
+        {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS, setOperationalStressStatus},
+        {PLDM_STATE_SET_PRESENCE, setPresence},
+        {PLDM_STATE_SET_CONFIGURATION_STATE, setConfigurationState},
+        {PLDM_STATE_SET_CHANGED_CONFIGURATION, setChangedConfiguration},
+        {PLDM_STATE_SET_VERSION, setVersion},
+        {PLDM_STATE_SET_LINK_STATE, setLinkState},
+        {PLDM_STATE_SET_COMM_LEASH_STATUS, setCommunicationLeashStatus},
+        {PLDM_STATE_SET_BOOT_RESTART_CAUSE, setBootRestartCause},
+        {PLDM_STATE_SET_HEALTH_STATE, setHealthState},
+        {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS, setOperationalRunningState},
+        {PLDM_STATE_SET_DEVICE_POWER_STATE, setPowerDeviceState},
+        {PLDM_STATE_SET_ACPI_POWER_STATE, setACPIPowerState},
+    };
+
+std::vector<std::string> getStateSetPossibleStateNames(
+    uint16_t stateId, const std::vector<uint8_t>& value)
+{
+    std::vector<std::string> data{};
+
+    for (const auto& s : value)
+    {
+        std::map<uint8_t, std::string> stateNameMaps;
+        auto pstr = std::to_string(s);
+
+#ifdef OEM_IBM
+        if (stateId >= PLDM_OEM_STATE_SET_ID_START &&
+            stateId < PLDM_OEM_STATE_SET_ID_END)
+        {
+            if (populateOemIBMStateMaps.contains(stateId))
+            {
+                const std::map<uint8_t, std::string> stateNames =
+                    populateOemIBMStateMaps.at(stateId);
+                stateNameMaps.insert(stateNames.begin(), stateNames.end());
+            }
+        }
+#endif
+        if (populatePStateMaps.contains(stateId))
+        {
+            const std::map<uint8_t, std::string> stateNames =
+                populatePStateMaps.at(stateId);
+            stateNameMaps.insert(stateNames.begin(), stateNames.end());
+        }
+        if (stateNameMaps.contains(s))
+        {
+            data.push_back(stateNameMaps.at(s) + "(" + pstr + ")");
+        }
+        else
+        {
+            data.push_back(pstr);
+        }
+    }
+    return data;
+}
+
 class GetPDR : public CommandInterface
 {
   public:
@@ -687,247 +955,6 @@ class GetPDR : public CommandInterface
         {PLDM_OEM_PDR, "OEM PDR"},
     };
 
-    static inline const std::map<uint8_t, std::string> setThermalTrip{
-        {PLDM_STATE_SET_THERMAL_TRIP_STATUS_NORMAL, "Normal"},
-        {PLDM_STATE_SET_THERMAL_TRIP_STATUS_THERMAL_TRIP, "Thermal Trip"}};
-
-    static inline const std::map<uint8_t, std::string> setIdentifyState{
-        {PLDM_STATE_SET_IDENTIFY_STATE_UNASSERTED, "Identify State Unasserted"},
-        {PLDM_STATE_SET_IDENTIFY_STATE_ASSERTED, "Identify State Asserted"}};
-
-    static inline const std::map<uint8_t, std::string> setBootProgressState{
-        {PLDM_STATE_SET_BOOT_PROG_STATE_NOT_ACTIVE, "Boot Not Active"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_COMPLETED, "Boot Completed"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_MEM_INITIALIZATION,
-         "Memory Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_HARD_DISK_INITIALIZATION,
-         "Hard-Disk Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_SEC_PROC_INITIALIZATION,
-         "Secondary Processor(s) Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_USER_AUTHENTICATION,
-         "User Authentication"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_USER_INITIATED_SYSTEM_SETUP,
-         "User-Initiated System Setup"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_USB_RESOURCE_CONFIG,
-         "USB Resource Configuration"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_PCI_RESOURCE_CONFIG,
-         "PCI Resource Configuration"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_OPTION_ROM_INITIALIZATION,
-         "Option ROM Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_VIDEO_INITIALIZATION,
-         "Video Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_CACHE_INITIALIZATION,
-         "Cache Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_SM_BUS_INITIALIZATION,
-         "SM Bus Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_KEYBOARD_CONTROLLER_INITIALIZATION,
-         "Keyboard Controller Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_EC_MC_INITIALIZATION,
-         "Embedded Controller/Management Controller Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_DOCKING_STATION_ATTACHEMENT,
-         "Docking Station Attachment"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_ENABLING_DOCKING_STATION,
-         "Enabling Docking Station"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_DOCKING_STATION_EJECTION,
-         "Docking Station Ejection"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_DISABLING_DOCKING_STATION,
-         "Disabling Docking Station"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_OSSTART,
-         "Calling Operating System Wake-Up Vector"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_STARTING_OP_SYS,
-         "Starting Operating System Boot Process"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_BASE_BOARD_INITIALIZATION,
-         "Baseboard or Motherboard Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_FLOPPY_INITIALIZATION,
-         "Floppy Initialization"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_KEYBOARD_TEST, "Keyboard Test"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_POINTING_DEVICE_TEST,
-         "Pointing Device Test"},
-        {PLDM_STATE_SET_BOOT_PROG_STATE_PRIMARY_PROC_INITIALIZATION,
-         "Primary Processor Initialization"}};
-
-    static inline const std::map<uint8_t, std::string> setOpFaultStatus{
-        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_NORMAL, "Normal"},
-        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_ERROR, "Error"},
-        {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS_NON_RECOVERABLE_ERROR,
-         "Non Recoverable Error"}};
-
-    static inline const std::map<uint8_t, std::string> setSysPowerState{
-        {PLDM_STATE_SET_SYS_POWER_STATE_ON, "On"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_HIBERNATE, "Hibernate (off-soft)"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_SLEEP_LIGHT, "Sleep – Light"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_SLEEP_DEEP, "Sleep – Deep"},
-        {PLDM_STATE_SET_SYS_POWER_CYCLE_SOFT, "Power Cycle Soft"},
-        {PLDM_STATE_SET_SYS_POWER_CYCLE_HARD, "Power Cycle Hard"},
-        {PLDM_STATE_SET_SYS_POWER_CYCLE_OFF_SOFT_GRACEFUL,
-         "Power Cycle Off-Soft Graceful"},
-        {PLDM_STATE_SET_SYS_POWER_CYCLE_OFF_HARD_GRACEFUL,
-         "Power Cycle Off-Hard Graceful"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_OFF_SOFT_GRACEFUL, "Off-Soft Graceful"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_OFF_HARD_GRACEFUL, "Off-Hard Graceful"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_MASTER_BUS_RESET, "Master Bus Reset"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_MASTER_BUS_RESET_GRACEFUL,
-         "Master Bus Reset (Graceful)"},
-        {PLDM_STATE_SET_SYS_POWER_STATE_NMI, "Diagnostic Interrupt (NMI)"}};
-
-    static inline const std::map<uint8_t, std::string> setSWTerminationStatus{
-        {PLDM_SW_TERM_NORMAL, "Normal"},
-        {PLDM_SW_TERM_SOFTWARE_TERMINATION_DETECTED,
-         "Software Termination Detected"},
-        {PLDM_SW_TERM_CRITICAL_STOP_DURING_LOAD_INITIALIZATION,
-         "Critical Stop during Load/Initialization"},
-        {PLDM_SW_TERM_RUN_TIME_CRITICAL_STOP, "Run-time Critical Stop"},
-        {PLDM_SW_TERM_GRACEFUL_SHUTDOWN_REQUESTED,
-         "Graceful Shutdown Requested"},
-        {PLDM_SW_TERM_GRACEFUL_RESTART_REQUESTED, "Graceful Restart Requested"},
-        {PLDM_SW_TERM_GRACEFUL_SHUTDOWN, "Graceful Shutdown"},
-        {PLDM_SW_TERM_TERMINATION_REQUEST_FAILED,
-         "Termination Request Failed"}};
-
-    static inline const std::map<uint8_t, std::string> setAvailability{
-        {PLDM_STATE_SET_AVAILABILITY_ENABLED, "Enabled"},
-        {PLDM_STATE_SET_AVAILABILITY_DISABLED, "Disabled"},
-        {PLDM_STATE_SET_AVAILABILITY_SHUTDOWN, "Shutdown"},
-        {PLDM_STATE_SET_AVAILABILITY_OFFLINE, "Offline"},
-        {PLDM_STATE_SET_AVAILABILITY_IN_TEST, "In Test"},
-        {PLDM_STATE_SET_AVAILABILITY_DEFERRED, "Deferred"},
-        {PLDM_STATE_SET_AVAILABILITY_QUIESCENT, "Quiescent"},
-        {PLDM_STATE_SET_AVAILABILITY_REBOOTING, "Rebooting"},
-        {PLDM_STATE_SET_AVAILABILITY_RESETTING, "Resetting"},
-        {PLDM_STATE_SET_AVAILABILITY_FAILED, "Failed"},
-        {PLDM_STATE_SET_AVAILABILITY_NOT_INSTALLED, "Not Installed"},
-        {PLDM_STATE_SET_AVAILABILITY_POWER_SAVE_MODE, "Power Save Mode"},
-        {PLDM_STATE_SET_AVAILABILITY_PAUSED, "Paused"},
-        {PLDM_STATE_SET_AVAILABILITY_SHUTTING_DOWN, "Shutting Down"},
-        {PLDM_STATE_SET_AVAILABILITY_STARTING, "Starting"},
-        {PLDM_STATE_SET_AVAILABILITY_NOT_RESPONDING, "Not Responding"}};
-
-    static inline const std::map<uint8_t, std::string> setPredictiveCondition{
-        {PLDM_STATE_SET_PREDICTIVE_CONDITION_NORMAL, "Normal"},
-        {PLDM_STATE_SET_PREDICTIVE_CONDITION_PREDICTIVE_FAILURE,
-         "Predictive Failure"}};
-
-    static inline const std::map<uint8_t, std::string>
-        setOperationalStressStatus{
-            {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS_NORMAL, "Normal"},
-            {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS_STRESSED, "Stressed"}};
-
-    static inline const std::map<uint8_t, std::string> setPresence{
-        {PLDM_STATE_SET_PRESENCE_PRESENT, "Present"},
-        {PLDM_STATE_SET_PRESENCE_NOT_PRESENT, "Not Present"}};
-
-    static inline const std::map<uint8_t, std::string> setConfigurationState{
-        {PLDM_STATE_SET_CONFIGURATION_STATE_VALID_CONFIGURATION,
-         "Valid Configuration"},
-        {PLDM_STATE_SET_CONFIGURATION_STATE_INVALID_CONFIGURATION,
-         "Invalid Configuration"},
-        {PLDM_STATE_SET_CONFIGURATION_STATE_NOT_CONFIGURED, "Not Configured"},
-        {PLDM_STATE_SET_CONFIGURATION_STATE_MISSING_CONFIGURATION,
-         "Missing Configuration"}};
-
-    static inline const std::map<uint8_t, std::string> setChangedConfiguration{
-        {PLDM_STATE_SET_CHANGED_CONFIGURATION_NORMAL, "Normal"},
-        {PLDM_STATE_SET_CHANGED_CONFIGURATION_CONFIGURATION_CHANGE_DETECTED,
-         "Configuration Change Detected"}};
-
-    static inline const std::map<uint8_t, std::string> setVersion{
-        {PLDM_STATE_SET_VERSION_NORMAL, "Normal"},
-        {PLDM_STATE_SET_VERSION_VERSION_CHANGE_DETECTED_COMPATIBLE,
-         "Version Change Detected – Compatible"},
-        {PLDM_STATE_SET_VERSION_VERSION_CHANGE_DETECTED_INCOMPATIBLE,
-         "Version Change Detected – Incompatible"},
-        {PLDM_STATE_SET_VERSION_VERSION_CHANGE_PENDING,
-         "Version Change Pending"}};
-
-    static inline const std::map<uint8_t, std::string> setLinkState{
-        {PLDM_STATE_SET_LINK_STATE_CONNECTED, "Connected"},
-        {PLDM_STATE_SET_LINK_STATE_DISCONNECTED, "Disconnected"}};
-
-    static inline const std::map<uint8_t, std::string>
-        setCommunicationLeashStatus{
-            {PLDM_STATE_SET_COMMUNICATION_LEASH_STATUS_LEASH_CONNECTED,
-             "Leash Connected"},
-            {PLDM_STATE_SET_COMMUNICATION_LEASH_STATUS_LEASH_DISCONNECTED,
-             "Leash Disconnected"}};
-
-    static inline const std::map<uint8_t, std::string> setBootRestartCause{
-        {PLDM_STATE_SET_BOOT_RESTART_CAUSE_POWERED_UP, "Powered Up"},
-        {PLDM_STATE_SET_BOOT_RESTART_CAUSE_HARD_RESET, "Hard Reset"},
-        {PLDM_STATE_SET_BOOT_RESTART_CAUSE_WARM_RESET, "Warm Reset"},
-        {PLDM_STATE_SET_BOOT_RESTART_CAUSE_MANUAL_HARD_RESET,
-         "Manual Hard Reset"},
-        {PLDM_STATE_SET_BOOT_RESTART_CAUSE_MANUAL_WARM_RESET,
-         "Manual Warm Reset"},
-        {PLDM_STATE_SET_BOOT_RESTART_CAUSE_SYSTEM_RESTART, "System Restart"},
-        {PLDM_STATE_SET_BOOT_RESTART_CAUSE_WATCHDOG_TIMEOUT,
-         "Watchdog Timeout"}};
-
-    static inline const std::map<uint8_t, std::string> setHealthState{
-        {PLDM_STATE_SET_HEALTH_STATE_NORMAL, "Normal"},
-        {PLDM_STATE_SET_HEALTH_STATE_NON_CRITICAL, "Non-Critical"},
-        {PLDM_STATE_SET_HEALTH_STATE_CRITICAL, "Critical"},
-        {PLDM_STATE_SET_HEALTH_STATE_FATAL, "Fatal"},
-        {PLDM_STATE_SET_HEALTH_STATE_UPPER_NON_CRITICAL, "Upper Non-Critical"},
-        {PLDM_STATE_SET_HEALTH_STATE_LOWER_NON_CRITICAL, "Lower Non-Critical"},
-        {PLDM_STATE_SET_HEALTH_STATE_UPPER_CRITICAL, "Upper Critical"},
-        {PLDM_STATE_SET_HEALTH_STATE_LOWER_CRITICAL, "Lower Critical"},
-        {PLDM_STATE_SET_HEALTH_STATE_UPPER_FATAL, "Upper Fatal"},
-        {PLDM_STATE_SET_HEALTH_STATE_LOWER_FATAL, "Lower Fatal"}};
-
-    static inline const std::map<uint8_t, std::string>
-        setOperationalRunningState{
-            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STARTING, "Starting"},
-            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STOPPING, "Stopping"},
-            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_STOPPED, "Stopped"},
-            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_IN_SERVICE,
-             "In Service"},
-            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_ABORTED, "Aborted"},
-            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS_DORMANT, "Dormant"}};
-
-    static inline const std::map<uint8_t, std::string> setPowerDeviceState{
-        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_UNKNOWN, "Unknown"},
-        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_FULLY_ON, "Fully-On"},
-        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_INTERMEDIATE_1,
-         "Intermediate State-1"},
-        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_INTERMEDIATE_2,
-         "Intermediate State-2"},
-        {PLDM_STATE_SET_ACPI_DEVICE_POWER_STATE_OFF, "Off"}};
-
-    static inline const std::map<uint8_t, std::string> setACPIPowerState{
-        {PLDM_STATE_SET_ACPI_POWER_STATE_S0, "S0"},
-        {PLDM_STATE_SET_ACPI_POWER_STATE_S1, "S1"},
-        {PLDM_STATE_SET_ACPI_POWER_STATE_S2, "S2"},
-        {PLDM_STATE_SET_ACPI_POWER_STATE_S3, "S3"},
-        {PLDM_STATE_SET_ACPI_POWER_STATE_S4, "S4"},
-        {PLDM_STATE_SET_ACPI_POWER_STATE_S5, "S5"},
-        {PLDM_STATE_SET_ACPI_POWER_STATE_G3, "G3"}};
-
-    static inline const std::map<uint16_t, const std::map<uint8_t, std::string>>
-        populatePStateMaps{
-            {PLDM_STATE_SET_THERMAL_TRIP, setThermalTrip},
-            {PLDM_STATE_SET_IDENTIFY_STATE, setIdentifyState},
-            {PLDM_STATE_SET_BOOT_PROGRESS, setBootProgressState},
-            {PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS, setOpFaultStatus},
-            {PLDM_STATE_SET_SYSTEM_POWER_STATE, setSysPowerState},
-            {PLDM_STATE_SET_SW_TERMINATION_STATUS, setSWTerminationStatus},
-            {PLDM_STATE_SET_AVAILABILITY, setAvailability},
-            {PLDM_STATE_SET_PREDICTIVE_CONDITION, setPredictiveCondition},
-            {PLDM_STATE_SET_OPERATIONAL_STRESS_STATUS,
-             setOperationalStressStatus},
-            {PLDM_STATE_SET_PRESENCE, setPresence},
-            {PLDM_STATE_SET_CONFIGURATION_STATE, setConfigurationState},
-            {PLDM_STATE_SET_CHANGED_CONFIGURATION, setChangedConfiguration},
-            {PLDM_STATE_SET_VERSION, setVersion},
-            {PLDM_STATE_SET_LINK_STATE, setLinkState},
-            {PLDM_STATE_SET_COMM_LEASH_STATUS, setCommunicationLeashStatus},
-            {PLDM_STATE_SET_BOOT_RESTART_CAUSE, setBootRestartCause},
-            {PLDM_STATE_SET_HEALTH_STATE, setHealthState},
-            {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS,
-             setOperationalRunningState},
-            {PLDM_STATE_SET_DEVICE_POWER_STATE, setPowerDeviceState},
-            {PLDM_STATE_SET_ACPI_POWER_STATE, setACPIPowerState},
-        };
-
     const std::map<std::string, uint8_t> strToPdrType = {
         {"terminuslocator", PLDM_TERMINUS_LOCATOR_PDR},
         {"statesensor", PLDM_STATE_SENSOR_PDR},
@@ -1129,46 +1156,6 @@ class GetPDR : public CommandInterface
         {
             return typeString;
         }
-    }
-
-    std::vector<std::string> getStateSetPossibleStateNames(
-        uint16_t stateId, const std::vector<uint8_t>& value)
-    {
-        std::vector<std::string> data{};
-
-        for (const auto& s : value)
-        {
-            std::map<uint8_t, std::string> stateNameMaps;
-            auto pstr = std::to_string(s);
-
-#ifdef OEM_IBM
-            if (stateId >= PLDM_OEM_STATE_SET_ID_START &&
-                stateId < PLDM_OEM_STATE_SET_ID_END)
-            {
-                if (populateOemIBMStateMaps.contains(stateId))
-                {
-                    const std::map<uint8_t, std::string> stateNames =
-                        populateOemIBMStateMaps.at(stateId);
-                    stateNameMaps.insert(stateNames.begin(), stateNames.end());
-                }
-            }
-#endif
-            if (populatePStateMaps.contains(stateId))
-            {
-                const std::map<uint8_t, std::string> stateNames =
-                    populatePStateMaps.at(stateId);
-                stateNameMaps.insert(stateNames.begin(), stateNames.end());
-            }
-            if (stateNameMaps.contains(s))
-            {
-                data.push_back(stateNameMaps.at(s) + "(" + pstr + ")");
-            }
-            else
-            {
-                data.push_back(pstr);
-            }
-        }
-        return data;
     }
 
     std::string getPDRType(uint8_t type)
@@ -2218,6 +2205,9 @@ class GetStateSensorReadings : public CommandInterface
                         "Each bit location in this field corresponds to a "
                         "particular sensor")
             ->required();
+        app->add_option(
+            "-s, --state_set_id", stateSetId,
+            "State Set ID that should be used for data interpretation");
     }
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
@@ -2261,12 +2251,21 @@ class GetStateSensorReadings : public CommandInterface
                 output.emplace(("sensorOpState[" + std::to_string(i) + "]"),
                                sensorOpState.at(stateField[i].sensor_op_state));
             }
+
+            std::vector<uint8_t> values = {stateField[i].present_state,
+                                           stateField[i].previous_state,
+                                           stateField[i].event_state};
+            std::vector<std::string> value_strings =
+                getStateSetPossibleStateNames(stateSetId, values);
+
             output.emplace(("presentState[" + std::to_string(i) + "]"),
-                           std::to_string(stateField[i].present_state));
+                           value_strings.at(0));
+
             output.emplace(("previousState[" + std::to_string(i) + "]"),
-                           std::to_string(stateField[i].previous_state));
+                           value_strings.at(1));
+
             output.emplace(("eventState[" + std::to_string(i) + "]"),
-                           std::to_string(stateField[i].event_state));
+                           value_strings.at(2));
         }
 
         pldmtool::helper::DisplayInJson(output);
@@ -2275,6 +2274,7 @@ class GetStateSensorReadings : public CommandInterface
   private:
     uint16_t sensorId;
     uint8_t sensorRearm;
+    uint16_t stateSetId;
 };
 
 class GetSensorReading : public CommandInterface
