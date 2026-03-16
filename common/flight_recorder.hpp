@@ -117,7 +117,7 @@ class FlightRecorder
         }
         else
         {
-            error("Fight recorder policy is disabled");
+            error("Flight recorder policy is disabled");
         }
     }
 };

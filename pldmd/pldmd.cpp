@@ -88,7 +88,7 @@ using namespace pldm::flightrecorder;
 void interruptFlightRecorderCallBack(Signal& /*signal*/,
                                      const struct signalfd_siginfo*)
 {
-    error("Received SIGUR1(10) Signal interrupt");
+    error("Received SIGUSR1(10) Signal interrupt");
     // obtain the flight recorder instance and dump the recorder
     FlightRecorder::GetInstance().playRecorder();
 }
