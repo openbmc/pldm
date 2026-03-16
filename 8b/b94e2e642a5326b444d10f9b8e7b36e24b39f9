@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: John Chung <john.chung@arm.com>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 16 Mar 2026 16:41:09 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/88244
+Comments-Total: 3
+Project: openbmc/pldm
+Branch: refs/heads/master
