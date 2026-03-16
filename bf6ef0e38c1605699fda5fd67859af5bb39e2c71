@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aec94e67_efb0fe1a",
+        "filename": "oem/meta/libpldmresponder/file_io_type_crash_dump.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-16T20:49:48Z",
+      "side": 1,
+      "message": "is there a reason this struct and all its fields don\u0027t adhere to the style guidelines?  I was hoping to enable some of the clang-tidy style checkers at some point...this would be a lot of exceptions to add.",
+      "revId": "bf6ef0e38c1605699fda5fd67859af5bb39e2c71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
