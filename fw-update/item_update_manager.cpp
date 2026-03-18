@@ -2,6 +2,7 @@
 
 #include "activation.hpp"
 #include "common/utils.hpp"
+#include "condition_executor.hpp"
 #include "package_parser.hpp"
 
 #include <fcntl.h>
@@ -81,6 +82,12 @@ bool ItemUpdateManager::processPackage()
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     activation->activation(software::Activation::Activations::Ready);
+    if (!preConditionPath.empty())
+    {
+        ConditionExecutor(pldm::utils::DBusHandler::getBus(), preConditionPath,
+                          conditionArg)
+            .executeAndWait();
+    }
     activationProgress = std::make_unique<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPathWithSwId);
     activation->activation(software::Activation::Activations::Activating);
@@ -137,6 +144,12 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
 
 void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
 {
+    if (!postConditionPath.empty())
+    {
+        ConditionExecutor(pldm::utils::DBusHandler::getBus(), postConditionPath,
+                          conditionArg)
+            .executeAndWait();
+    }
     activationProgress->progress(100);
     packageMap.reset();
 
@@ -148,6 +161,10 @@ void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
     activation->activation(status ? software::Activation::Activations::Active
                                   : software::Activation::Activations::Failed);
     updateInProgress = false;
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
+    }
     return;
 }
 
