@@ -68,6 +68,15 @@ option(
                     message in milliseconds''',
 )
 
+# Firmware update configuration parameters
+
+option(
+    'update-platform',
+    type: 'string',
+    value: '',
+    description: 'To specify what platform to do fw update',
+)
+
 # Bios Attributes option
 option(
     'system-specific-bios-json',
