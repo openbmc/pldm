@@ -36,6 +36,11 @@ MctpDiscovery::MctpDiscovery(
     mctpEndpointPropChangedSignal(
         bus, propertiesChangedNamespace(MCTPPath, MCTPInterfaceCC),
         [this](sdbusplus::message_t& msg) { this->propertiesChangedCb(msg); }),
+    mctpTargetHostStateChangedSignal(
+        bus,
+        propertiesChangedNamespace("/xyz/openbmc_project/state/host0",
+                                   "xyz.openbmc_project.State.Host"),
+        [this](sdbusplus::message_t& msg) { this->hostStateChangedCb(msg); }),
     handlers(list)
 {
     std::map<MctpInfo, Availability> currentMctpInfoMap;
@@ -362,6 +367,130 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             }
         }
     }
+}
+
+bool MctpDiscovery::isHostRunning(const dbus::Value& value) const
+{
+    const std::string* state = std::get_if<std::string>(&value);
+    if (state == nullptr)
+    {
+        error("CurrentHostState type is invalid");
+        return false;
+    }
+
+    return (*state == "xyz.openbmc_project.State.Host.HostState.Running");
+}
+
+bool MctpDiscovery::isMctpTargetInBiosPost(const std::string& objPath) const
+{
+    constexpr std::array<const char*, 2> configInterfaces = {
+        "xyz.openbmc_project.Configuration.MCTPI2CTarget",
+        "xyz.openbmc_project.Configuration.MCTPI3CTarget"};
+
+    for (const auto* configInterface : configInterfaces)
+    {
+        try
+        {
+            auto service = pldm::utils::DBusHandler().getService(
+                objPath.c_str(), configInterface);
+
+            auto properties =
+                pldm::utils::DBusHandler().getDbusPropertiesVariant(
+                    service.c_str(), objPath.c_str(), configInterface);
+
+            if (!properties.contains("Type") ||
+                !properties.contains("PowerState"))
+            {
+                warning("Missing Type or PowerState on path '{PATH}'", "PATH",
+                        objPath);
+                return false;
+            }
+
+            const auto& type = std::get<std::string>(properties.at("Type"));
+            const auto& powerState =
+                std::get<std::string>(properties.at("PowerState"));
+
+            return ((type == "MCTPI2CTarget" || type == "MCTPI3CTarget") &&
+                    powerState == "BiosPost");
+        }
+        catch (const sdbusplus::exception_t&)
+        {
+            // try next interface
+        }
+        catch (const std::bad_variant_access& e)
+        {
+            error("Invalid property type on path '{PATH}', error - {ERROR}",
+                  "PATH", objPath, "ERROR", e);
+            return false;
+        }
+    }
+
+    error("Failed to read MCTP target properties from path '{PATH}'", "PATH",
+          objPath);
+    return false;
+}
+
+MctpInfos MctpDiscovery::getMatchedMctpInfosInBiosPost() const
+{
+    MctpInfos matchedInfos;
+
+    for (const auto& mctpInfo : existingMctpInfos)
+    {
+        const auto& associatedPath = std::get<5>(mctpInfo);
+        if (!associatedPath.has_value())
+        {
+            continue;
+        }
+
+        if (isMctpTargetInBiosPost(*associatedPath))
+        {
+            matchedInfos.emplace_back(mctpInfo);
+        }
+    }
+
+    return matchedInfos;
+}
+
+void MctpDiscovery::hostStateChangedCb(sdbusplus::message_t& msg)
+{
+    using Properties = std::map<std::string, dbus::Value>;
+
+    std::string interface;
+    Properties changedProps;
+    std::vector<std::string> invalidatedProps;
+
+    try
+    {
+        msg.read(interface, changedProps, invalidatedProps);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error("Failed to parse PropertiesChanged: {ERROR}", "ERROR", e);
+        return;
+    }
+
+    auto it = changedProps.find("CurrentHostState");
+    if (it == changedProps.end())
+    {
+        return;
+    }
+
+    if (!isHostRunning(it->second))
+    {
+        return;
+    }
+
+    auto matchedInfos = getMatchedMctpInfosInBiosPost();
+    if (matchedInfos.empty())
+    {
+        info("No MCTP endpoints matched MctpTarget and powerstate");
+        return;
+    }
+
+    info("Re-handling {COUNT} matched MCTP endpoints after host power on",
+         "COUNT", matchedInfos.size());
+
+    handleMctpEndpoints(matchedInfos);
 }
 
 void MctpDiscovery::discoverEndpoints(sdbusplus::message_t& msg)
