@@ -90,6 +90,9 @@ class MctpDiscovery
     /** @brief Used to watch for new MCTP endpoints */
     sdbusplus::bus::match_t mctpEndpointPropChangedSignal;
 
+    /** @brief Used to watch for PowerState changes on MCTP target */
+    sdbusplus::bus::match_t mctpTargetHostStateChangedSignal;
+
     /** @brief List of handlers need to notify when new MCTP
      * Endpoint is Added/Removed */
     std::vector<MctpDiscoveryHandlerIntf*> handlers;
@@ -103,6 +106,17 @@ class MctpDiscovery
      *  @param[in] msg - Data associated with subscribed signal
      */
     void propertiesChangedCb(sdbusplus::message_t& msg);
+
+    bool isHostRunning(const dbus::Value& value) const;
+    bool isMctpTargetInBiosPost(const std::string& objPath) const;
+    MctpInfos getMatchedMctpInfosInBiosPost() const;
+
+    /** @brief Callback function when the propertiesChanged D-Bus
+     * signal is triggered for MCTP target config PowerState.
+     *
+     *  @param[in] msg - Data associated with subscribed signal
+     */
+    void hostStateChangedCb(sdbusplus::message_t& msg);
 
     /** @brief Callback function when MCTP endpoints addedInterface
      * D-Bus signal raised.
