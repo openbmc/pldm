@@ -47,12 +47,17 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const std::string& objPath,
         const std::string& generatedId, const Descriptors& descriptors,
-        const ComponentInfo& componentInfo) :
+        const ComponentInfo& componentInfo,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
         ItemUpdateIntf(pldm::utils::DBusHandler::getBus(),
                        std::format("{}_{}", objPath, generatedId).c_str()),
         eid(eid), objPath(objPath), descriptors(descriptors),
-        componentInfo(componentInfo)
+        componentInfo(componentInfo), preConditionPath(conditionPathPair.first),
+        postConditionPath(conditionPathPair.second), conditionArg(conditionArg),
+        taskCompletionCallback(std::move(taskCompletionCallback))
     {}
 
     /**
@@ -170,6 +175,12 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @brief The defer handler for processing package
      */
     std::unique_ptr<sdeventplus::source::Defer> deferHandler;
+
+    std::string preConditionPath;
+    std::string postConditionPath;
+    std::string conditionArg;
+
+    std::function<void()> taskCompletionCallback;
 
     bool updateInProgress = false;
 };

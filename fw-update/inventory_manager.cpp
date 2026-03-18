@@ -705,7 +705,10 @@ void InventoryManager::getFirmwareParameters(
             firmwareInventoryManager.createFirmwareEntry(
                 SoftwareIdentifier(eid, compIdentifier), componentName,
                 utils::toString(activeCompVerStr), descriptorMap.at(eid),
-                componentInfo);
+                componentInfo, [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
         }
         else
         {
