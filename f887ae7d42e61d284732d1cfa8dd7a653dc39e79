@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a98272_dc9d6044",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1358,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-03-18T00:12:16Z",
+      "side": 1,
+      "message": "I expect you should validate that the value returned in payload_length is the same as the vector size.",
+      "range": {
+        "startLine": 1358,
+        "startChar": 39,
+        "endLine": 1358,
+        "endChar": 54
+      },
+      "revId": "f887ae7d42e61d284732d1cfa8dd7a653dc39e79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51e23608_06cd84f8",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1370,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-03-18T00:12:16Z",
+      "side": 1,
+      "message": "I would avoid testing against `PLDM_SUCCESS` here. The API returns either 0 or a negative errno value, neither of which are intended as type `enum pldm_completion_codes`. It happens to be the case that `PLDM_SUCCESS` is defined as 0 by the spec, but that\u0027s a coincidence.",
+      "range": {
+        "startLine": 1370,
+        "startChar": 18,
+        "endLine": 1370,
+        "endChar": 30
+      },
+      "revId": "f887ae7d42e61d284732d1cfa8dd7a653dc39e79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7859e499_d75945c8",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-03-18T00:12:16Z",
+      "side": 1,
+      "message": "In general, if libpldm APIs return an error value then you mustn\u0027t assume that any out-parameters contain a decoded value.",
+      "range": {
+        "startLine": 1374,
+        "startChar": 52,
+        "endLine": 1374,
+        "endChar": 66
+      },
+      "revId": "f887ae7d42e61d284732d1cfa8dd7a653dc39e79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6bd165_6baaad40",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1389,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-03-18T00:12:16Z",
+      "side": 1,
+      "message": "Why not use `struct pldm_fwup_update_security_revision_req` here directly?",
+      "range": {
+        "startLine": 1387,
+        "startChar": 3,
+        "endLine": 1389,
+        "endChar": 45
+      },
+      "revId": "f887ae7d42e61d284732d1cfa8dd7a653dc39e79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
