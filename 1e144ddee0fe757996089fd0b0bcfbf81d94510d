@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac087cc7_0363c117",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-19T17:29:50Z",
+      "side": 1,
+      "message": "\u003e some of these magic numbers\n\nThe intent was to copy -all- the magic numbers from the defaults previously specified in meson.options.  If there is a case where I goofed that up please let me know.\n\nMarking resolved, let me know if there is more I can do here.",
+      "parentUuid": "acc7ba4e_aabe498e",
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f256f5e7_a3cb0b0a",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35a53d6a_2f11cac4",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-19T17:29:50Z",
+      "side": 1,
+      "message": "I will have a look at the git history to see if I can sus out where this came from.  Will tag @manojkiran.eda@gmail.com too to see if he has any idea.",
+      "parentUuid": "f256f5e7_a3cb0b0a",
+      "range": {
+        "startLine": 35,
+        "startChar": 27,
+        "endLine": 35,
+        "endChar": 34
+      },
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "425bd24e_05386fe7",
         "filename": "platform-mc/numeric_sensor.cpp",
         "patchSetId": 3
@@ -54,6 +96,30 @@
       "writtenOn": "2026-03-19T16:11:54Z",
       "side": 1,
       "message": "This is a surprising number.",
+      "range": {
+        "startLine": 22,
+        "startChar": 60,
+        "endLine": 22,
+        "endChar": 63
+      },
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b462a0e4_333f5499",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-19T17:29:50Z",
+      "side": 1,
+      "message": "Agreed.  @manojkiran.eda@gmail.com?",
+      "parentUuid": "425bd24e_05386fe7",
       "range": {
         "startLine": 22,
         "startChar": 60,
