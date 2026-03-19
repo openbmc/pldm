@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc7ba4e_aabe498e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-19T16:11:54Z",
+      "side": 1,
+      "message": "Since some of these magic numbers were just copied from the meson.options, I\u0027m not sure @bradleyb@fuzziesquirrel.com how much you can make a better value for them.  It\u0027s unfortunate.",
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f256f5e7_a3cb0b0a",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-19T16:11:54Z",
+      "side": 1,
+      "message": "Is this number derived from a spec somewhere or anything?  It doesn\u0027t seem like a nice power of 2.\n\n```\n8 MiB to byte \u003d 8388608 byte\n```\n\nIs there some way for us to write this as less of a magic number and more of a derivation as to why it was chosen?",
+      "range": {
+        "startLine": 35,
+        "startChar": 27,
+        "endLine": 35,
+        "endChar": 34
+      },
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "425bd24e_05386fe7",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-19T16:11:54Z",
+      "side": 1,
+      "message": "This is a surprising number.",
+      "range": {
+        "startLine": 22,
+        "startChar": 60,
+        "endLine": 22,
+        "endChar": 63
+      },
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
