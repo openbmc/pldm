@@ -22,6 +22,30 @@
       },
       "revId": "ef66ba4ed88c907d5091051a337de54fe48911a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fe27e85_fd5e7946",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-03-24T09:18:56Z",
+      "side": 1,
+      "message": "I was talking about Metric.Value D-Bus interface defined in PDI. There\u0027s no threshold interface under Metric/",
+      "parentUuid": "df18c6bb_8ca3e645",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "ef66ba4ed88c907d5091051a337de54fe48911a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
