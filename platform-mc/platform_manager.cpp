@@ -778,8 +778,8 @@ exec::task<int> PlatformManager::getFRURecordTable(
 
     auto responsePtr = reinterpret_cast<const struct pldm_msg*>(responseMsg);
     rc = decode_get_fru_record_table_resp(
-        responsePtr, responseLen - sizeof(pldm_msg_hdr), &completionCode,
-        nextDataTransferHndl, transferFlag, recordData.data(), responseCnt);
+        responsePtr, responseLen, &completionCode, nextDataTransferHndl,
+        transferFlag, recordData.data(), responseCnt);
 
     if (rc)
     {
