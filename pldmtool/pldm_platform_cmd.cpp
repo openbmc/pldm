@@ -264,7 +264,7 @@ class GetPDR : public CommandInterface
                     return;
                 }
                 prevRecordHandle = recordHandle;
-            } while (recordHandle != 0);
+            } while (recordHandle != 0 || nextPartRequired);
 
             // close the array
             std::cout << "]\n";
