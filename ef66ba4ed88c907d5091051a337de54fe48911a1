@@ -46,6 +46,30 @@
       },
       "revId": "ef66ba4ed88c907d5091051a337de54fe48911a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97978695_7bc2dfdb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-25T04:18:33Z",
+      "side": 1,
+      "message": "mmm. I understand that. Doesn\u0027t that mean we have to introduce thresholds there in PDI instead of removing it from here in PLDM?\n\nCurrently as I see, we are reusing the metric interface for some numeric sensors which are not inherently supported by redfish.\n\nBut these numeric sensors may or may not support thresholds.",
+      "parentUuid": "9fe27e85_fd5e7946",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "ef66ba4ed88c907d5091051a337de54fe48911a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
