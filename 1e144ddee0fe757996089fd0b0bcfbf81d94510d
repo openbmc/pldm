@@ -3,6 +3,46 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ecd8f4d5_2dcf3110",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-03-26T13:31:39Z",
+      "side": 1,
+      "message": "Thank you for the cleanup. I think this is a step in the right direction. There’s a delicate balance between offering flexibility and overwhelming users with too many configuration options. It feels like we may have crossed that line long ago, and the current level of configurability is starting to introduce unnecessary complexity and confusion.",
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fe70836_89a3683e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-03-26T13:31:39Z",
+      "side": 1,
+      "message": "you really wouldn\u0027t have to. But thanks for checking.",
+      "range": {
+        "startLine": 10,
+        "startChar": 22,
+        "endLine": 11,
+        "endChar": 25
+      },
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "acc7ba4e_aabe498e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -107,6 +147,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f498be3a_368aa2e1",
+        "filename": "oem/ibm/libpldmresponder/file_io.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-03-26T13:31:39Z",
+      "side": 1,
+      "message": "Yeah , its 8MB-4k. Not sure what that 4k is for 😊 of the top of my head. Will need to check it.",
+      "parentUuid": "59ef9866_54634f3b",
+      "range": {
+        "startLine": 35,
+        "startChar": 27,
+        "endLine": 35,
+        "endChar": 34
+      },
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "425bd24e_05386fe7",
@@ -144,6 +208,30 @@
       "side": 1,
       "message": "Agreed.  @manojkiran.eda@gmail.com?",
       "parentUuid": "425bd24e_05386fe7",
+      "range": {
+        "startLine": 22,
+        "startChar": 60,
+        "endLine": 22,
+        "endChar": 63
+      },
+      "revId": "1e144ddee0fe757996089fd0b0bcfbf81d94510d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d52a3bd_c9d45db0",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-03-26T13:31:39Z",
+      "side": 1,
+      "message": "999 ms is used as a near 1 second default interval. It behaves like 1 Hz polling. But yeah it could be 1000 too, but i did not press too much as it works and in range.",
+      "parentUuid": "b462a0e4_333f5499",
       "range": {
         "startLine": 22,
         "startChar": 60,
