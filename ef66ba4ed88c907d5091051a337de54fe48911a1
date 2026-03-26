@@ -94,6 +94,30 @@
       },
       "revId": "ef66ba4ed88c907d5091051a337de54fe48911a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ef6a48a_9880b3f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-26T09:46:51Z",
+      "side": 1,
+      "message": "Agreed. We can implement the logic in future like you said on a end-to-end manner instead of the current half implemented state. Thanks for the clarification.",
+      "parentUuid": "284f75f4_8ebec150",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 10
+      },
+      "revId": "ef66ba4ed88c907d5091051a337de54fe48911a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
