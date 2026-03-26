@@ -124,6 +124,24 @@
       "parentUuid": "4e4ed2ed_2640fa01",
       "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e874c0f5_69ea29c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-03-26T17:22:11Z",
+      "side": 1,
+      "message": "\u003e Hi Brad, apologies for the late response.\n\nIt\u0027s no problem.\n\nI certainly don\u0027t want to pressure maintainers into merging clang-tidy checks that they think will break or be a hassle to maintain.  I could be wrong, but I doubt the cpp core guidelines checks have caused any such problems.  I just wonder if some nuanced consideration is warranted, so progress can be made in parallel with other alignment discussions...because I don\u0027t share your optimism on alignment being reached anytime soon.",
+      "parentUuid": "4b4a1da1_adf157f5",
+      "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
