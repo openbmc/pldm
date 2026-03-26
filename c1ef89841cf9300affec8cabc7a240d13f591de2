@@ -106,6 +106,24 @@
       "parentUuid": "fe52a354_f029fed4",
       "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b4a1da1_adf157f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-03-26T14:18:43Z",
+      "side": 1,
+      "message": "Hi Brad, apologies for the late response.\n\nI agree that having these checks in place is valuable, and I’d definitely like to see them in pldm as well, especially for catching issues early in CI. At the same time, in past clang upgrade cycles, we’ve occasionally seen situations where checks were broken for some time and fixes took a while, largely due to limited maintainer bandwidth. In such cases, it has often required additional effort from other maintainers (including Patrick) to get things back into a good state.There have also been prior community discussions (e.g., on Discord) reflecting these experiences. My understanding is that the current approach of keeping a common set of clang-tidy checks was a practical outcome of those discussions, aiming to balance code quality with maintainability across the project. I’m trying to stay aligned with that direction. If the proposed checks are reasonable and we have enough support, I don’t expect it would take too long to move forward. I’d just suggest giving the discussion a bit more time so we can reach alignment as a community.",
+      "parentUuid": "4e4ed2ed_2640fa01",
+      "revId": "c1ef89841cf9300affec8cabc7a240d13f591de2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
