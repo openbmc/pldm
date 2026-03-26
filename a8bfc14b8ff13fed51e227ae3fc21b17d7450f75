@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99573394_2917c107",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-03-26T13:57:38Z",
+      "side": 1,
+      "message": "I think this commit message can be improved.\n\nI suppose you are trying to say that the PDR needs to be fetched until `nextRecordHandle` and `nextDataTransferHandle` has value `0x0000_0000`. Else the final portion of the last PDR will be missed. Correct?",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 44
+      },
+      "revId": "a8bfc14b8ff13fed51e227ae3fc21b17d7450f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
