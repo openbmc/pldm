@@ -22,6 +22,30 @@
       },
       "revId": "a8bfc14b8ff13fed51e227ae3fc21b17d7450f75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc1caec_91fea608",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-03-27T04:22:10Z",
+      "side": 1,
+      "message": "The fix was applied at the first record handle, where:\n\n`recordHandle \u003d 0`\n\nWhen an endpoint sends a multipart response, pldmtool is expected to request the next portion even when the initial recordHandle is 0. However, pldmtool exits prematurely due to the following condition:\n\n```\n            } while (recordHandle !\u003d 0);\n                        ```\nAs a result, the subsequent parts of the multipart response are never requested.",
+      "parentUuid": "99573394_2917c107",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 44
+      },
+      "revId": "a8bfc14b8ff13fed51e227ae3fc21b17d7450f75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
