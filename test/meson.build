@@ -10,7 +10,13 @@ foreach t : tests
             t.underscorify(),
             t + '.cpp',
             implicit_include_directories: false,
-            dependencies: [libpldm_dep, nlohmann_json_dep, gtest, test_src],
+            dependencies: [
+                gtest,
+                libpldm_dep,
+                nlohmann_json_dep,
+                phosphor_logging_dep,
+                test_src,
+            ],
         ),
         workdir: meson.current_source_dir(),
     )
