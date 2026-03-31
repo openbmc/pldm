@@ -122,6 +122,38 @@ class Terminus
         return terminusName;
     }
 
+    /** @brief The setter to set inventory name */
+    void setInventoryName(const EntityName& iName)
+    {
+        inventoryName = iName;
+    }
+
+    /** @brief The getter to get inventory name */
+    std::optional<std::string_view> getInventoryName()
+    {
+        if (inventoryName.empty())
+        {
+            return std::nullopt;
+        }
+        return inventoryName;
+    }
+
+    /** @brief The setter to set associated path */
+    void setAssociatedPath(const EntityName& path)
+    {
+        associatedPath = path;
+    }
+
+    /** @brief The getter to get associated path */
+    std::optional<std::string_view> getAssociatedPath()
+    {
+        if (associatedPath.empty())
+        {
+            return std::nullopt;
+        }
+        return associatedPath;
+    }
+
     /** @brief Parse record data from FRU table
      *
      *  @param[in] fruData - pointer to FRU record table
@@ -175,6 +207,12 @@ class Terminus
      *  @return sensor object
      */
     std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
+
+    /** @brief Fetch sensor names from Entity Manager via D-Bus
+     *
+     *  @return success code
+     */
+    int fetchEntityManagerConfiguration();
 
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
@@ -295,6 +333,12 @@ class Terminus
     /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
         nullptr;
+
+    /** @brief associated path */
+    EntityName associatedPath{};
+
+    /** @brief Inventory name */
+    EntityName inventoryName{};
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
