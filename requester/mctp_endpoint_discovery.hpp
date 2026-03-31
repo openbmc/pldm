@@ -28,10 +28,6 @@ constexpr const char* MCTPConnectivityProp = "Connectivity";
 constexpr const char* inventorySubtreePathStr =
     "/xyz/openbmc_project/inventory/system";
 
-const std::vector<std::string> interfaceFilter = {
-    "xyz.openbmc_project.Configuration.MCTPI2CTarget",
-    "xyz.openbmc_project.Configuration.MCTPI3CTarget"};
-
 /** @class MctpDiscoveryHandlerIntf
  *
  * This abstract class defines the APIs for MctpDiscovery class has common
@@ -237,6 +233,17 @@ class MctpDiscovery
      * information.
      */
     Configurations configurations;
+
+    /** @brief Map to store D-Bus match objects for deferred association
+     * discovery */
+    std::map<std::string, std::unique_ptr<sdbusplus::bus::match_t>>
+        associationMatches;
+
+    /** @brief Resolve the association for the MCTP endpoint and update the
+     * internal configuration map if the association is found.
+     */
+    bool resolveAssociation(const pldm::utils::DBusHandler& handler,
+                            MctpInfo& mctpInfo);
 };
 
 } // namespace pldm
