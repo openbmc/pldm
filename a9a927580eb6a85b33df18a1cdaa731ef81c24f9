@@ -16,6 +16,98 @@
       "message": "Works on Ampere systems.",
       "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "570d39e1_d5009dcd",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-01T05:59:13Z",
+      "side": 1,
+      "message": "return std::nullopt instead of empty string",
+      "range": {
+        "startLine": 969,
+        "startChar": 7,
+        "endLine": 969,
+        "endChar": 28
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f376e9_ed07a278",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-01T05:59:13Z",
+      "side": 1,
+      "message": "seems like libpldm currently exposes the raw buffers, which means callers end up dealing with wire-format details like endianness themselves. That seems to be why we have assumptions around big-endian UCS-2 in the conversion logic here.Not sure if this was already discussed as part of a different commit but @andrew@codeconstruct.com.au Would it make sense to eventually have helper APIs in libpldm for parsing/normalizing these fields .I think that could help keep this kind of logic out of the callers and make usage a bit less error-prone.",
+      "range": {
+        "startLine": 972,
+        "startChar": 4,
+        "endLine": 975,
+        "endChar": 52
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "870e0f03_40d26cef",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-01T05:59:13Z",
+      "side": 1,
+      "message": "an early exit before calling iconv_close() might leak the conversion descriptor",
+      "range": {
+        "startLine": 982,
+        "startChar": 4,
+        "endLine": 982,
+        "endChar": 15
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2c24225_80a9cead",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-01T05:59:13Z",
+      "side": 1,
+      "message": "this seems like we are leaking the wire format assumptions into the generic utility function in pldm ? are we lacking some function in libpldm that can handle that ?",
+      "range": {
+        "startLine": 758,
+        "startChar": 0,
+        "endLine": 768,
+        "endChar": 74
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
