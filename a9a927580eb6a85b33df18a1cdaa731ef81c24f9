@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31dde6aa_b7c830dd",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-04-01T06:01:39Z",
+      "side": 1,
+      "message": "Please review https://gerrit.openbmc.org/c/openbmc/libpldm/+/88801 :)",
+      "parentUuid": "e2f376e9_ed07a278",
+      "range": {
+        "startLine": 972,
+        "startChar": 4,
+        "endLine": 975,
+        "endChar": 52
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "870e0f03_40d26cef",
         "filename": "common/utils.cpp",
         "patchSetId": 2
