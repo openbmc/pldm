@@ -554,7 +554,7 @@ struct EventDescriptor
 };
 
 static const std::map<EventType, EventDescriptor> eventHandlers = {
-    {EventType::CPU_THERMAL_TRIP, {report::thermalFault, nullptr}},
+    {EventType::CPU_THERMAL_TRIP, {nullptr, nullptr}},
     {EventType::FAST_PROCHOT_ASSERTION, {report::thermalFault, nullptr}},
     {EventType::HSC_OCP, {report::powerRailFault, nullptr}},
     {EventType::P12V_STBY_UV, {report::powerRailFault, nullptr}},
