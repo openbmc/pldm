@@ -724,6 +724,81 @@ static void rainbowFault(const message& eventData, const std::string&,
     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
 }
 
+static void cxlEvent(const message& eventData, const std::string& event,
+                     const std::string&)
+{
+    lg2::info("{INFO}", "INFO", event); // Create log in journal
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    using EntrySeverity =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    static constexpr auto loggingService = "xyz.openbmc_project.Logging";
+    static constexpr auto loggingPath = "/xyz/openbmc_project/logging";
+    static constexpr auto loggingInterface =
+        "xyz.openbmc_project.Logging.Create";
+
+    std::string severityStr;
+    EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
+    if (eventStatus == EventAssert::EVENT_DEASSERTED)
+    {
+        severityStr =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                EntrySeverity::Error);
+    }
+    else
+    {
+        severityStr =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                EntrySeverity::Informational);
+    }
+
+    try
+    {
+        auto method = bus.new_method_call(loggingService, loggingPath,
+                                          loggingInterface, "Create");
+
+        std::map<std::string, std::string> addlData{};
+        method.append(event.c_str(), severityStr, addlData);
+        bus.call_noreply(method, dbusTimeout);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to create info-level D-Bus log: {ERR}", "ERR", e);
+    }
+}
+
+static void platformEvent(const message& eventData, const std::string& event,
+                          const std::string&)
+{
+    lg2::info("{INFO}", "INFO", event); // Create log in journal
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    using EntrySeverity =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    static constexpr auto loggingService = "xyz.openbmc_project.Logging";
+    static constexpr auto loggingPath = "/xyz/openbmc_project/logging";
+    static constexpr auto loggingInterface =
+        "xyz.openbmc_project.Logging.Create";
+
+    auto severityStr =
+        sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+            EntrySeverity::Informational);
+
+    try
+    {
+        auto method = bus.new_method_call(loggingService, loggingPath,
+                                          loggingInterface, "Create");
+
+        std::map<std::string, std::string> addlData{};
+        method.append(event.c_str(), severityStr, addlData);
+        bus.call_noreply(method, dbusTimeout);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to create info-level D-Bus log: {ERR}", "ERR", e);
+    }
+}
+
 static void reportError(const message&, const std::string& event,
                         const std::string&)
 {
@@ -786,11 +861,11 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::POWER_ON_SEQUENCE_FAILURE, {report::powerRailFault, nullptr}},
     {EventType::DIMM_PMIC_ERROR,
      {report::powerRailFault, format::dimmPmicError}},
-    {EventType::CXL1_HB, {nullptr, nullptr}},
-    {EventType::CXL2_HB, {nullptr, nullptr}},
-    {EventType::PLTRST_ASSERTION, {nullptr, nullptr}},
-    {EventType::POST_STARTED, {nullptr, nullptr}},
-    {EventType::POST_ENDED, {nullptr, nullptr}},
+    {EventType::CXL1_HB, {nullptr, cxlEvent}},
+    {EventType::CXL2_HB, {nullptr, cxlEvent}},
+    {EventType::PLTRST_ASSERTION, {nullptr, platformEvent}},
+    {EventType::POST_STARTED, {nullptr, platformEvent}},
+    {EventType::POST_ENDED, {nullptr, platformEvent}},
     {EventType::PROCHOT_IS_TRIGGERED_DUE_TO_SD_SENSOR_READING_EXCEED_UCR,
      {report::prochotSdSensor, nullptr}},
     {EventType::MTIA_FAULT, {report::mtiaFault, nullptr}},
