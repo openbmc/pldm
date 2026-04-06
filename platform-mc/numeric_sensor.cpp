@@ -318,6 +318,7 @@ NumericSensor::NumericSensor(
         valueIntf->maxValue(unitModifier(conversionFormula(maxValue)));
         valueIntf->minValue(unitModifier(conversionFormula(minValue)));
         valueIntf->unit(sensorUnit);
+        valueIntf->value(std::numeric_limits<double>::quiet_NaN());
     }
     else
     {
@@ -336,6 +337,7 @@ NumericSensor::NumericSensor(
         metricIntf->maxValue(unitModifier(conversionFormula(maxValue)));
         metricIntf->minValue(unitModifier(conversionFormula(minValue)));
         metricIntf->unit(metricUnit);
+        metricIntf->value(std::numeric_limits<double>::quiet_NaN());
     }
 
     hysteresis = unitModifier(conversionFormula(hysteresis));
@@ -569,6 +571,7 @@ NumericSensor::NumericSensor(
         valueIntf->maxValue(unitModifier(conversionFormula(maxValue)));
         valueIntf->minValue(unitModifier(conversionFormula(minValue)));
         valueIntf->unit(sensorUnit);
+        valueIntf->value(std::numeric_limits<double>::quiet_NaN());
     }
     else
     {
@@ -587,6 +590,7 @@ NumericSensor::NumericSensor(
         metricIntf->maxValue(unitModifier(conversionFormula(maxValue)));
         metricIntf->minValue(unitModifier(conversionFormula(minValue)));
         metricIntf->unit(metricUnit);
+        metricIntf->value(std::numeric_limits<double>::quiet_NaN());
     }
 
     hysteresis = unitModifier(conversionFormula(hysteresis));
