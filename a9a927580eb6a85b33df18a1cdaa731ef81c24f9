@@ -113,6 +113,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51f062c2_2ebd8833",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-06T11:23:43Z",
+      "side": 1,
+      "message": "utils.hpp is a common header included in a lot of files. I would suggest moving this inclusion to utils.cpp since that\u0027s the only place we need this.",
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2c24225_80a9cead",
         "filename": "common/utils.hpp",
         "patchSetId": 2
