@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b36536_b5665eea",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-06T08:34:20Z",
+      "side": 1,
+      "message": "Even if every component returns `PLDM_CCR_COMP_CANNOT_BE_UPDATED`, activation is still sent. Ideally should do the below right?\n\n```\nupdateManager-\u003eupdateDeviceCompletion(eid, false);\nreturn;\n```",
+      "revId": "8506f883d24443932aae11c9bb884c0c8e6f50ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
