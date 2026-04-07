@@ -492,37 +492,35 @@ struct SendRecvMsgOperation
      *         the handler. If registration fails, sets an error on the
      *         receiver. If stopping is possible, sets up a stop callback.
      *
-     *  @param[in] op - operation request
-     *
      *  @return Execute errors
      */
-    friend void tag_invoke(stdexec::start_t, SendRecvMsgOperation& op) noexcept
+    void start() noexcept
     {
-        auto stopToken = stdexec::get_stop_token(stdexec::get_env(op.receiver));
+        auto stopToken = stdexec::get_stop_token(stdexec::get_env(receiver));
 
         // operation already cancelled
         if (stopToken.stop_requested())
         {
-            return stdexec::set_stopped(std::move(op.receiver));
+            return stdexec::set_stopped(std::move(receiver));
         }
 
         using namespace std::placeholders;
-        auto rc = op.handler.registerRequest(
-            op.requestKey.eid, op.requestKey.instanceId, op.requestKey.type,
-            op.requestKey.command, std::move(op.request),
-            std::bind(&SendRecvMsgOperation::onComplete, &op, _1, _2, _3));
+        auto rc = handler.registerRequest(
+            requestKey.eid, requestKey.instanceId, requestKey.type,
+            requestKey.command, std::move(request),
+            std::bind(&SendRecvMsgOperation::onComplete, this, _1, _2, _3));
         if (rc)
         {
-            return stdexec::set_value(std::move(op.receiver), rc,
+            return stdexec::set_value(std::move(receiver), rc,
                                       static_cast<const pldm_msg*>(nullptr),
                                       static_cast<size_t>(0));
         }
 
         if (stopToken.stop_possible())
         {
-            op.stopCallback.emplace(
+            stopCallback.emplace(
                 std::move(stopToken),
-                std::bind(&SendRecvMsgOperation::onStop, &op));
+                std::bind(&SendRecvMsgOperation::onStop, this));
         }
     }
 
@@ -602,7 +600,7 @@ struct SendRecvMsgOperation
 template <class RequestInterface>
 struct SendRecvMsgSender
 {
-    using is_sender = void;
+    using sender_concept = stdexec::sender_t;
 
     SendRecvMsgSender() = delete;
 
@@ -611,18 +609,18 @@ struct SendRecvMsgSender
         handler(handler), eid(eid), request(std::move(request))
     {}
 
-    friend auto tag_invoke(stdexec::get_completion_signatures_t,
-                           const SendRecvMsgSender&, auto)
+    template <typename... Env>
+    auto get_completion_signatures(Env&&...) const
         -> stdexec::completion_signatures<
             stdexec::set_value_t(int, const pldm_msg*, size_t),
             stdexec::set_stopped_t()>;
 
     /** @brief Execute the sending the request message */
     template <stdexec::receiver R>
-    friend auto tag_invoke(stdexec::connect_t, SendRecvMsgSender&& self, R r)
+    auto connect(R r) &&
     {
         return SendRecvMsgOperation<RequestInterface, R>(
-            self.handler, self.eid, std::move(self.request), std::move(r));
+            handler, eid, std::move(request), std::move(r));
     }
 
   private:
