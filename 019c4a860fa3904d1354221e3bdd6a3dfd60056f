@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d42a82d_def6bc39",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-07T06:38:50Z",
+      "side": 1,
+      "message": "```suggestion\nAdded command to leverage Update Security Revision command from DSP0267\n```",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "386d47f9_9623b676",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1358,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-07T06:38:50Z",
+      "side": 1,
+      "message": "encode_pldm_fwup_update_security_revision_req should ideally be returning FAILURE when payload_length !\u003d expected. Returning SUCCESS on bad payload would imply encode failure. \n\nHence, if the encode function is working right, this whole block of check to early return can be removed and just let the rc to pass through.",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5096a381_7b119d04",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1376,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-07T06:38:50Z",
+      "side": 1,
+      "message": "can we do rc !\u003d PLDM_SUCCESS",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "397c50e6_4f7977af",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-07T06:38:50Z",
+      "side": 1,
+      "message": "this can be removed",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
