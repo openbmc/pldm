@@ -175,6 +175,24 @@
       "parentUuid": "397c50e6_4f7977af",
       "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de408fdf_5598a67b",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-08T06:28:04Z",
+      "side": 1,
+      "message": "Understood.",
+      "parentUuid": "130dfb62_b26bf4bd",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
