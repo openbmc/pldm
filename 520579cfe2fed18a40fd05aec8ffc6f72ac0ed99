@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44c01556_01419b30",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-08T06:16:53Z",
+      "side": 1,
+      "message": "cxlEvent creates an Error-severity log when DEASSERTED — not \"info-level\". You might have to fix the log.",
+      "revId": "520579cfe2fed18a40fd05aec8ffc6f72ac0ed99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84fe20e_325ebcb2",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-08T06:16:53Z",
+      "side": 1,
+      "message": "I am seeing both `cxlEvent` and `platformEvent` basically share 90% of the implementation except the severity. \n\nDo you think it would be better to make a shared helper function, so that both handlers would just become one-liners?",
+      "revId": "520579cfe2fed18a40fd05aec8ffc6f72ac0ed99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
