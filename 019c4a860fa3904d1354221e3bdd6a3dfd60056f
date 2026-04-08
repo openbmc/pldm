@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "639fd41d_6acc7e4a",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1358,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-04-08T05:02:48Z",
+      "side": 1,
+      "message": "Based on comments from @andrew@codeconstruct.com.au this check was added.",
+      "parentUuid": "386d47f9_9623b676",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5096a381_7b119d04",
         "filename": "pldmtool/pldm_fw_update_cmd.cpp",
         "patchSetId": 7
@@ -72,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9b485b4_823c9c83",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1376,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-04-08T05:02:48Z",
+      "side": 1,
+      "message": "Based on comments from @andrew@codeconstruct.com.au this check was added.",
+      "parentUuid": "5096a381_7b119d04",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "397c50e6_4f7977af",
         "filename": "pldmtool/pldm_fw_update_cmd.cpp",
         "patchSetId": 7
@@ -83,6 +119,24 @@
       "writtenOn": "2026-04-07T06:38:50Z",
       "side": 1,
       "message": "this can be removed",
+      "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "130dfb62_b26bf4bd",
+        "filename": "pldmtool/pldm_fw_update_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1388,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-04-08T05:02:48Z",
+      "side": 1,
+      "message": "This was kept to have consistent code pattern with rest of the pldm commands.",
+      "parentUuid": "397c50e6_4f7977af",
       "revId": "019c4a860fa3904d1354221e3bdd6a3dfd60056f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
