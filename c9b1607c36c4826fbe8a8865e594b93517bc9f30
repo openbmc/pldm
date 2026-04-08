@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c75bc3db_0bc7a0fb",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-08T09:48:11Z",
+      "side": 1,
+      "message": "nit: The lambda here captures nothing and it looks like a (potentially) reusable function.\n\n\nIf you define it as a separate  function it will reduce the indentation and possibly make it more readable.\n\nMaybe something like `std::string sanitizeForDBusPath(const std::string\u0026 s){...}`",
+      "range": {
+        "startLine": 780,
+        "startChar": 16,
+        "endLine": 788,
+        "endChar": 18
+      },
+      "revId": "c9b1607c36c4826fbe8a8865e594b93517bc9f30",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
