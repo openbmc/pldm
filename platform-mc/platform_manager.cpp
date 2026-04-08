@@ -677,7 +677,7 @@ exec::task<int> PlatformManager::getFRURecordTableMetadata(pldm_tid_t tid,
         lg2::error(
             "Error : GetFRURecordTableMetadata for terminus ID {TID}, complete code {CC}.",
             "TID", tid, "CC", completionCode);
-        co_return rc;
+        co_return completionCode;
     }
 
     co_return rc;
@@ -742,7 +742,7 @@ exec::task<int> PlatformManager::getFRURecordTable(
         lg2::error(
             "Error : GetFRURecordTable for terminus ID {TID}, complete code {CC}.",
             "TID", tid, "CC", completionCode);
-        co_return rc;
+        co_return completionCode;
     }
 
     co_return rc;
