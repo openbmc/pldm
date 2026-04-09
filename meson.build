@@ -271,7 +271,6 @@ executable(
     'pldmd/pldmd.cpp',
     'pldmd/dbus_impl_pdr.cpp',
     fw_update_sources,
-    'platform-mc/dbus_impl_fru.cpp',
     'platform-mc/terminus_manager.cpp',
     'platform-mc/terminus.cpp',
     'platform-mc/platform_manager.cpp',
