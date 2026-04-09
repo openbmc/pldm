@@ -237,14 +237,26 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
         const std::vector<uint8_t>& pdrData);
 
-    /** @brief Create the terminus inventory path to
-     *         /xyz/openbmc_project/inventory/Item/Board/.
+    /** @brief Create the terminus inventory path under
+     *         /xyz/openbmc_project/inventory/system/board/. The concrete
+     *         Inventory.Item.* interface is selected from @p entityType.
      *
      *  @param[in] tName - the terminus name
+     *  @param[in] entityType - PLDM entity type of the overall terminus
+     *                          entity (from the Entity Auxiliary Names PDR
+     *                          whose containerId is the system container)
      *  @return true/false: True if there is no error in creating inventory path
-     *
      */
-    bool createInventoryPath(std::string tName);
+    bool createInventoryPath(std::string tName, uint16_t entityType);
+
+    /** @brief Find the PLDM entity type of the overall terminus entity.
+     *
+     *  Uses the same Entity Auxiliary Names PDR lookup as findTerminusName()
+     *  (i.e. the entry whose containerId is the system container).
+     *
+     *  @return entity type, or 0 if not found
+     */
+    uint16_t findTerminusEntityType();
 
     /** @brief Get sensor names from Sensor Auxiliary Names PDRs
      *
@@ -290,8 +302,7 @@ class Terminus
     /** @brief Terminus name */
     EntityName terminusName{};
     /* @brief The pointer of inventory D-Bus interface for the terminus */
-    std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
-        nullptr;
+    std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
