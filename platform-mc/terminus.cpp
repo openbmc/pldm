@@ -87,7 +87,28 @@ std::optional<std::string_view> Terminus::findTerminusName()
     return std::nullopt;
 }
 
-bool Terminus::createInventoryPath(std::string tName)
+uint16_t Terminus::findTerminusEntityType()
+{
+    auto it = std::find_if(
+        entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
+        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+            const auto& [key, entityNames] = *entityAuxiliaryNames;
+            return (
+                entityAuxiliaryNames &&
+                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
+                entityNames.size());
+        });
+
+    if (it != entityAuxiliaryNamesTbl.end())
+    {
+        const auto& [key, entityNames] = **it;
+        return key.type;
+    }
+
+    return 0;
+}
+
+bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
 {
     if (tName.empty())
     {
@@ -95,7 +116,7 @@ bool Terminus::createInventoryPath(std::string tName)
     }
 
     /* inventory object is created */
-    if (inventoryItemBoardInft)
+    if (inventoryItemInft)
     {
         return false;
     }
@@ -103,9 +124,8 @@ bool Terminus::createInventoryPath(std::string tName)
     inventoryPath = "/xyz/openbmc_project/inventory/system/board/" + tName;
     try
     {
-        inventoryItemBoardInft =
-            std::make_unique<pldm::dbus_api::PldmEntityReq>(
-                utils::DBusHandler::getBus(), inventoryPath.c_str());
+        inventoryItemInft = pldm::dbus_api::createPldmEntity(
+            utils::DBusHandler::getBus(), inventoryPath, entityType);
         return true;
     }
     catch (const sdbusplus::exception_t& e)
@@ -214,7 +234,7 @@ void Terminus::parseTerminusPDRs()
         terminusName = std::format("Terminus_{}", tid);
     }
 
-    if (createInventoryPath(terminusName))
+    if (createInventoryPath(terminusName, findTerminusEntityType()))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
                   tid, "PATH", inventoryPath);
@@ -644,7 +664,8 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
         return;
     }
 
-    if (createInventoryPath(static_cast<std::string>(tmp.value())))
+    if (createInventoryPath(static_cast<std::string>(tmp.value()),
+                            findTerminusEntityType()))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path.", "TID", tid);
     }
@@ -706,25 +727,25 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             switch (tlv->type)
             {
                 case PLDM_FRU_FIELD_TYPE_MODEL:
-                    inventoryItemBoardInft->model(fruField);
+                    inventoryItemInft->model(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_PN:
-                    inventoryItemBoardInft->partNumber(fruField);
+                    inventoryItemInft->partNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_SN:
-                    inventoryItemBoardInft->serialNumber(fruField);
+                    inventoryItemInft->serialNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_MANUFAC:
-                    inventoryItemBoardInft->manufacturer(fruField);
+                    inventoryItemInft->manufacturer(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_NAME:
-                    inventoryItemBoardInft->names({fruField});
+                    inventoryItemInft->names({fruField});
                     break;
                 case PLDM_FRU_FIELD_TYPE_VERSION:
-                    inventoryItemBoardInft->version(fruField);
+                    inventoryItemInft->version(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
-                    inventoryItemBoardInft->assetTag(fruField);
+                    inventoryItemInft->assetTag(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_VENDOR:
                 case PLDM_FRU_FIELD_TYPE_CHASSIS:
