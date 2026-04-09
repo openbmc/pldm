@@ -134,8 +134,8 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
                                 segment, tName);
     try
     {
-        inventoryItemInft = std::make_unique<pldm::dbus_api::PldmEntityReq>(
-            utils::DBusHandler::getBus(), inventoryPath.c_str());
+        inventoryItemInft = pldm::dbus_api::createPldmEntity(
+            utils::DBusHandler::getBus(), inventoryPath, entityType);
         return true;
     }
     catch (const sdbusplus::exception_t& e)
