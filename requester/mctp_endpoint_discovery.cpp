@@ -177,7 +177,7 @@ Availability MctpDiscovery::getEndpointConnectivityProp(const std::string& path)
 void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                                       MctpInfos& mctpInfos)
 {
-    using ObjectPath = sdbusplus::message::object_path;
+    using ObjectPath = sdbusplus::object_path;
     ObjectPath objPath;
     using Property = std::string;
     using PropertyMap = std::map<Property, dbus::Value>;
@@ -451,8 +451,7 @@ void MctpDiscovery::searchConfigurationFor(
         std::string associatedObjPath;
         std::string associatedService;
         std::string associatedInterface;
-        sdbusplus::message::object_path inventorySubtreePath(
-            inventorySubtreePathStr);
+        sdbusplus::object_path inventorySubtreePath(inventorySubtreePathStr);
 
         //"/{board or chassis type}/{board or chassis}/{device}"
         auto constexpr subTreeDepth = 3;

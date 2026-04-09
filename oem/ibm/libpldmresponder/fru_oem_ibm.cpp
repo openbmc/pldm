@@ -183,8 +183,8 @@ void Handler::setFirmwareUAK(const std::vector<uint8_t>& data)
             uakObjPath, VPDManager::interface);
         auto method = bus.new_method_call(
             service.c_str(), uakObjPath, VPDManager::interface, "WriteKeyword");
-        method.append(static_cast<sdbusplus::message::object_path>(fruPath),
-                      "UTIL", "D8", data);
+        method.append(static_cast<sdbusplus::object_path>(fruPath), "UTIL",
+                      "D8", data);
         bus.call_noreply(method, dbusTimeout);
     }
     catch (const std::exception& e)

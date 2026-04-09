@@ -422,8 +422,8 @@ PropertyValue DBusHandler::getDbusPropertyVariant(
 }
 
 GetAssociatedSubTreeResponse DBusHandler::getAssociatedSubTree(
-    const sdbusplus::message::object_path& objectPath,
-    const sdbusplus::message::object_path& subtree, int depth,
+    const sdbusplus::object_path& objectPath,
+    const sdbusplus::object_path& subtree, int depth,
     const std::vector<std::string>& ifaceList) const
 {
     auto& bus = DBusHandler::getBus();

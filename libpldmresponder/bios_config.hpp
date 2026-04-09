@@ -235,7 +235,7 @@ class BIOSConfig
                         interfacesAdded() + argNpath(0, dBusMap->objectPath),
                         [this, biosAttrIndex, interface = dBusMap->interface](
                             sdbusplus::message_t& msg) {
-                            sdbusplus::message::object_path path;
+                            sdbusplus::object_path path;
                             DbusIfacesAdded interfaces;
 
                             msg.read(path, interfaces);

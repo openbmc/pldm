@@ -7,7 +7,7 @@ namespace pldm
 namespace fw_update
 {
 
-sdbusplus::message::object_path Update::startUpdate(
+sdbusplus::object_path Update::startUpdate(
     sdbusplus::message::unix_fd image,
     ApplyTimeIntf::RequestedApplyTimes applyTime [[maybe_unused]])
 {
@@ -42,7 +42,7 @@ sdbusplus::message::object_path Update::startUpdate(
         throw std::runtime_error("Failed to read image file descriptor");
     }
 
-    return sdbusplus::message::object_path(updateManager->processStreamDefer(
+    return sdbusplus::object_path(updateManager->processStreamDefer(
         imageStream, imageStream.str().size()));
 }
 

@@ -253,7 +253,7 @@ class Handler : public CmdHandler
                     std::string,
                     std::map<std::string, std::variant<std::string, uint32_t>>>
                     interfaces;
-                sdbusplus::message::object_path path;
+                sdbusplus::object_path path;
                 msg.read(path, interfaces);
                 std::string vspstring;
                 std::string password;
@@ -296,7 +296,7 @@ class Handler : public CmdHandler
                     std::string,
                     std::map<std::string, std::variant<std::string, uint32_t>>>
                     interfaces;
-                sdbusplus::message::object_path path;
+                sdbusplus::object_path path;
                 msg.read(path, interfaces);
                 std::string csr;
 
@@ -310,8 +310,7 @@ class Handler : public CmdHandler
                             {
                                 csr = std::get<std::string>(property.second);
                                 auto fileHandle =
-                                    sdbusplus::message::object_path(path)
-                                        .filename();
+                                    sdbusplus::object_path(path).filename();
 
                                 dbusToFileHandlers
                                     .emplace_back(std::make_unique<

@@ -963,7 +963,7 @@ int NumericSensor::setThresholdAlarm(pldm::utils::Level level,
 }
 
 void NumericSensor::clearThresholdLog(
-    std::optional<sdbusplus::message::object_path>& log)
+    std::optional<sdbusplus::object_path>& log)
 {
     if (!log)
     {
@@ -1002,7 +1002,7 @@ void NumericSensor::clearThresholdLog(
 template <typename errorObj>
 auto logThresholdHelper(const std::string& sensorObjPath, double value,
                         SensorUnit sensorUnit, double threshold)
-    -> std::optional<sdbusplus::message::object_path>
+    -> std::optional<sdbusplus::object_path>
 {
     return lg2::commit(
         errorObj("SENSOR_NAME", sensorObjPath, "READING_VALUE", value, "UNITS",
@@ -1018,7 +1018,7 @@ void NumericSensor::createThresholdLog(
      * logThresholdHelper with the required error object class */
     static const std::map<
         std::tuple<pldm::utils::Level, pldm::utils::Direction>,
-        std::function<std::optional<sdbusplus::message::object_path>(
+        std::function<std::optional<sdbusplus::object_path>(
             const std::string&, double, SensorUnit, double)>>
         thresholdEventMap = {
             {{pldm::utils::Level::WARNING, pldm::utils::Direction::HIGH},

@@ -40,7 +40,7 @@ class DbusToFileHandler
      */
     DbusToFileHandler(
         int mctp_fd, uint8_t mctp_eid, pldm::InstanceIdDb* instanceIdDb,
-        sdbusplus::message::object_path resDumpCurrentObjPath,
+        sdbusplus::object_path resDumpCurrentObjPath,
         pldm::requester::Handler<pldm::requester::Request>* handler);
 
     /** @brief Process the new resource dump request
@@ -87,7 +87,7 @@ class DbusToFileHandler
     pldm::InstanceIdDb* instanceIdDb;
 
     /** @brief Hold the current resource dump object path */
-    sdbusplus::message::object_path resDumpCurrentObjPath;
+    sdbusplus::object_path resDumpCurrentObjPath;
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
