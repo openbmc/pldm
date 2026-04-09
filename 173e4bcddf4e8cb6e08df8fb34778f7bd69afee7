@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c610cde9_b7a48665",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-09T07:35:18Z",
+      "side": 1,
+      "message": "I just realized the code silently fails on a decode failure instead of calling         updateManager-\u003eupdateDeviceCompletion(eid, false);. But am not sure if it needs fix in this PR or a separate PR. You can take a call",
+      "revId": "173e4bcddf4e8cb6e08df8fb34778f7bd69afee7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50675f5b_f3a7193a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-09T07:35:18Z",
+      "side": 1,
+      "message": "```suggestion\n    const auto\u0026 compVersion \u003d std::get\u003cComponentImageInfoPos::CompVersionPos\u003e(comp);\n```\n\nLets avoid magic nos.",
+      "revId": "173e4bcddf4e8cb6e08df8fb34778f7bd69afee7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
