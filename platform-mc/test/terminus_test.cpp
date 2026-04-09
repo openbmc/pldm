@@ -1,6 +1,10 @@
+#include "common/utils.hpp"
+#include "platform-mc/dbus_impl_fru.hpp"
 #include "platform-mc/terminus.hpp"
 
 #include <libpldm/entity.h>
+
+#include <sdbusplus/bus.hpp>
 
 #include <gtest/gtest.h>
 
@@ -350,6 +354,55 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
     EXPECT_EQ("TEMP12", names[1][1].second);
     EXPECT_EQ(2, t1.pdrs.size());
     EXPECT_EQ("S0", t1.getTerminusName().value());
+}
+
+TEST(TerminusTest, createPldmEntityTest)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    std::string basePath = "/xyz/openbmc_project/inventory/test/";
+
+    // Test all 7 entity type mappings produce non-null entities
+    struct EntityTestCase
+    {
+        uint16_t entityType;
+        const char* description;
+    };
+
+    // clang-format off
+    std::array<EntityTestCase, 10> testCases = {{
+        {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},
+        {PLDM_ENTITY_PROC,           "cpu"},
+        {PLDM_ENTITY_MEMORY_MODULE,  "dimm"},
+        {PLDM_ENTITY_FAN,            "fan"},
+        {PLDM_ENTITY_POWER_SUPPLY,   "powersupply"},
+        {PLDM_ENTITY_GPU,            "gpu/accelerator"},
+        {PLDM_ENTITY_ACCELERATOR,    "accelerator"},
+        {PLDM_ENTITY_BOARD,          "board"},
+        {PLDM_ENTITY_SYS_BOARD,      "sysboard/board"},
+        {PLDM_ENTITY_CARD,           "card/board"},
+    }};
+    // clang-format on
+
+    for (size_t i = 0; i < testCases.size(); i++)
+    {
+        auto path = basePath + std::to_string(i);
+        auto entity = pldm::dbus_api::createPldmEntity(bus, path,
+                                                       testCases[i].entityType);
+        EXPECT_NE(entity, nullptr) << "Failed for " << testCases[i].description;
+    }
+
+    // Unknown entity type falls back to Board
+    auto fallback =
+        pldm::dbus_api::createPldmEntity(bus, basePath + "unknown", 0xFFFF);
+    EXPECT_NE(fallback, nullptr) << "Failed for unknown/default entity type";
+
+    // Verify property setters work through the abstract base
+    auto entity = pldm::dbus_api::createPldmEntity(bus, basePath + "prop_test",
+                                                   PLDM_ENTITY_PROC);
+    ASSERT_NE(entity, nullptr);
+    EXPECT_EQ("SN123", entity->serialNumber("SN123"));
+    EXPECT_EQ("PN456", entity->partNumber("PN456"));
+    EXPECT_EQ("TestMfg", entity->manufacturer("TestMfg"));
 }
 
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
