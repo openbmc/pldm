@@ -306,7 +306,7 @@ class Terminus
     uint16_t terminusEntityType = PLDM_ENTITY_BOARD;
 
     /* @brief The pointer of inventory D-Bus interface for the terminus */
-    std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemInft = nullptr;
+    std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
