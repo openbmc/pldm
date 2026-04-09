@@ -909,7 +909,7 @@ void pldm::responder::oem_ibm_platform::Handler::disableWatchDogTimer()
 int pldm::responder::oem_ibm_platform::Handler::checkBMCState()
 {
     using BMC = sdbusplus::client::xyz::openbmc_project::state::BMC<>;
-    auto bmcPath = sdbusplus::message::object_path(BMC::namespace_path::value) /
+    auto bmcPath = sdbusplus::object_path(BMC::namespace_path::value) /
                    BMC::namespace_path::bmc;
     try
     {

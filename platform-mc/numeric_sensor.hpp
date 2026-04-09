@@ -397,7 +397,7 @@ class NumericSensor
      * @param[in/out] log - dbus path to log entry. The log will be resolve
      *               and the optional reset.
      */
-    void clearThresholdLog(std::optional<sdbusplus::message::object_path>& log);
+    void clearThresholdLog(std::optional<sdbusplus::object_path>& log);
 
     /** @brief create a log entry that all sensor alarms have cleared and is now
      *  operating in the normal operating range.
@@ -471,7 +471,7 @@ class NumericSensor
     /** @brief An internal mapping of thresholds and its associated log
      * entry. */
     std::map<std::tuple<pldm::utils::Level, pldm::utils::Direction>,
-             std::optional<sdbusplus::message::object_path>>
+             std::optional<sdbusplus::object_path>>
         assertedLog;
 };
 } // namespace platform_mc

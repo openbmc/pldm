@@ -39,7 +39,7 @@ class GetManagedObject
                                                       const char* /*path*/)
     {
         return pldm::utils::ObjectValueTree{
-            {sdbusplus::message::object_path("/foo/bar"),
+            {sdbusplus::object_path("/foo/bar"),
              {{"foo.bar",
                {{"Functional", true},
                 {"Enabled", true},
@@ -74,9 +74,8 @@ class MockdBusHandler : public pldm::utils::DBusHandler
                 (const override));
 
     MOCK_METHOD(pldm::utils::GetAssociatedSubTreeResponse, getAssociatedSubTree,
-                (const sdbusplus::message::object_path&,
-                 const sdbusplus::message::object_path&, int,
-                 const std::vector<std::string>&),
+                (const sdbusplus::object_path&, const sdbusplus::object_path&,
+                 int, const std::vector<std::string>&),
                 (const override));
 
     MOCK_METHOD(pldm::utils::PropertyMap, getDbusPropertiesVariant,

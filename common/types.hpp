@@ -92,7 +92,7 @@ using Value = std::variant<bool, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
 
 using PropertyMap = std::map<Property, Value>;
 using InterfaceMap = std::map<Interface, PropertyMap>;
-using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
+using ObjectValueTree = std::map<sdbusplus::object_path, InterfaceMap>;
 
 } // namespace dbus
 

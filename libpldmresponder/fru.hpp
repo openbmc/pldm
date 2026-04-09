@@ -34,7 +34,7 @@ using Value =
                  std::vector<uint64_t>, std::vector<std::string>>;
 using PropertyMap = std::map<Property, Value>;
 using InterfaceMap = std::map<Interface, PropertyMap>;
-using ObjectValueTree = std::map<sdbusplus::message::object_path, InterfaceMap>;
+using ObjectValueTree = std::map<sdbusplus::object_path, InterfaceMap>;
 using ObjectPath = std::string;
 using AssociatedEntityMap = std::map<ObjectPath, pldm_entity>;
 using ObjectPathToRSIMap = std::map<ObjectPath, uint16_t>;

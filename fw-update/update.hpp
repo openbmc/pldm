@@ -38,7 +38,7 @@ class Update : public UpdateIntf
         objPath(path)
     {}
 
-    virtual sdbusplus::message::object_path startUpdate(
+    virtual sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,
         ApplyTimeIntf::RequestedApplyTimes applyTime) override;
 
