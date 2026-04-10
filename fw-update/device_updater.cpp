@@ -192,6 +192,7 @@ void DeviceUpdater::requestUpdate(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to decode request update response for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
     if (completionCode)
@@ -333,6 +334,7 @@ void DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to decode pass component table response for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
     if (completionCode)
@@ -474,6 +476,7 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to decode update request response for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
     if (completionCode)
@@ -975,6 +978,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to decode activate firmware response for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
         return;
     }
     if (completionCode)
