@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "168acd9a_7a7f6881",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-04-10T13:14:43Z",
+      "side": 1,
+      "message": "Good catch - thank you! - The silent decode-failure is a pre-existing pattern — the same bug exists in all four response handlers (requestUpdate, passCompTable, updateComponent, activateFirmware). I\u0027ve submitted a separate fix for all four locations: https://gerrit.openbmc.org/c/openbmc/pldm/+/89121",
+      "parentUuid": "c610cde9_b7a48665",
+      "revId": "173e4bcddf4e8cb6e08df8fb34778f7bd69afee7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50675f5b_f3a7193a",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-09T07:35:18Z",
       "side": 1,
       "message": "```suggestion\n    const auto\u0026 compVersion \u003d std::get\u003cComponentImageInfoPos::CompVersionPos\u003e(comp);\n```\n\nLets avoid magic nos.",
+      "revId": "173e4bcddf4e8cb6e08df8fb34778f7bd69afee7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91ac662b_fcd7cf37",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-04-10T13:14:43Z",
+      "side": 1,
+      "message": "Done - thank you!",
+      "parentUuid": "50675f5b_f3a7193a",
       "revId": "173e4bcddf4e8cb6e08df8fb34778f7bd69afee7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
