@@ -653,14 +653,14 @@
         },
         {
             "attribute_type": "enum",
-            "attribute_name": "hb_power_PS0_present",
+            "attribute_name": "hb_power_PS0_present_n1",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "help_text": "Specifies if Power Supply 0 is present. (Enabled is Present)",
-            "display_name": "Power Supply 0 is present",
+            "help_text": "Specifies if Node 1 Power Supply 0 is present or not. (Enabled is Present)",
+            "display_name": "Node 1 Power Supply 0 Presence",
             "dbus": {
-                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply0",
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/power_supply0",
                 "interface": "xyz.openbmc_project.Inventory.Item",
                 "property_name": "Present",
                 "property_type": "bool",
@@ -669,14 +669,14 @@
         },
         {
             "attribute_type": "enum",
-            "attribute_name": "hb_power_PS1_present",
+            "attribute_name": "hb_power_PS1_present_n1",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "help_text": "Specifies if Power Supply 1 is present or not. (Enabled is present)",
-            "display_name": "Power Supply 1 is present",
+            "help_text": "Specifies if Node 1 Power Supply 1 is present or not. (Enabled is present)",
+            "display_name": "Node 1 Power Supply 1 Presence",
             "dbus": {
-                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply1",
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis1/motherboard/power_supply1",
                 "interface": "xyz.openbmc_project.Inventory.Item",
                 "property_name": "Present",
                 "property_type": "bool",
@@ -685,14 +685,14 @@
         },
         {
             "attribute_type": "enum",
-            "attribute_name": "hb_power_PS2_present",
+            "attribute_name": "hb_power_PS0_present_n2",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "help_text": "Specifies if Power Supply 2 is Present. (Enabled is Present)",
-            "display_name": "Power Supply 2 is present",
+            "help_text": "Specifies if Node 2 Power Supply 0 is Present or not. (Enabled is Present)",
+            "display_name": "Node 2 Power Supply 0 Presence",
             "dbus": {
-                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply2",
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/power_supply0",
                 "interface": "xyz.openbmc_project.Inventory.Item",
                 "property_name": "Present",
                 "property_type": "bool",
@@ -701,14 +701,206 @@
         },
         {
             "attribute_type": "enum",
-            "attribute_name": "hb_power_PS3_present",
+            "attribute_name": "hb_power_PS1_present_n2",
             "possible_values": ["Enabled", "Disabled"],
             "value_names": ["Enabled", "Disabled"],
             "default_values": ["Disabled"],
-            "help_text": "Specifies if Power Supply 3 is present. (Enabled is Present)",
-            "display_name": "Power Supply 3 is present",
+            "help_text": "Specifies if Node 2 Power Supply 1 is present or not. (Enabled is Present)",
+            "display_name": "Node 2 Power Supply 1 Presence",
             "dbus": {
-                "object_path": "/xyz/openbmc_project/inventory/system/chassis/motherboard/powersupply3",
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis2/motherboard/power_supply1",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS0_present_n3",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 3 Power Supply 0 is present or not. (Enabled is Present)",
+            "display_name": "Node 3 Power Supply 0 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/power_supply0",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS1_present_n3",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 3 Power Supply 1 is present or not. (Enabled is present)",
+            "display_name": "Node 3 Power Supply 1 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis3/motherboard/power_supply1",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS0_present_n4",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 4 Power Supply 0 is present or not. (Enabled is Present)",
+            "display_name": "Node 4 Power Supply 0 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/power_supply0",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS1_present_n4",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 4 Power Supply 1 is present or not. (Enabled is present)",
+            "display_name": "Node 4 Power Supply 1 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis4/motherboard/power_supply1",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS0_present_n5",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 5 Power Supply 0 is present or not. (Enabled is Present)",
+            "display_name": "Node 5 Power Supply 0 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis5/motherboard/power_supply0",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS1_present_n5",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 5 Power Supply 1 is present or not. (Enabled is present)",
+            "display_name": "Node 5 Power Supply 1 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis5/motherboard/power_supply1",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS0_present_n6",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 6 Power Supply 0 is present or not. (Enabled is Present)",
+            "display_name": "Node 6 Power Supply 0 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis6/motherboard/power_supply0",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS1_present_n6",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 6 Power Supply 1 is present or not. (Enabled is present)",
+            "display_name": "Node 6 Power Supply 1 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis6/motherboard/power_supply1",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS0_present_n7",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 7 Power Supply 0 is present or not. (Enabled is Present)",
+            "display_name": "Node 7 Power Supply 0 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis7/motherboard/power_supply0",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS1_present_n7",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 7 Power Supply 1 is present or not. (Enabled is present)",
+            "display_name": "Node 7 Power Supply 1 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis7/motherboard/power_supply1",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS0_present_n8",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 8 Power Supply 0 is present or not. (Enabled is Present)",
+            "display_name": "Node 8 Power Supply 0 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis8/motherboard/power_supply0",
+                "interface": "xyz.openbmc_project.Inventory.Item",
+                "property_name": "Present",
+                "property_type": "bool",
+                "property_values": [true, false]
+            }
+        },
+        {
+            "attribute_type": "enum",
+            "attribute_name": "hb_power_PS1_present_n8",
+            "possible_values": ["Enabled", "Disabled"],
+            "value_names": ["Enabled", "Disabled"],
+            "default_values": ["Disabled"],
+            "help_text": "Specifies if Node 8 Power Supply 1 is present or not. (Enabled is present)",
+            "display_name": "Node 8 Power Supply 1 Presence",
+            "dbus": {
+                "object_path": "/xyz/openbmc_project/inventory/system/chassis8/motherboard/power_supply1",
                 "interface": "xyz.openbmc_project.Inventory.Item",
                 "property_name": "Present",
                 "property_type": "bool",
@@ -872,24 +1064,171 @@
         },
         {
             "attribute_type": "integer",
-            "attribute_name": "hb_ioadapter_enlarged_capacity",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n1",
             "lower_bound": 0,
             "upper_bound": 21,
             "scalar_increment": 1,
             "default_value": 0,
-            "help_text": "Specifies the enlarged IO capacity, requires a reboot for a change to be applied.",
-            "display_name": "Enlarged IO Capacity (pending)"
+            "help_text": "Specifies the Node 1 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 1 Enlarged IO Capacity (pending)"
         },
         {
             "attribute_type": "integer",
-            "attribute_name": "hb_ioadapter_enlarged_capacity_current",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n1_current",
             "lower_bound": 0,
             "upper_bound": 21,
             "scalar_increment": 1,
             "default_value": 0,
             "read_only": true,
-            "help_text": "Specifies the enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity instead.",
-            "display_name": "Enlarged IO Capacity (current)"
+            "help_text": "Specifies the Node 1 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 1 Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n2",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "help_text": "Specifies the Node 2 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 2 Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n2_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "read_only": true,
+            "help_text": "Specifies the Node 2 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 2 Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n3",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "help_text": "Specifies the Node 3 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 3 Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n3_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "read_only": true,
+            "help_text": "Specifies the Node 3 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 3 Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n4",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "help_text": "Specifies the Node 4 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 4 Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n4_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "read_only": true,
+            "help_text": "Specifies the Node 4 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 4 Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n5",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "help_text": "Specifies the Node 5 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 5 Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n5_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "read_only": true,
+            "help_text": "Specifies the Node 5 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 5 Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n6",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "help_text": "Specifies the Node 6 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 6 Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n6_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "read_only": true,
+            "help_text": "Specifies the Node 6 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 6 Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n7",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "help_text": "Specifies the Node 7 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 7 Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n7_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "read_only": true,
+            "help_text": "Specifies the Node 7 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 7 Enlarged IO Capacity (current)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n8",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "help_text": "Specifies the Node 8 enlarged IO capacity, requires a reboot for a change to be applied.",
+            "display_name": "Node 8 Enlarged IO Capacity (pending)"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_ioadapter_enlarged_capacity_n8_current",
+            "lower_bound": 0,
+            "upper_bound": 21,
+            "scalar_increment": 1,
+            "default_value": 0,
+            "read_only": true,
+            "help_text": "Specifies the Node 8 enlarged IO capacity for the current IPL. Do not set this attribute directly; set hb_ioadapter_enlarged_capacity_n1 instead.",
+            "display_name": "Node 8 Enlarged IO Capacity (current)"
         },
         {
             "attribute_type": "integer",
@@ -947,24 +1286,171 @@
         },
         {
             "attribute_type": "integer",
-            "attribute_name": "hb_storage_preallocation_for_drawer_attach",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n1",
             "lower_bound": 0,
             "upper_bound": 9,
             "scalar_increment": 1,
             "default_value": 2,
-            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable dynamic I/O drawer attachment.",
-            "display_name": "Dynamic I/O Drawer Attachment"
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 1 dynamic I/O drawer attachment.",
+            "display_name": "Node 1 Dynamic I/O Drawer Attachment"
         },
         {
             "attribute_type": "integer",
-            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n1",
             "lower_bound": 0,
             "upper_bound": 9,
             "scalar_increment": 1,
             "default_value": 2,
             "read_only": true,
-            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable dynamic I/O drawer attachment.",
-            "display_name": "Dynamic I/O Drawer Attachment"
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 1 dynamic I/O drawer attachment.",
+            "display_name": "Node 1 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n2",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 2 dynamic I/O drawer attachment.",
+            "display_name": "Node 2 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n2",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "read_only": true,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 2 dynamic I/O drawer attachment.",
+            "display_name": "Node 2 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n3",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 3 dynamic I/O drawer attachment.",
+            "display_name": "Node 3 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n3",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "read_only": true,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 3 dynamic I/O drawer attachment.",
+            "display_name": "Node 3 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n4",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 4 dynamic I/O drawer attachment.",
+            "display_name": "Node 4 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n4",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "read_only": true,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 4 dynamic I/O drawer attachment.",
+            "display_name": "Node 4 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n5",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 5 dynamic I/O drawer attachment.",
+            "display_name": "Node 5 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n5",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "read_only": true,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 5 dynamic I/O drawer attachment.",
+            "display_name": "Node 5 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n6",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 6 dynamic I/O drawer attachment.",
+            "display_name": "Node 6 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n6",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "read_only": true,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 6 dynamic I/O drawer attachment.",
+            "display_name": "Node 6 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n7",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 7 dynamic I/O drawer attachment.",
+            "display_name": "Node 7 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n7",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "read_only": true,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 7 dynamic I/O drawer attachment.",
+            "display_name": "Node 7 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_n8",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 8 dynamic I/O drawer attachment.",
+            "display_name": "Node 8 Dynamic I/O Drawer Attachment"
+        },
+        {
+            "attribute_type": "integer",
+            "attribute_name": "hb_storage_preallocation_for_drawer_attach_current_n8",
+            "lower_bound": 0,
+            "upper_bound": 9,
+            "scalar_increment": 1,
+            "default_value": 2,
+            "read_only": true,
+            "help_text": "This option allocates platform memory during IPL for PCI-E slots to enable Node 8 dynamic I/O drawer attachment.",
+            "display_name": "Node 8 Dynamic I/O Drawer Attachment"
         },
         {
             "attribute_type": "integer",
