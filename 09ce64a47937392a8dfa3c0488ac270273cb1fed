@@ -70,6 +70,24 @@
       "parentUuid": "459aaf66_46ee60e7",
       "revId": "09ce64a47937392a8dfa3c0488ac270273cb1fed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "574b6047_565878f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-14T09:48:39Z",
+      "side": 1,
+      "message": "The \"sensor produces a NaN\" corner case cannot actually occur in this code path, for two reasons:\n\n**1. The wire reading is an integer — the cast to double is always exact.**\n`presentReading` is a PLDM wire field decoded into a fixed-width integer (`UINT8/SINT8/UINT16/SINT16/UINT32/SINT32`). It reaches `updateReading()` as `static_cast\u003cdouble\u003e(integer)`, which is a lossless conversion that never produces NaN or infinity.\n\n**2. The arithmetic on that double cannot synthesize a NaN either.**\n- `conversionFormula()` applies `value * resolution + offset`, but both `resolution` and `offset` are guarded by `std::isfinite()` before use — finite × finite and finite + finite is always finite.\n- `unitModifier()` explicitly returns early if `!std::isfinite(value)`, so it never runs arithmetic on a non-finite input. And `std::pow(10, baseUnitModifier)` with an `int8_t` exponent is always a positive finite number.\n\nSo a NaN can only reach `updateReading()` for an enabled sensor if `sensorDataSize` is an unknown/unsupported enum value — which is itself an error condition handled as such.\n\nThe states remain unambiguous:\n- `functional\u003dtrue`, `value\u003dNaN` → not yet polled (transient, cleared on first poll)\n- `functional\u003dfalse`, `value\u003dNaN` → sensor disabled/failed/unavailable\n- `functional\u003dtrue`, `value\u003dfinite` → valid reading",
+      "parentUuid": "8e89a215_473db4fe",
+      "revId": "09ce64a47937392a8dfa3c0488ac270273cb1fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
