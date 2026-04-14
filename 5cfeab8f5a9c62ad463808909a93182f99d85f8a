@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f5f0195_c1d4f69b",
+        "filename": "common/utils.cpp",
+        "patchSetId": 113
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-14T07:39:39Z",
+      "side": 1,
+      "message": "If PROT_READ is the intended flag, then we should make this static_cast\u003cconst char*\u003e and make data a const too, disallowing write. Any write operations on this would be protected by the OS as the CPU will raise protection fault.",
+      "revId": "5cfeab8f5a9c62ad463808909a93182f99d85f8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5748db70_f282b6ec",
+        "filename": "common/utils.hpp",
+        "patchSetId": 113
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-14T07:39:39Z",
+      "side": 1,
+      "message": "From utils.cpp\n```\ndata \u003d static_cast\u003cchar*\u003e(\n            mmap(nullptr, this-\u003esize, PROT_READ, MAP_PRIVATE, fd, 0));\n```\n\nMMAP was called with PROT_READ but we are providing a mutable view of data. If write operation was attempted on it, OS wouldn\u0027t allow it as CPU will raise protection fault.",
+      "revId": "5cfeab8f5a9c62ad463808909a93182f99d85f8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b10021_2da393b6",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 113
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-14T07:39:39Z",
+      "side": 1,
+      "message": "I think parser.reset() would be a good idea here. Without parser.reset(), every update cycle leaks the previous parser and all its image data.",
+      "revId": "5cfeab8f5a9c62ad463808909a93182f99d85f8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
