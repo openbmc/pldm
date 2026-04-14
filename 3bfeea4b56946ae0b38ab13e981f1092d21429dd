@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76712dcb_0d2b7fe6",
+        "filename": "platform-mc/dbus_impl_fru.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-14T10:39:52Z",
+      "side": 1,
+      "message": "If you are not planning to delete this file, atleast removing it from the build in meson should be appropriate right?",
+      "revId": "3bfeea4b56946ae0b38ab13e981f1092d21429dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "477d8a62_6552b666",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-14T10:39:52Z",
+      "side": 1,
+      "message": "I think explicitly deleting copy/move constructors and assignment operators would be good here , similar to PldmEntityBase style",
+      "revId": "3bfeea4b56946ae0b38ab13e981f1092d21429dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
