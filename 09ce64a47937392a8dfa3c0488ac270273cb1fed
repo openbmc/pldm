@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3a5ec54_0f5dee32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-04-14T07:57:35Z",
+      "side": 1,
+      "message": "For a value that is not available, using NaN would not be correct. NaN is used to represent computation error or values that do not have a defined value like 0 divided by 0 is a NaN. As defined by IEEE 754 single precision floating point value this is represented as `s111 1111 1xxx xxxx xxxx xxxx xxxx xxxx` where the bit represented by s is sign, 1 are the exponent, and x are for mantissa.\n\nBetter solution would be to keep sensorOperationalState as initializing and then on GetSensorReading update this parameter. Ignore the values when sensor is initializing.",
+      "revId": "09ce64a47937392a8dfa3c0488ac270273cb1fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
