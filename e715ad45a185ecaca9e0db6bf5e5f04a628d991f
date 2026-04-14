@@ -16,6 +16,24 @@
       "message": "\"RC\" is widely used for encode/decode return codes throughout this file. I would suggest to use \"RESP_CODE\" or something other than \"RC\" here to avoid ambiguity.",
       "revId": "e715ad45a185ecaca9e0db6bf5e5f04a628d991f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a3666e_e26cf79d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-04-14T23:05:04Z",
+      "side": 1,
+      "message": "Renamed to RESP_CODE in PS10 to distinguish it from the \"RC\" convention used elsewhere in this file for encode/decode return codes. Thank you for catching the inconsistency.",
+      "parentUuid": "e5e76639_32563a15",
+      "revId": "e715ad45a185ecaca9e0db6bf5e5f04a628d991f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
