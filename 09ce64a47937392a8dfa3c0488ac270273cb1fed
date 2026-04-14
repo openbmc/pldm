@@ -34,6 +34,24 @@
       "parentUuid": "b3a5ec54_0f5dee32",
       "revId": "09ce64a47937392a8dfa3c0488ac270273cb1fed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459aaf66_46ee60e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-04-14T08:49:15Z",
+      "side": 1,
+      "message": "`sensorOperationalState` comes from the `GetSensorReading` response — we can\u0027t just set it to initializing on our side, that\u0027s fabricating endpoint state.\n\nAlso, these are two different things. `sensorOperationalState` is internal PLDM protocol. The actual problem is that the D-Bus value (a double) sits at `0.0` before the first poll, and bmcweb/IPMI have no idea about `sensorOperationalState` — they only see the double. Setting our internal state to \"initializing\" doesn\u0027t fix the `0.0` on D-Bus at all.\n\n`NaN` for \"not yet read\" is already what this codebase does everywhere — offline terminus, unconfigured thresholds, failed/disabled sensors. updateReading() gates everything on std::isfinite(). We\u0027re just being consistent.\n\nOn the IEEE 754 point — that\u0027s about arithmetic semantics, not a rule against using `NaN` as a sentinel. Languages and libraries do this all the time.",
+      "parentUuid": "9b64a27d_a8db589a",
+      "revId": "09ce64a47937392a8dfa3c0488ac270273cb1fed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
