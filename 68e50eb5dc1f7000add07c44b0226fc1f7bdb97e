@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4e35d7d_1f495389",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-15T06:22:18Z",
+      "side": 1,
+      "message": "bmcweb does not look at object paths, it looks at mapper and interfaces. I am not sure how this patch adds value.",
+      "revId": "68e50eb5dc1f7000add07c44b0226fc1f7bdb97e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e2d54d_95fa99e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-15T06:22:18Z",
+      "side": 1,
+      "message": "What\u0027s the rationale behind this ? If there is really a value in doing this , why have a map of entity type to arbitary string ? why not get the names from the PDR and stick that into the path ?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 52
+      },
+      "revId": "68e50eb5dc1f7000add07c44b0226fc1f7bdb97e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6e4776_bc842603",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-15T06:22:18Z",
+      "side": 1,
+      "message": "The object paths themselves should not be considered meaningful. For instance, EM generates object paths within a flat hierarchy, and they are not intended to convey any semantic information. Given this, it’s unclear what value this additional functionality provides.\nThe commit message should clearly articulate the motivation, rationale, and the specific benefits or value this change introduces.",
+      "revId": "68e50eb5dc1f7000add07c44b0226fc1f7bdb97e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
