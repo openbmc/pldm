@@ -56,6 +56,23 @@
       "message": "The object paths themselves should not be considered meaningful. For instance, EM generates object paths within a flat hierarchy, and they are not intended to convey any semantic information. Given this, it’s unclear what value this additional functionality provides.\nThe commit message should clearly articulate the motivation, rationale, and the specific benefits or value this change introduces.",
       "revId": "68e50eb5dc1f7000add07c44b0226fc1f7bdb97e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d72b5f7_34d7639f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-04-15T19:36:28Z",
+      "side": 1,
+      "message": "Thanks Manoj — your point is well taken - bmcweb reads interfaces via the mapper, not paths, so the Redfish Chassis collection claim in my commit message was incorrect. And your broader point about D-Bus paths being opaque identifiers -- as entity-manager implements it -- is the right architectural principle.        The change that actually addresses bmcweb\u0027s Chassis enumeration is the interface\nrefactor in 89127 (Inventory.Item.Accelerator for GPU, Inventory.Item.Cpu for Processor, etc.). I\u0027m abandoning this path-rearrangement change, rebasing 89127 to stand alone on master, and updating its commit message to make the interface-level\nmotivation explicit. Thanks for pushing back on this.",
+      "revId": "68e50eb5dc1f7000add07c44b0226fc1f7bdb97e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
