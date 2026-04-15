@@ -127,7 +127,14 @@ PldmTransport::PldmTransport(bool listening)
     transport = transport_impl_init(impl, pfd, listening);
     if (!transport)
     {
-        throw std::runtime_error("Cannot initialize transport layer");
+#if defined(PLDM_TRANSPORT_WITH_MCTP_DEMUX)
+        throw std::runtime_error(
+            "Cannot initialize mctp-demux transport layer");
+#elif defined(PLDM_TRANSPORT_WITH_AF_MCTP)
+        throw std::runtime_error("Cannot initialize af-mctp transport layer");
+#else
+        throw std::runtime_error("Cannot initialize unknown transport layer");
+#endif
     }
 }
 
