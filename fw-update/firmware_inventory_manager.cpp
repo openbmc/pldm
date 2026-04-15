@@ -5,10 +5,13 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Inventory/Item/Board/common.hpp>
+#include <xyz/openbmc_project/Inventory/Item/Platform/common.hpp>
 #include <xyz/openbmc_project/Software/Version/common.hpp>
 
 using InventoryItemBoard =
     sdbusplus::common::xyz::openbmc_project::inventory::item::Board;
+using InventoryItemPlatform =
+    sdbusplus::common::xyz::openbmc_project::inventory::item::Platform;
 using SoftwareVersion =
     sdbusplus::common::xyz::openbmc_project::software::Version;
 
@@ -67,8 +70,9 @@ std::optional<std::filesystem::path> getBoardPath(
 
     try
     {
-        response =
-            handler.getAncestors(path.c_str(), {InventoryItemBoard::interface});
+        response = handler.getAncestors(
+            path.c_str(),
+            {InventoryItemBoard::interface, InventoryItemPlatform::interface});
     }
     catch (const sdbusplus::exception_t& e)
     {
