@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5257f687_b47d3514",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-04-15T05:53:15Z",
+      "side": 1,
+      "message": "I still see unresolved comments. Marking it as -1 until they are resolved.",
+      "revId": "e332c1f37c57d28c5575d51209f83ae23fb0467e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
