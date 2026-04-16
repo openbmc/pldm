@@ -2042,8 +2042,12 @@ class SetStateEffecter : public CommandInterface
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
-        std::vector<uint8_t> requestMsg(
-            sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
+        const auto payloadSize =
+            (effecterCount >= 1)
+                ? PLDM_SET_STATE_EFFECTER_STATES_MIN_REQ_BYTES +
+                      (effecterCount - 1) * sizeof(set_effecter_state_field)
+                : PLDM_SET_STATE_EFFECTER_STATES_MIN_REQ_BYTES;
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadSize);
         auto request = new (requestMsg.data()) pldm_msg;
 
         if (effecterCount > maxEffecterCount ||
