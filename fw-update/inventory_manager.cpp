@@ -678,6 +678,26 @@ void InventoryManager::getFirmwareParameters(
     variable_field pendingCompVerStr{};
 
     ComponentInfo componentInfo{};
+
+    if (!utils::toString(activeCompImageSetVerStr).empty())
+    {
+        auto devNameIt = firmwareDeviceNameMap.find(eid);
+        auto descIt = descriptorMap.find(eid);
+
+        if (devNameIt != firmwareDeviceNameMap.end() &&
+            descIt != descriptorMap.end())
+        {
+            auto totalImageName = devNameIt->second + "_ImageVersion";
+
+            SoftwareIdentifier totalIdentifier = std::make_pair(eid, 0);
+
+            firmwareInventoryManager.createFirmwareEntry(
+                totalIdentifier, totalImageName,
+                utils::toString(activeCompImageSetVerStr), descIt->second,
+                componentInfo);
+        }
+    }
+
     while (fwParams.comp_count-- && (compParamTableLen > 0))
     {
         auto rc = decode_get_firmware_parameters_resp_comp_entry(
