@@ -156,6 +156,19 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
 
 TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
 {
+    constexpr size_t queryRespPayloadLength1 = 49;
+    constexpr std::array<uint8_t,
+                         sizeof(pldm_msg_hdr) + queryRespPayloadLength1>
+        queryDeviceIdentifiersResp1{
+            0x00, 0x00, 0x00, 0x00, 0x2b, 0x00, 0x00, 0x00, 0x03, 0x01, 0x00,
+            0x04, 0x00, 0x0a, 0x0b, 0x0c, 0x0d, 0x02, 0x00, 0x10, 0x00, 0x12,
+            0x44, 0xd2, 0x64, 0x8d, 0x7d, 0x47, 0x18, 0xa0, 0x30, 0xfc, 0x8a,
+            0x56, 0x58, 0x7d, 0x5b, 0xFF, 0xFF, 0x0B, 0x00, 0x01, 0x07, 0x4f,
+            0x70, 0x65, 0x6e, 0x42, 0x4d, 0x43, 0x01, 0x02};
+    auto queryResponseMsg1 =
+        reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp1.data());
+    inventoryManager.queryDeviceIdentifiers(1, queryResponseMsg1,
+                                            queryRespPayloadLength1);
     // constexpr uint16_t compCount = 2;
     // constexpr std::string_view activeCompImageSetVersion{"DeviceVer1.0"};
     // constexpr std::string_view activeCompVersion1{"Comp1v2.0"};
