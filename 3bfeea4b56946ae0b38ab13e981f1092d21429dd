@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbdb10e1_12125881",
+        "filename": "platform-mc/dbus_impl_fru.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-04-19T17:14:56Z",
+      "side": 1,
+      "message": "Done in PS4 — file removed from meson",
+      "parentUuid": "76712dcb_0d2b7fe6",
+      "revId": "3bfeea4b56946ae0b38ab13e981f1092d21429dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "477d8a62_6552b666",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-04-14T10:39:52Z",
       "side": 1,
       "message": "I think explicitly deleting copy/move constructors and assignment operators would be good here , similar to PldmEntityBase style",
+      "revId": "3bfeea4b56946ae0b38ab13e981f1092d21429dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e95d895_40bd407b",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-04-19T17:14:56Z",
+      "side": 1,
+      "message": "Done in PS4 — ctors/assignment deleted on PldmEntityReq",
+      "parentUuid": "477d8a62_6552b666",
       "revId": "3bfeea4b56946ae0b38ab13e981f1092d21429dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
