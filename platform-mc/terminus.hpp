@@ -126,6 +126,15 @@ class Terminus
      */
     void updateInventoryWithFru(const uint8_t* fruData, const size_t fruLen);
 
+    /** @brief The getter to get terminus's FRU decorator D-Bus interfaces
+     *
+     *  @return the decorators, nullptr if FRU data has not been processed
+     */
+    const pldm::dbus_api::PldmFruDecorators* getFruDecorators() const
+    {
+        return fruDecoratorsIntf.get();
+    }
+
     /** @brief A list of PDRs fetched from Terminus */
     std::vector<std::vector<uint8_t>> pdrs{};
 
@@ -303,6 +312,10 @@ class Terminus
     EntityName terminusName{};
     /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
+
+    /* @brief The pointer of FRU decorator D-Bus interfaces */
+    std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =
+        nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
