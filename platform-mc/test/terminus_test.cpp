@@ -396,13 +396,13 @@ TEST(TerminusTest, createPldmEntityTest)
         pldm::dbus_api::createPldmEntity(bus, basePath + "unknown", 0xFFFF);
     EXPECT_NE(fallback, nullptr) << "Failed for unknown/default entity type";
 
-    // Verify property setters work through the abstract base
-    auto entity = pldm::dbus_api::createPldmEntity(bus, basePath + "prop_test",
-                                                   PLDM_ENTITY_PROC);
-    ASSERT_NE(entity, nullptr);
-    EXPECT_EQ("SN123", entity->serialNumber("SN123"));
-    EXPECT_EQ("PN456", entity->partNumber("PN456"));
-    EXPECT_EQ("TestMfg", entity->manufacturer("TestMfg"));
+    // Verify property setters work through PldmFruDecorators
+    auto decorators = std::make_unique<pldm::dbus_api::PldmFruDecorators>(
+        bus, basePath + "prop_test");
+    ASSERT_NE(decorators, nullptr);
+    EXPECT_EQ("SN123", decorators->serialNumber("SN123"));
+    EXPECT_EQ("PN456", decorators->partNumber("PN456"));
+    EXPECT_EQ("TestMfg", decorators->manufacturer("TestMfg"));
 }
 
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
