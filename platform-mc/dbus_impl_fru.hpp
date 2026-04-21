@@ -14,10 +14,14 @@
 
 #include <libpldm/entity.h>
 
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/exception.hpp>
 #include <sdbusplus/server/object.hpp>
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace pldm
 {
@@ -40,8 +44,9 @@ using CompatibleIntf = sdbusplus::server::object_t<CompatibleServer>;
 
 /** @class PldmEntityBase
  *  @brief Abstract base for PLDM inventory entities.
- *  @details Provides property setters via Decorator interfaces. Concrete
- *           subclasses add the entity-type-specific Inventory.Item interface.
+ *  @details Provides a common base type for the entity-type-specific
+ *           PldmEntityReq<T> template instantiations, allowing the
+ *           Terminus to hold any entity type through a single pointer.
  */
 class PldmEntityBase
 {
@@ -53,53 +58,20 @@ class PldmEntityBase
     PldmEntityBase& operator=(PldmEntityBase&&) noexcept = default;
     virtual ~PldmEntityBase() = default;
 
-    /** @brief Set value of partNumber in Decorator.Asset */
-    virtual std::string partNumber(std::string value) = 0;
-
-    /** @brief Set value of serialNumber in Decorator.Asset */
-    virtual std::string serialNumber(std::string value) = 0;
-
-    /** @brief Set value of manufacturer in Decorator.Asset */
-    virtual std::string manufacturer(std::string value) = 0;
-
-    /** @brief Set value of buildDate in Decorator.Asset */
-    virtual std::string buildDate(std::string value) = 0;
-
-    /** @brief Set value of model in Decorator.Asset */
-    virtual std::string model(std::string value) = 0;
-
-    /** @brief Set value of subModel in Decorator.Asset */
-    virtual std::string subModel(std::string value) = 0;
-
-    /** @brief Set value of sparePartNumber in Decorator.Asset */
-    virtual std::string sparePartNumber(std::string value) = 0;
-
-    /** @brief Set value of assetTag in Decorator.AssetTag */
-    virtual std::string assetTag(std::string value) = 0;
-
-    /** @brief Set value of version in Decorator.Revision */
-    virtual std::string version(std::string value) = 0;
-
-    /** @brief Set value of names in Decorator.Compatible */
-    virtual std::vector<std::string> names(std::vector<std::string> values) = 0;
-
   protected:
     PldmEntityBase(sdbusplus::bus_t& /*bus*/, const std::string& /*path*/) {}
 };
 
 /** @class PldmEntityReq
  *  @brief Templated PLDM inventory entity implementation.
- *  @details Inherits Decorator interfaces for properties and an
- *           entity-type-specific Inventory.Item marker interface.
+ *  @details Inherits an entity-type-specific Inventory.Item marker interface.
+ *           Decorator interfaces are handled separately by PldmFruDecorators,
+ *           which is created lazily only when FRU record data is available.
  *  @tparam ItemServer - The sdbusplus server type for the Item interface
  */
 template <typename ItemServer>
 class PldmEntityReq :
     public PldmEntityBase,
-    public AssetIntf,
-    public AssetTagIntf,
-    public RevisionIntf,
-    public CompatibleIntf,
     public sdbusplus::server::object_t<ItemServer>
 {
   public:
@@ -113,51 +85,204 @@ class PldmEntityReq :
     ~PldmEntityReq() override = default;
 
     PldmEntityReq(sdbusplus::bus_t& bus, const std::string& path) :
-        PldmEntityBase(bus, path), AssetIntf(bus, path.c_str()),
-        AssetTagIntf(bus, path.c_str()), RevisionIntf(bus, path.c_str()),
-        CompatibleIntf(bus, path.c_str()), ItemIntf(bus, path.c_str())
+        PldmEntityBase(bus, path), ItemIntf(bus, path.c_str())
+    {}
+};
+
+/** @class PldmFruDecorators
+ *  @brief FRU decorator D-Bus interfaces for a PLDM terminus.
+ *  @details Each decorator interface is created only when the first property
+ *           that belongs to it is set, so that termini without FRU support, or
+ *           whose FRU data does not map to an interface, do not expose empty
+ *           decorator interfaces on D-Bus. If creating an interface fails, the
+ *           interfaces created so far are removed and no further interface is
+ *           created.
+ */
+class PldmFruDecorators
+{
+  public:
+    PldmFruDecorators() = delete;
+    PldmFruDecorators(const PldmFruDecorators&) = delete;
+    PldmFruDecorators& operator=(const PldmFruDecorators&) = delete;
+    PldmFruDecorators(PldmFruDecorators&&) = delete;
+    PldmFruDecorators& operator=(PldmFruDecorators&&) = delete;
+    ~PldmFruDecorators() = default;
+
+    /** @brief Constructor, no interface is put onto the bus yet.
+     *  @param[in] bus - Bus to attach to.
+     *  @param[in] path - Path to attach at.
+     */
+    PldmFruDecorators(sdbusplus::bus_t& bus, const std::string& path) :
+        bus(bus), path(path)
     {}
 
-    std::string partNumber(std::string value) override
+    /** @brief Set value of partNumber in Decorator.Asset */
+    void partNumber(std::string value)
     {
-        return AssetIntf::partNumber(std::move(value));
+        if (auto* intf = ensure(assetIntf, "Decorator.Asset"))
+        {
+            intf->partNumber(std::move(value));
+        }
     }
-    std::string serialNumber(std::string value) override
+
+    /** @brief Set value of serialNumber in Decorator.Asset */
+    void serialNumber(std::string value)
     {
-        return AssetIntf::serialNumber(std::move(value));
+        if (auto* intf = ensure(assetIntf, "Decorator.Asset"))
+        {
+            intf->serialNumber(std::move(value));
+        }
     }
-    std::string manufacturer(std::string value) override
+
+    /** @brief Set value of manufacturer in Decorator.Asset */
+    void manufacturer(std::string value)
     {
-        return AssetIntf::manufacturer(std::move(value));
+        if (auto* intf = ensure(assetIntf, "Decorator.Asset"))
+        {
+            intf->manufacturer(std::move(value));
+        }
     }
-    std::string buildDate(std::string value) override
+
+    /** @brief Set value of buildDate in Decorator.Asset */
+    void buildDate(std::string value)
     {
-        return AssetIntf::buildDate(std::move(value));
+        if (auto* intf = ensure(assetIntf, "Decorator.Asset"))
+        {
+            intf->buildDate(std::move(value));
+        }
     }
-    std::string model(std::string value) override
+
+    /** @brief Set value of model in Decorator.Asset */
+    void model(std::string value)
     {
-        return AssetIntf::model(std::move(value));
+        if (auto* intf = ensure(assetIntf, "Decorator.Asset"))
+        {
+            intf->model(std::move(value));
+        }
     }
-    std::string subModel(std::string value) override
+
+    /** @brief Set value of subModel in Decorator.Asset */
+    void subModel(std::string value)
     {
-        return AssetIntf::subModel(std::move(value));
+        if (auto* intf = ensure(assetIntf, "Decorator.Asset"))
+        {
+            intf->subModel(std::move(value));
+        }
     }
-    std::string sparePartNumber(std::string value) override
+
+    /** @brief Set value of sparePartNumber in Decorator.Asset */
+    void sparePartNumber(std::string value)
     {
-        return AssetIntf::sparePartNumber(std::move(value));
+        if (auto* intf = ensure(assetIntf, "Decorator.Asset"))
+        {
+            intf->sparePartNumber(std::move(value));
+        }
     }
-    std::string assetTag(std::string value) override
+
+    /** @brief Set value of assetTag in Decorator.AssetTag */
+    void assetTag(std::string value)
     {
-        return AssetTagIntf::assetTag(std::move(value));
+        if (auto* intf = ensure(assetTagIntf, "Decorator.AssetTag"))
+        {
+            intf->assetTag(std::move(value));
+        }
     }
-    std::string version(std::string value) override
+
+    /** @brief Set value of version in Decorator.Revision */
+    void version(std::string value)
     {
-        return RevisionIntf::version(std::move(value));
+        if (auto* intf = ensure(revisionIntf, "Decorator.Revision"))
+        {
+            intf->version(std::move(value));
+        }
     }
-    std::vector<std::string> names(std::vector<std::string> values) override
+
+    /** @brief Set value of names in Decorator.Compatible */
+    void names(std::vector<std::string> values)
     {
-        return CompatibleIntf::names(std::move(values));
+        if (auto* intf = ensure(compatibleIntf, "Decorator.Compatible"))
+        {
+            intf->names(std::move(values));
+        }
     }
+
+    /** @brief Get the Decorator.Asset interface
+     *  @return the interface, nullptr if it has not been created
+     */
+    const AssetIntf* getAsset() const
+    {
+        return assetIntf.get();
+    }
+
+    /** @brief Get the Decorator.AssetTag interface
+     *  @return the interface, nullptr if it has not been created
+     */
+    const AssetTagIntf* getAssetTag() const
+    {
+        return assetTagIntf.get();
+    }
+
+    /** @brief Get the Decorator.Revision interface
+     *  @return the interface, nullptr if it has not been created
+     */
+    const RevisionIntf* getRevision() const
+    {
+        return revisionIntf.get();
+    }
+
+    /** @brief Get the Decorator.Compatible interface
+     *  @return the interface, nullptr if it has not been created
+     */
+    const CompatibleIntf* getCompatible() const
+    {
+        return compatibleIntf.get();
+    }
+
+  private:
+    /** @brief Create the interface on first use.
+     *
+     *  On failure the error is logged once, the interfaces created so far are
+     *  removed, and nothing is created afterwards.
+     *
+     *  @param[in,out] intf - the interface to create
+     *  @param[in] name - interface name used in the error log
+     *  @return the interface, nullptr if it cannot be created
+     */
+    template <typename Intf>
+    Intf* ensure(std::unique_ptr<Intf>& intf, const char* name)
+    {
+        if (failed)
+        {
+            return nullptr;
+        }
+        if (!intf)
+        {
+            try
+            {
+                intf = std::make_unique<Intf>(bus, path.c_str());
+            }
+            catch (const sdbusplus::exception_t& e)
+            {
+                lg2::error("Failed to create {INTERFACE} at {PATH}: {ERROR}",
+                           "INTERFACE", name, "PATH", path, "ERROR", e);
+                failed = true;
+                assetIntf.reset();
+                assetTagIntf.reset();
+                revisionIntf.reset();
+                compatibleIntf.reset();
+                return nullptr;
+            }
+        }
+        return intf.get();
+    }
+
+    sdbusplus::bus_t& bus;
+    std::string path;
+    bool failed = false;
+    std::unique_ptr<AssetIntf> assetIntf = nullptr;
+    std::unique_ptr<AssetTagIntf> assetTagIntf = nullptr;
+    std::unique_ptr<RevisionIntf> revisionIntf = nullptr;
+    std::unique_ptr<CompatibleIntf> compatibleIntf = nullptr;
 };
 
 // Item interface server types
