@@ -107,6 +107,28 @@ uint16_t Terminus::findTerminusEntityType()
     return 0;
 }
 
+bool Terminus::ensureFruDecorators()
+{
+    if (fruDecoratorsIntf)
+    {
+        return true;
+    }
+    try
+    {
+        fruDecoratorsIntf =
+            std::make_unique<pldm::dbus_api::PldmFruDecorators>(
+                utils::DBusHandler::getBus(), inventoryPath);
+        return true;
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error(
+            "Terminus ID {TID}: Failed to create FRU decorator interfaces at {PATH}: {ERROR}",
+            "TID", tid, "PATH", inventoryPath, "ERROR", e);
+        return false;
+    }
+}
+
 bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
 {
     if (tName.empty())
@@ -726,25 +748,53 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             switch (tlv->type)
             {
                 case PLDM_FRU_FIELD_TYPE_MODEL:
-                    inventoryItemInft->model(fruField);
+                    if (!ensureFruDecorators())
+                    {
+                        return;
+                    }
+                    fruDecoratorsIntf->model(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_PN:
-                    inventoryItemInft->partNumber(fruField);
+                    if (!ensureFruDecorators())
+                    {
+                        return;
+                    }
+                    fruDecoratorsIntf->partNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_SN:
-                    inventoryItemInft->serialNumber(fruField);
+                    if (!ensureFruDecorators())
+                    {
+                        return;
+                    }
+                    fruDecoratorsIntf->serialNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_MANUFAC:
-                    inventoryItemInft->manufacturer(fruField);
+                    if (!ensureFruDecorators())
+                    {
+                        return;
+                    }
+                    fruDecoratorsIntf->manufacturer(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_NAME:
-                    inventoryItemInft->names({fruField});
+                    if (!ensureFruDecorators())
+                    {
+                        return;
+                    }
+                    fruDecoratorsIntf->names({fruField});
                     break;
                 case PLDM_FRU_FIELD_TYPE_VERSION:
-                    inventoryItemInft->version(fruField);
+                    if (!ensureFruDecorators())
+                    {
+                        return;
+                    }
+                    fruDecoratorsIntf->version(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
-                    inventoryItemInft->assetTag(fruField);
+                    if (!ensureFruDecorators())
+                    {
+                        return;
+                    }
+                    fruDecoratorsIntf->assetTag(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_VENDOR:
                 case PLDM_FRU_FIELD_TYPE_CHASSIS:
