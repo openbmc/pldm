@@ -292,8 +292,12 @@ class Terminus
 
     /** @brief Terminus name */
     EntityName terminusName{};
-    /* @brief The pointer of inventory D-Bus interface for the terminus */
-    std::unique_ptr<pldm::dbus_api::PldmEntityReq> inventoryItemBoardInft =
+    /* @brief The pointer of inventory Board D-Bus interface */
+    std::unique_ptr<pldm::dbus_api::PldmBoardEntity> inventoryItemBoardInft =
+        nullptr;
+
+    /* @brief The pointer of FRU decorator D-Bus interfaces */
+    std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =
         nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
