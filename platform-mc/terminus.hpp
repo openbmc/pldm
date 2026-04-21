@@ -304,6 +304,10 @@ class Terminus
     /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
 
+    /* @brief The pointer of FRU decorator D-Bus interfaces */
+    std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =
+        nullptr;
+
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
 
