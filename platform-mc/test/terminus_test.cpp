@@ -3,8 +3,13 @@
 #include "platform-mc/terminus.hpp"
 
 #include <libpldm/entity.h>
+#include <libpldm/fru.h>
 
 #include <sdbusplus/bus.hpp>
+
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <gtest/gtest.h>
 
@@ -396,13 +401,186 @@ TEST(TerminusTest, createPldmEntityTest)
         pldm::dbus_api::createPldmEntity(bus, basePath + "unknown", 0xFFFF);
     EXPECT_NE(fallback, nullptr) << "Failed for unknown/default entity type";
 
-    // Verify property setters work through the abstract base
-    auto entity = pldm::dbus_api::createPldmEntity(bus, basePath + "prop_test",
-                                                   PLDM_ENTITY_PROC);
-    ASSERT_NE(entity, nullptr);
-    EXPECT_EQ("SN123", entity->serialNumber("SN123"));
-    EXPECT_EQ("PN456", entity->partNumber("PN456"));
-    EXPECT_EQ("TestMfg", entity->manufacturer("TestMfg"));
+    // Verify property setters work through PldmFruDecorators
+    auto decorators = std::make_unique<pldm::dbus_api::PldmFruDecorators>(
+        bus, basePath + "prop_test");
+    ASSERT_NE(decorators, nullptr);
+    decorators->serialNumber("SN123");
+    decorators->partNumber("PN456");
+    decorators->manufacturer("TestMfg");
+    ASSERT_NE(decorators->getAsset(), nullptr);
+    EXPECT_EQ("SN123", decorators->getAsset()->serialNumber());
+    EXPECT_EQ("PN456", decorators->getAsset()->partNumber());
+    EXPECT_EQ("TestMfg", decorators->getAsset()->manufacturer());
+}
+
+// Build one FRU General record that carries the given (type, value) fields
+std::vector<uint8_t> buildFruRecord(
+    const std::vector<std::pair<uint8_t, std::string>>& fields)
+{
+    std::vector<uint8_t> record{
+        0x1, 0x0,                            // record set identifier
+        PLDM_FRU_RECORD_TYPE_GENERAL,        // record type
+        static_cast<uint8_t>(fields.size()), // number of fields
+        PLDM_FRU_ENCODING_ASCII};            // encoding type
+    for (const auto& [type, value] : fields)
+    {
+        record.push_back(type);
+        record.push_back(static_cast<uint8_t>(value.size()));
+        record.insert(record.end(), value.begin(), value.end());
+    }
+    return record;
+}
+
+TEST(TerminusTest, fruDecoratorsNotCreatedWithoutFruDataTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestNoData");
+
+    // updateInventoryWithFru() is never called for a terminus without FRU
+    EXPECT_EQ(nullptr, t1.getFruDecorators());
+}
+
+TEST(TerminusTest, fruDecoratorsNotCreatedForNonDecoratorFieldsTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestNonDecorator");
+
+    // Vendor and Chassis do not map to any decorator property, and an empty
+    // Asset Tag has no value to set
+    auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_VENDOR, "Vendor"},
+                               {PLDM_FRU_FIELD_TYPE_CHASSIS, "Chassis"},
+                               {PLDM_FRU_FIELD_TYPE_ASSET_TAG, ""}});
+    t1.updateInventoryWithFru(fru.data(), fru.size());
+
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    EXPECT_EQ(nullptr, decorators->getAsset());
+    EXPECT_EQ(nullptr, decorators->getAssetTag());
+    EXPECT_EQ(nullptr, decorators->getRevision());
+    EXPECT_EQ(nullptr, decorators->getCompatible());
+}
+
+TEST(TerminusTest, fruDecoratorsCreatedOnlyForMappedFieldsTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestModelOnly");
+
+    auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+    t1.updateInventoryWithFru(fru.data(), fru.size());
+
+    // Only Decorator.Asset is created, the others stay off the bus
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    ASSERT_NE(nullptr, decorators->getAsset());
+    EXPECT_EQ("Model1", decorators->getAsset()->model());
+    EXPECT_EQ(nullptr, decorators->getAssetTag());
+    EXPECT_EQ(nullptr, decorators->getRevision());
+    EXPECT_EQ(nullptr, decorators->getCompatible());
+
+    auto t2 = pldm::platform_mc::Terminus(
+        2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t2.setTerminusName("FruTestPnVersion");
+
+    fru = buildFruRecord(
+        {{PLDM_FRU_FIELD_TYPE_PN, "PN2"}, {PLDM_FRU_FIELD_TYPE_VERSION, "B2"}});
+    t2.updateInventoryWithFru(fru.data(), fru.size());
+
+    decorators = t2.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    ASSERT_NE(nullptr, decorators->getAsset());
+    EXPECT_EQ("PN2", decorators->getAsset()->partNumber());
+    ASSERT_NE(nullptr, decorators->getRevision());
+    EXPECT_EQ("B2", decorators->getRevision()->version());
+    EXPECT_EQ(nullptr, decorators->getAssetTag());
+    EXPECT_EQ(nullptr, decorators->getCompatible());
+
+    auto t3 = pldm::platform_mc::Terminus(
+        3, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t3.setTerminusName("FruTestTagName");
+
+    fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_ASSET_TAG, "Tag3"},
+                          {PLDM_FRU_FIELD_TYPE_NAME, "Name3"}});
+    t3.updateInventoryWithFru(fru.data(), fru.size());
+
+    decorators = t3.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    ASSERT_NE(nullptr, decorators->getAssetTag());
+    EXPECT_EQ("Tag3", decorators->getAssetTag()->assetTag());
+    ASSERT_NE(nullptr, decorators->getCompatible());
+    EXPECT_EQ(std::vector<std::string>{"Name3"},
+              decorators->getCompatible()->names());
+    EXPECT_EQ(nullptr, decorators->getAsset());
+    EXPECT_EQ(nullptr, decorators->getRevision());
+}
+
+TEST(TerminusTest, fruDecoratorsCreatedForAllMappedFieldsTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestAllFields");
+
+    auto fru = buildFruRecord(
+        {{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"},
+         {PLDM_FRU_FIELD_TYPE_PN, "PN1"},
+         {PLDM_FRU_FIELD_TYPE_SN, "SN1"},
+         {PLDM_FRU_FIELD_TYPE_MANUFAC, "Mfg1"},
+         {PLDM_FRU_FIELD_TYPE_NAME, "Name1"},
+         {PLDM_FRU_FIELD_TYPE_VERSION, "B1"},
+         {PLDM_FRU_FIELD_TYPE_ASSET_TAG, "Tag1"}});
+    t1.updateInventoryWithFru(fru.data(), fru.size());
+
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    ASSERT_NE(nullptr, decorators->getAsset());
+    EXPECT_EQ("Model1", decorators->getAsset()->model());
+    EXPECT_EQ("PN1", decorators->getAsset()->partNumber());
+    EXPECT_EQ("SN1", decorators->getAsset()->serialNumber());
+    EXPECT_EQ("Mfg1", decorators->getAsset()->manufacturer());
+    ASSERT_NE(nullptr, decorators->getAssetTag());
+    EXPECT_EQ("Tag1", decorators->getAssetTag()->assetTag());
+    ASSERT_NE(nullptr, decorators->getRevision());
+    EXPECT_EQ("B1", decorators->getRevision()->version());
+    ASSERT_NE(nullptr, decorators->getCompatible());
+    EXPECT_EQ(std::vector<std::string>{"Name1"},
+              decorators->getCompatible()->names());
+}
+
+TEST(TerminusTest, fruDecoratorsCreationFailureRemovesCreatedTest)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    std::string path = "/xyz/openbmc_project/inventory/test/fru_conflict";
+
+    // The first owner holds Decorator.Revision at the path
+    pldm::dbus_api::PldmFruDecorators first(bus, path);
+    first.version("B1");
+    ASSERT_NE(nullptr, first.getRevision());
+
+    // Decorator.AssetTag is free, so it is created for the second owner
+    pldm::dbus_api::PldmFruDecorators second(bus, path);
+    second.assetTag("Tag2");
+    ASSERT_NE(nullptr, second.getAssetTag());
+
+    // Decorator.Revision is already registered at the path, so creating it
+    // fails and the interface created before is removed again
+    second.version("B2");
+    EXPECT_EQ(nullptr, second.getRevision());
+    EXPECT_EQ(nullptr, second.getAssetTag());
+
+    // Nothing is created after the failure
+    second.model("Model2");
+    EXPECT_EQ(nullptr, second.getAsset());
+
+    // The first owner is not affected
+    ASSERT_NE(nullptr, first.getRevision());
+    EXPECT_EQ("B1", first.getRevision()->version());
 }
 
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
