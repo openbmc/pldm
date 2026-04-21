@@ -1,0 +1,394 @@
+From e3cf889d81d30da2a697a98a4014ba5bb772bc38 Mon Sep 17 00:00:00 2001
+From: Eric Yang <eric.yang.wiwynn@gmail.com>
+Date: Tue, 21 Apr 2026 11:21:23 +0000
+Subject: [PATCH] platform-mc: Defer FRU decorators until data
+
+Move the Decorator interfaces (Asset, AssetTag, Revision, Compatible)
+out of PldmEntityReq into a new PldmFruDecorators class. PldmEntityReq
+now only inherits the entity-type-specific Inventory.Item interface,
+keeping the D-Bus object lightweight at creation time.
+
+PldmFruDecorators is created lazily via ensureFruDecorators(), a helper
+called only inside the switch cases that actually set a Decorator
+property. Field types that do not map to a Decorator property (IANA,
+Vendor, Chassis, etc.) never trigger creation, even though the PLDM FRU
+spec permits a terminus to provide only those fields.
+
+Motivation:
+Termini that do not support PLDM FRU commands never receive FRU record
+data, so updateInventoryWithFru() is never called for them. Previously
+the decorator interfaces were registered unconditionally, exposing empty
+properties on D-Bus for these termini. Empty interfaces pollute
+inventory tool output and may mislead D-Bus consumers that check
+interface presence to determine whether FRU data is available.
+
+Tested:
+On Yosemite 4 platform with mixed terminus types.
+
+Terminus without PLDM FRU support (OpenBIC, SENTINEL_DOME_SLOT_1):
+
+    $ busctl introspect xyz.openbmc_project.PLDM \
+        .../inventory/system/board/SENTINEL_DOME_SLOT_1
+    xyz...Inventory.Item.Board  interface
+
+Only Inventory.Item.Board present, no Decorator interfaces.
+
+Terminus with FRU data (Mellanox NIC, Terminus_1):
+
+    $ busctl introspect xyz.openbmc_project.PLDM \
+        .../inventory/system/board/Terminus_1
+    xyz...Inventory.Decorator.Asset      interface
+      .Manufacturer   "MLNX"
+      .Model          "CX71343DM"
+      .PartNumber     "CX71343DMC-VEAF_FB"
+      .SerialNumber   "MT2408J008NE"
+    xyz...Inventory.Decorator.AssetTag   interface
+    xyz...Inventory.Decorator.Compatible interface
+      .Names          "ConnectX-7 ..."
+    xyz...Inventory.Decorator.Revision   interface
+      .Version        "28.41.1000"
+    xyz...Inventory.Item.Board           interface
+
+All four Decorator interfaces appear with populated values only
+when the terminus provides FRU record data.
+
+Change-Id: I754286b23325506d3a15b409e5b48bd04682275f
+Signed-off-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+---
+ platform-mc/dbus_impl_fru.hpp      | 99 +++++++++++++++++-------------
+ platform-mc/terminus.cpp           | 64 ++++++++++++++++---
+ platform-mc/terminus.hpp           | 11 ++++
+ platform-mc/test/terminus_test.cpp | 14 ++---
+ 4 files changed, 133 insertions(+), 55 deletions(-)
+
+diff --git a/platform-mc/dbus_impl_fru.hpp b/platform-mc/dbus_impl_fru.hpp
+index 088a56fc..50540be9 100644
+--- a/platform-mc/dbus_impl_fru.hpp
++++ b/platform-mc/dbus_impl_fru.hpp
+@@ -18,6 +18,8 @@
+ #include <sdbusplus/server/object.hpp>
+ 
+ #include <memory>
++#include <string>
++#include <vector>
+ 
+ namespace pldm
+ {
+@@ -40,8 +42,9 @@ using CompatibleIntf = sdbusplus::server::object_t<CompatibleServer>;
+ 
+ /** @class PldmEntityBase
+  *  @brief Abstract base for PLDM inventory entities.
+- *  @details Provides property setters via Decorator interfaces. Concrete
+- *           subclasses add the entity-type-specific Inventory.Item interface.
++ *  @details Provides a common base type for the entity-type-specific
++ *           PldmEntityReq<T> template instantiations, allowing the
++ *           Terminus to hold any entity type through a single pointer.
+  */
+ class PldmEntityBase
+ {
+@@ -53,53 +56,20 @@ class PldmEntityBase
+     PldmEntityBase& operator=(PldmEntityBase&&) noexcept = default;
+     virtual ~PldmEntityBase() = default;
+ 
+-    /** @brief Set value of partNumber in Decorator.Asset */
+-    virtual std::string partNumber(std::string value) = 0;
+-
+-    /** @brief Set value of serialNumber in Decorator.Asset */
+-    virtual std::string serialNumber(std::string value) = 0;
+-
+-    /** @brief Set value of manufacturer in Decorator.Asset */
+-    virtual std::string manufacturer(std::string value) = 0;
+-
+-    /** @brief Set value of buildDate in Decorator.Asset */
+-    virtual std::string buildDate(std::string value) = 0;
+-
+-    /** @brief Set value of model in Decorator.Asset */
+-    virtual std::string model(std::string value) = 0;
+-
+-    /** @brief Set value of subModel in Decorator.Asset */
+-    virtual std::string subModel(std::string value) = 0;
+-
+-    /** @brief Set value of sparePartNumber in Decorator.Asset */
+-    virtual std::string sparePartNumber(std::string value) = 0;
+-
+-    /** @brief Set value of assetTag in Decorator.AssetTag */
+-    virtual std::string assetTag(std::string value) = 0;
+-
+-    /** @brief Set value of version in Decorator.Revision */
+-    virtual std::string version(std::string value) = 0;
+-
+-    /** @brief Set value of names in Decorator.Compatible */
+-    virtual std::vector<std::string> names(std::vector<std::string> values) = 0;
+-
+   protected:
+     PldmEntityBase(sdbusplus::bus_t& /*bus*/, const std::string& /*path*/) {}
+ };
+ 
+ /** @class PldmEntityReq
+  *  @brief Templated PLDM inventory entity implementation.
+- *  @details Inherits Decorator interfaces for properties and an
+- *           entity-type-specific Inventory.Item marker interface.
++ *  @details Inherits an entity-type-specific Inventory.Item marker interface.
++ *           Decorator interfaces are handled separately by PldmFruDecorators,
++ *           which is created lazily only when FRU record data is available.
+  *  @tparam ItemServer - The sdbusplus server type for the Item interface
+  */
+ template <typename ItemServer>
+ class PldmEntityReq :
+     public PldmEntityBase,
+-    public AssetIntf,
+-    public AssetTagIntf,
+-    public RevisionIntf,
+-    public CompatibleIntf,
+     public sdbusplus::server::object_t<ItemServer>
+ {
+   public:
+@@ -113,47 +83,94 @@ class PldmEntityReq :
+     ~PldmEntityReq() override = default;
+ 
+     PldmEntityReq(sdbusplus::bus_t& bus, const std::string& path) :
+-        PldmEntityBase(bus, path), AssetIntf(bus, path.c_str()),
+-        AssetTagIntf(bus, path.c_str()), RevisionIntf(bus, path.c_str()),
+-        CompatibleIntf(bus, path.c_str()), ItemIntf(bus, path.c_str())
++        PldmEntityBase(bus, path), ItemIntf(bus, path.c_str())
+     {}
++};
+ 
++/** @class PldmFruDecorators
++ *  @brief FRU decorator D-Bus interfaces for a PLDM terminus.
++ *  @details Created only when the terminus provides valid FRU record data,
++ *           so that termini without FRU support do not expose empty decorator
++ *           interfaces on D-Bus.
++ */
++class PldmFruDecorators :
++    public AssetIntf,
++    public AssetTagIntf,
++    public RevisionIntf,
++    public CompatibleIntf
++{
++  public:
++    PldmFruDecorators() = delete;
++    PldmFruDecorators(const PldmFruDecorators&) = delete;
++    PldmFruDecorators& operator=(const PldmFruDecorators&) = delete;
++    PldmFruDecorators(PldmFruDecorators&&) = delete;
++    PldmFruDecorators& operator=(PldmFruDecorators&&) = delete;
++    ~PldmFruDecorators() override = default;
++
++    /** @brief Constructor to put object onto bus at a dbus path.
++     *  @param[in] bus - Bus to attach to.
++     *  @param[in] path - Path to attach at.
++     */
++    PldmFruDecorators(sdbusplus::bus_t& bus, const std::string& path) :
++        AssetIntf(bus, path.c_str()), AssetTagIntf(bus, path.c_str()),
++        RevisionIntf(bus, path.c_str()), CompatibleIntf(bus, path.c_str())
++    {}
++
++    /** @brief Set value of partNumber in Decorator.Asset */
+     std::string partNumber(std::string value) override
+     {
+         return AssetIntf::partNumber(std::move(value));
+     }
++
++    /** @brief Set value of serialNumber in Decorator.Asset */
+     std::string serialNumber(std::string value) override
+     {
+         return AssetIntf::serialNumber(std::move(value));
+     }
++
++    /** @brief Set value of manufacturer in Decorator.Asset */
+     std::string manufacturer(std::string value) override
+     {
+         return AssetIntf::manufacturer(std::move(value));
+     }
++
++    /** @brief Set value of buildDate in Decorator.Asset */
+     std::string buildDate(std::string value) override
+     {
+         return AssetIntf::buildDate(std::move(value));
+     }
++
++    /** @brief Set value of model in Decorator.Asset */
+     std::string model(std::string value) override
+     {
+         return AssetIntf::model(std::move(value));
+     }
++
++    /** @brief Set value of subModel in Decorator.Asset */
+     std::string subModel(std::string value) override
+     {
+         return AssetIntf::subModel(std::move(value));
+     }
++
++    /** @brief Set value of sparePartNumber in Decorator.Asset */
+     std::string sparePartNumber(std::string value) override
+     {
+         return AssetIntf::sparePartNumber(std::move(value));
+     }
++
++    /** @brief Set value of assetTag in Decorator.AssetTag */
+     std::string assetTag(std::string value) override
+     {
+         return AssetTagIntf::assetTag(std::move(value));
+     }
++
++    /** @brief Set value of version in Decorator.Revision */
+     std::string version(std::string value) override
+     {
+         return RevisionIntf::version(std::move(value));
+     }
++
++    /** @brief Set value of names in Decorator.Compatible */
+     std::vector<std::string> names(std::vector<std::string> values) override
+     {
+         return CompatibleIntf::names(std::move(values));
+diff --git a/platform-mc/terminus.cpp b/platform-mc/terminus.cpp
+index 2afbbc76..0d9253e5 100644
+--- a/platform-mc/terminus.cpp
++++ b/platform-mc/terminus.cpp
+@@ -107,6 +107,28 @@ uint16_t Terminus::findTerminusEntityType()
+     return 0;
+ }
+ 
++bool Terminus::ensureFruDecorators()
++{
++    if (fruDecoratorsIntf)
++    {
++        return true;
++    }
++    try
++    {
++        fruDecoratorsIntf =
++            std::make_unique<pldm::dbus_api::PldmFruDecorators>(
++                utils::DBusHandler::getBus(), inventoryPath);
++        return true;
++    }
++    catch (const sdbusplus::exception_t& e)
++    {
++        lg2::error(
++            "Terminus ID {TID}: Failed to create FRU decorator interfaces at {PATH}: {ERROR}",
++            "TID", tid, "PATH", inventoryPath, "ERROR", e);
++        return false;
++    }
++}
++
+ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
+ {
+     if (tName.empty())
+@@ -726,25 +748,53 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
+             switch (tlv->type)
+             {
+                 case PLDM_FRU_FIELD_TYPE_MODEL:
+-                    inventoryItemInft->model(fruField);
++                    if (!ensureFruDecorators())
++                    {
++                        return;
++                    }
++                    fruDecoratorsIntf->model(fruField);
+                     break;
+                 case PLDM_FRU_FIELD_TYPE_PN:
+-                    inventoryItemInft->partNumber(fruField);
++                    if (!ensureFruDecorators())
++                    {
++                        return;
++                    }
++                    fruDecoratorsIntf->partNumber(fruField);
+                     break;
+                 case PLDM_FRU_FIELD_TYPE_SN:
+-                    inventoryItemInft->serialNumber(fruField);
++                    if (!ensureFruDecorators())
++                    {
++                        return;
++                    }
++                    fruDecoratorsIntf->serialNumber(fruField);
+                     break;
+                 case PLDM_FRU_FIELD_TYPE_MANUFAC:
+-                    inventoryItemInft->manufacturer(fruField);
++                    if (!ensureFruDecorators())
++                    {
++                        return;
++                    }
++                    fruDecoratorsIntf->manufacturer(fruField);
+                     break;
+                 case PLDM_FRU_FIELD_TYPE_NAME:
+-                    inventoryItemInft->names({fruField});
++                    if (!ensureFruDecorators())
++                    {
++                        return;
++                    }
++                    fruDecoratorsIntf->names({fruField});
+                     break;
+                 case PLDM_FRU_FIELD_TYPE_VERSION:
+-                    inventoryItemInft->version(fruField);
++                    if (!ensureFruDecorators())
++                    {
++                        return;
++                    }
++                    fruDecoratorsIntf->version(fruField);
+                     break;
+                 case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
+-                    inventoryItemInft->assetTag(fruField);
++                    if (!ensureFruDecorators())
++                    {
++                        return;
++                    }
++                    fruDecoratorsIntf->assetTag(fruField);
+                     break;
+                 case PLDM_FRU_FIELD_TYPE_VENDOR:
+                 case PLDM_FRU_FIELD_TYPE_CHASSIS:
+diff --git a/platform-mc/terminus.hpp b/platform-mc/terminus.hpp
+index 46277378..811c6563 100644
+--- a/platform-mc/terminus.hpp
++++ b/platform-mc/terminus.hpp
+@@ -258,6 +258,13 @@ class Terminus
+      */
+     uint16_t findTerminusEntityType();
+ 
++    /** @brief Ensure FRU decorator D-Bus interfaces exist.
++     *
++     *  Creates PldmFruDecorators on first call; subsequent calls are no-ops.
++     *  @return true if fruDecoratorsIntf is valid after the call
++     */
++    bool ensureFruDecorators();
++
+     /** @brief Get sensor names from Sensor Auxiliary Names PDRs
+      *
+      *  @param[in] sensorId - Sensor ID
+@@ -304,6 +311,10 @@ class Terminus
+     /* @brief The pointer of inventory D-Bus interface for the terminus */
+     std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
+ 
++    /* @brief The pointer of FRU decorator D-Bus interfaces */
++    std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =
++        nullptr;
++
+     /* @brief Inventory D-Bus object path of the terminus */
+     std::string inventoryPath;
+ 
+diff --git a/platform-mc/test/terminus_test.cpp b/platform-mc/test/terminus_test.cpp
+index eca1357f..a6fdedee 100644
+--- a/platform-mc/test/terminus_test.cpp
++++ b/platform-mc/test/terminus_test.cpp
+@@ -396,13 +396,13 @@ TEST(TerminusTest, createPldmEntityTest)
+         pldm::dbus_api::createPldmEntity(bus, basePath + "unknown", 0xFFFF);
+     EXPECT_NE(fallback, nullptr) << "Failed for unknown/default entity type";
+ 
+-    // Verify property setters work through the abstract base
+-    auto entity = pldm::dbus_api::createPldmEntity(bus, basePath + "prop_test",
+-                                                   PLDM_ENTITY_PROC);
+-    ASSERT_NE(entity, nullptr);
+-    EXPECT_EQ("SN123", entity->serialNumber("SN123"));
+-    EXPECT_EQ("PN456", entity->partNumber("PN456"));
+-    EXPECT_EQ("TestMfg", entity->manufacturer("TestMfg"));
++    // Verify property setters work through PldmFruDecorators
++    auto decorators = std::make_unique<pldm::dbus_api::PldmFruDecorators>(
++        bus, basePath + "prop_test");
++    ASSERT_NE(decorators, nullptr);
++    EXPECT_EQ("SN123", decorators->serialNumber("SN123"));
++    EXPECT_EQ("PN456", decorators->partNumber("PN456"));
++    EXPECT_EQ("TestMfg", decorators->manufacturer("TestMfg"));
+ }
+ 
+ TEST(TerminusTest, parsePDRTestNoSensorPDR)
+-- 
+2.43.0
+
