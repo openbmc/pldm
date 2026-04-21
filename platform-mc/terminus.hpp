@@ -258,6 +258,13 @@ class Terminus
      */
     uint16_t findTerminusEntityType();
 
+    /** @brief Ensure FRU decorator D-Bus interfaces exist.
+     *
+     *  Creates PldmFruDecorators on first call; subsequent calls are no-ops.
+     *  @return true if fruDecoratorsIntf is valid after the call
+     */
+    bool ensureFruDecorators();
+
     /** @brief Get sensor names from Sensor Auxiliary Names PDRs
      *
      *  @param[in] sensorId - Sensor ID
@@ -303,6 +310,10 @@ class Terminus
     EntityName terminusName{};
     /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
+
+    /* @brief The pointer of FRU decorator D-Bus interfaces */
+    std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =
+        nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;

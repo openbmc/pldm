@@ -18,6 +18,8 @@
 #include <sdbusplus/server/object.hpp>
 
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace pldm
 {
@@ -40,8 +42,9 @@ using CompatibleIntf = sdbusplus::server::object_t<CompatibleServer>;
 
 /** @class PldmEntityBase
  *  @brief Abstract base for PLDM inventory entities.
- *  @details Provides property setters via Decorator interfaces. Concrete
- *           subclasses add the entity-type-specific Inventory.Item interface.
+ *  @details Provides a common base type for the entity-type-specific
+ *           PldmEntityReq<T> template instantiations, allowing the
+ *           Terminus to hold any entity type through a single pointer.
  */
 class PldmEntityBase
 {
@@ -53,53 +56,20 @@ class PldmEntityBase
     PldmEntityBase& operator=(PldmEntityBase&&) noexcept = default;
     virtual ~PldmEntityBase() = default;
 
-    /** @brief Set value of partNumber in Decorator.Asset */
-    virtual std::string partNumber(std::string value) = 0;
-
-    /** @brief Set value of serialNumber in Decorator.Asset */
-    virtual std::string serialNumber(std::string value) = 0;
-
-    /** @brief Set value of manufacturer in Decorator.Asset */
-    virtual std::string manufacturer(std::string value) = 0;
-
-    /** @brief Set value of buildDate in Decorator.Asset */
-    virtual std::string buildDate(std::string value) = 0;
-
-    /** @brief Set value of model in Decorator.Asset */
-    virtual std::string model(std::string value) = 0;
-
-    /** @brief Set value of subModel in Decorator.Asset */
-    virtual std::string subModel(std::string value) = 0;
-
-    /** @brief Set value of sparePartNumber in Decorator.Asset */
-    virtual std::string sparePartNumber(std::string value) = 0;
-
-    /** @brief Set value of assetTag in Decorator.AssetTag */
-    virtual std::string assetTag(std::string value) = 0;
-
-    /** @brief Set value of version in Decorator.Revision */
-    virtual std::string version(std::string value) = 0;
-
-    /** @brief Set value of names in Decorator.Compatible */
-    virtual std::vector<std::string> names(std::vector<std::string> values) = 0;
-
   protected:
     PldmEntityBase(sdbusplus::bus_t& /*bus*/, const std::string& /*path*/) {}
 };
 
 /** @class PldmEntityReq
  *  @brief Templated PLDM inventory entity implementation.
- *  @details Inherits Decorator interfaces for properties and an
- *           entity-type-specific Inventory.Item marker interface.
+ *  @details Inherits an entity-type-specific Inventory.Item marker interface.
+ *           Decorator interfaces are handled separately by PldmFruDecorators,
+ *           which is created lazily only when FRU record data is available.
  *  @tparam ItemServer - The sdbusplus server type for the Item interface
  */
 template <typename ItemServer>
 class PldmEntityReq :
     public PldmEntityBase,
-    public AssetIntf,
-    public AssetTagIntf,
-    public RevisionIntf,
-    public CompatibleIntf,
     public sdbusplus::server::object_t<ItemServer>
 {
   public:
@@ -113,47 +83,94 @@ class PldmEntityReq :
     ~PldmEntityReq() override = default;
 
     PldmEntityReq(sdbusplus::bus_t& bus, const std::string& path) :
-        PldmEntityBase(bus, path), AssetIntf(bus, path.c_str()),
-        AssetTagIntf(bus, path.c_str()), RevisionIntf(bus, path.c_str()),
-        CompatibleIntf(bus, path.c_str()), ItemIntf(bus, path.c_str())
+        PldmEntityBase(bus, path), ItemIntf(bus, path.c_str())
+    {}
+};
+
+/** @class PldmFruDecorators
+ *  @brief FRU decorator D-Bus interfaces for a PLDM terminus.
+ *  @details Created only when the terminus provides valid FRU record data,
+ *           so that termini without FRU support do not expose empty decorator
+ *           interfaces on D-Bus.
+ */
+class PldmFruDecorators :
+    public AssetIntf,
+    public AssetTagIntf,
+    public RevisionIntf,
+    public CompatibleIntf
+{
+  public:
+    PldmFruDecorators() = delete;
+    PldmFruDecorators(const PldmFruDecorators&) = delete;
+    PldmFruDecorators& operator=(const PldmFruDecorators&) = delete;
+    PldmFruDecorators(PldmFruDecorators&&) = delete;
+    PldmFruDecorators& operator=(PldmFruDecorators&&) = delete;
+    ~PldmFruDecorators() override = default;
+
+    /** @brief Constructor to put object onto bus at a dbus path.
+     *  @param[in] bus - Bus to attach to.
+     *  @param[in] path - Path to attach at.
+     */
+    PldmFruDecorators(sdbusplus::bus_t& bus, const std::string& path) :
+        AssetIntf(bus, path.c_str()), AssetTagIntf(bus, path.c_str()),
+        RevisionIntf(bus, path.c_str()), CompatibleIntf(bus, path.c_str())
     {}
 
+    /** @brief Set value of partNumber in Decorator.Asset */
     std::string partNumber(std::string value) override
     {
         return AssetIntf::partNumber(std::move(value));
     }
+
+    /** @brief Set value of serialNumber in Decorator.Asset */
     std::string serialNumber(std::string value) override
     {
         return AssetIntf::serialNumber(std::move(value));
     }
+
+    /** @brief Set value of manufacturer in Decorator.Asset */
     std::string manufacturer(std::string value) override
     {
         return AssetIntf::manufacturer(std::move(value));
     }
+
+    /** @brief Set value of buildDate in Decorator.Asset */
     std::string buildDate(std::string value) override
     {
         return AssetIntf::buildDate(std::move(value));
     }
+
+    /** @brief Set value of model in Decorator.Asset */
     std::string model(std::string value) override
     {
         return AssetIntf::model(std::move(value));
     }
+
+    /** @brief Set value of subModel in Decorator.Asset */
     std::string subModel(std::string value) override
     {
         return AssetIntf::subModel(std::move(value));
     }
+
+    /** @brief Set value of sparePartNumber in Decorator.Asset */
     std::string sparePartNumber(std::string value) override
     {
         return AssetIntf::sparePartNumber(std::move(value));
     }
+
+    /** @brief Set value of assetTag in Decorator.AssetTag */
     std::string assetTag(std::string value) override
     {
         return AssetTagIntf::assetTag(std::move(value));
     }
+
+    /** @brief Set value of version in Decorator.Revision */
     std::string version(std::string value) override
     {
         return RevisionIntf::version(std::move(value));
     }
+
+    /** @brief Set value of names in Decorator.Compatible */
     std::vector<std::string> names(std::vector<std::string> values) override
     {
         return CompatibleIntf::names(std::move(values));
