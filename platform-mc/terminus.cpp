@@ -723,28 +723,46 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
                 }
             }
 
+            // Create FRU decorator interfaces on first valid field
+            if (!fruDecoratorsIntf && tlv->type != PLDM_FRU_FIELD_TYPE_IANA)
+            {
+                try
+                {
+                    fruDecoratorsIntf =
+                        std::make_unique<pldm::dbus_api::PldmFruDecorators>(
+                            utils::DBusHandler::getBus(), inventoryPath);
+                }
+                catch (const sdbusplus::exception_t& e)
+                {
+                    lg2::error(
+                        "Terminus ID {TID}: Failed to create FRU decorator interfaces at {PATH}",
+                        "TID", tid, "PATH", inventoryPath);
+                    return;
+                }
+            }
+
             switch (tlv->type)
             {
                 case PLDM_FRU_FIELD_TYPE_MODEL:
-                    inventoryItemInft->model(fruField);
+                    fruDecoratorsIntf->model(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_PN:
-                    inventoryItemInft->partNumber(fruField);
+                    fruDecoratorsIntf->partNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_SN:
-                    inventoryItemInft->serialNumber(fruField);
+                    fruDecoratorsIntf->serialNumber(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_MANUFAC:
-                    inventoryItemInft->manufacturer(fruField);
+                    fruDecoratorsIntf->manufacturer(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_NAME:
-                    inventoryItemInft->names({fruField});
+                    fruDecoratorsIntf->names({fruField});
                     break;
                 case PLDM_FRU_FIELD_TYPE_VERSION:
-                    inventoryItemInft->version(fruField);
+                    fruDecoratorsIntf->version(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_ASSET_TAG:
-                    inventoryItemInft->assetTag(fruField);
+                    fruDecoratorsIntf->assetTag(fruField);
                     break;
                 case PLDM_FRU_FIELD_TYPE_VENDOR:
                 case PLDM_FRU_FIELD_TYPE_CHASSIS:
