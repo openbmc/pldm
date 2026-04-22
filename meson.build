@@ -118,6 +118,8 @@ elif get_option('transport-implementation') == 'af-mctp'
     conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
 
+conf_data.set('SENSOR_POLLING_TIME', get_option('sensor-polling-time'))
+
 # Firmware update inotify option
 if get_option('fw-update-pkg-inotify').allowed()
     conf_data.set('FW_UPDATE_INOTIFY_ENABLED', 1)
