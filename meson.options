@@ -68,6 +68,17 @@ option(
                     message in milliseconds''',
 )
 
+# Firmware update configuration parameters
+option(
+    'maximum-transfer-size',
+    type: 'integer',
+    min: 16,
+    max: 4294967295,
+    value: 4096,
+    description: '''Maximum size in bytes of the variable payload allowed to be
+                    requested by the FD, via RequestFirmwareData command''',
+)
+
 # Bios Attributes option
 option(
     'system-specific-bios-json',
