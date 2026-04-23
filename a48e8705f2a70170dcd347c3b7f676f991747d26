@@ -50,6 +50,24 @@
       "message": "I see `struct.pack(I` is used in line 688.\n\nShouldn\u0027t we be incrementing by 4 bytes then?",
       "revId": "a48e8705f2a70170dcd347c3b7f676f991747d26",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c45e9928_45936e9a",
+        "filename": "tools/fw-update/pldm_fwup_pkg_creator.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2026-04-23T02:21:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4aa1bfb5_2c36b362",
+      "revId": "a48e8705f2a70170dcd347c3b7f676f991747d26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
