@@ -350,6 +350,49 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /**
+     * @brief Firmware-update phase state per DSP0267 v1.3.0 Sec. 7.5-7.6.
+     *
+     * Tracked by the UA so that out-of-sequence FD-initiated commands
+     * (RequestFirmwareData, TransferComplete, VerifyComplete, ApplyComplete)
+     * can be rejected with PLDM_FWUP_COMMAND_NOT_EXPECTED as required by
+     * DSP0267 Sec. 12.6-12.9. Without this gate a malicious FD can skip the
+     * download phase entirely by responding TransferComplete(success) ->
+     * VerifyComplete(success) -> ApplyComplete(success) without ever
+     * issuing a RequestFirmwareData, and the UA would report a
+     * "successful" firmware update with zero bytes transferred.
+     */
+    enum class Phase
+    {
+        Inactive, ///< Pre-update, post-activate, or mid-cancel. All
+                  ///< FD-initiated progress commands rejected in this phase.
+        Download, ///< UpdateComponent responded success. FD may send
+                  ///< RequestFirmwareData and, when done, TransferComplete.
+        Verify,   ///< TransferComplete(success) received. FD must send
+                  ///< VerifyComplete next.
+        Apply,    ///< VerifyComplete(success) received. FD must send
+                  ///< ApplyComplete next.
+    };
+
+    /** @brief Current firmware-update phase. */
+    Phase currentPhase = Phase::Inactive;
+
+    /**
+     * @brief Max (offset + length) served via RequestFirmwareData for the
+     *        current component. Reset when entering Download. On
+     *        TransferComplete(success) this is cross-checked against the
+     *        component image size so an FD cannot fake completion without
+     *        actually pulling the data.
+     */
+    uint32_t currentComponentBytesServed = 0;
+
+    /**
+     * @brief Build a COMMAND_NOT_EXPECTED response for an out-of-sequence
+     *        FD-initiated request. Used by the phase gate in the four
+     *        FD-request handlers.
+     */
+    Response encodeCommandNotExpectedResponse(const pldm_msg* request) const;
 };
 
 } // namespace fw_update

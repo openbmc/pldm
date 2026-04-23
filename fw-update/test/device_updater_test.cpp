@@ -63,10 +63,35 @@ TEST_F(DeviceUpdaterTest, validatePackage)
     EXPECT_EQ(testPkgCompImageInfos, compImageInfos);
 }
 
+// Build a successful UpdateComponent response message. DeviceUpdater
+// treats this as "FD has accepted the update request" and transitions
+// into the DOWNLOAD phase, allowing subsequent RequestFirmwareData and
+// TransferComplete handlers to accept wire-format traffic per
+// DSP0267 §7.6.
+static std::vector<uint8_t> makeUpdateComponentOkResponse(uint8_t instanceId)
+{
+    std::vector<uint8_t> msg(
+        sizeof(pldm_msg_hdr) + sizeof(pldm_update_component_resp), 0);
+    auto* hdr = reinterpret_cast<pldm_msg*>(msg.data());
+    hdr->hdr.request = PLDM_RESPONSE;
+    hdr->hdr.type = PLDM_FWUP;
+    hdr->hdr.command = PLDM_UPDATE_COMPONENT;
+    hdr->hdr.instance_id = instanceId;
+    return msg;
+}
+
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
                                 compInfo, 512, nullptr);
+
+    // Advance to DOWNLOAD phase by simulating a successful UpdateComponent
+    // response. Without this, requestFwData returns COMMAND_NOT_EXPECTED
+    // per the phase gate added in the DSP0267 §12.6 conformance fix.
+    auto ucResp = makeUpdateComponentOkResponse(0x42);
+    auto* ucMsg = reinterpret_cast<const pldm_msg*>(ucResp.data());
+    deviceUpdater.updateComponent(0, ucMsg,
+                                  ucResp.size() - sizeof(pldm_msg_hdr));
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -141,6 +166,16 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
                                 compInfo, 512, nullptr);
 
+    // Advance to DOWNLOAD phase so the FD-initiated handlers below
+    // pass the DSP0267 §12.6-12.9 phase gates. Prior to the phase-
+    // tracking fix this step was skipped and the test happened to
+    // pass by accepting out-of-sequence completes — which was the
+    // vulnerability itself.
+    auto ucResp = makeUpdateComponentOkResponse(0x42);
+    auto* ucMsg = reinterpret_cast<const pldm_msg*>(ucResp.data());
+    deviceUpdater.updateComponent(0, ucMsg,
+                                  ucResp.size() - sizeof(pldm_msg_hdr));
+
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
         reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,
@@ -160,6 +195,16 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
         requestMsg, sizeof(pldm_request_firmware_data_req));
     ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
     EXPECT_EQ(deviceUpdater.getProgress(), 97);
+
+    // The FD signals end-of-download with TransferComplete. The
+    // bytes-served cross-check (requestFwData has now served 1024 of
+    // 1024 bytes = compSize) permits the transition to the VERIFY
+    // phase.
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> transferComplete = {
+        0x8B, 0x05, 0x16, PLDM_FWUP_TRANSFER_SUCCESS};
+    requestMsg = reinterpret_cast<const pldm_msg*>(transferComplete.data());
+    response = deviceUpdater.transferComplete(requestMsg, 1);
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> verifyComplete = {
         0x8C, 0x05, 0x17, 0x0};
