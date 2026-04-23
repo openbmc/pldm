@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c7c5efc_4cee10f2",
+        "filename": "common/utils.cpp",
+        "patchSetId": 113
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2026-04-23T03:25:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f5f0195_c1d4f69b",
+      "revId": "5cfeab8f5a9c62ad463808909a93182f99d85f8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5748db70_f282b6ec",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1203b0ed_76090491",
+        "filename": "common/utils.hpp",
+        "patchSetId": 113
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2026-04-23T03:25:39Z",
+      "side": 1,
+      "message": "Done. Changed data member from char* to const char*, and updated both mmap call sites to static_cast\u003cconst char*\u003e. Removed all mutable accessor overloads (getData(), getBytes(), getChars()), so callers can only obtain read-only views. munmap uses const_cast\u003cchar*\u003e(data) since the syscall requires void* but no write occurs. packageMap in update_manager is now const uint8_t* and retrieved via getBytes().data().",
+      "parentUuid": "5748db70_f282b6ec",
+      "revId": "5cfeab8f5a9c62ad463808909a93182f99d85f8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73b10021_2da393b6",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-04-14T07:39:39Z",
       "side": 1,
       "message": "I think parser.reset() would be a good idea here. Without parser.reset(), every update cycle leaks the previous parser and all its image data.",
+      "revId": "5cfeab8f5a9c62ad463808909a93182f99d85f8a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1efa3970_66816474",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 113
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2026-04-23T03:25:39Z",
+      "side": 1,
+      "message": "Done. Added parser.reset() inside clearActivationInfo(), before packageMMapHandler.reset(), so the previous PackageParser and all its image data are released at the start of every cleanup, not deferred until the next assignment.",
+      "parentUuid": "73b10021_2da393b6",
       "revId": "5cfeab8f5a9c62ad463808909a93182f99d85f8a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
