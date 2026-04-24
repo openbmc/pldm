@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "294383ff_41b027ed",
+        "filename": "common/utils.cpp",
+        "patchSetId": 115
+      },
+      "lineNbr": 1090,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-04-24T01:30:45Z",
+      "side": 1,
+      "message": "If you own the fd you can close it straight after the `mmap()` call:\n\n       The mmap() function shall add an extra reference to the file\n       associated with the file descriptor fildes which is not removed by\n       a subsequent close() on that file descriptor. This reference shall\n       be removed when there are no more mappings to the file.\n\nhttps://man7.org/linux/man-pages/man3/mmap.3p.html\n\nIf it\u0027s not owned and you aren\u0027t `dup()`ing to take a reference it then you don\u0027t want to close it either, so this path can be eliminated.",
+      "revId": "b529054ae5dd932f369502c36459f98788a89f78",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e9b1aa_dd739e66",
+        "filename": "common/utils.cpp",
+        "patchSetId": 115
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-04-24T01:30:45Z",
+      "side": 1,
+      "message": "This is a trap: https://andreasfertig.com/blog/2026/04/what-reinterpret_cast-doesnt-do/",
+      "revId": "b529054ae5dd932f369502c36459f98788a89f78",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
