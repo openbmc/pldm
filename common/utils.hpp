@@ -737,7 +737,7 @@ std::optional<T> getBiosAttrValue(const std::string& dbusAttrName)
             return *ptr;
         }
     }
-    catch (const sdbusplus::exception::SdBusError& e)
+    catch (const sdbusplus::exception::internal_exception& e)
     {
         info("Error getting the bios attribute {BIOS_ATTR}: {ERR_EXCEP}",
              "BIOS_ATTR", dbusAttrName, "ERR_EXCEP", e);

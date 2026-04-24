@@ -698,7 +698,7 @@ bool checkForFruPresence(const std::string& objPath)
             InventoryItem::interface);
         isPresent = std::get<bool>(propVal);
     }
-    catch (const sdbusplus::exception::SdBusError& e)
+    catch (const sdbusplus::exception::internal_exception& e)
     {
         error("Failed to check for FRU presence at {PATH}, error - {ERROR}",
               "PATH", objPath, "ERROR", e);
@@ -933,7 +933,7 @@ void setBiosAttr(const PendingAttributesList& biosAttrList)
                           std::variant<PendingAttributesList>(biosAttrList));
             bus.call_noreply(method, dbusTimeout);
         }
-        catch (const sdbusplus::exception::SdBusError& e)
+        catch (const sdbusplus::exception::internal_exception& e)
         {
             AttributeType attrType;
             AttributeValue attrValue;
