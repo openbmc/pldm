@@ -7,6 +7,8 @@
 
 #include <common/utils.hpp>
 
+#include <algorithm>
+#include <cstddef>
 #include <memory>
 #include <ranges>
 
@@ -143,6 +145,13 @@ void Terminus::parseTerminusPDRs()
 {
     for (auto& pdr : pdrs)
     {
+        if (pdr.size() < sizeof(pldm_pdr_hdr))
+        {
+            lg2::error(
+                "Invalid PDR from Terminus {TID}: size {SIZE} is smaller than the PDR header; skipping",
+                "TID", tid, "SIZE", pdr.size());
+            continue;
+        }
         auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(pdr.data());
         switch (pdrHdr->type)
         {
@@ -308,38 +317,85 @@ std::shared_ptr<SensorAuxiliaryNames> Terminus::parseSensorAuxiliaryNamesPDR(
     const std::vector<uint8_t>& pdrData)
 {
     constexpr uint8_t nullTerminator = 0;
+
+    // Reject a PDR shorter than the fixed header before casting.
+    if (pdrData.size() < offsetof(pldm_sensor_auxiliary_names_pdr, names))
+    {
+        lg2::error(
+            "Invalid Sensor Auxiliary Names PDR from Terminus {TID}: size {SIZE} < minimum {MIN}",
+            "TID", tid, "SIZE", pdrData.size(), "MIN",
+            offsetof(pldm_sensor_auxiliary_names_pdr, names));
+        return nullptr;
+    }
+
     auto pdr = reinterpret_cast<const struct pldm_sensor_auxiliary_names_pdr*>(
         pdrData.data());
     const uint8_t* ptr = pdr->names;
+    // Buffer end; every read from ptr must stay below this.
+    const uint8_t* const end = pdrData.data() + pdrData.size();
+
     std::vector<AuxiliaryNames> sensorAuxNames{};
     char16_t alignedBuffer[PLDM_STR_UTF_16_MAX_LEN];
-    for ([[maybe_unused]] const auto& sensor :
+    for (const auto& sensor :
          std::views::iota(0, static_cast<int>(pdr->sensor_count)))
     {
+        if (ptr >= end)
+        {
+            lg2::error(
+                "Invalid Sensor Auxiliary Names PDR from Terminus {TID}: truncated before sensor {SENSOR}",
+                "TID", tid, "SENSOR", sensor);
+            return nullptr;
+        }
         const uint8_t nameStringCount = static_cast<uint8_t>(*ptr);
         ptr += sizeof(uint8_t);
         AuxiliaryNames nameStrings{};
         for ([[maybe_unused]] const auto& count :
              std::views::iota(0, static_cast<int>(nameStringCount)))
         {
-            std::string_view nameLanguageTag(
-                reinterpret_cast<const char*>(ptr));
-            ptr += nameLanguageTag.size() + sizeof(nullTerminator);
-
-            int u16NameStringLen = 0;
-            for (int i = 0; ptr[i] != 0 || ptr[i + 1] != 0; i += 2)
+            // Bounded NUL search for the language tag.
+            const uint8_t* nulTerm =
+                std::ranges::find(ptr, end, nullTerminator);
+            if (nulTerm == end)
             {
+                lg2::error(
+                    "Invalid Sensor Auxiliary Names PDR from Terminus {TID}: language tag not NUL-terminated",
+                    "TID", tid);
+                return nullptr;
+            }
+            std::string_view nameLanguageTag(
+                reinterpret_cast<const char*>(ptr),
+                static_cast<size_t>(nulTerm - ptr));
+            ptr = nulTerm + sizeof(nullTerminator);
+
+            // Bounded scan for the UTF-16 0x0000 terminator.
+            int u16NameStringLen = 0;
+            while (true)
+            {
+                const uint8_t* unit = ptr + u16NameStringLen * sizeof(uint16_t);
+                if (unit + 1 >= end)
+                {
+                    lg2::error(
+                        "Invalid Sensor Auxiliary Names PDR from Terminus {TID}: UTF-16 string not NUL-terminated",
+                        "TID", tid);
+                    return nullptr;
+                }
+                if (unit[0] == 0 && unit[1] == 0)
+                {
+                    break;
+                }
                 u16NameStringLen++;
+                if (u16NameStringLen >= PLDM_STR_UTF_16_MAX_LEN)
+                {
+                    lg2::error(
+                        "Invalid Sensor Auxiliary Names PDR from Terminus {TID}: name exceeds {MAX} UTF-16 units",
+                        "TID", tid, "MAX", PLDM_STR_UTF_16_MAX_LEN);
+                    return nullptr;
+                }
             }
             /* include terminator */
             u16NameStringLen++;
 
             std::fill(std::begin(alignedBuffer), std::end(alignedBuffer), 0);
-            if (u16NameStringLen > PLDM_STR_UTF_16_MAX_LEN)
-            {
-                lg2::error("Sensor name too long.");
-                return nullptr;
-            }
             memcpy(alignedBuffer, ptr, u16NameStringLen * sizeof(uint16_t));
             std::u16string u16NameString(alignedBuffer, u16NameStringLen);
             ptr += u16NameString.size() * sizeof(uint16_t);
