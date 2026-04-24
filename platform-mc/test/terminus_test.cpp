@@ -388,3 +388,160 @@ TEST(TerminusTest, parsePDRTestNoSensorPDR)
     auto sensorAuxNames = t1.getSensorAuxiliaryNames(1);
     EXPECT_EQ(nullptr, sensorAuxNames);
 }
+
+// ============================================================
+// Regression tests for CVE-class bounds-check gaps in
+// Terminus::parseSensorAuxiliaryNamesPDR. Each case crafts a
+// malicious Sensor Auxiliary Names PDR that, prior to the
+// bounds-check fix, drove pointer arithmetic past pdrData's end
+// (OOB read from the heap, potential crash). After the fix the
+// parser must return nullptr cleanly with no dereference beyond
+// the supplied buffer.
+// ============================================================
+
+TEST(TerminusTest, parseSensorAuxiliaryNamesPDR_UnterminatedUtf16Rejected)
+{
+    // Attack: UTF-16 name string in the PDR has no 0x0000
+    // terminator before the end of the buffer. The old scan
+    //   for (int i = 0; ptr[i] != 0 || ptr[i+1] != 0; i += 2)
+    // walks past the buffer into whatever heap memory follows.
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    std::vector<uint8_t> maliciousPdr{
+        0x0,
+        0x0,
+        0x0,
+        0x99,                            // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_SENSOR_AUXILIARY_NAMES_PDR, // PDRType
+        0x0,
+        0x0,                             // recordChangeNumber
+        0x0,
+        0x0,                             // dataLength
+        0x0,
+        0x0,                             // terminusHandle
+        0x99,
+        0x0,                             // sensorID
+        0x1,                             // sensorCount
+        0x1,                             // nameStringCount
+        'e',
+        'n',
+        0x0, // language tag "en\0"
+        'T',
+        0x0,
+        'E',
+        0x0 // UTF-16 "TE" — NO 0x0000 terminator
+    };
+    t1.pdrs.emplace_back(maliciousPdr);
+    EXPECT_NO_THROW(t1.parseTerminusPDRs());
+    EXPECT_EQ(nullptr, t1.getSensorAuxiliaryNames(0x99));
+}
+
+TEST(TerminusTest, parseSensorAuxiliaryNamesPDR_UnterminatedLangTagRejected)
+{
+    // Attack: language tag is missing its NUL terminator, so the
+    // original std::string_view(const char*) ctor would strlen
+    // past the PDR end into heap memory.
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    std::vector<uint8_t> maliciousPdr{
+        0x0,
+        0x0,
+        0x0,
+        0x9A,                            // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_SENSOR_AUXILIARY_NAMES_PDR, // PDRType
+        0x0,
+        0x0,                             // recordChangeNumber
+        0x0,
+        0x0,                             // dataLength
+        0x0,
+        0x0,                             // terminusHandle
+        0x9A,
+        0x0,                             // sensorID
+        0x1,                             // sensorCount
+        0x1,                             // nameStringCount
+        'e',
+        'n',
+        'U',
+        'S' // language tag "enUS" — NO NUL before end
+    };
+    t1.pdrs.emplace_back(maliciousPdr);
+    EXPECT_NO_THROW(t1.parseTerminusPDRs());
+    EXPECT_EQ(nullptr, t1.getSensorAuxiliaryNames(0x9A));
+}
+
+TEST(TerminusTest, parseSensorAuxiliaryNamesPDR_TruncatedHeaderRejected)
+{
+    // Attack: PDR too short to even contain the fixed-size prefix
+    // (hdr + terminus_handle + sensor_id + sensor_count). The old
+    // code cast pdrData.data() to the struct type and dereferenced
+    // sensor_count past the end.
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    std::vector<uint8_t> maliciousPdr{
+        0x0,
+        0x0,
+        0x0,
+        0x9B,                            // record handle (partial struct)
+        0x1,                             // PDRHeaderVersion
+        PLDM_SENSOR_AUXILIARY_NAMES_PDR, // PDRType
+        0x0,
+        0x0                              // recordChangeNumber (and that's all)
+    };
+    t1.pdrs.emplace_back(maliciousPdr);
+    EXPECT_NO_THROW(t1.parseTerminusPDRs());
+    EXPECT_EQ(nullptr, t1.getSensorAuxiliaryNames(0));
+}
+
+TEST(TerminusTest, parseSensorAuxiliaryNamesPDR_OversizedUtf16Rejected)
+{
+    // Attack: UTF-16 name string claims to be longer than
+    // PLDM_STR_UTF_16_MAX_LEN code units. Must be rejected both
+    // as a length-guard (protecting alignedBuffer) and without
+    // unbounded scanning.
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    std::vector<uint8_t> pdr{
+        0x0,
+        0x0,
+        0x0,
+        0x9C,                            // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_SENSOR_AUXILIARY_NAMES_PDR, // PDRType
+        0x0,
+        0x0,                             // recordChangeNumber
+        0x0,
+        0x0,                             // dataLength
+        0x0,
+        0x0,                             // terminusHandle
+        0x9C,
+        0x0,                             // sensorID
+        0x1,                             // sensorCount
+        0x1,                             // nameStringCount
+        'e',
+        'n',
+        0x0, // language tag "en\0"
+    };
+    // Append PLDM_STR_UTF_16_MAX_LEN + 10 non-zero UTF-16 code units
+    // (no 0x0000 terminator reached before the length cap fires).
+    for (int i = 0; i < PLDM_STR_UTF_16_MAX_LEN + 10; ++i)
+    {
+        pdr.push_back(0x00);
+        pdr.push_back('A'); // any non-zero unit
+    }
+    // Final 0x0000 terminator so the loop *would* exit if the length
+    // cap weren't enforced — ensures the cap, not eventual NUL, is
+    // what stops the scan.
+    pdr.push_back(0x00);
+    pdr.push_back(0x00);
+
+    t1.pdrs.emplace_back(pdr);
+    EXPECT_NO_THROW(t1.parseTerminusPDRs());
+    EXPECT_EQ(nullptr, t1.getSensorAuxiliaryNames(0x9C));
+}
