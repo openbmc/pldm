@@ -104,6 +104,24 @@
       "message": "this commit introduces a lot of #ifdefs. Is there a better way of separting out the optional code?",
       "revId": "7538c99c5571102bea58c412961e443116b69efb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95bfcd73_68c29fe8",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-04-27T10:05:51Z",
+      "side": 1,
+      "message": "I\u0027ve reworked this with a different approach in change [89472], which removes the #ifdefs entirely by splitting PldmEntityReq into PldmBoardEntity and PldmFruDecorators. The decorator interfaces are now created lazily only when valid FRU data is present.\n\nI accidentally submitted it with a new Change-Id instead of reusing this one. If the new approach is accepted, I\u0027ll abandon this patch.\nThanks!\n\n[89472]: https://gerrit.openbmc.org/c/openbmc/pldm/+/89472",
+      "parentUuid": "0391aa31_83907ffb",
+      "revId": "7538c99c5571102bea58c412961e443116b69efb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
