@@ -33,6 +33,23 @@
       "message": "Sorry for the hassle.  I didn\u0027t realize the Meta LF OpenBMC fork was buried in the OG Meta OpenBMC repo...otherwise would have checked there.",
       "revId": "b094150813569b069cc12e995a1133f4b0060c04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86b92a73_e3e6f56a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-04-28T14:09:17Z",
+      "side": 1,
+      "message": "I do want to point out we are setting precedent here, in that we are allowing/supporting upstream feature flags that are not used by any upstream platforms.  Is everyone OK with that?",
+      "revId": "b094150813569b069cc12e995a1133f4b0060c04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
