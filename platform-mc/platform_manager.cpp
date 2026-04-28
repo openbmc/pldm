@@ -17,8 +17,22 @@ namespace platform_mc
 
 exec::task<int> PlatformManager::initTerminus()
 {
-    for (auto& [tid, terminus] : termini)
+    /* Snapshot TIDs before iterating. The termini map can be modified (entries
+     * erased) by removeMctpTerminus() while this coroutine is suspended at a
+     * co_await point, which would invalidate range-for iterators and references
+     * into the map, causing use-after-free. */
+    std::vector<pldm_tid_t> tids;
+    for (auto& [tid, _] : termini)
     {
+        tids.push_back(tid);
+    }
+
+    for (const auto tid : tids)
+    {
+        /* Take a local shared_ptr copy so the Terminus object stays alive even
+         * if the map entry is erased while this coroutine is suspended. */
+        auto terminus = termini[tid];
+
         if (terminus->initialized)
         {
             continue;
@@ -43,6 +57,11 @@ exec::task<int> PlatformManager::initTerminus()
             }
         }
 
+        if (!termini.contains(tid))
+        {
+            continue;
+        }
+
         std::vector<uint8_t> fruData{};
         if ((totalTableRecords != 0) &&
             terminus->doesSupportCommand(PLDM_FRU, PLDM_GET_FRU_RECORD_TABLE))
@@ -57,6 +76,11 @@ exec::task<int> PlatformManager::initTerminus()
             }
         }
 
+        if (!termini.contains(tid))
+        {
+            continue;
+        }
+
         if (terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_GET_PDR))
         {
             auto rc = co_await getPDRs(terminus);
@@ -66,6 +90,11 @@ exec::task<int> PlatformManager::initTerminus()
                     "Failed to fetch PDRs for terminus with TID: {TID}, error: {ERROR}",
                     "TID", tid, "ERROR", rc);
                 continue; // Continue to next terminus
+            }
+
+            if (!termini.contains(tid))
+            {
+                continue;
             }
 
             terminus->parseTerminusPDRs();
@@ -100,16 +129,29 @@ exec::task<int> PlatformManager::initTerminus()
                     PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE;
             }
         }
+
+        if (!termini.contains(tid))
+        {
+            continue;
+        }
+
         terminus->maxBufferSize =
             std::min(terminus->maxBufferSize, terminusMaxBufferSize);
 
         auto rc = co_await configEventReceiver(tid);
+
+        if (!termini.contains(tid))
+        {
+            continue;
+        }
+
         if (rc)
         {
             lg2::error(
                 "Failed to config event receiver for terminus with TID: {TID}, error: {ERROR}",
                 "TID", tid, "ERROR", rc);
         }
+
         terminus->initialized = true;
         if (manager)
         {
@@ -133,7 +175,9 @@ exec::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
         co_return PLDM_ERROR;
     }
 
-    auto& terminus = termini[tid];
+    /* Take a local shared_ptr copy so the Terminus object stays alive even
+     * if the map entry is erased while this coroutine is suspended. */
+    auto terminus = termini[tid];
     if (!terminus->doesSupportCommand(PLDM_PLATFORM,
                                       PLDM_EVENT_MESSAGE_SUPPORTED))
     {
@@ -160,6 +204,11 @@ exec::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
                 "TID", tid, "ERROR", rc);
             terminus->synchronyConfigurationSupported.byte = 0;
         }
+    }
+
+    if (!termini.contains(tid))
+    {
+        co_return PLDM_ERROR;
     }
 
     if (!terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_SET_EVENT_RECEIVER))
@@ -217,6 +266,11 @@ exec::task<int> PlatformManager::configEventReceiver(pldm_tid_t tid)
                 "Failed to set event receiver for terminus with TID: {TID}, error: {ERROR}",
                 "TID", tid, "ERROR", rc);
         }
+    }
+
+    if (!termini.contains(tid))
+    {
+        co_return PLDM_ERROR;
     }
 
     co_return PLDM_SUCCESS;
