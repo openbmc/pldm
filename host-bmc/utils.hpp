@@ -1,3 +1,5 @@
+#pragma once
+
 #include "common/utils.hpp"
 #include "libpldmresponder/oem_handler.hpp"
 

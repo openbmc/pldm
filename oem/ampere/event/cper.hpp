@@ -1,3 +1,5 @@
+#pragma once
+
 #include "libcper/Cper.h"
 
 #include <unistd.h>
