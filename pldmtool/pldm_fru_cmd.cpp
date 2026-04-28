@@ -8,9 +8,6 @@
 
 #include <endian.h>
 
-#include <functional>
-#include <tuple>
-
 namespace pldmtool
 {
 

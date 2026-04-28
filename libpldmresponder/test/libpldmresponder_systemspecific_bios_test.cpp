@@ -2,14 +2,12 @@
 #include "common/test/mocked_utils.hpp"
 #include "libpldmresponder/bios_config.hpp"
 #include "libpldmresponder/bios_string_attribute.hpp"
-#include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/platform_config.hpp"
 #include "mocked_bios.hpp"
 
 #include <nlohmann/json.hpp>
 
 #include <fstream>
-#include <memory>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

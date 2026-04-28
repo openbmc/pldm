@@ -19,8 +19,6 @@
 #include <deque>
 #include <functional>
 #include <memory>
-#include <mutex>
-#include <queue>
 #include <tuple>
 #include <unordered_map>
 

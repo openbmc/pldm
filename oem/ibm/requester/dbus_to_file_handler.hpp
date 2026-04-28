@@ -5,10 +5,6 @@
 
 #include <libpldm/platform.h>
 
-#include <filesystem>
-#include <fstream>
-#include <map>
-
 namespace pldm
 {
 namespace requester

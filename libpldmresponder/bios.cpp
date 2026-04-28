@@ -6,12 +6,9 @@
 #include <xyz/openbmc_project/Time/EpochTime/common.hpp>
 #include <xyz/openbmc_project/Time/Synchronization/common.hpp>
 
-#include <array>
 #include <chrono>
 #include <ctime>
-#include <stdexcept>
 #include <string>
-#include <variant>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;

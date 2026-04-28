@@ -1,7 +1,6 @@
 #include "file_io_type_pel.hpp"
 
 #include "common/utils.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
@@ -17,7 +16,6 @@
 #include <exception>
 #include <filesystem>
 #include <fstream>
-#include <vector>
 
 PHOSPHOR_LOG2_USING;
 

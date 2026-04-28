@@ -1,8 +1,6 @@
 #include "base.hpp"
 
 #include "common/types.hpp"
-#include "common/utils.hpp"
-#include "libpldmresponder/pdr.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/bios.h>
@@ -12,7 +10,6 @@
 #include <array>
 #include <cstring>
 #include <map>
-#include <stdexcept>
 #include <vector>
 
 #ifdef OEM_IBM

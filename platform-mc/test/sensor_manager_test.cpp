@@ -1,4 +1,3 @@
-#include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "mock_sensor_manager.hpp"
 #include "platform-mc/sensor_manager.hpp"

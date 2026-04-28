@@ -12,8 +12,6 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
-#include <functional>
-#include <iostream>
 #include <string>
 
 PHOSPHOR_LOG2_USING;

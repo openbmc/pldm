@@ -1,8 +1,6 @@
 #pragma once
 
-#include "common/utils.hpp"
 #include "file_io_by_type.hpp"
-#include "oem/meta/utils.hpp"
 
 namespace pldm::responder::oem_meta
 {

@@ -1,7 +1,6 @@
 #include "common/utils.hpp"
 #include "fw-update/aggregate_update_manager.hpp"
 #include "fw-update/inventory_manager.hpp"
-#include "requester/test/mock_request.hpp"
 #include "test/test_instance_id.hpp"
 
 #include <libpldm/firmware_update.h>

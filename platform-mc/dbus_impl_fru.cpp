@@ -1,7 +1,5 @@
 #include "dbus_impl_fru.hpp"
 
-#include <iostream>
-
 namespace pldm
 {
 namespace dbus_api

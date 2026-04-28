@@ -3,7 +3,7 @@
 #include <libpldm/entity.h>
 
 #include <cstdlib>
-#include <iostream>
+#include <deque>
 
 using namespace pldm::utils;
 

@@ -8,7 +8,6 @@
 #include <sdeventplus/source/event.hpp>
 
 #include <cassert>
-#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <string>

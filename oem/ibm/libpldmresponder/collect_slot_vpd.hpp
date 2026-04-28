@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libpldmresponder/platform.hpp"
+#include "libpldmresponder/oem_handler.hpp"
 
 #include <libpldm/pdr.h>
 #include <libpldm/platform.h>

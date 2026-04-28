@@ -3,9 +3,11 @@
 #define PLDM_OEM_EVENT_CLASS_0xFB 0xFB
 
 #include "oem/meta/event/types.hpp"
-#include "platform-mc/manager.hpp"
 
 #include <libpldm/base.h>
+
+#include <format>
+#include <string>
 
 namespace pldm::oem_meta
 {

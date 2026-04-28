@@ -1,9 +1,6 @@
 #pragma once
 
-#include "common/utils.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
-
-#include <cstdint>
 
 namespace pldm
 {

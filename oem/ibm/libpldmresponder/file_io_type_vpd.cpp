@@ -2,6 +2,7 @@
 
 #include "common/utils.hpp"
 
+#include <fcntl.h>
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
 

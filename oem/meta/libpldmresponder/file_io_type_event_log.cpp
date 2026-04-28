@@ -1,5 +1,8 @@
 #include "file_io_type_event_log.hpp"
 
+#include "common/utils.hpp"
+#include "oem/meta/utils.hpp"
+
 #include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
@@ -8,7 +11,6 @@
 
 #include <array>
 #include <format>
-#include <functional>
 #include <map>
 #include <string>
 #include <string_view>

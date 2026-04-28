@@ -1,6 +1,7 @@
 #include "host_pdr_handler.hpp"
 
 #include "common/types.hpp"
+#include "host-bmc/utils.hpp"
 
 #include <libpldm/fru.h>
 #ifdef OEM_IBM
@@ -17,7 +18,6 @@
 #include <xyz/openbmc_project/State/Host/client.hpp>
 
 #include <cassert>
-#include <fstream>
 #include <type_traits>
 
 PHOSPHOR_LOG2_USING;

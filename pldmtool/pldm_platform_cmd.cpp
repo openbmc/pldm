@@ -1,4 +1,5 @@
 #include "common/types.hpp"
+#include "common/utils.hpp"
 #include "pldm_cmd_helper.hpp"
 
 #include <libpldm/entity.h>

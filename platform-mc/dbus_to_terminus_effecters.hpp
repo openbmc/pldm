@@ -9,7 +9,6 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <string>
-#include <utility>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;

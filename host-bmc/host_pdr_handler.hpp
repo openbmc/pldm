@@ -7,7 +7,6 @@
 #include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "requester/handler.hpp"
-#include "utils.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/platform.h>
@@ -16,7 +15,6 @@
 #include <sdeventplus/source/event.hpp>
 
 #include <deque>
-#include <filesystem>
 #include <map>
 #include <memory>
 #include <vector>

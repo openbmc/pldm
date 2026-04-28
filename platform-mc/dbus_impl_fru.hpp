@@ -9,8 +9,6 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 
-#include <map>
-
 namespace pldm
 {
 namespace dbus_api
