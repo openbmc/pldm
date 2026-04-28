@@ -603,6 +603,10 @@ static const std::map<uint8_t, FaultDesc> rainbowFaultsList = {
      {"RAINBOW_MEDHA0_HBM_CATTRIP_LS_LVC33_ALARM",
       "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/medha0_hbm_cattrip_ls_lvc33_alarm",
       "DEVICE", record::thermalFault}},
+    {0x54,
+     {"RAINBOW_BOOTSTRAP_SET_AFTER_PWR_EN",
+      "/xyz/openbmc_project/inventory/system/board/Santabarbara_Rainbow/bootstrap_set_after_pwr_en",
+      "POWER_RAIL", record::powerRailFault}},
 };
 
 namespace report
