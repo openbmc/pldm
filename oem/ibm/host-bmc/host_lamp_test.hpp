@@ -8,8 +8,6 @@
 
 #include <string>
 
-using namespace pldm::dbus_api;
-
 namespace pldm
 {
 namespace led
