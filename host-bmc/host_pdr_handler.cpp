@@ -32,7 +32,6 @@ using namespace sdbusplus::bus::match::rules;
 using namespace pldm::responder::pdr_utils;
 using namespace pldm::hostbmc::utils;
 using Json = nlohmann::json;
-namespace fs = std::filesystem;
 using namespace pldm::dbus;
 const Json emptyJson{};
 
