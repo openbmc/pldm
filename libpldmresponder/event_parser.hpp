@@ -23,11 +23,11 @@ namespace pldm::responder::events
  */
 struct StateSensorEntry
 {
-    pdr::ContainerID containerId;
-    pdr::EntityType entityType;
-    pdr::EntityInstance entityInstance;
-    pdr::SensorOffset sensorOffset;
-    pdr::StateSetId stateSetid;
+    pldm::pdr::ContainerID containerId;
+    pldm::pdr::EntityType entityType;
+    pldm::pdr::EntityInstance entityInstance;
+    pldm::pdr::SensorOffset sensorOffset;
+    pldm::pdr::StateSetId stateSetid;
     bool skipContainerId;
 
     bool operator==(const StateSensorEntry& e) const
@@ -68,7 +68,8 @@ struct StateSensorEntry
     }
 };
 
-using StateToDBusValue = std::map<pdr::EventState, pldm::utils::PropertyValue>;
+using StateToDBusValue =
+    std::map<pldm::pdr::EventState, pldm::utils::PropertyValue>;
 using EventDBusInfo = std::tuple<pldm::utils::DBusMapping, StateToDBusValue>;
 using EventMap = std::map<StateSensorEntry, EventDBusInfo>;
 using Json = nlohmann::json;
@@ -106,7 +107,7 @@ class StateSensorHandler
      *
      *  @return PLDM completion code
      */
-    int eventAction(const StateSensorEntry& entry, pdr::EventState state);
+    int eventAction(const StateSensorEntry& entry, pldm::pdr::EventState state);
 
     /** @brief Helper API to get D-Bus information for a StateSensorEntry
      *
