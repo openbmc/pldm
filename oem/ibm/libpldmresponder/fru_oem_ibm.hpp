@@ -1,9 +1,7 @@
 #pragma once
 
-#include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/oem_handler.hpp"
-#include "oem/ibm/libpldmresponder/utils.hpp"
 
 #include <libpldm/oem/ibm/fru.h>
 

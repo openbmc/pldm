@@ -1,5 +1,7 @@
 #include "file_io_type_power_control.hpp"
 
+#include "oem/meta/utils.hpp"
+
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/State/Host/client.hpp>
 

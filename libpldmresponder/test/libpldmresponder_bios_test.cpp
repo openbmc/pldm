@@ -1,13 +1,9 @@
 #include "libpldmresponder/bios.hpp"
-#include "libpldmresponder/bios_table.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/bios.h>
 
-#include <array>
-#include <cstring>
 #include <ctime>
-#include <filesystem>
 
 #include <gtest/gtest.h>
 

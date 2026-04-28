@@ -1,8 +1,6 @@
 #pragma once
 
 #include "common/types.hpp"
-#include "requester/handler.hpp"
-#include "terminus.hpp"
 #include "terminus_manager.hpp"
 
 #include <libpldm/platform.h>
@@ -12,7 +10,6 @@
 #include <memory>
 #include <optional>
 #include <utility>
-#include <vector>
 
 namespace pldm
 {

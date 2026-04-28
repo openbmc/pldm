@@ -5,11 +5,9 @@
 
 #include <nlohmann/json.hpp>
 
-#include <filesystem>
 #include <map>
 #include <string>
 #include <tuple>
-#include <vector>
 
 namespace pldm::responder::events
 {

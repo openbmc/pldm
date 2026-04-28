@@ -1,4 +1,3 @@
-#include "common/utils.hpp"
 #include "libpldmresponder/fru.hpp"
 #include "libpldmresponder/fru_parser.hpp"
 

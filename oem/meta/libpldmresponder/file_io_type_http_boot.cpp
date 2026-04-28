@@ -8,8 +8,6 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <cstring>
-#include <fstream>
-#include <utility>
 
 PHOSPHOR_LOG2_USING;
 

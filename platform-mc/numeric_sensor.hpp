@@ -1,6 +1,5 @@
 #pragma once
 
-#include "common/types.hpp"
 #include "common/utils.hpp"
 
 #include <libpldm/platform.h>

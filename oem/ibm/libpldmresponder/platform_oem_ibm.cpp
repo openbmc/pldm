@@ -2,7 +2,6 @@
 
 #include "common/types.hpp"
 #include "common/utils.hpp"
-#include "libpldmresponder/pdr.hpp"
 
 #include <libpldm/oem/ibm/platform.h>
 

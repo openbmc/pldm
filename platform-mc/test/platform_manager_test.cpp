@@ -1,12 +1,9 @@
-#include "common/instance_id.hpp"
 #include "mock_terminus_manager.hpp"
 #include "platform-mc/platform_manager.hpp"
 #include "test/test_instance_id.hpp"
 #include "utils_test.hpp"
 
 #include <sdeventplus/event.hpp>
-
-#include <bitset>
 
 #include <gtest/gtest.h>
 

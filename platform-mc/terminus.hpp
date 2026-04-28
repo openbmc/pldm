@@ -3,20 +3,17 @@
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
-#include "requester/handler.hpp"
-#include "terminus.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
 
 #include <sdbusplus/server/object.hpp>
 #include <sdeventplus/event.hpp>
+#include <sdeventplus/source/event.hpp>
 
 #include <algorithm>
 #include <bitset>
 #include <string>
-#include <tuple>
-#include <utility>
 #include <vector>
 
 namespace pldm

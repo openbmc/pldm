@@ -12,7 +12,6 @@
 #include <xyz/openbmc_project/PLDM/Event/common.hpp>
 
 #include <algorithm>
-#include <array>
 #include <cctype>
 #include <ctime>
 #include <fstream>

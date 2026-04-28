@@ -1,7 +1,7 @@
 #include "pldm_cmd_helper.hpp"
 
 #include "common/transport.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
+#include "common/utils.hpp"
 
 #include <libpldm/firmware_update.h>
 #include <libpldm/transport.h>
@@ -12,8 +12,6 @@
 
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
-
-#include <exception>
 
 using namespace pldm::utils;
 

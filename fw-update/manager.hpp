@@ -1,16 +1,11 @@
 #pragma once
 
-#include "activation.hpp"
 #include "aggregate_update_manager.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
-#include "device_updater.hpp"
 #include "inventory_manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
-
-#include <unordered_map>
-#include <vector>
 
 namespace pldm
 {

@@ -1,7 +1,6 @@
 #include "numeric_sensor.hpp"
 
 #include "common/utils.hpp"
-#include "requester/handler.hpp"
 
 #include <libpldm/platform.h>
 
@@ -10,7 +9,6 @@
 #include <xyz/openbmc_project/Sensor/Threshold/event.hpp>
 
 #include <limits>
-#include <regex>
 
 PHOSPHOR_LOG2_USING;
 

@@ -5,7 +5,6 @@
 #include "board.hpp"
 #include "cable.hpp"
 #include "chassis.hpp"
-#include "common/utils.hpp"
 #include "connector.hpp"
 #include "cpu_core.hpp"
 #include "fabric_adapter.hpp"

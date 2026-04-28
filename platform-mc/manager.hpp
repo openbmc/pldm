@@ -4,7 +4,6 @@
 #include "common/types.hpp"
 #include "event_manager.hpp"
 #include "platform_manager.hpp"
-#include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "sensor_manager.hpp"
 #include "terminus_manager.hpp"

@@ -14,7 +14,6 @@
 
 #include <chrono>
 #include <functional>
-#include <iostream>
 
 PHOSPHOR_LOG2_USING;
 

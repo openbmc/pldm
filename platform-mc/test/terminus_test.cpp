@@ -1,4 +1,3 @@
-#include "platform-mc/numeric_sensor.hpp"
 #include "platform-mc/terminus.hpp"
 
 #include <libpldm/entity.h>

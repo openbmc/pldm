@@ -1,9 +1,6 @@
 #pragma once
 
 #include "common/types.hpp"
-#include "numeric_sensor.hpp"
-#include "requester/handler.hpp"
-#include "terminus.hpp"
 #include "terminus_manager.hpp"
 
 #include <libpldm/platform.h>
