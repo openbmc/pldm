@@ -7,7 +7,6 @@
 
 #include <gtest/gtest.h>
 
-namespace fs = std::filesystem;
 using namespace pldm;
 using namespace pldm::utils;
 using namespace pldm::hostbmc::utils;

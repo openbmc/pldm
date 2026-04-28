@@ -18,9 +18,6 @@ namespace pldm
 namespace oem_ibm
 {
 
-using namespace pldm::state_sensor;
-using namespace pldm::dbus_api;
-
 /**
  * @class OemIBM
  *

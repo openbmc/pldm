@@ -20,8 +20,6 @@ namespace pldm
 {
 namespace platform_mc
 {
-namespace fs = std::filesystem;
-
 int EventManager::handlePlatformEvent(
     pldm_tid_t tid, uint16_t eventId, uint8_t eventClass,
     const uint8_t* eventData, size_t eventDataSize)

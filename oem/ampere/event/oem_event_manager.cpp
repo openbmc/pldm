@@ -23,8 +23,6 @@ namespace pldm
 {
 namespace oem_ampere
 {
-namespace fs = std::filesystem;
-using namespace std::chrono;
 namespace ReportedErrorSEL = sdbusplus::error::com::ampere::event::ReportedSEL;
 namespace ReportedEventSEL = sdbusplus::event::com::ampere::event::ReportedSEL;
 
