@@ -6,8 +6,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <ranges>
-
 PHOSPHOR_LOG2_USING;
 
 namespace pldm

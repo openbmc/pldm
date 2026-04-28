@@ -4,9 +4,7 @@
 #include <libpldm/transport/af-mctp.h>
 #include <libpldm/transport/mctp-demux.h>
 
-#include <algorithm>
 #include <ranges>
-#include <system_error>
 
 struct pldm_transport* transport_impl_init(TransportImpl& impl, pollfd& pollfd,
                                            bool listening);

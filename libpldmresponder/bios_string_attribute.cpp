@@ -4,7 +4,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <tuple>
 #include <variant>
 
 PHOSPHOR_LOG2_USING;

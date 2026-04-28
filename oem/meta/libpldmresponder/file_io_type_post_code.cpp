@@ -1,10 +1,12 @@
 #include "file_io_type_post_code.hpp"
 
+#include "common/utils.hpp"
 #include "oem/meta/utils.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 
 #include <utility>
+#include <vector>
 
 PHOSPHOR_LOG2_USING;
 namespace pldm::responder::oem_meta

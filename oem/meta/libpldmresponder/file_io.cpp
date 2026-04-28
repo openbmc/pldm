@@ -8,7 +8,6 @@
 
 #include <libpldm/oem/meta/file_io.h>
 
-#include <filesystem>
 namespace pldm::responder::oem_meta
 {
 

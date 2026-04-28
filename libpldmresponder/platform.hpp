@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/utils.hpp"
-#include "event_parser.hpp"
 #include "fru.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "host-bmc/host_pdr_handler.hpp"

@@ -1,13 +1,10 @@
 #pragma once
-
-#include "libpldmresponder/platform.hpp"
+#include "oem_handler.hpp"
+#include "pldmd/handler.hpp"
 
 #include <libpldm/base.h>
 
 #include <sdeventplus/source/event.hpp>
-
-#include <cstdint>
-#include <vector>
 
 using namespace pldm::responder;
 

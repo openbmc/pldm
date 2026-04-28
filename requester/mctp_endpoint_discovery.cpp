@@ -1,5 +1,3 @@
-#include "config.h"
-
 #include "mctp_endpoint_discovery.hpp"
 
 #include "common/types.hpp"
@@ -10,8 +8,6 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <algorithm>
-#include <fstream>
-#include <iostream>
 #include <map>
 #include <string>
 #include <string_view>

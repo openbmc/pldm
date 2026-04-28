@@ -3,7 +3,6 @@
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "pdr_utils.hpp"
-#include "pldmd/handler.hpp"
 
 #include <libpldm/platform.h>
 #include <libpldm/states.h>
@@ -11,7 +10,6 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <cstdint>
-#include <map>
 
 PHOSPHOR_LOG2_USING;
 

@@ -2,6 +2,7 @@
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
+#include <sys/stat.h>
 
 #include <phosphor-logging/lg2.hpp>
 

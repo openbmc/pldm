@@ -4,10 +4,8 @@
 
 #include <libpldm/firmware_update.h>
 
-#include <array>
 #include <cstdint>
 #include <memory>
-#include <tuple>
 #include <vector>
 
 namespace pldm

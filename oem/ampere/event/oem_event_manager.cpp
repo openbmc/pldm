@@ -3,8 +3,6 @@
 #include "libcper/Cper.h"
 
 #include "cper.hpp"
-#include "requester/handler.hpp"
-#include "requester/request.hpp"
 
 #include <config.h>
 #include <libpldm/pldm.h>
@@ -15,7 +13,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
-#include <algorithm>
 #include <map>
 #include <set>
 #include <sstream>

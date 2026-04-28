@@ -33,12 +33,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <fstream>
-#include <iomanip>
-#include <iterator>
 #include <memory>
-#include <ranges>
-#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -53,7 +48,6 @@ PHOSPHOR_LOG2_USING;
 #include "libpldmresponder/base.hpp"
 #include "libpldmresponder/bios.hpp"
 #include "libpldmresponder/fru.hpp"
-#include "libpldmresponder/oem_handler.hpp"
 #include "libpldmresponder/platform.hpp"
 #include "libpldmresponder/platform_config.hpp"
 #include "xyz/openbmc_project/PLDM/Event/server.hpp"
