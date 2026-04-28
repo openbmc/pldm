@@ -50,6 +50,24 @@
       "message": "I do want to point out we are setting precedent here, in that we are allowing/supporting upstream feature flags that are not used by any upstream platforms.  Is everyone OK with that?",
       "revId": "b094150813569b069cc12e995a1133f4b0060c04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7454dd67_fb10273b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-28T14:29:46Z",
+      "side": 1,
+      "message": "@jamesatha@meta.com - Please make this one show up in openbmc/openbmc also.  It shouldn\u0027t be in the downstream layers.",
+      "parentUuid": "86b92a73_e3e6f56a",
+      "revId": "b094150813569b069cc12e995a1133f4b0060c04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
