@@ -187,8 +187,6 @@ class Handler : public CmdHandler
 
 namespace oem_bios
 {
-using namespace pldm::utils;
-
 class Handler : public CmdHandler
 {
   public:

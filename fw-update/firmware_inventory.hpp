@@ -19,8 +19,6 @@ using SoftwareAssociationDefinitions = sdbusplus::server::object_t<
 
 using SoftwareVersionPurpose = SoftwareVersion::VersionPurpose;
 
-using namespace pldm;
-
 class FirmwareInventory
 {
   public:

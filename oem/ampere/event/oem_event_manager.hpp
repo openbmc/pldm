@@ -11,7 +11,6 @@ namespace pldm
 {
 namespace oem_ampere
 {
-using namespace pldm::pdr;
 #define NORMAL_EVENT_POLLING_TIME 5000000 // ms
 
 using EventToMsgMap_t = std::unordered_map<uint8_t, std::string>;
