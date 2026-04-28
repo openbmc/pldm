@@ -29,8 +29,6 @@ namespace pldm
 {
 namespace responder
 {
-using namespace sdbusplus::xyz::openbmc_project::Common::Error;
-
 int FileHandler::transferFileData(int32_t fd, bool upstream, uint32_t offset,
                                   uint32_t& length, uint64_t address)
 {
