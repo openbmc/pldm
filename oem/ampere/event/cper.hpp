@@ -6,8 +6,6 @@
 
 #include <cstdint>
 #include <cstdio>
-#include <fstream>
-#include <vector>
 
 namespace pldm
 {

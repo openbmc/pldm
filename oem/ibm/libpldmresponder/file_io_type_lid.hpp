@@ -1,6 +1,11 @@
 #pragma once
 
 #include "file_io_by_type.hpp"
+#include "libpldmresponder/inband_code_update.hpp"
+#include "libpldmresponder/oem_ibm_handler.hpp"
+
+#include <fcntl.h>
+#include <libpldm/oem/ibm/file_io.h>
 
 #include <phosphor-logging/lg2.hpp>
 

@@ -8,7 +8,7 @@
 #include "file_io_type_pel.hpp"
 #include "file_io_type_progress_src.hpp"
 #include "file_io_type_vpd.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
+#include "libpldmresponder/file_io.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
@@ -18,10 +18,8 @@
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include <cstdint>
-#include <exception>
 #include <filesystem>
 #include <fstream>
-#include <vector>
 
 PHOSPHOR_LOG2_USING;
 

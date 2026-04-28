@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/instance_id.hpp"
-#include "common/utils.hpp"
 
 #include <err.h>
 #include <libpldm/base.h>
@@ -20,7 +19,6 @@
 #include <nlohmann/json.hpp>
 
 #include <cstring>
-#include <iomanip>
 #include <iostream>
 #include <utility>
 

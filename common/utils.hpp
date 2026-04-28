@@ -19,10 +19,7 @@
 #include <xyz/openbmc_project/ObjectMapper/client.hpp>
 
 #include <cstdint>
-#include <deque>
-#include <exception>
 #include <filesystem>
-#include <iostream>
 #include <map>
 #include <string>
 #include <variant>

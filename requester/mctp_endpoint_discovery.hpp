@@ -9,7 +9,6 @@
 #include <xyz/openbmc_project/Common/UUID/common.hpp>
 #include <xyz/openbmc_project/MCTP/Endpoint/client.hpp>
 
-#include <filesystem>
 #include <initializer_list>
 #include <vector>
 

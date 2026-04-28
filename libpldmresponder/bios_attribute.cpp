@@ -1,9 +1,6 @@
 #include "bios_attribute.hpp"
 
-#include "bios_config.hpp"
 #include "common/utils.hpp"
-
-#include <variant>
 
 using namespace pldm::utils;
 

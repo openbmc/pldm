@@ -7,7 +7,6 @@
 #include "libpldmresponder/file_io_type_pcie.hpp"
 #include "libpldmresponder/file_io_type_pel.hpp"
 #include "libpldmresponder/file_table.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>

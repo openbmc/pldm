@@ -1,5 +1,6 @@
+#include "pdr_utils.hpp"
+
 #include "common/types.hpp"
-#include "pdr.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>

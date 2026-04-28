@@ -1,13 +1,10 @@
 #include "inventory_manager.hpp"
 
 #include "common/utils.hpp"
-#include "xyz/openbmc_project/Software/Version/server.hpp"
 
 #include <libpldm/firmware_update.h>
 
 #include <phosphor-logging/lg2.hpp>
-
-#include <functional>
 
 PHOSPHOR_LOG2_USING;
 

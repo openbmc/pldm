@@ -1,8 +1,6 @@
 #include "oem/ibm/host-bmc/host_lamp_test.hpp"
 #include "test/test_instance_id.hpp"
 
-#include <cstring>
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 

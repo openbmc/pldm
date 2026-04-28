@@ -1,9 +1,7 @@
 #include "file_io_type_dump.hpp"
 
-#include "com/ibm/Dump/Notify/server.hpp"
 #include "common/utils.hpp"
 #include "utils.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <libpldm/base.h>
 #include <libpldm/oem/ibm/file_io.h>
@@ -17,7 +15,6 @@
 #include <cstdint>
 #include <exception>
 #include <filesystem>
-#include <type_traits>
 
 PHOSPHOR_LOG2_USING;
 

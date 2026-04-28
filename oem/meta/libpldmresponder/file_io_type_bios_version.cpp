@@ -5,7 +5,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Software/Version/client.hpp>
 
-#include <sstream>
 #include <string>
 
 using SoftwareVersion =

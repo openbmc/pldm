@@ -1,5 +1,7 @@
 #include "fru_oem_ibm.hpp"
 
+#include "oem/ibm/libpldmresponder/utils.hpp"
+
 #include <com/ibm/VPD/Manager/client.hpp>
 #include <phosphor-logging/lg2.hpp>
 

@@ -1,8 +1,6 @@
 #include "inband_code_update.hpp"
 
-#include "libpldmresponder/pdr.hpp"
 #include "oem_ibm_handler.hpp"
-#include "xyz/openbmc_project/Common/error.hpp"
 
 #include <arpa/inet.h>
 #include <libpldm/entity.h>
