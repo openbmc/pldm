@@ -15,7 +15,6 @@ namespace pldm
 namespace fw_update
 {
 
-// using namespace phosphor::logging;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
@@ -93,12 +92,7 @@ int Watch::callback(sd_event_source* /* s */, int fd, uint32_t revents,
         if ((event->mask & IN_CLOSE_WRITE) && !(event->mask & IN_ISDIR))
         {
             auto tarballPath = std::string{"/tmp/images"} + '/' + event->name;
-            auto rc = static_cast<Watch*>(userdata)->imageCallback(tarballPath);
-            if (rc < 0)
-            {
-                // log<level::ERR>("Error processing image",
-                //                 entry("IMAGE=%s", tarballPath.c_str()));
-            }
+            static_cast<Watch*>(userdata)->imageCallback(tarballPath);
         }
 
         offset += offsetof(inotify_event, name) + event->len;
