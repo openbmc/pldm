@@ -350,6 +350,8 @@ int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
         ofs.write(reinterpret_cast<const char*>(
                       pldm_platform_cper_event_event_data(cperEvent)),
                   cperEvent->event_data_length);
+        ofs.close();
+
         if (cperEvent->format_type == PLDM_PLATFORM_CPER_EVENT_WITH_HEADER)
         {
             rc = createCperDumpEntry("CPER", fileName, terminusName);
@@ -358,7 +360,6 @@ int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
         {
             rc = createCperDumpEntry("CPERSection", fileName, terminusName);
         }
-        ofs.close();
     }
     catch (const std::ofstream::failure& e)
     {
