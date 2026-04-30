@@ -5,6 +5,7 @@
 #include "../oem/ibm/libpldmresponder/fru_oem_ibm.hpp"
 #include "../oem/ibm/libpldmresponder/oem_ibm_handler.hpp"
 #include "../oem/ibm/libpldmresponder/utils.hpp"
+#include "bios.hpp"
 #include "common/utils.hpp"
 #include "invoker.hpp"
 #include "libpldmresponder/base.hpp"
@@ -118,9 +119,10 @@ class OemIBM
      */
     void createOemPlatformHandler()
     {
-        oemPlatformHandler = std::make_unique<oem_ibm_platform::Handler>(
-            dBusIntf, codeUpdate.get(), slotHandler.get(), mctp_fd, mctp_eid,
-            instanceIdDb, event, reqHandler);
+        oemPlatformHandler =
+            std::make_unique<pldm::responder::oem_ibm_platform::Handler>(
+                dBusIntf, codeUpdate.get(), slotHandler.get(), mctp_fd,
+                mctp_eid, instanceIdDb, event, reqHandler);
     }
 
     /** @brief Method for creating oemIbmBiosHandler */

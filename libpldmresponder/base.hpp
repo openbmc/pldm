@@ -6,8 +6,6 @@
 
 #include <sdeventplus/source/event.hpp>
 
-using namespace pldm::responder;
-
 namespace pldm
 {
 namespace responder
