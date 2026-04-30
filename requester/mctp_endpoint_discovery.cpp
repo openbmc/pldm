@@ -191,7 +191,7 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
             "ERROR", e);
         return;
     }
-    const Availability& availability = getEndpointConnectivityProp(objPath.str);
+    Availability availability = getEndpointConnectivityProp(objPath.str);
 
     /* Get UUID */
     try
