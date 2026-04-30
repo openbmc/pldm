@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffc34099_0bd69d49",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-04-30T06:57:41Z",
+      "side": 1,
+      "message": "nit: There is no chance that termini get modified between L25 and L39. I don\u0027t think this check is required here. You will need it only after every co_await.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 35
+      },
+      "revId": "f7556416d742685c36ef11b5240774be4a47bf33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
