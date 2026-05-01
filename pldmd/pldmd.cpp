@@ -305,10 +305,8 @@ int main(int argc, char** argv)
 
 #ifdef OEM_AMPERE
     pldm::oem_ampere::OemAMPERE oemAMPERE(
-        &dbusHandler, pldmTransport.getEventSource(), pdrRepo.get(),
-        instanceIdDb, event, invoker, hostPDRHandler.get(),
-        platformHandler.get(), fruHandler.get(), baseHandler.get(),
-        biosHandler.get(), platformManager.get(), &reqHandler);
+        instanceIdDb, event, platformHandler.get(), platformManager.get(),
+        &reqHandler);
 #endif
 
 #ifdef OEM_META

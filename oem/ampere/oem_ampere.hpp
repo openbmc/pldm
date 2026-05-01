@@ -1,12 +1,8 @@
 #pragma once
-#include "../../common/utils.hpp"
-#include "../../libpldmresponder/base.hpp"
-#include "../../libpldmresponder/bios.hpp"
 #include "../../libpldmresponder/fru.hpp"
 #include "../../libpldmresponder/platform.hpp"
 #include "../../oem/ampere/event/oem_event_manager.hpp"
 #include "../../platform-mc/manager.hpp"
-#include "../../pldmd/invoker.hpp"
 #include "../../requester/request.hpp"
 
 namespace pldm
@@ -47,14 +43,9 @@ class OemAMPERE
      * @param[in] reqHandler - reqHandler handler
      */
     explicit OemAMPERE(
-        const pldm::utils::DBusHandler* /* dBusIntf */, int /* mctp_fd */,
-        pldm_pdr* /* repo */, pldm::InstanceIdDb& instanceIdDb,
-        sdeventplus::Event& event, responder::Invoker& /* invoker */,
-        HostPDRHandler* /* hostPDRHandler */,
+        pldm::InstanceIdDb& instanceIdDb,
+        sdeventplus::Event& event,
         responder::platform::Handler* platformHandler,
-        responder::fru::Handler* /* fruHandler */,
-        responder::base::Handler* /* baseHandler */,
-        responder::bios::Handler* /* biosHandler */,
         platform_mc::Manager* platformManager,
         pldm::requester::Handler<pldm::requester::Request>* reqHandler) :
         instanceIdDb(instanceIdDb), event(event),
