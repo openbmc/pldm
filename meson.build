@@ -250,20 +250,20 @@ if get_option('libpldmresponder').allowed()
     deps += [libpldmresponder_dep]
 endif
 
-fw_update_sources = [
+fw_update_sources = files(
     'fw-update/activation.cpp',
     'fw-update/aggregate_update_manager.cpp',
-    'fw-update/inventory_manager.cpp',
-    'fw-update/firmware_inventory_manager.cpp',
-    'fw-update/firmware_inventory.cpp',
-    'fw-update/package_parser.cpp',
     'fw-update/device_updater.cpp',
-    'fw-update/update_manager.cpp',
+    'fw-update/firmware_inventory.cpp',
+    'fw-update/firmware_inventory_manager.cpp',
+    'fw-update/inventory_manager.cpp',
+    'fw-update/package_parser.cpp',
     'fw-update/update.cpp',
-]
+    'fw-update/update_manager.cpp',
+)
 
 if get_option('fw-update-pkg-inotify').allowed()
-    fw_update_sources += 'fw-update/watch.cpp'
+    fw_update_sources += files('fw-update/watch.cpp')
 endif
 
 executable(
