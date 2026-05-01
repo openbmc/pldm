@@ -41,8 +41,8 @@ class EventManagerTest : public testing::Test
 
 TEST_F(EventManagerTest, processNumericSensorEventTest)
 {
-#define SENSOR_READING 50
-#define WARNING_HIGH 45
+    static constexpr uint8_t SENSOR_READING = 50;
+    static constexpr uint8_t WARNING_HIGH = 45;
     pldm_tid_t tid = 1;
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
