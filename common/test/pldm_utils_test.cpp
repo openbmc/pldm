@@ -1088,7 +1088,7 @@ TEST(ValidEID, allTestCases)
     EXPECT_EQ(rc, false);
     rc = isValidEID(7);
     EXPECT_EQ(rc, false);
-    rc = isValidEID(MCTP_START_VALID_EID);
+    rc = isValidEID(pldm::MCTP_START_VALID_EID);
     EXPECT_EQ(rc, true);
     rc = isValidEID(254);
     EXPECT_EQ(rc, true);

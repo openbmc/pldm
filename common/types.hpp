@@ -65,16 +65,16 @@ using MctpInfos = std::vector<MctpInfo>;
  * In `Table 2 - Special endpoint IDs` of DSP0236.
  * EID from 1 to 7 is reserved EID. So the start valid EID is 8
  */
-#define MCTP_START_VALID_EID 8
+constexpr eid MCTP_START_VALID_EID = 8;
 constexpr uint8_t BmcMctpEid = 8;
 
-#define PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES 1024
+constexpr size_t PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES = 1024;
 /* default the max event message buffer size BMC supported to 4K bytes */
-#define PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE 4096
+constexpr size_t PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE = 4096;
 /* DSP0248 section16.9 EventMessageBufferSize Command, the default message
  * buffer size is 256 bytes
  */
-#define PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE 256
+constexpr size_t PLDM_PLATFORM_DEFAULT_MESSAGE_BUFFER_SIZE = 256;
 
 inline constexpr uint16_t HEARTBEAT_TIMEOUT = 120;
 inline constexpr uint8_t TERMINUS_ID = 1;

@@ -1,13 +1,13 @@
 #pragma once
 
-#define PLDM_OEM_EVENT_CLASS_0xFB 0xFB
-
 #include "oem/meta/event/types.hpp"
 
 #include <libpldm/base.h>
 
 #include <format>
 #include <string>
+
+constexpr uint8_t PLDM_OEM_EVENT_CLASS_0xFB = 0xFB;
 
 namespace pldm::oem_meta
 {

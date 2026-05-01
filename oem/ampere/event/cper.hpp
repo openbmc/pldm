@@ -14,18 +14,18 @@ namespace oem_ampere
 constexpr auto logBusName = "xyz.openbmc_project.Logging.IPMI";
 constexpr auto logPath = "/xyz/openbmc_project/Logging/IPMI";
 constexpr auto logIntf = "xyz.openbmc_project.Logging.IPMI";
-#define SENSOR_TYPE_OEM 0xF0
+constexpr uint8_t SENSOR_TYPE_OEM = 0xF0;
 
 /* Memory definitions */
-#define MEM_ERROR_TYPE_PARITY 8
-#define ERROR_TYPE_ID_MCU 1
-#define SUBTYPE_ID_PARITY 9
+constexpr uint8_t MEM_ERROR_TYPE_PARITY = 8;
+constexpr uint16_t ERROR_TYPE_ID_MCU = 1;
+constexpr uint16_t SUBTYPE_ID_PARITY = 9;
 
 /* PCIe definitions */
-#define ERROR_SUBTYPE_PCIE_AER_ROOT_PORT 0
-#define ERROR_SUBTYPE_PCIE_AER_DEVICE 1
-#define CPER_PCIE_VALID_PORT_TYPE 0x0001
-#define CPER_PCIE_PORT_TYPE_ROOT_PORT 4
+constexpr uint16_t ERROR_SUBTYPE_PCIE_AER_ROOT_PORT = 0;
+constexpr uint16_t ERROR_SUBTYPE_PCIE_AER_DEVICE = 1;
+constexpr uint64_t CPER_PCIE_VALID_PORT_TYPE = 0x0001;
+constexpr uint32_t CPER_PCIE_PORT_TYPE_ROOT_PORT = 4;
 
 typedef struct
 {
