@@ -56,11 +56,13 @@ class NumericSensor
   public:
     NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
                   std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr,
-                  std::string& sensorName, std::string& associationPath);
+                  const std::string& sensorName,
+                  const std::string& associationPath);
 
     NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
                   std::shared_ptr<pldm_compact_numeric_sensor_pdr> pdr,
-                  std::string& sensorName, std::string& associationPath);
+                  const std::string& sensorName,
+                  const std::string& associationPath);
 
     ~NumericSensor() {};
 
