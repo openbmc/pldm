@@ -19,7 +19,8 @@ namespace fw_update
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
-Watch::Watch(sd_event* loop, std::function<int(std::string&)> imageCallback) :
+Watch::Watch(sd_event* loop,
+             std::function<int(const std::string&)> imageCallback) :
     imageCallback(imageCallback)
 {
     // Check if IMAGE DIR exists.

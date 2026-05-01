@@ -56,7 +56,7 @@ class UpdateManager
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
-              [this](std::string& packageFilePath) {
+              [this](const std::string& packageFilePath) {
                   return this->processPackage(
                       std::filesystem::path(packageFilePath));
               }),
