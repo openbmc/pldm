@@ -26,6 +26,7 @@
 #include <utility>
 
 class UpdateManagerTest;
+class UpdateManagerCompInfoTest;
 
 namespace pldm
 {
@@ -258,6 +259,7 @@ class UpdateManager : public UpdateManagerBase
     uint8_t lastProgress = 0;
 
     friend class ::UpdateManagerTest;
+    friend class ::UpdateManagerCompInfoTest;
 };
 
 } // namespace fw_update

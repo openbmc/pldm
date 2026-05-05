@@ -1,3 +1,4 @@
+#include "fw-update/test/update_component_util.hpp"
 #include "fw-update/update_manager.hpp"
 #include "test/test_instance_id.hpp"
 
@@ -38,6 +39,12 @@ class UpdateManagerTest : public testing::Test
     {
         updateManager.processStreamDefer(package, packageSize);
         event.run(std::nullopt);
+        // The FD's UpdateComponent response moves the updater to DOWNLOAD
+        if (auto it = updateManager.deviceUpdaterMap.find(eid);
+            it != updateManager.deviceUpdaterMap.end())
+        {
+            test::advanceToDownload(*it->second, eid);
+        }
     }
 
     // RequestFirmwareData for a 512-byte chunk at the given offset
@@ -224,6 +231,12 @@ class UpdateManagerCompInfoTest : public testing::Test
     // RequestFirmwareData for the first 512-byte chunk
     static Response requestFwData(UpdateManager& manager, mctp_eid_t eid)
     {
+        // The FD's UpdateComponent response moves the updater to DOWNLOAD
+        if (auto it = manager.deviceUpdaterMap.find(eid);
+            it != manager.deviceUpdaterMap.end())
+        {
+            test::advanceToDownload(*it->second, eid);
+        }
         std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                 sizeof(pldm_request_firmware_data_req)>
             reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,

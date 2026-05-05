@@ -1,5 +1,6 @@
 #include "common/types.hpp"
 #include "fw-update/item_update_manager.hpp"
+#include "fw-update/test/update_component_util.hpp"
 #include "test/test_instance_id.hpp"
 
 #include <fcntl.h>
@@ -51,6 +52,11 @@ class ItemUpdateManagerTest : public testing::Test
         ASSERT_NE(packageFd, -1);
         manager.startUpdate(sdbusplus::message::unix_fd{packageFd});
         event.run(std::nullopt);
+        // The FD's UpdateComponent response moves the updater to DOWNLOAD
+        if (manager.deviceUpdater)
+        {
+            test::advanceToDownload(*manager.deviceUpdater, eid);
+        }
     }
 
     // RequestFirmwareData for a 512-byte chunk at the given offset
