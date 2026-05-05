@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ec77344_9d3d3a98",
+        "filename": "platform-mc/test/event_manager_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-05T20:24:39Z",
+      "side": 1,
+      "message": "It feels inconsistent when you\u0027ve chosen \u0027static\u0027 and when you haven\u0027t.  I only bring it up because I would have expected it to be more useful in a header file to be \u0027static\u0027 or \u0027inline\u0027 than in a function, like here, but you\u0027ve seemingly chose the opposite of my intuition.",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 10
+      },
+      "revId": "a0f1018e71bae701650d953e6c5b5212b1599118",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
