@@ -9,6 +9,9 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <set>
+#include <utility>
+
 namespace pldm
 {
 
@@ -350,6 +353,68 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /**
+     * @brief Firmware-update phase state per DSP0267 v1.3.0 Sec. 7.5-7.6.
+     *
+     * Tracked by the UA so that out-of-sequence FD-initiated commands
+     * (RequestFirmwareData, TransferComplete, VerifyComplete, ApplyComplete)
+     * can be rejected with PLDM_FWUP_COMMAND_NOT_EXPECTED as required by
+     * DSP0267 Sec. 12.6-12.9. Without this gate a malicious FD can skip the
+     * download phase entirely by responding TransferComplete(success) ->
+     * VerifyComplete(success) -> ApplyComplete(success) without ever
+     * issuing a RequestFirmwareData, and the UA would report a
+     * "successful" firmware update with zero bytes transferred.
+     */
+    enum class Phase
+    {
+        Inactive, ///< Pre-update, post-activate, or mid-cancel. All
+                  ///< FD-initiated progress commands rejected in this phase.
+        Download, ///< UpdateComponent responded success. FD may send
+                  ///< RequestFirmwareData and, when done, TransferComplete.
+        Verify,   ///< TransferComplete(success) received. FD must send
+                  ///< VerifyComplete next.
+        Apply,    ///< VerifyComplete(success) received. FD must send
+                  ///< ApplyComplete next.
+    };
+
+    /** @brief Current firmware-update phase. */
+    Phase currentPhase = Phase::Inactive;
+
+    /**
+     * @brief Coverage map of byte ranges served via RequestFirmwareData for the
+     *        current component. Each entry is a half-open interval
+     *        [start, end), kept disjoint and merged. Reset when entering
+     *        Download. On TransferComplete(success) the total covered byte
+     *        count is cross-checked against the component image size so an FD
+     *        cannot fake completion without actually pulling every byte.
+     *
+     *        A high-water mark (max of offset+length) is insufficient: a
+     *        malicious FD could request only [compSize-1, compSize) and drive
+     *        the high-water to compSize while never pulling the prefix. The
+     *        interval set tracks actual coverage.
+     */
+    std::set<std::pair<uint32_t, uint32_t>> currentComponentCoveredRanges;
+
+    /**
+     * @brief Add a byte range [start, end) (clamped to [0, compSize)) into
+     *        currentComponentCoveredRanges, merging with any existing
+     *        overlapping or adjacent intervals.
+     *
+     *        Bytes outside [0, compSize) are silently dropped — they cannot
+     *        contribute to coverage no matter what the FD requests.
+     */
+    void addCoveredRange(uint64_t start, uint64_t end, uint32_t compSize);
+
+    /** @brief Total covered bytes across all intervals. */
+    uint32_t coveredByteCount() const;
+
+    /**
+     * @brief Build a COMMAND_NOT_EXPECTED response for an out-of-sequence
+     *        FD-initiated request. Used by the phase gate in the four
+     *        FD-request handlers.
+     */
+    Response encodeCommandNotExpectedResponse(const pldm_msg* request) const;
 };
 
 } // namespace fw_update

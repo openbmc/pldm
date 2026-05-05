@@ -550,12 +550,85 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
         "EID", eid, "COMPONENT_VERSION", compVersion);
     componentUpdateStatus[componentIndex] = true;
     createRequestFwDataTimer();
+
+    // DSP0267 Sec. 7.6 step 2: after a successful UpdateComponent response the
+    // FD moves into DOWNLOAD. Mirror that on the UA so the four FD-initiated
+    // handlers can enforce the sequence and reject out-of-order completes.
+    currentPhase = Phase::Download;
+    currentComponentCoveredRanges.clear();
+}
+
+Response DeviceUpdater::encodeCommandNotExpectedResponse(
+    const pldm_msg* request) const
+{
+    Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
+    auto responseMsg = new (response.data()) pldm_msg;
+    auto rc = encode_cc_only_resp(request->hdr.instance_id, request->hdr.type,
+                                  request->hdr.command,
+                                  PLDM_FWUP_COMMAND_NOT_EXPECTED, responseMsg);
+    if (rc)
+    {
+        error(
+            "Failed to encode COMMAND_NOT_EXPECTED response for endpoint ID '{EID}', command '{CMD}', response code '{RC}'",
+            "EID", eid, "CMD", request->hdr.command, "RC", rc);
+    }
+    return response;
+}
+
+void DeviceUpdater::addCoveredRange(uint64_t start, uint64_t end,
+                                    uint32_t compSize)
+{
+    // Clamp to [0, compSize). Bytes outside the component image cannot
+    // contribute to coverage, no matter what the FD requests.
+    if (start >= compSize || end <= start)
+    {
+        return;
+    }
+    if (end > compSize)
+    {
+        end = compSize;
+    }
+
+    auto s = static_cast<uint32_t>(start);
+    auto e = static_cast<uint32_t>(end);
+
+    // Find overlapping or adjacent intervals and merge them.
+    // upper_bound by start of e+1 gives the first interval strictly after
+    // [s, e); walk back from there to find the merge starting point.
+    auto it = currentComponentCoveredRanges.lower_bound({s, 0});
+    if (it != currentComponentCoveredRanges.begin())
+    {
+        auto prev = std::prev(it);
+        if (prev->second >= s)
+        {
+            it = prev;
+            s = prev->first;
+        }
+    }
+    while (it != currentComponentCoveredRanges.end() && it->first <= e)
+    {
+        s = std::min(s, it->first);
+        e = std::max(e, it->second);
+        it = currentComponentCoveredRanges.erase(it);
+    }
+    currentComponentCoveredRanges.insert({s, e});
+}
+
+uint32_t DeviceUpdater::coveredByteCount() const
+{
+    uint64_t total = 0;
+    for (const auto& [s, e] : currentComponentCoveredRanges)
+    {
+        total += static_cast<uint64_t>(e) - s;
+    }
+    return total > UINT32_MAX ? UINT32_MAX : static_cast<uint32_t>(total);
 }
 
 void DeviceUpdater::createRequestFwDataTimer()
 {
     reqFwDataTimer = std::make_unique<sdbusplus::Timer>([this]() -> void {
         componentUpdateStatus[componentIndex] = false;
+        currentPhase = Phase::Inactive;
         sendCancelUpdateComponentRequest();
         updateManager->updateDeviceCompletion(eid, false);
     });
@@ -564,6 +637,16 @@ void DeviceUpdater::createRequestFwDataTimer()
 Response DeviceUpdater::requestFwData(const pldm_msg* request,
                                       size_t payloadLength)
 {
+    // DSP0267 Sec. 12.6: RequestFirmwareData is only valid while the UA is in
+    // the DOWNLOAD phase. Reject with COMMAND_NOT_EXPECTED otherwise.
+    if (currentPhase != Phase::Download)
+    {
+        warning(
+            "Rejecting out-of-sequence RequestFirmwareData for endpoint ID '{EID}' in phase '{PHASE}' per DSP0267 Sec. 12.6",
+            "EID", eid, "PHASE", static_cast<int>(currentPhase));
+        return encodeCommandNotExpectedResponse(request);
+    }
+
     uint8_t completionCode = PLDM_SUCCESS;
     uint32_t offset = 0;
     uint32_t length = 0;
@@ -658,6 +741,14 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
+    // Record the byte range we just served into the coverage map.
+    // Use uint64_t for the range arithmetic so a malicious offset+length
+    // pair near UINT32_MAX cannot wrap around to a small value and produce
+    // bogus coverage. addCoveredRange() also clamps to [0, compSize) so
+    // out-of-bounds requests cannot artificially inflate coverage.
+    addCoveredRange(static_cast<uint64_t>(offset),
+                    static_cast<uint64_t>(offset) + length, compSize);
+
     if (!reqFwDataTimer)
     {
         if (offset != 0)
@@ -685,6 +776,18 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
 Response DeviceUpdater::transferComplete(const pldm_msg* request,
                                          size_t payloadLength)
 {
+    // DSP0267 Sec. 12.7: TransferComplete is only valid while the UA is in the
+    // DOWNLOAD phase (i.e. between UpdateComponent(success) and the first
+    // VerifyComplete). Reject out-of-sequence arrival with
+    // COMMAND_NOT_EXPECTED per the spec's completion-code set.
+    if (currentPhase != Phase::Download)
+    {
+        warning(
+            "Rejecting out-of-sequence TransferComplete for endpoint ID '{EID}' in phase '{PHASE}' per DSP0267 Sec. 12.7",
+            "EID", eid, "PHASE", static_cast<int>(currentPhase));
+        return encodeCommandNotExpectedResponse(request);
+    }
+
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
@@ -719,12 +822,44 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     const auto& compVersion = std::get<7>(comp);
+    const auto compSize = std::get<6>(comp);
 
     if (transferResult == PLDM_FWUP_TRANSFER_SUCCESS)
     {
+        // Defense-in-depth: the phase gate above rules out transferComplete
+        // outside of DOWNLOAD, but a malicious FD in DOWNLOAD could still
+        // claim success without having actually pulled the whole image.
+        // Cross-check that every byte in [0, compSize) was served via
+        // RequestFirmwareData. Coverage is tracked as a set of disjoint
+        // intervals, not a high-water mark, so that
+        //  (a) a sparse request like [compSize-1, compSize) cannot satisfy
+        //      the check on its own, and
+        //  (b) a request whose end overruns compSize, or whose offset+length
+        //      arithmetic would overflow uint32, cannot artificially inflate
+        //      the count (addCoveredRange clamps to [0, compSize) and the
+        //      arithmetic uses uint64).
+        const uint32_t covered = coveredByteCount();
+        if (covered < compSize)
+        {
+            error(
+                "Rejecting TransferComplete(success) for endpoint ID '{EID}': FD reported success but only {SERVED} of {TOTAL} bytes were served via RequestFirmwareData. Treating as a failed transfer.",
+                "EID", eid, "SERVED", covered, "TOTAL", compSize);
+            if (updateManager != nullptr)
+            {
+                updateManager->updateDeviceCompletion(eid, false);
+            }
+            componentUpdateStatus[componentIndex] = false;
+            currentPhase = Phase::Inactive;
+            if (updateManager != nullptr)
+            {
+                sendCancelUpdateComponentRequest();
+            }
+            return encodeCommandNotExpectedResponse(request);
+        }
         info(
             "Component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' transfer complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        currentPhase = Phase::Verify;
     }
     else
     {
@@ -734,6 +869,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
             transferResult);
         updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = false;
+        currentPhase = Phase::Inactive;
         sendCancelUpdateComponentRequest();
     }
 
@@ -753,6 +889,17 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
 Response DeviceUpdater::verifyComplete(const pldm_msg* request,
                                        size_t payloadLength)
 {
+    // DSP0267 Sec. 12.8: VerifyComplete is only valid while the UA is in the
+    // VERIFY phase (i.e. between TransferComplete(success) and
+    // ApplyComplete). Reject out-of-sequence arrival.
+    if (currentPhase != Phase::Verify)
+    {
+        warning(
+            "Rejecting out-of-sequence VerifyComplete for endpoint ID '{EID}' in phase '{PHASE}' per DSP0267 Sec. 12.8",
+            "EID", eid, "PHASE", static_cast<int>(currentPhase));
+        return encodeCommandNotExpectedResponse(request);
+    }
+
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
@@ -793,6 +940,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' verification complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        currentPhase = Phase::Apply;
     }
     else
     {
@@ -802,6 +950,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             verifyResult);
         updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = false;
+        currentPhase = Phase::Inactive;
         sendCancelUpdateComponentRequest();
     }
 
@@ -821,6 +970,17 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
 Response DeviceUpdater::applyComplete(const pldm_msg* request,
                                       size_t payloadLength)
 {
+    // DSP0267 Sec. 12.9: ApplyComplete is only valid while the UA is in the
+    // APPLY phase (i.e. between VerifyComplete(success) and the next
+    // component's UpdateComponent or ActivateFirmware).
+    if (currentPhase != Phase::Apply)
+    {
+        warning(
+            "Rejecting out-of-sequence ApplyComplete for endpoint ID '{EID}' in phase '{PHASE}' per DSP0267 Sec. 12.9",
+            "EID", eid, "PHASE", static_cast<int>(currentPhase));
+        return encodeCommandNotExpectedResponse(request);
+    }
+
     uint8_t completionCode = PLDM_SUCCESS;
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
@@ -857,6 +1017,12 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' with '{COMPONENT_VERSION}' apply complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        // Regardless of whether more components follow, we leave the
+        // APPLY phase here. Either (a) ActivateFirmware is about to be
+        // sent -- no per-component phase is valid while we await its
+        // response -- or (b) the next UpdateComponent will drive us back
+        // to DOWNLOAD via its response handler.
+        currentPhase = Phase::Inactive;
         if (componentIndex < progress.size())
         {
             progress[componentIndex].updateState(UpdateProgress::state::Apply);
@@ -901,6 +1067,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
             updateManager->updateDeviceCompletion(eid, false);
         }
         componentUpdateStatus[componentIndex] = false;
+        currentPhase = Phase::Inactive;
         sendCancelUpdateComponentRequest();
     }
 
@@ -992,6 +1159,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     }
 
     activationComplete = true;
+    currentPhase = Phase::Inactive;
     if (updateManager == nullptr)
     {
         return;
