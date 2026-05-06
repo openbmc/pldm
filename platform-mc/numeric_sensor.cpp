@@ -682,7 +682,7 @@ NumericSensor::NumericSensor(
     }
 }
 
-double NumericSensor::conversionFormula(double value)
+double NumericSensor::conversionFormula(double value) const
 {
     double convertedValue = value;
     if (std::isfinite(resolution))
@@ -696,7 +696,7 @@ double NumericSensor::conversionFormula(double value)
     return convertedValue;
 }
 
-double NumericSensor::unitModifier(double value)
+double NumericSensor::unitModifier(double value) const
 {
     if (!std::isfinite(value))
     {
@@ -1052,7 +1052,7 @@ void NumericSensor::createThresholdLog(
     }
 }
 
-void NumericSensor::createNormalRangeLog(double value)
+void NumericSensor::createNormalRangeLog(double value) const
 {
     namespace Events =
         sdbusplus::event::xyz::openbmc_project::sensor::Threshold;

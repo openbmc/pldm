@@ -79,14 +79,14 @@ class NumericSensor
      *  @param[in] value - raw value
      *  @return double - converted value
      */
-    double conversionFormula(double value);
+    double conversionFormula(double value) const;
 
     /** @brief UnitModifier is used to apply the unit modifier specified in PDR
      *
      *  @param[in] value - raw value
      *  @return double - converted value
      */
-    double unitModifier(double value);
+    double unitModifier(double value) const;
 
     /** @brief Check if value is over threshold.
      *
@@ -403,7 +403,7 @@ class NumericSensor
      *
      *  @param[in] value - The current sensor value in normal range.
      */
-    void createNormalRangeLog(double value);
+    void createNormalRangeLog(double value) const;
 
     /**
      *  @brief Create a threshold log for the given level/direction tuple.

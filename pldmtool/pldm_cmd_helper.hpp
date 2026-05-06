@@ -117,7 +117,7 @@ class CommandInterface
      *
      * @return uint8_t - MCTP endpoint ID
      */
-    inline uint8_t getMCTPEID()
+    inline uint8_t getMCTPEID() const
     {
         return mctp_eid;
     }
