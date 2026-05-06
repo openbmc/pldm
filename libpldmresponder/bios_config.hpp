@@ -142,8 +142,8 @@ class BIOSConfig
         options,
     };
 
-    const fs::path jsonDir;
-    const fs::path tableDir;
+    fs::path jsonDir;
+    fs::path tableDir;
     pldm::utils::DBusHandler* const dbusHandler;
     BaseBIOSTable baseBIOSTableMaps;
     pldm::responder::oem_bios::Handler* oemBiosHandler = nullptr;

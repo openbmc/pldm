@@ -46,7 +46,7 @@ class Update : public UpdateIntf
 
   private:
     UpdateManager* updateManager;
-    const std::string objPath;
+    std::string objPath;
     std::stringstream imageStream;
 };
 

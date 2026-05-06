@@ -89,17 +89,17 @@ class BIOSAttribute
     std::optional<pldm::utils::DBusMapping> getDBusMap();
 
     /** @brief Type of the attribute */
-    const std::string type;
+    std::string type;
 
     /** @brief Name of this attribute */
-    const std::string name;
+    std::string name;
 
     /** Weather this attribute is read-only */
     bool readOnly;
 
-    const std::string displayName;
+    std::string displayName;
 
-    const std::string helpText;
+    std::string helpText;
 
     ValueDisplayNamesMap valueDisplayNamesMap;
 

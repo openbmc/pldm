@@ -121,7 +121,7 @@ class Activation : public ActivationIntf
 
   private:
     sdbusplus::bus_t& bus;
-    const std::string objPath;
+    std::string objPath;
     UpdateManager* updateManager;
     std::unique_ptr<Delete> deleteImpl;
 };

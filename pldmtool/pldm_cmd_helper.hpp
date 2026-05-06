@@ -143,8 +143,8 @@ class CommandInterface
     }
 
   private:
-    const std::string pldmType;
-    const std::string commandName;
+    std::string pldmType;
+    std::string commandName;
     uint8_t mctp_eid;
     bool pldmVerbose;
 
