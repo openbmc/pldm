@@ -22,6 +22,30 @@
       },
       "revId": "a0f1018e71bae701650d953e6c5b5212b1599118",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "547f8da4_1ad7f298",
+        "filename": "platform-mc/test/event_manager_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-05-06T13:44:24Z",
+      "side": 1,
+      "message": "I think most of the headers already had unqualified constexpr in them so I just followed the pattern.  If it makes sense I will do a follow up patch that changes them all to inline? (I think tidy has a rule for that too?)\n\nIn this file, I am probably used to pre-constexpr static const to get symbols into rodata vs just const which I think gets them pushed/popped from the stack.  I take it unqualified constexpr is idiomatic for this case?",
+      "parentUuid": "0ec77344_9d3d3a98",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 10
+      },
+      "revId": "a0f1018e71bae701650d953e6c5b5212b1599118",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
