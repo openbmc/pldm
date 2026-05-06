@@ -46,6 +46,30 @@
       },
       "revId": "a0f1018e71bae701650d953e6c5b5212b1599118",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f6607e_e9dcb1b3",
+        "filename": "platform-mc/test/event_manager_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-06T16:18:49Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "547f8da4_1ad7f298",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 10
+      },
+      "revId": "a0f1018e71bae701650d953e6c5b5212b1599118",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
