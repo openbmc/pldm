@@ -98,7 +98,7 @@ class Terminus
     void parseTerminusPDRs();
 
     /** @brief The getter to return terminus's TID */
-    pldm_tid_t getTid()
+    pldm_tid_t getTid() const
     {
         return tid;
     }

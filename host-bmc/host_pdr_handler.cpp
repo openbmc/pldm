@@ -788,7 +788,7 @@ void HostPDRHandler::setHostFirmwareCondition()
     }
 }
 
-bool HostPDRHandler::isHostUp()
+bool HostPDRHandler::isHostUp() const
 {
     return responseReceived;
 }

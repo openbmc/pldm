@@ -52,7 +52,7 @@ class DumpHandler : public FileHandler
         uint64_t length, uint32_t metaDataValue1, uint32_t /*metaDataValue2*/,
         uint32_t /*metaDataValue3*/, uint32_t /*metaDataValue4*/);
 
-    std::string findDumpObjPath(uint32_t fileHandle);
+    std::string findDumpObjPath(uint32_t fileHandle) const;
     std::string getOffloadUri(uint32_t fileHandle);
 
     /** @brief DumpHandler destructor

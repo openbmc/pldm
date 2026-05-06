@@ -39,7 +39,7 @@ static constexpr auto resDumpDirPath = "/var/lib/pldm/resourcedump/1";
 int DumpHandler::fd = -1;
 namespace fs = std::filesystem;
 
-std::string DumpHandler::findDumpObjPath(uint32_t fileHandle)
+std::string DumpHandler::findDumpObjPath(uint32_t fileHandle) const
 {
     static constexpr auto DUMP_MANAGER_BUSNAME =
         "xyz.openbmc_project.Dump.Manager";

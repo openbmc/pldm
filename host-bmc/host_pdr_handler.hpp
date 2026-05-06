@@ -172,7 +172,7 @@ class HostPDRHandler
 
     /** @brief check whether Host is running when pldmd starts
      */
-    bool isHostUp();
+    bool isHostUp() const;
 
     /* @brief Method to set the oem platform handler in host pdr handler class
      *

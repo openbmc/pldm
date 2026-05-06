@@ -147,7 +147,7 @@ class TerminusManager
      *
      *  @return uint8_t - local EID
      */
-    mctp_eid_t getLocalEid()
+    mctp_eid_t getLocalEid() const
     {
         return localEid;
     }

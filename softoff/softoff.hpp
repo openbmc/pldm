@@ -33,7 +33,7 @@ class SoftPowerOff
      * if hasError is true, that means the pldm-softpoweroff failed to
      * trigger the host soft off,so the pldm-softpoweroff will exit.
      */
-    inline bool isError()
+    inline bool isError() const
     {
         return hasError;
     }
@@ -47,14 +47,14 @@ class SoftPowerOff
 
     /** @brief Is the host soft off completed.
      */
-    inline bool isCompleted()
+    inline bool isCompleted() const
     {
         return completed;
     }
 
     /** @brief Is receive the response for the PLDM request msg.
      */
-    inline bool isReceiveResponse()
+    inline bool isReceiveResponse() const
     {
         return responseReceived;
     }

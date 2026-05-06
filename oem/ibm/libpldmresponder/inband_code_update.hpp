@@ -99,7 +99,7 @@ class CodeUpdate
      *        going on
      *  @return - bool
      */
-    bool isCodeUpdateInProgress()
+    bool isCodeUpdateInProgress() const
     {
         return codeUpdateInProgress;
     }
@@ -138,7 +138,7 @@ class CodeUpdate
      * validation PDR
      * @return - sensor id
      */
-    uint16_t getMarkerLidSensor()
+    uint16_t getMarkerLidSensor() const
     {
         return markerLidSensorId;
     }
@@ -163,7 +163,7 @@ class CodeUpdate
     /* @brief Method to fetch the sensor id for firmware update state
      * @return - sensor id
      */
-    uint16_t getFirmwareUpdateSensor()
+    uint16_t getFirmwareUpdateSensor() const
     {
         return firmwareUpdateSensorId;
     }
@@ -180,7 +180,7 @@ class CodeUpdate
     /* @brief Method to fetch the sensor id for boot side rename state
      * @return - sensor id
      */
-    uint16_t getBootSideRenameStateSensor()
+    uint16_t getBootSideRenameStateSensor() const
     {
         return bootSideRenameStateSensorId;
     }
