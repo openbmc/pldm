@@ -6,7 +6,6 @@
 #include "fw-update/activation.hpp"
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
-#include "watch.hpp"
 
 #include <libpldm/base.h>
 
@@ -48,11 +47,6 @@ class UpdateManager
         const ComponentInfoMap& componentInfoMap) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
-        watch(event.get(),
-              [this](std::string& packageFilePath) {
-                  return this->processPackage(
-                      std::filesystem::path(packageFilePath));
-              }),
         totalNumComponentUpdates(0), compUpdateCompletedCount(0)
     {}
 
@@ -102,7 +96,6 @@ class UpdateManager
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
-    Watch watch;
 
     std::unique_ptr<Activation> activation;
     std::unique_ptr<ActivationProgress> activationProgress;
