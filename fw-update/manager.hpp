@@ -60,6 +60,15 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         inventoryMgr.discoverFDs(mctpInfos);
     }
 
+    /** @brief Refresh firmware parameters for discovered MCTP endpoints.
+     *
+     *  @param[in] mctpInfos - information of MCTP endpoints
+     */
+    void refreshFirmwareParameters(const MctpInfos& mctpInfos) override
+    {
+        inventoryMgr.refreshFirmwareParameters(mctpInfos);
+    }
+
     /** @brief Helper function to invoke registered handlers for
      *         the updated EM configurations
      *
