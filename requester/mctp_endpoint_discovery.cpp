@@ -419,6 +419,18 @@ void MctpDiscovery::updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
     }
 }
 
+void MctpDiscovery::refreshFirmwareParameters(const MctpInfos& mctpInfos)
+{
+    for (const auto& handler : handlers)
+    {
+        if (handler)
+        {
+            handler->handleConfigurations(configurations);
+            handler->refreshFirmwareParameters(mctpInfos);
+        }
+    }
+}
+
 std::string MctpDiscovery::getNameFromProperties(
     const utils::PropertyMap& properties)
 {
