@@ -124,11 +124,3 @@ option(
     description: 'Enable NVIDIA OEM PLDM',
     value: 'enabled',
 )
-
-# Firmware Update configuration parameters
-option(
-    'fw-update-pkg-inotify',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable inotify-based firmware update package monitoring',
-)

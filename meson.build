@@ -118,11 +118,6 @@ elif get_option('transport-implementation') == 'af-mctp'
     conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
 
-# Firmware update inotify option
-if get_option('fw-update-pkg-inotify').allowed()
-    conf_data.set('FW_UPDATE_INOTIFY_ENABLED', 1)
-endif
-
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(
@@ -261,10 +256,6 @@ fw_update_sources = files(
     'fw-update/update.cpp',
     'fw-update/update_manager.cpp',
 )
-
-if get_option('fw-update-pkg-inotify').allowed()
-    fw_update_sources += files('fw-update/watch.cpp')
-endif
 
 executable(
     'pldmd',
