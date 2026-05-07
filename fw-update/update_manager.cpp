@@ -201,9 +201,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     activationProgress = std::make_unique<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPath);
 
-#ifndef FW_UPDATE_INOTIFY_ENABLED
     activation->activation(software::Activation::Activations::Activating);
-#endif
 }
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(

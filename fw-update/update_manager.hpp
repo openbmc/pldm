@@ -4,10 +4,6 @@
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
 #include "fw-update/update.hpp"
-
-#ifdef FW_UPDATE_INOTIFY_ENABLED
-#include "fw-update/watch.hpp"
-#endif
 #include "package_parser.hpp"
 #include "requester/handler.hpp"
 
@@ -54,17 +50,9 @@ class UpdateManager
         const ComponentInfoMap& componentInfoMap) :
         event(event), handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
-#ifdef FW_UPDATE_INOTIFY_ENABLED
-        watch(event.get(),
-              [this](std::string& packageFilePath) {
-                  return this->processPackage(
-                      std::filesystem::path(packageFilePath));
-              }),
-#else
         updater(std::make_unique<Update>(pldm::utils::DBusHandler::getBus(),
                                          "/xyz/openbmc_project/software/pldm",
                                          this)),
-#endif
         totalNumComponentUpdates(0)
     {}
 
@@ -141,11 +129,7 @@ class UpdateManager
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const ComponentInfoMap& componentInfoMap;
-#ifdef FW_UPDATE_INOTIFY_ENABLED
-    Watch watch;
-#else
     std::unique_ptr<Update> updater;
-#endif
 
     std::unique_ptr<ActivationProgress> activationProgress;
     std::string objPath;
