@@ -67,6 +67,16 @@ class InventoryManager
      */
     void discoverFDs(const MctpInfos& mctpInfos);
 
+    /** @brief Refresh firmware parameters for FDs.
+     *
+     *  If descriptors are already known for the FD, only GetFirmwareParameters
+     *  is sent. Otherwise the full discovery flow is used to recover the
+     *  missing descriptors first.
+     *
+     *  @param[in] mctpInfos - List of MCTP endpoint information
+     */
+    void refreshFirmwareParameters(const MctpInfos& mctpInfos);
+
     /** @brief Remove the firmware identifiers and component details of FDs
      *
      *  This function removes the firmware identifiers, component details and
@@ -185,6 +195,24 @@ class InventoryManager
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
 
+    /** @brief Sends the next request needed for refreshing firmware parameters.
+     *
+     *  If descriptors are available, GetFirmwareParameters is sent directly.
+     *  Otherwise QueryDeviceIdentifiers is sent first.
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void sendRefreshFirmwareParametersRequest(mctp_eid_t eid);
+
+    /** @brief Retry a refresh firmware parameters flow after timeout.
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] requestName - PLDM request that timed out
+     *  @return true if another refresh request was queued, false otherwise
+     */
+    bool retryRefreshFirmwareParameters(mctp_eid_t eid,
+                                        std::string_view requestName);
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
 
@@ -208,6 +236,9 @@ class InventoryManager
 
     /** @brief Dbus Inventory Item Manager */
     FirmwareInventoryManager firmwareInventoryManager;
+
+    /** @brief Refresh retries remaining per endpoint */
+    std::map<eid, uint8_t> refreshRetriesRemaining;
 };
 
 /**
