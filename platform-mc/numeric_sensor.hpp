@@ -472,6 +472,13 @@ class NumericSensor
     std::map<std::tuple<pldm::utils::Level, pldm::utils::Direction>,
              std::optional<sdbusplus::object_path>>
         assertedLog;
+
+    /** @brief Holds the last status of the sensor to avoid redundant D-Bus
+     *  updates.
+     */
+    bool lastAvailable = true;
+    bool lastFunctional = true;
+    double lastValue = std::numeric_limits<double>::quiet_NaN();
 };
 } // namespace platform_mc
 } // namespace pldm

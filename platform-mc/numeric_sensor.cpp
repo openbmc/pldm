@@ -716,32 +716,37 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             "NAME", sensorName);
         return;
     }
-    availabilityIntf->available(available);
-    operationalStatusIntf->functional(functional);
-    double curValue = 0;
-    if (!useMetricInterface)
+
+    if (lastAvailable != available)
     {
-        curValue = valueIntf->value();
-    }
-    else
-    {
-        curValue = metricIntf->value();
+        availabilityIntf->available(available);
+        lastAvailable = available;
     }
 
+    if (lastFunctional != functional)
+    {
+        operationalStatusIntf->functional(functional);
+        lastFunctional = functional;
+    }
+
+    double curValue = lastValue;
     double newValue = std::numeric_limits<double>::quiet_NaN();
     if (functional && available)
     {
         newValue = unitModifier(conversionFormula(value));
-        if (std::isfinite(newValue) || std::isfinite(curValue))
+        if (newValue != curValue &&
+            (std::isfinite(newValue) || std::isfinite(curValue)))
         {
             if (!useMetricInterface)
             {
                 valueIntf->value(newValue);
+                lastValue = newValue;
                 updateThresholds();
             }
             else
             {
                 metricIntf->value(newValue);
+                lastValue = newValue;
             }
         }
     }
@@ -758,6 +763,7 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             {
                 metricIntf->value(std::numeric_limits<double>::quiet_NaN());
             }
+            lastValue = newValue;
         }
     }
 }
@@ -773,6 +779,7 @@ void NumericSensor::handleErrGetSensorReading()
         return;
     }
     operationalStatusIntf->functional(false);
+    lastFunctional = false;
     if (!useMetricInterface)
     {
         valueIntf->value(std::numeric_limits<double>::quiet_NaN());
@@ -781,6 +788,7 @@ void NumericSensor::handleErrGetSensorReading()
     {
         metricIntf->value(std::numeric_limits<double>::quiet_NaN());
     }
+    lastValue = std::numeric_limits<double>::quiet_NaN();
 }
 
 bool NumericSensor::checkThreshold(bool alarm, bool direction, double value,
