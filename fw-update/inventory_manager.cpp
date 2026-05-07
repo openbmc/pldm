@@ -12,6 +12,11 @@ namespace pldm
 {
 namespace fw_update
 {
+namespace
+{
+constexpr uint8_t refreshFirmwareParametersRetryCount = 3;
+}
+
 void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
     for (const auto& mctpInfo : mctpInfos)
@@ -30,11 +35,88 @@ void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
     }
 }
 
+void InventoryManager::refreshFirmwareParameters(const MctpInfos& mctpInfos)
+{
+    info("Starting refreshFirmwareParameters for {COUNT} endpoint(s)", "COUNT",
+         static_cast<uint64_t>(mctpInfos.size()));
+
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        auto eid = std::get<pldm::eid>(mctpInfo);
+        info("Refreshing firmware parameters for endpoint ID {EID}", "EID",
+             eid);
+        try
+        {
+            refreshRetriesRemaining[eid] = refreshFirmwareParametersRetryCount;
+            sendRefreshFirmwareParametersRequest(eid);
+        }
+        catch (const std::exception& e)
+        {
+            error(
+                "Failed to refresh firmware parameters for endpoint ID {EID} with {ERROR}",
+                "EID", eid, "ERROR", e);
+        }
+    }
+}
+
+void InventoryManager::sendRefreshFirmwareParametersRequest(mctp_eid_t eid)
+{
+    if (descriptorMap.contains(eid))
+    {
+        info(
+            "Descriptor map found for endpoint ID {EID}, sending GetFirmwareParameters",
+            "EID", eid);
+        sendGetFirmwareParametersRequest(eid);
+    }
+    else
+    {
+        info(
+            "Descriptor map missing for endpoint ID {EID}, sending QueryDeviceIdentifiers",
+            "EID", eid);
+        sendQueryDeviceIdentifiersRequest(eid);
+    }
+}
+
+bool InventoryManager::retryRefreshFirmwareParameters(
+    mctp_eid_t eid, std::string_view requestName)
+{
+    auto retryIt = refreshRetriesRemaining.find(eid);
+    if (retryIt == refreshRetriesRemaining.end())
+    {
+        return false;
+    }
+
+    if (!retryIt->second)
+    {
+        refreshRetriesRemaining.erase(retryIt);
+        return false;
+    }
+
+    --retryIt->second;
+    warning(
+        "Retrying refresh firmware parameters after {REQUEST} timeout for endpoint ID {EID}, remaining refresh retries {RETRIES}",
+        "REQUEST", requestName, "EID", eid, "RETRIES", retryIt->second);
+
+    try
+    {
+        sendRefreshFirmwareParametersRequest(eid);
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to retry refresh firmware parameters for endpoint ID {EID} with {ERROR}",
+            "EID", eid, "ERROR", e);
+        return false;
+    }
+}
+
 void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
 {
     for (const auto& mctpInfo : mctpInfos)
     {
         auto eid = std::get<pldm::eid>(mctpInfo);
+        refreshRetriesRemaining.erase(eid);
         firmwareDeviceNameMap.erase(eid);
         descriptorMap.erase(eid);
         downstreamDescriptorMap.erase(eid);
@@ -90,6 +172,7 @@ void InventoryManager::queryDeviceIdentifiers(
         error(
             "No response received for query device identifiers for endpoint ID {EID}",
             "EID", eid);
+        retryRefreshFirmwareParameters(eid, "QueryDeviceIdentifiers");
         return;
     }
 
@@ -639,9 +722,24 @@ void InventoryManager::getFirmwareParameters(
         error(
             "No response received for get firmware parameters for endpoint ID {EID}",
             "EID", eid);
-        descriptorMap.erase(eid);
+        if (retryRefreshFirmwareParameters(eid, "GetFirmwareParameters"))
+        {
+            return;
+        }
+        if (!componentInfoMap.contains(eid))
+        {
+            descriptorMap.erase(eid);
+        }
+        else
+        {
+            warning(
+                "Preserving existing firmware parameters for endpoint ID {EID}",
+                "EID", eid);
+        }
         return;
     }
+
+    refreshRetriesRemaining.erase(eid);
 
     pldm_get_firmware_parameters_resp fwParams{};
     variable_field activeCompImageSetVerStr{};
