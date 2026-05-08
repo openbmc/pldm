@@ -143,7 +143,7 @@ int DumpHandler::newFileAvailable(uint64_t length)
     return PLDM_SUCCESS;
 }
 
-std::string DumpHandler::getOffloadUri(uint32_t fileHandle)
+std::string DumpHandler::getOffloadUri(uint32_t fileHandle) const
 {
     auto path = findDumpObjPath(fileHandle);
     if (path.empty())
