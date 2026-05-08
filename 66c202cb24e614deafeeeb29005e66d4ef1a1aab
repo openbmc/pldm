@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0b25d89_12433045",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002466
+      },
+      "writtenOn": "2026-05-08T03:30:23Z",
+      "side": 1,
+      "message": "add the issue description in commit msg, please check.",
+      "parentUuid": "9bf561b1_349155c5",
+      "revId": "66c202cb24e614deafeeeb29005e66d4ef1a1aab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a374b20_1b8fcd3d",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-08T01:53:00Z",
       "side": 1,
       "message": "Please change log level to debug as these messages will spam the journal.\n\nSame at other place in patch.",
+      "revId": "66c202cb24e614deafeeeb29005e66d4ef1a1aab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6cd671f_d0ef76e2",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002466
+      },
+      "writtenOn": "2026-05-08T03:30:23Z",
+      "side": 1,
+      "message": "Change the log level to debug, also the patch, please check.",
+      "parentUuid": "0a374b20_1b8fcd3d",
       "revId": "66c202cb24e614deafeeeb29005e66d4ef1a1aab",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
