@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98389c54_598705bf",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-11T13:49:20Z",
+      "side": 1,
+      "message": "Dropped u16Str.empty() check as iconv handles zero-length input as a no-op, so the function naturally falls through to return with an empty string.",
+      "parentUuid": "570d39e1_d5009dcd",
+      "range": {
+        "startLine": 969,
+        "startChar": 7,
+        "endLine": 969,
+        "endChar": 28
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e2f376e9_ed07a278",
         "filename": "common/utils.cpp",
         "patchSetId": 2
@@ -113,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d033ebd_0dfcc497",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-11T13:49:20Z",
+      "side": 1,
+      "message": "Wrapped iconv_open\u0027s result in a std::unique_ptr with iconv_close as the deleter. Removed both explicit iconv_close(cd) calls as any early return between open and final use can no longer leak the descriptor.",
+      "parentUuid": "870e0f03_40d26cef",
+      "range": {
+        "startLine": 982,
+        "startChar": 4,
+        "endLine": 982,
+        "endChar": 15
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51f062c2_2ebd8833",
         "filename": "common/utils.hpp",
         "patchSetId": 2
@@ -124,6 +172,24 @@
       "writtenOn": "2026-04-06T11:23:43Z",
       "side": 1,
       "message": "utils.hpp is a common header included in a lot of files. I would suggest moving this inclusion to utils.cpp since that\u0027s the only place we need this.",
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf5ab164_8ea8dc8d",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-11T13:49:20Z",
+      "side": 1,
+      "message": "Done. Moved it to utils.cpp",
+      "parentUuid": "51f062c2_2ebd8833",
       "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
