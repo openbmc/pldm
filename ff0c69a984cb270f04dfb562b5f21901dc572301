@@ -229,6 +229,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a89eb04b_855707dd",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 76
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-11T02:08:13Z",
+      "side": 1,
+      "message": "Done, renamed it to `inProgressActivation`.",
+      "parentUuid": "9665b9db_d8717bd6",
+      "revId": "ff0c69a984cb270f04dfb562b5f21901dc572301",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4cef37d_d02b0421",
