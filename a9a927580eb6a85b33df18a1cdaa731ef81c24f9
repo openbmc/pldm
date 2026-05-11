@@ -65,6 +65,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdea31df_24e5df3f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-11T13:49:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98389c54_598705bf",
+      "range": {
+        "startLine": 969,
+        "startChar": 7,
+        "endLine": 969,
+        "endChar": 28
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2f376e9_ed07a278",
@@ -159,6 +183,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa44aa28_83c21154",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-11T13:49:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d033ebd_0dfcc497",
+      "range": {
+        "startLine": 982,
+        "startChar": 4,
+        "endLine": 982,
+        "endChar": 15
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51f062c2_2ebd8833",
@@ -190,6 +238,24 @@
       "side": 1,
       "message": "Done. Moved it to utils.cpp",
       "parentUuid": "51f062c2_2ebd8833",
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6abde75f_0a85cc35",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-11T13:49:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf5ab164_8ea8dc8d",
       "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
