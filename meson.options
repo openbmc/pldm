@@ -129,6 +129,6 @@ option(
 option(
     'fw-update-pkg-inotify',
     type: 'feature',
-    value: 'disabled',
+    value: 'enabled',
     description: 'Enable inotify-based firmware update package monitoring',
 )

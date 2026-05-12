@@ -60,11 +60,10 @@ class UpdateManager
                   return this->processPackage(
                       std::filesystem::path(packageFilePath));
               }),
-#else
+#endif
         updater(std::make_unique<Update>(pldm::utils::DBusHandler::getBus(),
                                          "/xyz/openbmc_project/software/pldm",
                                          this)),
-#endif
         totalNumComponentUpdates(0)
     {}
 
@@ -136,6 +135,11 @@ class UpdateManager
 
     std::unique_ptr<Activation> activation;
 
+    bool updateInProgress() const
+    {
+        return updateInProgressFlag;
+    }
+
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
@@ -143,9 +147,9 @@ class UpdateManager
     const ComponentInfoMap& componentInfoMap;
 #ifdef FW_UPDATE_INOTIFY_ENABLED
     Watch watch;
-#else
-    std::unique_ptr<Update> updater;
 #endif
+    bool updateInProgressFlag{false};
+    std::unique_ptr<Update> updater;
 
     std::unique_ptr<ActivationProgress> activationProgress;
     std::string objPath;

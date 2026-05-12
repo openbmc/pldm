@@ -33,9 +33,17 @@ std::string UpdateManager::getSwId()
 
 int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 {
+    if (updateInProgressFlag)
+    {
+        error("Processing of PLDM fw update already in progress.");
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+    updateInProgressFlag = true;
     // If no devices discovered, take no action on the package.
     if (!descriptorMap.size())
     {
+        updateInProgressFlag = false;
         return 0;
     }
 
@@ -50,12 +58,14 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
             error(
                 "Activation of PLDM fw update package for version '{VERSION}' already in progress.",
                 "VERSION", parser->pkgVersion);
+            updateInProgressFlag = false;
             std::filesystem::remove(packageFilePath);
             return -1;
         }
         else
         {
             clearActivationInfo();
+            updateInProgressFlag = true;
         }
     }
 
@@ -67,6 +77,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
             "Failed to open the PLDM fw update package file '{FILE}', error - {ERROR}.",
             "ERROR", errno, "FILE", packageFilePath);
         package.close();
+        updateInProgressFlag = false;
         std::filesystem::remove(packageFilePath);
         return -1;
     }
@@ -88,6 +99,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         error("Exception occurred while processing the package: {ERROR}",
               "ERROR", e);
         package.close();
+        updateInProgressFlag = false;
         std::filesystem::remove(packageFilePath);
         return -1;
     }
@@ -96,6 +108,12 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 std::string UpdateManager::processStreamDefer(std::istream& package,
                                               uintmax_t packageSize)
 {
+    if (updateInProgressFlag)
+    {
+        throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+    }
+
+    updateInProgressFlag = true;
     auto swId = getSwId();
     objPath = swRootPath + swId;
 
@@ -104,6 +122,7 @@ std::string UpdateManager::processStreamDefer(std::istream& package,
     {
         error(
             "No devices discovered, cannot process the PLDM fw update package.");
+        updateInProgressFlag = false;
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
 
@@ -128,6 +147,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
         parser.reset();
+        updateInProgressFlag = false;
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -144,6 +164,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
         parser.reset();
+        updateInProgressFlag = false;
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -160,6 +181,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
         parser.reset();
+        updateInProgressFlag = false;
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -175,6 +197,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
         parser.reset();
+        updateInProgressFlag = false;
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             Incompatible();
     }
@@ -244,6 +267,7 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
                 info("Firmware update failed on eid {EID}", "EID", eid);
                 activation->activation(
                     software::Activation::Activations::Failed);
+                updateInProgressFlag = false;
                 return;
             }
         }
@@ -254,6 +278,7 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
                 .count();
         info("Firmware update time: {DURATION}ms", "DURATION", dur);
         activation->activation(software::Activation::Activations::Active);
+        updateInProgressFlag = false;
     }
     return;
 }
@@ -313,6 +338,7 @@ void UpdateManager::activatePackage()
 
 void UpdateManager::clearActivationInfo()
 {
+    updateInProgressFlag = false;
     activation.reset();
     activationProgress.reset();
     objPath.clear();
