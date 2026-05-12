@@ -10,7 +10,7 @@ namespace fw_update
 ActivationIntf::Activations Activation::activation(
     ActivationIntf::Activations value)
 {
-    if (value == ActivationIntf::Activations::Activating)
+    if (value == ActivationIntf::Activations::Ready)
     {
         deleteImpl.reset();
         updateManager->activatePackage();
