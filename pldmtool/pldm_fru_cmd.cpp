@@ -91,8 +91,19 @@ class FRUTablePrint
         auto p = table;
         ordered_json frutable;
         ordered_json output;
-        while (!isTableEnd(p))
+        bool malformed = false;
+        while (!isTableEnd(p) && !malformed)
         {
+            constexpr auto record_hdr_size =
+                sizeof(pldm_fru_record_data_format) -
+                sizeof(pldm_fru_record_tlv);
+            if (static_cast<size_t>(p - table) + record_hdr_size > table_size)
+            {
+                std::cerr << "FRU table malformed: record header out of bounds"
+                          << std::endl;
+                malformed = true;
+                break;
+            }
             auto record =
                 reinterpret_cast<const pldm_fru_record_data_format*>(p);
             output["FRU Record Set Identifier"] =
@@ -114,7 +125,30 @@ class FRUTablePrint
             frufielddata.emplace_back(output);
             for (int i = 0; i < record->num_fru_fields; i++)
             {
+                // Ensure there are at least type+length bytes remaining
+                constexpr auto tlv_hdr_size =
+                    offsetof(pldm_fru_record_tlv, value);
+                if (static_cast<size_t>(p - table) + tlv_hdr_size > table_size)
+                {
+                    std::cerr << "FRU table malformed: TLV header out of bounds"
+                              << std::endl;
+                    malformed = true;
+                    break;
+                }
                 auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(p);
+                // Ensure the full TLV value is within bounds
+                if (static_cast<size_t>(p - table) + tlv_hdr_size +
+                        tlv->length >
+                    table_size)
+                {
+                    std::cerr
+                        << "FRU table malformed: TLV value out of bounds "
+                           "(type="
+                        << static_cast<int>(tlv->type) << ", length="
+                        << static_cast<int>(tlv->length) << ")" << std::endl;
+                    malformed = true;
+                    break;
+                }
                 if (record->record_type == PLDM_FRU_RECORD_TYPE_GENERAL)
                 {
                     FruFieldTypeMap.insert(fruGeneralFieldTypes.begin(),
@@ -281,14 +315,19 @@ class FRUTablePrint
 
     std::string fruFieldValuestring(const uint8_t* value, uint8_t length)
     {
-        return std::string(reinterpret_cast<const char*>(value), length);
+        auto str = reinterpret_cast<const char*>(value);
+        return std::string(str, strnlen(str, length));
     }
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
     {
-        assert(length == 4);
+        if (length != 4)
+        {
+            return "<malformed: expected 4 bytes, got " +
+                   std::to_string(length) + ">";
+        }
         uint32_t v;
-        std::memcpy(&v, value, length);
+        std::memcpy(&v, value, sizeof(v));
         return std::to_string(le32toh(v));
     }
 
