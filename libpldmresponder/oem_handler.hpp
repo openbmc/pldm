@@ -132,6 +132,16 @@ class Handler : public CmdHandler
     /** @brief To handle the boot types bios attributes at shutdown*/
     virtual void handleBootTypesAtChassisOff() = 0;
 
+    /** @brief Interface to perform OEM actions when a PLDM_RECORDS_MODIFIED
+     *  event is received from the host
+     *
+     *  @param[in] entityType - entity type of the modified state effecter PDR
+     *  @param[in] stateSetId - state set id of the possible states entry in
+     *             the modified state effecter PDR
+     */
+    virtual void modifyPDROemActions(uint16_t entityType,
+                                     uint16_t stateSetId) = 0;
+
     ~Handler() override = default;
 
   protected:
