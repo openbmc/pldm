@@ -119,7 +119,7 @@ class OemIBM
         oemPlatformHandler =
             std::make_unique<pldm::responder::oem_ibm_platform::Handler>(
                 dBusIntf, codeUpdate.get(), slotHandler.get(), mctp_fd,
-                mctp_eid, instanceIdDb, event, reqHandler);
+                mctp_eid, instanceIdDb, event, repo, reqHandler);
     }
 
     /** @brief Method for creating oemIbmBiosHandler */
