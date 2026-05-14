@@ -132,6 +132,10 @@ class Handler : public CmdHandler
     /** @brief To handle the boot types bios attributes at shutdown*/
     virtual void handleBootTypesAtChassisOff() = 0;
 
+    /** @brief Interface to perform OEM actions*/
+    virtual void modifyPDROemActions(uint16_t entityType,
+                                     uint16_t stateSetId) = 0;
+
     ~Handler() override = default;
 
   protected:

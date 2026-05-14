@@ -305,6 +305,44 @@ size_t getEffecterDataSize(uint8_t effecterDataSize)
     }
 }
 
+std::vector<uint8_t> fetchBitMap(const std::vector<std::vector<uint8_t>>& pdrs)
+{
+    std::vector<uint8_t> bitMap;
+    for (const auto& pdr : pdrs)
+    {
+        if (pdr.empty())
+        {
+            continue;
+        }
+
+        auto effecterPdr = new (const_cast<uint8_t*>(pdr.data()))
+            pldm_state_effecter_pdr;
+        struct state_effecter_possible_states states;
+        int rc = 0;
+        foreach_pldm_platform_state_effecter_pdr_possible_states(
+            effecterPdr, pdr.size(), states, rc)
+        {
+            bitfield8_t bitfield;
+            foreach_pldm_platform_state_effecter_pdr_states(states, bitfield,
+                                                            rc)
+            {
+                bitMap.emplace_back(bitfield.byte);
+            }
+            if (rc)
+            {
+                break;
+            }
+        }
+        if (rc)
+        {
+            throw std::runtime_error(
+                "fetchBitMap(): Failed to iterate through state effecter PDR: " +
+                std::to_string(rc));
+        }
+    }
+    return bitMap;
+}
+
 } // namespace pdr_utils
 } // namespace responder
 } // namespace pldm

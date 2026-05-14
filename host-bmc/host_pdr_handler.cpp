@@ -162,12 +162,13 @@ void HostPDRHandler::setPresenceFrus()
     }
 }
 
-void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
+void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles,
+                              uint8_t eventDataOperation)
 {
     pdrRecordHandles.clear();
     modifiedPDRRecordHandles.clear();
 
-    if (isHostPdrModified)
+    if (PLDM_RECORDS_MODIFIED == eventDataOperation)
     {
         modifiedPDRRecordHandles = std::move(recordHandles);
     }
@@ -197,11 +198,9 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
         sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
     uint32_t recordHandle{};
-    if (!nextRecordHandle && (!modifiedPDRRecordHandles.empty()) &&
-        isHostPdrModified)
+    if (!nextRecordHandle && (!modifiedPDRRecordHandles.empty()))
     {
         recordHandle = modifiedPDRRecordHandles.front();
-        modifiedPDRRecordHandles.pop_front();
     }
     else if (!nextRecordHandle && (!pdrRecordHandles.empty()))
     {
@@ -658,12 +657,40 @@ void HostPDRHandler::processHostPDRs(
                 }
                 else
                 {
+                    pldm_pdr_delete_by_record_handle(repo, rh, true);
+
                     rc = pldm_pdr_add(repo, pdr.data(), respCount, true,
                                       pdrTerminusHandle, &rh);
                     if (rc)
                     {
-                        // pldm_pdr_add() assert()ed on failure to add a PDR.
                         throw std::runtime_error("Failed to add PDR");
+                    }
+
+                    if (!modifiedPDRRecordHandles.empty())
+                    {
+                        if ((pdrHdr->type == PLDM_STATE_EFFECTER_PDR) &&
+                            (oemPlatformHandler))
+                        {
+                            const auto* effecterPdr = new (pdr.data())
+                                pldm_state_effecter_pdr;
+                            const auto entityType = effecterPdr->entity_type;
+                            struct state_effecter_possible_states states;
+                            foreach_pldm_platform_state_effecter_pdr_possible_states(
+                                effecterPdr, pdr.size(), states, rc)
+                            {
+                                const uint16_t stateSetID = states.state_set_id;
+                                oemPlatformHandler->modifyPDROemActions(
+                                    entityType, stateSetID);
+                            }
+
+                            if (rc)
+                            {
+                                throw std::runtime_error(
+                                    "processHostPDRs(): Failed to iterate through possible_states array: " +
+                                    std::to_string(rc));
+                            }
+                        }
+                        modifiedPDRRecordHandles.pop_front();
                     }
                 }
             }
@@ -701,19 +728,10 @@ void HostPDRHandler::processHostPDRs(
     }
     else
     {
-        if (modifiedPDRRecordHandles.empty() && isHostPdrModified)
-        {
-            isHostPdrModified = false;
-        }
-        else
-        {
-            deferredFetchPDREvent =
-                std::make_unique<sdeventplus::source::Defer>(
-                    event,
-                    std::bind(
-                        std::mem_fn((&HostPDRHandler::_processFetchPDREvent)),
-                        this, nextRecordHandle, std::placeholders::_1));
-        }
+        deferredFetchPDREvent = std::make_unique<sdeventplus::source::Defer>(
+            event,
+            std::bind(std::mem_fn((&HostPDRHandler::_processFetchPDREvent)),
+                      this, nextRecordHandle, std::placeholders::_1));
     }
 }
 
@@ -735,10 +753,9 @@ void HostPDRHandler::_processFetchPDREvent(
         nextRecordHandle = this->pdrRecordHandles.front();
         this->pdrRecordHandles.pop_front();
     }
-    if (isHostPdrModified && (!this->modifiedPDRRecordHandles.empty()))
+    else if (!this->modifiedPDRRecordHandles.empty())
     {
         nextRecordHandle = this->modifiedPDRRecordHandles.front();
-        this->modifiedPDRRecordHandles.pop_front();
     }
     this->getHostPDR(nextRecordHandle);
 }
