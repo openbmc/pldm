@@ -281,6 +281,30 @@
       },
       "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4d56190_26b85d7f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-18T08:48:42Z",
+      "side": 1,
+      "message": "lipldm has a handful of UTF-16 helpers, but I\u0027m not sure if they\u0027re helpful in this scenario.",
+      "parentUuid": "a2c24225_80a9cead",
+      "range": {
+        "startLine": 758,
+        "startChar": 0,
+        "endLine": 768,
+        "endChar": 74
+      },
+      "revId": "a9a927580eb6a85b33df18a1cdaa731ef81c24f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
