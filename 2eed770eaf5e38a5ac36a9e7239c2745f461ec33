@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6b084d3_6c299446",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-05-19T14:01:04Z",
+      "side": 1,
+      "message": "I think we need to see another PR with a pldm recipe update with PACKAGECONFIG updated so that the current defaults are kept so we don\u0027t have behavioral changes when building with yocto.",
+      "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4fc1386_6cbb1162",
@@ -31,6 +48,24 @@
       "writtenOn": "2026-05-19T06:39:51Z",
       "side": 1,
       "message": "I understand the intent to support both paths coexisting, but I don\u0027t think flipping the default to enabled is the right approach here.\n\nChanging the default silently activates inotify for all builds that don\u0027t explicitly set the option — consumers pick up a behavioral change without opting into it. That\u0027s especially problematic for platforms that lack the watched directory or that relied on the D-Bus-only path.\n\nI\u0027d suggest leaving the default as disabled and letting callers opt in explicitly. That keeps it a conscious per-platform decision rather than something imposed on everyone.",
+      "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3285a234_ab1be4fc",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2026-05-19T14:01:04Z",
+      "side": 1,
+      "message": "\u003e That keeps it a conscious per-platform decision rather than something imposed on everyone.\n\nAgree, but we can address that by making disabled the default in the pldm recipe.  The defaults here should really only apply to the CI environment where we want as much code enabled and exercised as possible.",
+      "parentUuid": "c4fc1386_6cbb1162",
       "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
