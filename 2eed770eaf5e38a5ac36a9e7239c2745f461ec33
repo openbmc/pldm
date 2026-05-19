@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dbece1b_38f86350",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-05-19T06:34:02Z",
+      "side": 1,
+      "message": "Needs a concurrent-update guard.\n\nIf inotify and D-Bus paths are triggered simultaneously, processPackage and processStream both run against the same UpdateManager instance — clobbering shared state like parser, deviceUpdaterMap, activationProgress, etc.\n\nSuggest checking parser !\u003d nullptr (or an explicit updateInProgress flag) at the top of both functions and returning early if an update is already underway.",
+      "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
