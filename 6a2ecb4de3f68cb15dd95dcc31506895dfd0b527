@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "446eb1f4_d2342fcf",
+        "filename": "requester/test/mctp_endpoint_discovery_test.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-05-19T05:54:45Z",
+      "side": 1,
+      "message": "I suggest adding tests for removeEndpoints too.",
+      "revId": "6a2ecb4de3f68cb15dd95dcc31506895dfd0b527",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
