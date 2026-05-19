@@ -16,6 +16,23 @@
       "message": "Needs a concurrent-update guard.\n\nIf inotify and D-Bus paths are triggered simultaneously, processPackage and processStream both run against the same UpdateManager instance — clobbering shared state like parser, deviceUpdaterMap, activationProgress, etc.\n\nSuggest checking parser !\u003d nullptr (or an explicit updateInProgress flag) at the top of both functions and returning early if an update is already underway.",
       "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4fc1386_6cbb1162",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-05-19T06:39:51Z",
+      "side": 1,
+      "message": "I understand the intent to support both paths coexisting, but I don\u0027t think flipping the default to enabled is the right approach here.\n\nChanging the default silently activates inotify for all builds that don\u0027t explicitly set the option — consumers pick up a behavioral change without opting into it. That\u0027s especially problematic for platforms that lack the watched directory or that relied on the D-Bus-only path.\n\nI\u0027d suggest leaving the default as disabled and letting callers opt in explicitly. That keeps it a conscious per-platform decision rather than something imposed on everyone.",
+      "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
