@@ -27,6 +27,13 @@ exec::task<int> PlatformManager::initTerminus()
 
     for (const auto tid : tids)
     {
+        // termini[tid] would auto-insert if the TID was erased after the
+        // snapshot above.
+        if (!termini.contains(tid))
+        {
+            continue;
+        }
+
         /* Take a local shared_ptr copy so the Terminus object stays alive even
          * if the map entry is erased while this coroutine is suspended. */
         auto terminus = termini[tid];
