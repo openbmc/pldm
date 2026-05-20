@@ -22,6 +22,30 @@
       },
       "revId": "18eb9ae197a6a4a0e7e4b695ee69e1d18be40c11",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f26a767f_8b762065",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-05-20T11:04:04Z",
+      "side": 1,
+      "message": "It seems ```std::start_lifetime_as``` isn\u0027t available currently in OpenBMC CI as well as for Yocto openbmc (master branch) even after including ```#include \u003cmemory\u003e```. \nGot this compilation error (same during local CI too):\n```\n../sources/pldm-1.0+git/host-bmc/host_pdr_handler.cpp:676:60: error: \u0027start_lifetime_as\u0027 is not a member of \u0027std\u0027\n|   676 |                             const auto* effecterPdr \u003d std::start_lifetime_as\u003c\n|       |                                                            ^~~~~~~~~~~~~~~~~\n```",
+      "parentUuid": "4a3eaa3f_01cf6bc8",
+      "range": {
+        "startLine": 299,
+        "startChar": 1,
+        "endLine": 301,
+        "endChar": 36
+      },
+      "revId": "18eb9ae197a6a4a0e7e4b695ee69e1d18be40c11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
