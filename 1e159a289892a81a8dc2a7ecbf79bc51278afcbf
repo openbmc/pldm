@@ -130,6 +130,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32977ebe_72efa4e0",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2026-05-20T01:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3740a2f9_e4f296a7",
+      "range": {
+        "startLine": 973,
+        "startChar": 3,
+        "endLine": 973,
+        "endChar": 19
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86f0f2fe_70c5d3c4",
@@ -214,6 +238,30 @@
       "side": 1,
       "message": "Reason is as described above.\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/80194/comment/60dbc048_d181b22f/",
       "parentUuid": "b49082a6_fafa7a21",
+      "range": {
+        "startLine": 1022,
+        "startChar": 7,
+        "endLine": 1022,
+        "endChar": 23
+      },
+      "revId": "1e159a289892a81a8dc2a7ecbf79bc51278afcbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "082ac46e_f1955ffb",
+        "filename": "common/utils.cpp",
+        "patchSetId": 101
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 1002522
+      },
+      "writtenOn": "2026-05-20T01:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "009d2864_54e81c62",
       "range": {
         "startLine": 1022,
         "startChar": 7,
