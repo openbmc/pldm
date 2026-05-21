@@ -3,6 +3,9 @@
 #include "common/utils.hpp"
 #include "oem/meta/utils.hpp"
 
+#include <com/meta/State/Cxl/event.hpp>
+#include <com/meta/State/Host/common.hpp>
+#include <com/meta/State/Host/event.hpp>
 #include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
@@ -774,6 +777,67 @@ static void rainbowFault(const message& eventData, const std::string&,
     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
 }
 
+// Drop the redundant "Event: " label (7 chars) prepended by checkEventAssert,
+// keeping the contiguous "Host<slot> <name>, <ASSERTED|DEASSERTED>" string in
+// the Event metadata so existing log tooling can grep it unchanged.
+static std::string eventDetail(const std::string& event)
+{
+    return event.starts_with("Event: ") ? event.substr(7) : event;
+}
+
+static void cxlEvent(const message& eventData, const std::string& event,
+                     const std::string& slotNum)
+{
+    using Lost = sdbusplus::error::com::meta::state::Cxl::CxlHeartbeatLost;
+    using Normal = sdbusplus::event::com::meta::state::Cxl::CxlHeartbeatNormal;
+
+    auto cxlId = (static_cast<EventType>(eventData[0]) == EventType::CXL1_HB)
+                     ? "cxl1"
+                     : "cxl2";
+    std::string path =
+        "/xyz/openbmc_project/state/host" + slotNum + "/" + cxlId;
+    std::string detail = eventDetail(event);
+
+    EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
+    if (eventStatus == EventAssert::DEASSERTED)
+    {
+        lg2::commit(Lost("CXL", path, "EVENT", detail));
+    }
+    else
+    {
+        lg2::commit(Normal("CXL", path, "EVENT", detail));
+    }
+}
+
+static void postEvent(const message& eventData, const std::string& event,
+                      const std::string& slotNum)
+{
+    using PostStatus = sdbusplus::event::com::meta::state::Host::HostPostStatus;
+    using PostPhase = sdbusplus::common::com::meta::state::Host::PostPhase;
+
+    std::string path = "/xyz/openbmc_project/state/host" + slotNum;
+    // Only POST_STARTED and POST_ENDED are routed to this handler (see
+    // eventHandlers), so anything that is not POST_STARTED is POST_ENDED.
+    PostPhase phase =
+        (static_cast<EventType>(eventData[0]) == EventType::POST_STARTED)
+            ? PostPhase::Started
+            : PostPhase::Ended;
+
+    lg2::commit(
+        PostStatus("HOST", path, "PHASE", phase, "EVENT", eventDetail(event)));
+}
+
+static void pltrstEvent(const message&, const std::string& event,
+                        const std::string& slotNum)
+{
+    using PltRst =
+        sdbusplus::event::com::meta::state::Host::PlatformResetAsserted;
+
+    std::string path = "/xyz/openbmc_project/state/host" + slotNum;
+
+    lg2::commit(PltRst("HOST", path, "EVENT", eventDetail(event)));
+}
+
 static void reportError(const message&, const std::string& event,
                         const std::string&)
 {
@@ -836,11 +900,11 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::POWER_ON_SEQUENCE_FAILURE, {report::powerRailFault, nullptr}},
     {EventType::DIMM_PMIC_ERROR,
      {report::powerRailFault, format::dimmPmicError}},
-    {EventType::CXL1_HB, {nullptr, nullptr}},
-    {EventType::CXL2_HB, {nullptr, nullptr}},
-    {EventType::PLTRST_ASSERTION, {nullptr, nullptr}},
-    {EventType::POST_STARTED, {nullptr, nullptr}},
-    {EventType::POST_ENDED, {nullptr, nullptr}},
+    {EventType::CXL1_HB, {report::cxlEvent, nullptr}},
+    {EventType::CXL2_HB, {report::cxlEvent, nullptr}},
+    {EventType::PLTRST_ASSERTION, {report::pltrstEvent, nullptr}},
+    {EventType::POST_STARTED, {report::postEvent, nullptr}},
+    {EventType::POST_ENDED, {report::postEvent, nullptr}},
     {EventType::PROCHOT_IS_TRIGGERED_DUE_TO_SD_SENSOR_READING_EXCEED_UCR,
      {report::prochotSdSensor, nullptr}},
     {EventType::MTIA_FAULT, {report::mtiaFault, nullptr}},
