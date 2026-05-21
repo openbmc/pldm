@@ -3,6 +3,8 @@
 #include "common/utils.hpp"
 #include "oem/meta/utils.hpp"
 
+#include <com/meta/State/Cxl/event.hpp>
+#include <com/meta/State/Host/event.hpp>
 #include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
@@ -774,6 +776,41 @@ static void rainbowFault(const message& eventData, const std::string&,
     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
 }
 
+static void cxlEvent(const message& eventData, const std::string& event,
+                     const std::string&)
+{
+    using Lost = sdbusplus::error::com::meta::state::Cxl::CxlHeartbeatLost;
+    using Normal = sdbusplus::event::com::meta::state::Cxl::CxlHeartbeatNormal;
+
+    EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
+    if (eventStatus == EventAssert::DEASSERTED)
+    {
+        lg2::commit(Lost("EVENT", event));
+    }
+    else
+    {
+        lg2::commit(Normal("EVENT", event));
+    }
+}
+
+static void postEvent(const message&, const std::string& event,
+                      const std::string&)
+{
+    using PostStatus =
+        sdbusplus::event::com::meta::state::Host::HostPostStatus;
+
+    lg2::commit(PostStatus("EVENT", event));
+}
+
+static void pltrstEvent(const message&, const std::string& event,
+                        const std::string&)
+{
+    using PltRst =
+        sdbusplus::event::com::meta::state::Host::PlatformResetAsserted;
+
+    lg2::commit(PltRst("EVENT", event));
+}
+
 static void reportError(const message&, const std::string& event,
                         const std::string&)
 {
@@ -836,11 +873,11 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::POWER_ON_SEQUENCE_FAILURE, {report::powerRailFault, nullptr}},
     {EventType::DIMM_PMIC_ERROR,
      {report::powerRailFault, format::dimmPmicError}},
-    {EventType::CXL1_HB, {nullptr, nullptr}},
-    {EventType::CXL2_HB, {nullptr, nullptr}},
-    {EventType::PLTRST_ASSERTION, {nullptr, nullptr}},
-    {EventType::POST_STARTED, {nullptr, nullptr}},
-    {EventType::POST_ENDED, {nullptr, nullptr}},
+    {EventType::CXL1_HB, {report::cxlEvent, nullptr}},
+    {EventType::CXL2_HB, {report::cxlEvent, nullptr}},
+    {EventType::PLTRST_ASSERTION, {report::pltrstEvent, nullptr}},
+    {EventType::POST_STARTED, {report::postEvent, nullptr}},
+    {EventType::POST_ENDED, {report::postEvent, nullptr}},
     {EventType::PROCHOT_IS_TRIGGERED_DUE_TO_SD_SENSOR_READING_EXCEED_UCR,
      {report::prochotSdSensor, nullptr}},
     {EventType::MTIA_FAULT, {report::mtiaFault, nullptr}},
