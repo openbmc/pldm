@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86eba7a0_120c67f6",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1002968
+      },
+      "writtenOn": "2026-05-21T11:08:34Z",
+      "side": 1,
+      "message": "nit: instead of leaving the bit mask as a magic number can we do some clean up like so:\nconstexpr uint16_t ENTITY_TYPE_MASK \u003d 0x7FFF;\n\nif ((pdr-\u003ebase_unit \u003d\u003d PLDM_SENSOR_UNIT_BYTES) \u0026\u0026\n        ((pdr-\u003eentity_type \u0026 ENTITY_TYPE_MASK) \u003d\u003d PLDM_ENTITY_DEVICE_FILE))",
+      "range": {
+        "startLine": 117,
+        "startChar": 10,
+        "endLine": 117,
+        "endChar": 35
+      },
+      "revId": "60d599529bee931341469f13a8bbd4d20768492f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
