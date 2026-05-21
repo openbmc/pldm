@@ -627,7 +627,8 @@ static void thermalFault(const message& eventData, const std::string&,
     auto device = "/xyz/openbmc_project/State/Thermal/host" + slotNum + "/cpu0";
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
 
-    record::thermalFault(device, eventStatus, "Thermal Trip");
+    record::thermalFault(device, eventStatus,
+                         std::string(eventList[eventData[0]]));
 }
 
 static void powerRailFault(const message& eventData, const std::string&,
@@ -636,7 +637,8 @@ static void powerRailFault(const message& eventData, const std::string&,
     auto device = "/xyz/openbmc_project/State/Power/host" + slotNum + "/power";
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
 
-    record::powerRailFault(device, eventStatus, "Power Rail Fault");
+    record::powerRailFault(device, eventStatus,
+                           std::string(eventList[eventData[0]]));
 }
 
 static void prochotSdSensor(const message& eventData, const std::string&,
@@ -724,6 +726,60 @@ static void rainbowFault(const message& eventData, const std::string&,
     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
 }
 
+static void createEventLog(
+    const std::string& event,
+    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity)
+{
+    lg2::info("{INFO}", "INFO", event);
+    auto& bus = pldm::utils::DBusHandler::getBus();
+
+    static constexpr auto loggingService = "xyz.openbmc_project.Logging";
+    static constexpr auto loggingPath = "/xyz/openbmc_project/logging";
+    static constexpr auto loggingInterface =
+        "xyz.openbmc_project.Logging.Create";
+
+    auto severityStr =
+        sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+            severity);
+
+    try
+    {
+        auto method = bus.new_method_call(loggingService, loggingPath,
+                                          loggingInterface, "Create");
+
+        std::map<std::string, std::string> addlData{};
+        method.append(event.c_str(), severityStr, addlData);
+        bus.call_noreply(method, dbusTimeout);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to create D-Bus event log: {ERR}", "ERR", e);
+    }
+}
+
+static void cxlEvent(const message& eventData, const std::string& event,
+                     const std::string&)
+{
+    using EntrySeverity =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
+    auto severity = (eventStatus == EventAssert::DEASSERTED)
+                        ? EntrySeverity::Error
+                        : EntrySeverity::Informational;
+
+    createEventLog(event, severity);
+}
+
+static void platformEvent(const message&, const std::string& event,
+                          const std::string&)
+{
+    using EntrySeverity =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    createEventLog(event, EntrySeverity::Informational);
+}
+
 static void reportError(const message&, const std::string& event,
                         const std::string&)
 {
@@ -786,11 +842,11 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::POWER_ON_SEQUENCE_FAILURE, {report::powerRailFault, nullptr}},
     {EventType::DIMM_PMIC_ERROR,
      {report::powerRailFault, format::dimmPmicError}},
-    {EventType::CXL1_HB, {nullptr, nullptr}},
-    {EventType::CXL2_HB, {nullptr, nullptr}},
-    {EventType::PLTRST_ASSERTION, {nullptr, nullptr}},
-    {EventType::POST_STARTED, {nullptr, nullptr}},
-    {EventType::POST_ENDED, {nullptr, nullptr}},
+    {EventType::CXL1_HB, {report::cxlEvent, nullptr}},
+    {EventType::CXL2_HB, {report::cxlEvent, nullptr}},
+    {EventType::PLTRST_ASSERTION, {report::platformEvent, nullptr}},
+    {EventType::POST_STARTED, {report::platformEvent, nullptr}},
+    {EventType::POST_ENDED, {report::platformEvent, nullptr}},
     {EventType::PROCHOT_IS_TRIGGERED_DUE_TO_SD_SENSOR_READING_EXCEED_UCR,
      {report::prochotSdSensor, nullptr}},
     {EventType::MTIA_FAULT, {report::mtiaFault, nullptr}},
