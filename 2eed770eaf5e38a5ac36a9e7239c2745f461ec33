@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "31340595_ccd14329",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-22T09:03:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dbece1b_38f86350",
+      "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d6b084d3_6c299446",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-19T14:01:04Z",
       "side": 1,
       "message": "I think we need to see another PR with a pldm recipe update with PACKAGECONFIG updated so that the current defaults are kept so we don\u0027t have behavioral changes when building with yocto.",
+      "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f325849_163ce53b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-22T09:03:47Z",
+      "side": 1,
+      "message": "The option seems to be disabled by default already.",
+      "parentUuid": "d6b084d3_6c299446",
       "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -66,6 +102,24 @@
       "side": 1,
       "message": "\u003e That keeps it a conscious per-platform decision rather than something imposed on everyone.\n\nAgree, but we can address that by making disabled the default in the pldm recipe.  The defaults here should really only apply to the CI environment where we want as much code enabled and exercised as possible.",
       "parentUuid": "c4fc1386_6cbb1162",
+      "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5731b94e_1d69c442",
+        "filename": "meson.options",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-22T09:03:47Z",
+      "side": 1,
+      "message": "The option seems to be disabled by default already in the recipe, since the `fw-update-pkg-inotify` was not appended.",
+      "parentUuid": "3285a234_ab1be4fc",
       "revId": "2eed770eaf5e38a5ac36a9e7239c2745f461ec33",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
