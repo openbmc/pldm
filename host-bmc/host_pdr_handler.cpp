@@ -7,6 +7,7 @@
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>
 #endif
+#include "common/start_lifetime_as.hpp"
 #include "dbus/custom_dbus.hpp"
 
 #include <nlohmann/json.hpp>
@@ -18,6 +19,7 @@
 #include <xyz/openbmc_project/State/Host/client.hpp>
 
 #include <cassert>
+#include <memory>
 #include <type_traits>
 
 PHOSPHOR_LOG2_USING;
@@ -563,7 +565,7 @@ void HostPDRHandler::processHostPDRs(
                 rh = nextRecordHandle - 1;
             }
 
-            auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
+            auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(pdr.data());
             if (!rh)
             {
                 rh = pdrHdr->record_handle;

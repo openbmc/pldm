@@ -1,4 +1,5 @@
 #include "common/instance_id.hpp"
+#include "common/start_lifetime_as.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "mock_request.hpp"
@@ -9,6 +10,8 @@
 #include <libpldm/transport.h>
 
 #include <sdbusplus/async.hpp>
+
+#include <memory>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -260,8 +263,8 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
                                               mctp_eid_t eid,
                                               uint8_t instanceId, uint8_t& tid)
         {
-            pldm::Request request(sizeof(pldm_msg_hdr), 0);
-            auto requestMsg = new (request.data()) pldm_msg;
+            pldm::Request request(sizeof(pldm_msg), 0);
+            auto requestMsg = std::start_lifetime_as<pldm_msg>(request.data());
             const pldm_msg* responseMsg = nullptr;
             size_t responseLen = 0;
 

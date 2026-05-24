@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/start_lifetime_as.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "pdr_utils.hpp"
@@ -10,6 +11,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <cstdint>
+#include <memory>
 
 PHOSPHOR_LOG2_USING;
 
@@ -66,7 +68,7 @@ int setStateEffecterStatesHandler(
     auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_state_effecter_pdr;
+        pdr = std::start_lifetime_as<pldm_state_effecter_pdr>(pdrEntry.data);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;
