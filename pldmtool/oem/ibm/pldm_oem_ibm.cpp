@@ -1,6 +1,7 @@
 #include "pldm_oem_ibm.hpp"
 
 #include "../../pldm_cmd_helper.hpp"
+#include "common/start_lifetime_as.hpp"
 
 #include <endian.h>
 #include <libpldm/oem/ibm/file_io.h>
@@ -8,6 +9,7 @@
 #include <libpldm/pldm_types.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
 namespace pldmtool
 {
@@ -170,7 +172,8 @@ class GetFileTable : public CommandInterface
         while (startptr < endptr)
         {
             ordered_json fdata;
-            auto filetableData = new (startptr) pldm_file_attr_table_entry;
+            auto filetableData =
+                std::start_lifetime_as<pldm_file_attr_table_entry>(startptr);
             fdata["FileHandle"] = std::to_string(filetableData->file_handle);
             startptr += sizeof(filetableData->file_handle);
 
