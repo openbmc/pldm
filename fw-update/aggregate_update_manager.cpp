@@ -8,7 +8,7 @@ Response AggregateUpdateManager::handleRequest(
 {
     Response response;
     response = UpdateManager::handleRequest(eid, command, request, reqMsgLen);
-    auto responseMsg = new (response.data()) pldm_msg;
+    auto responseMsg = reinterpret_cast<pldm_msg*>(response.data());
     if (responseMsg->payload[0] != PLDM_FWUP_COMMAND_NOT_EXPECTED)
     {
         return response;

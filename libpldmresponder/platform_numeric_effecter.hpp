@@ -273,7 +273,7 @@ int setNumericEffecterValueHandler(
     auto pdrRecord = numericEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_numeric_effecter_value_pdr;
+        pdr = reinterpret_cast<pldm_numeric_effecter_value_pdr*>(pdrEntry.data);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;
@@ -510,7 +510,7 @@ int getNumericEffecterData(const DBusInterface& dBusIntf, Handler& handler,
 
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_numeric_effecter_value_pdr;
+        pdr = reinterpret_cast<pldm_numeric_effecter_value_pdr*>(pdrEntry.data);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;

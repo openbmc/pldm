@@ -143,9 +143,8 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
     constexpr size_t respPayloadLength = 1;
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
         queryDownstreamIdentifiersResp{0x00, 0x00, 0x00, 0x01};
-    const auto responseMsg =
-        new (const_cast<unsigned char*>(queryDownstreamIdentifiersResp.data()))
-            pldm_msg;
+    const auto responseMsg = reinterpret_cast<pldm_msg*>(
+        const_cast<unsigned char*>(queryDownstreamIdentifiersResp.data()));
     inventoryManager.queryDownstreamIdentifiers(1, responseMsg,
                                                 respPayloadLength);
 

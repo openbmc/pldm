@@ -261,7 +261,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
                                               uint8_t instanceId, uint8_t& tid)
         {
             pldm::Request request(sizeof(pldm_msg_hdr), 0);
-            auto requestMsg = new (request.data()) pldm_msg;
+            auto requestMsg = reinterpret_cast<pldm_msg*>(request.data());
             const pldm_msg* responseMsg = nullptr;
             size_t responseLen = 0;
 

@@ -210,7 +210,7 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
         auto pdrRecord = sensorPDRs.getFirstRecord(pdrEntry);
         while (pdrRecord)
         {
-            pdr = new (pdrEntry.data) pldm_state_sensor_pdr;
+            pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrEntry.data);
             SensorId sensorId = LE16TOH(pdr->sensor_id);
             if (sensorHandlers.contains(pdrType))
             {
