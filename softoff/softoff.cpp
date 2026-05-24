@@ -19,6 +19,7 @@
 #include <array>
 #include <filesystem>
 #include <fstream>
+#include <memory>
 
 PHOSPHOR_LOG2_USING;
 
@@ -190,7 +191,8 @@ bool SoftPowerOff::getEffecterID(pldm::pdr::EntityType& entityType,
         {
             for (auto& rep : response)
             {
-                auto softoffPdr = new (rep.data()) pldm_state_effecter_pdr;
+                auto softoffPdr =
+                    std::start_lifetime_as<pldm_state_effecter_pdr>(rep.data());
                 effecterID = softoffPdr->effecter_id;
             }
         }
@@ -232,7 +234,7 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
         pldm_state_sensor_pdr* pdr = nullptr;
         for (auto& rep : Response)
         {
-            pdr = new (rep.data()) pldm_state_sensor_pdr;
+            pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(rep.data());
             if (!pdr)
             {
                 error("Failed to get state sensor PDR.");
@@ -247,8 +249,9 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
 
         for (auto offset = 0; offset < compositeSensorCount; offset++)
         {
-            auto possibleStates = new (possibleStatesStart)
-                state_sensor_possible_states;
+            auto possibleStates =
+                std::start_lifetime_as<state_sensor_possible_states>(
+                    possibleStatesStart);
             auto setId = possibleStates->state_set_id;
             auto possibleStateSize = possibleStates->possible_states_size;
 
@@ -301,7 +304,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
                sizeof(pldm_msg_hdr) + sizeof(effecterID) +
                    sizeof(effecterCount) + sizeof(set_effecter_state_field)>
         requestMsg{};
-    auto request = new (requestMsg.data()) pldm_msg;
+    auto request = std::start_lifetime_as<pldm_msg>(requestMsg.data());
     set_effecter_state_field stateField{PLDM_REQUEST_SET, effecterState};
     auto instanceIdResult = instanceIdDb.next(pldmTID);
     if (!instanceIdResult)
@@ -367,7 +370,7 @@ int SoftPowerOff::hostSoftOff(sdeventplus::Event& event)
         // We've got the response meant for the PLDM request msg that was
         // sent out
         io.set_enabled(Enabled::Off);
-        auto response = new (responseMsgPtr.get()) pldm_msg;
+        auto response = std::start_lifetime_as<pldm_msg>(responseMsgPtr.get());
 
         if (srcTID != pldmTID ||
             !pldm_msg_hdr_correlate_response(&request->hdr, &response->hdr))

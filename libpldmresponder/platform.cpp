@@ -19,6 +19,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <memory>
+
 PHOSPHOR_LOG2_USING;
 
 using namespace pldm::utils;
@@ -867,7 +869,7 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
     auto pdrRecord = stateSensorPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_state_sensor_pdr;
+        pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrEntry.data);
         assert(pdr != nullptr);
         if (pdr->sensor_id != sensorId)
         {
@@ -939,7 +941,7 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
     auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_state_effecter_pdr;
+        pdr = std::start_lifetime_as<pldm_state_effecter_pdr>(pdrEntry.data);
         assert(pdr != nullptr);
         if (pdr->effecter_id != effecterId)
         {

@@ -6,6 +6,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <memory>
+
 PHOSPHOR_LOG2_USING;
 
 namespace pldm
@@ -356,7 +358,7 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
         {
             // multipart transfer
             uint32_t receivedRecordSize = responseCnt;
-            auto pdrHdr = new (recvBuf.data()) pldm_pdr_hdr;
+            auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(recvBuf.data());
             uint16_t recordChgNum = le16toh(pdrHdr->record_change_num);
             std::vector<uint8_t> receivedPdr(recvBuf.begin(),
                                              recvBuf.begin() + responseCnt);

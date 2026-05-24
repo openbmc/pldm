@@ -6,6 +6,7 @@
 
 #include <common/utils.hpp>
 
+#include <memory>
 #include <ranges>
 
 namespace pldm
@@ -141,7 +142,7 @@ void Terminus::parseTerminusPDRs()
 {
     for (auto& pdr : pdrs)
     {
-        auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
+        auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(pdr.data());
         switch (pdrHdr->type)
         {
             case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
@@ -381,7 +382,8 @@ std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(
     size_t decodedPdrSize =
         sizeof(struct pldm_entity_auxiliary_names_pdr) + names_size;
     auto vPdr = std::vector<char>(decodedPdrSize);
-    auto decodedPdr = new (vPdr.data()) pldm_entity_auxiliary_names_pdr;
+    auto decodedPdr =
+        std::start_lifetime_as<pldm_entity_auxiliary_names_pdr>(vPdr.data());
 
     auto rc = decode_entity_auxiliary_names_pdr(pdrData.data(), pdrData.size(),
                                                 decodedPdr, decodedPdrSize);

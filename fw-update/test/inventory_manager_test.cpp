@@ -5,6 +5,8 @@
 
 #include <libpldm/firmware_update.h>
 
+#include <memory>
+
 #include <gtest/gtest.h>
 
 using namespace pldm;
@@ -143,9 +145,8 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
     constexpr size_t respPayloadLength = 1;
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength>
         queryDownstreamIdentifiersResp{0x00, 0x00, 0x00, 0x01};
-    const auto responseMsg =
-        new (const_cast<unsigned char*>(queryDownstreamIdentifiersResp.data()))
-            pldm_msg;
+    const auto responseMsg = std::start_lifetime_as<pldm_msg>(
+        const_cast<unsigned char*>(queryDownstreamIdentifiersResp.data()));
     inventoryManager.queryDownstreamIdentifiers(1, responseMsg,
                                                 respPayloadLength);
 

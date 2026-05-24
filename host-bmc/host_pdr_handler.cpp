@@ -18,6 +18,7 @@
 #include <xyz/openbmc_project/State/Host/client.hpp>
 
 #include <cassert>
+#include <memory>
 #include <type_traits>
 
 PHOSPHOR_LOG2_USING;
@@ -563,7 +564,7 @@ void HostPDRHandler::processHostPDRs(
                 rh = nextRecordHandle - 1;
             }
 
-            auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
+            auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(pdr.data());
             if (!rh)
             {
                 rh = pdrHdr->record_handle;
