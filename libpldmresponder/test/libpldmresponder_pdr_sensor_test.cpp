@@ -1,3 +1,4 @@
+#include "common/start_lifetime_as.hpp"
 #include "common/test/mocked_utils.hpp"
 #include "libpldmresponder/pdr_utils.hpp"
 #include "libpldmresponder/platform.hpp"
@@ -6,6 +7,8 @@
 
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <sdeventplus/event.hpp>
+
+#include <memory>
 
 #include <gtest/gtest.h>
 
@@ -22,7 +25,7 @@ TEST(GeneratePDRByStateSensor, testGoodJson)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES>
         requestPayload{};
-    auto req = new (requestPayload.data()) pldm_msg;
+    auto req = std::start_lifetime_as<pldm_msg>(requestPayload.data());
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
     MockdBusHandler mockedUtils;
@@ -49,7 +52,8 @@ TEST(GeneratePDRByStateSensor, testGoodJson)
     auto record = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record, nullptr);
 
-    pldm_state_sensor_pdr* pdr = new (e.data) pldm_state_sensor_pdr;
+    pldm_state_sensor_pdr* pdr =
+        std::start_lifetime_as<pldm_state_sensor_pdr>(e.data);
     EXPECT_EQ(pdr->hdr.record_handle, 2);
     EXPECT_EQ(pdr->hdr.version, 1);
     EXPECT_EQ(pdr->hdr.type, PLDM_STATE_SENSOR_PDR);
@@ -73,7 +77,7 @@ TEST(GeneratePDR, testMalformedJson)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES>
         requestPayload{};
-    auto req = new (requestPayload.data()) pldm_msg;
+    auto req = std::start_lifetime_as<pldm_msg>(requestPayload.data());
     size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
 
     MockdBusHandler mockedUtils;

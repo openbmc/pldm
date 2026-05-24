@@ -1,5 +1,9 @@
 #include "aggregate_update_manager.hpp"
 
+#include "common/start_lifetime_as.hpp"
+
+#include <memory>
+
 namespace pldm::fw_update
 {
 
@@ -8,7 +12,7 @@ Response AggregateUpdateManager::handleRequest(
 {
     Response response;
     response = UpdateManager::handleRequest(eid, command, request, reqMsgLen);
-    auto responseMsg = new (response.data()) pldm_msg;
+    auto responseMsg = std::start_lifetime_as<pldm_msg>(response.data());
     if (responseMsg->payload[0] != PLDM_FWUP_COMMAND_NOT_EXPECTED)
     {
         return response;
