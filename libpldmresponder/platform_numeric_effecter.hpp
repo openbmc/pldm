@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/start_lifetime_as.hpp"
 #include "common/utils.hpp"
 #include "libpldmresponder/pdr.hpp"
 #include "pdr_utils.hpp"
@@ -11,6 +12,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <memory>
 #include <optional>
 
 PHOSPHOR_LOG2_USING;
@@ -273,7 +275,8 @@ int setNumericEffecterValueHandler(
     auto pdrRecord = numericEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_numeric_effecter_value_pdr;
+        pdr = std::start_lifetime_as<pldm_numeric_effecter_value_pdr>(
+            pdrEntry.data);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;
@@ -510,7 +513,8 @@ int getNumericEffecterData(const DBusInterface& dBusIntf, Handler& handler,
 
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_numeric_effecter_value_pdr;
+        pdr = std::start_lifetime_as<pldm_numeric_effecter_value_pdr>(
+            pdrEntry.data);
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;

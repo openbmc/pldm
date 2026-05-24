@@ -1,9 +1,12 @@
 #include "dbus_to_event_handler.hpp"
 
+#include "common/start_lifetime_as.hpp"
 #include "common/types.hpp"
 #include "libpldmresponder/pdr.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+
+#include <memory>
 
 PHOSPHOR_LOG2_USING;
 
@@ -210,7 +213,7 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
         auto pdrRecord = sensorPDRs.getFirstRecord(pdrEntry);
         while (pdrRecord)
         {
-            pdr = new (pdrEntry.data) pldm_state_sensor_pdr;
+            pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrEntry.data);
             SensorId sensorId = LE16TOH(pdr->sensor_id);
             if (sensorHandlers.contains(pdrType))
             {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/start_lifetime_as.hpp"
 #include "common/utils.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
 #include "libpldmresponder/pdr.hpp"
@@ -12,6 +13,7 @@
 
 #include <cstdint>
 #include <map>
+#include <memory>
 
 PHOSPHOR_LOG2_USING;
 
@@ -108,7 +110,7 @@ int getStateSensorReadingsHandler(
     auto pdrRecord = stateSensorPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_state_sensor_pdr;
+        pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrEntry.data);
         assert(pdr != nullptr);
         if (pdr->sensor_id != sensorId)
         {
