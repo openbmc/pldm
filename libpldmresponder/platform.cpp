@@ -867,7 +867,7 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
     auto pdrRecord = stateSensorPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_state_sensor_pdr;
+        pdr = reinterpret_cast<pldm_state_sensor_pdr*>(pdrEntry.data);
         assert(pdr != nullptr);
         if (pdr->sensor_id != sensorId)
         {
@@ -879,8 +879,7 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
         auto tmpEntityInstance = pdr->entity_instance;
         auto tmpEntityContainerId = pdr->container_id;
         auto tmpCompSensorCnt = pdr->composite_sensor_count;
-        auto tmpPossibleStates =
-            reinterpret_cast<state_sensor_possible_states*>(
+        auto tmpPossibleStates = reinterpret_cast<state_sensor_possible_states*>(
                 pdr->possible_states);
         auto tmpStateSetId = tmpPossibleStates->state_set_id;
 
@@ -939,7 +938,7 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
     auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = new (pdrEntry.data) pldm_state_effecter_pdr;
+        pdr = reinterpret_cast<pldm_state_effecter_pdr*>(pdrEntry.data);
         assert(pdr != nullptr);
         if (pdr->effecter_id != effecterId)
         {

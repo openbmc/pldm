@@ -563,7 +563,7 @@ void HostPDRHandler::processHostPDRs(
                 rh = nextRecordHandle - 1;
             }
 
-            auto pdrHdr = new (pdr.data()) pldm_pdr_hdr;
+            auto pdrHdr = reinterpret_cast<pldm_pdr_hdr*>(pdr.data());
             if (!rh)
             {
                 rh = pdrHdr->record_handle;
