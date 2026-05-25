@@ -17,7 +17,8 @@ sdbusplus::object_path Update::startUpdate(
     if (updateManager->activation)
     {
         if (updateManager->activation->activation() ==
-            software::Activation::Activations::Activating)
+                software::Activation::Activations::Activating ||
+            updateManager->updateRegistered())
         {
             throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
         }

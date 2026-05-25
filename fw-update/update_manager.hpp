@@ -60,11 +60,10 @@ class UpdateManager
                   return this->processPackage(
                       std::filesystem::path(packageFilePath));
               }),
-#else
+#endif
         updater(std::make_unique<Update>(pldm::utils::DBusHandler::getBus(),
                                          "/xyz/openbmc_project/software/pldm",
                                          this)),
-#endif
         totalNumComponentUpdates(0)
     {}
 
@@ -136,6 +135,11 @@ class UpdateManager
 
     std::unique_ptr<Activation> activation;
 
+    bool updateRegistered() const
+    {
+        return updateRegisteredFlag;
+    }
+
   private:
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
@@ -143,9 +147,9 @@ class UpdateManager
     const ComponentInfoMap& componentInfoMap;
 #ifdef FW_UPDATE_INOTIFY_ENABLED
     Watch watch;
-#else
-    std::unique_ptr<Update> updater;
 #endif
+    bool updateRegisteredFlag{false};
+    std::unique_ptr<Update> updater;
 
     std::unique_ptr<ActivationProgress> activationProgress;
     std::string objPath;
@@ -171,6 +175,34 @@ class UpdateManager
      *
      */
     uint8_t lastProgress;
+
+    class updateRegisteredGuard
+    {
+      public:
+        updateRegisteredGuard(bool& updateRegisteredFlag) :
+            updateRegisteredFlag(updateRegisteredFlag)
+        {
+            if (updateRegisteredFlag)
+            {
+                throw sdbusplus::xyz::openbmc_project::Common::Error::
+                    Unavailable();
+            }
+            updateRegisteredFlag = true;
+        }
+
+        ~updateRegisteredGuard()
+        {
+            if (!keepRegistered)
+            {
+                updateRegisteredFlag = false;
+            }
+        }
+
+        bool keepRegistered{false};
+
+      private:
+        bool& updateRegisteredFlag;
+    };
 };
 
 } // namespace fw_update

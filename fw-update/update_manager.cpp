@@ -33,6 +33,13 @@ std::string UpdateManager::getSwId()
 
 int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 {
+    if (updateRegisteredFlag)
+    {
+        error("Processing of PLDM fw update already in progress.");
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+    updateRegisteredGuard guard(updateRegisteredFlag);
     // If no devices discovered, take no action on the package.
     if (!descriptorMap.size())
     {
@@ -80,6 +87,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 
     try
     {
+        guard.keepRegistered = true;
         processStream(package, packageSize);
         return 0;
     }
@@ -96,6 +104,12 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
 std::string UpdateManager::processStreamDefer(std::istream& package,
                                               uintmax_t packageSize)
 {
+    if (updateRegisteredFlag)
+    {
+        throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+    }
+
+    updateRegisteredGuard guard(updateRegisteredFlag);
     auto swId = getSwId();
     objPath = swRootPath + swId;
 
@@ -107,6 +121,7 @@ std::string UpdateManager::processStreamDefer(std::istream& package,
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
 
+    guard.keepRegistered = true;
     updateDeferHandler = std::make_unique<sdeventplus::source::Defer>(
         event, [this, &package, packageSize](sdeventplus::source::EventBase&) {
             this->processStream(package, packageSize);
@@ -117,6 +132,7 @@ std::string UpdateManager::processStreamDefer(std::istream& package,
 
 void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 {
+    updateRegisteredGuard guard(updateRegisteredFlag);
     startTime = std::chrono::steady_clock::now();
     if (packageSize < sizeof(pldm_package_header_information))
     {
@@ -200,6 +216,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         software::Activation::Activations::Ready, this);
     activationProgress = std::make_unique<ActivationProgress>(
         pldm::utils::DBusHandler::getBus(), objPath);
+    guard.keepRegistered = true;
 
 #ifndef FW_UPDATE_INOTIFY_ENABLED
     activation->activation(software::Activation::Activations::Activating);
@@ -304,6 +321,7 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
 
 void UpdateManager::activatePackage()
 {
+    updateRegisteredFlag = false;
     startTime = std::chrono::steady_clock::now();
     for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
     {
