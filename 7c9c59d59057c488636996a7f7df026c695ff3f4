@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce95b95e_0fc88e81",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-05-25T07:44:32Z",
+      "side": 1,
+      "message": "Thanks for the suggestion!\nIntroduced an `ensureFruDecorators()` helper that lazily creates the decorator interfaces, and placed the call only inside the switch cases that actually set a Decorator property.\nUpdated the Tested section in the commit message with the latest test results.",
+      "parentUuid": "b1334c50_2d55da02",
+      "revId": "7c9c59d59057c488636996a7f7df026c695ff3f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8ff87d5_373a2997",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-05-19T06:14:35Z",
       "side": 1,
       "message": "The exception caught `e` would be a good information to add in the error message.",
+      "revId": "7c9c59d59057c488636996a7f7df026c695ff3f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f97f7c35_8e4c0047",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-05-25T07:44:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8ff87d5_373a2997",
       "revId": "7c9c59d59057c488636996a7f7df026c695ff3f4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
