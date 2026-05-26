@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03bd87fa_d64473fa",
+        "filename": "common/utils.cpp",
+        "patchSetId": 85
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-26T06:30:50Z",
+      "side": 1,
+      "message": "Thanks for finding, fixed.",
+      "parentUuid": "30a7af40_b1ecc4c3",
+      "range": {
+        "startLine": 969,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 62
+      },
+      "revId": "de021eaee170008b8cd8704b47590ca7fea9fa87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61fcb2f7_283778b4",
@@ -61,6 +85,30 @@
       "writtenOn": "2026-05-25T12:18:39Z",
       "side": 1,
       "message": "declared but not defined in the utils.cpp \nToday nothing moves a MMapHandler (all\ncallers use make_unique), so the link succeeds, but the moment someone\ndoes, they\u0027ll get an undefined-reference error.",
+      "range": {
+        "startLine": 796,
+        "startChar": 4,
+        "endLine": 797,
+        "endChar": 57
+      },
+      "revId": "de021eaee170008b8cd8704b47590ca7fea9fa87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb3d1d78_ce443f92",
+        "filename": "common/utils.hpp",
+        "patchSetId": 85
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-26T06:30:50Z",
+      "side": 1,
+      "message": "Deleted this function at the moment.",
+      "parentUuid": "61fcb2f7_283778b4",
       "range": {
         "startLine": 796,
         "startChar": 4,
@@ -88,6 +136,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a335716_25638e8f",
+        "filename": "fw-update/aggregate_update_manager.cpp",
+        "patchSetId": 85
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-26T06:30:50Z",
+      "side": 1,
+      "message": "Remamed to `relayedResponseMsg`",
+      "parentUuid": "41fe4bf8_263b7bf6",
+      "revId": "de021eaee170008b8cd8704b47590ca7fea9fa87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0e599a2_9e5c7fb7",
@@ -111,6 +177,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "feb43a26_3531dd7a",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 85
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-26T06:30:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0e599a2_9e5c7fb7",
+      "range": {
+        "startLine": 97,
+        "startChar": 5,
+        "endLine": 106,
+        "endChar": 71
+      },
+      "revId": "de021eaee170008b8cd8704b47590ca7fea9fa87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48cb40f0_a39c00e8",
@@ -124,6 +214,30 @@
       "writtenOn": "2026-05-25T12:18:39Z",
       "side": 1,
       "message": "Header has no include guard. Currently only transitively included via\naggregate_update_manager.hpp, so the build works, but as soon as any\nother TU pulls it in twice you\u0027ll get redefinition errors for\nItemUpdateManager. Please add `#pragma once`.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 29
+      },
+      "revId": "de021eaee170008b8cd8704b47590ca7fea9fa87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "694314ca_e9b7ef08",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 85
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-05-26T06:30:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48cb40f0_a39c00e8",
       "range": {
         "startLine": 1,
         "startChar": 0,
