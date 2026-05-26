@@ -515,11 +515,16 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         return hostPDRHandler->handleStateSensorEvent(stateSensorEntry,
                                                       eventState);
     }
-    else
+    else if (eventClass != PLDM_NUMERIC_SENSOR_STATE &&
+             eventClass != PLDM_SENSOR_OP_STATE)
     {
+        error("Unknown sensor event class {CLASS}", "CLASS", eventClass);
         return PLDM_ERROR_INVALID_DATA;
     }
 
+    /* PLDM_NUMERIC_SENSOR_STATE and PLDM_SENSOR_OP_STATE are handled by other
+     * callbacks registered in eventHandlers[PLDM_SENSOR_EVENT]. Return
+     * PLDM_SUCCESS so their result determines the outcome. */
     return PLDM_SUCCESS;
 }
 
