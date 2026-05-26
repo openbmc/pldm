@@ -513,7 +513,10 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
     }
     else
     {
-        return PLDM_ERROR_INVALID_DATA;
+        /* Non-state sensor event classes (e.g. PLDM_NUMERIC_SENSOR_STATE) are
+         * handled by addOn handlers registered via addOnEventHandlers. Return
+         * success here so addOn handler's result determines the outcome. */
+        return PLDM_SUCCESS;
     }
 
     return PLDM_SUCCESS;
