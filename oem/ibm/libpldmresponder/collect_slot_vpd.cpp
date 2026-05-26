@@ -116,7 +116,7 @@ void SlotHandler::callVPDManager(const std::string& adapterObjPath,
                  stateFieldValue == PLDM_OEM_IBM_PCIE_SLOT_EFFECTER_REPLACE)
         {
             auto method = bus.new_method_call(service.c_str(), VPDObjPath,
-                                              VPDInterface, "deleteFRUVPD");
+                                              VPDInterface, "DeleteFRUVPD");
             method.append(static_cast<sdbusplus::object_path>(adapterObjPath));
             bus.call_noreply(method, dbusTimeout);
         }
