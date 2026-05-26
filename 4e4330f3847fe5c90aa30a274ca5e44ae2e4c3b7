@@ -16,6 +16,24 @@
       "message": "My understanding is rather than reinterpret_cast you need start_lifetime_as in these cases",
       "revId": "4e4330f3847fe5c90aa30a274ca5e44ae2e4c3b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9599881_2a96f78b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-26T12:51:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d78abc14_a019c7ee",
+      "revId": "4e4330f3847fe5c90aa30a274ca5e44ae2e4c3b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
