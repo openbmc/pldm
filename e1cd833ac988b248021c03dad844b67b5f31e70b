@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb2c5ef8_b327f31c",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-26T18:44:40Z",
+      "side": 1,
+      "message": "These changes probably belong in a separate commit.",
+      "range": {
+        "startLine": 630,
+        "startChar": 0,
+        "endLine": 641,
+        "endChar": 65
+      },
+      "revId": "e1cd833ac988b248021c03dad844b67b5f31e70b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8ac2cd_397c6505",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-26T18:44:40Z",
+      "side": 1,
+      "message": "What can we do to avoid calling phosphor-logging directly?  These end up being 100% custom events that do not show up properly in Redfish and can never create push notifications.",
+      "range": {
+        "startLine": 736,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 45
+      },
+      "revId": "e1cd833ac988b248021c03dad844b67b5f31e70b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
