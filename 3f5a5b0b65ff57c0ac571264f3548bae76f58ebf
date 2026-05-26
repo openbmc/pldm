@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deb485b4_f70a2d64",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2026-05-26T08:20:23Z",
+      "side": 1,
+      "message": "So Host here refers to the CPU/hypervisor/UEFI. Could the softoff application be extended to any PLDM terminus endpoint exposing these PDRs to be gracefully shutdown/restarted? if so, could we add that as part of this documentation? or that maybe part of future implementation plans.",
+      "range": {
+        "startLine": 5,
+        "startChar": 54,
+        "endLine": 5,
+        "endChar": 59
+      },
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a363b518_922ea085",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000845
+      },
+      "writtenOn": "2026-05-26T08:20:23Z",
+      "side": 1,
+      "message": "known issues?",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 110,
+        "endChar": 11
+      },
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
