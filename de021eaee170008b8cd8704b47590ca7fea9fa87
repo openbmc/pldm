@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c04f5bf8_e66016be",
+        "filename": "common/utils.cpp",
+        "patchSetId": 85
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-05-27T05:44:12Z",
+      "side": 1,
+      "message": "Hi @unive.tien.wiwynn@gmail.com, I do not see the code changes for this issue in the latest patch 86.",
+      "parentUuid": "03bd87fa_d64473fa",
+      "range": {
+        "startLine": 969,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 62
+      },
+      "revId": "de021eaee170008b8cd8704b47590ca7fea9fa87",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "61fcb2f7_283778b4",
         "filename": "common/utils.hpp",
         "patchSetId": 85
