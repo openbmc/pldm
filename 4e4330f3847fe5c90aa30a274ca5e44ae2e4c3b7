@@ -34,6 +34,24 @@
       "parentUuid": "d78abc14_a019c7ee",
       "revId": "4e4330f3847fe5c90aa30a274ca5e44ae2e4c3b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f410b37_ee244f49",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-05-27T00:55:29Z",
+      "side": 1,
+      "message": "For reference, I found this article helpful:\n\nhttps://andreasfertig.com/blog/2026/04/what-reinterpret_cast-doesnt-do/",
+      "parentUuid": "f9599881_2a96f78b",
+      "revId": "4e4330f3847fe5c90aa30a274ca5e44ae2e4c3b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
