@@ -22,6 +22,30 @@
       },
       "revId": "01614e19124eed12fa9a1d0478e3e619ebe14f99",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c87e359_1e7b56a4",
+        "filename": "common/start_lifetime_as.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-27T02:18:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb88b4b3_8665caae",
+      "range": {
+        "startLine": 5,
+        "startChar": 51,
+        "endLine": 6,
+        "endChar": 66
+      },
+      "revId": "01614e19124eed12fa9a1d0478e3e619ebe14f99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
