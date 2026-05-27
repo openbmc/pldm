@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb88b4b3_8665caae",
+        "filename": "common/start_lifetime_as.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-05-27T00:54:09Z",
+      "side": 1,
+      "message": "Can you add a reference for these?\n\nAnd is there one for dereferencing `reinterpret_cast\u003c\u003e()` not being UB in GCC-15?",
+      "range": {
+        "startLine": 5,
+        "startChar": 51,
+        "endLine": 6,
+        "endChar": 66
+      },
+      "revId": "01614e19124eed12fa9a1d0478e3e619ebe14f99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
