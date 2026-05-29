@@ -1,6 +1,3 @@
 [wrap-git]
 url = https://github.com/CLIUtils/CLI11.git
 revision = HEAD
-
-[provide]
-CLI11 = CLI11_dep
