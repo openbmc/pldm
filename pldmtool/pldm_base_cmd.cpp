@@ -235,29 +235,29 @@ class GetPLDMTypes : public CommandInterface
 
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
-        uint8_t cc = 0;
-        std::vector<bitfield8_t> types(8);
-        auto rc = decode_get_types_resp(responsePtr, payloadLength, &cc,
-                                        types.data());
-        if (rc != PLDM_SUCCESS)
+        pldm_base_get_pldm_types_resp resp{};
+        auto rc = decode_pldm_base_get_pldm_types_resp(responsePtr,
+                                                       payloadLength, &resp);
+        if (rc)
         {
             std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+                      << "rc=" << rc << ",cc=" << resp.completion_code << "\n";
             return;
         }
 
         ordered_json data;
-        fillCompletionCode(cc, data, PLDM_BASE);
-        if (cc == PLDM_SUCCESS)
+        fillCompletionCode(resp.completion_code, data, PLDM_BASE);
+        if (resp.completion_code == PLDM_SUCCESS)
         {
-            printPLDMTypes(types, data);
+            printPLDMTypes(resp.pldm_types, data);
         }
 
         pldmtool::helper::DisplayInJson(data);
     }
 
   private:
-    void printPLDMTypes(std::vector<bitfield8_t>& types, ordered_json& data)
+    void printPLDMTypes(bitfield8_t (&types)[PLDM_MAX_TYPES / 8],
+                        ordered_json& data)
     {
         ordered_json jPldmTypes;
         ordered_json jarray;

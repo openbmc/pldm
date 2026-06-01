@@ -590,10 +590,8 @@ exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
         co_return rc;
     }
 
-    uint8_t completionCode = 0;
-    bitfield8_t* types = reinterpret_cast<bitfield8_t*>(&supportedTypes);
-    rc =
-        decode_get_types_resp(responseMsg, responseLen, &completionCode, types);
+    pldm_base_get_pldm_types_resp resp{};
+    rc = decode_pldm_base_get_pldm_types_resp(responseMsg, responseLen, &resp);
     if (rc)
     {
         lg2::error(
@@ -602,14 +600,16 @@ exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
         co_return rc;
     }
 
-    if (completionCode != PLDM_SUCCESS)
+    if (resp.completion_code != PLDM_SUCCESS)
     {
         lg2::error(
             "Error : GetPLDMTypes for terminus ID {TID}, complete code {CC}.",
-            "TID", tid, "CC", completionCode);
+            "TID", tid, "CC", resp.completion_code);
         co_return rc;
     }
-    co_return completionCode;
+
+    ::memcpy(&supportedTypes, &resp.pldm_types, sizeof(resp.pldm_types));
+    co_return resp.completion_code;
 }
 
 exec::task<int> TerminusManager::getPLDMCommands(
