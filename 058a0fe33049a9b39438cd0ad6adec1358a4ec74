@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "274f2fb3_20ed3933",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 87
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-01T07:16:31Z",
+      "side": 1,
+      "message": "Some of these issues would still break the update. Please check. Thanks!",
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3602876_e003343e",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-01T07:16:31Z",
+      "side": 1,
+      "message": "buffer is only the fixed C struct (≈30 bytes). PackageParserV1::parse will compare pkgHeaderSize (the full header length read out of the struct, typically several hundred bytes minimum) against pkgHdr.size() and throw InternalFailure — see package_parser.cpp:227",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 36
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44be6349_7231a985",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-01T07:16:31Z",
+      "side": 1,
+      "message": "MMapHandler now throws std::system_error on failure, so the if (packageMap-\u003egetData() \u003d\u003d nullptr) branch is unreachable and the cleanup inside (updateInProgress \u003d false; this-\u003edupFd.reset();) never runs. The exception escapes the lambda → sdeventplus logs it and continues, but updateInProgress stays true forever. Next StartUpdate gets Unavailable (\"Update already in progress\").",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 115,
+        "endChar": 9
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84930178_d22da954",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-01T07:16:31Z",
+      "side": 1,
+      "message": "packageDataStream and deviceUpdater are not reset here. Reset them in reverse-dependency order: deviceUpdater, then packageDataStream, then packageMap, then dupFd.",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 1
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c99b79e_03835475",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-01T07:16:31Z",
+      "side": 1,
+      "message": "this does not reset updateInProgress. The flag stays true, blocking all future updates. Either reset updateInProgress here or reject the Delete while updateInProgress",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 1
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f471232d_161c89b9",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-01T07:16:31Z",
+      "side": 1,
+      "message": "move this check above `updateInProgress \u003d true;`",
+      "range": {
+        "startLine": 236,
+        "startChar": 4,
+        "endLine": 240,
+        "endChar": 5
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d08873_bedfb5ad",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-01T07:16:31Z",
+      "side": 1,
+      "message": "These using namespace directives in a header leak into every TU that includes it. Move to the .cpp.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
