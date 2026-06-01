@@ -67,22 +67,24 @@ Response Handler::getPLDMTypes(const pldm_msg* request,
                                size_t /*payloadLength*/)
 {
     // DSP0240 has this as a bitfield8[N], where N = 0 to 7
-    std::array<bitfield8_t, 8> types{};
+    pldm_base_get_pldm_types_resp resp{PLDM_SUCCESS, {{0}}};
     for (const auto& type : capabilities)
     {
         auto index = type.first / 8;
         // <Type Number> = <Array Index> * 8 + <bit position>
         auto bit = type.first - (index * 8);
-        types[index].byte |= 1 << bit;
+        resp.pldm_types[index].byte |= 1 << bit;
     }
 
-    Response response(sizeof(pldm_msg_hdr) + PLDM_GET_TYPES_RESP_BYTES, 0);
+    Response response(
+        sizeof(pldm_msg_hdr) + PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES, 0);
     auto responsePtr = new (response.data()) pldm_msg;
-    auto rc = encode_get_types_resp(request->hdr.instance_id, PLDM_SUCCESS,
-                                    types.data(), responsePtr);
-    if (rc != PLDM_SUCCESS)
+    size_t payloadLength = PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES;
+    auto rc = encode_pldm_base_get_pldm_types_resp(
+        request->hdr.instance_id, &resp, responsePtr, &payloadLength);
+    if (rc || payloadLength != PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES)
     {
-        return CmdHandler::ccOnlyResponse(request, rc);
+        return CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
     }
 
     return response;
