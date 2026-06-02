@@ -517,7 +517,7 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
     {
         lg2::error("Error : GetTID for Endpoint ID {EID}, complete code {CC}.",
                    "EID", eid, "CC", completionCode);
-        co_return rc;
+        co_return completionCode;
     }
 
     co_return completionCode;
@@ -607,7 +607,7 @@ exec::task<int> TerminusManager::getPLDMTypes(pldm_tid_t tid,
         lg2::error(
             "Error : GetPLDMTypes for terminus ID {TID}, complete code {CC}.",
             "TID", tid, "CC", completionCode);
-        co_return rc;
+        co_return completionCode;
     }
     co_return completionCode;
 }
@@ -656,7 +656,7 @@ exec::task<int> TerminusManager::getPLDMCommands(
         lg2::error(
             "Error : GetPLDMCommands for terminus ID {TID}, complete code {CC}.",
             "TID", tid, "CC", completionCode);
-        co_return rc;
+        co_return completionCode;
     }
 
     co_return completionCode;
