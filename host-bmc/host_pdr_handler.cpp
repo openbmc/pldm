@@ -292,6 +292,7 @@ void HostPDRHandler::mergeEntityAssociations(
         }
         if (!pNode)
         {
+            free(entities);
             return;
         }
 
