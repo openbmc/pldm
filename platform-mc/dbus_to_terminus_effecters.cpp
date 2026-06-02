@@ -226,6 +226,7 @@ void HostEffecterParser::processHostEffecterChangeNotification(
     const DbusChgHostEffecterProps& chProperties, size_t effecterInfoIndex,
     size_t dbusInfoIndex, uint16_t effecterId)
 {
+    const auto& checkHost = hostEffecterInfo[effecterInfoIndex].checkHostState;
     const auto& pdrType = hostEffecterInfo[effecterInfoIndex].effecterPdrType;
     if (pdrType == PLDM_NUMERIC_EFFECTER_PDR)
     {
@@ -268,7 +269,7 @@ void HostEffecterParser::processHostEffecterChangeNotification(
         }
     }
 
-    if (!isHostOn())
+    if (checkHost && !isHostOn())
     {
         return;
     }
