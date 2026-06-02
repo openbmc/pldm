@@ -46,7 +46,7 @@ static constexpr uint8_t MCTP_EID_VALID_MAX = 255;
         int rc = pldm_transport_mctp_demux_map_tid(impl.mctp_demux, eid, eid);
         if (rc)
         {
-            pldm_transport_af_mctp_destroy(impl.af_mctp);
+            pldm_transport_mctp_demux_destroy(impl.mctp_demux);
             return nullptr;
         }
     }
