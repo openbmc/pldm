@@ -9,6 +9,8 @@
 #include <sdeventplus/source/io.hpp>
 
 #include <array>
+#include <cstdlib>
+#include <memory>
 
 using namespace sdeventplus;
 using namespace sdeventplus::source;
@@ -70,6 +72,8 @@ int main(int argc, char** argv)
             error("Failed to receive PLDM response, rc={RC}", "RC", rc);
             return;
         }
+        std::unique_ptr<void, decltype(&free)> responseMsgPtr(
+            responseMsg, free);
         pldm_msg* response = new (responseMsg) pldm_msg;
         if (dstTid != srcTid ||
             !pldm_msg_hdr_correlate_response(&request->hdr, &response->hdr))
@@ -77,7 +81,6 @@ int main(int argc, char** argv)
             error(
                 "Unexpected PLDM response, received TID={RTID} expected TID={ETID}",
                 "RTID", srcTid, "ETID", dstTid);
-            free(responseMsg);
             return;
         }
 
@@ -87,7 +90,6 @@ int main(int argc, char** argv)
         info(
             "Done! Got the response for PLDM request message, response code '{RC}'",
             "RC", lg2::hex, response->payload[0]);
-        free(responseMsg);
         exit(EXIT_SUCCESS);
     };
     IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
