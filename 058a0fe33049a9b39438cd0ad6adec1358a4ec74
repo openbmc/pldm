@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "151adbaa_7d006bcd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 87
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-02T06:48:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "274f2fb3_20ed3933",
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3602876_e003343e",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-01T07:16:31Z",
       "side": 1,
       "message": "buffer is only the fixed C struct (≈30 bytes). PackageParserV1::parse will compare pkgHeaderSize (the full header length read out of the struct, typically several hundred bytes minimum) against pkgHdr.size() and throw InternalFailure — see package_parser.cpp:227",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 36
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35828262_3adcfae2",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-02T06:48:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3602876_e003343e",
       "range": {
         "startLine": 41,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19e2ad4c_8ca48521",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-02T06:48:24Z",
+      "side": 1,
+      "message": "Added try catch statement here.",
+      "parentUuid": "44be6349_7231a985",
+      "range": {
+        "startLine": 107,
+        "startChar": 8,
+        "endLine": 115,
+        "endChar": 9
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84930178_d22da954",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-06-01T07:16:31Z",
       "side": 1,
       "message": "packageDataStream and deviceUpdater are not reset here. Reset them in reverse-dependency order: deviceUpdater, then packageDataStream, then packageMap, then dupFd.",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 1
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70b17b00_bd96439f",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-02T06:48:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84930178_d22da954",
       "range": {
         "startLine": 146,
         "startChar": 0,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b49155e8_9e21021c",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-02T06:48:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c99b79e_03835475",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 1
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f471232d_161c89b9",
@@ -133,6 +247,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c62ad57c_774cfeaa",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-02T06:48:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f471232d_161c89b9",
+      "range": {
+        "startLine": 236,
+        "startChar": 4,
+        "endLine": 240,
+        "endChar": 5
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60d08873_bedfb5ad",
@@ -146,6 +284,30 @@
       "writtenOn": "2026-06-01T07:16:31Z",
       "side": 1,
       "message": "These using namespace directives in a header leak into every TU that includes it. Move to the .cpp.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "058a0fe33049a9b39438cd0ad6adec1358a4ec74",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14f72931_f71826b0",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 87
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-02T06:48:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60d08873_bedfb5ad",
       "range": {
         "startLine": 14,
         "startChar": 0,
