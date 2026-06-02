@@ -367,6 +367,8 @@ int main(int argc, char** argv)
         size_t recvDataLength = 0;
         returnCode = pldmTransport.recvMsg(TID, requestMsg, recvDataLength);
 
+        std::unique_ptr<void, decltype(&free)> requestMsgPtr(requestMsg, free);
+
         if (returnCode == PLDM_REQUESTER_SUCCESS)
         {
             std::vector<uint8_t> requestMsgVec(
@@ -417,8 +419,6 @@ int main(int argc, char** argv)
                 "Failed to receive PLDM request for pldmTransport, response code '{RETURN_CODE}'",
                 "RETURN_CODE", returnCode);
         }
-        /* Free requestMsg after using */
-        free(requestMsg);
     };
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
