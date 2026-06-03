@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1867f66c_b1df01d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 88
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-03T07:17:23Z",
+      "side": 1,
+      "message": "Please fix the package header size issue when doing target filtering. Also perform basic sanity with the new changes for this MR.",
+      "revId": "23c35b4b2f57042b55050afa6d30ba73fe7c06e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93d106ac_c3604938",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-03T07:17:23Z",
+      "side": 1,
+      "message": "Target filtering is still breaking with this error:\n```\nJun 03 06:56:43 nvl32-obmc pldmd[25524]: Invalid package header size \u0027665\u0027\nJun 03 06:56:43 nvl32-obmc pldmd[25524]: Invalid PLDM package header, error - xyz.openbmc_project.Common.Error.InternalFailure: The operation failed internally.\nJun 03 06:56:43 nvl32-obmc pldmd[25524]: Failed to process firmware update package\n```",
+      "range": {
+        "startLine": 42,
+        "startChar": 3,
+        "endLine": 48,
+        "endChar": 70
+      },
+      "revId": "23c35b4b2f57042b55050afa6d30ba73fe7c06e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
