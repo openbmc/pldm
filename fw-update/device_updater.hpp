@@ -350,6 +350,13 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /** @brief Accumulated SelfContainedActivationRequest across all components.
+     *         Set to true if any ApplyComplete response indicates
+     * self-contained activation is required (ComponentActivationModification
+     * bit 1).
+     */
+    bool selfContainedActivationReq = false;
 };
 
 } // namespace fw_update

@@ -857,6 +857,11 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' with '{COMPONENT_VERSION}' apply complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        if (compActivationModification.value &
+            (1u << PLDM_ACTIVATION_SELF_CONTAINED))
+        {
+            selfContainedActivationReq = true;
+        }
         if (componentIndex < progress.size())
         {
             progress[componentIndex].updateState(UpdateProgress::state::Apply);
@@ -931,8 +936,11 @@ void DeviceUpdater::sendActivateFirmwareRequest()
     auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_activate_firmware_req(
-        instanceId, PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
-        sizeof(pldm_activate_firmware_req));
+        instanceId,
+        selfContainedActivationReq
+            ? PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS
+            : PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS,
+        requestMsg, sizeof(pldm_activate_firmware_req));
     if (rc)
     {
         updateManager->instanceIdDb.free(eid, instanceId);
