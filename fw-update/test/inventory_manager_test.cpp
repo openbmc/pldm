@@ -189,9 +189,9 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     ComponentInfoMap componentInfoMap1{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
-           compClassificationIndex1},
+           CompEntry{compClassificationIndex1, true}},
           {std::make_pair(compClassification2, compIdentifier2),
-           compClassificationIndex2}}}};
+           CompEntry{compClassificationIndex2, true}}}}};
     EXPECT_EQ(outComponentInfoMap.size(), componentInfoMap1.size());
     EXPECT_EQ(outComponentInfoMap, componentInfoMap1);
 
@@ -219,12 +219,12 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     ComponentInfoMap componentInfoMap2{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
-           compClassificationIndex1},
+           CompEntry{compClassificationIndex1, true}},
           {std::make_pair(compClassification2, compIdentifier2),
-           compClassificationIndex2}}},
+           CompEntry{compClassificationIndex2, true}}}},
         {2,
          {{std::make_pair(compClassification3, compIdentifier3),
-           compClassificationIndex3}}}};
+           CompEntry{compClassificationIndex3, true}}}}};
     EXPECT_EQ(outComponentInfoMap.size(), componentInfoMap2.size());
     EXPECT_EQ(outComponentInfoMap, componentInfoMap2);
 }
