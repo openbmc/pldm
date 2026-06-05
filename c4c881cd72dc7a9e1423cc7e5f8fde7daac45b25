@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09acd9d_c25bc79d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-05T15:25:22Z",
+      "side": 1,
+      "message": "Its too much verbose, just make it \n\n````\n\n// Set selfContainedActivationReq if any component supports self-contained activation.\n```",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 16
+      },
+      "revId": "c4c881cd72dc7a9e1423cc7e5f8fde7daac45b25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d7311fd_af0baede",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-05T15:25:22Z",
+      "side": 1,
+      "message": "this can be modernized, we can eliminate the unused variable (it is anyway lacking clarity)\n\n```\nselfContainedActivationReq \u003d std::ranges::any_of(                                                                                                                                                        \n                             compInfo, [](const auto\u0026 comp) {                                                                                                                                                                                   \n                              return comp.second.selfContainedActivation;                                                                                                                                                                         \n});\n\n```",
+      "range": {
+        "startLine": 106,
+        "startChar": 2,
+        "endLine": 113,
+        "endChar": 5
+      },
+      "revId": "c4c881cd72dc7a9e1423cc7e5f8fde7daac45b25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b4eff9e_65046031",
+        "filename": "fw-update/test/device_updater_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-05T15:25:22Z",
+      "side": 1,
+      "message": "please add a test specifically for both the cases which shows that the code is able to decides if selfcontainedactivation is supported vs not supported.",
+      "revId": "c4c881cd72dc7a9e1423cc7e5f8fde7daac45b25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
