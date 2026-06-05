@@ -52,6 +52,24 @@
       "parentUuid": "f9599881_2a96f78b",
       "revId": "4e4330f3847fe5c90aa30a274ca5e44ae2e4c3b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01480886_5317e6c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-05T17:07:29Z",
+      "side": 1,
+      "message": "Thanks for fixing this @patrick@stwcx.xyz.\n\nThanks for the link andrew, In addition i felt [this talk](https://www.youtube.com/watch?v\u003dpbkQG09grFw) to be super helpful as well.",
+      "parentUuid": "0f410b37_ee244f49",
+      "revId": "4e4330f3847fe5c90aa30a274ca5e44ae2e4c3b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
