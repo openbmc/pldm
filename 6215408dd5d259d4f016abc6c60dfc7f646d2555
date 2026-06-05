@@ -156,6 +156,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "de4622eb_2c3c926b",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-06-05T08:57:41Z",
+      "side": 1,
+      "message": "We probably needs to use (UUID, EID) as the unique endpoint identity;",
+      "range": {
+        "startLine": 319,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 66
+      },
+      "revId": "6215408dd5d259d4f016abc6c60dfc7f646d2555",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4143f7d1_81296f62",
         "filename": "platform-mc/terminus_manager.cpp",
         "patchSetId": 5
