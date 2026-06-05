@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ec788c8_09191026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-05T15:30:26Z",
+      "side": 1,
+      "message": "Please split this one too. 4k lines of change all in one commit is just too much.",
+      "revId": "c5e4330debe9488e4007cbd2a6e0866783bf0b4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
