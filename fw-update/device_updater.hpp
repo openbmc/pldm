@@ -350,6 +350,13 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /** @brief Set to true if any component in GetFirmwareParameters indicates
+     *         self-contained activation (ComponentActivationMethods bit 1,
+     *         DSP0267 Table 19). Used to set SelfContainedActivationRequest
+     *         in the ActivateFirmware command.
+     */
+    bool selfContainedActivationReq = false;
 };
 
 } // namespace fw_update
