@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97009a31_5099dd64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 88
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-05T02:45:28Z",
+      "side": 1,
+      "message": "Performed sanity test on Yosemite4 with the latest patchset:\n```\nJun 04 10:10:47 bmc-WX884350007N01 pldmd[573]: Component at endpoint ID \u002710\u0027 with version \u0027ast1030 v2023SD\u0027 can be updated\nJun 04 10:17:00 bmc-WX884350007N01 pldmd[573]: Component endpoint ID \u002710\u0027 and version \u0027ast1030 v2023SD\u0027 transfer complete.\nJun 04 10:17:00 bmc-WX884350007N01 pldmd[573]: Component endpoint ID \u002710\u0027 and version \u0027ast1030 v2023SD\u0027 verification complete.\nJun 04 10:17:00 bmc-WX884350007N01 pldmd[573]: Component endpoint ID \u002710\u0027 with \u0027ast1030 v2023SD\u0027 apply complete.\n```",
+      "parentUuid": "1867f66c_b1df01d2",
+      "revId": "23c35b4b2f57042b55050afa6d30ba73fe7c06e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93d106ac_c3604938",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-03T07:17:23Z",
       "side": 1,
       "message": "Target filtering is still breaking with this error:\n```\nJun 03 06:56:43 nvl32-obmc pldmd[25524]: Invalid package header size \u0027665\u0027\nJun 03 06:56:43 nvl32-obmc pldmd[25524]: Invalid PLDM package header, error - xyz.openbmc_project.Common.Error.InternalFailure: The operation failed internally.\nJun 03 06:56:43 nvl32-obmc pldmd[25524]: Failed to process firmware update package\n```",
+      "range": {
+        "startLine": 42,
+        "startChar": 3,
+        "endLine": 48,
+        "endChar": 70
+      },
+      "revId": "23c35b4b2f57042b55050afa6d30ba73fe7c06e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a4a3325_d14c3033",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 88
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-05T02:45:28Z",
+      "side": 1,
+      "message": "Fixed, the API is expecting the entire fw package rather than just the header, this should works fine now.",
+      "parentUuid": "93d106ac_c3604938",
       "range": {
         "startLine": 42,
         "startChar": 3,
