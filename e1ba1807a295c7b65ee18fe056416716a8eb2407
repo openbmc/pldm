@@ -16,6 +16,24 @@
       "message": "Has testing been done with the replacement already?",
       "revId": "e1ba1807a295c7b65ee18fe056416716a8eb2407",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96622387_34208f2f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-06-05T08:29:05Z",
+      "side": 1,
+      "message": "`decode_get_types_resp()` needs to be removed from libpldm. Unit and fuzz tests have been added for `decode_pldm_base_get_pldm_types_resp()` in the implementation, but I\u0027d appreciate any help you can provide with testing this integration.",
+      "parentUuid": "db6358e7_4aec120a",
+      "revId": "e1ba1807a295c7b65ee18fe056416716a8eb2407",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
