@@ -100,6 +100,13 @@ DeviceUpdater::DeviceUpdater(
     maxTransferSize(maxTransferSize), updateManager(updateManager),
     activationComplete{false}
 {
+    // Set selfContainedActivationReq if any component supports self-contained
+    // activation.
+    selfContainedActivationReq =
+        std::ranges::any_of(compInfo, [](const auto& comp) {
+            return comp.second.selfContainedActivation;
+        });
+
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
     // create as many progress objects as there are components
@@ -255,7 +262,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     if (compInfo.contains(compKey))
     {
         auto search = compInfo.find(compKey);
-        compClassificationIndex = search->second;
+        compClassificationIndex = search->second.classificationIndex;
     }
     else
     {
@@ -393,7 +400,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     if (compInfo.contains(compKey))
     {
         auto search = compInfo.find(compKey);
-        compClassificationIndex = search->second;
+        compClassificationIndex = search->second.classificationIndex;
     }
     else
     {
@@ -931,8 +938,11 @@ void DeviceUpdater::sendActivateFirmwareRequest()
     auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_activate_firmware_req(
-        instanceId, PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
-        sizeof(pldm_activate_firmware_req));
+        instanceId,
+        selfContainedActivationReq
+            ? PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS
+            : PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS,
+        requestMsg, sizeof(pldm_activate_firmware_req));
     if (rc)
     {
         updateManager->instanceIdDb.free(eid, instanceId);

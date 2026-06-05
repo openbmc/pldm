@@ -28,7 +28,7 @@ class DeviceUpdaterTest : public testing::Test
             {}};
         compImageInfos = {
             {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
-        compInfo = {{std::make_pair(10, 100), 1}};
+        compInfo = {{std::make_pair(10, 100), CompEntry{1, false}}};
     }
 
     int fd = -1;
@@ -37,6 +37,26 @@ class DeviceUpdaterTest : public testing::Test
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
 };
+
+TEST_F(DeviceUpdaterTest, SelfContainedActivationNotRequired)
+{
+    // All components have selfContainedActivation = false
+    compInfo = {{std::make_pair(10, 100), CompEntry{1, false}},
+                {std::make_pair(10, 200), CompEntry{2, false}}};
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+    EXPECT_FALSE(deviceUpdater.getSelfContainedActivationReq());
+}
+
+TEST_F(DeviceUpdaterTest, SelfContainedActivationRequired)
+{
+    // At least one component has selfContainedActivation = true
+    compInfo = {{std::make_pair(10, 100), CompEntry{1, false}},
+                {std::make_pair(10, 200), CompEntry{2, true}}};
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+    EXPECT_TRUE(deviceUpdater.getSelfContainedActivationReq());
+}
 
 TEST_F(DeviceUpdaterTest, validatePackage)
 {

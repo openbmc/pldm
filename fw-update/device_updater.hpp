@@ -152,6 +152,13 @@ class DeviceUpdater
      */
     uint8_t getProgress() const;
 
+    /** @brief Returns whether any component requires self-contained activation
+     */
+    bool getSelfContainedActivationReq() const
+    {
+        return selfContainedActivationReq;
+    }
+
     /** @brief Start the firmware update flow for the FD
      *
      *  To start the update flow RequestUpdate command is sent to the FD.
@@ -350,6 +357,13 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /** @brief Set to true if any component in GetFirmwareParameters indicates
+     *         self-contained activation (ComponentActivationMethods bit 1,
+     *         DSP0267 Table 19). Used to set SelfContainedActivationRequest
+     *         in the ActivateFirmware command.
+     */
+    bool selfContainedActivationReq = false;
 };
 
 } // namespace fw_update
