@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b2e28ef_72e69336",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 90
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-08T06:33:25Z",
+      "side": 1,
+      "message": "TargetFiltering is working now, please resolve these comments before merge.",
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b0f822a_94fccaf9",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-08T06:33:25Z",
+      "side": 1,
+      "message": "Mirror update_manager.cpp:127-179 and set activation as Invalid on each failure path.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 5
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73248892_6411acff",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-08T06:33:25Z",
+      "side": 1,
+      "message": "Mirror update_manager.cpp:127-179 and set activation as Invalid on each failure path.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 5
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca743e05_d0c0a524",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-08T06:33:25Z",
+      "side": 1,
+      "message": "Mirror update_manager.cpp:127-179 and set activation as Invalid on each failure path.",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feda283f_066e146c",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-08T06:33:25Z",
+      "side": 1,
+      "message": "Change this to: catch (const std::exception\u0026), because MMapHandler also throws std::runtime_error (failed fstat, common/utils.cpp:977) and std::invalid_argument (size \u003e file, :988 and :1045). Those will propagate uncaught",
+      "range": {
+        "startLine": 111,
+        "startChar": 8,
+        "endLine": 111,
+        "endChar": 42
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92e25da8_78fc8d3d",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-06-08T06:33:25Z",
+      "side": 1,
+      "message": "Activation::activation() calls this on every flip to Activating, including external D-Bus writes on a NotReady/Invalid object — segfaults if deviceUpdater is null.",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 0
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
