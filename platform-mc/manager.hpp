@@ -237,6 +237,29 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         eventManager.registerPolledEventHandler(eventClass, handlers);
     }
 
+    /** @brief Get numeric sensor name by terminus and sensor ID
+     *
+     *  @param[in] tid - Terminus ID
+     *  @param[in] sensorId - Sensor ID
+     *  @return sensor name when a matching numeric sensor exists
+     */
+    std::optional<std::string> getNumericSensorName(pldm_tid_t tid,
+                                                    uint16_t sensorId)
+    {
+        if (!termini.contains(tid) || !termini[tid])
+        {
+            return std::nullopt;
+        }
+
+        auto sensor = termini[tid]->getSensorObject(sensorId);
+        if (!sensor)
+        {
+            return std::nullopt;
+        }
+
+        return sensor->sensorName;
+    }
+
     /** @brief Register OEM flow to poll the PLDM Event use
      *         PollForPlatformEventMessage command
      *
