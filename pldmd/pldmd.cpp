@@ -65,6 +65,10 @@ PHOSPHOR_LOG2_USING;
 #include "oem/ampere/oem_ampere.hpp"
 #endif
 
+#ifdef OEM_ARM
+#include "oem/arm/oem_arm.hpp"
+#endif
+
 #ifdef OEM_NVIDIA
 #include "oem/nvidia/oem_nvidia.hpp"
 #endif
@@ -307,6 +311,10 @@ int main(int argc, char** argv)
     pldm::oem_ampere::OemAMPERE oemAMPERE(
         instanceIdDb, event, platformHandler.get(), platformManager.get(),
         &reqHandler);
+#endif
+
+#ifdef OEM_ARM
+    pldm::oem_arm::OemARM oemARM(platformHandler.get(), platformManager.get());
 #endif
 
 #ifdef OEM_META
