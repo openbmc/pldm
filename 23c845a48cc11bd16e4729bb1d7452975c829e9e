@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7375473b_1cf354f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 90
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-09T06:48:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8b2e28ef_72e69336",
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b0f822a_94fccaf9",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-08T06:33:25Z",
       "side": 1,
       "message": "Mirror update_manager.cpp:127-179 and set activation as Invalid on each failure path.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 5
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bacdb9d5_23c821a4",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-09T06:48:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b0f822a_94fccaf9",
       "range": {
         "startLine": 32,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d2ba829_142c30c6",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-09T06:48:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73248892_6411acff",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 5
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca743e05_d0c0a524",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-06-08T06:33:25Z",
       "side": 1,
       "message": "Mirror update_manager.cpp:127-179 and set activation as Invalid on each failure path.",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c3062c_af9892f6",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-09T06:48:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca743e05_d0c0a524",
       "range": {
         "startLine": 67,
         "startChar": 4,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cb8b3ac_d4414508",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-09T06:48:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feda283f_066e146c",
+      "range": {
+        "startLine": 111,
+        "startChar": 8,
+        "endLine": 111,
+        "endChar": 42
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92e25da8_78fc8d3d",
@@ -123,6 +237,30 @@
       "writtenOn": "2026-06-08T06:33:25Z",
       "side": 1,
       "message": "Activation::activation() calls this on every flip to Activating, including external D-Bus writes on a NotReady/Invalid object — segfaults if deviceUpdater is null.",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 0
+      },
+      "revId": "23c845a48cc11bd16e4729bb1d7452975c829e9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4b9ad7b_e9aff393",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 90
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-09T06:48:11Z",
+      "side": 1,
+      "message": "Fixed, now the activation will flip to Activating only if the target is Ready.",
+      "parentUuid": "92e25da8_78fc8d3d",
       "range": {
         "startLine": 214,
         "startChar": 0,
