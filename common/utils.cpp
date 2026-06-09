@@ -702,6 +702,14 @@ std::string getCurrentSystemTime()
     return std::format("{:%F %Z %T}", zonedTime);
 }
 
+uint64_t getCurrentSystemTimeUsec()
+{
+    return static_cast<uint64_t>(
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count());
+}
+
 bool checkForFruPresence(const std::string& objPath)
 {
     bool isPresent = false;
