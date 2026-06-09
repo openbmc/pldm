@@ -198,6 +198,10 @@ if get_option('oem-ampere').allowed()
     add_project_arguments('-DOEM_AMPERE', language: 'cpp')
 endif
 
+if get_option('oem-arm').allowed()
+    add_project_arguments('-DOEM_ARM', language: 'cpp')
+endif
+
 if get_option('oem-meta').allowed()
     add_project_arguments('-DOEM_META', language: 'cpp')
 endif
@@ -243,6 +247,10 @@ deps = [
 oem_files = []
 if get_option('oem-ampere').allowed()
     subdir('oem/ampere')
+endif
+
+if get_option('oem-arm').allowed()
+    subdir('oem/arm')
 endif
 
 if get_option('oem-meta').allowed()
