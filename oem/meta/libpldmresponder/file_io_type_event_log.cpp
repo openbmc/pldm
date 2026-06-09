@@ -677,7 +677,8 @@ static void thermalFault(const message& eventData, const std::string&,
     auto device = "/xyz/openbmc_project/State/Thermal/host" + slotNum + "/cpu0";
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
 
-    record::thermalFault(device, eventStatus, "Thermal Trip");
+    record::thermalFault(device, eventStatus,
+                         std::string(eventList[eventData[0]]));
 }
 
 static void powerRailFault(const message& eventData, const std::string&,
@@ -686,7 +687,8 @@ static void powerRailFault(const message& eventData, const std::string&,
     auto device = "/xyz/openbmc_project/State/Power/host" + slotNum + "/power";
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
 
-    record::powerRailFault(device, eventStatus, "Power Rail Fault");
+    record::powerRailFault(device, eventStatus,
+                           std::string(eventList[eventData[0]]));
 }
 
 static void prochotSdSensor(const message& eventData, const std::string&,
