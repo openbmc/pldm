@@ -109,6 +109,14 @@ option(
     value: 'enabled',
 )
 
+## OEM ARM Options
+option(
+    'oem-arm',
+    type: 'feature',
+    description: 'Enable ARM OEM PLDM',
+    value: 'disabled',
+)
+
 ## OEM META Options
 option(
     'oem-meta',
