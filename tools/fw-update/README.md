@@ -1,6 +1,7 @@
 # Overview
 
-pldm_fwup_pkg_creator.py is a python script that can create and extract PLDM firmware update packages, as per the DSP0267 specification
+pldm_fwup_pkg_creator.py is a python script that can create, extract and
+analyze PLDM firmware update packages, as per the DSP0267 specification
 v1.3.0 - Section 8.
 
 ## Requirements
@@ -11,7 +12,7 @@ v1.3.0 - Section 8.
 
 ## Usage
 
-The script supports three subcommands: `create` and `extract`.
+The script supports three subcommands: `create`, `extract` and `analyze`.
 
 ### Creating a Package
 
@@ -45,6 +46,18 @@ The script supports three subcommands: `create` and `extract`.
 - Each component image is saved with a filename based on its version string
 - If multiple components have the same version string, classification and
   identifier are appended to the filename to avoid overwriting
+
+### Analyzing a Package
+
+    pldm_fwup_pkg_creator.py analyze [-h] pldmfwuppkgname
+
+    positional arguments:
+        pldmfwuppkgname  Path to the PLDM FW update package
+
+- Displays detailed information about the package header, firmware devices,
+  downstream devices, and component images
+- Validates package header and payload checksums (for format version >= 4)
+- Useful for debugging and verifying package contents
 
 ## Metadata JSON file
 
