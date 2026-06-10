@@ -937,81 +937,244 @@ def append_component_images(pldm_fw_up_pkg, image_files):
                 pldm_fw_up_pkg.write(line)
 
 
+def extract_component_images(pkg_file_path, output_dir):
+    """
+    Extract component images from a PLDM FW update package.
+
+    Parses the package header to locate each component image by its
+    ComponentLocationOffset and ComponentSize, then writes each image
+    to the output directory.
+
+        Parameters:
+            pkg_file_path: Path to the PLDM FW update package
+            output_dir: Directory to write extracted component images
+    """
+    with open(pkg_file_path, "rb") as f:
+        # PackageHeaderIdentifier (16 bytes)
+        if len(f.read(16)) < 16:
+            sys.exit("ERROR: File too short to be a valid PLDM package")
+
+        # PackageHeaderFormatRevision (1 byte)
+        format_revision = struct.unpack("<B", f.read(1))[0]
+        if format_revision not in expected_package_format_versions:
+            sys.exit(
+                "ERROR: Unsupported package format version %d"
+                % format_revision
+            )
+
+        # PackageHeaderSize (2 bytes)
+        package_header_size = struct.unpack("<H", f.read(2))[0]
+
+        # PackageReleaseDateTime (13 bytes)
+        f.read(13)
+
+        # ComponentBitmapBitLength (2 bytes)
+        f.read(2)
+
+        # PackageVersionStringType (1 byte)
+        f.read(1)
+        # PackageVersionStringLength (1 byte) + PackageVersionString
+        pkg_ver_str_len = struct.unpack("<B", f.read(1))[0]
+        pkg_ver_str = f.read(pkg_ver_str_len).decode("ascii", errors="replace")
+
+        print(
+            "Package: version='{}' format_revision={} header_size={} bytes".format(
+                pkg_ver_str, format_revision, package_header_size
+            )
+        )
+
+        # DeviceIDRecordCount (1 byte); skip each record via RecordLength
+        device_id_record_count = struct.unpack("<B", f.read(1))[0]
+        for _ in range(device_id_record_count):
+            record_length = struct.unpack("<H", f.read(2))[0]
+            f.read(record_length - 2)
+
+        # DownstreamDeviceIDRecords (format version >= 2)
+        if format_revision >= 2:
+            downstream_count = struct.unpack("<B", f.read(1))[0]
+            for _ in range(downstream_count):
+                record_length = struct.unpack("<H", f.read(2))[0]
+                f.read(record_length - 2)
+
+        # ComponentImageCount (2 bytes)
+        component_image_count = struct.unpack("<H", f.read(2))[0]
+        print("Component count: {}".format(component_image_count))
+
+        # Parse each ComponentImageInformation entry
+        components = []
+        for i in range(component_image_count):
+            classification = struct.unpack("<H", f.read(2))[
+                0
+            ]  # ComponentClassification
+            identifier = struct.unpack("<H", f.read(2))[
+                0
+            ]  # ComponentIdentifier
+            f.read(4)  # ComponentComparisonStamp
+            f.read(2)  # ComponentOptions
+            f.read(2)  # RequestedComponentActivationMethod
+            location_offset = struct.unpack("<I", f.read(4))[
+                0
+            ]  # ComponentLocationOffset
+            component_size = struct.unpack("<I", f.read(4))[0]  # ComponentSize
+            f.read(1)  # ComponentVersionStringType
+            ver_str_len = struct.unpack("<B", f.read(1))[0]
+            ver_str = f.read(ver_str_len).decode("ascii", errors="replace")
+            if format_revision >= 3:
+                opaque_data_len = struct.unpack("<I", f.read(4))[0]
+                f.read(opaque_data_len)
+            components.append(
+                {
+                    "index": i,
+                    "classification": classification,
+                    "identifier": identifier,
+                    "location_offset": location_offset,
+                    "size": component_size,
+                    "version_string": ver_str,
+                }
+            )
+
+        # Extract each component image to the output directory
+        os.makedirs(output_dir, exist_ok=True)
+        for comp in components:
+            f.seek(comp["location_offset"])
+            image_data = f.read(comp["size"])
+            # Sanitize version string for use as a filename
+            safe_ver = "".join(
+                c if c.isalnum() or c in "-_." else "_"
+                for c in comp["version_string"]
+            ).strip("_") or "component_{:d}".format(comp["index"])
+            output_filename = os.path.join(output_dir, safe_ver + ".bin")
+            # Avoid overwriting if multiple components share the same version string
+            if os.path.exists(output_filename):
+                output_filename = os.path.join(
+                    output_dir,
+                    "{}_cls{:04X}_id{:04X}.bin".format(
+                        safe_ver,
+                        comp["classification"],
+                        comp["identifier"],
+                    ),
+                )
+            with open(output_filename, "wb") as out_file:
+                out_file.write(image_data)
+            print(
+                "  [{}] version='{}' cls=0x{:04X} id=0x{:04X}"
+                " size={} bytes -> {}".format(
+                    comp["index"],
+                    comp["version_string"],
+                    comp["classification"],
+                    comp["identifier"],
+                    comp["size"],
+                    output_filename,
+                )
+            )
+
+
 def main():
-    """Create PLDM FW update (DSP0267) package based on a JSON metadata file"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
+    """Create or extract PLDM FW update (DSP0267) packages"""
+    parser = argparse.ArgumentParser(
+        description="Create or extract PLDM FW update (DSP0267) packages"
+    )
+    subparsers = parser.add_subparsers(dest="command")
+    subparsers.required = True
+
+    # 'create' subcommand (existing functionality)
+    create_parser = subparsers.add_parser(
+        "create", help="Create a PLDM FW update package"
+    )
+    create_parser.add_argument(
         "pldmfwuppkgname", help="Name of the PLDM FW update package"
     )
-    parser.add_argument("metadatafile", help="Path of metadata JSON file")
-    parser.add_argument(
+    create_parser.add_argument(
+        "metadatafile", help="Path of metadata JSON file"
+    )
+    create_parser.add_argument(
         "images",
         nargs="+",
         help=(
-            "One or more firmware image paths, in the same order as           "
+            "One or more firmware image paths, in the same order as"
             " ComponentImageInformationArea entries"
         ),
     )
 
+    # 'extract' subcommand (new functionality)
+    extract_parser = subparsers.add_parser(
+        "extract",
+        help="Extract component images from a PLDM FW update package",
+    )
+    extract_parser.add_argument(
+        "pldmfwuppkgname", help="Path to the PLDM FW update package"
+    )
+    extract_parser.add_argument(
+        "outputdir",
+        nargs="?",
+        default=".",
+        help="Output directory for extracted components (default: current directory)",
+    )
+
     args = parser.parse_args()
-    image_files = args.images
-    with open(args.metadatafile) as file:
+
+    if args.command == "create":
+        image_files = args.images
+        with open(args.metadatafile) as file:
+            try:
+                metadata = json.load(file)
+            except ValueError:
+                sys.exit("ERROR: Invalid metadata JSON file")
+
+        # Validate the number of component images
+        if len(image_files) != len(metadata["ComponentImageInformationArea"]):
+            sys.exit(
+                "ERROR: number of images passed != number of entries"
+                " in ComponentImageInformationArea"
+            )
+
         try:
-            metadata = json.load(file)
-        except ValueError:
-            sys.exit("ERROR: Invalid metadata JSON file")
-
-    # Validate the number of component images
-    if len(image_files) != len(metadata["ComponentImageInformationArea"]):
-        sys.exit(
-            "ERROR: number of images passed != number of entries            "
-            " in ComponentImageInformationArea"
-        )
-
-    try:
-        with open(args.pldmfwuppkgname, "w+b") as pldm_fw_up_pkg:
-            package_header_format_revision, component_bitmap_bit_length = (
-                write_pkg_header_info(pldm_fw_up_pkg, metadata)
-            )
-            if (
-                package_header_format_revision
-                not in expected_package_format_versions
-            ):
-                sys.exit(
-                    "ERROR: Unsupported package format version %d"
-                    % package_header_format_revision
+            with open(args.pldmfwuppkgname, "w+b") as pldm_fw_up_pkg:
+                package_header_format_revision, component_bitmap_bit_length = (
+                    write_pkg_header_info(pldm_fw_up_pkg, metadata)
                 )
-            write_fw_device_identification_area(
-                pldm_fw_up_pkg,
-                metadata,
-                package_header_format_revision,
-                component_bitmap_bit_length,
-            )
-            if package_header_format_revision >= 2:
-                write_downstream_device_identification_area(
+                if (
+                    package_header_format_revision
+                    not in expected_package_format_versions
+                ):
+                    sys.exit(
+                        "ERROR: Unsupported package format version %d"
+                        % package_header_format_revision
+                    )
+                write_fw_device_identification_area(
                     pldm_fw_up_pkg,
                     metadata,
                     package_header_format_revision,
                     component_bitmap_bit_length,
                 )
-            write_component_image_info_area(
-                pldm_fw_up_pkg,
-                metadata,
-                package_header_format_revision,
-                image_files,
-            )
-            update_pkg_header_size(
-                pldm_fw_up_pkg, package_header_format_revision
-            )
-            write_pkg_header_checksum(pldm_fw_up_pkg)
-            if package_header_format_revision >= 4:
-                write_pkg_payload_checksum(pldm_fw_up_pkg, image_files)
-            append_component_images(pldm_fw_up_pkg, image_files)
+                if package_header_format_revision >= 2:
+                    write_downstream_device_identification_area(
+                        pldm_fw_up_pkg,
+                        metadata,
+                        package_header_format_revision,
+                        component_bitmap_bit_length,
+                    )
+                write_component_image_info_area(
+                    pldm_fw_up_pkg,
+                    metadata,
+                    package_header_format_revision,
+                    image_files,
+                )
+                update_pkg_header_size(
+                    pldm_fw_up_pkg, package_header_format_revision
+                )
+                write_pkg_header_checksum(pldm_fw_up_pkg)
+                if package_header_format_revision >= 4:
+                    write_pkg_payload_checksum(pldm_fw_up_pkg, image_files)
+                append_component_images(pldm_fw_up_pkg, image_files)
+                pldm_fw_up_pkg.close()
+        except BaseException:
             pldm_fw_up_pkg.close()
-    except BaseException:
-        pldm_fw_up_pkg.close()
-        os.remove(args.pldmfwuppkgname)
-        raise
+            os.remove(args.pldmfwuppkgname)
+            raise
+
+    elif args.command == "extract":
+        extract_component_images(args.pldmfwuppkgname, args.outputdir)
 
 
 if __name__ == "__main__":
