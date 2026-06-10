@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7357ffa_771112f9",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-06-10T11:46:42Z",
+      "side": 1,
+      "message": "Done, split out to change [91084].\n\n[91084]: https://gerrit.openbmc.org/c/openbmc/pldm/+/91084",
+      "parentUuid": "cb2c5ef8_b327f31c",
+      "range": {
+        "startLine": 630,
+        "startChar": 0,
+        "endLine": 641,
+        "endChar": 65
+      },
+      "revId": "e1cd833ac988b248021c03dad844b67b5f31e70b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b8ac2cd_397c6505",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-05-26T18:44:40Z",
       "side": 1,
       "message": "What can we do to avoid calling phosphor-logging directly?  These end up being 100% custom events that do not show up properly in Redfish and can never create push notifications.",
+      "range": {
+        "startLine": 736,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 45
+      },
+      "revId": "e1cd833ac988b248021c03dad844b67b5f31e70b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "202916b1_ec082b84",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-06-10T11:46:42Z",
+      "side": 1,
+      "message": "Thanks for the feedback.\nI\u0027ve submitted PDI change [91094] with dedicated event types so these can be recorded via lg2::commit. I placed them under com/meta since the triggers are platform-specific.\nLet me know if you\u0027d prefer a different namespace or structure.\n\n[91094]: https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/91094",
+      "parentUuid": "6b8ac2cd_397c6505",
       "range": {
         "startLine": 736,
         "startChar": 0,
