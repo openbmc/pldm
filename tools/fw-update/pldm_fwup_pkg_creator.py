@@ -1063,6 +1063,352 @@ def extract_component_images(pkg_file_path, output_dir):
             )
 
 
+def _parse_descriptors(f, descriptor_count):
+    """Parse and return a list of descriptor dicts from the current file position."""
+    descriptors = []
+    for _ in range(descriptor_count):
+        desc_type = struct.unpack("<H", f.read(2))[0]
+        desc_len = struct.unpack("<H", f.read(2))[0]
+        desc_data = f.read(desc_len)
+        if desc_type == 0xFFFF:
+            desc_name = "Vendor Defined"
+        else:
+            entry = descriptor_type_name_length.get(desc_type)
+            desc_name = entry[0] if entry else "Unknown"
+        descriptors.append(
+            {
+                "type": desc_type,
+                "name": desc_name,
+                "length": desc_len,
+                "data": desc_data,
+            }
+        )
+    return descriptors
+
+
+def _print_descriptors(descriptors, indent="      "):
+    for i, d in enumerate(descriptors):
+        print(
+            "{}[{}] type=0x{:04X} ({}) len={} data={}".format(
+                indent, i, d["type"], d["name"], d["length"], d["data"].hex()
+            )
+        )
+
+
+def analyze_package(pkg_file_path):
+    """
+    Analyze and print the full contents of a PLDM FW update package header.
+
+        Parameters:
+            pkg_file_path: Path to the PLDM FW update package
+    """
+    with open(pkg_file_path, "rb") as f:
+        print("=" * 70)
+        print("PLDM FW Update Package Analysis")
+        print("  File: {}".format(pkg_file_path))
+        print("=" * 70)
+
+        # --- Package Header Information ---
+        pkg_header_id = f.read(16)
+        if len(pkg_header_id) < 16:
+            sys.exit("ERROR: File too short to be a valid PLDM package")
+
+        print("\n[Package Header Information]")
+        # Format UUID as xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        h = pkg_header_id.hex()
+        uuid_str = "{}-{}-{}-{}-{}".format(h[0:8], h[8:12], h[12:16], h[16:20], h[20:32])
+        print("  PackageHeaderIdentifier    : {}".format(uuid_str))
+
+        format_revision = struct.unpack("<B", f.read(1))[0]
+        if format_revision not in expected_package_format_versions:
+            sys.exit(
+                "ERROR: Unsupported package format version %d" % format_revision
+            )
+        print("  PackageHeaderFormatRevision: {} (DSP0267 v1.{}.0)".format(
+            format_revision, format_revision - 1
+        ))
+
+        package_header_size = struct.unpack("<H", f.read(2))[0]
+        print("  PackageHeaderSize          : {} bytes".format(package_header_size))
+
+        # PackageReleaseDateTime: "<hBBBBBBBBHB" = 13 bytes
+        dt_raw = f.read(13)
+        _utc_off, us0, us1, us2, sec, minute, hour, day, month = \
+            struct.unpack_from("<hBBBBBBBB", dt_raw, 0)
+        year, _utc_dir = struct.unpack_from("<HB", dt_raw, 10)
+        microseconds = us0 | (us1 << 8) | (us2 << 16)
+        print(
+            "  PackageReleaseDateTime     : "
+            "{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}.{:06d}".format(
+                year, month, day, hour, minute, sec, microseconds
+            )
+        )
+
+        component_bitmap_bit_length = struct.unpack("<H", f.read(2))[0]
+        print("  ComponentBitmapBitLength   : {}".format(component_bitmap_bit_length))
+
+        pkg_ver_str_type = struct.unpack("<B", f.read(1))[0]
+        pkg_ver_str_len = struct.unpack("<B", f.read(1))[0]
+        pkg_ver_str = f.read(pkg_ver_str_len).decode("ascii", errors="replace")
+        print("  PackageVersionString       : '{}' (type={}, len={})".format(
+            pkg_ver_str, pkg_ver_str_type, pkg_ver_str_len
+        ))
+
+        # --- Firmware Device Identification Area ---
+        print("\n[Firmware Device Identification Area]")
+        device_id_record_count = struct.unpack("<B", f.read(1))[0]
+        print("  DeviceIDRecordCount : {}".format(device_id_record_count))
+
+        for dev_idx in range(device_id_record_count):
+            print("\n  [FW Device Record {}]".format(dev_idx))
+            record_length = struct.unpack("<H", f.read(2))[0]
+            descriptor_count = struct.unpack("<B", f.read(1))[0]
+            dev_update_flags = struct.unpack("<I", f.read(4))[0]
+            comp_set_ver_str_type = struct.unpack("<B", f.read(1))[0]
+            comp_set_ver_str_len = struct.unpack("<B", f.read(1))[0]
+            fw_pkg_data_len = struct.unpack("<H", f.read(2))[0]
+
+            ref_manifest_len = 0
+            if format_revision >= 4:
+                ref_manifest_len = struct.unpack("<I", f.read(4))[0]
+
+            applicable_bytes = f.read(component_bitmap_bit_length // 8)
+            comp_set_ver_str = f.read(comp_set_ver_str_len).decode(
+                "ascii", errors="replace"
+            )
+
+            applicable = [
+                byte_idx * 8 + bit
+                for byte_idx, bval in enumerate(applicable_bytes)
+                for bit in range(8)
+                if bval & (1 << bit)
+            ]
+
+            print("    RecordLength             : {}".format(record_length))
+            print("    DescriptorCount          : {}".format(descriptor_count))
+            print("    DeviceUpdateOptionFlags  : 0x{:08X}".format(dev_update_flags))
+            print("    CompImgSetVersionString  : '{}'".format(comp_set_ver_str))
+            print("    ApplicableComponents     : {}".format(applicable))
+            print("    FWDevicePkgDataLength    : {}".format(fw_pkg_data_len))
+            if format_revision >= 4:
+                print("    ReferenceManifestLength  : {}".format(ref_manifest_len))
+
+            print("    Descriptors:")
+            _print_descriptors(_parse_descriptors(f, descriptor_count))
+
+            if fw_pkg_data_len > 0:
+                f.read(fw_pkg_data_len)
+            if format_revision >= 4 and ref_manifest_len > 0:
+                f.read(ref_manifest_len)
+
+        # --- Downstream Device Identification Area (v2+) ---
+        if format_revision >= 2:
+            print("\n[Downstream Device Identification Area]")
+            downstream_count = struct.unpack("<B", f.read(1))[0]
+            print("  DownstreamDeviceIDRecordCount : {}".format(downstream_count))
+
+            for ds_idx in range(downstream_count):
+                print("\n  [Downstream Device Record {}]".format(ds_idx))
+                record_length = struct.unpack("<H", f.read(2))[0]
+                descriptor_count = struct.unpack("<B", f.read(1))[0]
+                ds_flags = struct.unpack("<I", f.read(4))[0]
+                ds_min_ver_str_type = struct.unpack("<B", f.read(1))[0]
+                ds_min_ver_str_len = struct.unpack("<B", f.read(1))[0]
+                ds_pkg_data_len = struct.unpack("<H", f.read(2))[0]
+
+                ds_ref_manifest_len = 0
+                if format_revision >= 4:
+                    ds_ref_manifest_len = struct.unpack("<I", f.read(4))[0]
+
+                applicable_bytes = f.read(component_bitmap_bit_length // 8)
+                ds_min_ver_str = f.read(ds_min_ver_str_len).decode(
+                    "ascii", errors="replace"
+                )
+
+                applicable = [
+                    byte_idx * 8 + bit
+                    for byte_idx, bval in enumerate(applicable_bytes)
+                    for bit in range(8)
+                    if bval & (1 << bit)
+                ]
+
+                print("    RecordLength                     : {}".format(record_length))
+                print("    DescriptorCount                  : {}".format(descriptor_count))
+                print("    DownstreamDeviceUpdateOptionFlags: 0x{:08X}".format(ds_flags))
+                print("    SelfContainedActivMinVerString   : '{}'".format(ds_min_ver_str))
+                print("    ApplicableComponents             : {}".format(applicable))
+                print("    DSDevicePkgDataLength            : {}".format(ds_pkg_data_len))
+                if format_revision >= 4:
+                    print("    ReferenceManifestLength          : {}".format(ds_ref_manifest_len))
+
+                # ComparisonStamp is written before descriptors when flag bit 0 is set
+                if ds_flags & 0x1:
+                    cmp_stamp = struct.unpack("<I", f.read(4))[0]
+                    print(
+                        "    MinVersionComparisonStamp        : 0x{:08X}".format(
+                            cmp_stamp
+                        )
+                    )
+
+                print("    Descriptors:")
+                _print_descriptors(_parse_descriptors(f, descriptor_count))
+
+                if ds_pkg_data_len > 0:
+                    f.read(ds_pkg_data_len)
+                if format_revision >= 4 and ds_ref_manifest_len > 0:
+                    f.read(ds_ref_manifest_len)
+
+        # --- Component Image Information Area ---
+        print("\n[Component Image Information Area]")
+        component_image_count = struct.unpack("<H", f.read(2))[0]
+        print("  ComponentImageCount : {}".format(component_image_count))
+
+        for comp_idx in range(component_image_count):
+            print("\n  [Component {}]".format(comp_idx))
+            classification = struct.unpack("<H", f.read(2))[0]
+            identifier = struct.unpack("<H", f.read(2))[0]
+            comparison_stamp = struct.unpack("<I", f.read(4))[0]
+            comp_options = struct.unpack("<H", f.read(2))[0]
+            activation_method = struct.unpack("<H", f.read(2))[0]
+            location_offset = struct.unpack("<I", f.read(4))[0]
+            component_size = struct.unpack("<I", f.read(4))[0]
+            ver_str_type = struct.unpack("<B", f.read(1))[0]
+            ver_str_len = struct.unpack("<B", f.read(1))[0]
+            ver_str = f.read(ver_str_len).decode("ascii", errors="replace")
+
+            opaque_data_len = 0
+            if format_revision >= 3:
+                opaque_data_len = struct.unpack("<I", f.read(4))[0]
+                if opaque_data_len > 0:
+                    f.read(opaque_data_len)
+
+            # Decode ComponentOptions bits
+            options_flags = []
+            if comp_options & (1 << 0):
+                options_flags.append("ForceUpdate")
+            if comp_options & (1 << 1):
+                options_flags.append("UseComponentCompStamp")
+            if comp_options & (1 << 2):
+                options_flags.append("DowngradeAllowed")
+
+            # Decode RequestedComponentActivationMethod bits
+            activation_flags = []
+            activation_names = [
+                "AutomaticSelfContained",
+                "SelfContainedWithRestrictions",
+                "MediumSpecificReset",
+                "SystemReboot",
+                "DCPowerCycle",
+                "ACPowerCycle",
+            ]
+            for bit, name in enumerate(activation_names):
+                if activation_method & (1 << bit):
+                    activation_flags.append(name)
+
+            print(
+                "    ComponentClassification            : 0x{:04X}".format(
+                    classification
+                )
+            )
+            print(
+                "    ComponentIdentifier                : 0x{:04X}".format(
+                    identifier
+                )
+            )
+            stamp_note = (
+                " (default/unused)"
+                if comparison_stamp == 0xFFFFFFFF
+                else ""
+            )
+            print(
+                "    ComponentComparisonStamp           : 0x{:08X}{}".format(
+                    comparison_stamp, stamp_note
+                )
+            )
+            print(
+                "    ComponentOptions                   : 0x{:04X} {}".format(
+                    comp_options,
+                    "[{}]".format(", ".join(options_flags)) if options_flags else "[]",
+                )
+            )
+            print(
+                "    RequestedComponentActivationMethod : 0x{:04X} {}".format(
+                    activation_method,
+                    (
+                        "[{}]".format(", ".join(activation_flags))
+                        if activation_flags
+                        else "[]"
+                    ),
+                )
+            )
+            print(
+                "    ComponentLocationOffset            : 0x{:08X} ({} bytes from start)".format(
+                    location_offset, location_offset
+                )
+            )
+            print(
+                "    ComponentSize                      : {} bytes".format(
+                    component_size
+                )
+            )
+            print(
+                "    ComponentVersionString             : '{}' (type={}, len={})".format(
+                    ver_str, ver_str_type, ver_str_len
+                )
+            )
+            if format_revision >= 3:
+                print(
+                    "    ComponentOpaqueDataLength          : {}".format(
+                        opaque_data_len
+                    )
+                )
+
+        # --- Checksums ---
+        print("\n[Checksums]")
+        header_end_pos = f.tell()
+        stored_header_checksum = struct.unpack("<I", f.read(4))[0]
+
+        f.seek(0)
+        computed_header_checksum = binascii.crc32(f.read(header_end_pos)) & 0xFFFFFFFF
+        header_ok = (
+            "OK"
+            if computed_header_checksum == stored_header_checksum
+            else "MISMATCH (expected 0x{:08X})".format(computed_header_checksum)
+        )
+        print(
+            "  PackageHeaderChecksum  : 0x{:08X} [{}]".format(
+                stored_header_checksum, header_ok
+            )
+        )
+
+        if format_revision >= 4:
+            stored_payload_checksum = struct.unpack("<I", f.read(4))[0]
+            payload_data = f.read()
+            computed_payload_checksum = binascii.crc32(payload_data) & 0xFFFFFFFF
+            payload_ok = (
+                "OK"
+                if computed_payload_checksum == stored_payload_checksum
+                else "MISMATCH (expected 0x{:08X})".format(
+                    computed_payload_checksum
+                )
+            )
+            print(
+                "  PackagePayloadChecksum : 0x{:08X} [{}]".format(
+                    stored_payload_checksum, payload_ok
+                )
+            )
+
+        # --- Summary ---
+        f.seek(0, os.SEEK_END)
+        total_file_size = f.tell()
+        payload_size = total_file_size - package_header_size
+        print("\n[Summary]")
+        print("  Total file size : {} bytes".format(total_file_size))
+        print("  Header size     : {} bytes".format(package_header_size))
+        print("  Payload size    : {} bytes".format(payload_size))
+        print("=" * 70)
+
+
 def main():
     """Create or extract PLDM FW update (DSP0267) packages"""
     parser = argparse.ArgumentParser(
@@ -1100,6 +1446,14 @@ def main():
         nargs="?",
         default=".",
         help="Output directory for extracted components (default: current directory)",
+    )
+
+    # 'analyze' subcommand (new functionality)
+    analyze_parser = subparsers.add_parser(
+        "analyze", help="Analyze and display PLDM FW update package header contents"
+    )
+    analyze_parser.add_argument(
+        "pldmfwuppkgname", help="Path to the PLDM FW update package"
     )
 
     args = parser.parse_args()
@@ -1166,6 +1520,9 @@ def main():
 
     elif args.command == "extract":
         extract_component_images(args.pldmfwuppkgname, args.outputdir)
+
+    elif args.command == "analyze":
+        analyze_package(args.pldmfwuppkgname)
 
 
 if __name__ == "__main__":
