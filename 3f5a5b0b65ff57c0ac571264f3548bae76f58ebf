@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7299ca7f_397cd6be",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-11T07:28:22Z",
+      "side": 1,
+      "message": "Acknowledged, added it as a note",
+      "parentUuid": "deb485b4_f70a2d64",
+      "range": {
+        "startLine": 5,
+        "startChar": 54,
+        "endLine": 5,
+        "endChar": 59
+      },
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d59d48df_4078795c",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-06-11T04:46:22Z",
       "side": 1,
       "message": "This does not capture what the remote side should implement for this to all work, please re-work on the document to added the requirements on the remote end point (give sample PDR\u0027s if required).\n\nEssentially , Graceful shutdown flow is modelled using the standard sensors \u0026 effecters documented in the pldm platform spec. It clearly needs to be spelled out. and give examples of PDR\u0027s , explain the soft off flow clearly, this looks like its all there but at various places and it\u0027s difficult to to get the model right by looking at this document.",
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08cb4110_5387d03a",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-11T07:28:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d59d48df_4078795c",
       "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5ddeae5_8de2bc81",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-11T07:28:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2b706544_e821bb1f",
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4112e0c7_a79b9b13",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-06-11T04:46:22Z",
       "side": 1,
       "message": "drop , not useful.",
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d958efb5_7eb40e0d",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-11T07:28:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4112e0c7_a79b9b13",
       "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -115,6 +193,48 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef30e607_59302b2e",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-11T07:28:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a363b518_922ea085",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 110,
+        "endChar": 11
+      },
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b1ddd9_b84e7666",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-11T07:28:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bfdd4987_6bfe04f1",
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30356870_82eb6671",
@@ -128,6 +248,24 @@
       "writtenOn": "2026-06-11T04:46:22Z",
       "side": 1,
       "message": "add the hyperlinks here",
+      "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ee9b1ed_b298f88c",
+        "filename": "softoff/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-11T07:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30356870_82eb6671",
       "revId": "3f5a5b0b65ff57c0ac571264f3548bae76f58ebf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
