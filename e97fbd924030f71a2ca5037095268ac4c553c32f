@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da5e471e_1f29fa47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000350
+      },
+      "writtenOn": "2026-06-11T15:34:16Z",
+      "side": 1,
+      "message": "Hi @manojkiran.eda@gmail.com\ncan you please review this commit chain",
+      "revId": "e97fbd924030f71a2ca5037095268ac4c553c32f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
