@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "745e87d1_bd7eb9f4",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-11T08:21:58Z",
+      "side": 1,
+      "message": "adding a public function purely just for the sake of unit tests is a bad idea. This breaks encapsulation. Please fix this.",
+      "revId": "f4d41eeb6d9f6d7437d2dd2a90fb07b484282e33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
