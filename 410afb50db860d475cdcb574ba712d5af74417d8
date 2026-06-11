@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac3e3319_9896dd13",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-06-11T06:21:11Z",
+      "side": 1,
+      "message": "This should be PLDM_FILE right?\n\n```\nPLDMType\nThe PLDM Type for the protocol by which this transfer is being performed.\n```\nDSP0240_1.2.0 Table 17",
+      "range": {
+        "startLine": 204,
+        "startChar": 12,
+        "endLine": 204,
+        "endChar": 21
+      },
+      "revId": "410afb50db860d475cdcb574ba712d5af74417d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8d24508_0ae9bf46",
         "filename": "platform-mc/file_descriptor.cpp",
         "patchSetId": 36
