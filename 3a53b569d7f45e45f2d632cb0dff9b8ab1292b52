@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d987745_07615229",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-06-11T06:06:58Z",
+      "side": 1,
+      "message": "Need to first confirm whether there is any existing tool already monitoring the related event strings.",
+      "revId": "3a53b569d7f45e45f2d632cb0dff9b8ab1292b52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
