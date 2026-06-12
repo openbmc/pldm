@@ -955,6 +955,7 @@ class GetPDR : public CommandInterface
         {PLDM_PDR_FRU_RECORD_SET, "FRU Record Set PDR"},
         {PLDM_OEM_DEVICE_PDR, "OEM Device PDR"},
         {PLDM_OEM_PDR, "OEM PDR"},
+        {PLDM_FILE_DESCRIPTOR_PDR, "File Descriptor PDR"},
     };
 
     const std::map<std::string, uint8_t> strToPdrType = {
@@ -968,6 +969,7 @@ class GetPDR : public CommandInterface
         {"stateeffecter", PLDM_STATE_EFFECTER_PDR},
         {"entityassociation", PLDM_PDR_ENTITY_ASSOCIATION},
         {"frurecord", PLDM_PDR_FRU_RECORD_SET},
+        {"filedescriptor", PLDM_FILE_DESCRIPTOR_PDR},
         // Add other types
     };
 
@@ -1833,6 +1835,94 @@ class GetPDR : public CommandInterface
         }
     }
 
+    /** @brief Format the File Descriptor PDR types to json output
+     *
+     *  @param[in] data - pointer to the File Descriptor PDR
+     *  @param[in] data_length - number of PDR data bytes
+     *  @param[out] output - PDRs data fields in Json format
+     */
+    void printFileDescriptorPDR(const uint8_t* data, size_t data_length,
+                                ordered_json& output)
+    {
+        static const std::map<uint8_t, std::string> fileClassNames = {
+            {PLDM_PLATFORM_FILE_CLASS_OEM, "OEM"},
+            {PLDM_PLATFORM_FILE_CLASS_BOOT_LOG, "BootLog"},
+            {PLDM_PLATFORM_FILE_CLASS_SERIAL_TX_FIFO, "SerialTxFIFO"},
+            {PLDM_PLATFORM_FILE_CLASS_SERIAL_RX_FIFO, "SerialRxFIFO"},
+            {PLDM_PLATFORM_FILE_CLASS_DIAGNOSTIC_LOG, "DiagnosticLog"},
+            {PLDM_PLATFORM_FILE_CLASS_CRASH_DUMP_FILE, "CrashDumpFile"},
+            {PLDM_PLATFORM_FILE_CLASS_SECURITY_LOG, "SecurityLog"},
+            {PLDM_PLATFORM_FILE_CLASS_FRU_DATA_FILE, "FRUDataFile"},
+            {PLDM_PLATFORM_FILE_CLASS_TELEMETRY_DATA_FILE, "TelemetryDataFile"},
+            {PLDM_PLATFORM_FILE_CLASS_TELEMETRY_DATA_LOG, "TelemetryDataLog"},
+            {PLDM_PLATFORM_FILE_CLASS_OTHER_LOG, "OtherLog"},
+            {PLDM_PLATFORM_FILE_CLASS_OTHER_FILE, "OtherFile"},
+            {PLDM_PLATFORM_FILE_CLASS_FILE_DIRECTORY, "FileDirectory"},
+        };
+
+        struct pldm_platform_file_descriptor_pdr pdr = {};
+        int rc =
+            decode_pldm_platform_file_descriptor_pdr(data, data_length, &pdr);
+        if (rc)
+        {
+            std::cerr << "Failed to decode File Descriptor PDR, rc=" << rc
+                      << std::endl;
+            return;
+        }
+
+        output["terminusHandle"] = pdr.terminus_handle;
+        output["fileIdentifier"] = pdr.file_identifier;
+        output["entityType"] = getEntityName(pdr.container.entity_type);
+        output["entityInstanceNumber"] =
+            unsigned(pdr.container.entity_instance_num);
+        output["containerID"] = unsigned(pdr.container.entity_container_id);
+        output["superiorDirectoryFileIdentifier"] =
+            pdr.superior_directory_file_identifier;
+
+        uint8_t cls = pdr.file_classification;
+        if (fileClassNames.contains(cls))
+        {
+            output["fileClassification"] =
+                fileClassNames.at(cls) + "(" + std::to_string(cls) + ")";
+        }
+        else
+        {
+            output["fileClassification"] = std::to_string(cls);
+        }
+
+        output["oemFileClassification"] = unsigned(pdr.oem_file_classification);
+        output["fileCapabilities"] =
+            std::format("0x{:04x}", pdr.file_capabilities.value);
+        output["fileCapabilities_exclusiveReadSupported"] =
+            (pdr.file_capabilities.bits.bit0 ? true : false);
+        output["fileCapabilities_isStreaming"] =
+            (pdr.file_capabilities.bits.bit3 ? true : false);
+        output["fileMaximumSize"] = pdr.file_maximum_size;
+        output["fileMaximumFileDescriptorCount"] =
+            unsigned(pdr.file_maximum_file_descriptor_count);
+
+        if (pdr.file_name.length > 0 && pdr.file_name.ptr != nullptr)
+        {
+            output["fileName"] =
+                std::string(reinterpret_cast<const char*>(pdr.file_name.ptr),
+                            pdr.file_name.length);
+        }
+        else
+        {
+            output["fileName"] = "";
+        }
+
+        if (pdr.oem_file_classification &&
+            pdr.oem_file_classification_name.length > 0 &&
+            pdr.oem_file_classification_name.ptr != nullptr)
+        {
+            output["oemFileClassificationName"] =
+                std::string(reinterpret_cast<const char*>(
+                                pdr.oem_file_classification_name.ptr),
+                            pdr.oem_file_classification_name.length);
+        }
+    }
+
     /** @brief Format the Compact Numeric Sensor PDR types to json output
      *
      *  @param[in] data - reference to the Compact Numeric Sensor PDR
@@ -1978,6 +2068,9 @@ class GetPDR : public CommandInterface
                 break;
             case PLDM_COMPACT_NUMERIC_SENSOR_PDR:
                 printCompactNumericSensorPDR(data, output);
+                break;
+            case PLDM_FILE_DESCRIPTOR_PDR:
+                printFileDescriptorPDR(data, respCnt, output);
                 break;
             default:
                 break;
