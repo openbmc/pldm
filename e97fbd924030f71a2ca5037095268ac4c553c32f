@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bd9df80_e2704b90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-12T08:28:29Z",
+      "side": 1,
+      "message": "just wanted to check how are you sure these are the only places ? are you running some tool o detect this or plain grep ?",
+      "revId": "e97fbd924030f71a2ca5037095268ac4c553c32f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da5e471e_1f29fa47",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
