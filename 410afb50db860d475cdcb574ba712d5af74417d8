@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42e0911e_4f610acc",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-06-12T08:39:30Z",
+      "side": 1,
+      "message": "Thank you. I missed that info. Updated.",
+      "parentUuid": "cf690cc3_1775f0b7",
+      "range": {
+        "startLine": 204,
+        "startChar": 12,
+        "endLine": 204,
+        "endChar": 21
+      },
+      "revId": "410afb50db860d475cdcb574ba712d5af74417d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8d24508_0ae9bf46",
