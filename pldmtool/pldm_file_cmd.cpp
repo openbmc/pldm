@@ -1,0 +1,335 @@
+#include "pldm_file_cmd.hpp"
+
+#include "common/utils.hpp"
+
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/message.hpp>
+#include <unistd.h>
+
+#include <CLI/CLI.hpp>
+
+#include <cerrno>
+#include <cstring>
+#include <format>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <variant>
+#include <vector>
+
+namespace pldmtool
+{
+namespace file
+{
+
+namespace
+{
+
+constexpr const char* PLDMService = "xyz.openbmc_project.PLDM";
+constexpr const char* FileInterface = "xyz.openbmc_project.PLDM.File";
+constexpr const char* FileRootPath = "/xyz/openbmc_project/pldm/file";
+constexpr const char* DBusProperties = "org.freedesktop.DBus.Properties";
+
+/** @brief Hex-dump bytes to stdout, 16 bytes per row */
+static void hexDump(const std::vector<uint8_t>& data)
+{
+    constexpr size_t rowWidth = 16;
+    for (size_t i = 0; i < data.size(); i += rowWidth)
+    {
+        std::cout << std::hex << std::setw(8) << std::setfill('0') << i
+                  << "  ";
+        for (size_t j = i; j < i + rowWidth; ++j)
+        {
+            if (j < data.size())
+            {
+                std::cout << std::hex << std::setw(2) << std::setfill('0')
+                          << static_cast<int>(data[j]) << " ";
+            }
+            else
+            {
+                std::cout << "   ";
+            }
+            if (j == i + 7)
+            {
+                std::cout << " ";
+            }
+        }
+        std::cout << " |";
+        for (size_t j = i; j < i + rowWidth && j < data.size(); ++j)
+        {
+            char c = static_cast<char>(data[j]);
+            std::cout << (std::isprint(c) ? c : '.');
+        }
+        std::cout << "|\n";
+    }
+    std::cout << std::dec;
+}
+
+/** @brief Fetch a single string property via D-Bus Properties.Get */
+static std::string getStringProp(sdbusplus::bus_t& bus,
+                                 const std::string& objPath,
+                                 const std::string& prop)
+{
+    try
+    {
+        auto m = bus.new_method_call(PLDMService, objPath.c_str(),
+                                     DBusProperties, "Get");
+        m.append(FileInterface, prop);
+        auto reply = bus.call(m);
+        std::variant<std::string> val;
+        reply.read(val);
+        return std::get<std::string>(val);
+    }
+    catch (...)
+    {
+        return {};
+    }
+}
+
+/** @brief Fetch a single uint64 property via D-Bus Properties.Get */
+static uint64_t getUint64Prop(sdbusplus::bus_t& bus,
+                               const std::string& objPath,
+                               const std::string& prop)
+{
+    try
+    {
+        auto m = bus.new_method_call(PLDMService, objPath.c_str(),
+                                     DBusProperties, "Get");
+        m.append(FileInterface, prop);
+        auto reply = bus.call(m);
+        std::variant<uint64_t> val;
+        reply.read(val);
+        return std::get<uint64_t>(val);
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+/** @brief Get all PLDM File object paths via the ObjectMapper subtree query */
+static std::vector<std::string> listFileObjects()
+{
+    pldm::utils::DBusHandler handler;
+    try
+    {
+        auto subtree = handler.getSubtree(FileRootPath, 0, {FileInterface});
+        std::vector<std::string> paths;
+        paths.reserve(subtree.size());
+        for (const auto& [objPath, _] : subtree)
+        {
+            paths.emplace_back(objPath);
+        }
+        return paths;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to list PLDM file objects: " << e.what() << "\n";
+        return {};
+    }
+}
+
+/** @brief Print a numbered list of files with Name, Purpose and Size */
+static std::vector<std::string> printFileList()
+{
+    auto bus = sdbusplus::bus::new_default();
+    auto paths = listFileObjects();
+
+    if (paths.empty())
+    {
+        std::cout << "No PLDM file objects found.\n";
+        return paths;
+    }
+
+    std::cout << std::left << std::setw(4) << "#" << std::setw(24) << "Name"
+              << std::setw(20) << "Purpose" << std::setw(12) << "Size"
+              << "Object Path\n";
+    std::cout << std::string(80, '-') << "\n";
+
+    int idx = 0;
+    for (const auto& path : paths)
+    {
+        auto name = getStringProp(bus, path, "Name");
+        auto purpose = getStringProp(bus, path, "Purpose");
+        auto size = getUint64Prop(bus, path, "Size");
+
+        // strip the enum prefix (e.g. "xyz.openbmc_project.PLDM.File.PurposeType.")
+        auto dot = purpose.rfind('.');
+        if (dot != std::string::npos)
+        {
+            purpose = purpose.substr(dot + 1);
+        }
+
+        std::cout << std::left << std::setw(4) << idx++ << std::setw(24)
+                  << (name.empty() ? "(unknown)" : name) << std::setw(20)
+                  << (purpose.empty() ? "-" : purpose) << std::setw(12) << size
+                  << path << "\n";
+    }
+    return paths;
+}
+
+/** @brief Open a file session and stream data to stdout (hex) or a file */
+static void doRead(const std::string& objPath, uint32_t offset, uint32_t length,
+                   bool exclusivity, const std::string& outputFile)
+{
+    auto bus = sdbusplus::bus::new_default();
+
+    auto method =
+        bus.new_method_call(PLDMService, objPath.c_str(), FileInterface, "Open");
+    method.append(offset, length, exclusivity);
+
+    sdbusplus::message_t reply;
+    try
+    {
+        reply = bus.call(method);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        std::cerr << "D-Bus call to Open() failed: " << e.what() << "\n";
+        return;
+    }
+
+    sdbusplus::message::unix_fd socketFd;
+    try
+    {
+        reply.read(socketFd);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        std::cerr << "Failed to read unix_fd from reply: " << e.what() << "\n";
+        return;
+    }
+
+    std::vector<uint8_t> data;
+    uint8_t buf[4096];
+    ssize_t n;
+    while ((n = read(socketFd.fd, buf, sizeof(buf))) > 0)
+    {
+        data.insert(data.end(), buf, buf + n);
+    }
+    if (n < 0)
+    {
+        std::cerr << "Error reading from socket: " << std::strerror(errno)
+                  << "\n";
+        close(socketFd.fd);
+        return;
+    }
+    close(socketFd.fd);
+
+    std::cerr << "Read " << data.size() << " bytes from " << objPath << "\n";
+
+    if (!outputFile.empty())
+    {
+        std::ofstream ofs(outputFile, std::ios::binary);
+        if (!ofs)
+        {
+            std::cerr << "Failed to open output file: " << outputFile << "\n";
+            return;
+        }
+        ofs.write(reinterpret_cast<const char*>(data.data()),
+                  static_cast<std::streamsize>(data.size()));
+        std::cerr << "Data written to " << outputFile << "\n";
+    }
+    else
+    {
+        hexDump(data);
+    }
+}
+
+} // namespace
+
+/** @brief ListFiles: show all available PLDM file objects */
+class ListFiles
+{
+  public:
+    ListFiles() = delete;
+    explicit ListFiles(CLI::App* app)
+    {
+        app->callback([&]() { printFileList(); });
+    }
+};
+
+/** @brief ReadFile: read by D-Bus object path or by index from ListFiles */
+class ReadFile
+{
+  public:
+    ReadFile() = delete;
+    explicit ReadFile(CLI::App* app)
+    {
+        app->add_option("-p,--object-path", objPath,
+                        "D-Bus object path of the PLDM File");
+        app->add_option("-i,--index", index,
+                        "Index from 'pldmtool file ListFiles' (use instead of -p)");
+        app->add_option("-o,--offset", offset,
+                        "Byte offset to start reading from (default: 0)");
+        app->add_option("-l,--length", length,
+                        "Number of bytes to read, 0 means whole file (default: 0)");
+        app->add_option("-f,--output-file", outputFile,
+                        "Write raw bytes to this path instead of hex-dumping to stdout");
+        app->add_flag("-x,--exclusive", exclusivity,
+                      "Request exclusive access to the file");
+
+        app->callback([&]() { exec(); });
+    }
+
+  private:
+    std::string objPath;
+    int index = -1;
+    uint32_t offset = 0;
+    uint32_t length = 0;
+    std::string outputFile;
+    bool exclusivity = false;
+
+    void exec()
+    {
+        std::string target = objPath;
+
+        if (target.empty())
+        {
+            if (index < 0)
+            {
+                // No path and no index: print the list and prompt
+                auto paths = printFileList();
+                if (paths.empty())
+                {
+                    return;
+                }
+                std::cout << "\nEnter index to read: ";
+                std::cin >> index;
+            }
+
+            // Resolve index to path
+            auto paths = listFileObjects();
+            if (index < 0 || static_cast<size_t>(index) >= paths.size())
+            {
+                std::cerr << "Index " << index << " is out of range (0.."
+                          << paths.size() - 1 << ")\n";
+                return;
+            }
+            target = paths[index];
+        }
+
+        doRead(target, offset, length, exclusivity, outputFile);
+    }
+};
+
+void registerCommand(CLI::App& app)
+{
+    auto file =
+        app.add_subcommand("file", "PLDM File Transfer (DSP0248) commands");
+    file->require_subcommand(1);
+
+    auto listFiles = file->add_subcommand(
+        "ListFiles", "List all PLDM File Descriptor objects on D-Bus");
+    static ListFiles listFilesCmd(listFiles);
+
+    auto readFile = file->add_subcommand(
+        "ReadFile",
+        "Read data from a PLDM File Descriptor "
+        "(-p <path> | -i <index from ListFiles>)");
+    static ReadFile readFileCmd(readFile);
+}
+
+} // namespace file
+} // namespace pldmtool
