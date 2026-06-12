@@ -63,6 +63,24 @@
       "message": "Any reason dfHeartbeat is implemented only for regular files? as per the Spec DSP0242 section 13.3.3 Polled Serial Log read example. it does show that DfHeartbeat can be implemented for serial FIFO files as well.",
       "revId": "410afb50db860d475cdcb574ba712d5af74417d8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daaac089_d18d4651",
+        "filename": "platform-mc/file_descriptor.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-06-12T04:30:46Z",
+      "side": 1,
+      "message": "Because the reading flow of each part of a section for a regular file can be long (each part does not have to be the negotiated part size) compared to Serial file (each section has only one part which must be equal or less than the negotiated part size).\n\nTherefore, I let File client call DfHeartbeat before entering the sequential read in order to set RequesterMaxInterval for Regular File as Figure 5 Page 1 of DSP0242 1.0.0 suggests and not for Serial File as Figure 9 Page 1 suggests.\n\nMoreover, we read files based on the outside client\u0027s needs, and always close the FD after the required length is met. So, there\u0027s no need to keep the FD open by DfHeartbeat after we have completed the read (as opposed to the suggestion in Figure 7 Page 3+4 for regular file, and Figure 10 Page 2 for serial file).",
+      "parentUuid": "e8d24508_0ae9bf46",
+      "revId": "410afb50db860d475cdcb574ba712d5af74417d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
