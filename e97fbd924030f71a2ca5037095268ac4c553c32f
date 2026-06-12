@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27d70cc0_e4ea6165",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000350
+      },
+      "writtenOn": "2026-06-12T09:26:28Z",
+      "side": 1,
+      "message": "Hi @manojkiran.eda@gmail.com\nI have greped for free() to check where ever manual free() used.\nthere are other files as well where free used, can be fixed in future commits. \nthese two places requires similar fix, so updated in this commit.",
+      "parentUuid": "3bd9df80_e2704b90",
+      "revId": "e97fbd924030f71a2ca5037095268ac4c553c32f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "da5e471e_1f29fa47",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
