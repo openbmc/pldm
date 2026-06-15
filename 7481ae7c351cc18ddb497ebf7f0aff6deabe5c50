@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5b2e4a_05b7b439",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "remote pldm endpoint",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9814f2fc_7178a5e3",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "please re-order this ? I think checking for the state should be the first point ?",
+      "range": {
+        "startLine": 17,
+        "startChar": 1,
+        "endLine": 17,
+        "endChar": 64
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73e5add8_af3354f7",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "I am not sure if this is adding any value ? A remote pldm endpoint can be host/UEFI/BIOS/Embedded Micro - we dont really need to convey that explicity.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 14
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7de41e0a_954f8980",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "this title seems redundant ?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 32
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fb7d33a_096428a8",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "this statement looks odd - openbmc does not start the pldm-softoff ..its usually the state manager application soft off target that starts the app.",
+      "range": {
+        "startLine": 102,
+        "startChar": 2,
+        "endLine": 102,
+        "endChar": 22
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8b0aade_d14a3c8c",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "remote endpoint shutdown",
+      "range": {
+        "startLine": 114,
+        "startChar": 50,
+        "endLine": 114,
+        "endChar": 63
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "624dbaff_3397d142",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "i think we can drop this note.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 139
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97311e23_d40a84fe",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "drop this",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 27
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "237d86e9_90bd70bb",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-15T09:51:54Z",
+      "side": 1,
+      "message": "Just `PLDM for` is good enough ?",
+      "range": {
+        "startLine": 177,
+        "startChar": 16,
+        "endLine": 177,
+        "endChar": 53
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
