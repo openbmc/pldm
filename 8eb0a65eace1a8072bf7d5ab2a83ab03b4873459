@@ -16,6 +16,24 @@
       "message": "@unive.tien.wiwynn@gmail.com I see your other patch which was implementing this https://gerrit.openbmc.org/c/openbmc/pldm/+/76702 has been abandoned for https://gerrit.openbmc.org/c/openbmc/pldm/+/85759. How do you plan to use merged changes for this TODO ?",
       "revId": "8eb0a65eace1a8072bf7d5ab2a83ab03b4873459",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44b56d6b_638e3e50",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 93
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-16T02:42:29Z",
+      "side": 1,
+      "message": "Implemented on this patch.",
+      "parentUuid": "db3589fd_40eb6da6",
+      "revId": "8eb0a65eace1a8072bf7d5ab2a83ab03b4873459",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
