@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed2dfe24_159f54dc",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b5b2e4a_05b7b439",
+      "range": {
+        "startLine": 7,
+        "startChar": 21,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9814f2fc_7178a5e3",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-06-15T09:51:54Z",
       "side": 1,
       "message": "please re-order this ? I think checking for the state should be the first point ?",
+      "range": {
+        "startLine": 17,
+        "startChar": 1,
+        "endLine": 17,
+        "endChar": 64
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57af1b23_56b41d58",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9814f2fc_7178a5e3",
       "range": {
         "startLine": 17,
         "startChar": 1,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48658a32_90112957",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "There was a comment from @sagi.040693@gmail.com asking the same and needing to mention the same in the doc.",
+      "parentUuid": "73e5add8_af3354f7",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 14
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7de41e0a_954f8980",
         "filename": "softoff/README.md",
         "patchSetId": 11
@@ -83,6 +155,30 @@
       "writtenOn": "2026-06-15T09:51:54Z",
       "side": 1,
       "message": "this title seems redundant ?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 32
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6526a399_1028952d",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7de41e0a_954f8980",
       "range": {
         "startLine": 44,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9118ce7a_a516af68",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5fb7d33a_096428a8",
+      "range": {
+        "startLine": 102,
+        "startChar": 2,
+        "endLine": 102,
+        "endChar": 22
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8b0aade_d14a3c8c",
@@ -129,6 +249,30 @@
       "writtenOn": "2026-06-15T09:51:54Z",
       "side": 1,
       "message": "remote endpoint shutdown",
+      "range": {
+        "startLine": 114,
+        "startChar": 50,
+        "endLine": 114,
+        "endChar": 63
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d49db0a_e87fe45c",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b8b0aade_d14a3c8c",
       "range": {
         "startLine": 114,
         "startChar": 50,
@@ -162,6 +306,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06d7143b_9a53ce31",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "624dbaff_3397d142",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 139
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97311e23_d40a84fe",
@@ -185,6 +353,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4aaf795_f869743f",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97311e23_d40a84fe",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 27
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "237d86e9_90bd70bb",
@@ -198,6 +390,30 @@
       "writtenOn": "2026-06-15T09:51:54Z",
       "side": 1,
       "message": "Just `PLDM for` is good enough ?",
+      "range": {
+        "startLine": 177,
+        "startChar": 16,
+        "endLine": 177,
+        "endChar": 53
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c20ff0ec_8ce1805f",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-16T08:56:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "237d86e9_90bd70bb",
       "range": {
         "startLine": 177,
         "startChar": 16,
