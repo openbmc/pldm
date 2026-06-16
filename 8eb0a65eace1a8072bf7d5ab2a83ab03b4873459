@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "748cd3e5_745696fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 93
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-16T20:29:54Z",
+      "side": 1,
+      "message": "@manojkiran.eda@gmail.com @deepak.kodihalli.83@gmail.com If there are no further comments, can you pleas merge this PR. We need to close on this as its open for close to 2 years now.",
+      "revId": "8eb0a65eace1a8072bf7d5ab2a83ab03b4873459",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db3589fd_40eb6da6",
         "filename": "fw-update/item_update_manager.cpp",
         "patchSetId": 93
