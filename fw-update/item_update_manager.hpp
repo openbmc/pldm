@@ -97,7 +97,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @param[in] image The image file descriptor
      * @param[in] applyTime The requested apply time
      */
-    virtual sdbusplus::message::object_path startUpdate(
+    virtual sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,
         ApplyTimeIntf::RequestedApplyTimes applyTime =
             ApplyTimeIntf::RequestedApplyTimes::Immediate) override;

@@ -244,7 +244,7 @@ void ItemUpdateManager::updateActivationProgress()
     }
 }
 
-sdbusplus::message::object_path ItemUpdateManager::startUpdate(
+sdbusplus::object_path ItemUpdateManager::startUpdate(
     sdbusplus::message::unix_fd image,
     ApplyTimeIntf::RequestedApplyTimes /*applyTime*/)
 {
