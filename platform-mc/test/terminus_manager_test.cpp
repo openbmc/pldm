@@ -130,7 +130,7 @@ TEST_F(TerminusManagerTest, negativeMapTidTest)
 
 TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
 {
-    const size_t getTidRespLen = PLDM_GET_TID_RESP_BYTES;
+    const size_t getTidRespLen = PLDM_BASE_GET_TID_RESP_BYTES;
     const size_t setTidRespLen = PLDM_SET_TID_RESP_BYTES;
     const size_t getPldmTypesRespLen = PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES;
 
@@ -189,7 +189,7 @@ TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
 
 TEST_F(TerminusManagerTest, negativeDiscoverMctpTerminusTest)
 {
-    const size_t getTidRespLen = PLDM_GET_TID_RESP_BYTES;
+    const size_t getTidRespLen = PLDM_BASE_GET_TID_RESP_BYTES;
     const size_t setTidRespLen = PLDM_SET_TID_RESP_BYTES;
     const size_t getPldmTypesRespLen = PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES;
 
@@ -245,7 +245,7 @@ TEST_F(TerminusManagerTest, negativeDiscoverMctpTerminusTest)
 
 TEST_F(TerminusManagerTest, doesSupportTypeTest)
 {
-    const size_t getTidRespLen = PLDM_GET_TID_RESP_BYTES;
+    const size_t getTidRespLen = PLDM_BASE_GET_TID_RESP_BYTES;
     const size_t setTidRespLen = PLDM_SET_TID_RESP_BYTES;
     const size_t getPldmTypesRespLen = PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES;
 
@@ -295,7 +295,7 @@ TEST_F(TerminusManagerTest, doesSupportTypeTest)
 
 TEST_F(TerminusManagerTest, doesSupportCommandTest)
 {
-    const size_t getTidRespLen = PLDM_GET_TID_RESP_BYTES;
+    const size_t getTidRespLen = PLDM_BASE_GET_TID_RESP_BYTES;
     const size_t setTidRespLen = PLDM_SET_TID_RESP_BYTES;
     const size_t getPldmTypesRespLen = PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES;
     const size_t getPldmCommandRespLen = PLDM_GET_COMMANDS_RESP_BYTES;
