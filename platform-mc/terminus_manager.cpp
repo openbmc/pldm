@@ -503,8 +503,8 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
         co_return rc;
     }
 
-    uint8_t completionCode = 0;
-    rc = decode_get_tid_resp(responseMsg, responseLen, &completionCode, tid);
+    pldm_base_get_tid_resp resp{};
+    rc = decode_pldm_base_get_tid_resp(responseMsg, responseLen, &resp);
     if (rc)
     {
         lg2::error(
@@ -513,14 +513,16 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
         co_return rc;
     }
 
-    if (completionCode != PLDM_SUCCESS)
+    if (resp.completion_code != PLDM_SUCCESS)
     {
         lg2::error("Error : GetTID for Endpoint ID {EID}, complete code {CC}.",
-                   "EID", eid, "CC", completionCode);
+                   "EID", eid, "CC", resp.completion_code);
         co_return rc;
     }
 
-    co_return completionCode;
+    *tid = resp.tid;
+
+    co_return resp.completion_code;
 }
 
 exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
