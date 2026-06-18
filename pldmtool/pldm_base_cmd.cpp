@@ -373,18 +373,18 @@ class GetTID : public CommandInterface
 
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
-        uint8_t cc = 0;
-        uint8_t tid = 0;
-        std::vector<bitfield8_t> types(8);
-        auto rc = decode_get_tid_resp(responsePtr, payloadLength, &cc, &tid);
-        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        pldm_base_get_tid_resp resp{};
+        auto rc =
+            decode_pldm_base_get_tid_resp(responsePtr, payloadLength, &resp);
+        if (rc != PLDM_SUCCESS || resp.completion_code != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
-                      << "rc=" << rc << ",cc=" << (int)cc << "\n";
+                      << "rc=" << rc << ",cc="
+                      << static_cast<int>(resp.completion_code) << "\n";
             return;
         }
         ordered_json data;
-        data["Response"] = static_cast<uint32_t>(tid);
+        data["Response"] = static_cast<uint32_t>(resp.tid);
         pldmtool::helper::DisplayInJson(data);
     }
 };

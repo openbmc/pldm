@@ -275,11 +275,12 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
                 co_await handler.sendRecvMsg(eid, std::move(request));
             EXPECT_NE(responseLen, 0);
 
-            uint8_t cc = 0;
-            rc = decode_get_tid_resp(responseMsg, responseLen, &cc, &tid);
+            pldm_base_get_tid_resp resp{};
+            rc = decode_pldm_base_get_tid_resp(responseMsg, responseLen, &resp);
             EXPECT_EQ(rc, PLDM_SUCCESS);
 
-            co_return cc;
+            tid = resp.tid;
+            co_return resp.completion_code;
         }
     };
 
