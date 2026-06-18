@@ -178,13 +178,15 @@ void Handler::_processSetEventReceiver(sdeventplus::source::EventBase&
 
 Response Handler::getTID(const pldm_msg* request, size_t /*payloadLength*/)
 {
-    Response response(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES, 0);
+    pldm_base_get_tid_resp resp{PLDM_SUCCESS, TERMINUS_ID};
+    Response response(sizeof(pldm_msg_hdr) + PLDM_BASE_GET_TID_RESP_BYTES, 0);
     auto responsePtr = new (response.data()) pldm_msg;
-    auto rc = encode_get_tid_resp(request->hdr.instance_id, PLDM_SUCCESS,
-                                  TERMINUS_ID, responsePtr);
-    if (rc != PLDM_SUCCESS)
+    size_t payloadLength = PLDM_BASE_GET_TID_RESP_BYTES;
+    auto rc = encode_pldm_base_get_tid_resp(request->hdr.instance_id, &resp,
+                                            responsePtr, &payloadLength);
+    if (rc || payloadLength != PLDM_BASE_GET_TID_RESP_BYTES)
     {
-        return ccOnlyResponse(request, rc);
+        return ccOnlyResponse(request, PLDM_ERROR);
     }
 
     if (oemPlatformHandler)

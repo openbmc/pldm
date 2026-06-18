@@ -305,12 +305,17 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
                 }),
                 exec::default_task_context<void>(stdexec::inline_scheduler{}));
 
-    pldm::Response mockResponse(sizeof(pldm_msg_hdr) + PLDM_GET_TID_RESP_BYTES,
-                                0);
+    pldm::Response mockResponse(
+        sizeof(pldm_msg_hdr) + PLDM_BASE_GET_TID_RESP_BYTES, 0);
     auto mockResponseMsg = new (mockResponse.data()) pldm_msg;
 
     // Compose response message of getTID command
-    encode_get_tid_resp(instanceId, PLDM_SUCCESS, expectedTid, mockResponseMsg);
+    pldm_base_get_tid_resp resp{PLDM_SUCCESS, expectedTid};
+    size_t payloadLength = PLDM_BASE_GET_TID_RESP_BYTES;
+    auto rc = encode_pldm_base_get_tid_resp(instanceId, &resp, mockResponseMsg,
+                                            &payloadLength);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(payloadLength, PLDM_BASE_GET_TID_RESP_BYTES);
 
     // Send response back to resume getTID coroutine to update respTid by
     // calling  reqHandler.handleResponse() manually
