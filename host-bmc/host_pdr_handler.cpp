@@ -101,7 +101,7 @@ HostPDRHandler::HostPDRHandler(
     entityMaps(parseEntityMap(ENTITY_MAP_JSON)), oemUtilsHandler(nullptr)
 {
     mergedHostParents = false;
-    hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
+    hostOffMatch = std::make_unique<sdbusplus::match>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
                           HostState::interface),

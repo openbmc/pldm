@@ -154,7 +154,7 @@ class SoftPowerOff
      * When the host soft off is complete, it sends an platform event message
      * to BMC's pldmd, and the pldmd will emit the StateSensorEvent signal.
      **/
-    std::unique_ptr<sdbusplus::bus::match_t> pldmEventSignal;
+    std::unique_ptr<sdbusplus::match> pldmEventSignal;
 
     /** @brief Reference to the instance database
      */

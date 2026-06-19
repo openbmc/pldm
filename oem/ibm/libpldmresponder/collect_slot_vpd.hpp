@@ -157,7 +157,7 @@ class SlotHandler
         nullptr; //!< oem platform handler
 
     /** @brief pointer to the matcher for Present State for adapter object*/
-    std::unique_ptr<sdbusplus::bus::match_t> fruPresenceMatch;
+    std::unique_ptr<sdbusplus::match> fruPresenceMatch;
 
     /** @brief Timer used for Slot VPD Collection operation */
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> timer;

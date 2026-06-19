@@ -242,7 +242,7 @@ class Handler : public CmdHandler
                                                           payloadLength);
             });
 
-        resDumpMatcher = std::make_unique<sdbusplus::bus::match_t>(
+        resDumpMatcher = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
                 sdbusplus::bus::match::rules::argNpath(0, dumpObjPath),
@@ -285,7 +285,7 @@ class Handler : public CmdHandler
                     }
                 }
             });
-        vmiCertMatcher = std::make_unique<sdbusplus::bus::match_t>(
+        vmiCertMatcher = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             sdbusplus::bus::match::rules::interfacesAdded() +
                 sdbusplus::bus::match::rules::argNpath(0, certObjPath),
@@ -450,10 +450,10 @@ class Handler : public CmdHandler
         std::vector<std::pair<std::string, std::variant<std::string>>>>>;
     std::unique_ptr<pldm::requester::oem_ibm::DbusToFileHandler>
         dbusToFileHandler; //!< pointer to send request to Host
-    std::unique_ptr<sdbusplus::bus::match_t>
+    std::unique_ptr<sdbusplus::match>
         resDumpMatcher;    //!< Pointer to capture the interface added signal
                            //!< for new resource dump
-    std::unique_ptr<sdbusplus::bus::match_t>
+    std::unique_ptr<sdbusplus::match>
         vmiCertMatcher;    //!< Pointer to capture the interface added signal
                            //!< for new csr string
     /** @brief PLDM request handler */

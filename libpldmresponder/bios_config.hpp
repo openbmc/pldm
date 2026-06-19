@@ -176,7 +176,7 @@ class BIOSConfig
     using DbusIfacesAdded = std::map<ifaceName, DbusChObjProperties>;
 
     // vector to catch the D-Bus property change signals for BIOS attributes
-    std::vector<std::unique_ptr<sdbusplus::bus::match_t>> biosAttrMatch;
+    std::vector<std::unique_ptr<sdbusplus::match>> biosAttrMatch;
 
     /** @brief system type/model */
     std::string sysType;
@@ -214,36 +214,32 @@ class BIOSConfig
             if (dBusMap.has_value())
             {
                 using namespace sdbusplus::bus::match::rules;
-                biosAttrMatch.push_back(
-                    std::make_unique<sdbusplus::bus::match_t>(
-                        pldm::utils::DBusHandler::getBus(),
-                        propertiesChanged(dBusMap->objectPath,
-                                          dBusMap->interface),
-                        [this, biosAttrIndex](sdbusplus::message_t& msg) {
-                            DbusChObjProperties props;
-                            std::string iface;
-                            msg.read(iface, props);
-                            processBiosAttrChangeNotification(props,
+                biosAttrMatch.push_back(std::make_unique<sdbusplus::match>(
+                    pldm::utils::DBusHandler::getBus(),
+                    propertiesChanged(dBusMap->objectPath, dBusMap->interface),
+                    [this, biosAttrIndex](sdbusplus::message_t& msg) {
+                        DbusChObjProperties props;
+                        std::string iface;
+                        msg.read(iface, props);
+                        processBiosAttrChangeNotification(props, biosAttrIndex);
+                    }));
+
+                biosAttrMatch.push_back(std::make_unique<sdbusplus::match>(
+                    pldm::utils::DBusHandler::getBus(),
+                    interfacesAdded() + argNpath(0, dBusMap->objectPath),
+                    [this, biosAttrIndex, interface = dBusMap->interface](
+                        sdbusplus::message_t& msg) {
+                        sdbusplus::object_path path;
+                        DbusIfacesAdded interfaces;
+
+                        msg.read(path, interfaces);
+                        auto ifaceIt = interfaces.find(interface);
+                        if (ifaceIt != interfaces.end())
+                        {
+                            processBiosAttrChangeNotification(ifaceIt->second,
                                                               biosAttrIndex);
-                        }));
-
-                biosAttrMatch.push_back(
-                    std::make_unique<sdbusplus::bus::match_t>(
-                        pldm::utils::DBusHandler::getBus(),
-                        interfacesAdded() + argNpath(0, dBusMap->objectPath),
-                        [this, biosAttrIndex, interface = dBusMap->interface](
-                            sdbusplus::message_t& msg) {
-                            sdbusplus::object_path path;
-                            DbusIfacesAdded interfaces;
-
-                            msg.read(path, interfaces);
-                            auto ifaceIt = interfaces.find(interface);
-                            if (ifaceIt != interfaces.end())
-                            {
-                                processBiosAttrChangeNotification(
-                                    ifaceIt->second, biosAttrIndex);
-                            }
-                        }));
+                        }
+                    }));
             }
         }
         catch (const std::exception& e)

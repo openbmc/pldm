@@ -697,7 +697,7 @@ void HostEffecterParser::createHostEffecterMatch(
     size_t effecterInfoIndex, size_t dbusInfoIndex, uint16_t effecterId)
 {
     using namespace sdbusplus::bus::match::rules;
-    effecterInfoMatch.emplace_back(std::make_unique<sdbusplus::bus::match_t>(
+    effecterInfoMatch.emplace_back(std::make_unique<sdbusplus::match>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged(objectPath, interface),
         [this, effecterInfoIndex, dbusInfoIndex,

@@ -155,7 +155,7 @@ void SlotHandler::createPresenceMatch(const std::string& adapterObjectPath,
                                       const pldm_entity& entity,
                                       uint8_t stateFieldValue)
 {
-    fruPresenceMatch = std::make_unique<sdbusplus::bus::match_t>(
+    fruPresenceMatch = std::make_unique<sdbusplus::match>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged(adapterObjectPath,
                           "xyz.openbmc_project.Inventory.Item"),

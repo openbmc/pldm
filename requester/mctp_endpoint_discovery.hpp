@@ -81,13 +81,13 @@ class MctpDiscovery
     sdbusplus::bus_t& bus;
 
     /** @brief Used to watch for new MCTP endpoints */
-    sdbusplus::bus::match_t mctpEndpointAddedSignal;
+    sdbusplus::match mctpEndpointAddedSignal;
 
     /** @brief Used to watch for the removed MCTP endpoints */
-    sdbusplus::bus::match_t mctpEndpointRemovedSignal;
+    sdbusplus::match mctpEndpointRemovedSignal;
 
     /** @brief Used to watch for new MCTP endpoints */
-    sdbusplus::bus::match_t mctpEndpointPropChangedSignal;
+    sdbusplus::match mctpEndpointPropChangedSignal;
 
     /** @brief List of handlers need to notify when new MCTP
      * Endpoint is Added/Removed */
