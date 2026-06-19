@@ -72,8 +72,8 @@ class Handler : public oem_platform::Handler
         codeUpdate->setVersions();
         setEventReceiverCnt = 0;
 
-        using namespace sdbusplus::bus::match::rules;
-        hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
+        using namespace sdbusplus::match_rules;
+        hostOffMatch = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/host0",
                               HostState::interface),
@@ -111,7 +111,7 @@ class Handler : public oem_platform::Handler
                 }
             });
 
-        powerStateOffMatch = std::make_unique<sdbusplus::bus::match_t>(
+        powerStateOffMatch = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/state/chassis0",
                               "xyz.openbmc_project.State.Chassis"),
@@ -160,7 +160,7 @@ class Handler : public oem_platform::Handler
                 }
             });
 
-        updateBIOSMatch = std::make_unique<sdbusplus::bus::match_t>(
+        updateBIOSMatch = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged("/xyz/openbmc_project/bios_config/manager",
                               "xyz.openbmc_project.BIOSConfig.Manager"),
@@ -194,7 +194,7 @@ class Handler : public oem_platform::Handler
                 }
             });
 
-        platformSAIMatch = std::make_unique<sdbusplus::bus::match_t>(
+        platformSAIMatch = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(
                 "/xyz/openbmc_project/led/groups/partition_system_attention_indicator",
@@ -210,7 +210,7 @@ class Handler : public oem_platform::Handler
                 }
             });
 
-        partitionSAIMatch = std::make_unique<sdbusplus::bus::match_t>(
+        partitionSAIMatch = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(
                 "/xyz/openbmc_project/led/groups/platform_system_attention_indicator",
@@ -459,28 +459,28 @@ class Handler : public oem_platform::Handler
     void startStopTimer(bool value);
 
     /** @brief D-Bus property changed signal match for CurrentPowerState*/
-    std::unique_ptr<sdbusplus::bus::match_t> chassisOffMatch;
+    std::unique_ptr<sdbusplus::match> chassisOffMatch;
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>* handler;
 
     /** @brief D-Bus property changed signal match */
-    std::unique_ptr<sdbusplus::bus::match_t> updateBIOSMatch;
+    std::unique_ptr<sdbusplus::match> updateBIOSMatch;
 
     /** @brief D-Bus property changed signal match */
-    std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
+    std::unique_ptr<sdbusplus::match> hostOffMatch;
 
     /** @brief D-Bus property changed signal match */
-    std::unique_ptr<sdbusplus::bus::match_t> powerStateOffMatch;
+    std::unique_ptr<sdbusplus::match> powerStateOffMatch;
 
     /** @brief Timer used for monitoring surveillance pings from host */
     sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic> timer;
 
     /** @brief D-Bus Interface added signal match for virtual platform SAI */
-    std::unique_ptr<sdbusplus::bus::match_t> platformSAIMatch;
+    std::unique_ptr<sdbusplus::match> platformSAIMatch;
 
     /** @brief D-Bus Interface added signal match for virtual partition SAI */
-    std::unique_ptr<sdbusplus::bus::match_t> partitionSAIMatch;
+    std::unique_ptr<sdbusplus::match> partitionSAIMatch;
 
     /** @brief Real SAI sensor id*/
     uint16_t realSAISensorId;

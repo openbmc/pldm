@@ -327,7 +327,7 @@ class HostPDRHandler
     PDRRecordHandles modifiedPDRRecordHandles;
 
     /** @brief D-Bus property changed signal match */
-    std::unique_ptr<sdbusplus::bus::match_t> hostOffMatch;
+    std::unique_ptr<sdbusplus::match> hostOffMatch;
 
     /** @brief sensorMap is a lookup data structure that is build from the
      *         hostPDR that speeds up the lookup of <TerminusID, SensorID> in

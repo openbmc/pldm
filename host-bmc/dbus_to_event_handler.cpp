@@ -16,7 +16,7 @@ using namespace pldm::responder;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
 using namespace pldm::utils;
-using namespace sdbusplus::bus::match::rules;
+using namespace sdbusplus::match_rules;
 
 namespace state_sensor
 {
@@ -115,7 +115,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
 
         const auto& dbusMapping = dbusMappings[offset];
         const auto& dbusValueMapping = dbusValMaps[offset];
-        auto stateSensorMatch = std::make_unique<sdbusplus::bus::match_t>(
+        auto stateSensorMatch = std::make_unique<sdbusplus::match>(
             pldm::utils::DBusHandler::getBus(),
             propertiesChanged(dbusMapping.objectPath.c_str(),
                               dbusMapping.interface.c_str()),

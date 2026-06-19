@@ -238,10 +238,10 @@ class CodeUpdate
     bool codeUpdateInProgress =
         false;                     //!< indicates whether codeupdate is going on
     const pldm::utils::DBusHandler* dBusIntf; //!< D-Bus handler
-    std::vector<std::unique_ptr<sdbusplus::bus::match_t>>
+    std::vector<std::unique_ptr<sdbusplus::match>>
         captureNextBootSideChange; //!< vector to catch the D-Bus property
                                    //!< change for next boot side
-    std::vector<std::unique_ptr<sdbusplus::bus::match_t>>
+    std::vector<std::unique_ptr<sdbusplus::match>>
         fwUpdateMatcher; //!< pointer to capture the interface added signal for
                          //!< new image
     pldm::responder::oem_platform::Handler*
@@ -250,7 +250,7 @@ class CodeUpdate
     uint16_t firmwareUpdateSensorId;
     uint16_t bootSideRenameStateSensorId;
     /** @brief D-Bus property changed signal match for image activation */
-    std::unique_ptr<sdbusplus::bus::match_t> imageActivationMatch;
+    std::unique_ptr<sdbusplus::match> imageActivationMatch;
 
     /* @brief Method to take action when the subscribed D-Bus property is
      *        changed

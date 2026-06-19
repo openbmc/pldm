@@ -15,7 +15,7 @@ namespace requester
 namespace oem_ibm
 {
 using namespace pldm::utils;
-using namespace sdbusplus::bus::match::rules;
+using namespace sdbusplus::match_rules;
 
 static constexpr auto resDumpProgressIntf =
     "xyz.openbmc_project.Common.Progress";

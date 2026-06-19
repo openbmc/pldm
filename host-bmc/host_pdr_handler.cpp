@@ -30,7 +30,7 @@ namespace pldm
 {
 using namespace pldm::responder::events;
 using namespace pldm::utils;
-using namespace sdbusplus::bus::match::rules;
+using namespace sdbusplus::match_rules;
 using namespace pldm::responder::pdr_utils;
 using namespace pldm::hostbmc::utils;
 using Json = nlohmann::json;
@@ -101,7 +101,7 @@ HostPDRHandler::HostPDRHandler(
     entityMaps(parseEntityMap(ENTITY_MAP_JSON)), oemUtilsHandler(nullptr)
 {
     mergedHostParents = false;
-    hostOffMatch = std::make_unique<sdbusplus::bus::match_t>(
+    hostOffMatch = std::make_unique<sdbusplus::match>(
         pldm::utils::DBusHandler::getBus(),
         propertiesChanged("/xyz/openbmc_project/state/host0",
                           HostState::interface),

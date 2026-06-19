@@ -13,7 +13,7 @@
 #include <string_view>
 #include <vector>
 
-using namespace sdbusplus::bus::match::rules;
+using namespace sdbusplus::match_rules;
 
 PHOSPHOR_LOG2_USING;
 

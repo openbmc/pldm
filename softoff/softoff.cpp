@@ -40,7 +40,7 @@ using sdbusplus::exception::SdBusError;
 // Shutdown effecter terminus ID, set when we look up the effecter
 pldm::pdr::TerminusID TID = 0;
 
-namespace sdbusRule = sdbusplus::bus::match::rules;
+namespace sdbusRule = sdbusplus::match_rules;
 
 SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
                            pldm::InstanceIdDb& instanceIdDb) :
@@ -87,7 +87,7 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
     }
 
     // Matches on the pldm StateSensorEvent signal
-    pldmEventSignal = std::make_unique<sdbusplus::bus::match_t>(
+    pldmEventSignal = std::make_unique<sdbusplus::match>(
         bus,
         sdbusRule::type::signal() + sdbusRule::member("StateSensorEvent") +
             sdbusRule::path("/xyz/openbmc_project/pldm") +

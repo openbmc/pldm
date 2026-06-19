@@ -18,14 +18,13 @@ class Handler : public CmdHandler
   public:
     explicit Handler(const fs::path sysDirPath = {}) : sysDirPath(sysDirPath)
     {
-        systemCompatibleMatchCallBack =
-            std::make_unique<sdbusplus::bus::match_t>(
-                pldm::utils::DBusHandler::getBus(),
-                sdbusplus::bus::match::rules::interfacesAdded() +
-                    sdbusplus::bus::match::rules::sender(
-                        "xyz.openbmc_project.EntityManager"),
-                std::bind(&Handler::systemCompatibleCallback, this,
-                          std::placeholders::_1));
+        systemCompatibleMatchCallBack = std::make_unique<sdbusplus::match>(
+            pldm::utils::DBusHandler::getBus(),
+            sdbusplus::match_rules::interfacesAdded() +
+                sdbusplus::match_rules::sender(
+                    "xyz.openbmc_project.EntityManager"),
+            std::bind(&Handler::systemCompatibleCallback, this,
+                      std::placeholders::_1));
         sysTypeCallback = nullptr;
     }
 
@@ -56,7 +55,7 @@ class Handler : public CmdHandler
     std::string systemType;
 
     /** @brief D-Bus Interface added signal match for Entity Manager */
-    std::unique_ptr<sdbusplus::bus::match_t> systemCompatibleMatchCallBack;
+    std::unique_ptr<sdbusplus::match> systemCompatibleMatchCallBack;
 
     /** @brief Registered Callback */
     SystemTypeCallback sysTypeCallback;
