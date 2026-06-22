@@ -690,7 +690,10 @@ void InventoryManager::getFirmwareParameters(
 
             firmwareInventoryManager.createFirmwareEntry(
                 totalIdentifier, devNameIt->second, imageSetVersion,
-                descIt->second, componentInfo);
+                descIt->second, componentInfo, [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
         }
     }
 
@@ -721,7 +724,10 @@ void InventoryManager::getFirmwareParameters(
             firmwareInventoryManager.createFirmwareEntry(
                 SoftwareIdentifier(eid, compIdentifier), componentName,
                 utils::toString(activeCompVerStr), descriptorMap.at(eid),
-                componentInfo);
+                componentInfo, [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
         }
         else
         {

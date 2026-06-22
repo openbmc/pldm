@@ -20,7 +20,9 @@
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <functional>
 #include <unordered_map>
+#include <utility>
 
 namespace pldm
 {
@@ -88,7 +90,10 @@ class UpdateManager : public UpdateManagerBase
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
+        const ComponentInfoMap& componentInfoMap,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
@@ -102,7 +107,9 @@ class UpdateManager : public UpdateManagerBase
                                          "/xyz/openbmc_project/software/pldm",
                                          this)),
 #endif
-        totalNumComponentUpdates(0)
+        totalNumComponentUpdates(0), preConditionPath(conditionPathPair.first),
+        postConditionPath(conditionPathPair.second), conditionArg(conditionArg),
+        taskCompletionCallback(std::move(taskCompletionCallback))
     {}
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -170,6 +177,10 @@ class UpdateManager : public UpdateManagerBase
     std::unique_ptr<Activation> activation;
 
   private:
+    void startFirmwareActivation();
+
+    void completeUpdate(bool status);
+
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
@@ -198,6 +209,12 @@ class UpdateManager : public UpdateManagerBase
 
     decltype(std::chrono::steady_clock::now()) startTime;
     std::unique_ptr<sdeventplus::source::Defer> updateDeferHandler;
+
+    std::string preConditionPath;
+    std::string postConditionPath;
+    std::string conditionArg;
+    std::function<void()> taskCompletionCallback;
+    bool updateInProgress = false;
 
     /** @brief The last progress that was calculated. Used to avoid spamming
      * dbus

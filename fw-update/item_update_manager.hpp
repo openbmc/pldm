@@ -45,12 +45,20 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const std::string& objPath,
         const std::string& generatedId, const Descriptors& descriptors,
-        const ComponentInfo& componentInfo) :
+        const ComponentInfo& componentInfo,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        bool includeApplyTimeArg = false,
+        std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
         ItemUpdateIntf(pldm::utils::DBusHandler::getBus(),
                        std::format("{}_{}", objPath, generatedId).c_str()),
         eid(eid), objPath(objPath), descriptors(descriptors),
-        componentInfo(componentInfo)
+        componentInfo(componentInfo), preConditionPath(conditionPathPair.first),
+        postConditionPath(conditionPathPair.second),
+        baseConditionArg(conditionArg), conditionArg(conditionArg),
+        includeApplyTimeArg(includeApplyTimeArg),
+        taskCompletionCallback(std::move(taskCompletionCallback))
     {}
 
     /**
@@ -95,7 +103,10 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * D-Bus method implementation for starting the update process
      *
      * @param[in] image The image file descriptor
-     * @param[in] applyTime The requested apply time
+     * @param[in] applyTime The requested apply time (Immediate, OnReset,
+     * OnStart, etc.) This will be passed to post-condition services to allow
+     *                       conditional handling (e.g., skip reset if not
+     * immediate)
      */
     virtual sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,
@@ -158,6 +169,19 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      */
     std::string processFd(int fd);
 
+    void startFirmwareActivation();
+
+    void completeUpdate(bool status);
+
+    /**
+     * @brief Common teardown path for cleaning up update resources
+     *
+     * Resets deviceUpdater, packageDataStream, packageMap, dupFd and
+     * marks updateInProgress as false. Should be called from all cleanup
+     * paths to ensure consistent resource management.
+     */
+    void teardownUpdate();
+
     std::unique_ptr<Activation> inProgressActivation;
     std::unique_ptr<ActivationProgress> activationProgress;
     std::unique_ptr<PackageParser> parser;
@@ -173,6 +197,22 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @brief RAII wrapper for the duplicated package file descriptor
      */
     std::unique_ptr<pldm::utils::CustomFD> dupFd;
+
+    std::string preConditionPath;
+    std::string postConditionPath;
+    std::string baseConditionArg;
+    std::string conditionArg;
+    bool includeApplyTimeArg = false;
+    ApplyTimeIntf::RequestedApplyTimes applyTime =
+        ApplyTimeIntf::RequestedApplyTimes::Immediate;
+
+    /**
+     * @brief Convert applyTime enum to string representation
+     * @return String representation of applyTime
+     */
+    std::string applyTimeToString() const;
+
+    std::function<void()> taskCompletionCallback;
 
     bool updateInProgress = false;
 

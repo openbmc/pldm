@@ -123,6 +123,12 @@ if get_option('fw-update-pkg-inotify').allowed()
     conf_data.set('FW_UPDATE_INOTIFY_ENABLED', 1)
 endif
 
+# Firmware update targets JSON path
+conf_data.set_quoted(
+    'FW_UPDATE_TARGETS_JSON',
+    get_option('fw-update-targets-json'),
+)
+
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(
@@ -263,6 +269,7 @@ fw_update_sources = files(
     'fw-update/inventory_manager.cpp',
     'fw-update/item_update_manager.cpp',
     'fw-update/package_parser.cpp',
+    'fw-update/systemd_interface.cpp',
     'fw-update/update.cpp',
     'fw-update/update_manager.cpp',
 )
