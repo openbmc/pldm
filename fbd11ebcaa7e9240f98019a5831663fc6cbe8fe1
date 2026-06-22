@@ -3,6 +3,227 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8164181d_585ad5ed",
+        "filename": "common/types.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "Whats a ConditionArg?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a37d062d_99b72702",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 43
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "nit: Better to follow UpperCamelCase for def names or if u expend this inline rather than a reference, that should be fine too.",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4057b1aa_bca22e49",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "nit: Better to use pldm::fw_update to reduce number of lines.",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad7f9e99_71ba0b58",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "You are already in pldm namespace, any reason for defining this using clause?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c62d56_275139aa",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "Probably you can use from_json construct https://json.nlohmann.me/api/adl_serializer/from_json/ .\n\nFor example use case https://github.com/openbmc/phosphor-health-monitor/blob/master/health_metric_config.cpp#L74",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "057f49a6_50f986e2",
+        "filename": "fw-update/condition_executor.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "Wondering if passing a callback will be better by doing something as under -\n\nDisclaimer: I have never used it https://grok.openbmc.org/xref/openbmc/pldm/oem/ibm/libpldmresponder/file_io_type_pel.cpp?r\u003d7656b6575447d80c46fbd08d367dd516f350ba98#332",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d92fdb7_28b44eb8",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "I think its better to change file name to SystemdInterface as well (both for .hpp and .cpp)",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a7080b7_183ee806",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "You are already in pldm namespace, any reason for defining this using clause?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4099eeaa_1b355559",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "I don\u0027t see a user for Context ?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebe54053_c77ace9f",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "Better to define these constexpr in .cpp file, if they are only used there ? Same for other constexpr.",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d22a6af_d3ecb957",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "Looks like this is your task callback function? Isn\u0027t it ? How do u know what is pre and post condition ?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6a0b8ff_ba6f7fda",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "Are your blocking the thread until the whole job finishes? If yes, then thats wrong. Please pass a taskCallback down the chain. Implement SystemD interface as a singleton that can register for JobRemoved signals that can publish back into the event queue.",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78035b78_859c4f47",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T20:49:07Z",
+      "side": 1,
+      "message": "Would this handle both pre and post conditions ?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c873d5d3_830e4ffa",
         "filename": "fw-update/test/condition_executor_test.cpp",
         "patchSetId": 43
