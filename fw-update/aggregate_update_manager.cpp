@@ -33,7 +33,9 @@ Response AggregateUpdateManager::handleRequest(
 void AggregateUpdateManager::createUpdateManager(
     const SoftwareIdentifier& softwareIdentifier,
     const Descriptors& descriptors, const ComponentInfo& componentInfo,
-    const std::string& updateObjPath, const std::string& generatedId)
+    const std::string& updateObjPath, const std::string& generatedId,
+    const ConditionPaths& conditionPathPair, const std::string& conditionArg,
+    bool includeApplyTimeArg, std::function<void()> taskCompletionCallback)
 {
     auto eid = softwareIdentifier.first;
 
@@ -45,7 +47,8 @@ void AggregateUpdateManager::createUpdateManager(
     updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
         eid, event, handler, instanceIdDb, updateObjPath, generatedId,
         *descriptorMap[softwareIdentifier],
-        *componentInfoMap[softwareIdentifier]);
+        *componentInfoMap[softwareIdentifier], conditionPathPair, conditionArg,
+        includeApplyTimeArg, std::move(taskCompletionCallback));
 }
 
 void AggregateUpdateManager::eraseUpdateManager(
