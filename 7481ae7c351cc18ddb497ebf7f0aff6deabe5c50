@@ -166,6 +166,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f26de90_62f1be13",
+        "filename": "softoff/README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-06-22T06:12:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "af4a41bf_9d41cc3a",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 14
+      },
+      "revId": "7481ae7c351cc18ddb497ebf7f0aff6deabe5c50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7de41e0a_954f8980",
