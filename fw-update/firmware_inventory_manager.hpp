@@ -2,6 +2,7 @@
 
 #include "aggregate_update_manager.hpp"
 #include "common/types.hpp"
+#include "condition_collector.hpp"
 #include "firmware_inventory.hpp"
 
 class FirmwareInventoryManagerTest;
@@ -43,7 +44,8 @@ class FirmwareInventoryManager
         const pldm::utils::DBusHandler* dbusHandler,
         const Configurations& config, AggregateUpdateManager& updateManager) :
         dbusHandler(dbusHandler), configurations(config),
-        updateManager(updateManager)
+        updateManager(updateManager),
+        conditionConfigManager("/var/lib/pldmd/fw-update-targets.json")
     {}
 
     /**
@@ -60,7 +62,8 @@ class FirmwareInventoryManager
     void createFirmwareEntry(
         const SoftwareIdentifier& softwareIdentifier,
         const SoftwareName& softwareName, const std::string& activeVersion,
-        const Descriptors& descriptors, const ComponentInfo& componentInfo);
+        const Descriptors& descriptors, const ComponentInfo& componentInfo,
+        std::function<void()> taskCompletionCallback);
 
     /**
      * @brief Deletes the firmware inventory entry for the given EID
@@ -103,6 +106,8 @@ class FirmwareInventoryManager
      * @brief Reference to the aggregate update manager
      */
     AggregateUpdateManager& updateManager;
+
+    ConditionConfigManager conditionConfigManager;
 };
 
 } // namespace pldm::fw_update

@@ -257,6 +257,7 @@ endif
 fw_update_sources = files(
     'fw-update/activation.cpp',
     'fw-update/aggregate_update_manager.cpp',
+    'fw-update/condition_executor.cpp',
     'fw-update/device_updater.cpp',
     'fw-update/firmware_inventory.cpp',
     'fw-update/firmware_inventory_manager.cpp',

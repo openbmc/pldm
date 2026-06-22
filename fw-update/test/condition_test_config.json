@@ -1,0 +1,18 @@
+{
+    "Components": [
+        {
+            "Component": "BIC",
+            "PostUpdateTarget": "bic-post-update"
+        },
+        {
+            "Component": "BIOS",
+            "PreUpdateTarget": "bios-pre-update",
+            "PostUpdateTarget": "bios-post-update"
+        },
+        {
+            "Component": "NIC",
+            "PreUpdateTarget": "",
+            "PostUpdateTarget": ""
+        }
+    ]
+}
