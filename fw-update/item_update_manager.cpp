@@ -3,6 +3,7 @@
 #include "activation.hpp"
 #include "common/utils.hpp"
 #include "package_parser.hpp"
+#include "systemd_interface.hpp"
 
 #include <fcntl.h>
 #include <sys/mman.h>
@@ -88,10 +89,38 @@ bool ItemUpdateManager::processPackage()
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     inProgressActivation->activation(software::Activation::Activations::Ready);
-    activationProgress = std::make_unique<ActivationProgress>(
-        pldm::utils::DBusHandler::getBus(), objPathWithSwId);
-    inProgressActivation->activation(
-        software::Activation::Activations::Activating);
+    if (!preConditionPath.empty())
+    {
+        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+            .execute(preConditionPath, conditionArg, [this](bool success) {
+                if (!updateInProgress)
+                {
+                    return;
+                }
+
+                if (!success)
+                {
+                    error("Pre-update condition failed for {PATH}", "PATH",
+                          preConditionPath);
+                    inProgressActivation->activation(
+                        software::Activation::Activations::Failed);
+                    packageMap.reset();
+                    dupFd.reset();
+                    updateInProgress = false;
+                    if (taskCompletionCallback)
+                    {
+                        taskCompletionCallback();
+                    }
+                    return;
+                }
+
+                startFirmwareActivation();
+            });
+
+        return true;
+    }
+
+    startFirmwareActivation();
 
     return true;
 }
@@ -153,6 +182,50 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
 
 void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
 {
+    if (!postConditionPath.empty())
+    {
+        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+            .execute(postConditionPath, conditionArg,
+                     [this, status](bool conditionSuccess) {
+                         if (!updateInProgress)
+                         {
+                             return;
+                         }
+
+                         if (!conditionSuccess)
+                         {
+                             error("Post-update condition failed for {PATH}",
+                                   "PATH", postConditionPath);
+                         }
+
+                         completeUpdate(status && conditionSuccess);
+                     });
+        return;
+    }
+
+    completeUpdate(status);
+}
+
+void ItemUpdateManager::startFirmwareActivation()
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
+    activationProgress = std::make_unique<ActivationProgress>(
+        pldm::utils::DBusHandler::getBus(), objPathWithSwId);
+    inProgressActivation->activation(
+        software::Activation::Activations::Activating);
+}
+
+void ItemUpdateManager::completeUpdate(bool status)
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
     activationProgress->progress(100);
     packageMap.reset();
     dupFd.reset();
@@ -170,7 +243,10 @@ void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
     packageMap.reset();
     dupFd.reset();
     updateInProgress = false;
-    return;
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
+    }
 }
 
 Response ItemUpdateManager::handleRequest(mctp_eid_t /*eid*/, uint8_t command,
@@ -244,7 +320,7 @@ void ItemUpdateManager::updateActivationProgress()
     }
 }
 
-sdbusplus::message::object_path ItemUpdateManager::startUpdate(
+sdbusplus::object_path ItemUpdateManager::startUpdate(
     sdbusplus::message::unix_fd image,
     ApplyTimeIntf::RequestedApplyTimes /*applyTime*/)
 {
