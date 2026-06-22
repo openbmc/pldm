@@ -263,6 +263,7 @@ fw_update_sources = files(
     'fw-update/inventory_manager.cpp',
     'fw-update/item_update_manager.cpp',
     'fw-update/package_parser.cpp',
+    'fw-update/systemd_interface.cpp',
     'fw-update/update.cpp',
     'fw-update/update_manager.cpp',
 )
