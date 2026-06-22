@@ -132,3 +132,10 @@ option(
     value: 'disabled',
     description: 'Enable inotify-based firmware update package monitoring',
 )
+
+option(
+    'fw-update-targets-json',
+    type: 'string',
+    value: '/var/lib/pldmd/fw-update-targets.json',
+    description: 'Path to firmware update targets configuration JSON file',
+)

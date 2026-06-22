@@ -3,6 +3,7 @@
 #include "activation.hpp"
 #include "common/utils.hpp"
 #include "package_parser.hpp"
+#include "systemd_interface.hpp"
 
 #include <fcntl.h>
 #include <sys/mman.h>
@@ -22,6 +23,8 @@ PHOSPHOR_LOG2_USING;
 
 namespace pldm::fw_update
 {
+
+constexpr auto APPLY_TIME_ARG_KEY = "applyTime";
 
 bool ItemUpdateManager::processPackage()
 {
@@ -88,10 +91,36 @@ bool ItemUpdateManager::processPackage()
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     inProgressActivation->activation(software::Activation::Activations::Ready);
-    activationProgress = std::make_unique<ActivationProgress>(
-        pldm::utils::DBusHandler::getBus(), objPathWithSwId);
-    inProgressActivation->activation(
-        software::Activation::Activations::Activating);
+    if (!preConditionPath.empty())
+    {
+        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+            .execute(preConditionPath, conditionArg, [this](bool success) {
+                if (!updateInProgress)
+                {
+                    return;
+                }
+
+                if (!success)
+                {
+                    error("Pre-update condition failed for {PATH}", "PATH",
+                          preConditionPath);
+                    inProgressActivation->activation(
+                        software::Activation::Activations::Failed);
+                    teardownUpdate();
+                    if (taskCompletionCallback)
+                    {
+                        taskCompletionCallback();
+                    }
+                    return;
+                }
+
+                startFirmwareUpdate();
+            });
+
+        return true;
+    }
+
+    startFirmwareUpdate();
 
     return true;
 }
@@ -117,16 +146,13 @@ std::string ItemUpdateManager::processFd(int fd)
         catch (const std::exception& e)
         {
             error("Failed to mmap package file, error - {ERROR}", "ERROR", e);
-            updateInProgress = false;
-            this->dupFd.reset();
+            teardownUpdate();
             throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
         }
         if (!processPackage())
         {
             error("Failed to process firmware update package");
-            updateInProgress = false;
-            packageMap.reset();
-            this->dupFd.reset();
+            teardownUpdate();
             throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
         }
     });
@@ -153,9 +179,51 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
 
 void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
 {
+    if (!postConditionPath.empty() && status == true)
+    {
+        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+            .execute(postConditionPath, conditionArg,
+                     [this, status](bool conditionSuccess) {
+                         if (!updateInProgress)
+                         {
+                             return;
+                         }
+
+                         if (!conditionSuccess)
+                         {
+                             error("Post-update condition failed for {PATH}",
+                                   "PATH", postConditionPath);
+                         }
+
+                         completeUpdate(status && conditionSuccess);
+                     });
+        return;
+    }
+
+    completeUpdate(status);
+}
+
+void ItemUpdateManager::startFirmwareUpdate()
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
+    activationProgress = std::make_unique<ActivationProgress>(
+        pldm::utils::DBusHandler::getBus(), objPathWithSwId);
+    inProgressActivation->activation(
+        software::Activation::Activations::Activating);
+}
+
+void ItemUpdateManager::completeUpdate(bool status)
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
     activationProgress->progress(100);
-    packageMap.reset();
-    dupFd.reset();
 
     auto endTime = std::chrono::steady_clock::now();
     auto dur =
@@ -165,12 +233,20 @@ void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
     inProgressActivation->activation(
         status ? software::Activation::Activations::Active
                : software::Activation::Activations::Failed);
+    teardownUpdate();
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
+    }
+}
+
+void ItemUpdateManager::teardownUpdate()
+{
     deviceUpdater.reset();
     packageDataStream.reset();
     packageMap.reset();
     dupFd.reset();
     updateInProgress = false;
-    return;
 }
 
 Response ItemUpdateManager::handleRequest(mctp_eid_t /*eid*/, uint8_t command,
@@ -246,7 +322,7 @@ void ItemUpdateManager::updateActivationProgress()
 
 sdbusplus::object_path ItemUpdateManager::startUpdate(
     sdbusplus::message::unix_fd image,
-    ApplyTimeIntf::RequestedApplyTimes /*applyTime*/)
+    ApplyTimeIntf::RequestedApplyTimes applyTime)
 {
     if (updateInProgress)
     {
@@ -259,8 +335,34 @@ sdbusplus::object_path ItemUpdateManager::startUpdate(
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
     updateInProgress = true;
+    this->applyTime = applyTime;
+
+    conditionArg = baseConditionArg;
+    if (includeApplyTimeArg)
+    {
+        if (!conditionArg.empty())
+        {
+            conditionArg += ",";
+        }
+        conditionArg +=
+            std::format("{}={}", APPLY_TIME_ARG_KEY, applyTimeToString());
+    }
 
     return processFd(image.fd);
+}
+
+std::string ItemUpdateManager::applyTimeToString() const
+{
+    constexpr std::string_view applyTimePrefix =
+        "xyz.openbmc_project.Software.ApplyTime.RequestedApplyTimes.";
+    auto applyTimeStr =
+        ApplyTimeIntf::convertRequestedApplyTimesToString(applyTime);
+    if (applyTimeStr.starts_with(applyTimePrefix))
+    {
+        return applyTimeStr.substr(applyTimePrefix.size());
+    }
+
+    return applyTimeStr;
 }
 
 } // namespace pldm::fw_update
