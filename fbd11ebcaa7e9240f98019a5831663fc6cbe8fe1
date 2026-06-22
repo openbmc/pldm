@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c873d5d3_830e4ffa",
+        "filename": "fw-update/test/condition_executor_test.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-22T19:58:33Z",
+      "side": 1,
+      "message": "What is this test testing?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
