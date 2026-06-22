@@ -29,9 +29,13 @@ class AggregateUpdateManager : public UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap) :
+        const ComponentInfoMap& componentInfoMap,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                      componentInfoMap, conditionPathPair, conditionArg,
+                      std::move(taskCompletionCallback))
     {}
 
     /**
@@ -65,11 +69,21 @@ class AggregateUpdateManager : public UpdateManager
      * software identifier
      * @param[in] updateObjPath - The D-Bus object path for the update manager
      * @param[in] generatedId - The software hash identifier
+     * @param[in] conditionPathPair - The condition paths associated with the
+     * update manager
+     * @param[in] conditionArg - The condition argument associated with the
+     * update manager
+     * @param[in] taskCompletionCallback - The callback function to be called
+     * upon task completion
      */
     void createUpdateManager(
         const SoftwareIdentifier& softwareIdentifier,
         const Descriptors& descriptors, const ComponentInfo& componentInfo,
-        const std::string& updateObjPath, const std::string& generatedId);
+        const std::string& updateObjPath, const std::string& generatedId,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        bool includeApplyTimeArg = false,
+        std::function<void()> taskCompletionCallback = nullptr);
 
     /**
      * @brief Erase an existing UpdateManager instance associated with a
