@@ -1,0 +1,54 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://openbmc.github.io/pldm/fw-update-conditions/schema.json",
+    "title": "PLDM Firmware Update Conditions",
+    "description": "Schema for pre/post setup targets used by platform firmware update conditions.",
+    "type": "object",
+    "required": ["Components"],
+    "additionalProperties": false,
+    "properties": {
+        "Components": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/ComponentCondition"
+            }
+        }
+    },
+    "$defs": {
+        "ComponentCondition": {
+            "type": "object",
+            "required": ["ComIdentifier"],
+            "additionalProperties": false,
+            "properties": {
+                "Component": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Component name for readability (optional, for documentation purposes)."
+                },
+                "ComIdentifier": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "description": "Component identifier (uint16_t) used to map update conditions."
+                },
+                "PreUpdateTarget": {
+                    "type": "string",
+                    "description": "Systemd target/service to run before update. Empty string means no pre-condition."
+                },
+                "PostUpdateTarget": {
+                    "type": "string",
+                    "description": "Systemd target/service to run after update. Empty string means no post-condition."
+                },
+                "ArgTemplate": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["boardName", "applyTime"]
+                    },
+                    "description": "Array of argument fields to pass to systemd interface. Supported candidates: boardName, applyTime. Empty array or omitted means no arguments."
+                }
+            }
+        }
+    }
+}

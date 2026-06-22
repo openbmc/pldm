@@ -3,6 +3,7 @@
 #include "activation.hpp"
 #include "common/utils.hpp"
 #include "package_parser.hpp"
+#include "systemd_interface.hpp"
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
@@ -195,6 +196,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
                 compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
     }
 
+    updateInProgress = true;
     activation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPath,
         software::Activation::Activations::Ready, this);
@@ -242,18 +244,34 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
             if (!status)
             {
                 info("Firmware update failed on eid {EID}", "EID", eid);
-                activation->activation(
-                    software::Activation::Activations::Failed);
+                completeUpdate(false);
                 return;
             }
         }
 
-        auto endTime = std::chrono::steady_clock::now();
-        auto dur =
-            std::chrono::duration<double, std::milli>(endTime - startTime)
-                .count();
-        info("Firmware update time: {DURATION}ms", "DURATION", dur);
-        activation->activation(software::Activation::Activations::Active);
+        if (!postConditionPath.empty())
+        {
+            SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+                .execute(
+                    postConditionPath, conditionArg,
+                    [this](bool conditionSuccess) {
+                        if (!updateInProgress)
+                        {
+                            return;
+                        }
+
+                        if (!conditionSuccess)
+                        {
+                            error("Post-update condition failed for {PATH}",
+                                  "PATH", postConditionPath);
+                        }
+
+                        completeUpdate(conditionSuccess);
+                    });
+            return;
+        }
+
+        completeUpdate(true);
     }
     return;
 }
@@ -304,6 +322,43 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
 
 void UpdateManager::activatePackage()
 {
+    if (!updateInProgress)
+    {
+        return;
+    }
+
+    if (!preConditionPath.empty())
+    {
+        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+            .execute(preConditionPath, conditionArg, [this](bool success) {
+                if (!updateInProgress)
+                {
+                    return;
+                }
+
+                if (!success)
+                {
+                    error("Pre-update condition failed for {PATH}", "PATH",
+                          preConditionPath);
+                    completeUpdate(false);
+                    return;
+                }
+
+                startFirmwareActivation();
+            });
+        return;
+    }
+
+    startFirmwareActivation();
+}
+
+void UpdateManager::startFirmwareActivation()
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
     startTime = std::chrono::steady_clock::now();
     for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
     {
@@ -311,8 +366,30 @@ void UpdateManager::activatePackage()
     }
 }
 
+void UpdateManager::completeUpdate(bool status)
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
+    updateInProgress = false;
+    auto endTime = std::chrono::steady_clock::now();
+    auto dur =
+        std::chrono::duration<double, std::milli>(endTime - startTime).count();
+    info("Firmware update time: {DURATION}ms", "DURATION", dur);
+    activation->activation(status ? software::Activation::Activations::Active
+                                  : software::Activation::Activations::Failed);
+
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
+    }
+}
+
 void UpdateManager::resetActivationState()
 {
+    updateInProgress = false;
     activation.reset();
     activationProgress.reset();
     objPath.clear();

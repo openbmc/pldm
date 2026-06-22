@@ -178,6 +178,19 @@ enum class ComponentImageInfoPos : size_t
     CompVersionPos = 7,
 };
 
+// Pre/Post condition
+using ConditionIdentifier = CompIdentifier;
+using ConditionArg = std::string;
+using ConditionPath = std::string;
+using ConditionPaths = std::pair<ConditionPath, ConditionPath>;
+using ConditionArgTemplate = std::vector<std::string>;
+using ConditionInfo =
+    std::tuple<ConditionPath, ConditionPath, ConditionArgTemplate>;
+using PrePostCondition = std::pair<ConditionIdentifier, ConditionPaths>;
+using PrePostConditionMap =
+    std::unordered_map<ConditionIdentifier, ConditionInfo>;
+using ConditionConfig = std::pair<ConditionIdentifier, ConditionArg>;
+
 } // namespace fw_update
 
 namespace pdr
