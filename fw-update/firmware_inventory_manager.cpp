@@ -20,7 +20,8 @@ namespace pldm::fw_update
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo)
+    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    std::function<void()> taskCompletionCallback)
 {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -45,8 +46,16 @@ void FirmwareInventoryManager::createFirmwareEntry(
         "{}/{}_{}", SoftwareVersion::namespace_path, boardName, softwareName);
     const auto generatedId = std::to_string(utils::generateSwId());
 
-    updateManager.createUpdateManager(softwareIdentifier, descriptors,
-                                      componentInfo, softwarePath, generatedId);
+    auto conditions =
+        conditionConfigManager.conditions(softwareIdentifier.second);
+    auto argTemplate =
+        conditionConfigManager.argTemplate(softwareIdentifier.second);
+    auto conditionArg = generateArg(argTemplate, boardName);
+
+    updateManager.createUpdateManager(
+        softwareIdentifier, descriptors, componentInfo, softwarePath,
+        generatedId, conditions, conditionArg,
+        std::move(taskCompletionCallback));
 
     softwareMap.insert_or_assign(softwareIdentifier,
                                  std::make_unique<FirmwareInventory>(
