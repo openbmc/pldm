@@ -21,3 +21,57 @@ To enable inotify-based firmware update monitoring:
 ```bash
 meson setup build -Dfw-update-pkg-inotify=enabled
 ```
+
+## Pre and Post Update Condition Services
+
+PLDM firmware update supports optional pre and post update condition services
+that can be executed during the firmware update process. These services are
+specified in the configuration files and are used for device-specific handling
+such as checking conditions before update or performing cleanup/validation after
+update.
+
+### Condition Service Arguments Format
+
+When invoking condition services, PLDM passes arguments that contain both the
+configured condition argument and the requested apply time. The format is:
+
+```text
+<conditionArg>,applyTime=<applyTimeValue>
+```
+
+Where:
+
+- `<conditionArg>`: The original condition argument from the configuration
+  (optional, may be empty)
+- `<applyTimeValue>`: One of:
+  - `Immediate` - Apply the update immediately
+  - `OnReset` - Apply the update on next system reset
+  - `OnStart` - Apply the update on next system start
+
+### Examples
+
+**Example 1: Post-condition with empty original argument** If the original
+`conditionArg` is empty and `applyTime` is `OnReset`:
+
+```text
+applyTime=OnReset
+```
+
+**Example 2: Post-condition with original argument** If the original
+`conditionArg` is `device1` and `applyTime` is `Immediate`:
+
+```text
+device1,applyTime=Immediate
+```
+
+### Post-Condition Service Processing
+
+Post-condition services receive these arguments and can use them for conditional
+processing. For example:
+
+- Skip system reset if `applyTime` is not `Immediate`
+- Perform device-specific validation based on `applyTime`
+- Schedule deferred operations based on the apply time value
+
+The service should interpret these parameters to determine appropriate actions
+for the given apply time.

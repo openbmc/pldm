@@ -7,6 +7,8 @@
 #include <xyz/openbmc_project/Inventory/Item/Board/common.hpp>
 #include <xyz/openbmc_project/Software/Version/common.hpp>
 
+#include <algorithm>
+
 using InventoryItemBoard =
     sdbusplus::common::xyz::openbmc_project::inventory::item::Board;
 using SoftwareVersion =
@@ -20,7 +22,8 @@ namespace pldm::fw_update
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo)
+    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    std::function<void()> taskCompletionCallback)
 {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -45,8 +48,17 @@ void FirmwareInventoryManager::createFirmwareEntry(
         "{}/{}_{}", SoftwareVersion::namespace_path, boardName, softwareName);
     const auto generatedId = std::to_string(utils::generateSwId());
 
-    updateManager.createUpdateManager(softwareIdentifier, descriptors,
-                                      componentInfo, softwarePath, generatedId);
+    auto conditions = conditionConfigManager.conditions(softwareName);
+    auto argTemplate = conditionConfigManager.argTemplate(softwareName);
+    auto conditionArg = generateArg(argTemplate, boardName);
+    const bool includeApplyTimeArg =
+        std::find(argTemplate.begin(), argTemplate.end(), "applyTime") !=
+        argTemplate.end();
+
+    updateManager.createUpdateManager(
+        softwareIdentifier, descriptors, componentInfo, softwarePath,
+        generatedId, conditions, conditionArg, includeApplyTimeArg,
+        std::move(taskCompletionCallback));
 
     softwareMap.insert_or_assign(softwareIdentifier,
                                  std::make_unique<FirmwareInventory>(
