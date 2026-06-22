@@ -6,6 +6,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <format>
+
 PHOSPHOR_LOG2_USING;
 
 namespace pldm
@@ -690,7 +692,10 @@ void InventoryManager::getFirmwareParameters(
 
             firmwareInventoryManager.createFirmwareEntry(
                 totalIdentifier, devNameIt->second, imageSetVersion,
-                descIt->second, componentInfo);
+                descIt->second, componentInfo, [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
         }
     }
 
@@ -715,13 +720,17 @@ void InventoryManager::getFirmwareParameters(
 
         if (firmwareDeviceNameMap.contains(eid) and descriptorMap.contains(eid))
         {
-            auto componentName = firmwareDeviceNameMap.at(eid) + "_Component_" +
-                                 std::to_string(compIdentifier);
+            auto componentName =
+                std::format("{}_Component_{}", firmwareDeviceNameMap.at(eid),
+                            compIdentifier);
 
             firmwareInventoryManager.createFirmwareEntry(
                 SoftwareIdentifier(eid, compIdentifier), componentName,
                 utils::toString(activeCompVerStr), descriptorMap.at(eid),
-                componentInfo);
+                componentInfo, [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
         }
         else
         {
