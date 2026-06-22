@@ -5,8 +5,11 @@
 #include <xyz/openbmc_project/Software/ApplyTime/server.hpp>
 #include <xyz/openbmc_project/Software/Update/server.hpp>
 
+#include <memory>
+#include <optional>
 #include <span>
 #include <spanstream>
+#include <variant>
 
 namespace pldm::fw_update
 {
@@ -45,12 +48,18 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const std::string& objPath,
         const std::string& generatedId, const Descriptors& descriptors,
-        const ComponentInfo& componentInfo) :
+        const ComponentInfo& componentInfo,
+        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const std::string& conditionArg = std::string{},
+        std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
         ItemUpdateIntf(pldm::utils::DBusHandler::getBus(),
                        std::format("{}_{}", objPath, generatedId).c_str()),
         eid(eid), objPath(objPath), descriptors(descriptors),
-        componentInfo(componentInfo)
+        componentInfo(componentInfo), preConditionPath(conditionPathPair.first),
+        postConditionPath(conditionPathPair.second),
+        baseConditionArg(conditionArg), conditionArg(conditionArg),
+        taskCompletionCallback(std::move(taskCompletionCallback))
     {}
 
     /**
@@ -95,7 +104,10 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * D-Bus method implementation for starting the update process
      *
      * @param[in] image The image file descriptor
-     * @param[in] applyTime The requested apply time
+     * @param[in] applyTime The requested apply time (Immediate, OnReset,
+     * OnStart, etc.) This will be passed to post-condition services to allow
+     *                       conditional handling (e.g., skip reset if not
+     * immediate)
      */
     virtual sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,
@@ -158,11 +170,40 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      */
     std::string processFd(int fd);
 
+    void startFirmwareUpdate();
+
+    /**
+     * @brief Common completion path for an update attempt
+     *
+     * Reports the final activation state, releases the update resources and
+     * notifies the completion callback. This is the single completion path for
+     * both a finished firmware update and a failing pre/post update condition,
+     * so it tolerates being called before the firmware update flow started.
+     *
+     * @param[in] status - true when the update succeeded
+     */
+    void completeUpdate(bool status);
+
+    /**
+     * @brief Common teardown path for cleaning up update resources
+     *
+     * Resets deviceUpdater, packageDataStream, packageMap, dupFd and
+     * marks updateInProgress as false. Should be called from all cleanup
+     * paths to ensure consistent resource management.
+     */
+    void teardownUpdate();
+
     std::unique_ptr<Activation> inProgressActivation;
     std::unique_ptr<ActivationProgress> activationProgress;
     std::unique_ptr<PackageParser> parser;
     std::unique_ptr<DeviceUpdater> deviceUpdater;
-    decltype(std::chrono::steady_clock::now()) startTime;
+    /**
+     * @brief Start time of the firmware update flow
+     *
+     * Only set once the update has been activated, so that a completion before
+     * that point does not report a bogus duration.
+     */
+    std::optional<decltype(std::chrono::steady_clock::now())> startTime;
 
     /**
      * @brief The defer handler for processing package
@@ -173,6 +214,45 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @brief RAII wrapper for the duplicated package file descriptor
      */
     std::unique_ptr<pldm::utils::CustomFD> dupFd;
+
+    /**
+     * @brief Liveness token for callbacks that can outlive this manager
+     *
+     * A condition callback is owned by the SystemdInterface singleton, which
+     * lives as long as the daemon, while this manager is erased as soon as its
+     * MCTP endpoint goes away. Callbacks therefore capture a weak reference to
+     * this token and return early once it has expired, both while the StartUnit
+     * reply is still pending and after the callback has been registered for the
+     * JobRemoved signal.
+     */
+    std::shared_ptr<std::monostate> aliveToken =
+        std::make_shared<std::monostate>();
+
+    std::string preConditionPath;
+    std::string postConditionPath;
+
+    /**
+     * @brief Named arguments known before an update is requested
+     */
+    std::string baseConditionArg;
+
+    /**
+     * @brief All named arguments passed to a parameterized condition service
+     *
+     * The base arguments plus the fields only known once an update has been
+     * requested. Ignored for a condition service that is not parameterized.
+     */
+    std::string conditionArg;
+    ApplyTimeIntf::RequestedApplyTimes applyTime =
+        ApplyTimeIntf::RequestedApplyTimes::Immediate;
+
+    /**
+     * @brief Convert applyTime enum to string representation
+     * @return String representation of applyTime
+     */
+    std::string applyTimeToString() const;
+
+    std::function<void()> taskCompletionCallback;
 
     bool updateInProgress = false;
 

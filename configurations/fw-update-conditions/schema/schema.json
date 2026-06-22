@@ -1,0 +1,42 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://openbmc.github.io/pldm/fw-update-conditions/schema.json",
+    "title": "PLDM Firmware Update Conditions",
+    "description": "Schema for pre/post setup targets used by platform firmware update conditions.",
+    "type": "object",
+    "required": ["Components"],
+    "additionalProperties": false,
+    "properties": {
+        "Components": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/ComponentCondition"
+            }
+        }
+    },
+    "$defs": {
+        "ComponentCondition": {
+            "type": "object",
+            "required": ["Component"],
+            "additionalProperties": false,
+            "properties": {
+                "Component": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Component name used to map update conditions."
+                },
+                "PreUpdateTarget": {
+                    "type": "string",
+                    "pattern": "^[^/]+\\.(service|target)$",
+                    "description": "Systemd unit name to run before update, for example ABC_PreUpdate.service. A template unit name such as ABC_PreUpdate@.service receives all supported named arguments as its instance name. Omit this property when the component has no pre-condition."
+                },
+                "PostUpdateTarget": {
+                    "type": "string",
+                    "pattern": "^[^/]+\\.(service|target)$",
+                    "description": "Systemd unit name to run after a successful update, for example ABC_PostUpdate.service. A template unit name such as ABC_PostUpdate@.service receives all supported named arguments as its instance name. Omit this property when the component has no post-condition."
+                }
+            }
+        }
+    }
+}

@@ -6,6 +6,8 @@ tests = [
     'device_updater_test',
     'firmware_inventory_manager_test',
     'firmware_inventory_test',
+    'condition_collector_test',
+    'systemd_interface_test',
 ]
 
 foreach t : tests
