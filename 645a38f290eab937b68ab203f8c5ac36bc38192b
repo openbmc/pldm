@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ea8ac3_c9c4748b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 40
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14e3efda_2e8b10c8",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5471f91b_4efa9b0e",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-17T20:49:29Z",
       "side": 1,
       "message": "Would it be more readable and maintainable to define a struct instead?",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95138223_049fc64a",
+        "filename": "common/types.hpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Removed `ConditionConfig`, as this is unused evetually.",
+      "parentUuid": "5471f91b_4efa9b0e",
       "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3e90150_d95f8e6c",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 40
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdfac6e1_c6b0869c",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a16216d7_72fb51c6",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-06-17T20:49:29Z",
       "side": 1,
       "message": "Probably we can make the Targets as optional, that way one doesn\u0027t have to provide empty strings for non-existent targets. The configuration parsing logic can automatically handle non-existent taregts by defaulting them to empty strings.",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc6ac368_0aed52c3",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 40
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a16216d7_72fb51c6",
       "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dea9a07_65ed72f9",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 40
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68aaa1c3_14e50952",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "317ac4ff_e4575ff6",
@@ -99,6 +189,24 @@
       "writtenOn": "2026-06-17T20:49:29Z",
       "side": 1,
       "message": "Same as above.",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83d9aeed_eb60f3dd",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 40
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "317ac4ff_e4575ff6",
       "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c748699d_6b8cefbe",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "518950dc_29dcd8d3",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41c0aef2_4daaf1ac",
@@ -133,6 +259,24 @@
       "writtenOn": "2026-06-17T20:49:29Z",
       "side": 1,
       "message": "Probably rename to SystemdInterface to make it more explicit ?",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe1713c_d3e034e6",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41c0aef2_4daaf1ac",
       "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +298,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5650bdcb_d3d2843d",
+        "filename": "fw-update/test/firmware_inventory_manager_test.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7911067_c362938b",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d807b45_d385056f",
@@ -171,6 +333,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fc11e99_12a5fda2",
+        "filename": "meson.build",
+        "patchSetId": 40
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d807b45_d385056f",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a16ce0f5_598f1620",
@@ -184,6 +364,24 @@
       "writtenOn": "2026-06-17T20:49:29Z",
       "side": 1,
       "message": "I don\u0027t think you need to define the meson option this way. Probably you just need to define the file path where the config will be available, lets say, /var/lib/pldmd/fw-update-targets.json. That way in openbmc/openbmc layer different platforms can define this config for them and change the default file path value if they want to place it somewhere else.",
+      "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97beff35_dace6f8b",
+        "filename": "meson.options",
+        "patchSetId": 40
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-22T08:14:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a16ce0f5_598f1620",
       "revId": "645a38f290eab937b68ab203f8c5ac36bc38192b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
