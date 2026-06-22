@@ -3,6 +3,7 @@
 #include "activation.hpp"
 #include "common/utils.hpp"
 #include "package_parser.hpp"
+#include "systemd_interface.hpp"
 
 #include <fcntl.h>
 #include <sys/mman.h>
@@ -88,10 +89,38 @@ bool ItemUpdateManager::processPackage()
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     inProgressActivation->activation(software::Activation::Activations::Ready);
-    activationProgress = std::make_unique<ActivationProgress>(
-        pldm::utils::DBusHandler::getBus(), objPathWithSwId);
-    inProgressActivation->activation(
-        software::Activation::Activations::Activating);
+    if (!preConditionPath.empty())
+    {
+        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+            .execute(preConditionPath, conditionArg, [this](bool success) {
+                if (!updateInProgress)
+                {
+                    return;
+                }
+
+                if (!success)
+                {
+                    error("Pre-update condition failed for {PATH}", "PATH",
+                          preConditionPath);
+                    inProgressActivation->activation(
+                        software::Activation::Activations::Failed);
+                    packageMap.reset();
+                    dupFd.reset();
+                    updateInProgress = false;
+                    if (taskCompletionCallback)
+                    {
+                        taskCompletionCallback();
+                    }
+                    return;
+                }
+
+                startFirmwareActivation();
+            });
+
+        return true;
+    }
+
+    startFirmwareActivation();
 
     return true;
 }
@@ -153,6 +182,50 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
 
 void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
 {
+    if (!postConditionPath.empty())
+    {
+        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+            .execute(postConditionPath, buildPostConditionArgs(),
+                     [this, status](bool conditionSuccess) {
+                         if (!updateInProgress)
+                         {
+                             return;
+                         }
+
+                         if (!conditionSuccess)
+                         {
+                             error("Post-update condition failed for {PATH}",
+                                   "PATH", postConditionPath);
+                         }
+
+                         completeUpdate(status && conditionSuccess);
+                     });
+        return;
+    }
+
+    completeUpdate(status);
+}
+
+void ItemUpdateManager::startFirmwareActivation()
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
+    activationProgress = std::make_unique<ActivationProgress>(
+        pldm::utils::DBusHandler::getBus(), objPathWithSwId);
+    inProgressActivation->activation(
+        software::Activation::Activations::Activating);
+}
+
+void ItemUpdateManager::completeUpdate(bool status)
+{
+    if (!updateInProgress)
+    {
+        return;
+    }
+
     activationProgress->progress(100);
     packageMap.reset();
     dupFd.reset();
@@ -170,7 +243,10 @@ void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
     packageMap.reset();
     dupFd.reset();
     updateInProgress = false;
-    return;
+    if (taskCompletionCallback)
+    {
+        taskCompletionCallback();
+    }
 }
 
 Response ItemUpdateManager::handleRequest(mctp_eid_t /*eid*/, uint8_t command,
@@ -246,7 +322,7 @@ void ItemUpdateManager::updateActivationProgress()
 
 sdbusplus::object_path ItemUpdateManager::startUpdate(
     sdbusplus::message::unix_fd image,
-    ApplyTimeIntf::RequestedApplyTimes /*applyTime*/)
+    ApplyTimeIntf::RequestedApplyTimes applyTime)
 {
     if (updateInProgress)
     {
@@ -259,8 +335,39 @@ sdbusplus::object_path ItemUpdateManager::startUpdate(
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
     updateInProgress = true;
+    this->applyTime = applyTime;
 
     return processFd(image.fd);
+}
+
+std::string ItemUpdateManager::applyTimeToString() const
+{
+    switch (applyTime)
+    {
+        case ApplyTimeIntf::RequestedApplyTimes::Immediate:
+            return "Immediate";
+        case ApplyTimeIntf::RequestedApplyTimes::OnReset:
+            return "OnReset";
+        case ApplyTimeIntf::RequestedApplyTimes::OnActivationRequest:
+            return "OnActivationRequest";
+        default:
+            return "Unknown";
+    }
+}
+
+std::string ItemUpdateManager::buildPostConditionArgs() const
+{
+    std::string args = conditionArg;
+
+    // Append applyTime to the arguments
+    // Format: "originalArg,applyTime=<value>"
+    if (!args.empty())
+    {
+        args += ",";
+    }
+    args += "applyTime=" + applyTimeToString();
+
+    return args;
 }
 
 } // namespace pldm::fw_update
