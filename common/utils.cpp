@@ -617,26 +617,33 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
     auto pdrs = findStateSensorPDR(tid, entityType, stateSetId, pdrRepo);
     for (auto pdr : pdrs)
     {
-        auto sensorPdr =
-            std::start_lifetime_as<pldm_state_sensor_pdr>(pdr.data());
-        auto compositeSensorCount = sensorPdr->composite_sensor_count;
-        auto possible_states_start = sensorPdr->possible_states;
-
-        for (auto sensors = 0x00; sensors < compositeSensorCount; sensors++)
+        struct pldm_platform_state_sensor_pdr sensorPdr{};
+        int rc = decode_pldm_platform_state_sensor_pdr(pdr.data(), pdr.size(),
+                                                       &sensorPdr);
+        if (rc)
         {
-            auto possibleStates =
-                std::start_lifetime_as<state_sensor_possible_states>(
-                    possible_states_start);
-            auto setId = possibleStates->state_set_id;
-            auto possibleStateSize = possibleStates->possible_states_size;
-            if (entityType == sensorPdr->entity_type &&
-                entityInstance == sensorPdr->entity_instance &&
-                stateSetId == setId && containerId == sensorPdr->container_id)
+            error("Failed to decode state sensor PDR, response code '{RC}'",
+                  "RC", rc);
+            continue;
+        }
+
+        struct state_sensor_possible_states states{};
+        foreach_pldm_platform_state_sensor_pdr_possible_states(
+            pdr.data(), pdr.size(), states, rc)
+        {
+            if (entityType == sensorPdr.entity_type &&
+                entityInstance == sensorPdr.entity_instance_number &&
+                stateSetId == states.state_set_id &&
+                containerId == sensorPdr.container_id)
             {
-                return sensorPdr->sensor_id;
+                return sensorPdr.sensor_id;
             }
-            possible_states_start +=
-                possibleStateSize + sizeof(setId) + sizeof(possibleStateSize);
+        }
+        if (rc)
+        {
+            error(
+                "Failed to iterate state sensor PDR possible states, response code '{RC}'",
+                "RC", rc);
         }
     }
     return PLDM_INVALID_EFFECTER_ID;
