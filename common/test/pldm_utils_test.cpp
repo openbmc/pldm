@@ -1331,6 +1331,7 @@ TEST(GetStateSensorPDRsByType, testMultipleMatches)
 
     rec1->hdr.type = PLDM_STATE_SENSOR_PDR;
     rec1->hdr.record_handle = 1;
+    rec1->hdr.length = pdr1.size() - sizeof(pldm_pdr_hdr);
     rec1->entity_type = entityType;
     rec1->composite_sensor_count = 1;
     state1->state_set_id = 1;
@@ -1349,6 +1350,7 @@ TEST(GetStateSensorPDRsByType, testMultipleMatches)
 
     rec2->hdr.type = PLDM_STATE_SENSOR_PDR;
     rec2->hdr.record_handle = 2;
+    rec2->hdr.length = pdr2.size() - sizeof(pldm_pdr_hdr);
     rec2->entity_type = entityType;
     rec2->composite_sensor_count = 1;
     state2->state_set_id = 2;
@@ -1377,6 +1379,7 @@ TEST(GetStateSensorPDRsByType, testNoMatch)
 
     rec->hdr.type = PLDM_STATE_SENSOR_PDR;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 99;
     rec->composite_sensor_count = 1;
     state->state_set_id = 1;
@@ -1397,6 +1400,153 @@ TEST(GetStateSensorPDRsByType, testEmptyRepo)
 
     auto pdrs = getStateSensorPDRsByType(5, repo);
     EXPECT_TRUE(pdrs.empty());
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(GetStateSensorPDRsByType, testBadRecordLength)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+
+    std::vector<uint8_t> pdr(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
+                             sizeof(state_sensor_possible_states));
+
+    auto* rec = new (pdr.data()) pldm_state_sensor_pdr{};
+    auto* state = new (rec->possible_states) state_sensor_possible_states{};
+
+    rec->hdr.type = PLDM_STATE_SENSOR_PDR;
+    rec->hdr.record_handle = 1;
+    // Claims more payload than the record carries
+    rec->hdr.length = pdr.size() + 1;
+    rec->entity_type = entityType;
+    rec->composite_sensor_count = 1;
+    state->state_set_id = 1;
+    state->possible_states_size = 1;
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto pdrs = getStateSensorPDRsByType(entityType, repo);
+    EXPECT_TRUE(pdrs.empty());
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(GetStateSensorPDRsByType, testBadRecordDoesNotStopScan)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+
+    std::vector<uint8_t> pdr1(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
+                              sizeof(state_sensor_possible_states));
+
+    auto* rec1 = new (pdr1.data()) pldm_state_sensor_pdr{};
+    auto* state1 = new (rec1->possible_states) state_sensor_possible_states{};
+
+    rec1->hdr.type = PLDM_STATE_SENSOR_PDR;
+    rec1->hdr.record_handle = 1;
+    // Claims more payload than the record carries
+    rec1->hdr.length = pdr1.size() + 1;
+    rec1->entity_type = entityType;
+    rec1->composite_sensor_count = 1;
+    state1->state_set_id = 1;
+    state1->possible_states_size = 1;
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr1.data(), pdr1.size(), false, 1, &handle),
+              0);
+
+    std::vector<uint8_t> pdr2(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
+                              sizeof(state_sensor_possible_states));
+
+    auto* rec2 = new (pdr2.data()) pldm_state_sensor_pdr{};
+    auto* state2 = new (rec2->possible_states) state_sensor_possible_states{};
+
+    rec2->hdr.type = PLDM_STATE_SENSOR_PDR;
+    rec2->hdr.record_handle = 2;
+    rec2->hdr.length = pdr2.size() - sizeof(pldm_pdr_hdr);
+    rec2->entity_type = entityType;
+    rec2->composite_sensor_count = 1;
+    state2->state_set_id = 2;
+    state2->possible_states_size = 1;
+
+    handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr2.data(), pdr2.size(), false, 1, &handle),
+              0);
+
+    auto pdrs = getStateSensorPDRsByType(entityType, repo);
+    ASSERT_EQ(pdrs.size(), 1);
+    EXPECT_EQ(pdr2, pdrs[0]);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindSensorIds, testOneMatch)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+    uint16_t entityInstance = 2;
+    uint16_t containerId = 3;
+
+    std::vector<uint8_t> pdr(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
+                             sizeof(state_sensor_possible_states));
+
+    auto* rec = new (pdr.data()) pldm_state_sensor_pdr{};
+    auto* state = new (rec->possible_states) state_sensor_possible_states{};
+
+    rec->hdr.type = PLDM_STATE_SENSOR_PDR;
+    rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
+    rec->sensor_id = 7;
+    rec->entity_type = entityType;
+    rec->entity_instance = entityInstance;
+    rec->container_id = containerId;
+    rec->composite_sensor_count = 1;
+    state->state_set_id = 1;
+    state->possible_states_size = 1;
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto sensorIds =
+        findSensorIds(repo, entityType, entityInstance, containerId);
+    ASSERT_EQ(sensorIds.size(), 1);
+    EXPECT_EQ(sensorIds[0], 7);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindSensorIds, testNoMatch)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+    uint16_t entityInstance = 2;
+    uint16_t containerId = 3;
+
+    std::vector<uint8_t> pdr(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
+                             sizeof(state_sensor_possible_states));
+
+    auto* rec = new (pdr.data()) pldm_state_sensor_pdr{};
+    auto* state = new (rec->possible_states) state_sensor_possible_states{};
+
+    rec->hdr.type = PLDM_STATE_SENSOR_PDR;
+    rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
+    rec->sensor_id = 7;
+    rec->entity_type = entityType;
+    rec->entity_instance = entityInstance + 1;
+    rec->container_id = containerId;
+    rec->composite_sensor_count = 1;
+    state->state_set_id = 1;
+    state->possible_states_size = 1;
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto sensorIds =
+        findSensorIds(repo, entityType, entityInstance, containerId);
+    EXPECT_TRUE(sensorIds.empty());
 
     pldm_pdr_destroy(repo);
 }
