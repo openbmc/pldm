@@ -1205,43 +1205,63 @@ class GetPDR : public CommandInterface
         return data;
     }
 
-    void printStateSensorPDR(const uint8_t* data, ordered_json& output)
+    void printStateSensorPDR(const uint8_t* data, const uint16_t data_length,
+                             ordered_json& output)
     {
-        auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
-        output["PLDMTerminusHandle"] = pdr->terminus_handle;
-        output["sensorID"] = pdr->sensor_id;
-        output["entityType"] = getEntityName(pdr->entity_type);
-        output["entityInstanceNumber"] = pdr->entity_instance;
-        output["containerID"] = pdr->container_id;
-        output["sensorInit"] = sensorInit[pdr->sensor_init];
-        output["sensorAuxiliaryNamesPDR"] =
-            (pdr->sensor_auxiliary_names_pdr ? true : false);
-        output["compositeSensorCount"] = unsigned(pdr->composite_sensor_count);
-
-        auto statesPtr = pdr->possible_states;
-        auto compCount = pdr->composite_sensor_count;
-
-        while (compCount--)
+        struct pldm_platform_state_sensor_pdr pdr{};
+        int rc = decode_pldm_platform_state_sensor_pdr(
+            data, (size_t)data_length, &pdr);
+        if (rc)
         {
-            auto state = reinterpret_cast<const state_sensor_possible_states*>(
-                statesPtr);
+            std::cerr << "Failed to get state sensor PDR" << std::endl;
+            return;
+        }
+        output["PLDMTerminusHandle"] = pdr.terminus_handle;
+        output["sensorID"] = pdr.sensor_id;
+        output["entityType"] = getEntityName(pdr.entity_type);
+        output["entityInstanceNumber"] = pdr.entity_instance_number;
+        output["containerID"] = pdr.container_id;
+        output["sensorInit"] = sensorInit[pdr.sensor_init];
+        output["sensorAuxiliaryNamesPDR"] =
+            (pdr.sensor_auxiliary_names_pdr ? true : false);
+        output["compositeSensorCount"] = unsigned(pdr.composite_sensor_count);
+
+        auto compCount = pdr.composite_sensor_count;
+        struct state_sensor_possible_states states{};
+        foreach_pldm_platform_state_sensor_pdr_possible_states(
+            data, (size_t)data_length, states, rc)
+        {
+            compCount--;
             output.emplace(("stateSetID[" + std::to_string(compCount) + "]"),
-                           getStateSetName(state->state_set_id));
+                           getStateSetName(states.state_set_id));
             output.emplace(
                 ("possibleStatesSize[" + std::to_string(compCount) + "]"),
-                state->possible_states_size);
+                states.possible_states_size);
+
+            std::vector<bitfield8_t> stateBytes{};
+            bitfield8_t bitfield{};
+            foreach_pldm_platform_state_sensor_pdr_states(states, bitfield, rc)
+            {
+                stateBytes.push_back(bitfield);
+            }
+            if (rc)
+            {
+                std::cerr << "Failed to iterate state sensor PDR states"
+                          << std::endl;
+                return;
+            }
             output.emplace(
                 ("possibleStates[" + std::to_string(compCount) + "]"),
                 getStateSetPossibleStateNames(
-                    state->state_set_id,
-                    printPossibleStates(state->possible_states_size,
-                                        state->states)));
-
-            if (compCount)
-            {
-                statesPtr += sizeof(state_sensor_possible_states) +
-                             state->possible_states_size - 1;
-            }
+                    states.state_set_id,
+                    printPossibleStates(states.possible_states_size,
+                                        stateBytes.data())));
+        }
+        if (rc)
+        {
+            std::cerr << "Failed to decode state sensor PDR possible states"
+                      << std::endl;
+            return;
         }
     }
 
@@ -1559,7 +1579,7 @@ class GetPDR : public CommandInterface
         }
     }
 
-    bool checkTerminusHandle(const uint8_t* data,
+    bool checkTerminusHandle(const uint8_t* data, const uint16_t data_length,
                              std::optional<uint16_t> terminusHandle)
     {
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
@@ -1576,9 +1596,16 @@ class GetPDR : public CommandInterface
         }
         else if (pdr->type == PLDM_STATE_SENSOR_PDR)
         {
-            auto sensor = reinterpret_cast<const pldm_state_sensor_pdr*>(data);
+            struct pldm_platform_state_sensor_pdr sensor{};
+            int rc = decode_pldm_platform_state_sensor_pdr(
+                data, (size_t)data_length, &sensor);
+            if (rc)
+            {
+                std::cerr << "Failed to decode state sensor PDR" << std::endl;
+                return true;
+            }
 
-            if (sensor->terminus_handle != terminusHandle)
+            if (sensor.terminus_handle != terminusHandle)
             {
                 return true;
             }
@@ -1939,7 +1966,7 @@ class GetPDR : public CommandInterface
 
         if (pdrTerminus.has_value())
         {
-            if (checkTerminusHandle(data, terminusHandle))
+            if (checkTerminusHandle(data, respCnt, terminusHandle))
             {
                 std::cerr << "The Terminus handle doesn't match return"
                           << std::endl;
@@ -1955,7 +1982,7 @@ class GetPDR : public CommandInterface
                 printTerminusLocatorPDR(data, output);
                 break;
             case PLDM_STATE_SENSOR_PDR:
-                printStateSensorPDR(data, output);
+                printStateSensorPDR(data, respCnt, output);
                 break;
             case PLDM_NUMERIC_EFFECTER_PDR:
                 printNumericEffecterPDR(data, output);
