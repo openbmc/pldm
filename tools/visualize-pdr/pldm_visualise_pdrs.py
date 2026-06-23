@@ -132,13 +132,14 @@ def prepare_summary_report(state_sensor_pdr, state_effecter_pdr):
     for value in state_sensor_pdr.values():
         summary_record = []
         sensor_possible_states = ""
-        for sensor_state in value["possibleStates[0]"]:
+        composite_state = value["compositeStates"][0]
+        for sensor_state in composite_state["possibleStates"]:
             sensor_possible_states += sensor_state + "\n"
         summary_record.extend(
             [
                 value["sensorID"],
                 value["entityType"],
-                value["stateSetID[0]"],
+                composite_state["stateSetID"],
                 sensor_possible_states,
             ]
         )
