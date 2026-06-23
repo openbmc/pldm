@@ -854,8 +854,15 @@ SensorPDRs getStateSensorPDRsByType(uint16_t entityType, const pldm_pdr* repo)
         while ((record = pldm_pdr_find_record_by_type(
                     repo, PLDM_STATE_SENSOR_PDR, record, &outData, &size)))
         {
-            auto pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(outData);
-            if (pdr && pdr->entity_type == entityType)
+            struct pldm_platform_state_sensor_pdr pdr{};
+            int rc = decode_pldm_platform_state_sensor_pdr(outData, size, &pdr);
+            if (rc)
+            {
+                error("Failed to decode state sensor PDR, response code '{RC}'",
+                      "RC", rc);
+                continue;
+            }
+            if (pdr.entity_type == entityType)
             {
                 pdrs.emplace_back(outData, outData + size);
             }
@@ -874,14 +881,21 @@ std::vector<pldm::pdr::SensorID> findSensorIds(
 
     for (const auto& pdr : pdrs)
     {
-        auto sensorPdr =
-            reinterpret_cast<const pldm_state_sensor_pdr*>(pdr.data());
-
-        if (sensorPdr && sensorPdr->entity_type == entityType &&
-            sensorPdr->entity_instance == entityInstance &&
-            sensorPdr->container_id == containerId)
+        struct pldm_platform_state_sensor_pdr sensorPdr{};
+        int rc = decode_pldm_platform_state_sensor_pdr(pdr.data(), pdr.size(),
+                                                       &sensorPdr);
+        if (rc)
         {
-            sensorIDs.emplace_back(sensorPdr->sensor_id);
+            error("Failed to decode state sensor PDR, response code '{RC}'",
+                  "RC", rc);
+            continue;
+        }
+
+        if (sensorPdr.entity_type == entityType &&
+            sensorPdr.entity_instance_number == entityInstance &&
+            sensorPdr.container_id == containerId)
+        {
+            sensorIDs.emplace_back(sensorPdr.sensor_id);
         }
     }
 

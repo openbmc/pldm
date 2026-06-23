@@ -1331,6 +1331,7 @@ TEST(GetStateSensorPDRsByType, testMultipleMatches)
 
     rec1->hdr.type = PLDM_STATE_SENSOR_PDR;
     rec1->hdr.record_handle = 1;
+    rec1->hdr.length = pdr1.size() - sizeof(pldm_pdr_hdr);
     rec1->entity_type = entityType;
     rec1->composite_sensor_count = 1;
     state1->state_set_id = 1;
@@ -1349,6 +1350,7 @@ TEST(GetStateSensorPDRsByType, testMultipleMatches)
 
     rec2->hdr.type = PLDM_STATE_SENSOR_PDR;
     rec2->hdr.record_handle = 2;
+    rec2->hdr.length = pdr2.size() - sizeof(pldm_pdr_hdr);
     rec2->entity_type = entityType;
     rec2->composite_sensor_count = 1;
     state2->state_set_id = 2;
@@ -1377,6 +1379,7 @@ TEST(GetStateSensorPDRsByType, testNoMatch)
 
     rec->hdr.type = PLDM_STATE_SENSOR_PDR;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 99;
     rec->composite_sensor_count = 1;
     state->state_set_id = 1;
