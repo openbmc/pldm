@@ -608,6 +608,7 @@ TEST(FindStateSensorPDR, testOneMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 5;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -641,6 +642,7 @@ TEST(FindStateSensorPDR, testNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 55;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -690,6 +692,7 @@ TEST(FindStateSensorPDR, testMoreMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 5;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -710,6 +713,7 @@ TEST(FindStateSensorPDR, testMoreMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 5;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -749,6 +753,7 @@ TEST(FindStateSensorPDR, testManyNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 56;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -769,6 +774,7 @@ TEST(FindStateSensorPDR, testManyNoMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 66;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -804,6 +810,7 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 10;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -824,6 +831,7 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 5;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -860,6 +868,7 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 6;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -880,6 +889,7 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 5;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -902,6 +912,7 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
 
     rec_third->hdr.type = 4;
     rec_third->hdr.record_handle = 3;
+    rec_third->hdr.length = pdr_third.size() - sizeof(pldm_pdr_hdr);
     rec_third->entity_type = 7;
     rec_third->container_id = 0;
     rec_third->composite_sensor_count = 1;
@@ -934,6 +945,7 @@ TEST(FindStateSensorPDR, testCompositeSensor)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 5;
     rec->container_id = 0;
     rec->composite_sensor_count = 3;
@@ -982,6 +994,7 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 21;
     rec->container_id = 0;
     rec->composite_sensor_count = 3;
@@ -1006,6 +1019,134 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
     auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
 
     EXPECT_EQ(record.empty(), true);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindStateSensorPDR, testBadRecordLength)
+{
+    auto repo = pldm_pdr_init();
+    uint8_t tid = 1;
+    uint16_t entityID = 5;
+    uint16_t stateSetId = 1;
+
+    std::vector<uint8_t> pdr(
+        sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
+        sizeof(struct state_sensor_possible_states));
+
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
+
+    auto state = new (rec->possible_states) state_sensor_possible_states;
+
+    rec->hdr.type = 4;
+    rec->hdr.record_handle = 1;
+    // Claims more payload than the record carries
+    rec->hdr.length = pdr.size() + 1;
+    rec->entity_type = 5;
+    rec->container_id = 0;
+    rec->composite_sensor_count = 1;
+    state->state_set_id = 1;
+    state->possible_states_size = 1;
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
+
+    EXPECT_EQ(record.empty(), true);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindStateSensorPDR, testTruncatedPossibleStates)
+{
+    auto repo = pldm_pdr_init();
+    uint8_t tid = 1;
+    uint16_t entityID = 5;
+    uint16_t stateSetId = 2;
+
+    // Room for one possible_states entry, but the PDR claims two
+    std::vector<uint8_t> pdr(
+        sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
+        sizeof(struct state_sensor_possible_states));
+
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
+
+    auto state = new (rec->possible_states) state_sensor_possible_states;
+
+    rec->hdr.type = 4;
+    rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
+    rec->entity_type = 5;
+    rec->container_id = 0;
+    rec->composite_sensor_count = 2;
+    state->state_set_id = 1;
+    state->possible_states_size = 1;
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
+
+    EXPECT_EQ(record.empty(), true);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindStateSensorPDR, testBadRecordDoesNotStopScan)
+{
+    auto repo = pldm_pdr_init();
+    uint8_t tid = 1;
+    uint16_t entityID = 5;
+    uint16_t stateSetId = 1;
+
+    std::vector<uint8_t> pdr(
+        sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
+        sizeof(struct state_sensor_possible_states));
+
+    auto rec = new (pdr.data()) pldm_state_sensor_pdr;
+
+    auto state = new (rec->possible_states) state_sensor_possible_states;
+
+    rec->hdr.type = 4;
+    rec->hdr.record_handle = 1;
+    // Claims more payload than the record carries
+    rec->hdr.length = pdr.size() + 1;
+    rec->entity_type = 5;
+    rec->container_id = 0;
+    rec->composite_sensor_count = 1;
+    state->state_set_id = 1;
+    state->possible_states_size = 1;
+
+    std::vector<uint8_t> pdr_second(
+        sizeof(struct pldm_state_sensor_pdr) - sizeof(uint8_t) +
+        sizeof(struct state_sensor_possible_states));
+
+    auto rec_second = new (pdr_second.data()) pldm_state_sensor_pdr;
+
+    auto state_second = new (rec_second->possible_states)
+        state_sensor_possible_states;
+
+    rec_second->hdr.type = 4;
+    rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
+    rec_second->entity_type = 5;
+    rec_second->container_id = 0;
+    rec_second->composite_sensor_count = 1;
+    state_second->state_set_id = 1;
+    state_second->possible_states_size = 1;
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+    handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
+                           &handle),
+              0);
+
+    auto record = findStateSensorPDR(tid, entityID, stateSetId, repo);
+
+    ASSERT_EQ(record.size(), 1);
+    EXPECT_EQ(pdr_second, record[0]);
 
     pldm_pdr_destroy(repo);
 }
