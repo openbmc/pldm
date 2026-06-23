@@ -1317,42 +1317,72 @@ TEST(JsonEntryToDbusVal, stringTest)
     EXPECT_EQ(std::get<std::string>(result), "test_string");
 }
 
+namespace
+{
+constexpr size_t stateSensorPdrSize =
+    PLDM_PLATFORM_STATE_SENSOR_PDR_MIN_LENGTH +
+    PLDM_PLATFORM_STATE_SENSOR_POSSIBLE_STATES_MIN_LENGTH + 1;
+constexpr uint16_t stateSensorPdrBodyLen =
+    stateSensorPdrSize - sizeof(pldm_pdr_hdr);
+
+// Encodes a State Sensor PDR carrying one composite sensor, whose
+// possibleStates bitfield is a single zero byte. hdr.length is encoded as
+// supplied, so a record claiming more payload than it carries can be built.
+std::vector<uint8_t> makeStateSensorPdr(
+    const pldm_platform_state_sensor_pdr& fixed, uint16_t stateSetId)
+{
+    std::vector<uint8_t> pdr(stateSensorPdrSize);
+
+    size_t len = pdr.size();
+    EXPECT_EQ(0,
+              encode_pldm_platform_state_sensor_pdr(&fixed, pdr.data(), &len));
+    size_t offset = len;
+
+    const uint8_t possibleStates = 0;
+    struct pldm_platform_state_sensor_possible_states states{};
+    struct variable_field bits{};
+
+    states.state_set_id = stateSetId;
+    states.possible_states_size = 1;
+    bits.ptr = &possibleStates;
+    bits.length = 1;
+
+    len = pdr.size() - offset;
+    EXPECT_EQ(0, encode_pldm_platform_state_sensor_possible_states(
+                     &states, &bits, pdr.data() + offset, &len));
+
+    return pdr;
+}
+} // namespace
+
 TEST(GetStateSensorPDRsByType, testMultipleMatches)
 {
     auto repo = pldm_pdr_init();
     uint16_t entityType = 5;
 
     // Add first PDR
-    std::vector<uint8_t> pdr1(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
-                              sizeof(state_sensor_possible_states));
+    struct pldm_platform_state_sensor_pdr fixed1{};
+    fixed1.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed1.hdr.record_handle = 1;
+    fixed1.hdr.length = stateSensorPdrBodyLen;
+    fixed1.entity_type = entityType;
+    fixed1.composite_sensor_count = 1;
 
-    auto* rec1 = new (pdr1.data()) pldm_state_sensor_pdr{};
-    auto* state1 = new (rec1->possible_states) state_sensor_possible_states{};
-
-    rec1->hdr.type = PLDM_STATE_SENSOR_PDR;
-    rec1->hdr.record_handle = 1;
-    rec1->entity_type = entityType;
-    rec1->composite_sensor_count = 1;
-    state1->state_set_id = 1;
-    state1->possible_states_size = 1;
+    auto pdr1 = makeStateSensorPdr(fixed1, 1);
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr1.data(), pdr1.size(), false, 1, &handle),
               0);
 
     // Add second PDR
-    std::vector<uint8_t> pdr2(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
-                              sizeof(state_sensor_possible_states));
+    struct pldm_platform_state_sensor_pdr fixed2{};
+    fixed2.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed2.hdr.record_handle = 2;
+    fixed2.hdr.length = stateSensorPdrBodyLen;
+    fixed2.entity_type = entityType;
+    fixed2.composite_sensor_count = 1;
 
-    auto* rec2 = new (pdr2.data()) pldm_state_sensor_pdr{};
-    auto* state2 = new (rec2->possible_states) state_sensor_possible_states{};
-
-    rec2->hdr.type = PLDM_STATE_SENSOR_PDR;
-    rec2->hdr.record_handle = 2;
-    rec2->entity_type = entityType;
-    rec2->composite_sensor_count = 1;
-    state2->state_set_id = 2;
-    state2->possible_states_size = 1;
+    auto pdr2 = makeStateSensorPdr(fixed2, 2);
 
     handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr2.data(), pdr2.size(), false, 1, &handle),
@@ -1369,18 +1399,14 @@ TEST(GetStateSensorPDRsByType, testNoMatch)
     auto repo = pldm_pdr_init();
     uint16_t entityType = 5;
 
-    std::vector<uint8_t> pdr(sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t) +
-                             sizeof(state_sensor_possible_states));
+    struct pldm_platform_state_sensor_pdr fixed{};
+    fixed.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed.hdr.record_handle = 1;
+    fixed.hdr.length = stateSensorPdrBodyLen;
+    fixed.entity_type = 99;
+    fixed.composite_sensor_count = 1;
 
-    auto* rec = new (pdr.data()) pldm_state_sensor_pdr{};
-    auto* state = new (rec->possible_states) state_sensor_possible_states{};
-
-    rec->hdr.type = PLDM_STATE_SENSOR_PDR;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 99;
-    rec->composite_sensor_count = 1;
-    state->state_set_id = 1;
-    state->possible_states_size = 1;
+    auto pdr = makeStateSensorPdr(fixed, 1);
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
@@ -1397,6 +1423,128 @@ TEST(GetStateSensorPDRsByType, testEmptyRepo)
 
     auto pdrs = getStateSensorPDRsByType(5, repo);
     EXPECT_TRUE(pdrs.empty());
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(GetStateSensorPDRsByType, testBadRecordLength)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+
+    struct pldm_platform_state_sensor_pdr fixed{};
+    fixed.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed.hdr.record_handle = 1;
+    // Claims more payload than the record carries
+    fixed.hdr.length = stateSensorPdrSize + 1;
+    fixed.entity_type = entityType;
+    fixed.composite_sensor_count = 1;
+
+    auto pdr = makeStateSensorPdr(fixed, 1);
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto pdrs = getStateSensorPDRsByType(entityType, repo);
+    EXPECT_TRUE(pdrs.empty());
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(GetStateSensorPDRsByType, testBadRecordDoesNotStopScan)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+
+    struct pldm_platform_state_sensor_pdr fixed1{};
+    fixed1.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed1.hdr.record_handle = 1;
+    // Claims more payload than the record carries
+    fixed1.hdr.length = stateSensorPdrSize + 1;
+    fixed1.entity_type = entityType;
+    fixed1.composite_sensor_count = 1;
+
+    auto pdr1 = makeStateSensorPdr(fixed1, 1);
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr1.data(), pdr1.size(), false, 1, &handle),
+              0);
+
+    struct pldm_platform_state_sensor_pdr fixed2{};
+    fixed2.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed2.hdr.record_handle = 2;
+    fixed2.hdr.length = stateSensorPdrBodyLen;
+    fixed2.entity_type = entityType;
+    fixed2.composite_sensor_count = 1;
+
+    auto pdr2 = makeStateSensorPdr(fixed2, 2);
+
+    handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr2.data(), pdr2.size(), false, 1, &handle),
+              0);
+
+    auto pdrs = getStateSensorPDRsByType(entityType, repo);
+    ASSERT_EQ(pdrs.size(), 1);
+    EXPECT_EQ(pdr2, pdrs[0]);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindSensorIds, testOneMatch)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+    uint16_t entityInstance = 2;
+    uint16_t containerId = 3;
+
+    struct pldm_platform_state_sensor_pdr fixed{};
+    fixed.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed.hdr.record_handle = 1;
+    fixed.hdr.length = stateSensorPdrBodyLen;
+    fixed.sensor_id = 7;
+    fixed.entity_type = entityType;
+    fixed.entity_instance_number = entityInstance;
+    fixed.container_id = containerId;
+    fixed.composite_sensor_count = 1;
+
+    auto pdr = makeStateSensorPdr(fixed, 1);
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto sensorIds =
+        findSensorIds(repo, entityType, entityInstance, containerId);
+    ASSERT_EQ(sensorIds.size(), 1);
+    EXPECT_EQ(sensorIds[0], 7);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindSensorIds, testNoMatch)
+{
+    auto repo = pldm_pdr_init();
+    uint16_t entityType = 5;
+    uint16_t entityInstance = 2;
+    uint16_t containerId = 3;
+
+    struct pldm_platform_state_sensor_pdr fixed{};
+    fixed.hdr.type = PLDM_STATE_SENSOR_PDR;
+    fixed.hdr.record_handle = 1;
+    fixed.hdr.length = stateSensorPdrBodyLen;
+    fixed.sensor_id = 7;
+    fixed.entity_type = entityType;
+    fixed.entity_instance_number = entityInstance + 1;
+    fixed.container_id = containerId;
+    fixed.composite_sensor_count = 1;
+
+    auto pdr = makeStateSensorPdr(fixed, 1);
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto sensorIds =
+        findSensorIds(repo, entityType, entityInstance, containerId);
+    EXPECT_TRUE(sensorIds.empty());
 
     pldm_pdr_destroy(repo);
 }
