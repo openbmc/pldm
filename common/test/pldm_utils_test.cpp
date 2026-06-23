@@ -606,6 +606,7 @@ TEST(FindStateSensorPDR, testOneMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 5;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -639,6 +640,7 @@ TEST(FindStateSensorPDR, testNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 55;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -688,6 +690,7 @@ TEST(FindStateSensorPDR, testMoreMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 5;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -708,6 +711,7 @@ TEST(FindStateSensorPDR, testMoreMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 5;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -747,6 +751,7 @@ TEST(FindStateSensorPDR, testManyNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 56;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -767,6 +772,7 @@ TEST(FindStateSensorPDR, testManyNoMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 66;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -802,6 +808,7 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 10;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -822,6 +829,7 @@ TEST(FindStateSensorPDR, testOneMatchOneNoMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 5;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -858,6 +866,7 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 6;
     rec->container_id = 0;
     rec->composite_sensor_count = 1;
@@ -878,6 +887,7 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
 
     rec_second->hdr.type = 4;
     rec_second->hdr.record_handle = 2;
+    rec_second->hdr.length = pdr_second.size() - sizeof(pldm_pdr_hdr);
     rec_second->entity_type = 5;
     rec_second->container_id = 0;
     rec_second->composite_sensor_count = 1;
@@ -900,6 +910,7 @@ TEST(FindStateSensorPDR, testOneMatchManyNoMatch)
 
     rec_third->hdr.type = 4;
     rec_third->hdr.record_handle = 3;
+    rec_third->hdr.length = pdr_third.size() - sizeof(pldm_pdr_hdr);
     rec_third->entity_type = 7;
     rec_third->container_id = 0;
     rec_third->composite_sensor_count = 1;
@@ -932,6 +943,7 @@ TEST(FindStateSensorPDR, testCompositeSensor)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 5;
     rec->container_id = 0;
     rec->composite_sensor_count = 3;
@@ -980,6 +992,7 @@ TEST(FindStateSensorPDR, testNoMatchCompositeSensor)
 
     rec->hdr.type = 4;
     rec->hdr.record_handle = 1;
+    rec->hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
     rec->entity_type = 21;
     rec->container_id = 0;
     rec->composite_sensor_count = 3;

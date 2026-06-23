@@ -114,30 +114,33 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(
                                                   record, &outData, &size);
             if (record)
             {
-                auto pdr =
-                    std::start_lifetime_as<pldm_state_sensor_pdr>(outData);
-                auto compositeSensorCount = pdr->composite_sensor_count;
-                auto possible_states_start = pdr->possible_states;
-
-                for (auto sensors = 0x00; sensors < compositeSensorCount;
-                     sensors++)
+                struct pldm_platform_state_sensor_pdr pdr{};
+                int rc =
+                    decode_pldm_platform_state_sensor_pdr(outData, size, &pdr);
+                if (rc)
                 {
-                    auto possibleStates =
-                        std::start_lifetime_as<state_sensor_possible_states>(
-                            possible_states_start);
-                    auto setId = possibleStates->state_set_id;
-                    auto possibleStateSize =
-                        possibleStates->possible_states_size;
+                    error(
+                        "Failed to decode state sensor PDR, response code '{RC}'",
+                        "RC", rc);
+                    continue;
+                }
 
-                    if (pdr->entity_type == entityID && setId == stateSetId)
+                struct state_sensor_possible_states states{};
+                foreach_pldm_platform_state_sensor_pdr_possible_states(
+                    outData, size, states, rc)
+                {
+                    if (pdr.entity_type == entityID &&
+                        states.state_set_id == stateSetId)
                     {
-                        std::vector<uint8_t> sensor_pdr(&outData[0],
-                                                        &outData[size]);
-                        pdrs.emplace_back(std::move(sensor_pdr));
+                        pdrs.emplace_back(&outData[0], &outData[size]);
                         break;
                     }
-                    possible_states_start += possibleStateSize + sizeof(setId) +
-                                             sizeof(possibleStateSize);
+                }
+                if (rc)
+                {
+                    error(
+                        "Failed to iterate state sensor PDR possible states, response code '{RC}'",
+                        "RC", rc);
                 }
             }
 
