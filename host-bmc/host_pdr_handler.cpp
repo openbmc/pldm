@@ -799,22 +799,23 @@ void HostPDRHandler::setHostSensorState(const PDRList& stateSensorPDRs)
 {
     for (const auto& stateSensorPDR : stateSensorPDRs)
     {
-        auto pdr = reinterpret_cast<const pldm_state_sensor_pdr*>(
-            stateSensorPDR.data());
-
-        if (!pdr)
+        struct pldm_platform_state_sensor_pdr pdr{};
+        int rc = decode_pldm_platform_state_sensor_pdr(
+            stateSensorPDR.data(), stateSensorPDR.size(), &pdr);
+        if (rc)
         {
-            error("Failed to get state sensor PDR");
+            error("Failed to decode state sensor PDR, response code '{RC}'",
+                  "RC", rc);
             pldm::utils::reportError(
                 "xyz.openbmc_project.bmc.pldm.InternalFailure");
             return;
         }
 
-        uint16_t sensorId = pdr->sensor_id;
+        uint16_t sensorId = pdr.sensor_id;
 
         for (const auto& [terminusHandle, terminusInfo] : tlPDRInfo)
         {
-            if (terminusHandle == pdr->terminus_handle)
+            if (terminusHandle == pdr.terminus_handle)
             {
                 if (std::get<2>(terminusInfo) == PLDM_TL_PDR_VALID)
                 {
