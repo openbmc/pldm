@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7174cb25_5214fc84",
+        "filename": "common/types.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-24T10:50:46Z",
+      "side": 1,
+      "message": "not sure what this really means, can you re-write this in better words ?",
+      "range": {
+        "startLine": 179,
+        "startChar": 33,
+        "endLine": 180,
+        "endChar": 39
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "573d1461_ed5c17a5",
+        "filename": "common/utils.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 1040,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-24T10:50:46Z",
+      "side": 1,
+      "message": "seems like both the ctors have commonality. Can you move the common parts into a helper function so that the logic is not duplicated ?",
+      "range": {
+        "startLine": 1031,
+        "startChar": 1,
+        "endLine": 1040,
+        "endChar": 3
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c766982e_19a0ef4d",
+        "filename": "common/utils.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-24T10:50:46Z",
+      "side": 1,
+      "message": "is this inaccurate ? because the dtor only seems to only do munmap ?",
+      "range": {
+        "startLine": 801,
+        "startChar": 30,
+        "endLine": 801,
+        "endChar": 57
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ef5f3a_03e4d3e7",
+        "filename": "common/utils.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-24T10:50:46Z",
+      "side": 1,
+      "message": "always initialize , although it does not do harm at the moment, but it does allow the variable to have garbage. clang-tidy would have listed this a bug.",
+      "range": {
+        "startLine": 836,
+        "startChar": 4,
+        "endLine": 836,
+        "endChar": 16
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
