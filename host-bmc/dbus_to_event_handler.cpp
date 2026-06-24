@@ -192,7 +192,6 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
              this->sendStateSensorEvent(sensorId, dbusMaps);
          }}};
 
-    pldm_state_sensor_pdr* pdr = nullptr;
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> sensorPdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
     if (!sensorPdrRepo)
@@ -213,11 +212,21 @@ void DbusToPLDMEvent::listenSensorEvent(const pdr_utils::Repo& repo,
         auto pdrRecord = sensorPDRs.getFirstRecord(pdrEntry);
         while (pdrRecord)
         {
-            pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrEntry.data);
-            SensorId sensorId = LE16TOH(pdr->sensor_id);
-            if (sensorHandlers.contains(pdrType))
+            struct pldm_platform_state_sensor_pdr pdr{};
+            int rc = decode_pldm_platform_state_sensor_pdr(pdrEntry.data,
+                                                           pdrEntry.size, &pdr);
+            if (rc)
             {
-                sensorHandlers.at(pdrType)(sensorId, dbusMaps);
+                error("Failed to decode state sensor PDR, response code '{RC}'",
+                      "RC", rc);
+            }
+            else
+            {
+                SensorId sensorId = pdr.sensor_id;
+                if (sensorHandlers.contains(pdrType))
+                {
+                    sensorHandlers.at(pdrType)(sensorId, dbusMaps);
+                }
             }
 
             pdrRecord = sensorPDRs.getNextRecord(pdrRecord, pdrEntry);
