@@ -73,8 +73,10 @@ SoftPowerOff::SoftPowerOff(sdbusplus::bus_t& bus, sd_event* event,
             auto rc = getSensorInfo(entityType, stateSetId);
             if (rc != PLDM_SUCCESS)
             {
-                error("Failed to get Sensor PDRs, response code '{RC}'", "RC",
-                      lg2::hex, rc);
+                error(
+                    "Failed to get Sensor PDRs for TID={TID}, EntityType={ENTITY_TYPE}, StateSetId={STATE_SET}, response code '{RC}'",
+                    "TID", static_cast<unsigned>(TID), "ENTITY_TYPE",
+                    entityType, "STATE_SET", stateSetId, "RC", rc);
                 hasError = true;
                 return;
             }
@@ -204,7 +206,10 @@ bool SoftPowerOff::getEffecterID(pldm::pdr::EntityType& entityType,
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Failed to get softPowerOff PDR, error - {ERROR}", "ERROR", e);
+        error(
+            "Failed to get State Effecter PDR for TID={TID}, EntityType={ENTITY_TYPE}, StateSetId={STATE_SET}, error - {ERROR}",
+            "TID", static_cast<unsigned>(TID), "ENTITY_TYPE", entityType,
+            "STATE_SET", stateSetId, "ERROR", e);
         return false;
     }
     return true;
@@ -228,7 +233,10 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
 
         if (Response.size() == 0)
         {
-            error("No sensor PDR has been found that matches the criteria");
+            error(
+                "No State Sensor PDR found for TID={TID}, EntityType={ENTITY_TYPE}, StateSetId={STATE_SET}",
+                "TID", static_cast<unsigned>(TID), "ENTITY_TYPE", entityType,
+                "STATE_SET", stateSetId);
             return PLDM_ERROR;
         }
 
@@ -238,7 +246,10 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
             pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(rep.data());
             if (!pdr)
             {
-                error("Failed to get state sensor PDR.");
+                error(
+                    "Failed to parse State Sensor PDR for TID={TID}, EntityType={ENTITY_TYPE}, StateSetId={STATE_SET}",
+                    "TID", static_cast<unsigned>(TID), "ENTITY_TYPE",
+                    entityType, "STATE_SET", stateSetId);
                 return PLDM_ERROR;
             }
         }
@@ -267,8 +278,10 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
     }
     catch (const sdbusplus::exception_t& e)
     {
-        error("Failed to get state sensor PDR during soft-off, error - {ERROR}",
-              "ERROR", e);
+        error(
+            "Failed to get State Sensor PDR for TID={TID}, EntityType={ENTITY_TYPE}, StateSetId={STATE_SET}, error - {ERROR}",
+            "TID", static_cast<unsigned>(TID), "ENTITY_TYPE", entityType,
+            "STATE_SET", stateSetId, "ERROR", e);
         return PLDM_ERROR;
     }
 
