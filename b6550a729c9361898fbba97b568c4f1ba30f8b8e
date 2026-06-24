@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a297acf_f55fd901",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-06-24T10:04:59Z",
+      "side": 1,
+      "message": "I agree that relying on `GetSubtree()` here is racy because it observes the current D-Bus state rather than the state that generated InterfacesRemoved.\n\nHowever, I\u0027m not convinced parsing the object path is the best long term solution. D-Bus object paths are identifiers, and their structure should generally be treated as an implementation detail unless the MCTP D-Bus API explicitly guarantees `/networks/{networkId}/endpoints/{eid}` as a stable contract.\n\n\nIf possible, I\u0027d prefer maintaining a mapping from `object_path` to `{networkId, EID}` (or relying on cached properties/interfaces populated from InterfacesAdded) and using the object path from InterfacesRemoved as the lookup key. That avoids both the race condition and coupling the consumer to the path layout.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "b6550a729c9361898fbba97b568c4f1ba30f8b8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
