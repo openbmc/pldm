@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62b80a28_95d8cc4f",
+        "filename": "common/types.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "A parameter used for template service\ne.g CondiditionArg `1` for `\"bic-pist-update@1.service\"`",
+      "parentUuid": "8164181d_585ad5ed",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a37d062d_99b72702",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-22T20:49:07Z",
       "side": 1,
       "message": "nit: Better to follow UpperCamelCase for def names or if u expend this inline rather than a reference, that should be fine too.",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "373dbe66_5c8fd98d",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 43
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a37d062d_99b72702",
       "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf55e396_89ac1a25",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4057b1aa_bca22e49",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad7f9e99_71ba0b58",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e712af3_2e10b1e1",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "ad7f9e99_71ba0b58",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6c62d56_275139aa",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-06-22T20:49:07Z",
       "side": 1,
       "message": "Probably you can use from_json construct https://json.nlohmann.me/api/adl_serializer/from_json/ .\n\nFor example use case https://github.com/openbmc/phosphor-health-monitor/blob/master/health_metric_config.cpp#L74",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1bea540_a5c6e31c",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6c62d56_275139aa",
       "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +210,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19d8dbe9_0ae9d106",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d92fdb7_28b44eb8",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a7080b7_183ee806",
@@ -133,6 +241,24 @@
       "writtenOn": "2026-06-22T20:49:07Z",
       "side": 1,
       "message": "You are already in pldm namespace, any reason for defining this using clause?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79bc29f9_599179ca",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "6a7080b7_183ee806",
       "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +280,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5f1dec_e6059702",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "4099eeaa_1b355559",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebe54053_c77ace9f",
@@ -167,6 +311,24 @@
       "writtenOn": "2026-06-22T20:49:07Z",
       "side": 1,
       "message": "Better to define these constexpr in .cpp file, if they are only used there ? Same for other constexpr.",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "824b4509_92d96e7c",
+        "filename": "fw-update/condition_executor.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebe54053_c77ace9f",
       "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -190,6 +352,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f011787_3f01be72",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "This will always happen no matter what the pre/post conditions are, reason written in another reply.",
+      "parentUuid": "2d22a6af_d3ecb957",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6a0b8ff_ba6f7fda",
         "filename": "fw-update/item_update_manager.cpp",
         "patchSetId": 43
@@ -201,6 +381,24 @@
       "writtenOn": "2026-06-22T20:49:07Z",
       "side": 1,
       "message": "Are your blocking the thread until the whole job finishes? If yes, then thats wrong. Please pass a taskCallback down the chain. Implement SystemD interface as a singleton that can register for JobRemoved signals that can publish back into the event queue.",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5fa488_d2231bbc",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6a0b8ff_ba6f7fda",
       "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -224,6 +422,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "604fad42_5f17337b",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "This is used for ensuring the `InventoryManager` to re-query the fw devices after the update procedure is completed, as some fw devices won\u0027t re-populated the MCTP endpoint after it\u0027s reset(e.g. bic), the query won\u0027t be triggered automatically.",
+      "parentUuid": "78035b78_859c4f47",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c873d5d3_830e4ffa",
         "filename": "fw-update/test/condition_executor_test.cpp",
         "patchSetId": 43
@@ -235,6 +451,24 @@
       "writtenOn": "2026-06-22T19:58:33Z",
       "side": 1,
       "message": "What is this test testing?",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "961cefcc_545c0009",
+        "filename": "fw-update/test/condition_executor_test.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-25T00:44:56Z",
+      "side": 1,
+      "message": "Removed this as they\u0027re no use case like this at the moment.",
+      "parentUuid": "c873d5d3_830e4ffa",
       "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
