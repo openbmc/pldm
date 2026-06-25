@@ -247,6 +247,20 @@ class MctpDiscovery
      * @param[in] properties - the properties of the D-Bus object
      * @return the name property
      */
+    /** @brief Check if an EID+UUID pair already exists in existingMctpInfos
+     *         across all networks. Used to prevent registering the same
+     *         physical device as multiple terminuses when it is reachable via
+     *         more than one MCTP network.
+     *
+     *  @param[in] endpointEid - the endpoint EID to check
+     *  @param[in] uuid        - the endpoint UUID to check
+     *
+     *  @return the TID if the EID+UUID pair already exists, std::nullopt
+     * otherwise
+     */
+    std::optional<pldm::tid> eidUuidPairExists(pldm::eid endpointEid,
+                                               const UUID& uuid) const;
+
     std::string getNameFromProperties(const utils::PropertyMap& properties);
 
     /** @brief The configuration contains D-Bus path and the MCTP endpoint
