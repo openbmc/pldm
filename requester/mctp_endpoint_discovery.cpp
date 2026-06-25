@@ -43,6 +43,20 @@ MctpDiscovery::MctpDiscovery(
             // Only add the available endpoints to the terminus
             // Let the propertiesChanged signal tells us when it comes back
             // to Available again
+            const auto& candidateEid = std::get<pldm::eid>(mapIt.first);
+            const auto& candidateUuid = std::get<1>(mapIt.first);
+            if (candidateUuid != emptyUUID)
+            {
+                if (auto matchedTid = eidUuidPairExists(candidateEid,
+                                                        candidateUuid))
+                {
+                    info(
+                        "Skipping EID '{EID}' UUID '{UUID}': already registered for terminus TID '{TID}'",
+                        "EID", unsigned(candidateEid), "UUID", candidateUuid,
+                        "TID", matchedTid.value());
+                    continue;
+                }
+            }
             TerminusInfos singleInfo;
             // Need TID here - get from TID pool
             for (auto* handler : handlers)
@@ -249,29 +263,79 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                     types.end())
                 {
-                    info(
-                        "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
-                        "NETWORK", networkId, "EID", eid, "UUID", uuid);
                     auto mctpInfo =
                         MctpInfo(eid, uuid, "", networkId, std::nullopt);
                     searchConfigurationFor(pldm::utils::DBusHandler(),
                                            mctpInfo);
-                    for (auto* handler : handlers)
+                    if (uuid != emptyUUID)
                     {
-                        if (auto tid = handler->allocateOrGetTid(mctpInfo))
+                        if (auto matchedTid = eidUuidPairExists(eid, uuid))
                         {
-                            if (auto* transport = handler->getTransport())
+                            info(
+                                "Skipping EID '{EID}' UUID '{UUID}': already registered for terminus TID '{TID}'",
+                                "EID", unsigned(eid), "UUID", uuid,
+                                "TID", matchedTid.value());
+                        }
+                        else
+                        {
+                            info(
+                                "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
+                                "NETWORK", networkId, "EID", eid, "UUID", uuid);
+                            for (auto* handler : handlers)
                             {
-                                transport->mapTid(tid.value(), networkId, eid);
+                                if (auto tid =
+                                        handler->allocateOrGetTid(mctpInfo))
+                                {
+                                    if (auto* transport =
+                                            handler->getTransport())
+                                    {
+                                        transport->mapTid(tid.value(), networkId,
+                                                          eid);
+                                    }
+                                    mctpInfos[tid.value()] =
+                                        std::move(mctpInfo);
+                                    break;
+                                }
                             }
-                            mctpInfos[tid.value()] = std::move(mctpInfo);
-                            break;
+                        }
+                    }
+                    else
+                    {
+                        info(
+                            "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
+                            "NETWORK", networkId, "EID", eid, "UUID", uuid);
+                        for (auto* handler : handlers)
+                        {
+                            if (auto tid = handler->allocateOrGetTid(mctpInfo))
+                            {
+                                if (auto* transport = handler->getTransport())
+                                {
+                                    transport->mapTid(tid.value(), networkId,
+                                                      eid);
+                                }
+                                mctpInfos[tid.value()] = std::move(mctpInfo);
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
     }
+}
+
+std::optional<pldm::tid> MctpDiscovery::eidUuidPairExists(
+    pldm::eid endpointEid, const UUID& uuid) const
+{
+    for (const auto& [tid, existingInfo] : existingMctpInfos)
+    {
+        if (std::get<pldm::eid>(existingInfo) == endpointEid &&
+            std::get<1>(existingInfo) == uuid)
+        {
+            return tid;
+        }
+    }
+    return std::nullopt;
 }
 
 void MctpDiscovery::addToExistingMctpInfos(const TerminusInfos& addedInfos)
@@ -387,6 +451,19 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             {
                 if (availability)
                 {
+                    const auto& epEid = std::get<pldm::eid>(mctpInfo);
+                    const auto& epUuid = std::get<1>(mctpInfo);
+                    if (epUuid != emptyUUID)
+                    {
+                        if (auto matchedTid = eidUuidPairExists(epEid, epUuid))
+                        {
+                            info(
+                                "Skipping EID '{EID}' UUID '{UUID}': already registered for terminus TID '{TID}'",
+                                "EID", unsigned(epEid), "UUID", epUuid,
+                                "TID", matchedTid.value());
+                            return;
+                        }
+                    }
                     // The endpoint not in existingMctpInfos and is
                     // available Add it to existingMctpInfos
                     info(
