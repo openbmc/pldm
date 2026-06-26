@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a049f17_2eaba9d8",
+        "filename": "common/types.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-26T23:46:20Z",
+      "side": 1,
+      "message": "Is this ConditionArg same as the ComponentIdentifier or is it something else ?",
+      "parentUuid": "62b80a28_95d8cc4f",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a37d062d_99b72702",
         "filename": "configurations/fw-update-conditions/schema/schema.json",
         "patchSetId": 43
@@ -386,6 +404,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc5a9abf_068caa60",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-26T23:46:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3f011787_3f01be72",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6a0b8ff_ba6f7fda",
@@ -452,6 +488,24 @@
       "side": 1,
       "message": "This is used for ensuring the `InventoryManager` to re-query the fw devices after the update procedure is completed, as some fw devices won\u0027t re-populated the MCTP endpoint after it\u0027s reset(e.g. bic), the query won\u0027t be triggered automatically.",
       "parentUuid": "78035b78_859c4f47",
+      "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b389def1_95853918",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-26T23:46:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "604fad42_5f17337b",
       "revId": "fbd11ebcaa7e9240f98019a5831663fc6cbe8fe1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
