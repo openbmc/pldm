@@ -22,6 +22,30 @@
       },
       "revId": "b6550a729c9361898fbba97b568c4f1ba30f8b8e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53b01ebe_9bd39289",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-06-26T11:14:27Z",
+      "side": 1,
+      "message": "Thanks for the feedback!\nI agree that parsing the object path couples us to mctpd\u0027s path layout, which has changed before.\n\nI\u0027ve updated the patch to replace `parseMctpEndpointPath()` with a cached map (endpointsByPath) that stores the `object_path` to `{networkId, EID}` mapping at discovery time (getMctpInfos and InterfacesAdded handler). On InterfacesRemoved, the object path is used purely as a lookup key into this cache. No path structure is assumed or parsed.",
+      "parentUuid": "7a297acf_f55fd901",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 37
+      },
+      "revId": "b6550a729c9361898fbba97b568c4f1ba30f8b8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
