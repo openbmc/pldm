@@ -442,67 +442,86 @@ void MctpDiscovery::searchConfigurationFor(
     const pldm::utils::DBusHandler& handler, MctpInfo& mctpInfo)
 {
     const auto mctpReactorObjectPath = constructMctpReactorObjectPath(mctpInfo);
+    std::string associatedObjPath;
+    std::string associatedService;
+    std::string associatedInterface;
+    sdbusplus::object_path inventorySubtreePath(inventorySubtreePathStr);
+
+    //"/{board or chassis type}/{board or chassis}/{device}"
+    auto constexpr subTreeDepth = 3;
+    utils::GetAssociatedSubTreeResponse response;
     try
     {
-        std::string associatedObjPath;
-        std::string associatedService;
-        std::string associatedInterface;
-        sdbusplus::object_path inventorySubtreePath(inventorySubtreePathStr);
-
-        //"/{board or chassis type}/{board or chassis}/{device}"
-        auto constexpr subTreeDepth = 3;
-        auto response = handler.getAssociatedSubTree(
-            mctpReactorObjectPath, inventorySubtreePath, subTreeDepth,
-            interfaceFilter);
-        if (response.empty())
-        {
-            warning("No associated subtree found for path {PATH}", "PATH",
-                    mctpReactorObjectPath);
-            return;
-        }
-        // Assume the first entry is the one we want
-        auto subTree = response.begin();
-        associatedObjPath = subTree->first;
-        auto associatedServiceProp = subTree->second;
-        if (associatedServiceProp.empty())
-        {
-            warning("No associated service found for path {PATH}", "PATH",
-                    mctpReactorObjectPath);
-            return;
-        }
-        // Assume the first entry is the one we want
-        auto entry = associatedServiceProp.begin();
-        associatedService = entry->first;
-        auto dBusIntfList = entry->second;
-        auto associatedInterfaceItr = std::find_if(
-            dBusIntfList.begin(), dBusIntfList.end(), [](const auto& intf) {
-                return std::find(interfaceFilter.begin(), interfaceFilter.end(),
-                                 intf) != interfaceFilter.end();
-            });
-        if (associatedInterfaceItr == dBusIntfList.end())
-        {
-            error("No associated interface found for path {PATH}", "PATH",
-                  mctpReactorObjectPath);
-            return;
-        }
-        associatedInterface = *associatedInterfaceItr;
-        auto mctpTargetProperties = handler.getDbusPropertiesVariant(
-            associatedService.c_str(), associatedObjPath.c_str(),
-            associatedInterface.c_str());
-        auto name = getNameFromProperties(mctpTargetProperties);
-        if (!name.empty())
-        {
-            std::get<std::optional<std::string>>(mctpInfo) = name;
-        }
-        configurations.emplace(associatedObjPath, mctpInfo);
+        response = handler.getAssociatedSubTree(
+            mctpReactorObjectPath, inventorySubtreePath,
+            subTreeDepth, interfaceFilter);
     }
     catch (const std::exception& e)
     {
         error(
-            "Error getting associated subtree for path {PATH}, error - {ERROR}",
+            "Failed to get associated subtree for path '{PATH}': {ERROR}",
             "PATH", mctpReactorObjectPath, "ERROR", e);
         return;
     }
+
+    if (response.empty())
+    {
+        warning("No associated subtree found for path {PATH}", "PATH",
+                mctpReactorObjectPath);
+        return;
+    }
+    // Assume the first entry is the one we want
+    auto subTree = response.begin();
+    associatedObjPath = subTree->first;
+    auto associatedServiceProp = subTree->second;
+    if (associatedServiceProp.empty())
+    {
+        warning("No associated service found for path {PATH}", "PATH",
+                mctpReactorObjectPath);
+        return;
+    }
+    // Assume the first entry is the one we want
+    auto entry = associatedServiceProp.begin();
+    associatedService = entry->first;
+    auto dBusIntfList = entry->second;
+    auto associatedInterfaceItr = std::find_if(
+        dBusIntfList.begin(), dBusIntfList.end(), [](const auto& intf) {
+            return std::find(interfaceFilter.begin(), interfaceFilter.end(),
+                                intf) != interfaceFilter.end();
+        });
+    if (associatedInterfaceItr == dBusIntfList.end())
+    {
+        error("No associated interface found for path {PATH}", "PATH",
+                mctpReactorObjectPath);
+        return;
+    }
+    associatedInterface = *associatedInterfaceItr;
+
+    utils::PropertyMap mctpTargetProperties;
+    try
+    {
+        mctpTargetProperties = handler.getDbusPropertiesVariant(
+            associatedService.c_str(), associatedObjPath.c_str(),
+            associatedInterface.c_str());
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to get properties from '{SERVICE}' at '{PATH}' "
+            "for interface '{INTERFACE}': {ERROR}",
+            "SERVICE", associatedService,
+            "PATH", associatedObjPath,
+            "INTERFACE", associatedInterface,
+            "ERROR", e);
+        return;
+    }
+
+    auto name = getNameFromProperties(mctpTargetProperties);
+    if (!name.empty())
+    {
+        std::get<std::optional<std::string>>(mctpInfo) = name;
+    }
+    configurations.emplace(associatedObjPath, mctpInfo);
 }
 
 void MctpDiscovery::removeConfigs(const MctpInfos& removedInfos)
