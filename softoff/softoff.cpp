@@ -232,37 +232,37 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
             return PLDM_ERROR;
         }
 
-        pldm_state_sensor_pdr* pdr = nullptr;
-        for (auto& rep : Response)
+        const auto& sensorPdr = Response.back();
+        struct pldm_platform_state_sensor_pdr pdr{};
+        int rc = decode_pldm_platform_state_sensor_pdr(sensorPdr.data(),
+                                                       sensorPdr.size(), &pdr);
+        if (rc)
         {
-            pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(rep.data());
-            if (!pdr)
-            {
-                error("Failed to get state sensor PDR.");
-                return PLDM_ERROR;
-            }
+            error("Failed to decode state sensor PDR, response code '{RC}'",
+                  "RC", rc);
+            return PLDM_ERROR;
         }
 
-        sensorID = pdr->sensor_id;
+        sensorID = pdr.sensor_id;
 
-        auto compositeSensorCount = pdr->composite_sensor_count;
-        auto possibleStatesStart = pdr->possible_states;
-
-        for (auto offset = 0; offset < compositeSensorCount; offset++)
+        uint8_t offset = 0;
+        struct state_sensor_possible_states states{};
+        foreach_pldm_platform_state_sensor_pdr_possible_states(
+            sensorPdr.data(), sensorPdr.size(), states, rc)
         {
-            auto possibleStates =
-                std::start_lifetime_as<state_sensor_possible_states>(
-                    possibleStatesStart);
-            auto setId = possibleStates->state_set_id;
-            auto possibleStateSize = possibleStates->possible_states_size;
-
-            if (setId == PLDM_STATE_SET_SW_TERMINATION_STATUS)
+            if (states.state_set_id == PLDM_STATE_SET_SW_TERMINATION_STATUS)
             {
                 sensorOffset = offset;
                 break;
             }
-            possibleStatesStart +=
-                possibleStateSize + sizeof(setId) + sizeof(possibleStateSize);
+            offset++;
+        }
+        if (rc)
+        {
+            error(
+                "Failed to walk state sensor PDR possible states, response code '{RC}'",
+                "RC", rc);
+            return PLDM_ERROR;
         }
     }
     catch (const sdbusplus::exception_t& e)
