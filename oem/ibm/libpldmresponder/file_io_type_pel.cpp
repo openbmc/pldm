@@ -152,7 +152,7 @@ int PelHandler::read(uint32_t offset, uint32_t& length, Response& response,
                 "OFFSET", offset, "SIZE", fileSize, "FILE_HANDLE", fileHandle);
             return PLDM_DATA_OUT_OF_RANGE;
         }
-        if (offset + length > fileSize)
+        if (length > static_cast<uint64_t>(fileSize - offset))
         {
             length = fileSize - offset;
         }
