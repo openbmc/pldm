@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37bc825c_3e472526",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 44
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-29T09:36:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "242d40d4_72124463",
+      "revId": "66714340b832774df9927237dfe82cd14487d51d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "368dc7f1_1f1fafcc",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-06-26T23:46:20Z",
       "side": 1,
       "message": "Can you please add some unit test for this new interface to test and verify the async nature of code.",
+      "revId": "66714340b832774df9927237dfe82cd14487d51d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52b29e70_666a0035",
+        "filename": "fw-update/systemd_interface.hpp",
+        "patchSetId": 44
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-06-29T09:36:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "368dc7f1_1f1fafcc",
       "revId": "66714340b832774df9927237dfe82cd14487d51d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
