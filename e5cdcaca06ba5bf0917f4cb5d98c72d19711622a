@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e15ce43_dca3dde8",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-06-29T05:28:39Z",
+      "side": 1,
+      "message": "Could you please add a comment documenting the behavior when different components of the same device are updated simultaneously?\n\nDo we fail the update with updateInProgress error in that case or we rely on the error which FD throws.",
+      "revId": "e5cdcaca06ba5bf0917f4cb5d98c72d19711622a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
