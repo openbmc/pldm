@@ -421,7 +421,7 @@ Response Handler::readFileIntoMemory(const pldm_msg* request,
         return response;
     }
 
-    if (offset + length > fileSize)
+    if (length > fileSize - offset)
     {
         length = fileSize - offset;
     }
@@ -687,7 +687,7 @@ Response Handler::readFile(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
-    if (offset + length > fileSize)
+    if (length > fileSize - offset)
     {
         length = fileSize - offset;
     }
