@@ -89,7 +89,7 @@ int FileHandler::transferFileData(const fs::path& path, bool upstream,
                 "OFFSET", offset, "SIZE", fileSize, "FILE_HANDLE", fileHandle);
             return PLDM_DATA_OUT_OF_RANGE;
         }
-        if (offset + length > fileSize)
+        if (length > fileSize - offset)
         {
             length = fileSize - offset;
         }
@@ -199,7 +199,7 @@ int FileHandler::readFile(const std::string& filePath, uint32_t offset,
         return PLDM_DATA_OUT_OF_RANGE;
     }
 
-    if (offset + length > fileSize)
+    if (length > fileSize - offset)
     {
         length = fileSize - offset;
     }

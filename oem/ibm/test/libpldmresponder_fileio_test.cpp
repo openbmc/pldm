@@ -712,6 +712,15 @@ TEST_F(TestFileTable, ReadFileGoodPath)
     ASSERT_EQ(0, memcmp(response->file_data, buffer.data(),
                         (fileSize - request->offset)));
 
+    // A large length must be clamped without wrapping offset + length.
+    request->offset = 1;
+    request->length = UINT32_MAX;
+    responseMsg = handler.readFile(requestMsgPtr, payload_length);
+    response = reinterpret_cast<pldm_read_file_resp*>(
+        responseMsg.data() + sizeof(pldm_msg_hdr));
+    ASSERT_EQ(response->completion_code, PLDM_SUCCESS);
+    ASSERT_EQ(response->length, fileSize - request->offset);
+
     table.clear();
 }
 
@@ -996,4 +1005,11 @@ TEST(readFileByType, testReadFile)
     ASSERT_EQ(length, in.size());
     ASSERT_EQ(response.size(), in.size());
     ASSERT_EQ(std::equal(in.begin(), in.end(), response.begin()), true);
+
+    length = UINT32_MAX;
+    response.clear();
+    rc = handler.readFile(tmplt, 1, length, response);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    ASSERT_EQ(length, in.size() - 1);
+    ASSERT_EQ(response.size(), in.size() - 1);
 }
