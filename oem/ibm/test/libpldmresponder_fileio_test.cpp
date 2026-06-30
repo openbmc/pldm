@@ -13,6 +13,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 
@@ -1012,4 +1013,79 @@ TEST(readFileByType, testReadFile)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(length, in.size() - 1);
     ASSERT_EQ(response.size(), in.size() - 1);
+}
+
+class PCIeInfoParserTest : public testing::Test
+{
+  protected:
+    void SetUp() override
+    {
+        char pathTemplate[] = "/tmp/pldm-pcie.XXXXXX";
+        path = fs::path(mkdtemp(pathTemplate));
+    }
+
+    void TearDown() override
+    {
+        fs::remove_all(path);
+    }
+
+    void writeBlob(const char* name, const std::vector<uint8_t>& blob)
+    {
+        std::ofstream file(path / name, std::ios::binary);
+        file.write(reinterpret_cast<const char*>(blob.data()), blob.size());
+    }
+
+    fs::path path;
+};
+
+TEST_F(PCIeInfoParserTest, RejectsTruncatedTopologyEntry)
+{
+    constexpr size_t headerSize = offsetof(topologyBlob, pciLinkEntry);
+    std::vector<uint8_t> blob(headerSize);
+    topologyBlob header{};
+    header.numPcieLinkEntries = htobe16(1);
+    std::memcpy(blob.data(), &header, headerSize);
+    writeBlob("topology", blob);
+
+    PCIeInfoHandler handler(0, PLDM_FILE_TYPE_PCIE_TOPOLOGY, path);
+    EXPECT_FALSE(handler.parseTopologyData());
+}
+
+TEST_F(PCIeInfoParserTest, RejectsTopologyLocationOutsideEntry)
+{
+    constexpr size_t headerSize = offsetof(topologyBlob, pciLinkEntry);
+    constexpr size_t entrySize = offsetof(pcieLinkEntry, pciLinkEntryLocCode);
+    std::vector<uint8_t> blob(headerSize + entrySize);
+    topologyBlob header{};
+    header.numPcieLinkEntries = htobe16(1);
+    std::memcpy(blob.data(), &header, headerSize);
+    pcieLinkEntry entry{};
+    entry.entryLength = htobe16(entrySize);
+    entry.pcieHostBridgeLocCodeOff = htobe16(UINT16_MAX);
+    entry.pcieHostBridgeLocCodeSize = 1;
+    std::memcpy(blob.data() + headerSize, &entry, entrySize);
+    writeBlob("topology", blob);
+
+    PCIeInfoHandler handler(0, PLDM_FILE_TYPE_PCIE_TOPOLOGY, path);
+    EXPECT_FALSE(handler.parseTopologyData());
+}
+
+TEST_F(PCIeInfoParserTest, RejectsCableLocationOutsideEntry)
+{
+    constexpr size_t headerSize =
+        offsetof(cableAttributesList, pciLinkCableAttr);
+    constexpr size_t entrySize = offsetof(pcieLinkCableAttr, cableAttrLocCode);
+    std::vector<uint8_t> blob(headerSize + entrySize);
+    cableAttributesList header{};
+    header.numOfCables = htobe16(1);
+    std::memcpy(blob.data(), &header, headerSize);
+    pcieLinkCableAttr entry{};
+    entry.entryLength = htobe16(entrySize);
+    entry.hostPortLocationCodeOffset = htobe16(UINT16_MAX);
+    entry.hostPortLocationCodeSize = 1;
+    std::memcpy(blob.data() + headerSize, &entry, entrySize);
+    writeBlob("cableinfo", blob);
+
+    PCIeInfoHandler handler(0, PLDM_FILE_TYPE_CABLE_INFO, path);
+    EXPECT_FALSE(handler.parseCableInfo());
 }

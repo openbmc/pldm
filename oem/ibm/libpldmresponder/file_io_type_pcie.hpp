@@ -4,6 +4,7 @@
 
 #include <sys/mman.h>
 
+#include <filesystem>
 #include <unordered_map>
 
 namespace pldm
@@ -139,7 +140,9 @@ class PCIeInfoHandler : public FileHandler
   public:
     /** @brief PCIeInfoHandler constructor
      */
-    PCIeInfoHandler(uint32_t fileHandle, uint16_t fileType);
+    PCIeInfoHandler(
+        uint32_t fileHandle, uint16_t fileType,
+        std::filesystem::path pciePath = "/var/lib/pldm/pcie-topology/");
 
     int writeFromMemory(uint32_t offset, uint32_t length, uint64_t address,
                         oem_platform::Handler* /*oemPlatformHandler*/) override;
@@ -184,10 +187,10 @@ class PCIeInfoHandler : public FileHandler
     }
 
     /** @brief method to parse the pcie topology information */
-    virtual void parseTopologyData();
+    virtual bool parseTopologyData();
 
     /** @brief method to parse the cable information */
-    virtual void parseCableInfo();
+    virtual bool parseCableInfo();
 
     /** @brief PCIeInfoHandler destructor
      */
@@ -195,6 +198,7 @@ class PCIeInfoHandler : public FileHandler
 
   private:
     uint16_t infoType; //!< type of the information
+    std::filesystem::path pciePath;
 
     /**
      * @brief Map contains Topology data
