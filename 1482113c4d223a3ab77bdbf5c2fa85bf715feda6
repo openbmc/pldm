@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9deefed5_cebd9ef6",
+        "filename": "fw-update/test/condition_collector_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-30T07:05:21Z",
+      "side": 1,
+      "message": "Why r u checking for \"AnyComponent\" ? Isn\u0027t the check for preConditions being empty is good enough. Same goes for other tests as well.",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be4733cb_998da77b",
+        "filename": "fw-update/test/condition_collector_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-30T07:05:21Z",
+      "side": 1,
+      "message": "Can you parsing logic take care of completely ignoring an entry if it doesn\u0027t have any pre/pot condition at all as i don\u0027t see how this will be useful? Logically this shall be treated as any other component which doesn\u0027t have its entry specified in the file at all and so no such services shall be called for it.",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "781d24af_da6b2223",
         "filename": "fw-update/test/systemd_interface_test.cpp",
         "patchSetId": 45
