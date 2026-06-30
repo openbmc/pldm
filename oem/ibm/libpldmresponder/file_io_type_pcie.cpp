@@ -8,6 +8,8 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <cstdint>
+#include <cstring>
+#include <utility>
 
 PHOSPHOR_LOG2_USING;
 
@@ -53,7 +55,6 @@ std::unordered_map<uint8_t, std::string> cableStatusMap{
     {0x02, "xyz.openbmc_project.Inventory.Item.Cable.Status.PoweredOff"},
     {0xFF, "xyz.openbmc_project.Inventory.Item.Cable.Status.Unknown"}};
 
-static constexpr auto pciePath = "/var/lib/pldm/pcie-topology/";
 constexpr auto topologyFile = "topology";
 constexpr auto cableInfoFile = "cableinfo";
 
@@ -72,6 +73,11 @@ constexpr auto sizeOfSuffixSizeDataMember = 1;
 // }
 constexpr auto slotLocationDataMemberSize = 2;
 
+constexpr bool isRangeValid(size_t containerSize, size_t offset, size_t length)
+{
+    return offset <= containerSize && length <= containerSize - offset;
+}
+
 namespace fs = std::filesystem;
 
 std::unordered_map<uint16_t, bool> PCIeInfoHandler::receivedFiles;
@@ -85,8 +91,9 @@ std::unordered_map<
     PCIeInfoHandler::cableInformation;
 std::unordered_map<LinkId, linkTypeData> PCIeInfoHandler::linkTypeInfo;
 
-PCIeInfoHandler::PCIeInfoHandler(uint32_t fileHandle, uint16_t fileType) :
-    FileHandler(fileHandle), infoType(fileType)
+PCIeInfoHandler::PCIeInfoHandler(uint32_t fileHandle, uint16_t fileType,
+                                 fs::path pciePath) :
+    FileHandler(fileHandle), infoType(fileType), pciePath(std::move(pciePath))
 {
     receivedFiles.emplace(infoType, false);
 }
@@ -179,14 +186,14 @@ int PCIeInfoHandler::fileAck(uint8_t /*fileStatus*/)
     return PLDM_SUCCESS;
 }
 
-void PCIeInfoHandler::parseTopologyData()
+bool PCIeInfoHandler::parseTopologyData()
 {
     int fd = open((fs::path(pciePath) / topologyFile).string().c_str(),
                   O_RDONLY, S_IRUSR | S_IWUSR);
     if (fd == -1)
     {
         perror("Topology file not present");
-        return;
+        return false;
     }
     pldm::utils::CustomFD topologyFd(fd);
     // Reading the statistics of the topology file, to get the size.
@@ -195,13 +202,14 @@ void PCIeInfoHandler::parseTopologyData()
     if (fstat(fd, &sb) == -1)
     {
         perror("Could not get topology file size");
-        return;
+        return false;
     }
 
-    if (sb.st_size == 0)
+    constexpr size_t topologyHeaderSize = offsetof(topologyBlob, pciLinkEntry);
+    if (sb.st_size < static_cast<off_t>(topologyHeaderSize))
     {
-        error("Topology file Size is 0");
-        return;
+        error("Topology file is smaller than its header");
+        return false;
     }
 
     auto topologyCleanup = [sb](void* fileInMemory) {
@@ -214,7 +222,7 @@ void PCIeInfoHandler::parseTopologyData()
     if (MAP_FAILED == fileInMemory)
     {
         error("mmap on topology file failed with error {RC}", "RC", -errno);
-        return;
+        return false;
     }
 
     std::unique_ptr<void, decltype(topologyCleanup)> topologyPtr(
@@ -225,7 +233,7 @@ void PCIeInfoHandler::parseTopologyData()
     if (!pcieLinkList)
     {
         error("Parsing of topology file failed : pcieLinkList is null");
-        return;
+        return false;
     }
 
     // The elements in the structure that were being parsed from the obtained
@@ -243,24 +251,48 @@ void PCIeInfoHandler::parseTopologyData()
 
     numOfLinks = htobe16(pcieLinkList->numPcieLinkEntries);
 
-    // To fetch the PCIe link from the topology data, moving the pointer
-    // by 8 bytes based on the size of other elements of the structure
+    // To fetch the PCIe link from the topology data, move past the header.
     struct pcieLinkEntry* singleEntryData =
         reinterpret_cast<struct pcieLinkEntry*>(
-            reinterpret_cast<uint8_t*>(pcieLinkList) + 8);
+            reinterpret_cast<uint8_t*>(pcieLinkList) + topologyHeaderSize);
 
     if (!singleEntryData)
     {
         error("Parsing of topology file failed : single_link is null");
-        return;
+        return false;
     }
-
-    auto singleEntryDataCharStream = reinterpret_cast<char*>(singleEntryData);
 
     // iterate over every pcie link and get the link specific attributes
     for ([[maybe_unused]] const auto& link :
          std::views::iota(0) | std::views::take(numOfLinks))
     {
+        constexpr size_t entryHeaderSize =
+            offsetof(pcieLinkEntry, pciLinkEntryLocCode);
+        const auto* fileStart = static_cast<const uint8_t*>(fileInMemory);
+        const auto* entryStart =
+            reinterpret_cast<const uint8_t*>(singleEntryData);
+        const size_t entryOffset = entryStart - fileStart;
+        const size_t fileSize = static_cast<size_t>(sb.st_size);
+        if (!isRangeValid(fileSize, entryOffset, entryHeaderSize))
+        {
+            error("PCIe topology entry header exceeds file bounds");
+            return false;
+        }
+        const size_t entryLength = htobe16(singleEntryData->entryLength);
+        if (entryLength < entryHeaderSize ||
+            !isRangeValid(fileSize, entryOffset, entryLength))
+        {
+            error("Invalid PCIe topology entry length {LENGTH}", "LENGTH",
+                  entryLength);
+            return false;
+        }
+        auto singleEntryDataCharStream =
+            reinterpret_cast<char*>(singleEntryData);
+        const auto validEntryRange =
+            [entryLength](uint16_t offset, uint8_t length) {
+                return isRangeValid(entryLength, htobe16(offset), length);
+            };
+
         // get the link id
         auto linkId = htobe16(singleEntryData->linkId);
 
@@ -285,6 +317,20 @@ void PCIeInfoHandler::parseTopologyData()
 
         // get the PCIe Host Bridge Location
         size_t pcieLocCodeSize = singleEntryData->pcieHostBridgeLocCodeSize;
+        if (!validEntryRange(singleEntryData->pcieHostBridgeLocCodeOff,
+                             singleEntryData->pcieHostBridgeLocCodeSize) ||
+            !validEntryRange(singleEntryData->topLocalPortLocCodeOff,
+                             singleEntryData->topLocalPortLocCodeSize) ||
+            !validEntryRange(singleEntryData->bottomLocalPortLocCodeOff,
+                             singleEntryData->bottomLocalPortLocCodeSize) ||
+            !validEntryRange(singleEntryData->topRemotePortLocCodeOff,
+                             singleEntryData->topRemotePortLocCodeSize) ||
+            !validEntryRange(singleEntryData->bottomRemotePortLocCodeOff,
+                             singleEntryData->bottomRemotePortLocCodeSize))
+        {
+            error("PCIe topology location code exceeds entry bounds");
+            return false;
+        }
         std::vector<char> pcieHostBridgeLocation(
             singleEntryDataCharStream +
                 htobe16(singleEntryData->pcieHostBridgeLocCodeOff),
@@ -340,17 +386,25 @@ void PCIeInfoHandler::parseTopologyData()
         std::string remoteBottomPortLocationCode(
             remoteBottomPortLocation.begin(), remoteBottomPortLocation.end());
 
-        struct slotLocCode* slotData = reinterpret_cast<struct slotLocCode*>(
-            (reinterpret_cast<uint8_t*>(singleEntryData)) +
-            htobe16(singleEntryData->slotLocCodesOffset));
-        if (!slotData)
+        const size_t slotOffset = htobe16(singleEntryData->slotLocCodesOffset);
+        if (!isRangeValid(entryLength, slotOffset, slotLocationDataMemberSize))
         {
-            error("Parsing the topology file failed : slotData is null");
-            return;
+            error("PCIe topology slot data exceeds entry bounds");
+            return false;
         }
+        struct slotLocCode* slotData = reinterpret_cast<struct slotLocCode*>(
+            reinterpret_cast<uint8_t*>(singleEntryData) + slotOffset);
         // get the Slot location code common part
         size_t numOfSlots = slotData->numSlotLocCodes;
         size_t slotLocCodeCompartSize = slotData->slotLocCodesCmnPrtSize;
+        size_t suffixOffset =
+            slotOffset + slotLocationDataMemberSize + slotLocCodeCompartSize;
+        if (!isRangeValid(entryLength, slotOffset + slotLocationDataMemberSize,
+                          slotLocCodeCompartSize))
+        {
+            error("PCIe topology slot common data exceeds entry bounds");
+            return false;
+        }
         std::vector<char> slotLocation(
             reinterpret_cast<char*>(slotData->slotLocCodesCmnPrt),
             (reinterpret_cast<char*>(slotData->slotLocCodesCmnPrt) +
@@ -360,11 +414,6 @@ void PCIeInfoHandler::parseTopologyData()
         uint8_t* suffixData =
             reinterpret_cast<uint8_t*>(slotData) + slotLocationDataMemberSize +
             slotData->slotLocCodesCmnPrtSize;
-        if (!suffixData)
-        {
-            error("slot location suffix data is nullptr");
-            return;
-        }
 
         // create the full slot location code by combining common part and
         // suffix part
@@ -373,15 +422,23 @@ void PCIeInfoHandler::parseTopologyData()
         for ([[maybe_unused]] const auto& slot :
              std::views::iota(0) | std::views::take(numOfSlots))
         {
+            if (!isRangeValid(entryLength, suffixOffset,
+                              sizeOfSuffixSizeDataMember))
+            {
+                error("PCIe topology slot suffix exceeds entry bounds");
+                return false;
+            }
             struct slotLocCodeSuf* slotLocSufData =
                 reinterpret_cast<struct slotLocCodeSuf*>(suffixData);
-            if (!slotLocSufData)
-            {
-                error("slot location suffix data is nullptr");
-                break;
-            }
 
             size_t slotLocCodeSuffixSize = slotLocSufData->slotLocCodeSz;
+            if (!isRangeValid(entryLength,
+                              suffixOffset + sizeOfSuffixSizeDataMember,
+                              slotLocCodeSuffixSize))
+            {
+                error("PCIe topology slot suffix exceeds entry bounds");
+                return false;
+            }
             if (slotLocCodeSuffixSize > 0)
             {
                 std::vector<char> slotSuffixLocation(
@@ -399,6 +456,7 @@ void PCIeInfoHandler::parseTopologyData()
 
             // move the pointer to next slot
             suffixData += sizeOfSuffixSizeDataMember + slotLocCodeSuffixSize;
+            suffixOffset += sizeOfSuffixSizeDataMember + slotLocCodeSuffixSize;
         }
 
         // store the information into a map
@@ -413,23 +471,22 @@ void PCIeInfoHandler::parseTopologyData()
 
         // move the pointer to next link
         singleEntryData = reinterpret_cast<struct pcieLinkEntry*>(
-            reinterpret_cast<uint8_t*>(singleEntryData) +
-            htobe16(singleEntryData->entryLength));
+            reinterpret_cast<uint8_t*>(singleEntryData) + entryLength);
     }
     // Need to call cable info at the end , because we dont want to parse
     // cable info without parsing the successful topology successfully
     // Having partial information is of no use.
-    parseCableInfo();
+    return parseCableInfo();
 }
 
-void PCIeInfoHandler::parseCableInfo()
+bool PCIeInfoHandler::parseCableInfo()
 {
     int fd = open((fs::path(pciePath) / cableInfoFile).string().c_str(),
                   O_RDONLY, S_IRUSR | S_IWUSR);
     if (fd == -1)
     {
         perror("CableInfo file not present");
-        return;
+        return false;
     }
     pldm::utils::CustomFD cableInfoFd(fd);
     struct stat sb;
@@ -437,13 +494,15 @@ void PCIeInfoHandler::parseCableInfo()
     if (fstat(fd, &sb) == -1)
     {
         perror("Could not get cableinfo file size");
-        return;
+        return false;
     }
 
-    if (sb.st_size == 0)
+    constexpr size_t cableHeaderSize =
+        offsetof(cableAttributesList, pciLinkCableAttr);
+    if (sb.st_size < static_cast<off_t>(cableHeaderSize))
     {
-        error("Topology file Size is 0");
-        return;
+        error("Cable information file is smaller than its header");
+        return false;
     }
 
     auto cableInfoCleanup = [sb](void* fileInMemory) {
@@ -457,7 +516,7 @@ void PCIeInfoHandler::parseCableInfo()
     {
         int rc = -errno;
         error("mmap on cable ifno file failed, RC={RC}", "RC", rc);
-        return;
+        return false;
     }
 
     std::unique_ptr<void, decltype(cableInfoCleanup)> cablePtr(
@@ -471,48 +530,79 @@ void PCIeInfoHandler::parseCableInfo()
 
     struct pcieLinkCableAttr* cableData =
         reinterpret_cast<struct pcieLinkCableAttr*>(
-            (reinterpret_cast<uint8_t*>(cableList)) +
-            (sizeof(struct cableAttributesList) - 1));
+            (reinterpret_cast<uint8_t*>(cableList)) + cableHeaderSize);
 
     if (!cableData)
     {
         error("Cable info parsing failed , cableData = nullptr");
-        return;
+        return false;
     }
 
     // iterate over each pci cable link
     for (const auto& cable :
          std::views::iota(0) | std::views::take(numOfCableLinks))
     {
+        constexpr size_t entryHeaderSize =
+            offsetof(pcieLinkCableAttr, cableAttrLocCode);
+        const auto* fileStart = static_cast<const uint8_t*>(fileInMemory);
+        const auto* entryStart = reinterpret_cast<const uint8_t*>(cableData);
+        const size_t entryOffset = entryStart - fileStart;
+        const size_t fileSize = static_cast<size_t>(sb.st_size);
+        if (!isRangeValid(fileSize, entryOffset, entryHeaderSize))
+        {
+            error("PCIe cable entry header exceeds file bounds");
+            return false;
+        }
+        pcieLinkCableAttr entryData{};
+        std::memcpy(&entryData, entryStart, entryHeaderSize);
+        const size_t entryLength = htobe16(entryData.entryLength);
+        if (entryLength < entryHeaderSize ||
+            !isRangeValid(fileSize, entryOffset, entryLength))
+        {
+            error("Invalid PCIe cable entry length {LENGTH}", "LENGTH",
+                  entryLength);
+            return false;
+        }
+        if (!isRangeValid(entryLength,
+                          htobe16(entryData.hostPortLocationCodeOffset),
+                          entryData.hostPortLocationCodeSize) ||
+            !isRangeValid(entryLength,
+                          htobe16(entryData.ioEnclosurePortLocationCodeOffset),
+                          entryData.ioEnclosurePortLocationCodeSize) ||
+            !isRangeValid(entryLength, htobe16(entryData.cablePartNumberOffset),
+                          entryData.cablePartNumberSize))
+        {
+            error("PCIe cable location code exceeds entry bounds");
+            return false;
+        }
         // get the link id
-        auto linkId = htobe16(cableData->linkId);
+        auto linkId = htobe16(entryData.linkId);
         char* cableDataPtr = reinterpret_cast<char*>(cableData);
 
         std::string localPortLocCode(
-            cableDataPtr + htobe16(cableData->hostPortLocationCodeOffset),
-            cableData->hostPortLocationCodeSize);
+            cableDataPtr + htobe16(entryData.hostPortLocationCodeOffset),
+            entryData.hostPortLocationCodeSize);
 
         std::string ioSlotLocationCode(
-            cableDataPtr +
-                htobe16(cableData->ioEnclosurePortLocationCodeOffset),
-            cableData->ioEnclosurePortLocationCodeSize);
+            cableDataPtr + htobe16(entryData.ioEnclosurePortLocationCodeOffset),
+            entryData.ioEnclosurePortLocationCodeSize);
 
         std::string cablePartNum(
-            cableDataPtr + htobe16(cableData->cablePartNumberOffset),
-            cableData->cablePartNumberSize);
+            cableDataPtr + htobe16(entryData.cablePartNumberOffset),
+            entryData.cablePartNumberSize);
 
         // cache the data into a map
         cableInformation[cable] = std::make_tuple(
             linkId, localPortLocCode, ioSlotLocationCode, cablePartNum,
-            cableLengthMap[cableData->cableLength],
-            cableTypeMap[cableData->cableType],
-            cableStatusMap[cableData->cableStatus]);
+            cableLengthMap[entryData.cableLength],
+            cableTypeMap[entryData.cableType],
+            cableStatusMap[entryData.cableStatus]);
         // move the cable data pointer
 
         cableData = reinterpret_cast<struct pcieLinkCableAttr*>(
-            (reinterpret_cast<uint8_t*>(cableData)) +
-            htobe16(cableData->entryLength));
+            reinterpret_cast<uint8_t*>(cableData) + entryLength);
     }
+    return true;
 }
 
 } // namespace responder
