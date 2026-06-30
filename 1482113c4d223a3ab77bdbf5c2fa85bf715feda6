@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47fdc8d6_bdc722d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 45
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-30T20:23:15Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com @manojkiran.eda@gmail.com Can you please help review this change?",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9deefed5_cebd9ef6",
         "filename": "fw-update/test/condition_collector_test.cpp",
         "patchSetId": 45
