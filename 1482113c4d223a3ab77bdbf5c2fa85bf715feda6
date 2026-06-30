@@ -135,6 +135,23 @@
       "message": "Whats the purpose of this test? I don\u0027t see it test anything useful ?",
       "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca11f83c_ee89d26e",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-06-30T07:24:14Z",
+      "side": 1,
+      "message": "Is it possible to verify later as a followup step in test that callbackInvoked \u003d true did take effect after the callback executed?",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
