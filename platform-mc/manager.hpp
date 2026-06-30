@@ -10,6 +10,9 @@
 
 #include <libpldm/pldm.h>
 
+#include <optional>
+#include <string>
+
 namespace pldm
 {
 namespace platform_mc
@@ -235,6 +238,28 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                                     pldm::platform_mc::HandlerFuncs handlers)
     {
         eventManager.registerPolledEventHandler(eventClass, handlers);
+    }
+
+    /** @brief Get terminus name by terminus ID
+     *
+     *  @param[in] tid - Terminus ID
+     *  @return terminus name when a matching terminus exists
+     */
+    std::optional<std::string> getTerminusName(pldm_tid_t tid)
+    {
+        auto terminus = termini.find(tid);
+        if (terminus == termini.end() || !terminus->second)
+        {
+            return std::nullopt;
+        }
+
+        auto terminusName = terminus->second->getTerminusName();
+        if (!terminusName.has_value())
+        {
+            return std::nullopt;
+        }
+
+        return std::string{terminusName.value()};
     }
 
     /** @brief Register OEM flow to poll the PLDM Event use
