@@ -8,6 +8,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <cstring>
+#include <utility>
 
 PHOSPHOR_LOG2_USING;
 
@@ -16,7 +17,16 @@ namespace pldm::responder::oem_meta
 
 constexpr uint8_t HTTP_BOOT_ATTR_REQ_DATA_LEN = 0;
 
-static constexpr auto certificationfilepath = "/mnt/data/host/bios-rootcert";
+static constexpr auto defaultCertificationFilePath =
+    "/mnt/data/host/bios-rootcert";
+
+HttpBootHandler::HttpBootHandler() :
+    certificationFilePath(defaultCertificationFilePath)
+{}
+
+HttpBootHandler::HttpBootHandler(std::string certificationFilePath) :
+    certificationFilePath(std::move(certificationFilePath))
+{}
 
 int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
 {
@@ -29,13 +39,13 @@ int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
     int fd = -1;
     struct stat sb;
 
-    if (access(certificationfilepath, F_OK) == -1)
+    if (access(certificationFilePath.c_str(), F_OK) == -1)
     {
         error("Failed to find Http boot certification file");
         goto noCertificationFile;
     }
 
-    fd = open(certificationfilepath, O_RDONLY);
+    fd = open(certificationFilePath.c_str(), O_RDONLY);
     if (fd < 0)
     {
         error("Failed to open Http boot certification file");
@@ -111,6 +121,16 @@ int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
             uint8_t transferFlag = data->info.data.transferFlag;
             uint16_t offset = data->info.data.offset;
 
+            if (offset >= static_cast<uint64_t>(sb.st_size))
+            {
+                error(
+                    "Invalid offset={OFFSET} for Http boot certification file of size={SIZE}",
+                    "OFFSET", offset, "SIZE", sb.st_size);
+                data->length = 0;
+                close(fd);
+                return PLDM_ERROR_INVALID_DATA;
+            }
+
             int ret = lseek(fd, offset, SEEK_SET);
             if (ret < 0)
             {
@@ -121,40 +141,34 @@ int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
                 return PLDM_ERROR;
             }
 
-            if (offset + data->length >= sb.st_size)
+            const auto remaining = static_cast<uint64_t>(sb.st_size) - offset;
+            if (data->length >= remaining)
             {
                 transferFlag = PLDM_END;
-                data->length = sb.st_size - offset; // Revise length
+                data->length = static_cast<uint8_t>(remaining);
             }
             else
             {
                 transferFlag = PLDM_MIDDLE;
             }
 
-            uint8_t* buffer = (uint8_t*)malloc(data->length);
-            if (buffer == nullptr)
-            {
-                error(
-                    "Failed to allocate buffer for http boot, length={LENGTH}",
-                    "LENGTH", data->length);
-                close(fd);
-                return PLDM_ERROR;
-            }
-
-            ret = ::read(fd, buffer, data->length);
+            auto* responseData = static_cast<uint8_t*>(
+                pldm_oem_meta_file_io_read_resp_data(data));
+            ret = ::read(fd, responseData, data->length);
             if (ret < 0)
             {
                 error(
                     "Failed to read file content at offset={OFFSET} of length={LENGTH} on Http boot certification file",
                     "OFFSET", offset, "LENGTH", data->length);
-                free(buffer);
                 close(fd);
                 return PLDM_ERROR;
             }
 
-            memcpy(pldm_oem_meta_file_io_read_resp_data(data), buffer,
-                   data->length);
-            free(buffer);
+            data->length = static_cast<uint8_t>(ret);
+            if (offset + data->length >= static_cast<uint64_t>(sb.st_size))
+            {
+                transferFlag = PLDM_END;
+            }
 
             offset = offset + data->length;
 
