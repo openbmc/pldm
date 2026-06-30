@@ -366,6 +366,37 @@ TEST_F(TestBIOSConfig, setAttrValue)
                                       attrValueEntry.size(), false);
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
+    std::vector<uint8_t> truncatedEntry(attrValueEntry.begin(),
+                                        attrValueEntry.begin() + 5);
+    truncatedEntry[3] = 0xff;
+    truncatedEntry[4] = 0xff;
+    rc = biosConfig.setAttrValue(truncatedEntry.data(), truncatedEntry.size(),
+                                 false);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    std::vector<uint8_t> truncatedEnum{attrValueEntry[0], attrValueEntry[1],
+                                       PLDM_BIOS_ENUMERATION, 0xff};
+    rc = biosConfig.setAttrValue(truncatedEnum.data(), truncatedEnum.size(),
+                                 false);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    std::vector<uint8_t> truncatedInteger{attrValueEntry[0], attrValueEntry[1],
+                                          PLDM_BIOS_INTEGER, 0};
+    rc = biosConfig.setAttrValue(truncatedInteger.data(),
+                                 truncatedInteger.size(), false);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
+    std::vector<uint8_t> mismatchedType{attrValueEntry[0], attrValueEntry[1],
+                                        PLDM_BIOS_ENUMERATION, 0};
+    rc = biosConfig.setAttrValue(mismatchedType.data(), mismatchedType.size(),
+                                 false);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_DATA);
+
+    Table truncatedTable = truncatedEntry;
+    table::appendPadAndChecksum(truncatedTable);
+    rc = biosConfig.setBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE, truncatedTable);
+    EXPECT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+
     auto attrValueTable = biosConfig.getBIOSTable(PLDM_BIOS_ATTR_VAL_TABLE);
     auto findEntry = [&attrValueTable](uint16_t handle)
         -> const pldm_bios_attr_val_table_entry* {
