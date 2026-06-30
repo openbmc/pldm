@@ -4,6 +4,8 @@
 
 #include <libpldm/oem/meta/file_io.h>
 
+#include <string>
+
 namespace pldm::responder::oem_meta
 {
 /** @class PostCodeHandler
@@ -14,7 +16,8 @@ namespace pldm::responder::oem_meta
 class HttpBootHandler : public FileHandler
 {
   public:
-    HttpBootHandler() = default;
+    HttpBootHandler();
+    explicit HttpBootHandler(std::string certificationFilePath);
     HttpBootHandler(const HttpBootHandler&) = delete;
     HttpBootHandler(HttpBootHandler&&) = delete;
     HttpBootHandler& operator=(const HttpBootHandler&) = delete;
@@ -28,6 +31,9 @@ class HttpBootHandler : public FileHandler
      *  @return  PLDM status code
      */
     int read(struct pldm_oem_meta_file_io_read_resp* data) override;
+
+  private:
+    std::string certificationFilePath;
 };
 
 } // namespace pldm::responder::oem_meta
