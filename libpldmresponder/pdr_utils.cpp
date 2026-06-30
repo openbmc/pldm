@@ -218,7 +218,7 @@ std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
     // 7: uint16_t(FRU Record Set Identifier), uint8_t(FRU Record Type),
     // uint8_t(Number of FRU fields), uint8_t(Encoding Type for FRU fields),
     // uint8_t(FRU Field Type), uint8_t(FRU Field Length)
-    if (fruLen < fruRecordDataFormatLength)
+    if (fruData == nullptr || fruLen < fruRecordDataFormatLength)
     {
         error("Invalid FRU length '{LENGTH}' while parsing FRU record table",
               "LENGTH", fruLen);
@@ -230,6 +230,15 @@ std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
     size_t index = 0;
     while (index < fruLen)
     {
+        constexpr size_t recordHeaderLength =
+            offsetof(pldm_fru_record_data_format, tlvs);
+        if (recordHeaderLength > fruLen - index)
+        {
+            error("Truncated FRU record header at offset '{OFFSET}'", "OFFSET",
+                  index);
+            return {};
+        }
+
         FruRecordDataFormat fru;
 
         auto record = reinterpret_cast<const pldm_fru_record_data_format*>(
@@ -239,28 +248,37 @@ std::vector<FruRecordDataFormat> parseFruRecordTable(const uint8_t* fruData,
         fru.fruNum = record->num_fru_fields;
         fru.fruEncodeType = record->encoding_type;
 
-        index += 5;
+        index += recordHeaderLength;
 
-        std::ranges::for_each(
-            std::views::iota(0, (int)record->num_fru_fields),
-            [fruData, &fru, &index](int) {
-                auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(
-                    fruData + index);
-                FruTLV frutlv;
-                frutlv.fruFieldType = tlv->type;
-                frutlv.fruFieldLen = tlv->length;
-                frutlv.fruFieldValue.resize(tlv->length);
-                for (const auto& i : std::views::iota(0, (int)tlv->length))
-                {
-                    memcpy(frutlv.fruFieldValue.data() + i, tlv->value + i, 1);
-                }
-                fru.fruTLV.push_back(frutlv);
+        for (uint8_t field = 0; field < record->num_fru_fields; ++field)
+        {
+            if (fruFieldTypeLength > fruLen - index)
+            {
+                error("Truncated FRU field header at offset '{OFFSET}'",
+                      "OFFSET", index);
+                return {};
+            }
 
-                // 2: 1byte FRU Field Type, 1byte FRU Field Length
-                index += fruFieldTypeLength + (unsigned)tlv->length;
-            });
+            auto tlv =
+                reinterpret_cast<const pldm_fru_record_tlv*>(fruData + index);
+            index += fruFieldTypeLength;
+            if (tlv->length > fruLen - index)
+            {
+                error("FRU field at offset '{OFFSET}' exceeds table length",
+                      "OFFSET", index - fruFieldTypeLength);
+                return {};
+            }
 
-        frus.push_back(fru);
+            FruTLV frutlv;
+            frutlv.fruFieldType = tlv->type;
+            frutlv.fruFieldLen = tlv->length;
+            frutlv.fruFieldValue.assign(fruData + index,
+                                        fruData + index + tlv->length);
+            fru.fruTLV.push_back(std::move(frutlv));
+            index += tlv->length;
+        }
+
+        frus.push_back(std::move(fru));
     }
 
     return frus;

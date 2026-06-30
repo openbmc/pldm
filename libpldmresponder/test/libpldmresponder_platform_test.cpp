@@ -23,6 +23,55 @@ using namespace pldm::responder::platform;
 using namespace pldm::responder::pdr;
 using namespace pldm::responder::pdr_utils;
 
+TEST(ParseFruRecordTable, RejectsFieldPastEndOfBuffer)
+{
+    const std::vector<uint8_t> table{
+        1,   0, /* record set id */
+        1,      /* record type */
+        1,      /* number of fields */
+        1,      /* encoding */
+        2,      /* field type */
+        4,      /* field length */
+        'x',    /* truncated field value */
+    };
+
+    EXPECT_TRUE(parseFruRecordTable(table.data(), table.size()).empty());
+}
+
+TEST(ParseFruRecordTable, RejectsTruncatedNextRecord)
+{
+    const std::vector<uint8_t> table{
+        1,   0, /* record set id */
+        1,      /* record type */
+        1,      /* number of fields */
+        1,      /* encoding */
+        2,      /* field type */
+        1,      /* field length */
+        'x',    /* field value */
+        0,      /* truncated next record */
+    };
+
+    EXPECT_TRUE(parseFruRecordTable(table.data(), table.size()).empty());
+}
+
+TEST(ParseFruRecordTable, ParsesBoundedField)
+{
+    const std::vector<uint8_t> table{
+        1,   0, /* record set id */
+        1,      /* record type */
+        1,      /* number of fields */
+        1,      /* encoding */
+        2,      /* field type */
+        1,      /* field length */
+        'x',    /* field value */
+    };
+
+    const auto records = parseFruRecordTable(table.data(), table.size());
+    ASSERT_EQ(records.size(), 1);
+    ASSERT_EQ(records[0].fruTLV.size(), 1);
+    EXPECT_EQ(records[0].fruTLV[0].fruFieldValue, std::vector<uint8_t>({'x'}));
+}
+
 using ::testing::_;
 using ::testing::Return;
 using ::testing::StrEq;
