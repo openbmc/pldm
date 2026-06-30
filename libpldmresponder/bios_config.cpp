@@ -6,9 +6,12 @@
 #include "bios_table.hpp"
 #include "common/bios_utils.hpp"
 
+#include <endian.h>
+
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/BIOSConfig/Manager/server.hpp>
 
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 
@@ -36,6 +39,84 @@ constexpr auto attributesJsonFile = "bios_attrs.json";
 constexpr auto stringTableFile = "stringTable";
 constexpr auto attrTableFile = "attributeTable";
 constexpr auto attrValueTableFile = "attributeValueTable";
+
+int validateAttrValueEntry(const void* data, size_t size, size_t& entryLength)
+{
+    constexpr size_t headerSize =
+        offsetof(pldm_bios_attr_val_table_entry, value);
+    if (data == nullptr)
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
+    if (size < headerSize)
+    {
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    const auto* bytes = static_cast<const uint8_t*>(data);
+    const auto attrType = bytes[sizeof(uint16_t)];
+    switch (attrType)
+    {
+        case PLDM_BIOS_ENUMERATION:
+        case PLDM_BIOS_ENUMERATION_READ_ONLY:
+            if (size < headerSize + sizeof(uint8_t))
+            {
+                return PLDM_ERROR_INVALID_LENGTH;
+            }
+            entryLength = pldm_bios_table_attr_value_entry_encode_enum_length(
+                bytes[headerSize]);
+            break;
+        case PLDM_BIOS_STRING:
+        case PLDM_BIOS_STRING_READ_ONLY:
+        {
+            if (size < headerSize + sizeof(uint16_t))
+            {
+                return PLDM_ERROR_INVALID_LENGTH;
+            }
+            uint16_t stringLength{};
+            std::memcpy(&stringLength, bytes + headerSize,
+                        sizeof(stringLength));
+            entryLength = pldm_bios_table_attr_value_entry_encode_string_length(
+                le16toh(stringLength));
+            break;
+        }
+        case PLDM_BIOS_INTEGER:
+        case PLDM_BIOS_INTEGER_READ_ONLY:
+            entryLength =
+                pldm_bios_table_attr_value_entry_encode_integer_length();
+            break;
+        default:
+            return PLDM_ERROR_INVALID_DATA;
+    }
+
+    return entryLength <= size ? PLDM_SUCCESS : PLDM_ERROR_INVALID_LENGTH;
+}
+
+int validateAttrValueTable(const Table& table)
+{
+    constexpr size_t maxPadAndChecksumSize = 7;
+    if (table.size() < sizeof(uint32_t))
+    {
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    size_t position = 0;
+    while (table.size() - position > maxPadAndChecksumSize)
+    {
+        size_t entryLength{};
+        auto rc = validateAttrValueEntry(table.data() + position,
+                                         table.size() - position, entryLength);
+        if (rc != PLDM_SUCCESS)
+        {
+            return rc;
+        }
+        position += entryLength;
+    }
+
+    return table.size() - position >= sizeof(uint32_t)
+               ? PLDM_SUCCESS
+               : PLDM_ERROR_INVALID_LENGTH;
+}
 
 } // namespace
 
@@ -272,6 +353,11 @@ int BIOSConfig::checkAttributeTable(const Table& table)
 int BIOSConfig::checkAttributeValueTable(const Table& table)
 {
     using namespace pldm::bios::utils;
+    auto rc = validateAttrValueTable(table);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
     auto stringTable = getBIOSTable(PLDM_BIOS_STRING_TABLE);
     auto attrTable = getBIOSTable(PLDM_BIOS_ATTR_TABLE);
 
@@ -303,6 +389,11 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
         if (attrEntry == nullptr)
         {
             return PLDM_INVALID_BIOS_ATTR_HANDLE;
+        }
+        if (pldm_bios_table_attr_entry_decode_attribute_type(attrEntry) !=
+            attrType)
+        {
+            return PLDM_ERROR_INVALID_DATA;
         }
         auto attrHandle =
             pldm_bios_table_attr_entry_decode_attribute_handle(attrEntry);
@@ -899,8 +990,20 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool isBMC,
         return PLDM_BIOS_TABLE_UNAVAILABLE;
     }
 
+    size_t entryLength{};
+    auto rc = validateAttrValueEntry(entry, size, entryLength);
+    if (rc != PLDM_SUCCESS)
+    {
+        return rc;
+    }
+
     auto attrValueEntry =
         reinterpret_cast<const pldm_bios_attr_val_table_entry*>(entry);
+
+    if (entryLength != size)
+    {
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
 
     auto attrValHeader = table::attribute_value::decodeHeader(attrValueEntry);
 
@@ -910,8 +1013,13 @@ int BIOSConfig::setAttrValue(const void* entry, size_t size, bool isBMC,
     {
         return PLDM_ERROR;
     }
+    if (table::attribute::decodeHeader(attrEntry).attrType !=
+        attrValHeader.attrType)
+    {
+        return PLDM_ERROR_INVALID_DATA;
+    }
 
-    auto rc = checkAttrValueToUpdate(attrValueEntry, attrEntry, *stringTable);
+    rc = checkAttrValueToUpdate(attrValueEntry, attrEntry, *stringTable);
     if (rc != PLDM_SUCCESS)
     {
         return rc;
