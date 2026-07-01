@@ -403,6 +403,7 @@ int main(int argc, char** argv)
         // TODO check that we get here if mctp-demux dies?
         else if (returnCode == PLDM_REQUESTER_RECV_FAIL)
         {
+#if defined(PLDM_TRANSPORT_WITH_MCTP_DEMUX)
             // MCTP daemon has closed the socket this daemon is connected to.
             // This may or may not be an error scenario, in either case the
             // recovery mechanism for this daemon is to restart, and hence exit
@@ -412,6 +413,14 @@ int main(int argc, char** argv)
                 "MCTP daemon closed the socket, IO exiting with response code '{RC}'",
                 "RC", returnCode);
             io.get_event().exit(0);
+#elif defined(PLDM_TRANSPORT_WITH_AF_MCTP)
+            // With AF_MCTP, a recv failure is not fatal. A common cause is a
+            // loopback message (e.g. pldmtool sending to own EID) where the
+            // source arrives with ifindex=0, which cannot be mapped to a TID.
+            warning(
+                "Failed to receive PLDM message, ignoring: response code '{RC}'",
+                "RC", returnCode);
+#endif
         }
         else
         {
