@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99d4aafb_faaa2044",
+        "filename": "fw-update/test/condition_collector_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9deefed5_cebd9ef6",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be4733cb_998da77b",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-06-30T07:05:21Z",
       "side": 1,
       "message": "Can you parsing logic take care of completely ignoring an entry if it doesn\u0027t have any pre/pot condition at all as i don\u0027t see how this will be useful? Logically this shall be treated as any other component which doesn\u0027t have its entry specified in the file at all and so no such services shall be called for it.",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "335bc57d_7c76feac",
+        "filename": "fw-update/test/condition_collector_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Done, parser should now ignore such entry, test case is kept to show that the query won\u0027t fail in such case.",
+      "parentUuid": "be4733cb_998da77b",
       "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74e6e8e9_b91c55ed",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "781d24af_da6b2223",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78a81f45_737ab969",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-06-30T06:58:06Z",
       "side": 1,
       "message": "Why is your test code testing a test class API formServiceName ? How is this useful ?\n\nSame goes for all the test below.",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b438a8af_b3a8a99a",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "78a81f45_737ab969",
       "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -103,6 +175,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fae149e_508844ae",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "14c8d957_cec56e78",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14858d41_61e64c45",
@@ -116,6 +206,24 @@
       "writtenOn": "2026-06-30T06:58:06Z",
       "side": 1,
       "message": "Whats the purpose of this test? I don\u0027t see it test anything useful ?",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "949dec39_b400238e",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "14858d41_61e64c45",
       "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -137,6 +245,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88fe6205_e21116fb",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "22b93923_67479448",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8382f21_cea3541d",
@@ -154,6 +280,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "059ff0a0_be5e7876",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "d8382f21_cea3541d",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca11f83c_ee89d26e",
@@ -167,6 +311,24 @@
       "writtenOn": "2026-06-30T07:24:14Z",
       "side": 1,
       "message": "Is it possible to verify later as a followup step in test that callbackInvoked \u003d true did take effect after the callback executed?",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13cde162_a1e57b00",
+        "filename": "fw-update/test/systemd_interface_test.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-03T16:41:02Z",
+      "side": 1,
+      "message": "Added anoter test case that the `.execute()` will invoke callback immediately since the path is empty, which can proove that the callback will be invoked by ensuring `callbackInvoked \u003d true`.",
+      "parentUuid": "ca11f83c_ee89d26e",
       "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
