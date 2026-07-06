@@ -113,7 +113,7 @@ void BIOSStringAttribute::constructEntry(
           _] = table::attribute::decodeHeader(attrTableEntry);
 
     std::string currStr{};
-    if (optAttributeValue.has_value())
+    if (optAttributeValue.has_value() && !dBusMap.has_value())
     {
         auto attributeValue = optAttributeValue.value();
         if (attributeValue.index() == 1)
