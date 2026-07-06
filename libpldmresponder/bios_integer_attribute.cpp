@@ -118,23 +118,13 @@ void BIOSIntegerAttribute::constructEntry(
     auto [attrHandle, attrType,
           _] = table::attribute::decodeHeader(attrTableEntry);
 
-    int64_t currentValue{};
-    if (optAttributeValue.has_value())
+    std::optional<int64_t> persisted;
+    if (optAttributeValue.has_value() && optAttributeValue->index() == 0)
     {
-        auto attributeValue = optAttributeValue.value();
-        if (attributeValue.index() == 0)
-        {
-            currentValue = std::get<int64_t>(attributeValue);
-        }
-        else
-        {
-            currentValue = getAttrValue();
-        }
+        persisted = std::get<int64_t>(*optAttributeValue);
     }
-    else
-    {
-        currentValue = getAttrValue();
-    }
+
+    auto currentValue = getAttrValue(persisted);
 
     table::attribute_value::constructIntegerEntry(attrValueTable, attrHandle,
                                                   attrType, currentValue);
@@ -184,11 +174,12 @@ uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
     return value;
 }
 
-uint64_t BIOSIntegerAttribute::getAttrValue()
+uint64_t BIOSIntegerAttribute::getAttrValue(std::optional<int64_t> persisted)
 {
     if (!dBusMap.has_value())
     {
-        return integerInfo.defaultValue;
+        return static_cast<uint64_t>(
+            persisted.value_or(static_cast<int64_t>(integerInfo.defaultValue)));
     }
 
     try
@@ -205,7 +196,8 @@ uint64_t BIOSIntegerAttribute::getAttrValue()
             "Error getting integer attribute '{ATTRIBUTE}' at path '{PATH}' and interface '{INTERFACE}' for property '{PROPERTY}', error - {ERROR}",
             "ATTRIBUTE", name, "PATH", dBusMap->objectPath, "INTERFACE",
             dBusMap->interface, "PROPERTY", dBusMap->propertyName, "ERROR", e);
-        return integerInfo.defaultValue;
+        return static_cast<uint64_t>(
+            persisted.value_or(static_cast<int64_t>(integerInfo.defaultValue)));
     }
 }
 
