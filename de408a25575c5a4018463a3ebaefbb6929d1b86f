@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2bf8ae0_6c0a823c",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-07-06T18:20:57Z",
+      "side": 1,
+      "message": "I think we should also add the applyTime to the conditionArg for post service and document the syntax for the args being passed to the services.\n\nBy passing the applytime we can let the post condition do the required handling, for example skip a reset if the applytime is not immediate ?",
+      "revId": "de408a25575c5a4018463a3ebaefbb6929d1b86f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
