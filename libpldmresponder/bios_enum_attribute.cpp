@@ -128,11 +128,25 @@ void BIOSEnumAttribute::buildValMap(const Json& dbusVals)
     }
 }
 
-uint8_t BIOSEnumAttribute::getAttrValueIndex()
+uint8_t BIOSEnumAttribute::getAttrValueIndex(std::optional<std::string> persisted)
 {
     auto defaultValueIndex = getValueIndex(defaultValue, possibleValues);
     if (!dBusMap.has_value())
     {
+        if (persisted.has_value())
+        {
+            try
+            {
+                return getValueIndex(*persisted, possibleValues);
+            }
+            catch (const std::exception&)
+            {
+                warning(
+                    "Persisted value '{VALUE}' not in possible values for "
+                    "attribute '{ATTRIBUTE}', using default",
+                    "VALUE", *persisted, "ATTRIBUTE", name);
+            }
+        }
         return defaultValueIndex;
     }
 
@@ -151,6 +165,20 @@ uint8_t BIOSEnumAttribute::getAttrValueIndex()
     }
     catch (const std::exception&)
     {
+        if (persisted.has_value())
+        {
+            try
+            {
+                return getValueIndex(*persisted, possibleValues);
+            }
+            catch (const std::exception&)
+            {
+                warning(
+                    "Persisted value '{VALUE}' not in possible values for "
+                    "attribute '{ATTRIBUTE}', using default",
+                    "VALUE", *persisted, "ATTRIBUTE", name);
+            }
+        }
         return defaultValueIndex;
     }
 }
@@ -223,25 +251,13 @@ void BIOSEnumAttribute::constructEntry(
 
     populateValueDisplayNamesMap(attrHandle);
 
-    std::vector<uint8_t> currValueIndices(1, 0);
+    std::optional<std::string> persisted;
+    if (optAttributeValue.has_value() && optAttributeValue->index() == 1)
+    {
+        persisted = std::get<std::string>(*optAttributeValue);
+    }
 
-    if (optAttributeValue.has_value())
-    {
-        auto attributeValue = optAttributeValue.value();
-        if (attributeValue.index() == 1)
-        {
-            auto currValue = std::get<std::string>(attributeValue);
-            currValueIndices[0] = getValueIndex(currValue, possibleValues);
-        }
-        else
-        {
-            currValueIndices[0] = getAttrValueIndex();
-        }
-    }
-    else
-    {
-        currValueIndices[0] = getAttrValueIndex();
-    }
+    std::vector<uint8_t> currValueIndices(1, getAttrValueIndex(std::move(persisted)));
 
     table::attribute_value::constructEnumEntry(attrValueTable, attrHandle,
                                                attrType, currValueIndices);
