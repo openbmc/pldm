@@ -90,8 +90,12 @@ class BIOSStringAttribute : public BIOSAttribute
     /** @brief string field from json */
     table::attribute::StringField stringInfo;
 
-    /** @brief Get attribute value on dbus */
-    std::string getAttrValue();
+    /** @brief Get attribute value on dbus, falling back to persisted value
+     *         then default on failure.
+     *  @param[in] persisted - optional persisted value from BaseBIOSTable
+     */
+    std::string getAttrValue(
+        std::optional<std::string> persisted = std::nullopt);
 };
 
 } // namespace bios

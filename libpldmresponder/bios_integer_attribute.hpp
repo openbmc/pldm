@@ -70,8 +70,11 @@ class BIOSIntegerAttribute : public BIOSAttribute
     /** @brief Get pldm value from dbus propertyValue */
     uint64_t getAttrValue(const pldm::utils::PropertyValue& value);
 
-    /** @brief Get value on dbus */
-    uint64_t getAttrValue();
+    /** @brief Get value on dbus, falling back to persisted value then default
+     *         on failure.
+     *  @param[in] persisted - optional persisted value from BaseBIOSTable
+     */
+    uint64_t getAttrValue(std::optional<int64_t> persisted = std::nullopt);
 };
 
 } // namespace bios
