@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4b2bd041_9a2e074c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-07-06T21:45:37Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com With this need any change in the firmware update path or will it work as such ?",
+      "revId": "1cbbb1f4d83a868a3614bbebebe5bebcee151e48",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "866eb8cc_ea41efd6",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 5
