@@ -119,7 +119,7 @@ void BIOSIntegerAttribute::constructEntry(
           _] = table::attribute::decodeHeader(attrTableEntry);
 
     int64_t currentValue{};
-    if (optAttributeValue.has_value())
+    if (optAttributeValue.has_value() && !dBusMap.has_value())
     {
         auto attributeValue = optAttributeValue.value();
         if (attributeValue.index() == 0)

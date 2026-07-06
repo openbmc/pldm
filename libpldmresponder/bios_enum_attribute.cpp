@@ -225,7 +225,7 @@ void BIOSEnumAttribute::constructEntry(
 
     std::vector<uint8_t> currValueIndices(1, 0);
 
-    if (optAttributeValue.has_value())
+    if (optAttributeValue.has_value() && !dBusMap.has_value())
     {
         auto attributeValue = optAttributeValue.value();
         if (attributeValue.index() == 1)
