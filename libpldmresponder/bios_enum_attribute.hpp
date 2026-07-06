@@ -103,10 +103,13 @@ class BIOSEnumAttribute : public BIOSAttribute
      */
     void buildValMap(const Json& dbusVals);
 
-    /** @brief Get index of the current value in possible values
+    /** @brief Get index of the current value in possible values, falling back
+     *         to the persisted value then default on D-Bus failure.
+     *  @param[in] persisted - optional persisted string from BaseBIOSTable
      *  @return The index of the current value in possible values
      */
-    uint8_t getAttrValueIndex();
+    uint8_t getAttrValueIndex(
+        std::optional<std::string> persisted = std::nullopt);
 
     /** @brief Get index of the property value in possible values
      *  @param[in] propValue - property values
