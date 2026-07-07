@@ -568,7 +568,7 @@ int Handler::pldmPDRRepositoryChgEvent(
                 return rc;
             }
 
-            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
+            if (hostPDRHandler && eventDataOperation == PLDM_RECORDS_MODIFIED)
             {
                 hostPDRHandler->isHostPdrModified = true;
             }
@@ -811,10 +811,14 @@ Response Handler::getStateSensorReadings(const pldm_msg* request,
     }
     else
     {
+        static const stateSensorCacheMaps emptySensorCache{};
+        const auto& sensorCache = dbusToPLDMEventHandler
+                                      ? dbusToPLDMEventHandler->getSensorCache()
+                                      : emptySensorCache;
         rc = platform_state_sensor::getStateSensorReadingsHandler<
             pldm::utils::DBusHandler, Handler>(
             dBusIntf, *this, sensorId, sensorRearmCount, comSensorCnt,
-            stateField, dbusToPLDMEventHandler->getSensorCache());
+            stateField, sensorCache);
     }
 
     if (rc != PLDM_SUCCESS)
