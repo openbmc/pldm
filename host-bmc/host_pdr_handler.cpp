@@ -527,9 +527,6 @@ void HostPDRHandler::processHostPDRs(
         response, respMsgLen /*- sizeof(pldm_msg_hdr)*/, &completionCode,
         &nextRecordHandle, &nextDataTransferHandle, &transferFlag, &respCount,
         nullptr, 0, &transferCRC);
-    std::vector<uint8_t> responsePDRMsg;
-    responsePDRMsg.resize(respMsgLen + sizeof(pldm_msg_hdr));
-    memcpy(responsePDRMsg.data(), response, respMsgLen + sizeof(pldm_msg_hdr));
     if (rc != PLDM_SUCCESS)
     {
         error(
