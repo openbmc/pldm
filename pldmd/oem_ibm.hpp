@@ -79,8 +79,11 @@ class OemIBM
         createOemPlatformHandler();
         createOemIbmUtilsHandler();
         codeUpdate->setOemPlatformHandler(oemPlatformHandler.get());
-        hostPDRHandler->setOemPlatformHandler(oemPlatformHandler.get());
-        hostPDRHandler->setOemUtilsHandler(oemUtilsHandler.get());
+        if (hostPDRHandler)
+        {
+            hostPDRHandler->setOemPlatformHandler(oemPlatformHandler.get());
+            hostPDRHandler->setOemUtilsHandler(oemUtilsHandler.get());
+        }
         fruHandler->setOemPlatformHandler(oemPlatformHandler.get());
         platformHandler->setOemPlatformHandler(oemPlatformHandler.get());
         baseHandler->setOemPlatformHandler(oemPlatformHandler.get());

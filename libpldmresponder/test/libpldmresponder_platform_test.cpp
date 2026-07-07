@@ -922,3 +922,89 @@ TEST(getStateSensorReadingsHandler, testBadRequest)
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);
 }
+
+TEST(getStateSensorReadings, testNoDbusToPLDMEventHandler)
+{
+    // pldmd constructs dbusToPLDMEventHandler only when a host EID is
+    // configured; the responder must serve GetStateSensorReadings without it
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES>
+        requestPayload{};
+    auto req = std::start_lifetime_as<pldm_msg>(requestPayload.data());
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+
+    bitfield8_t sensorRearm{};
+    sensorRearm.byte = 0x01;
+    auto rc = encode_get_state_sensor_readings_req(0, 0x1, sensorRearm, 0, req);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(1)
+        .WillRepeatedly(Return("foo.bar"));
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto event = sdeventplus::Event::get_default();
+    Handler handler(&mockedUtils, 0, nullptr, "./pdr_jsons/state_sensor/good",
+                    inPDRRepo, nullptr, nullptr, nullptr, nullptr, nullptr,
+                    event);
+
+    auto response = handler.getStateSensorReadings(req, requestPayloadLength);
+    auto responsePtr = std::start_lifetime_as<pldm_msg>(response.data());
+
+    uint8_t completionCode{};
+    uint8_t compSensorCnt{};
+    std::array<get_sensor_state_field, 1> stateField{};
+    rc = decode_get_state_sensor_readings_resp(
+        responsePtr, response.size() - sizeof(pldm_msg_hdr), &completionCode,
+        &compSensorCnt, stateField.data());
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_EQ(completionCode, PLDM_SUCCESS);
+    ASSERT_EQ(compSensorCnt, 1);
+    // without the host event path there is no sensor cache, so the previous
+    // state is unknown as on a first read
+    EXPECT_EQ(stateField[0].previous_state, PLDM_SENSOR_UNKNOWN);
+
+    pldm_pdr_destroy(inPDRRepo);
+}
+
+TEST(pldmPDRRepositoryChgEvent, testNoHostPDRHandler)
+{
+    // pldmd constructs hostPDRHandler only when a host EID is configured; a
+    // terminus sending a repository change event with PLDM_RECORDS_MODIFIED
+    // must not crash the responder
+    std::array<uint8_t, 1> eventDataOps = {PLDM_RECORDS_MODIFIED};
+    std::array<uint8_t, 1> numsOfChangeEntries = {1};
+    std::array<uint32_t, 1> changeEntries = {1};
+    const uint32_t* firstEntry = changeEntries.data();
+
+    size_t maxSize = PLDM_PDR_REPOSITORY_CHG_EVENT_MIN_LENGTH +
+                     PLDM_PDR_REPOSITORY_CHANGE_RECORD_MIN_LENGTH +
+                     changeEntries.size() * sizeof(uint32_t);
+    std::vector<uint8_t> requestPayload(sizeof(pldm_msg_hdr) + maxSize);
+    auto req = std::start_lifetime_as<pldm_msg>(requestPayload.data());
+    auto eventData = std::start_lifetime_as<pldm_pdr_repository_chg_event_data>(
+        req->payload);
+    size_t actualSize{};
+    auto rc = encode_pldm_pdr_repository_chg_event_data(
+        FORMAT_IS_PDR_HANDLES, 1, eventDataOps.data(),
+        numsOfChangeEntries.data(), &firstEntry, eventData, &actualSize,
+        maxSize);
+    ASSERT_EQ(rc, PLDM_SUCCESS);
+
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(StrEq("/foo/bar"), _))
+        .Times(1)
+        .WillRepeatedly(Return("foo.bar"));
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto event = sdeventplus::Event::get_default();
+    Handler handler(&mockedUtils, 0, nullptr, "./pdr_jsons/state_sensor/good",
+                    inPDRRepo, nullptr, nullptr, nullptr, nullptr, nullptr,
+                    event);
+
+    rc = handler.pldmPDRRepositoryChgEvent(req, actualSize, 0x01, 1, 0);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    pldm_pdr_destroy(inPDRRepo);
+}
