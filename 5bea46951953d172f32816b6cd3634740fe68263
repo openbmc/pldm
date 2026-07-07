@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43c0cbe1_ecf57bdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003022
+      },
+      "writtenOn": "2026-07-07T19:01:19Z",
+      "side": 1,
+      "message": "Thanks for the review everyone. Received 3 \"+1\". \nCan someone kindly help in merging the commit if there are no further improvements to be done on this patch?\nThanks in advance.",
+      "revId": "5bea46951953d172f32816b6cd3634740fe68263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
