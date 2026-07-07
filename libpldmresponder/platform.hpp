@@ -318,7 +318,7 @@ class Handler : public CmdHandler
 
     /** @brief Handler for extracting the PDR handles from changeEntries
      *
-     *  @param[in] changeEntryData - ChangeEntry data from changeRecord
+     *  @param[in] changeEntryData - ChangeEntry data bytes from changeRecord
      *  @param[in] changeEntryDataSize - total size of changeEntryData
      *  @param[in] numberOfChangeEntries - total number of changeEntries to
      *                                     extract
@@ -326,7 +326,7 @@ class Handler : public CmdHandler
      *                                 handles are placed
      *  @return PLDM completion code
      */
-    int getPDRRecordHandles(const ChangeEntry* changeEntryData,
+    int getPDRRecordHandles(const uint8_t* changeEntryData,
                             size_t changeEntryDataSize,
                             size_t numberOfChangeEntries,
                             PDRRecordHandles& pdrRecordHandles);

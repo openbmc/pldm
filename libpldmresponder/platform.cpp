@@ -20,6 +20,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <cstring>
 #include <memory>
 
 PHOSPHOR_LOG2_USING;
@@ -568,16 +569,15 @@ int Handler::pldmPDRRepositoryChgEvent(
                 return rc;
             }
 
-            if (eventDataOperation == PLDM_RECORDS_MODIFIED)
+            if (hostPDRHandler && eventDataOperation == PLDM_RECORDS_MODIFIED)
             {
                 hostPDRHandler->isHostPdrModified = true;
             }
 
-            rc = getPDRRecordHandles(
-                reinterpret_cast<const ChangeEntry*>(
-                    changeRecordData + dataOffset),
-                changeRecordDataSize - dataOffset,
-                static_cast<size_t>(numberOfChangeEntries), pdrRecordHandles);
+            rc = getPDRRecordHandles(changeRecordData + dataOffset,
+                                     changeRecordDataSize - dataOffset,
+                                     static_cast<size_t>(numberOfChangeEntries),
+                                     pdrRecordHandles);
 
             if (rc != PLDM_SUCCESS)
             {
@@ -630,7 +630,7 @@ int Handler::pldmPDRRepositoryChgEvent(
 }
 
 int Handler::getPDRRecordHandles(
-    const ChangeEntry* changeEntryData, size_t changeEntryDataSize,
+    const uint8_t* changeEntryData, size_t changeEntryDataSize,
     size_t numberOfChangeEntries, PDRRecordHandles& pdrRecordHandles)
 {
     if (numberOfChangeEntries > (changeEntryDataSize / sizeof(ChangeEntry)))
@@ -639,7 +639,13 @@ int Handler::getPDRRecordHandles(
     }
     for (size_t i = 0; i < numberOfChangeEntries; i++)
     {
-        pdrRecordHandles.push_back(changeEntryData[i]);
+        // the changeEntry array is offset by the PLDM message header and the
+        // event data framing in the request payload, so it is not naturally
+        // aligned for a direct read
+        ChangeEntry entry;
+        std::memcpy(&entry, changeEntryData + i * sizeof(ChangeEntry),
+                    sizeof(ChangeEntry));
+        pdrRecordHandles.push_back(entry);
     }
     return PLDM_SUCCESS;
 }
@@ -811,10 +817,14 @@ Response Handler::getStateSensorReadings(const pldm_msg* request,
     }
     else
     {
+        static const stateSensorCacheMaps emptySensorCache{};
+        const auto& sensorCache = dbusToPLDMEventHandler
+                                      ? dbusToPLDMEventHandler->getSensorCache()
+                                      : emptySensorCache;
         rc = platform_state_sensor::getStateSensorReadingsHandler<
             pldm::utils::DBusHandler, Handler>(
             dBusIntf, *this, sensorId, sensorRearmCount, comSensorCnt,
-            stateField, dbusToPLDMEventHandler->getSensorCache());
+            stateField, sensorCache);
     }
 
     if (rc != PLDM_SUCCESS)
