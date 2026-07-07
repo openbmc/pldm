@@ -150,6 +150,7 @@ void NumericSensor::setSensorUnit(uint8_t baseUnit)
             break;
         case PLDM_SENSOR_UNIT_COUNTS:
         case PLDM_SENSOR_UNIT_CORRECTED_ERRORS:
+        case PLDM_SENSOR_UNIT_ERRORS:
         case PLDM_SENSOR_UNIT_UNCORRECTABLE_ERRORS:
             sensorNameSpace = "/xyz/openbmc_project/metric/count/";
             useMetricInterface = true;
