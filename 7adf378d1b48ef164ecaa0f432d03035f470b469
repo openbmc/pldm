@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd2f50bf_3197d76f",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:28:45Z",
+      "side": 1,
+      "message": "can we do this conversion seperate rather than doing it twice (even in line 693)\nsomething like this\n\nconst auto imageSetVersion \u003d utils::toString(activeCompImageSetVerStr);\nif (!imageSetVersion.empty())\n{\n    ...\n    firmwareInventoryManager.createFirmwareEntry(\n        totalIdentifier, totalImageName, imageSetVersion,\n        descIt-\u003esecond, componentInfo);\n}",
+      "range": {
+        "startLine": 679,
+        "startChar": 25,
+        "endLine": 679,
+        "endChar": 49
+      },
+      "revId": "7adf378d1b48ef164ecaa0f432d03035f470b469",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "243842c6_8087b347",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:28:45Z",
+      "side": 1,
+      "message": "Can we skip this variable and directly use devNameIt-\u003esecond in line 692, as totalImageName is not used anywhere else",
+      "range": {
+        "startLine": 687,
+        "startChar": 17,
+        "endLine": 687,
+        "endChar": 32
+      },
+      "revId": "7adf378d1b48ef164ecaa0f432d03035f470b469",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f014ece_2732a883",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:28:45Z",
+      "side": 1,
+      "message": "can totalIdentifier be a const?",
+      "revId": "7adf378d1b48ef164ecaa0f432d03035f470b469",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
