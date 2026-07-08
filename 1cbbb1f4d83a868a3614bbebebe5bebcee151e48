@@ -33,6 +33,24 @@
       "message": "Lets drop _ActiveImageSetVersion from the end as its obvious from the listing that the one without the Component is the firmware image for the full device itself.",
       "revId": "1cbbb1f4d83a868a3614bbebebe5bebcee151e48",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0bf30a5_1d3a340c",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-07-08T03:46:17Z",
+      "side": 1,
+      "message": "Done. I have dropped the _ActiveImageSetVersion suffix as suggested.",
+      "parentUuid": "866eb8cc_ea41efd6",
+      "revId": "1cbbb1f4d83a868a3614bbebebe5bebcee151e48",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
