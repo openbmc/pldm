@@ -94,11 +94,14 @@ HostPDRHandler::HostPDRHandler(
     pldm_entity_association_tree* entityTree,
     pldm_entity_association_tree* bmcEntityTree,
     pldm::InstanceIdDb& instanceIdDb,
-    pldm::requester::Handler<pldm::requester::Request>* handler) :
+    pldm::requester::Handler<pldm::requester::Request>* handler,
+    const std::optional<pldm::utils::EntityMaps>& initialEntityMaps) :
     mctp_eid(mctp_eid), event(event), repo(repo),
     stateSensorHandler(eventsJsonsDir), entityTree(entityTree),
     instanceIdDb(instanceIdDb), handler(handler),
-    entityMaps(parseEntityMap(ENTITY_MAP_JSON)), oemUtilsHandler(nullptr)
+    entityMaps(initialEntityMaps ? *initialEntityMaps :
+                                   parseEntityMap(ENTITY_MAP_JSON)),
+    oemUtilsHandler(nullptr)
 {
     mergedHostParents = false;
     hostOffMatch = std::make_unique<sdbusplus::match>(
@@ -164,6 +167,7 @@ void HostPDRHandler::setPresenceFrus()
 
 void HostPDRHandler::fetchPDR(PDRRecordHandles&& recordHandles)
 {
+    resetPDRProcessingState();
     pdrRecordHandles.clear();
     modifiedPDRRecordHandles.clear();
 
@@ -497,12 +501,16 @@ void HostPDRHandler::parseStateSensorPDRs(const PDRList& stateSensorPDRs)
     }
 }
 
+void HostPDRHandler::resetPDRProcessingState()
+{
+    mergedHostPdrs = false;
+    pendingStateSensorPDRs.clear();
+    pendingFruRecordSetPDRs.clear();
+}
+
 void HostPDRHandler::processHostPDRs(
     mctp_eid_t /*eid*/, const pldm_msg* response, size_t respMsgLen)
 {
-    static bool merged = false;
-    static PDRList stateSensorPDRs{};
-    static PDRList fruRecordSetPDRs{};
     uint32_t nextRecordHandle{};
     uint8_t tlEid = 0;
     bool tlValid = true;
@@ -521,6 +529,7 @@ void HostPDRHandler::processHostPDRs(
         error("Failed to receive response for the GetPDR command");
         pldm::utils::reportError(
             "xyz.openbmc_project.PLDM.Error.GetPDR.PDRExchangeFailure");
+        resetPDRProcessingState();
         return;
     }
 
@@ -533,6 +542,7 @@ void HostPDRHandler::processHostPDRs(
         error(
             "Failed to decode getPDR response for next record handle '{NEXT_RECORD_HANDLE}', response code '{RC}'",
             "NEXT_RECORD_HANDLE", nextRecordHandle, "RC", rc);
+        resetPDRProcessingState();
         return;
     }
     else
@@ -549,6 +559,7 @@ void HostPDRHandler::processHostPDRs(
                 "NEXT_RECORD_HANDLE", nextRecordHandle, "DATA_TRANSFER_HANDLE",
                 nextDataTransferHandle, "FLAG", transferFlag, "RC", rc, "CC",
                 completionCode);
+            resetPDRProcessingState();
             return;
         }
         else
@@ -573,7 +584,7 @@ void HostPDRHandler::processHostPDRs(
             if (pdrHdr->type == PLDM_PDR_ENTITY_ASSOCIATION)
             {
                 this->mergeEntityAssociations(pdr, respCount, rh);
-                merged = true;
+                mergedHostPdrs = true;
             }
             else
             {
@@ -608,6 +619,7 @@ void HostPDRHandler::processHostPDRs(
                         {
                             // TL PDR already present with same validity don't
                             // add the PDR to the repo just return
+                            resetPDRProcessingState();
                             return;
                         }
                     }
@@ -620,14 +632,14 @@ void HostPDRHandler::processHostPDRs(
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_state_sensor_pdr>(pdr);
                     updateContainerId<pldm_state_sensor_pdr>(entityTree, pdr);
-                    stateSensorPDRs.emplace_back(pdr);
+                    pendingStateSensorPDRs.emplace_back(pdr);
                 }
                 else if (pdrHdr->type == PLDM_PDR_FRU_RECORD_SET)
                 {
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_pdr_fru_record_set>(pdr);
                     updateContainerId<pldm_pdr_fru_record_set>(entityTree, pdr);
-                    fruRecordSetPDRs.emplace_back(pdr);
+                    pendingFruRecordSetPDRs.emplace_back(pdr);
                 }
                 else if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
                 {
@@ -672,6 +684,7 @@ void HostPDRHandler::processHostPDRs(
     }
     if (!nextRecordHandle)
     {
+        const bool shouldSendPdrRepoChgEvent = mergedHostPdrs;
         updateEntityAssociation(entityAssociations, entityTree, objPathMap,
                                 entityMaps, oemPlatformHandler);
         if (oemUtilsHandler)
@@ -679,19 +692,17 @@ void HostPDRHandler::processHostPDRs(
             oemUtilsHandler->setCoreCount(entityAssociations, entityMaps);
         }
         /*received last record*/
-        this->parseStateSensorPDRs(stateSensorPDRs);
-        this->createDbusObjects(fruRecordSetPDRs);
+        this->parseStateSensorPDRs(pendingStateSensorPDRs);
+        this->createDbusObjects(pendingFruRecordSetPDRs);
         if (isHostUp())
         {
-            this->setHostSensorState(stateSensorPDRs);
+            this->setHostSensorState(pendingStateSensorPDRs);
         }
-        stateSensorPDRs.clear();
-        fruRecordSetPDRs.clear();
+        resetPDRProcessingState();
         entityAssociations.clear();
 
-        if (merged)
+        if (shouldSendPdrRepoChgEvent)
         {
-            merged = false;
             deferredPDRRepoChgEvent =
                 std::make_unique<sdeventplus::source::Defer>(
                     event,

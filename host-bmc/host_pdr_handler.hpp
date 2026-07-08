@@ -17,6 +17,7 @@
 #include <deque>
 #include <map>
 #include <memory>
+#include <optional>
 #include <vector>
 
 namespace pldm
@@ -63,6 +64,8 @@ using PDRList = std::vector<std::vector<uint8_t>>;
  */
 class HostPDRHandler
 {
+    friend class HostPDRHandlerTest;
+
   public:
     HostPDRHandler() = delete;
     HostPDRHandler(const HostPDRHandler&) = delete;
@@ -85,6 +88,7 @@ class HostPDRHandler
      *  @param[in] bmcEntityTree - pointer to BMC's entity association tree
      *  @param[in] instanceIdDb - reference to an InstanceIdDb object
      *  @param[in] handler - PLDM request handler
+     *  @param[in] initialEntityMaps - entity maps used to associate host PDRs
      *  @param[in] oemUtilsHandler - pointer oem utils handler
      */
     explicit HostPDRHandler(
@@ -93,7 +97,9 @@ class HostPDRHandler
         pldm_entity_association_tree* entityTree,
         pldm_entity_association_tree* bmcEntityTree,
         pldm::InstanceIdDb& instanceIdDb,
-        pldm::requester::Handler<pldm::requester::Request>* handler);
+        pldm::requester::Handler<pldm::requester::Request>* handler,
+        const std::optional<pldm::utils::EntityMaps>& initialEntityMaps =
+            std::nullopt);
 
     /** @brief fetch PDRs from host firmware. See @class.
      *  @param[in] recordHandles - list of record handles pointing to host's
@@ -234,6 +240,9 @@ class HostPDRHandler
     void _processFetchPDREvent(uint32_t nextRecordHandle,
                                sdeventplus::source::EventBase& source);
 
+    /** @brief reset per-fetch temporary PDR processing state */
+    void resetPDRProcessingState();
+
     /** @brief Get FRU record table metadata by remote PLDM terminus
      *
      *  @param[out] uint16_t    - total table records
@@ -342,6 +351,16 @@ class HostPDRHandler
      *         from host is merged into the BMC tree
      */
     bool mergedHostParents;
+
+    /** @brief captures if entity association PDRs were merged in current fetch
+     */
+    bool mergedHostPdrs = false;
+
+    /** @brief temporary state sensor PDRs collected during current fetch */
+    PDRList pendingStateSensorPDRs;
+
+    /** @brief temporary FRU record set PDRs collected during current fetch */
+    PDRList pendingFruRecordSetPDRs;
 
     /** @brief maps an object path to pldm_entity from the BMC's entity
      *         association tree
