@@ -16,6 +16,23 @@
       "message": "Thanks for the review everyone. Received 3 \"+1\". \nCan someone kindly help in merging the commit if there are no further improvements to be done on this patch?\nThanks in advance.",
       "revId": "5bea46951953d172f32816b6cd3634740fe68263",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f8d1753_679a9b21",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T06:48:31Z",
+      "side": 1,
+      "message": "Do we need this extra string construction? Since terminusName is already a std::optional\u003cstd::string\u003e, and the function returns std::optional\u003cstd::string\u003e?",
+      "revId": "5bea46951953d172f32816b6cd3634740fe68263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
