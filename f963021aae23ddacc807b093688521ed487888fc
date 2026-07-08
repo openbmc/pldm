@@ -16,6 +16,24 @@
       "message": "dBusMap does not tell us if the dbus path and the property is present in the D-bus. So for Dbus Backed bios attribute for which we do not have dbus value populated over dbus while building the bios table will end up in having the default value and not the persisted value.\nThis change would have fixed the usecase which we are testing but its not following the priority as we are expecting\nDbus value -\u003e Persisted -\u003e Default from Json",
       "revId": "f963021aae23ddacc807b093688521ed487888fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8420458_f4c24139",
+        "filename": "libpldmresponder/bios_enum_attribute.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-08T14:34:19Z",
+      "side": 1,
+      "message": "I agree to your statement, but I am not sure fixing things in this really helps.\n\nIf it is a dbus backed property, and if we cannot get a value via dbus for some reason, once the property is available - it should automatically change the value of the attribute. Even if we restore the persisted value it might be inaccurate right ? is it not ?",
+      "parentUuid": "a08d53c1_79bf59e2",
+      "revId": "f963021aae23ddacc807b093688521ed487888fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
