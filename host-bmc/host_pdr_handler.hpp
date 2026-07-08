@@ -234,6 +234,9 @@ class HostPDRHandler
     void _processFetchPDREvent(uint32_t nextRecordHandle,
                                sdeventplus::source::EventBase& source);
 
+    /** @brief reset per-fetch temporary PDR processing state */
+    void resetPDRProcessingState();
+
     /** @brief Get FRU record table metadata by remote PLDM terminus
      *
      *  @param[out] uint16_t    - total table records
@@ -342,6 +345,16 @@ class HostPDRHandler
      *         from host is merged into the BMC tree
      */
     bool mergedHostParents;
+
+    /** @brief captures if entity association PDRs were merged in current fetch
+     */
+    bool mergedHostPdrs = false;
+
+    /** @brief temporary state sensor PDRs collected during current fetch */
+    PDRList pendingStateSensorPDRs;
+
+    /** @brief temporary FRU record set PDRs collected during current fetch */
+    PDRList pendingFruRecordSetPDRs;
 
     /** @brief maps an object path to pldm_entity from the BMC's entity
      *         association tree
