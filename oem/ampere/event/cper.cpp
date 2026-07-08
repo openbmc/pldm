@@ -113,71 +113,101 @@ static void decodeSecPcie(void* section, EFI_AMPERE_ERROR_DATA* ampSpecHdr)
     }
 }
 
-static void decodeCperSection(const uint8_t* data, long basePos,
-                              EFI_AMPERE_ERROR_DATA* ampSpecHdr,
-                              EFI_ERROR_SECTION_DESCRIPTOR* secDesc)
+static void decodeCperSection(
+    const uint8_t* data, long basePos, size_t eventDataSize,
+    EFI_AMPERE_ERROR_DATA* ampSpecHdr, EFI_ERROR_SECTION_DESCRIPTOR* secDesc)
 {
-    long pos = basePos + secDesc->SectionOffset;
-    char* section = new char[secDesc->SectionLength];
-    std::memcpy(section, &data[pos], secDesc->SectionLength);
-    pos += secDesc->SectionLength;
+    // SectionOffset and SectionLength come from the untrusted,
+    // firmware-supplied record. Reject any section that would fall outside the
+    // received event data (or whose bounds overflow) before copying it, to
+    // avoid an out-of-bounds read.
+    size_t sectionStart = static_cast<size_t>(basePos) + secDesc->SectionOffset;
+    size_t sectionEnd = sectionStart + secDesc->SectionLength;
+    if (sectionEnd < sectionStart || sectionEnd > eventDataSize)
+    {
+        lg2::error(
+            "CPER section out of bounds, offset {OFFSET} length {LENGTH} "
+            "event data size {SIZE}",
+            "OFFSET", secDesc->SectionOffset, "LENGTH", secDesc->SectionLength,
+            "SIZE", eventDataSize);
+        return;
+    }
+
+    std::vector<uint8_t> section(secDesc->SectionLength);
+    std::memcpy(section.data(), &data[sectionStart], secDesc->SectionLength);
     EFI_GUID* ptr = reinterpret_cast<EFI_GUID*>(&secDesc->SectionType);
     if (guid_equal(ptr, &gEfiAmpereErrorSectionGuid))
     {
         lg2::info("RAS Section Type : Ampere Specific");
-        decodeSecAmpere(section, ampSpecHdr);
+        decodeSecAmpere(section.data(), ampSpecHdr);
     }
     else if (guid_equal(ptr, &gEfiArmProcessorErrorSectionGuid))
     {
         lg2::info("RAS Section Type : ARM");
-        decodeSecArm(section, ampSpecHdr);
+        decodeSecArm(section.data(), ampSpecHdr);
     }
     else if (guid_equal(ptr, &gEfiPlatformMemoryErrorSectionGuid))
     {
         lg2::info("RAS Section Type : Memory");
-        decodeSecPlatformMemory(section, ampSpecHdr);
+        decodeSecPlatformMemory(section.data(), ampSpecHdr);
     }
     else if (guid_equal(ptr, &gEfiPcieErrorSectionGuid))
     {
         lg2::info("RAS Section Type : PCIE");
-        decodeSecPcie(section, ampSpecHdr);
+        decodeSecPcie(section.data(), ampSpecHdr);
     }
     else
     {
         lg2::error("Section Type is not supported");
     }
-
-    delete[] section;
 }
 
-void decodeCperRecord(const uint8_t* data, size_t /* eventDataSize */,
+void decodeCperRecord(const uint8_t* data, size_t eventDataSize,
                       EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 {
-    EFI_COMMON_ERROR_RECORD_HEADER cperHeader;
-    long pos = sizeof(CommonEventData);
     long basePos = sizeof(CommonEventData);
 
+    // The record header is fixed-size; make sure the event data is large enough
+    // to hold the common wrapper plus the CPER header before reading it.
+    if (eventDataSize <
+        static_cast<size_t>(basePos) + sizeof(EFI_COMMON_ERROR_RECORD_HEADER))
+    {
+        lg2::error("CPER event data too small for record header, size {SIZE}",
+                   "SIZE", eventDataSize);
+        return;
+    }
+
+    EFI_COMMON_ERROR_RECORD_HEADER cperHeader;
+    long pos = basePos;
     std::memcpy(&cperHeader, &data[pos],
                 sizeof(EFI_COMMON_ERROR_RECORD_HEADER));
     pos += sizeof(EFI_COMMON_ERROR_RECORD_HEADER);
 
-    EFI_ERROR_SECTION_DESCRIPTOR* secDesc =
-        new EFI_ERROR_SECTION_DESCRIPTOR[cperHeader.SectionCount];
-    for ([[maybe_unused]] const auto& i :
-         std::views::iota(0, static_cast<int>(cperHeader.SectionCount)))
+    // SectionCount is firmware-supplied; make sure the descriptor array it
+    // implies actually fits in the received event data before reading it.
+    size_t descBytes = static_cast<size_t>(cperHeader.SectionCount) *
+                       sizeof(EFI_ERROR_SECTION_DESCRIPTOR);
+    if (static_cast<size_t>(pos) + descBytes > eventDataSize)
+    {
+        lg2::error("CPER section descriptors exceed event data, count {COUNT} "
+                   "size {SIZE}",
+                   "COUNT", cperHeader.SectionCount, "SIZE", eventDataSize);
+        return;
+    }
+
+    std::vector<EFI_ERROR_SECTION_DESCRIPTOR> secDesc(cperHeader.SectionCount);
+    for (size_t i = 0; i < cperHeader.SectionCount; i++)
     {
         std::memcpy(&secDesc[i], &data[pos],
                     sizeof(EFI_ERROR_SECTION_DESCRIPTOR));
         pos += sizeof(EFI_ERROR_SECTION_DESCRIPTOR);
     }
 
-    for ([[maybe_unused]] const auto& i :
-         std::views::iota(0, static_cast<int>(cperHeader.SectionCount)))
+    for (size_t i = 0; i < cperHeader.SectionCount; i++)
     {
-        decodeCperSection(data, basePos, ampSpecHdr, &secDesc[i]);
+        decodeCperSection(data, basePos, eventDataSize, ampSpecHdr,
+                          &secDesc[i]);
     }
-
-    delete[] secDesc;
 }
 
 void addCperSELLog(pldm_tid_t tid, uint16_t eventID, EFI_AMPERE_ERROR_DATA* p)
