@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59badeb8_d86cc4cb",
+        "filename": "oem/arm/event/oem_event_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:17:42Z",
+      "side": 1,
+      "message": "Should we add this in common/utils.hpp file?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 1
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8b6c769_57dd1edc",
         "filename": "oem/arm/event/oem_event_manager.cpp",
         "patchSetId": 6
@@ -36,6 +59,116 @@
         "startChar": 0,
         "endLine": 68,
         "endChar": 1
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39b9d805_4d14bbff",
+        "filename": "oem/arm/event/oem_event_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:17:42Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "e8b6c769_57dd1edc",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 1
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7da1b7d6_8860f65d",
+        "filename": "oem/arm/event/oem_event_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:17:42Z",
+      "side": 1,
+      "message": "if(!request || eventDataOffset \u003e payloadLength) ?",
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ef9e71c_db3ce554",
+        "filename": "oem/arm/event/oem_event_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:17:42Z",
+      "side": 1,
+      "message": "if(!manager)",
+      "range": {
+        "startLine": 101,
+        "startChar": 3,
+        "endLine": 101,
+        "endChar": 27
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f54fbc5c_03b3375e",
+        "filename": "oem/arm/event/oem_event_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:17:42Z",
+      "side": 1,
+      "message": "is this clang formatted?",
+      "range": {
+        "startLine": 208,
+        "startChar": 8,
+        "endLine": 212,
+        "endChar": 26
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1aeaf14_b86d2467",
+        "filename": "oem/arm/event/oem_event_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-08T07:17:42Z",
+      "side": 1,
+      "message": "can we have doxygen mentioned for each of these functions?",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 45,
+        "endChar": 2
       },
       "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
