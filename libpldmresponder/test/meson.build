@@ -10,6 +10,7 @@ tests = [
     'libpldmresponder_platform_test',
     'libpldmresponder_pdr_effecter_test',
     'libpldmresponder_pdr_sensor_test',
+    'host_pdr_handler_test',
 ]
 
 
