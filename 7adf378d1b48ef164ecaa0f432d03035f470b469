@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd2807be_92a7ec47",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-07-09T02:05:42Z",
+      "side": 1,
+      "message": "Done. Added const auto imageSetVersion to prevent redundant conversions.",
+      "parentUuid": "cd2f50bf_3197d76f",
+      "range": {
+        "startLine": 679,
+        "startChar": 25,
+        "endLine": 679,
+        "endChar": 49
+      },
+      "revId": "7adf378d1b48ef164ecaa0f432d03035f470b469",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "243842c6_8087b347",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80b56a20_b762f808",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-07-09T02:05:42Z",
+      "side": 1,
+      "message": "Done. Added const auto imageSetVersion to prevent redundant conversions.",
+      "parentUuid": "243842c6_8087b347",
+      "range": {
+        "startLine": 687,
+        "startChar": 17,
+        "endLine": 687,
+        "endChar": 32
+      },
+      "revId": "7adf378d1b48ef164ecaa0f432d03035f470b469",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f014ece_2732a883",
@@ -60,6 +108,24 @@
       "writtenOn": "2026-07-08T07:28:45Z",
       "side": 1,
       "message": "can totalIdentifier be a const?",
+      "revId": "7adf378d1b48ef164ecaa0f432d03035f470b469",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a41a3ac_ece9df5d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-07-09T02:05:42Z",
+      "side": 1,
+      "message": "Done. Added the const qualifier as suggested.",
+      "parentUuid": "8f014ece_2732a883",
       "revId": "7adf378d1b48ef164ecaa0f432d03035f470b469",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
