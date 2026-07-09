@@ -16,6 +16,159 @@
       "message": "@unive.tien.wiwynn@gmail.com/ @paligill@gmail.com What is the reason for using json instead of EM for defining pre/post update conditions ? https://github.com/openbmc/docs/blob/master/designs/code-update.md#pre-and-post-update-conditions\n\nThe pre-post condition can also be platform/device specific.",
       "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c2121d5_2d7c0d65",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "Why are we using softwareName for this lookup? The json schema defines Component as the component identifier, and that\u0027s already unique. (https://gerrit.openbmc.org/c/openbmc/pldm/+/76704#:~:text\u003d%22description%22%3A%20%22Component%20identifier%20used%20to%20map%20update%20conditions.%22)",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5313c06_23b60d54",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "why are we unconditionally hardcoding conditionArg with boardName ? \n\nNot every pre/post service requires an argument, this should be optional and driven by configuration.",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a172a1d_2aeeb846",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "can we use a meson option instead of hardcoding the path in the code.",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42872fb2_49b026b8",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "Are pre-post conditions intentionally limited to targeted Software.Update path? \nI don\u0027t see a support for full PLDM bundle update.",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b0b296c_61fa44fb",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "packageDataStream and deviceUpdater stays alive in this path, better to create a common teardown path and reuse it.",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f4ab56_488549c1",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "What is the behavior when update has failed ?",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f79767b3_5e22bc57",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "The post-update condition may not require any arguments, and ApplyTime should not be passed unconditionally. \n\nThe PLDM UA should start the unit specified in the config and leave the platform/device specific handling to that unit. If arguments are needed, they should be optional and explicitly defined in the configuration",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e352829_790092a4",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "The schema describes PreUpdateTarget/PostUpdateTarget as systemd unit names, what is motivation to do this ?\n\nIt will be clearer if code executed the configured unit unchanged",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa9efc8_3692844d",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T08:38:09Z",
+      "side": 1,
+      "message": "what if boardName is not required for some pre-conditon ?",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
