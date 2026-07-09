@@ -1,0 +1,10 @@
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Code-Review+1: Mayank Metha D <mayank.metha@intel.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Jagpal S Gill <paligill@gmail.com>
+Submitted-by: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Submitted-at: Thu, 09 Jul 2026 04:03:53 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/89351
+Comments-Total: 13
+Project: openbmc/pldm
+Branch: refs/heads/master
