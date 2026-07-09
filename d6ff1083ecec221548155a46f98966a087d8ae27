@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81fefe88_30bb6443",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 48
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-07-09T07:35:45Z",
+      "side": 1,
+      "message": "@unive.tien.wiwynn@gmail.com/ @paligill@gmail.com What is the reason for using json instead of EM for defining pre/post update conditions ? https://github.com/openbmc/docs/blob/master/designs/code-update.md#pre-and-post-update-conditions\n\nThe pre-post condition can also be platform/device specific.",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
