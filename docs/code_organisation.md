@@ -40,9 +40,8 @@ Files having the oem functionality for the libpldmresponder library should be
 placed under the folder oem/<oem_name>/libpldmresponder. They must be adhering
 to the rules mentioned under the libpldmresponder section above.
 
-Once the above is done a meson option has to be created in
-`pldm/meson_options.txt` with its mapped compiler flag to enable conditional
-compilation.
+Once the above is done a meson option has to be created in `pldm/meson.options`
+with its mapped compiler flag to enable conditional compilation.
 
 For consistency would recommend using "oem-<oem_name>".
 
