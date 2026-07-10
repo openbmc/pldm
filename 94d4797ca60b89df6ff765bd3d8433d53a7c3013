@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d3bb330_95af8399",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T05:56:44Z",
+      "side": 1,
+      "message": "can you make these points , so that its easy to understand that we have 3 issues.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 62
+      },
+      "revId": "94d4797ca60b89df6ff765bd3d8433d53a7c3013",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8958a9_5ffc49e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T05:56:44Z",
+      "side": 1,
+      "message": "you dont really need to mention this in the commit message, the CI status it self will be self explanatory.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 32
+      },
+      "revId": "94d4797ca60b89df6ff765bd3d8433d53a7c3013",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a671f01d_85975766",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T05:56:44Z",
+      "side": 1,
+      "message": "please try to avoid reinterpret_cast , we are trying to move away from it , look at https://github.com/openbmc/pldm/commit/842113b5349cd8dcb1bdbcc8d2845449ffe8317f for example.",
+      "range": {
+        "startLine": 648,
+        "startChar": 20,
+        "endLine": 648,
+        "endChar": 69
+      },
+      "revId": "94d4797ca60b89df6ff765bd3d8433d53a7c3013",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
