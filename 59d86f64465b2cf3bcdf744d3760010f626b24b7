@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20f8f615_8bf532fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-10T11:43:08Z",
+      "side": 1,
+      "message": "Addressed in Patch Set 2.\nClarified that function-static temp state could persist across fetch attempts and retain partial state if the flow exited early on an error path.",
+      "parentUuid": "6650e917_45b68f8f",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 45
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbbdb78b_fd20b858",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-10T06:52:46Z",
       "side": 1,
       "message": "what do you mean by terminal completion?",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a4af50_d9902e6e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-10T11:43:08Z",
+      "side": 1,
+      "message": "Addressed in Patch Set 2. Clarified this as the final successful fetch completion path when nextRecordHandle \u003d\u003d 0.",
+      "parentUuid": "dbbdb78b_fd20b858",
       "range": {
         "startLine": 22,
         "startChar": 2,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b9e3830_b4ff0c52",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-10T11:43:08Z",
+      "side": 1,
+      "message": "Addressed in Patch Set 2. Renamed to resetPDRProcessingState() for naming consistency with PDR usage in this file.",
+      "parentUuid": "de2e4026_dc52c5b2",
+      "range": {
+        "startLine": 167,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 29
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8f01b6f_cb386641",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-10T06:52:46Z",
       "side": 1,
       "message": "I think this handles the case where we have stale entries? (I mean duplicate entries) In every fetch cycle?",
+      "range": {
+        "startLine": 496,
+        "startChar": 7,
+        "endLine": 496,
+        "endChar": 62
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ae4492_661e3c52",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-10T11:43:08Z",
+      "side": 1,
+      "message": "Yes, line 496 clears the buffered per-fetch state, but the motivation for this patch is to remove the function-static state entirely. The change makes that temporary state instance-scoped, with explicit reset points, so the behavior is easier to reason about and no longer depends on hidden static locals.",
+      "parentUuid": "c8f01b6f_cb386641",
       "range": {
         "startLine": 496,
         "startChar": 7,
@@ -110,6 +206,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ba28b50_baaba34a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-10T11:43:08Z",
+      "side": 1,
+      "message": "Thanks for raising this. In this flow, Entity Association PDRs are processed differently from State Sensor/FRU PDRs: they are merged into the entity tree immediately when each Entity Association record is received, not buffered in per-fetch pending containers.\nThis patch only moves the previous function-static per-fetch state to instance scope (merge flag + pending State Sensor PDR list + pending FRU Record Set PDR list).\nSo, behavior for Entity Association merge is unchanged by this patch.",
+      "parentUuid": "9f079b3d_c3d8ba8a",
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "561d8960_97ff9b9d",
@@ -123,6 +237,30 @@
       "writtenOn": "2026-07-10T06:52:46Z",
       "side": 1,
       "message": "Why is an extra variable needed here? Can\u0027t we use mergedHostPdrs directly in line 694?",
+      "range": {
+        "startLine": 685,
+        "startChar": 19,
+        "endLine": 685,
+        "endChar": 38
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f0b8ed9_6d1987c7",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-10T11:43:08Z",
+      "side": 1,
+      "message": "We cannot use mergedHostPdrs directly there because it is cleared by resetPDRProcessingState(). The local variable preserves the current-cycle result so we can still decide whether to send the PDR repository changed event afterward.",
+      "parentUuid": "561d8960_97ff9b9d",
       "range": {
         "startLine": 685,
         "startChar": 19,
