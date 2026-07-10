@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e88d49b2_866f6332",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003022
+      },
+      "writtenOn": "2026-07-10T10:38:16Z",
+      "side": 1,
+      "message": "Thanks for the review comments @pavithrabarithaya07@gmail.com and @manojkiran.eda@gmail.com @jvoon@nvidia.com\n\nI am making the changes mentioned and I would test and submit the patch again.",
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7dd7fa4_aa49d29e",
@@ -31,6 +48,24 @@
       "writtenOn": "2026-07-10T06:20:06Z",
       "side": 1,
       "message": "is there some one in arm who is interested in maintaining the oem-arm code ?",
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "085e6fd8_39b68a25",
+        "filename": "meson.options",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1003022
+      },
+      "writtenOn": "2026-07-10T10:38:16Z",
+      "side": 1,
+      "message": "@davidson.kumaresan@arm.com and team would be the maintainers of the OEM-ARM.",
+      "parentUuid": "f7dd7fa4_aa49d29e",
       "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
