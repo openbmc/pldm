@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6650e917_45b68f8f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-10T06:52:46Z",
+      "side": 1,
+      "message": "what do you mean by this?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 45
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbbdb78b_fd20b858",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-10T06:52:46Z",
+      "side": 1,
+      "message": "what do you mean by terminal completion?",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de2e4026_dc52c5b2",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-10T06:52:46Z",
+      "side": 1,
+      "message": "Can we name this resetPDRProcessingState() to match the uppercase PDR everywhere?",
+      "range": {
+        "startLine": 167,
+        "startChar": 4,
+        "endLine": 167,
+        "endChar": 29
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8f01b6f_cb386641",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-10T06:52:46Z",
+      "side": 1,
+      "message": "I think this handles the case where we have stale entries? (I mean duplicate entries) In every fetch cycle?",
+      "range": {
+        "startLine": 496,
+        "startChar": 7,
+        "endLine": 496,
+        "endChar": 62
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f079b3d_c3d8ba8a",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-10T06:52:46Z",
+      "side": 1,
+      "message": "This only clears the state sensors and FRU record set PDRs; what happens to the entity association PDRs then?",
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "561d8960_97ff9b9d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-10T06:52:46Z",
+      "side": 1,
+      "message": "Why is an extra variable needed here? Can\u0027t we use mergedHostPdrs directly in line 694?",
+      "range": {
+        "startLine": 685,
+        "startChar": 19,
+        "endLine": 685,
+        "endChar": 38
+      },
+      "revId": "59d86f64465b2cf3bcdf744d3760010f626b24b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
