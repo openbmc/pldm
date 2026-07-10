@@ -20,6 +20,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f7dd7fa4_aa49d29e",
+        "filename": "meson.options",
+        "patchSetId": 6
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "is there some one in arm who is interested in maintaining the oem-arm code ?",
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e426d2c_b3e383e2",
+        "filename": "meson.options",
+        "patchSetId": 6
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "much like other OEM options , we should enable this by default , so that repo CI can test the code.",
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59badeb8_d86cc4cb",
         "filename": "oem/arm/event/oem_event_manager.cpp",
         "patchSetId": 6
@@ -31,6 +65,30 @@
       "writtenOn": "2026-07-08T07:17:42Z",
       "side": 1,
       "message": "Should we add this in common/utils.hpp file?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 1
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ac8799c_05fa93f6",
+        "filename": "oem/arm/event/oem_event_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "I guess we should have a similar function in utils already. May be we can reuse it ?",
+      "parentUuid": "59badeb8_d86cc4cb",
       "range": {
         "startLine": 52,
         "startChar": 0,
@@ -130,6 +188,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a4bf198_4566180b",
+        "filename": "oem/arm/event/oem_event_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "These logs are supposed to be human readable, `Boot.Progress` ? https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings\n\nplease relook at all the logs to see if they are human readable.",
+      "range": {
+        "startLine": 208,
+        "startChar": 9,
+        "endLine": 211,
+        "endChar": 24
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f54fbc5c_03b3375e",
         "filename": "oem/arm/event/oem_event_manager.cpp",
         "patchSetId": 6
@@ -169,6 +250,93 @@
         "startChar": 3,
         "endLine": 45,
         "endChar": 2
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ec484ee_be0f54c0",
+        "filename": "oem/arm/event/oem_event_manager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "b1aeaf14_b86d2467",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 45,
+        "endChar": 2
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "849113a5_5942e1a0",
+        "filename": "oem/arm/oem_arm.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "doxygen missing",
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82c34625_9d8c7c96",
+        "filename": "oem/arm/oem_arm.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "null check missing",
+      "range": {
+        "startLine": 45,
+        "startChar": 8,
+        "endLine": 45,
+        "endChar": 23
+      },
+      "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46328e03_9f5700f1",
+        "filename": "oem/arm/oem_arm.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:20:06Z",
+      "side": 1,
+      "message": "null check missing",
+      "range": {
+        "startLine": 50,
+        "startChar": 23,
+        "endLine": 50,
+        "endChar": 36
       },
       "revId": "018a1a4180571905fd7e3881f194f39092ecc725",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
