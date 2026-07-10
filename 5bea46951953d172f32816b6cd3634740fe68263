@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2c24f7d_2950feea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:06:28Z",
+      "side": 1,
+      "message": "I guess i am a little confused, not sure why we have to depend on sensor names ? cant we rely on tid, eid, networkid ?",
+      "range": {
+        "startLine": 10,
+        "startChar": 51,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "5bea46951953d172f32816b6cd3634740fe68263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "43c0cbe1_ecf57bdd",
@@ -31,6 +54,24 @@
       "writtenOn": "2026-07-08T06:48:31Z",
       "side": 1,
       "message": "Do we need this extra string construction? Since terminusName is already a std::optional\u003cstd::string\u003e, and the function returns std::optional\u003cstd::string\u003e?",
+      "revId": "5bea46951953d172f32816b6cd3634740fe68263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d6100aa_1bba0e8c",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-10T06:06:28Z",
+      "side": 1,
+      "message": "terminusName returns an optional string_view, he is just constructing the string from it. Not sure we would need that though ? cant we just return an optional string_view itself ?",
+      "parentUuid": "3f8d1753_679a9b21",
       "revId": "5bea46951953d172f32816b6cd3634740fe68263",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
