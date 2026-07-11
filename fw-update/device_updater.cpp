@@ -609,7 +609,11 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
-    if (offset + length > compSize + PLDM_FWUP_BASELINE_TRANSFER_SIZE)
+    const uint64_t requestEnd = static_cast<uint64_t>(offset) + length;
+    const uint64_t paddedComponentEnd =
+        static_cast<uint64_t>(compSize) +
+        PLDM_FWUP_BASELINE_TRANSFER_SIZE;
+    if (requestEnd > paddedComponentEnd)
     {
         rc = encode_request_firmware_data_resp(
             request->hdr.instance_id, PLDM_FWUP_DATA_OUT_OF_RANGE, responseMsg,
@@ -624,9 +628,9 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     }
 
     size_t padBytes = 0;
-    if (offset + length > compSize)
+    if (requestEnd > compSize)
     {
-        padBytes = offset + length - compSize;
+        padBytes = static_cast<size_t>(requestEnd - compSize);
     }
 
     if (componentIndex < progress.size())
