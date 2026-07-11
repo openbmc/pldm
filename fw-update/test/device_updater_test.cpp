@@ -136,6 +136,60 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
     EXPECT_EQ(deviceUpdater.getProgress(), 48);
 }
 
+TEST_F(DeviceUpdaterTest, RejectWrappedOffsetBeforeComponent)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0x75, 0xFF, 0xFF,
+                     0xFF, 0x00, 0x02, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
+    auto response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+
+    EXPECT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_DATA_OUT_OF_RANGE);
+}
+
+TEST_F(DeviceUpdaterTest, AllowBaselinePaddingAtComponentEnd)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x04, 0x00,
+                     0x00, 0x20, 0x00, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
+    auto response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+
+    EXPECT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t) + 32);
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_TRUE(std::all_of(
+        response.begin() + sizeof(pldm_msg_hdr) + sizeof(uint8_t),
+        response.end(), [](uint8_t value) { return value == 0; }));
+}
+
+TEST_F(DeviceUpdaterTest, RejectOffsetPastComponentEnd)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0x01, 0x04, 0x00,
+                     0x00, 0x20, 0x00, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
+    auto response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+
+    EXPECT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_DATA_OUT_OF_RANGE);
+}
+
 TEST_F(DeviceUpdaterTest, FullUpdateProgress)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
