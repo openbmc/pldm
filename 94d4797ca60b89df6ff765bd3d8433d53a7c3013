@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ab3ebe7_90e056ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-11T19:10:25Z",
+      "side": 1,
+      "message": "Understood.\nI have restructure the commit message to make the issues clearer.",
+      "parentUuid": "0d3bb330_95af8399",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 62
+      },
+      "revId": "94d4797ca60b89df6ff765bd3d8433d53a7c3013",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d8958a9_5ffc49e9",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07ab37bb_97a88e01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-11T19:10:25Z",
+      "side": 1,
+      "message": "Sure, have the commit message modified and removed the line.\nThanks for acknowledging!",
+      "parentUuid": "5d8958a9_5ffc49e9",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 32
+      },
+      "revId": "94d4797ca60b89df6ff765bd3d8433d53a7c3013",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a671f01d_85975766",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-07-10T05:56:44Z",
       "side": 1,
       "message": "please try to avoid reinterpret_cast , we are trying to move away from it , look at https://github.com/openbmc/pldm/commit/842113b5349cd8dcb1bdbcc8d2845449ffe8317f for example.",
+      "range": {
+        "startLine": 648,
+        "startChar": 20,
+        "endLine": 648,
+        "endChar": 69
+      },
+      "revId": "94d4797ca60b89df6ff765bd3d8433d53a7c3013",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d5cc507_ef70965a",
+        "filename": "libpldmresponder/platform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-11T19:10:25Z",
+      "side": 1,
+      "message": "Done.\nI have remove the use of `reinterpret_cast\u003c\u003e`.\nThanks for acknowledging.",
+      "parentUuid": "a671f01d_85975766",
       "range": {
         "startLine": 648,
         "startChar": 20,
