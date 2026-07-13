@@ -309,7 +309,67 @@ class FRUTablePrint
     }
 };
 
-class GetFRURecordByOption : public CommandInterface
+// Accumulate one FRU multipart response chunk and act on its transfer flag.
+// Appends the chunk to accumulated, and on the final chunk prints the full
+// table. Returns true if another GetNextPart request is required.
+static bool accumulateFruPart(
+    std::vector<uint8_t>& accumulated, const uint8_t* data, size_t length,
+    uint8_t transferFlag, uint32_t nextHandle, uint32_t& dataTransferHandle,
+    uint8_t& operationFlag)
+{
+    if (transferFlag != PLDM_START && transferFlag != PLDM_MIDDLE &&
+        transferFlag != PLDM_END && transferFlag != PLDM_START_AND_END)
+    {
+        std::cerr << "Response Message Error: invalid transfer flag "
+                  << static_cast<int>(transferFlag) << std::endl;
+        return false;
+    }
+
+    accumulated.insert(accumulated.end(), data, data + length);
+
+    if (transferFlag == PLDM_END || transferFlag == PLDM_START_AND_END)
+    {
+        FRUTablePrint tablePrint(accumulated.data(), accumulated.size());
+        tablePrint.print();
+        return false;
+    }
+
+    dataTransferHandle = nextHandle;
+    operationFlag = PLDM_GET_NEXTPART;
+    return true;
+}
+
+// Base for FRU commands that reassemble a table via PLDM multipart transfers.
+// Runs the GetNextPart request loop and owns the transfer state shared by all
+// such commands, so the loop lives in a single place.
+class MultipartFruCommand : public CommandInterface
+{
+  public:
+    using CommandInterface::CommandInterface;
+
+    void exec() override
+    {
+        accumulated.clear();
+        dataTransferHandle = 0;
+        operationFlag = PLDM_GET_FIRSTPART;
+        do
+        {
+            // Reset before each request so that a request which fails early
+            // in CommandInterface::exec() (before parseResponseMsg runs)
+            // terminates the loop instead of spinning forever.
+            nextPartRequired = false;
+            CommandInterface::exec();
+        } while (nextPartRequired);
+    }
+
+  protected:
+    uint32_t dataTransferHandle = 0;
+    uint8_t operationFlag = PLDM_GET_FIRSTPART;
+    bool nextPartRequired = false;
+    std::vector<uint8_t> accumulated;
+};
+
+class GetFRURecordByOption : public MultipartFruCommand
 {
   public:
     ~GetFRURecordByOption() override = default;
@@ -320,7 +380,7 @@ class GetFRURecordByOption : public CommandInterface
 
     explicit GetFRURecordByOption(const char* type, const char* name,
                                   CLI::App* app) :
-        CommandInterface(type, name, app)
+        MultipartFruCommand(type, name, app)
     {
         app->add_option("-i, --identifier", recordSetIdentifier,
                         "Record Set Identifier\n"
@@ -359,9 +419,9 @@ class GetFRURecordByOption : public CommandInterface
                                         0);
         auto reqMsg = new (requestMsg.data()) pldm_msg;
         auto rc = encode_get_fru_record_by_option_req(
-            instanceId, 0 /* DataTransferHandle */, 0 /* FRUTableHandle */,
-            recordSetIdentifier, recordType, fieldType, PLDM_GET_FIRSTPART,
-            reqMsg, payloadLength);
+            instanceId, dataTransferHandle, 0 /* FRUTableHandle */,
+            recordSetIdentifier, recordType, fieldType, operationFlag, reqMsg,
+            payloadLength);
 
         return {rc, requestMsg};
     }
@@ -369,23 +429,33 @@ class GetFRURecordByOption : public CommandInterface
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
     {
         uint8_t cc = 0;
-        uint32_t dataTransferHandle = 0;
+        uint32_t nextTransferHandle = 0;
         uint8_t transferFlag = 0;
-        variable_field fruData;
+        variable_field fruData{};
 
         auto rc = decode_get_fru_record_by_option_resp(
-            responsePtr, payloadLength, &cc, &dataTransferHandle, &transferFlag,
+            responsePtr, payloadLength, &cc, &nextTransferHandle, &transferFlag,
             &fruData);
 
         if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
         {
             std::cerr << "Response Message Error: "
                       << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            nextPartRequired = false;
             return;
         }
 
-        FRUTablePrint tablePrint(fruData.ptr, fruData.length);
-        tablePrint.print();
+        if (fruData.ptr == nullptr)
+        {
+            std::cerr << "Response Message Error: no FRU data returned"
+                      << std::endl;
+            nextPartRequired = false;
+            return;
+        }
+
+        nextPartRequired = accumulateFruPart(
+            accumulated, fruData.ptr, fruData.length, transferFlag,
+            nextTransferHandle, dataTransferHandle, operationFlag);
     }
 
   private:
@@ -394,7 +464,7 @@ class GetFRURecordByOption : public CommandInterface
     uint8_t fieldType;
 };
 
-class GetFruRecordTable : public CommandInterface
+class GetFruRecordTable : public MultipartFruCommand
 {
   public:
     ~GetFruRecordTable() override = default;
@@ -404,7 +474,11 @@ class GetFruRecordTable : public CommandInterface
     GetFruRecordTable& operator=(const GetFruRecordTable&) = delete;
     GetFruRecordTable& operator=(GetFruRecordTable&&) = delete;
 
-    using CommandInterface::CommandInterface;
+    explicit GetFruRecordTable(const char* type, const char* name,
+                               CLI::App* app) :
+        MultipartFruCommand(type, name, app)
+    {}
+
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {
         std::vector<uint8_t> requestMsg(
@@ -412,7 +486,7 @@ class GetFruRecordTable : public CommandInterface
         auto request = new (requestMsg.data()) pldm_msg;
 
         auto rc = encode_get_fru_record_table_req(
-            instanceId, 0, PLDM_GET_FIRSTPART, request,
+            instanceId, dataTransferHandle, operationFlag, request,
             requestMsg.size() - sizeof(pldm_msg_hdr));
         return {rc, requestMsg};
     }
@@ -433,12 +507,14 @@ class GetFruRecordTable : public CommandInterface
         {
             std::cerr << "Response Message Error: "
                       << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            nextPartRequired = false;
             return;
         }
 
-        FRUTablePrint tablePrint(fru_record_table_data.data(),
-                                 fru_record_table_length);
-        tablePrint.print();
+        nextPartRequired = accumulateFruPart(
+            accumulated, fru_record_table_data.data(), fru_record_table_length,
+            transfer_flag, next_data_transfer_handle, dataTransferHandle,
+            operationFlag);
     }
 };
 
