@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09aaee76_b3ea284f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-13T09:12:00Z",
+      "side": 1,
+      "message": "nit:extra line",
+      "revId": "2d942709a772008afd8bacc764e53d1e72de4afc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127a0cf8_733aa900",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-13T09:12:00Z",
+      "side": 1,
+      "message": "nit: add a new line before this",
+      "revId": "2d942709a772008afd8bacc764e53d1e72de4afc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "078b07ad_2a0656b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-13T09:12:00Z",
+      "side": 1,
+      "message": "nit:extra line",
+      "revId": "2d942709a772008afd8bacc764e53d1e72de4afc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36be0777_985a46e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-07-13T09:12:00Z",
+      "side": 1,
+      "message": "Did we check this change on any hardware to see if the PDR exchange was successful?",
+      "revId": "2d942709a772008afd8bacc764e53d1e72de4afc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
