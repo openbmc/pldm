@@ -4,3 +4,4 @@ revision = HEAD
 
 [provide]
 libpldm = libpldm_dep
+libpldm++ = libpldmpp_dep

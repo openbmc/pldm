@@ -2,6 +2,7 @@ test_deps = [
     gmock,
     gtest,
     libpldm_dep,
+    libpldmcpp_dep,
     libpldmutils,
     nlohmann_json_dep,
     phosphor_dbus_interfaces,
