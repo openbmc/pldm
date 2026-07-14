@@ -55,6 +55,12 @@ int EventManager::handlePlatformEvent(
                                                  sensorDataLength);
             }
             case PLDM_STATE_SENSOR_STATE:
+            {
+                const uint8_t* sensorData = eventData + eventClassDataOffset;
+                size_t sensorDataLength = eventDataSize - eventClassDataOffset;
+                return processStateSensorEvent(tid, sensorId, sensorData,
+                                               sensorDataLength);
+            }
             case PLDM_SENSOR_OP_STATE:
             default:
                 lg2::info(
@@ -267,6 +273,95 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         return rc;
     }
     return PLDM_SUCCESS;
+}
+
+int EventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
+                                          const uint8_t* sensorData,
+                                          size_t sensorDataLength)
+{
+    uint8_t sensorOffset = 0;
+    uint8_t eventState = 0;
+    uint8_t previousEventState = 0;
+    auto rc =
+        decode_state_sensor_data(sensorData, sensorDataLength, &sensorOffset,
+                                 &eventState, &previousEventState);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to decode state sensor event data for terminus ID {TID} sensor ID {SID}, error {RC}",
+            "TID", tid, "SID", sensorId, "RC", rc);
+        return rc;
+    }
+
+    lg2::info(
+        "State sensor event: TID={TID}, sensorId={SID}, offset={OFFSET}, eventState={ESTATE}, previousEventState={PESTATE}",
+        "TID", tid, "SID", sensorId, "OFFSET",
+        static_cast<unsigned int>(sensorOffset), "ESTATE",
+        static_cast<unsigned int>(eventState), "PESTATE",
+        static_cast<unsigned int>(previousEventState));
+
+    rc = pldm::utils::emitStateSensorEventSignal(
+        tid, sensorId, sensorOffset, eventState, previousEventState);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Failed to emit state sensor event signal for TID {TID} sensor {SID}, error {RC}",
+            "TID", tid, "SID", sensorId, "RC", rc);
+        return rc;
+    }
+
+    createStateSensorLogEntry(tid, sensorId, sensorOffset, eventState,
+                              previousEventState);
+
+    return PLDM_SUCCESS;
+}
+
+void EventManager::createStateSensorLogEntry(
+    pldm_tid_t tid, uint16_t sensorId, uint8_t sensorOffset, uint8_t eventState,
+    uint8_t previousEventState)
+{
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
+    using Level =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    // A generic state-change message is used because the event state cannot be
+    // mapped to a Redfish health status without state-set-specific semantics.
+    const std::string messageID = "ResourceEvent.1.0.ResourceStateChanged";
+    const std::string resourceName =
+        "PLDM.TID" + std::to_string(tid) + ".Sensor" + std::to_string(sensorId);
+    const std::string newState = std::to_string(eventState);
+
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto service =
+            pldm::utils::DBusHandler().getService(logObjPath, logInterface);
+
+        std::map<std::string, std::string> addData;
+        addData["REDFISH_MESSAGE_ID"] = messageID;
+        addData["REDFISH_MESSAGE_ARGS"] = resourceName + "," + newState;
+        addData["TID"] = std::to_string(tid);
+        addData["SENSOR_ID"] = std::to_string(sensorId);
+        addData["SENSOR_OFFSET"] = std::to_string(sensorOffset);
+        addData["EVENT_STATE"] = std::to_string(eventState);
+        addData["PREVIOUS_EVENT_STATE"] = std::to_string(previousEventState);
+
+        auto severity =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                Level::Informational);
+
+        auto method = bus.new_method_call(service.c_str(), logObjPath,
+                                          logInterface, "Create");
+        method.append(messageID, severity, addData);
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error(
+            "Failed to create Redfish log entry for state sensor event, TID {TID} sensor {SID}, error - {ERROR}",
+            "TID", tid, "SID", sensorId, "ERROR", e);
+    }
 }
 
 int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
