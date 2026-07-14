@@ -140,6 +140,36 @@ class EventManager
                                   const uint8_t* sensorData,
                                   size_t sensorDataLength);
 
+    /** @brief Helper method to process the PLDM State sensor event class.
+     *         Decodes the event data and emits a state sensor event signal
+     *         on D-Bus so consumers can react to remote terminus state
+     *         changes.
+     *
+     *  @param[in] tid - tid where the event is from
+     *  @param[in] sensorId - Sensor ID which is the source of event
+     *  @param[in] sensorData - State sensor event data
+     *  @param[in] sensorDataLength - event data length
+     *
+     *  @return PLDM completion code
+     */
+    int processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
+                                const uint8_t* sensorData,
+                                size_t sensorDataLength);
+
+    /** @brief Create a Redfish-visible log entry for a state sensor event.
+     *         Uses xyz.openbmc_project.Logging.Create so the entry is
+     *         surfaced in the Redfish EventLog for verification purposes.
+     *
+     *  @param[in] tid - terminus id where the event originated
+     *  @param[in] sensorId - sensor id which is the source of event
+     *  @param[in] sensorOffset - offset within a composite state sensor
+     *  @param[in] eventState - current event state
+     *  @param[in] previousEventState - previous event state
+     */
+    void createStateSensorLogEntry(pldm_tid_t tid, uint16_t sensorId,
+                                   uint8_t sensorOffset, uint8_t eventState,
+                                   uint8_t previousEventState);
+
     /** @brief Helper method to process the PLDM CPER event class
      *
      *  @param[in] tid - tid where the event is from
