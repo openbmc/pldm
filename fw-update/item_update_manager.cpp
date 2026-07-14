@@ -79,7 +79,7 @@ bool ItemUpdateManager::processPackage()
     {
         error("Failed to associate package to device");
         events::generateUpdateNotApplicable(firmwareInventoryPath,
-                                            parser->pkgVersion);
+                                            "TODO");
         return failInvalidPackage();
     }
 
@@ -93,8 +93,8 @@ bool ItemUpdateManager::processPackage()
     deviceUpdater = std::make_unique<DeviceUpdater>(
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this,
-        parser->pkgVersion, firmwareInventoryPath);
-    events::generateTargetDetermined(firmwareInventoryPath, parser->pkgVersion);
+        "TODO", firmwareInventoryPath);
+    events::generateTargetDetermined(firmwareInventoryPath, "TODO");
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
     {
@@ -258,7 +258,7 @@ void ItemUpdateManager::completeUpdate(bool status)
     if (status)
     {
         events::generateUpdateSuccessful(
-            firmwareInventoryPath, parser ? parser->pkgVersion : std::string{});
+            firmwareInventoryPath, parser ? "TODO" : std::string{});
     }
     inProgressActivation->activation(
         status ? software::Activation::Activations::Active
