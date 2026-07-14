@@ -45,14 +45,11 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     std::vector<uint8_t> compImage;
     imageGenerate(compImage, pkgImageSize);
     imageInsert(fwPkgHdr, compImage);
-    constexpr std::string_view pkgVersion{"VersionString1"};
     auto parser = parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(WrapPackageParser).name());
-    EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
+    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
@@ -117,6 +114,7 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
 
     constexpr uintmax_t pkgSize = 407;
     const uintmax_t pkgImageSize = (pkgSize - pkgHeaderSize) / 3;
+
     std::vector<uint8_t> compImage1, compImage2, compImage3;
     imageGenerate(compImage1, pkgImageSize);
     imageGenerate(compImage2, pkgImageSize);
@@ -124,14 +122,14 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     imageInsert(fwPkgHdr, compImage1);
     imageInsert(fwPkgHdr, compImage2);
     imageInsert(fwPkgHdr, compImage3);
-    constexpr std::string_view pkgVersion{"VersionString1"};
+
     auto parser = parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(WrapPackageParser).name());
-    EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
-    EXPECT_EQ(parser->pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
+    EXPECT_EQ(fwPkgHdr.size(), pkgSize);
+
+    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
