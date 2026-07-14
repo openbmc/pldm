@@ -13,6 +13,7 @@ foreach t : tests
             dependencies: [
                 gtest,
                 libpldm_dep,
+                libpldmcpp_dep,
                 nlohmann_json_dep,
                 phosphor_logging_dep,
                 test_src,
