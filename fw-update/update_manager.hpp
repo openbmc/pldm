@@ -3,16 +3,17 @@
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
+#include "fw-update/package_parser.hpp"
 #include "fw-update/update.hpp"
 
 #ifdef FW_UPDATE_INOTIFY_ENABLED
 #include "fw-update/watch.hpp"
 #endif
-#include "package_parser.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/base.h>
 
+#include <libpldm++/firmware_update.hpp>
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Software/Activation/server.hpp>

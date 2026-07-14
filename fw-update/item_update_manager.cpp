@@ -54,7 +54,7 @@ bool ItemUpdateManager::processPackage()
     }
     try
     {
-        parser->parse(buffer, buffer.size());
+        parser->parse(buffer);
     }
     catch (const std::exception& e)
     {
