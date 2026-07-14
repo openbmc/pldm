@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "090ffd3b_608e100f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 48
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-07-14T00:56:33Z",
+      "side": 1,
+      "message": "This was already discussed with EM maintainers as part of above design update and it was pushed back. Tom was also involved in that discussion, please refer https://gerrit.openbmc.org/c/openbmc/docs/+/75500/comment/c8ef7c62_9eb33e40/. Hence, the reason.",
+      "parentUuid": "81fefe88_30bb6443",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c2121d5_2d7c0d65",
