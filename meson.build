@@ -199,6 +199,10 @@ libpldm_dep = dependency(
     fallback: ['libpldm', 'libpldm_dep'],
     include_type: 'system',
 )
+libpldmcpp_dep = dependency(
+    'libpldm++',
+    include_type: 'system',
+)
 
 if get_option('oem-ampere').allowed()
     add_project_arguments('-DOEM_AMPERE', language: 'cpp')
@@ -237,6 +241,7 @@ libpldmutils = declare_dependency(
 deps = [
     CLI11_dep,
     libpldm_dep,
+    libpldmcpp_dep,
     libpldmutils,
     nlohmann_json_dep,
     phosphor_dbus_interfaces,
