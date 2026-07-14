@@ -21,7 +21,8 @@ Response AggregateUpdateManager::handleRequest(
     {
         response =
             updateManager->handleRequest(eid, command, request, reqMsgLen);
-        auto relayedResponseMsg = new (response.data()) pldm_msg;
+        auto relayedResponseMsg =
+            std::start_lifetime_as<pldm_msg>(response.data());
         if (relayedResponseMsg->payload[0] != PLDM_FWUP_COMMAND_NOT_EXPECTED)
         {
             return response;
