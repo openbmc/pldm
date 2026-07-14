@@ -146,6 +146,7 @@ using DeviceUpdateOptionFlags = std::bitset<32>;
 using ApplicableComponents = std::vector<size_t>;
 using ComponentImageSetVersion = std::string;
 using FirmwareDevicePackageData = std::vector<uint8_t>;
+
 using WrapFirmwareDeviceIDRecord =
     std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
                ComponentImageSetVersion, Descriptors,
@@ -160,6 +161,7 @@ using ReqCompActivationMethod = std::bitset<16>;
 using CompLocationOffset = uint32_t;
 using CompSize = uint32_t;
 using CompVersion = std::string;
+
 using WrapComponentImageInfo =
     std::tuple<CompClassification, CompIdentifier, CompComparisonStamp,
                CompOptions, ReqCompActivationMethod, CompLocationOffset,

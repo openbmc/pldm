@@ -47,9 +47,7 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         if (activation->activation() ==
             software::Activation::Activations::Activating)
         {
-            error(
-                "Activation of PLDM fw update package for version '{VERSION}' already in progress.",
-                "VERSION", parser->pkgVersion);
+            error("Activation of PLDM fw update package already in progress.");
             std::filesystem::remove(packageFilePath);
             return -1;
         }
@@ -151,7 +149,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     package.seekg(0);
     try
     {
-        parser->parse(packageHeader, packageSize);
+        parser->parse(packageHeader);
     }
     catch (const std::exception& e)
     {
