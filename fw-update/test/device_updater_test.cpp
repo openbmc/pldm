@@ -184,3 +184,82 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+TEST_F(DeviceUpdaterTest, computeUpdateOptionFlags)
+{
+    // Neither the package nor the StartUpdate D-Bus method request a force
+    // update
+    EXPECT_EQ(computeUpdateOptionFlags(compImageInfos[0], false).bits.bit0, 0u);
+    // ForceUpdate set in the StartUpdate D-Bus method
+    EXPECT_EQ(computeUpdateOptionFlags(compImageInfos[0], true).bits.bit0, 1u);
+    // Package requests the force update for the component
+    auto comp = compImageInfos[0];
+    std::get<static_cast<size_t>(ComponentImageInfoPos::CompOptionsPos)>(comp) =
+        CompOptions{1};
+    EXPECT_EQ(computeUpdateOptionFlags(comp, false).bits.bit0, 1u);
+}
+
+TEST_F(DeviceUpdaterTest, SkipComponentUpdateOnIdenticalImage)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    // UpdateComponent response indicating the component will not be updated
+    // because the component comparison stamp is identical
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9>
+        updateComponentResp = {
+            0x0A,
+            0x05,
+            0x14,
+            PLDM_SUCCESS,
+            PLDM_CCR_COMP_CANNOT_BE_UPDATED,
+            PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00};
+    auto respMsg =
+        reinterpret_cast<const pldm_msg*>(updateComponentResp.data());
+    deviceUpdater.updateComponent(
+        0, respMsg, updateComponentResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 99);
+
+    // Successful CancelUpdate response completes the device update
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 10> cancelUpdateResp =
+        {0x0A, 0x05, 0x1D, PLDM_SUCCESS, 0x00, 0x00, 0x00,
+         0x00, 0x00, 0x00, 0x00,         0x00, 0x00};
+    auto cancelMsg = reinterpret_cast<const pldm_msg*>(cancelUpdateResp.data());
+    deviceUpdater.cancelUpdate(0, cancelMsg,
+                               cancelUpdateResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 100);
+}
+
+TEST_F(DeviceUpdaterTest, ComponentUpdateFailureOnOtherResponseCode)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    // UpdateComponent response indicating the component will not be updated
+    // for a reason other than an identical comparison stamp is not skipped
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9>
+        updateComponentResp = {
+            0x0A,
+            0x05,
+            0x14,
+            PLDM_SUCCESS,
+            PLDM_CCR_COMP_CANNOT_BE_UPDATED,
+            PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00};
+    auto respMsg =
+        reinterpret_cast<const pldm_msg*>(updateComponentResp.data());
+    deviceUpdater.updateComponent(
+        0, respMsg, updateComponentResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 0);
+}
