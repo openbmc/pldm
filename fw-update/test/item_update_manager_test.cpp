@@ -79,7 +79,7 @@ class ItemUpdateManagerTest : public testing::Test
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> handler;
     int packageFd;
-    Descriptors descriptors;
+    base::Descriptors descriptors;
     ComponentInfo componentInfo;
 };
 

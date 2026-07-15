@@ -174,7 +174,7 @@ class UpdateManager : public UpdateManagerBase
      *  @return Matched devices as pairs of EID and device ID record offset
      */
     DeviceUpdaterInfos associatePkgToDevices(
-        const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
         const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap,
         TotalComponentUpdates& totalNumComponentUpdates);
@@ -225,7 +225,7 @@ class UpdateManager : public UpdateManagerBase
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
-    std::unique_ptr<PackageParser> parser;
+    std::unique_ptr<pkg::PackageParser> parser;
     std::ifstream package;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>

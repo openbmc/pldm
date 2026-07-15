@@ -177,7 +177,7 @@ class InventoryManager
      * @param[in] descriptors - Descriptors of the firmware device
      */
     void obtainFirmwareDeviceName(pldm::eid eid,
-                                  const Descriptors& descriptors);
+                                  const base::Descriptors& descriptors);
 
     /** @brief Send GetFirmwareParameters command request
      *
@@ -229,7 +229,7 @@ std::optional<SoftwareName> obtainDeviceNameFromConfigurations(
  * @return SoftwareName - The Device name, std::nullopt if not found
  */
 std::optional<SoftwareName> obtainDeviceNameFromDescriptors(
-    const Descriptors& descriptors);
+    const base::Descriptors& descriptors);
 
 } // namespace fw_update
 

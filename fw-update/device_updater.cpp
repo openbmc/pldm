@@ -94,10 +94,10 @@ void UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
 
 DeviceUpdater::DeviceUpdater(
     mctp_eid_t eid, std::istream& package,
-    const FirmwareDeviceIDRecord& fwDeviceIDRecord,
-    const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
-    uint32_t maxTransferSize, UpdateManagerBase* updateManager,
-    std::string_view pkgVersion,
+    const pkg::FirmwareDeviceIDRecord& fwDeviceIDRecord,
+    const pkg::ComponentImageInfos& compImageInfos,
+    const ComponentInfo& compInfo, uint32_t maxTransferSize,
+    UpdateManagerBase* updateManager, std::string_view pkgVersion,
     std::optional<sdbusplus::object_path> targetPath) :
     eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
     compImageInfos(compImageInfos), compInfo(compInfo),
@@ -106,7 +106,7 @@ DeviceUpdater::DeviceUpdater(
     activationComplete{false}
 {
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     // create as many progress objects as there are components
     // and initialize them with the size of each component
     for (const auto& applicableComponent : applicableComponents)
@@ -127,13 +127,13 @@ void DeviceUpdater::startFwUpdateFlow()
     auto instanceId = instanceIdResult.value();
     // NumberOfComponents
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     // PackageDataLength
     const auto& fwDevicePkgData =
-        std::get<FirmwareDevicePackageData>(fwDeviceIDRecord);
+        std::get<pkg::FirmwareDevicePackageData>(fwDeviceIDRecord);
     // ComponentImageSetVersionString
     const auto& compImageSetVersion =
-        std::get<ComponentImageSetVersion>(fwDeviceIDRecord);
+        std::get<pkg::ComponentImageSetVersion>(fwDeviceIDRecord);
     variable_field compImgSetVerStrInfo{};
     compImgSetVerStrInfo.ptr =
         reinterpret_cast<const uint8_t*>(compImageSetVersion.data());
@@ -230,7 +230,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     auto instanceId = instanceIdResult.value();
     // TransferFlag
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     uint8_t transferFlag = 0;
     if (applicableComponents.size() == 1)
     {
@@ -251,11 +251,10 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     const auto& comp = compImageInfos[applicableComponents[offset]];
     // ComponentClassification
     CompClassification compClassification = std::get<static_cast<size_t>(
-        ComponentImageInfoPos::CompClassificationPos)>(comp);
+        pkg::ComponentImageInfoPos::CompClassificationPos)>(comp);
     // ComponentIdentifier
-    CompIdentifier compIdentifier =
-        std::get<static_cast<size_t>(ComponentImageInfoPos::CompIdentifierPos)>(
-            comp);
+    CompIdentifier compIdentifier = std::get<static_cast<size_t>(
+        pkg::ComponentImageInfoPos::CompIdentifierPos)>(comp);
     // ComponentClassificationIndex
     auto compKey = std::make_pair(compClassification, compIdentifier);
     auto compInfoIter = compInfo.find(compKey);
@@ -271,12 +270,11 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
     }
     CompClassificationIndex compClassificationIndex = compInfoIter->second;
     // ComponentComparisonStamp
-    CompComparisonStamp compComparisonStamp = std::get<static_cast<size_t>(
-        ComponentImageInfoPos::CompComparisonStampPos)>(comp);
+    pkg::CompComparisonStamp compComparisonStamp = std::get<static_cast<size_t>(
+        pkg::ComponentImageInfoPos::CompComparisonStampPos)>(comp);
     // ComponentVersionString
-    const auto& compVersion =
-        std::get<static_cast<size_t>(ComponentImageInfoPos::CompVersionPos)>(
-            comp);
+    const auto& compVersion = std::get<static_cast<size_t>(
+        pkg::ComponentImageInfoPos::CompVersionPos)>(comp);
     variable_field compVerStrInfo{};
     compVerStrInfo.ptr = reinterpret_cast<const uint8_t*>(compVersion.data());
     compVerStrInfo.length = static_cast<uint8_t>(compVersion.size());
@@ -357,7 +355,7 @@ bool DeviceUpdater::passCompTable(mctp_eid_t eid, const pldm_msg* response,
     // Handle ComponentResponseCode
 
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     if (componentIndex == applicableComponents.size() - 1)
     {
         componentIndex = 0;
@@ -387,15 +385,14 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     }
     auto instanceId = instanceIdResult.value();
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[offset]];
     // ComponentClassification
     CompClassification compClassification = std::get<static_cast<size_t>(
-        ComponentImageInfoPos::CompClassificationPos)>(comp);
+        pkg::ComponentImageInfoPos::CompClassificationPos)>(comp);
     // ComponentIdentifier
-    CompIdentifier compIdentifier =
-        std::get<static_cast<size_t>(ComponentImageInfoPos::CompIdentifierPos)>(
-            comp);
+    CompIdentifier compIdentifier = std::get<static_cast<size_t>(
+        pkg::ComponentImageInfoPos::CompIdentifierPos)>(comp);
     // ComponentClassificationIndex
     auto compKey = std::make_pair(compClassification, compIdentifier);
     auto compInfoIter = compInfo.find(compKey);
@@ -428,8 +425,9 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     auto rc = encode_update_component_req(
         instanceId, compClassification, compIdentifier, compClassificationIndex,
         std::get<static_cast<size_t>(
-            ComponentImageInfoPos::CompComparisonStampPos)>(comp),
-        std::get<static_cast<size_t>(ComponentImageInfoPos::CompSizePos)>(comp),
+            pkg::ComponentImageInfoPos::CompComparisonStampPos)>(comp),
+        std::get<static_cast<size_t>(pkg::ComponentImageInfoPos::CompSizePos)>(
+            comp),
         updateOptionFlags, PLDM_STR_TYPE_ASCII, compVerStrInfo.length,
         &compVerStrInfo, requestMsg,
         sizeof(pldm_update_component_req) + compVerStrInfo.length);
@@ -499,16 +497,15 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     }
 
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     if (applicableComponents.empty())
     {
         error("No applicable components for endpoint ID '{EID}'", "EID", eid);
         return false;
     }
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
-    const auto& compVersion =
-        std::get<static_cast<size_t>(ComponentImageInfoPos::CompVersionPos)>(
-            comp);
+    const auto& compVersion = std::get<static_cast<size_t>(
+        pkg::ComponentImageInfoPos::CompVersionPos)>(comp);
 
     if (compCompatibilityResp != PLDM_CCR_COMP_CAN_BE_UPDATED &&
         compCompatibilityResp != PLDM_CCR_COMP_CANNOT_BE_UPDATED)
@@ -603,7 +600,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     }
 
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     auto compOffset = std::get<5>(comp);
     auto compSize = std::get<6>(comp);
@@ -744,7 +741,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
     }
 
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     const auto& compVersion = std::get<7>(comp);
 
@@ -807,7 +804,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
     }
 
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     const auto& compVersion = std::get<7>(comp);
     if (componentIndex < progress.size())
@@ -879,7 +876,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     }
 
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     const auto& comp = compImageInfos[applicableComponents[componentIndex]];
     const auto& compVersion = std::get<7>(comp);
 
@@ -1111,7 +1108,7 @@ void DeviceUpdater::cancelUpdateComponent(
     }
 
     const auto& applicableComponents =
-        std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     // Check if this is the last component being cancelled
     if (componentIndex == applicableComponents.size() - 1)
     {

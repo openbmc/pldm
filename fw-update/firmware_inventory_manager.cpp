@@ -20,7 +20,7 @@ namespace pldm::fw_update
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    const base::Descriptors& descriptors, const ComponentInfo& componentInfo,
     std::function<void()> taskCompletionCallback)
 {
     struct timespec ts;
