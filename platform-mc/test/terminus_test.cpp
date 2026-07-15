@@ -440,3 +440,238 @@ TEST(TerminusTest, parsePDRTestNoSensorPDR)
     auto sensorAuxNames = t1.getSensorAuxiliaryNames(1);
     EXPECT_EQ(nullptr, sensorAuxNames);
 }
+
+TEST(TerminusTest, parseStateSensorPDRTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    // Sensor Auxiliary Names PDR: sensorID=1, name "STATE1" at offset 0
+    std::vector<uint8_t> pdr1{
+        0x0,
+        0x0,
+        0x0,
+        0x1,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_SENSOR_AUXILIARY_NAMES_PDR, // PDRType
+        0x0,
+        0x0,                             // recordChangeNumber
+        0x0,
+        23,                              // dataLength
+        0,
+        0x0,                             // PLDMTerminusHandle
+        0x1,
+        0x0,                             // sensorID
+        0x1,                             // sensorCount
+        0x1,                             // nameStringCount
+        'e',
+        'n',
+        0x0, // nameLanguageTag
+        0x0,
+        'S',
+        0x0,
+        'T',
+        0x0,
+        'A',
+        0x0,
+        'T',
+        0x0,
+        'E',
+        0x0,
+        '1',
+        0x0,
+        0x0 // sensorName
+    };
+
+    // State Sensor PDR: sensorID=1, two offsets with distinct state sets
+    std::vector<uint8_t> pdr2{
+        0x2,
+        0x0,
+        0x0,
+        0x0,                   // record handle
+        0x1,                   // PDRHeaderVersion
+        PLDM_STATE_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                   // recordChangeNumber
+        21,
+        0,                     // dataLength
+        0,
+        0,                     // PLDMTerminusHandle
+        0x1,
+        0x0,                   // sensorID=1
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,                     // entityType=Power Supply(120)
+        1,
+        0,                     // entityInstanceNumber
+        0x1,
+        0x0,                   // containerID=1
+        PLDM_NO_INIT,          // sensorInit
+        true,                  // sensorAuxiliaryNamesPDR
+        2,                     // compositeSensorCount
+        0x1,
+        0x0,                   // stateSetID[0]=1
+        0x1,                   // possibleStatesSize[0]
+        0x6,                   // possibleStates[0] = {1,2}
+        0x3,
+        0x0,                   // stateSetID[1]=3
+        0x1,                   // possibleStatesSize[1]
+        0x1e                   // possibleStates[1] = {1,2,3,4}
+    };
+
+    // Entity Auxiliary Names PDR: terminus name "S0"
+    std::vector<uint8_t> pdr3{
+        0x3,
+        0x0,
+        0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        3,
+        0x80,                            // entityType system software
+        0x1,
+        0x0,                             // Entity instance number =1
+        0,
+        0,                               // Overall system
+        0,                               // shared Name Count one name only
+        01,                              // nameStringCount
+        0x65,
+        0x6e,
+        0x00,
+        0x00, // Language Tag "en"
+        0x53,
+        0x00,
+        0x30,
+        0x00,
+        0x00 // Entity Name "S0"
+    };
+
+    t1.pdrs.emplace_back(pdr1);
+    t1.pdrs.emplace_back(pdr2);
+    t1.pdrs.emplace_back(pdr3);
+    t1.parseTerminusPDRs();
+
+    // Drive the deferred sensor creation events
+    while (sd_event_run(event.get(), 0) > 0)
+    {}
+
+    // One object per component sensor. Offset 0 is state set 1 (Health,
+    // mapped to "health") and gets an object named by the aux name of
+    // offset 0; offset 1 is state set 3, which has no snake_case name, so it
+    // is skipped.
+    ASSERT_EQ(1, t1.stateSensors.size());
+    auto sensor = t1.stateSensors[0];
+    EXPECT_EQ(1, sensor->sensorId);
+    EXPECT_EQ(0, sensor->offset);
+    EXPECT_EQ("health", sensor->stateSetName);
+    EXPECT_EQ("S0_STATE1_Component_0", sensor->label);
+    EXPECT_EQ("/xyz/openbmc_project/sensors/health/S0_STATE1_Component_0",
+              sensor->path);
+
+    ASSERT_EQ(2, sensor->info->compositeInfo.size());
+    EXPECT_EQ(1, sensor->info->compositeInfo[0].first);
+    EXPECT_EQ((std::set<uint8_t>{1, 2}), sensor->info->compositeInfo[0].second);
+    EXPECT_EQ(3, sensor->info->compositeInfo[1].first);
+    EXPECT_EQ((std::set<uint8_t>{1, 2, 3, 4}),
+              sensor->info->compositeInfo[1].second);
+}
+
+TEST(TerminusTest, parseStateSensorPDRSplitTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    // State Sensor PDR: sensorID=2, two offsets repeating state set 1
+    std::vector<uint8_t> pdr1{
+        0x1,
+        0x0,
+        0x0,
+        0x0,                   // record handle
+        0x1,                   // PDRHeaderVersion
+        PLDM_STATE_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                   // recordChangeNumber
+        21,
+        0,                     // dataLength
+        0,
+        0,                     // PLDMTerminusHandle
+        0x2,
+        0x0,                   // sensorID=2
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,                     // entityType=Power Supply(120)
+        1,
+        0,                     // entityInstanceNumber
+        0x1,
+        0x0,                   // containerID=1
+        PLDM_NO_INIT,          // sensorInit
+        false,                 // sensorAuxiliaryNamesPDR
+        2,                     // compositeSensorCount
+        0x1,
+        0x0,                   // stateSetID[0]=1
+        0x1,                   // possibleStatesSize[0]
+        0x6,                   // possibleStates[0] = {1,2}
+        0x1,
+        0x0,                   // stateSetID[1]=1
+        0x1,                   // possibleStatesSize[1]
+        0x6                    // possibleStates[1] = {1,2}
+    };
+
+    // Entity Auxiliary Names PDR: terminus name "S0"
+    std::vector<uint8_t> pdr2{
+        0x2,
+        0x0,
+        0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        3,
+        0x80,                            // entityType system software
+        0x1,
+        0x0,                             // Entity instance number =1
+        0,
+        0,                               // Overall system
+        0,                               // shared Name Count one name only
+        01,                              // nameStringCount
+        0x65,
+        0x6e,
+        0x00,
+        0x00, // Language Tag "en"
+        0x53,
+        0x00,
+        0x30,
+        0x00,
+        0x00 // Entity Name "S0"
+    };
+
+    t1.pdrs.emplace_back(pdr1);
+    t1.pdrs.emplace_back(pdr2);
+    t1.parseTerminusPDRs();
+
+    // Drive the deferred sensor creation events
+    while (sd_event_run(event.get(), 0) > 0)
+    {}
+
+    // Repeated state set ID on a sensor with no aux name PDR: one object per
+    // offset, the component index keeps the labels unique in the same state
+    // set namespace.
+    ASSERT_EQ(2, t1.stateSensors.size());
+
+    EXPECT_EQ(2, t1.stateSensors[0]->sensorId);
+    EXPECT_EQ(0, t1.stateSensors[0]->offset);
+    EXPECT_EQ("health", t1.stateSensors[0]->stateSetName);
+    EXPECT_EQ("S0_Sensor_2_Component_0", t1.stateSensors[0]->label);
+
+    EXPECT_EQ(2, t1.stateSensors[1]->sensorId);
+    EXPECT_EQ(1, t1.stateSensors[1]->offset);
+    EXPECT_EQ("health", t1.stateSensors[1]->stateSetName);
+    EXPECT_EQ("S0_Sensor_2_Component_1", t1.stateSensors[1]->label);
+}
