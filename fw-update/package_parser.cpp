@@ -221,8 +221,7 @@ void PackageParser::validatePkgTotalSize(uintmax_t pkgSize)
     }
 }
 
-void PackageParserV1::parse(const std::vector<uint8_t>& pkgHdr,
-                            uintmax_t pkgSize)
+void PackageParser::parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize)
 {
     if (pkgHeaderSize >= pkgHdr.size())
     {
@@ -317,7 +316,7 @@ std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgData)
         PackageHeaderSize pkgHdrSize = pkgHeader.package_header_size;
         ComponentBitmapBitLength componentBitmapBitLength =
             pkgHeader.component_bitmap_bit_length;
-        return std::make_unique<PackageParserV1>(
+        return std::make_unique<PackageParser>(
             pkgHdrSize, utils::toString(pkgVersion), componentBitmapBitLength);
     }
 
