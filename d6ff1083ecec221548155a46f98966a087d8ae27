@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a703edd4_b286954b",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Sorry for the misleading, the component identifier doesn\u0027t equal to the `CompIdentifier` in pldmd, which is actually not unique for the multihost platforms, I revised the description.\nBut let me know it there are any ideas to make this suitable for more cases.",
+      "parentUuid": "0c2121d5_2d7c0d65",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5313c06_23b60d54",
@@ -66,6 +84,24 @@
       "writtenOn": "2026-07-09T08:38:09Z",
       "side": 1,
       "message": "why are we unconditionally hardcoding conditionArg with boardName ? \n\nNot every pre/post service requires an argument, this should be optional and driven by configuration.",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59a851d6_16b068b0",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5313c06_23b60d54",
       "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -100,6 +136,24 @@
       "writtenOn": "2026-07-14T01:18:49Z",
       "side": 1,
       "message": "+1",
+      "parentUuid": "2a172a1d_2aeeb846",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5324d2c_bbc676c3",
+        "filename": "fw-update/firmware_inventory_manager.hpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "2a172a1d_2aeeb846",
       "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -140,6 +194,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06255b4e_a6f37247",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Added support to the regular `UpdateManager`.",
+      "parentUuid": "42872fb2_49b026b8",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b0b296c_61fa44fb",
@@ -153,6 +225,24 @@
       "writtenOn": "2026-07-09T08:38:09Z",
       "side": 1,
       "message": "packageDataStream and deviceUpdater stays alive in this path, better to create a common teardown path and reuse it.",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e339ca83_a5fe2c38",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b0b296c_61fa44fb",
       "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -192,6 +282,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dc1c835_41e4c8c0",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Revised",
+      "parentUuid": "71f4ab56_488549c1",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f79767b3_5e22bc57",
@@ -222,6 +330,24 @@
       "writtenOn": "2026-07-14T01:18:49Z",
       "side": 1,
       "message": "Refer to https://gerrit.openbmc.org/c/openbmc/pldm/+/76704/comment/baa9efc8_3692844d/ . The runtime args cannot be added to configuration file and needs to be computed at runtime.",
+      "parentUuid": "f79767b3_5e22bc57",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0316b3b_ba976a46",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "f79767b3_5e22bc57",
       "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -293,6 +419,24 @@
       "side": 1,
       "message": "I think this should need a better handling based on if the service in config file accepts parameterized args or not. If yes, then pass the args otherwise just skip them.\n\nAlso, it will be better if the args can be named args, for example -\n\n@\"--ApplyTime\u003dXXX --DeviceName\u003dXXX ....\" something like that.\n\nTo make it more robust, the configuration can also define an optional array of in_args list for each service where the entries in that list can be an enum type defined in configuration schema.",
       "parentUuid": "baa9efc8_3692844d",
+      "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5dc9874_b5721a08",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-15T09:07:11Z",
+      "side": 1,
+      "message": "Implemented as a configuration in the .json file, but let me know if there\u0027s a better idea.",
+      "parentUuid": "d608e826_10c02b40",
       "revId": "d6ff1083ecec221548155a46f98966a087d8ae27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
