@@ -95,6 +95,13 @@ class SensorManager
      */
     exec::task<int> getSensorReading(std::shared_ptr<NumericSensor> sensor);
 
+    /** @brief Sending getStateSensorReadings command for the state sensor
+     *
+     *  @param[in] sensor - the state sensor to be updated
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getStateSensorReadings(std::shared_ptr<StateSensor> sensor);
+
     /** @brief Reference to to PLDM daemon's main event loop.
      */
     sdeventplus::Event& event;
