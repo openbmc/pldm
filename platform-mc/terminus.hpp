@@ -3,6 +3,7 @@
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
+#include "state_sensor.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
@@ -143,6 +144,9 @@ class Terminus
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 
+    /** @brief A list of stateSensors */
+    std::vector<std::shared_ptr<StateSensor>> stateSensors{};
+
     /** @brief The flag indicates that the terminus FIFO contains a large
      *         message that will require a multipart transfer via the
      *         PollForPlatformEvent command
@@ -237,6 +241,23 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
         const std::vector<uint8_t>& pdrData);
 
+    /** @brief Construct the StateSensor sensor class for the PLDM state
+     *         sensor. One object covers the whole composite sensor; when a
+     *         composite sensor repeats a state set ID, one object is created
+     *         per composite sensor offset.
+     *
+     *  @param[in] info - the parsed state sensor PDR info
+     */
+    void addStateSensor(const std::shared_ptr<StateSensorInfo> info);
+
+    /** @brief Parse the state sensor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to parsed state sensor info struct
+     */
+    std::shared_ptr<StateSensorInfo> parseStateSensorPDR(
+        const std::vector<uint8_t>& pdrData);
+
     /** @brief Create the terminus inventory path under
      *         /xyz/openbmc_project/inventory/system/board/. The concrete
      *         Inventory.Item.* interface is selected from @p entityType.
@@ -322,6 +343,9 @@ class Terminus
     /** @brief Compact Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief State Sensor PDR list */
+    std::vector<std::shared_ptr<StateSensorInfo>> stateSensorPdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;

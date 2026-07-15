@@ -5,12 +5,17 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <array>
 #include <exception>
 
 namespace pldm
 {
 namespace platform_mc
 {
+
+/* GetStateSensorReadings addresses composite sensor offsets through the
+ * 8-bit sensorRearm bitfield, so a state sensor has at most 8 offsets */
+static constexpr size_t maxCompositeSensorCount = 8;
 
 SensorManager::SensorManager(sdeventplus::Event& event,
                              TerminusManager& terminusManager,
@@ -218,6 +223,32 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
 
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
 
+        /* Read the state sensors: the initial read (timeStamp 0) and then a
+         * periodic re-poll once updateTime has elapsed. State Sensor PDRs
+         * carry no updateInterval, so updateTime is the numeric-sensor
+         * default. getStateSensorReadings fans one command out to every
+         * component object of the sensor ID and stamps them, so siblings are
+         * skipped for the rest of the round. Sensor objects are added
+         * asynchronously after PDR parsing, so newly created sensors are
+         * picked up on the following polling rounds. */
+        for (auto& stateSensor : terminus->stateSensors)
+        {
+            elapsed = t1 - stateSensor->timeStamp;
+            if (stateSensor->timeStamp && (stateSensor->updateTime > elapsed))
+            {
+                continue;
+            }
+
+            co_await getStateSensorReadings(stateSensor);
+
+            if ((!sensorPollTimers.contains(tid)) ||
+                (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning()))
+            {
+                co_return PLDM_ERROR;
+            }
+            sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
+        }
+
         auto& numericSensors = terminus->numericSensors;
         auto toBeUpdated = numericSensors.size();
 
@@ -405,6 +436,126 @@ exec::task<int> SensorManager::getSensorReading(
     }
 
     sensor->updateReading(true, true, value);
+    co_return completionCode;
+}
+
+exec::task<int> SensorManager::getStateSensorReadings(
+    std::shared_ptr<StateSensor> sensor)
+{
+    if (!sensor)
+    {
+        lg2::error("Call `getStateSensorReadings` with null `sensor` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    auto tid = sensor->tid;
+    auto sensorId = sensor->sensorId;
+
+    /* One GetStateSensorReadings response carries every composite sensor
+     * offset of the sensor ID, while each offset is a separate D-Bus object.
+     * Collect the component objects sharing this sensor ID so a single
+     * command updates them all, instead of one command per component. */
+    std::vector<std::shared_ptr<StateSensor>> components;
+    auto terminusIt = termini.find(tid);
+    if (terminusIt != termini.end() && terminusIt->second)
+    {
+        for (auto& component : terminusIt->second->stateSensors)
+        {
+            if (component && component->sensorId == sensorId)
+            {
+                components.emplace_back(component);
+            }
+        }
+    }
+
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    bitfield8_t sensorRearm{};
+    auto rc = encode_get_state_sensor_readings_req(0, sensorId, sensorRearm, 0,
+                                                   requestMsg);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send GetStateSensorReadings message for terminus {TID}, sensor Id {ID}, error {RC}",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        for (auto& component : components)
+        {
+            component->handleErrGetStateSensorReadings();
+        }
+        co_return rc;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint8_t compSensorCount = 0;
+    std::array<get_sensor_state_field, maxCompositeSensorCount> stateFields{};
+    rc = decode_get_state_sensor_readings_resp(
+        responseMsg, responseLen, &completionCode, &compSensorCount,
+        stateFields.data());
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        for (auto& component : components)
+        {
+            component->handleErrGetStateSensorReadings();
+        }
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, complete code {CC}.",
+            "TID", tid, "ID", sensorId, "CC", completionCode);
+        for (auto& component : components)
+        {
+            component->handleErrGetStateSensorReadings();
+        }
+        co_return completionCode;
+    }
+
+    uint64_t now = 0;
+    sd_event_now(event.get(), CLOCK_MONOTONIC, &now);
+    for (auto& component : components)
+    {
+        if (component->offset >= compSensorCount)
+        {
+            lg2::error(
+                "Terminus ID {TID} sensor Id {ID}: offset {OFFSET} exceeds composite sensor count {COUNT}.",
+                "TID", tid, "ID", sensorId, "OFFSET", component->offset,
+                "COUNT", compSensorCount);
+            component->handleErrGetStateSensorReadings();
+            continue;
+        }
+        const auto& field = stateFields[component->offset];
+        component->updateReading(field.sensor_op_state, field.present_state,
+                                 field.previous_state);
+        component->initialized = true;
+        component->timeStamp = now;
+    }
+
     co_return completionCode;
 }
 
