@@ -83,7 +83,7 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
     SoftwareIdentifier softwareIdentifier{endpointId, 100};
     SoftwareName softwareName{"TestDevice"};
     std::string firmwareVersion{"1.0.0"};
-    Descriptors firmwareDescriptors;
+    base::Descriptors firmwareDescriptors;
     ComponentInfo firmwareComponentInfo;
 
     inventoryManager.createFirmwareEntry(

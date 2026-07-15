@@ -108,6 +108,18 @@ namespace fw_update
 using InventoryPath = std::string;
 using SoftwareName = std::string;
 
+// Component information
+using CompClassification = uint16_t;
+using CompIdentifier = uint16_t;
+using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
+using CompKey = std::pair<CompClassification, CompIdentifier>;
+using CompClassificationIndex = uint8_t;
+using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
+using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+
+namespace base
+{
+
 // Descriptor definition
 using DescriptorType = uint16_t;
 using DescriptorData = std::vector<uint8_t>;
@@ -118,21 +130,17 @@ using VendorDefinedDescriptorInfo =
 using Descriptors =
     std::multimap<DescriptorType,
                   std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+} // namespace base
+
 using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
-    std::unordered_map<DownstreamDeviceIndex, Descriptors>;
+    std::unordered_map<DownstreamDeviceIndex, base::Descriptors>;
 
-using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DescriptorMap = std::unordered_map<eid, base::Descriptors>;
 using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 
-// Component information
-using CompClassification = uint16_t;
-using CompIdentifier = uint16_t;
-using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
-using CompKey = std::pair<CompClassification, CompIdentifier>;
-using CompClassificationIndex = uint8_t;
-using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
-using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+namespace pkg
+{
 
 // PackageHeaderInformation
 using PackageHeaderSize = size_t;
@@ -148,7 +156,7 @@ using ComponentImageSetVersion = std::string;
 using FirmwareDevicePackageData = std::vector<uint8_t>;
 using FirmwareDeviceIDRecord =
     std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
-               ComponentImageSetVersion, Descriptors,
+               ComponentImageSetVersion, base::Descriptors,
                FirmwareDevicePackageData>;
 using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
 
@@ -177,6 +185,7 @@ enum class ComponentImageInfoPos : size_t
     CompSizePos = 6,
     CompVersionPos = 7,
 };
+} // namespace pkg
 
 // Pre/Post condition
 using ConditionIdentifier = SoftwareName;

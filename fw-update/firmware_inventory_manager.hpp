@@ -59,11 +59,12 @@ class FirmwareInventoryManager
      * @param[in] componentInfo - Component information associated with the
      * firmware
      */
-    void createFirmwareEntry(
-        const SoftwareIdentifier& softwareIdentifier,
-        const SoftwareName& softwareName, const std::string& activeVersion,
-        const Descriptors& descriptors, const ComponentInfo& componentInfo,
-        std::function<void()> taskCompletionCallback);
+    void createFirmwareEntry(const SoftwareIdentifier& softwareIdentifier,
+                             const SoftwareName& softwareName,
+                             const std::string& activeVersion,
+                             const base::Descriptors& descriptors,
+                             const ComponentInfo& componentInfo,
+                             std::function<void()> taskCompletionCallback);
 
     /**
      * @brief Deletes the firmware inventory entry for the given EID

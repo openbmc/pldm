@@ -27,7 +27,7 @@ Response AggregateUpdateManager::handleRequest(
 
 void AggregateUpdateManager::createUpdateManager(
     const SoftwareIdentifier& softwareIdentifier,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    const base::Descriptors& descriptors, const ComponentInfo& componentInfo,
     const std::string& updateObjPath, const std::string& generatedId,
     const ConditionPaths& conditionPathPair, const std::string& conditionArg,
     std::function<void()> taskCompletionCallback)
@@ -35,7 +35,7 @@ void AggregateUpdateManager::createUpdateManager(
     auto eid = softwareIdentifier.first;
 
     descriptorMap[softwareIdentifier] =
-        std::make_unique<Descriptors>(descriptors);
+        std::make_unique<base::Descriptors>(descriptors);
     componentInfoMap[softwareIdentifier] =
         std::make_unique<ComponentInfo>(componentInfo);
 
