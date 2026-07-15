@@ -18,15 +18,15 @@ namespace fw_update
  *
  *  PackageParser is the class for parsing the PLDM firmware update package.
  */
-class PackageParser
+class WrapPackageParser
 {
   public:
-    PackageParser() = delete;
-    PackageParser(const PackageParser&) = delete;
-    PackageParser(PackageParser&&) = default;
-    PackageParser& operator=(const PackageParser&) = delete;
-    PackageParser& operator=(PackageParser&&) = delete;
-    ~PackageParser() = default;
+    WrapPackageParser() = delete;
+    WrapPackageParser(const WrapPackageParser&) = delete;
+    WrapPackageParser(WrapPackageParser&&) = default;
+    WrapPackageParser& operator=(const WrapPackageParser&) = delete;
+    WrapPackageParser& operator=(WrapPackageParser&&) = delete;
+    ~WrapPackageParser() = default;
 
     /** @brief Constructor
      *
@@ -37,9 +37,9 @@ class PackageParser
      *                                        ApplicableComponents field for a
      *                                        matching device.
      */
-    explicit PackageParser(PackageHeaderSize pkgHeaderSize,
-                           const PackageVersion& pkgVersion,
-                           ComponentBitmapBitLength componentBitmapBitLength) :
+    explicit WrapPackageParser(
+        PackageHeaderSize pkgHeaderSize, const PackageVersion& pkgVersion,
+        ComponentBitmapBitLength componentBitmapBitLength) :
         pkgHeaderSize(pkgHeaderSize), pkgVersion(pkgVersion),
         componentBitmapBitLength(componentBitmapBitLength)
     {}
@@ -140,7 +140,8 @@ class PackageParser
  *  @return On success return the PackageParser for the header format version
  *          on failure return nullptr
  */
-std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgHdrInfo);
+std::unique_ptr<WrapPackageParser> parsePkgHeader(
+    std::vector<uint8_t>& pkgHdrInfo);
 
 } // namespace fw_update
 
