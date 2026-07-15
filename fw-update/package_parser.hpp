@@ -16,12 +16,7 @@ namespace fw_update
 
 /** @class PackageParser
  *
- *  PackageParser is the abstract base class for parsing the PLDM firmware
- *  update package. The PLDM firmware update contains two major sections; the
- *  firmware package header, and the firmware package payload. Each package
- *  header version will have a concrete implementation of the PackageParser.
- *  The concrete implementation understands the format of the package header and
- *  will implement the parse API.
+ *  PackageParser is the class for parsing the PLDM firmware update package.
  */
 class PackageParser
 {
@@ -31,7 +26,7 @@ class PackageParser
     PackageParser(PackageParser&&) = default;
     PackageParser& operator=(const PackageParser&) = delete;
     PackageParser& operator=(PackageParser&&) = delete;
-    virtual ~PackageParser() = default;
+    ~PackageParser() = default;
 
     /** @brief Constructor
      *
@@ -56,8 +51,7 @@ class PackageParser
      *
      *  @note Throws exception is parsing fails
      */
-    virtual void parse(const std::vector<uint8_t>& pkgHdr,
-                       uintmax_t pkgSize) = 0;
+    void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize);
 
     /** @brief Get firmware device ID records from the package
      *
@@ -137,38 +131,6 @@ class PackageParser
      *         for each component in the package.
      */
     const ComponentBitmapBitLength componentBitmapBitLength;
-};
-
-/** @class PackageParserV1
- *
- *  This class implements the package parser for the header format version 0x01
- */
-class PackageParserV1 final : public PackageParser
-{
-  public:
-    PackageParserV1() = delete;
-    PackageParserV1(const PackageParserV1&) = delete;
-    PackageParserV1(PackageParserV1&&) = default;
-    PackageParserV1& operator=(const PackageParserV1&) = delete;
-    PackageParserV1& operator=(PackageParserV1&&) = delete;
-    ~PackageParserV1() override = default;
-
-    /** @brief Constructor
-     *
-     *  @param[in] pkgHeaderSize - Size of package header section
-     *  @param[in] pkgVersion - Package version
-     *  @param[in] componentBitmapBitLength - The number of bits used to
-     *                                        represent the bitmap in the
-     *                                        ApplicableComponents field for a
-     *                                        matching device.
-     */
-    explicit PackageParserV1(
-        PackageHeaderSize pkgHeaderSize, const PackageVersion& pkgVersion,
-        ComponentBitmapBitLength componentBitmapBitLength) :
-        PackageParser(pkgHeaderSize, pkgVersion, componentBitmapBitLength)
-    {}
-
-    void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize) override;
 };
 
 /** @brief Parse the package header information
