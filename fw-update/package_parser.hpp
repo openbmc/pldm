@@ -23,15 +23,15 @@ namespace fw_update
  *  The concrete implementation understands the format of the package header and
  *  will implement the parse API.
  */
-class PackageParser
+class WrapPackageParser
 {
   public:
-    PackageParser() = delete;
-    PackageParser(const PackageParser&) = delete;
-    PackageParser(PackageParser&&) = default;
-    PackageParser& operator=(const PackageParser&) = delete;
-    PackageParser& operator=(PackageParser&&) = delete;
-    virtual ~PackageParser() = default;
+    WrapPackageParser() = delete;
+    WrapPackageParser(const WrapPackageParser&) = delete;
+    WrapPackageParser(WrapPackageParser&&) = default;
+    WrapPackageParser& operator=(const WrapPackageParser&) = delete;
+    WrapPackageParser& operator=(WrapPackageParser&&) = delete;
+    virtual ~WrapPackageParser() = default;
 
     /** @brief Constructor
      *
@@ -42,9 +42,9 @@ class PackageParser
      *                                        ApplicableComponents field for a
      *                                        matching device.
      */
-    explicit PackageParser(PackageHeaderSize pkgHeaderSize,
-                           const PackageVersion& pkgVersion,
-                           ComponentBitmapBitLength componentBitmapBitLength) :
+    explicit WrapPackageParser(
+        PackageHeaderSize pkgHeaderSize, const PackageVersion& pkgVersion,
+        ComponentBitmapBitLength componentBitmapBitLength) :
         pkgHeaderSize(pkgHeaderSize), pkgVersion(pkgVersion),
         componentBitmapBitLength(componentBitmapBitLength)
     {}
@@ -143,7 +143,7 @@ class PackageParser
  *
  *  This class implements the package parser for the header format version 0x01
  */
-class PackageParserV1 final : public PackageParser
+class PackageParserV1 final : public WrapPackageParser
 {
   public:
     PackageParserV1() = delete;
@@ -165,7 +165,7 @@ class PackageParserV1 final : public PackageParser
     explicit PackageParserV1(
         PackageHeaderSize pkgHeaderSize, const PackageVersion& pkgVersion,
         ComponentBitmapBitLength componentBitmapBitLength) :
-        PackageParser(pkgHeaderSize, pkgVersion, componentBitmapBitLength)
+        WrapPackageParser(pkgHeaderSize, pkgVersion, componentBitmapBitLength)
     {}
 
     void parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize) override;
@@ -178,7 +178,8 @@ class PackageParserV1 final : public PackageParser
  *  @return On success return the PackageParser for the header format version
  *          on failure return nullptr
  */
-std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgHdrInfo);
+std::unique_ptr<WrapPackageParser> parsePkgHeader(
+    std::vector<uint8_t>& pkgHdrInfo);
 
 } // namespace fw_update
 

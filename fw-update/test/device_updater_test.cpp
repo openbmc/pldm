@@ -33,7 +33,7 @@ class DeviceUpdaterTest : public testing::Test
 
     int fd = -1;
     std::ifstream package;
-    FirmwareDeviceIDRecord fwDeviceIDRecord;
+    WrapFirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
 };
