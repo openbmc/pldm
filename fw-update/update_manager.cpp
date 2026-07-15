@@ -137,7 +137,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     std::vector<uint8_t> packageHeader(packageSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
 
-    parser = parsePkgHeader(packageHeader);
+    parser = pkg::parsePkgHeader(packageHeader);
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
@@ -209,7 +209,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 }
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
-    const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+    const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const DescriptorMap& descriptorMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
@@ -226,7 +226,8 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
             {
                 deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
                 const auto& applicableComponents =
-                    std::get<ApplicableComponents>(fwDeviceIDRecords[index]);
+                    std::get<pkg::ApplicableComponents>(
+                        fwDeviceIDRecords[index]);
                 totalNumComponentUpdates += applicableComponents.size();
             }
         }

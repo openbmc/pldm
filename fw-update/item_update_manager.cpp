@@ -47,7 +47,7 @@ bool ItemUpdateManager::processPackage()
 
     auto buffer = std::vector<uint8_t>(packageMap->getBytes().begin(),
                                        packageMap->getBytes().end());
-    parser = parsePkgHeader(buffer);
+    parser = pkg::parsePkgHeader(buffer);
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
@@ -163,7 +163,7 @@ std::string ItemUpdateManager::processFd(int fd)
 }
 
 std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
-    const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+    const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const Descriptors& descriptors)
 {
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
