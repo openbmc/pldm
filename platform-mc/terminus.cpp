@@ -8,7 +8,9 @@
 #include <common/utils.hpp>
 
 #include <memory>
+#include <optional>
 #include <ranges>
+#include <set>
 
 namespace pldm
 {
@@ -196,6 +198,20 @@ void Terminus::parseTerminusPDRs()
                 }
                 compactNumericSensorPdrs.emplace_back(std::move(parsedPdr));
                 sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));
+                break;
+            }
+            case PLDM_STATE_SENSOR_PDR:
+            {
+                auto parsedPdr = parseStateSensorPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                stateSensorPdrs.emplace_back(std::move(parsedPdr));
                 break;
             }
             case PLDM_ENTITY_AUXILIARY_NAMES_PDR:
@@ -608,6 +624,61 @@ void Terminus::addCompactNumericSensor(
     }
 
     addNextSensorFromPDRs();
+}
+
+std::shared_ptr<StateSensorInfo> Terminus::parseStateSensorPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    auto info = std::make_shared<StateSensorInfo>();
+    int rc = decode_pldm_platform_state_sensor_pdr(pdrData.data(),
+                                                   pdrData.size(), &info->pdr);
+    if (rc)
+    {
+        lg2::error("Failed to decode State Sensor PDR, error - {ERROR}",
+                   "ERROR", rc);
+        return nullptr;
+    }
+
+    state_sensor_possible_states states{};
+    foreach_pldm_platform_state_sensor_pdr_possible_states(
+        pdrData.data(), pdrData.size(), states, rc)
+    {
+        /* state_sensor_possible_states is packed, so its fields cannot bind
+         * to a reference. Copy the state set ID out before use. */
+        const StateSetId setId = states.state_set_id;
+        std::set<uint8_t> possibleStateValues{};
+        uint8_t byteIndex = 0;
+        bitfield8_t bitfield{};
+        foreach_pldm_platform_state_sensor_pdr_states(states, bitfield, rc)
+        {
+            for (uint8_t bit = 0; bit < 8; bit++)
+            {
+                if (bitfield.byte & (1 << bit))
+                {
+                    possibleStateValues.insert(byteIndex * 8 + bit);
+                }
+            }
+            byteIndex++;
+        }
+        if (rc)
+        {
+            lg2::error(
+                "Failed to decode possible states of State Sensor PDR of sensorID {SENSORID}, error - {ERROR}",
+                "SENSORID", info->pdr.sensor_id, "ERROR", rc);
+            return nullptr;
+        }
+
+        info->compositeInfo.emplace_back(setId, std::move(possibleStateValues));
+    }
+    if (rc)
+    {
+        lg2::error(
+            "Failed to walk possible states of State Sensor PDR of sensorID {SENSORID}, error - {ERROR}",
+            "SENSORID", info->pdr.sensor_id, "ERROR", rc);
+        return nullptr;
+    }
+
+    return info;
 }
 
 std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorID id)
