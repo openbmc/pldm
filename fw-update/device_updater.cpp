@@ -7,6 +7,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <format>
 #include <functional>
 
 PHOSPHOR_LOG2_USING;
@@ -88,6 +89,17 @@ void UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
     progress = static_cast<uint8_t>(std::floor(
         1.0 * componentXferProgressPercent * totalUpdated / totalSize));
     return;
+}
+
+bitfield32_t computeUpdateOptionFlags(const ComponentImageInfo& comp,
+                                      bool forceUpdate)
+{
+    bitfield32_t updateOptionFlags{};
+    updateOptionFlags.bits.bit0 =
+        std::get<static_cast<size_t>(ComponentImageInfoPos::CompOptionsPos)>(
+            comp)[0] ||
+        forceUpdate;
+    return updateOptionFlags;
 }
 
 DeviceUpdater::DeviceUpdater(
@@ -404,8 +416,8 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     }
 
     // UpdateOptionFlags
-    bitfield32_t updateOptionFlags;
-    updateOptionFlags.bits.bit0 = std::get<3>(comp)[0];
+    bitfield32_t updateOptionFlags = computeUpdateOptionFlags(
+        comp, updateManager != nullptr && updateManager->forceUpdate);
     // ComponentVersion
     const auto& compVersion = std::get<7>(comp);
     variable_field compVerStrInfo{};
@@ -512,17 +524,48 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
 
     if (compCompatibilityResp == PLDM_CCR_COMP_CANNOT_BE_UPDATED)
     {
-        info(
-            "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' cannot be updated, response code '{RESP_CODE}', skipping",
-            "EID", eid, "COMPONENT_VERSION", compVersion, "RESP_CODE",
-            compCompatibilityRespCode);
-        componentUpdateStatus[componentIndex] = false;
+        if (compCompatibilityRespCode ==
+            PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL)
+        {
+            info(
+                "Component image at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' is identical to the active image, skipping update. Retry with ForceUpdate set to update anyway.",
+                "EID", eid, "COMPONENT_VERSION", compVersion,
+                "REDFISH_MESSAGE_ID",
+                std::string("Update.1.2.UpdateSkippedSameVersion"),
+                "REDFISH_MESSAGE_ARGS",
+                std::format("EID {},{}", eid, compVersion));
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Skipped;
+            if (componentIndex < progress.size())
+            {
+                progress[componentIndex].updateState(
+                    UpdateProgress::state::Apply);
+                if (updateManager != nullptr)
+                {
+                    updateManager->updateActivationProgress();
+                }
+            }
+        }
+        else
+        {
+            info(
+                "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' cannot be updated, response code '{RESP_CODE}', skipping",
+                "EID", eid, "COMPONENT_VERSION", compVersion, "RESP_CODE",
+                compCompatibilityRespCode);
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Failed;
+        }
+
+        if (updateManager == nullptr)
+        {
+            return;
+        }
 
         if (componentIndex == applicableComponents.size() - 1)
         {
             for (const auto& compStatus : componentUpdateStatus)
             {
-                if (compStatus.second)
+                if (compStatus.second == ComponentUpdateStatus::Completed)
                 {
                     componentIndex = 0;
                     pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -532,7 +575,13 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
                     return;
                 }
             }
-            updateManager->updateDeviceCompletion(eid, false);
+            // No component was transferred to the firmware device. Send
+            // CancelUpdate to exit update mode; the device completion is
+            // reported as successful only if no component failed.
+            componentIndex = 0;
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event,
+                std::bind(&DeviceUpdater::sendCancelUpdateRequest, this));
         }
         else
         {
@@ -548,14 +597,14 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     info(
         "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' can be updated",
         "EID", eid, "COMPONENT_VERSION", compVersion);
-    componentUpdateStatus[componentIndex] = true;
+    componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Completed;
     createRequestFwDataTimer();
 }
 
 void DeviceUpdater::createRequestFwDataTimer()
 {
     reqFwDataTimer = std::make_unique<sdbusplus::Timer>([this]() -> void {
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
         updateManager->updateDeviceCompletion(eid, false);
     });
@@ -733,7 +782,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             transferResult);
         updateManager->updateDeviceCompletion(eid, false);
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
     }
 
@@ -801,7 +850,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             verifyResult);
         updateManager->updateDeviceCompletion(eid, false);
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
     }
 
@@ -869,7 +918,8 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         {
             componentIndex = 0;
             componentUpdateStatus.clear();
-            componentUpdateStatus[componentIndex] = true;
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Completed;
             if (updateManager != nullptr)
             {
                 pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -881,7 +931,8 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         else
         {
             componentIndex++;
-            componentUpdateStatus[componentIndex] = true;
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Completed;
             if (updateManager != nullptr)
             {
                 pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -900,7 +951,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         {
             updateManager->updateDeviceCompletion(eid, false);
         }
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
     }
 
@@ -1077,7 +1128,7 @@ void DeviceUpdater::cancelUpdateComponent(
     {
         for (auto& compStatus : componentUpdateStatus)
         {
-            if (compStatus.second)
+            if (compStatus.second == ComponentUpdateStatus::Completed)
             {
                 // If at least one component update succeeded, proceed with
                 // activation
@@ -1090,19 +1141,130 @@ void DeviceUpdater::cancelUpdateComponent(
                 return;
             }
         }
-        updateManager->updateDeviceCompletion(eid, false);
+        // No component update succeeded, send CancelUpdate to exit update
+        // mode. The device completion is reported when the CancelUpdate
+        // response is received.
+        pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+            updateManager->event,
+            std::bind(&DeviceUpdater::sendCancelUpdateRequest, this));
     }
     else
     {
         // Move to next component and update its status
         componentIndex++;
-        componentUpdateStatus[componentIndex] = true;
+        componentUpdateStatus[componentIndex] =
+            ComponentUpdateStatus::Completed;
         pldmRequest = std::make_unique<sdeventplus::source::Defer>(
             updateManager->event,
             std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
                       componentIndex));
     }
     return;
+}
+
+void DeviceUpdater::sendCancelUpdateRequest()
+{
+    pldmRequest.reset();
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        throw pldm::InstanceIdError(instanceIdResult.error());
+    }
+    auto instanceId = instanceIdResult.value();
+    Request request(sizeof(pldm_msg_hdr));
+    auto requestMsg = new (request.data()) pldm_msg;
+
+    auto rc = encode_cancel_update_req(instanceId, requestMsg,
+                                       PLDM_CANCEL_UPDATE_REQ_BYTES);
+    if (rc)
+    {
+        updateManager->instanceIdDb.free(eid, instanceId);
+        error(
+            "Failed to encode cancel update request for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
+        return;
+    }
+
+    rc = updateManager->handler.registerRequest(
+        eid, instanceId, PLDM_FWUP, PLDM_CANCEL_UPDATE, std::move(request),
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->cancelUpdate(eid, response, respMsgLen);
+        });
+    if (rc)
+    {
+        error(
+            "Failed to send cancel update request for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
+    }
+}
+
+void DeviceUpdater::cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
+                                 size_t respMsgLen)
+{
+    if (response == nullptr || !respMsgLen)
+    {
+        error("No response received for cancel update for endpoint ID '{EID}'",
+              "EID", eid);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateDeviceCompletion(eid, false);
+        }
+        return;
+    }
+
+    uint8_t completionCode = 0;
+    bool8_t nonFunctioningComponentIndication = false;
+    bitfield64_t nonFunctioningComponentBitmap{0};
+    auto rc = decode_cancel_update_resp(response, respMsgLen, &completionCode,
+                                        &nonFunctioningComponentIndication,
+                                        &nonFunctioningComponentBitmap);
+    if (rc)
+    {
+        error(
+            "Failed to decode cancel update response for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateDeviceCompletion(eid, false);
+        }
+        return;
+    }
+    if (completionCode)
+    {
+        error(
+            "Failed to cancel update for endpoint ID '{EID}', completion code '{CC}'",
+            "EID", eid, "CC", completionCode);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateDeviceCompletion(eid, false);
+        }
+        return;
+    }
+
+    // CancelUpdate is sent when no component was transferred to the firmware
+    // device. The device update is successful only if every component was
+    // skipped because its image is identical to the active image; a component
+    // declined for any other reason fails the device update.
+    bool success = true;
+    for (const auto& compStatus : componentUpdateStatus)
+    {
+        if (compStatus.second == ComponentUpdateStatus::Failed)
+        {
+            success = false;
+            break;
+        }
+    }
+    if (success)
+    {
+        activationComplete = true;
+    }
+    if (updateManager != nullptr)
+    {
+        updateManager->updateActivationProgress();
+        updateManager->updateDeviceCompletion(eid, success);
+    }
 }
 
 uint8_t DeviceUpdater::getProgress() const
