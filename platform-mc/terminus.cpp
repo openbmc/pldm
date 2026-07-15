@@ -4,11 +4,15 @@
 #include "dbus_impl_fru.hpp"
 
 #include <libpldm/platform.h>
+#include <libpldm/state_set.h>
 
 #include <common/utils.hpp>
 
+#include <map>
 #include <memory>
+#include <optional>
 #include <ranges>
+#include <set>
 
 namespace pldm
 {
@@ -198,6 +202,20 @@ void Terminus::parseTerminusPDRs()
                 sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));
                 break;
             }
+            case PLDM_STATE_SENSOR_PDR:
+            {
+                auto parsedPdr = parseStateSensorPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                stateSensorPdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             case PLDM_ENTITY_AUXILIARY_NAMES_PDR:
             {
                 auto entityNames = parseEntityAuxiliaryNamesPDR(pdr);
@@ -274,6 +292,17 @@ void Terminus::addNextSensorFromPDRs()
         sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
             event, std::bind(std::mem_fn(&Terminus::addCompactNumericSensor),
                              this, pdr));
+    }
+    else if (pdrIt <
+             numericSensorPdrs.size() + compactNumericSensorPdrs.size() +
+                 stateSensorPdrs.size())
+    {
+        pdrIt -= numericSensorPdrs.size() + compactNumericSensorPdrs.size();
+        const auto& pdr = stateSensorPdrs[pdrIt];
+        // Defer adding the next State Sensor
+        sensorCreationEvent = std::make_unique<sdeventplus::source::Defer>(
+            event,
+            std::bind(std::mem_fn(&Terminus::addStateSensor), this, pdr));
     }
     else
     {
@@ -605,6 +634,150 @@ void Terminus::addCompactNumericSensor(
         lg2::error(
             "Failed to create Compact NumericSensor. error - {ERROR} sensorname - {NAME}",
             "ERROR", e, "NAME", sensorName);
+    }
+
+    addNextSensorFromPDRs();
+}
+
+/* Minimal DSP0249 state set ID -> snake_case name table. The name is both
+ * the `/xyz/openbmc_project/sensors/<name>/` namespace element and the key
+ * to the Sensor.State.<StateSetName> interface a later commit hangs on the
+ * object. A state set absent from this table (e.g. an OEM state set with no
+ * phosphor-dbus-interfaces interface) gets no object. Extend as state sets
+ * gain their interfaces; the full StateSet framework subsumes this table. */
+static std::optional<std::string> getStateSetName(StateSetId id)
+{
+    static const std::map<StateSetId, std::string> names = {
+        {PLDM_STATE_SET_HEALTH_STATE, "health"},
+    };
+    auto it = names.find(id);
+    if (it == names.end())
+    {
+        return std::nullopt;
+    }
+    return it->second;
+}
+
+std::shared_ptr<StateSensorInfo> Terminus::parseStateSensorPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    if (pdrData.size() < sizeof(pldm_state_sensor_pdr))
+    {
+        return nullptr;
+    }
+
+    auto info = std::make_shared<StateSensorInfo>();
+    auto pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrData.data());
+    info->pdr.sensor_id = pdr->sensor_id;
+    info->pdr.entity_type = pdr->entity_type;
+    info->pdr.entity_instance_number = pdr->entity_instance;
+    info->pdr.container_id = pdr->container_id;
+    info->pdr.composite_sensor_count = pdr->composite_sensor_count;
+
+    /* Walk the possible_states[] region one composite sensor at a time,
+     * bounding every read against the end of the PDR buffer. Each composite
+     * entry is a state_sensor_possible_states: a 3-byte header (state set ID
+     * plus possible states size) followed by that many state bitfield bytes. */
+    const uint8_t* statesPtr = pdr->possible_states;
+    const uint8_t* pdrEnd = pdrData.data() + pdrData.size();
+    constexpr size_t possibleStatesHdrSize =
+        sizeof(state_sensor_possible_states::state_set_id) +
+        sizeof(state_sensor_possible_states::possible_states_size);
+    for (uint8_t offset = 0; offset < pdr->composite_sensor_count; offset++)
+    {
+        if (statesPtr + possibleStatesHdrSize > pdrEnd)
+        {
+            return nullptr;
+        }
+        auto possibleStates =
+            std::start_lifetime_as<state_sensor_possible_states>(statesPtr);
+        const auto setId = possibleStates->state_set_id;
+        const uint8_t possibleStatesSize = possibleStates->possible_states_size;
+        const uint8_t* stateBytes = statesPtr + possibleStatesHdrSize;
+        if (stateBytes + possibleStatesSize > pdrEnd)
+        {
+            return nullptr;
+        }
+
+        std::set<uint8_t> possibleStateValues{};
+        for (uint8_t byteIndex = 0; byteIndex < possibleStatesSize; byteIndex++)
+        {
+            const uint8_t stateBits = stateBytes[byteIndex];
+            for (uint8_t bit = 0; bit < 8; bit++)
+            {
+                if (stateBits & (1 << bit))
+                {
+                    possibleStateValues.insert(byteIndex * 8 + bit);
+                }
+            }
+        }
+        info->compositeInfo.emplace_back(setId, std::move(possibleStateValues));
+
+        statesPtr = stateBytes + possibleStatesSize;
+    }
+
+    return info;
+}
+
+void Terminus::addStateSensor(const std::shared_ptr<StateSensorInfo> info)
+{
+    if (!info)
+    {
+        lg2::error(
+            "Terminus ID {TID}: Skip adding State Sensor - invalid pointer to PDR.",
+            "TID", tid);
+        addNextSensorFromPDRs();
+        return;
+    }
+
+    auto sensorId = info->pdr.sensor_id;
+    auto sensorNames = getSensorNames(sensorId);
+
+    if (sensorNames.empty())
+    {
+        lg2::error(
+            "Terminus ID {TID}: Failed to get name for State Sensor {SID}",
+            "TID", tid, "SID", sensorId);
+        addNextSensorFromPDRs();
+        return;
+    }
+
+    const uint8_t offsetCount = info->compositeInfo.size();
+
+    /* One D-Bus object per component sensor (composite sensor offset). The
+     * sensor's aux name (or its default Sensor_<ID> name) is shared by all
+     * offsets, so the component index is appended to keep each object unique
+     * within the terminus - covering a composite sensor that repeats a state
+     * set on more than one offset. A component sensor whose state set has no
+     * snake_case name (an OEM or otherwise unmapped state set) gets no
+     * object. */
+    const auto& baseName = sensorNames.front();
+    for (uint8_t offset = 0; offset < offsetCount; offset++)
+    {
+        const StateSetId stateSetId = info->compositeInfo[offset].first;
+        auto stateSetName = getStateSetName(stateSetId);
+        if (!stateSetName)
+        {
+            lg2::info(
+                "Terminus ID {TID} sensor {SID} offset {OFF}: state set {SS} has no interface, skipping.",
+                "TID", tid, "SID", sensorId, "OFF", offset, "SS", stateSetId);
+            continue;
+        }
+
+        auto label = std::format("{}_Component_{}", baseName, unsigned(offset));
+        try
+        {
+            auto sensor = std::make_shared<StateSensor>(
+                tid, true, info, offset, *stateSetName, label, inventoryPath);
+            lg2::info("Created StateSensor {NAME}", "NAME", label);
+            stateSensors.emplace_back(sensor);
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            lg2::error(
+                "Failed to create StateSensor. error - {ERROR} label - {NAME}",
+                "ERROR", e, "NAME", label);
+        }
     }
 
     addNextSensorFromPDRs();
