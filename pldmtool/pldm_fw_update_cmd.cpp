@@ -60,7 +60,7 @@ const std::map<uint8_t, const char*> fdReasonCode{
  * @brief descriptor type to name mapping
  *
  */
-const std::map<DescriptorType, const char*> descriptorName{
+const std::map<pkg::DescriptorType, const char*> descriptorName{
     {PLDM_FWUP_PCI_VENDOR_ID, "PCI Vendor ID"},
     {PLDM_FWUP_IANA_ENTERPRISE_ID, "IANA Enterprise ID"},
     {PLDM_FWUP_UUID, "UUID"},
@@ -488,26 +488,26 @@ class QueryDeviceIdentifiers : public CommandInterface
      * @param[in] descriptorVal - descriptor value
      */
     void updateDescriptor(
-        ordered_json& descriptors, const DescriptorType& descriptorType,
-        const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
-            descriptorVal);
+        ordered_json& descriptors, const pkg::DescriptorType& descriptorType,
+        const std::variant<pkg::DescriptorData,
+                           pkg::VendorDefinedDescriptorInfo>& descriptorVal);
 };
 
 void QueryDeviceIdentifiers::updateDescriptor(
-    ordered_json& descriptors, const DescriptorType& descriptorType,
-    const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
+    ordered_json& descriptors, const pkg::DescriptorType& descriptorType,
+    const std::variant<pkg::DescriptorData, pkg::VendorDefinedDescriptorInfo>&
         descriptorVal)
 {
     std::ostringstream descDataStream;
-    DescriptorData descData;
+    pkg::DescriptorData descData;
     if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
     {
-        descData = std::get<DescriptorData>(descriptorVal);
+        descData = std::get<pkg::DescriptorData>(descriptorVal);
     }
     else
     {
-        descData = std::get<VendorDefinedDescriptorData>(
-            std::get<VendorDefinedDescriptorInfo>(descriptorVal));
+        descData = std::get<pkg::VendorDefinedDescriptorData>(
+            std::get<pkg::VendorDefinedDescriptorInfo>(descriptorVal));
     }
     for (int byte : descData)
     {
@@ -528,9 +528,10 @@ void QueryDeviceIdentifiers::updateDescriptor(
                 else
                 {
                     ordered_json vendorDefinedVal;
-                    vendorDefinedVal[std::get<VendorDefinedDescriptorTitle>(
-                        std::get<VendorDefinedDescriptorInfo>(descriptorVal))] =
-                        descDataStream.str();
+                    vendorDefinedVal
+                        [std::get<pkg::VendorDefinedDescriptorTitle>(
+                            std::get<pkg::VendorDefinedDescriptorInfo>(
+                                descriptorVal))] = descDataStream.str();
                     descriptor["Value"].emplace_back(vendorDefinedVal);
                 }
                 return;
@@ -547,8 +548,8 @@ void QueryDeviceIdentifiers::updateDescriptor(
         else
         {
             ordered_json vendorDefinedVal;
-            vendorDefinedVal[std::get<VendorDefinedDescriptorTitle>(
-                std::get<VendorDefinedDescriptorInfo>(descriptorVal))] =
+            vendorDefinedVal[std::get<pkg::VendorDefinedDescriptorTitle>(
+                std::get<pkg::VendorDefinedDescriptorInfo>(descriptorVal))] =
                 descDataStream.str();
             descriptor["Value"].emplace_back(vendorDefinedVal);
         }
@@ -599,7 +600,7 @@ void QueryDeviceIdentifiers::parseResponseMsg(pldm_msg* responsePtr,
     ordered_json descriptors;
     while (descriptorCount-- && (deviceIdentifiersLen > 0))
     {
-        DescriptorType descriptorType = 0;
+        pkg::DescriptorType descriptorType = 0;
         variable_field descriptorData{};
 
         rc = decode_descriptor_type_length_value(

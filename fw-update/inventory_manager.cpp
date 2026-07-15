@@ -774,12 +774,13 @@ std::optional<SoftwareName> obtainDeviceNameFromDescriptors(
         if (descriptorType == PLDM_FWUP_VENDOR_DEFINED)
         {
             auto vendorInfo =
-                std::get<VendorDefinedDescriptorInfo>(descriptorData);
-            auto title = std::get<VendorDefinedDescriptorTitle>(vendorInfo);
+                std::get<pkg::VendorDefinedDescriptorInfo>(descriptorData);
+            auto title =
+                std::get<pkg::VendorDefinedDescriptorTitle>(vendorInfo);
             if (title == "OpenBMC.Name")
             {
                 auto deviceNameData =
-                    std::get<VendorDefinedDescriptorData>(vendorInfo);
+                    std::get<pkg::VendorDefinedDescriptorData>(vendorInfo);
                 return SoftwareName{
                     reinterpret_cast<char*>(deviceNameData.data()),
                     deviceNameData.size()};

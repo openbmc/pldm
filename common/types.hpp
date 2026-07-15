@@ -108,23 +108,6 @@ namespace fw_update
 using InventoryPath = std::string;
 using SoftwareName = std::string;
 
-// Descriptor definition
-using DescriptorType = uint16_t;
-using DescriptorData = std::vector<uint8_t>;
-using VendorDefinedDescriptorTitle = std::string;
-using VendorDefinedDescriptorData = std::vector<uint8_t>;
-using VendorDefinedDescriptorInfo =
-    std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
-using Descriptors =
-    std::multimap<DescriptorType,
-                  std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
-using DownstreamDeviceIndex = uint16_t;
-using DownstreamDeviceInfo =
-    std::unordered_map<DownstreamDeviceIndex, Descriptors>;
-
-using DescriptorMap = std::unordered_map<eid, Descriptors>;
-using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
-
 // Component information
 using CompClassification = uint16_t;
 using CompIdentifier = uint16_t;
@@ -133,6 +116,32 @@ using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
 using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+
+namespace pkg
+{
+
+// Descriptor definition
+using DescriptorType = uint16_t;
+using DescriptorData = std::vector<uint8_t>;
+using VendorDefinedDescriptorTitle = std::string;
+using VendorDefinedDescriptorData = std::vector<uint8_t>;
+using VendorDefinedDescriptorInfo =
+    std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
+} // namespace pkg
+
+using Descriptors = std::multimap<
+    pkg::DescriptorType,
+    std::variant<pkg::DescriptorData, pkg::VendorDefinedDescriptorInfo>>;
+
+using DownstreamDeviceIndex = uint16_t;
+using DownstreamDeviceInfo =
+    std::unordered_map<DownstreamDeviceIndex, Descriptors>;
+
+using DescriptorMap = std::unordered_map<eid, Descriptors>;
+using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
+
+namespace pkg
+{
 
 // PackageHeaderInformation
 using PackageHeaderSize = size_t;
@@ -177,6 +186,7 @@ enum class ComponentImageInfoPos : size_t
     CompSizePos = 6,
     CompVersionPos = 7,
 };
+} // namespace pkg
 
 // Pre/Post condition
 using ConditionIdentifier = SoftwareName;

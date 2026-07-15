@@ -127,7 +127,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * otherwise.
      */
     std::optional<DeviceIDRecordOffset> associatePkgToDevice(
-        const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
         const Descriptors& descriptors);
 
   private:
@@ -195,7 +195,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
 
     std::unique_ptr<Activation> inProgressActivation;
     std::unique_ptr<ActivationProgress> activationProgress;
-    std::unique_ptr<PackageParser> parser;
+    std::unique_ptr<pkg::WrapPackageParser> parser;
     std::unique_ptr<DeviceUpdater> deviceUpdater;
     /**
      * @brief Start time of the firmware update flow
