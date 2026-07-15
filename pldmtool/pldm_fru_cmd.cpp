@@ -265,18 +265,17 @@ class FRUTablePrint
                      {"VR10", VR10FieldTypes}};
 #endif
 
-    std::string typeToString(std::map<uint8_t, std::string> typeMap,
+    std::string typeToString(const std::map<uint8_t, std::string>& typeMap,
                              uint8_t type)
     {
         auto typeString = std::to_string(type);
-        try
+        const auto it = typeMap.find(type);
+        if (it != typeMap.end())
         {
-            return std::string(typeMap.at(type)) + "(" + typeString + ")";
+            return std::string(it->second) + "(" + typeString + ")";
         }
-        catch (const std::out_of_range& e)
-        {
-            return typeString;
-        }
+
+        return typeString;
     }
 
     std::string fruFieldValuestring(const uint8_t* value, uint8_t length)
