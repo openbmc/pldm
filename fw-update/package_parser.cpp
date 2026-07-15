@@ -21,7 +21,7 @@ namespace fw_update
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
-size_t PackageParser::parseFDIdentificationArea(
+size_t WrapPackageParser::parseFDIdentificationArea(
     DeviceIDRecordCount deviceIdRecCount, const std::vector<uint8_t>& pkgHdr,
     size_t offset)
 {
@@ -70,8 +70,9 @@ size_t PackageParser::parseFDIdentificationArea(
             {
                 descriptors.emplace(
                     descriptorType,
-                    DescriptorData{descriptorData.ptr,
-                                   descriptorData.ptr + descriptorData.length});
+                    WrapDescriptorData{descriptorData.ptr,
+                                       descriptorData.ptr +
+                                           descriptorData.length});
             }
             else
             {
@@ -140,9 +141,9 @@ size_t PackageParser::parseFDIdentificationArea(
     return offset;
 }
 
-size_t PackageParser::parseCompImageInfoArea(ComponentImageCount compImageCount,
-                                             const std::vector<uint8_t>& pkgHdr,
-                                             size_t offset)
+size_t WrapPackageParser::parseCompImageInfoArea(
+    ComponentImageCount compImageCount, const std::vector<uint8_t>& pkgHdr,
+    size_t offset)
 {
     size_t pkgHdrRemainingSize = pkgHdr.size() - offset;
 
@@ -187,7 +188,7 @@ size_t PackageParser::parseCompImageInfoArea(ComponentImageCount compImageCount,
     return offset;
 }
 
-void PackageParser::validatePkgTotalSize(uintmax_t pkgSize)
+void WrapPackageParser::validatePkgTotalSize(uintmax_t pkgSize)
 {
     uintmax_t calcPkgSize = pkgHeaderSize;
     for (const auto& componentImageInfo : componentImageInfos)
@@ -221,7 +222,8 @@ void PackageParser::validatePkgTotalSize(uintmax_t pkgSize)
     }
 }
 
-void PackageParser::parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize)
+void WrapPackageParser::parse(const std::vector<uint8_t>& pkgHdr,
+                              uintmax_t pkgSize)
 {
     if (pkgHeaderSize >= pkgHdr.size())
     {
@@ -290,7 +292,7 @@ void PackageParser::parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize)
     validatePkgTotalSize(pkgSize);
 }
 
-std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgData)
+std::unique_ptr<WrapPackageParser> parsePkgHeader(std::vector<uint8_t>& pkgData)
 {
     constexpr std::array<uint8_t, PLDM_FWUP_UUID_LENGTH> hdrIdentifierv1{
         0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D, 0x49, 0x43,
@@ -316,7 +318,7 @@ std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgData)
         PackageHeaderSize pkgHdrSize = pkgHeader.package_header_size;
         ComponentBitmapBitLength componentBitmapBitLength =
             pkgHeader.component_bitmap_bit_length;
-        return std::make_unique<PackageParser>(
+        return std::make_unique<WrapPackageParser>(
             pkgHdrSize, utils::toString(pkgVersion), componentBitmapBitLength);
     }
 

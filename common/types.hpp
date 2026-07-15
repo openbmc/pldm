@@ -110,14 +110,14 @@ using SoftwareName = std::string;
 
 // Descriptor definition
 using DescriptorType = uint16_t;
-using DescriptorData = std::vector<uint8_t>;
+using WrapDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorTitle = std::string;
 using VendorDefinedDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorInfo =
     std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
 using Descriptors =
-    std::multimap<DescriptorType,
-                  std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+    std::multimap<DescriptorType, std::variant<WrapDescriptorData,
+                                               VendorDefinedDescriptorInfo>>;
 using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
     std::unordered_map<DownstreamDeviceIndex, Descriptors>;
@@ -146,11 +146,11 @@ using DeviceUpdateOptionFlags = std::bitset<32>;
 using ApplicableComponents = std::vector<size_t>;
 using ComponentImageSetVersion = std::string;
 using FirmwareDevicePackageData = std::vector<uint8_t>;
-using FirmwareDeviceIDRecord =
+using WrapFirmwareDeviceIDRecord =
     std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
                ComponentImageSetVersion, Descriptors,
                FirmwareDevicePackageData>;
-using FirmwareDeviceIDRecords = std::vector<FirmwareDeviceIDRecord>;
+using FirmwareDeviceIDRecords = std::vector<WrapFirmwareDeviceIDRecord>;
 
 // ComponentImageInformation
 using ComponentImageCount = uint16_t;
@@ -160,11 +160,11 @@ using ReqCompActivationMethod = std::bitset<16>;
 using CompLocationOffset = uint32_t;
 using CompSize = uint32_t;
 using CompVersion = std::string;
-using ComponentImageInfo =
+using WrapComponentImageInfo =
     std::tuple<CompClassification, CompIdentifier, CompComparisonStamp,
                CompOptions, ReqCompActivationMethod, CompLocationOffset,
                CompSize, CompVersion>;
-using ComponentImageInfos = std::vector<ComponentImageInfo>;
+using ComponentImageInfos = std::vector<WrapComponentImageInfo>;
 
 enum class ComponentImageInfoPos : size_t
 {
