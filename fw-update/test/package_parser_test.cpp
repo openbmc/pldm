@@ -46,7 +46,7 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     constexpr std::string_view pkgVersion{"VersionString1"};
     auto parser = parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParser).name());
+    EXPECT_EQ(typeid(*obj).name(), typeid(WrapPackageParser).name());
     EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
     EXPECT_EQ(parser->pkgVersion, pkgVersion);
 
@@ -115,7 +115,7 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     constexpr std::string_view pkgVersion{"VersionString1"};
     auto parser = parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
-    EXPECT_EQ(typeid(*obj).name(), typeid(PackageParser).name());
+    EXPECT_EQ(typeid(*obj).name(), typeid(WrapPackageParser).name());
     EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
     EXPECT_EQ(parser->pkgVersion, pkgVersion);
 

@@ -137,7 +137,7 @@ class DeviceUpdater
      *                             device
      */
     explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
-                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+                           const WrapFirmwareDeviceIDRecord& fwDeviceIDRecord,
                            const ComponentImageInfos& compImageInfos,
                            const ComponentInfo& compInfo,
                            uint32_t maxTransferSize,
@@ -291,7 +291,7 @@ class DeviceUpdater
     /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
      *         firmware device
      */
-    const FirmwareDeviceIDRecord& fwDeviceIDRecord;
+    const WrapFirmwareDeviceIDRecord& fwDeviceIDRecord;
 
     /** @brief Component image information for all the components in the fw
      *         update package
