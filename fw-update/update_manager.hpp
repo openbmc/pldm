@@ -184,7 +184,7 @@ class UpdateManager : public UpdateManagerBase
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
-    std::unique_ptr<PackageParser> parser;
+    std::unique_ptr<WrapPackageParser> parser;
     std::ifstream package;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>

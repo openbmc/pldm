@@ -92,7 +92,7 @@ void UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
 
 DeviceUpdater::DeviceUpdater(
     mctp_eid_t eid, std::istream& package,
-    const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+    const WrapFirmwareDeviceIDRecord& fwDeviceIDRecord,
     const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
     uint32_t maxTransferSize, UpdateManagerBase* updateManager) :
     eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),

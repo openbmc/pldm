@@ -489,20 +489,20 @@ class QueryDeviceIdentifiers : public CommandInterface
      */
     void updateDescriptor(
         ordered_json& descriptors, const DescriptorType& descriptorType,
-        const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
+        const std::variant<WrapDescriptorData, VendorDefinedDescriptorInfo>&
             descriptorVal);
 };
 
 void QueryDeviceIdentifiers::updateDescriptor(
     ordered_json& descriptors, const DescriptorType& descriptorType,
-    const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
+    const std::variant<WrapDescriptorData, VendorDefinedDescriptorInfo>&
         descriptorVal)
 {
     std::ostringstream descDataStream;
-    DescriptorData descData;
+    WrapDescriptorData descData;
     if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
     {
-        descData = std::get<DescriptorData>(descriptorVal);
+        descData = std::get<WrapDescriptorData>(descriptorVal);
     }
     else
     {
