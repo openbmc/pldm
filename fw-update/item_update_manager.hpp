@@ -51,7 +51,9 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
                        std::format("{}_{}", objPath, generatedId).c_str()),
         eid(eid), objPath(objPath), descriptors(descriptors),
         componentInfo(componentInfo)
-    {}
+    {
+        allowedForceUpdate(true);
+    }
 
     /**
      * @brief Handle PLDM requests for the item-based update manager
@@ -96,11 +98,15 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      *
      * @param[in] image The image file descriptor
      * @param[in] applyTime The requested apply time
+     * @param[in] forceUpdate Instruct the firmware device to update the
+     *                        components even if the component image is
+     *                        identical to the active image
      */
     virtual sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,
         ApplyTimeIntf::RequestedApplyTimes applyTime =
-            ApplyTimeIntf::RequestedApplyTimes::Immediate) override;
+            ApplyTimeIntf::RequestedApplyTimes::Immediate,
+        bool forceUpdate = false) override;
 
     /**
      * @brief Associate the firmware update package with the target device

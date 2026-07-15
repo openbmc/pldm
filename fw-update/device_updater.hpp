@@ -15,13 +15,40 @@ namespace pldm
 namespace fw_update
 {
 
-/** @brief Type alias for component update status tracking
- *         Maps component index to its update completion status (true indicates
- *         successful completion, false indicates cancellation)
+/** @brief Update status of a component in the firmware update package
+ *
+ *  Skipped indicates the firmware device declined the component update
+ *  because the component image is identical to the active component image,
+ *  which is not treated as a failure.
  */
-using ComponentUpdateStatusMap = std::map<size_t, bool>;
+enum class ComponentUpdateStatus
+{
+    Failed,
+    Completed,
+    Skipped,
+};
+
+/** @brief Type alias for component update status tracking
+ *         Maps component index to its update status
+ */
+using ComponentUpdateStatusMap = std::map<size_t, ComponentUpdateStatus>;
 
 class UpdateManagerBase;
+
+/** @brief Compute the UpdateOptionFlags for the UpdateComponent request
+ *
+ *  The ForceUpdate bit (bit0) is set if the firmware update package requests
+ *  it for the component or if the force update flag was set in the StartUpdate
+ *  D-Bus method.
+ *
+ *  @param[in] comp - Component image information from the package
+ *  @param[in] forceUpdate - Force update flag from the StartUpdate D-Bus
+ *                           method
+ *
+ *  @return UpdateOptionFlags for the UpdateComponent request
+ */
+bitfield32_t computeUpdateOptionFlags(const ComponentImageInfo& comp,
+                                      bool forceUpdate);
 
 /** @class UpdateProgress
  *
@@ -256,6 +283,32 @@ class DeviceUpdater
     void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
                                size_t respMsgLen);
 
+    /**
+     * @brief Handler for CancelUpdate command response
+     *
+     *  CancelUpdate is sent to exit update mode when no component was
+     *  transferred to the firmware device. The device update is reported as
+     *  successful only if every component was skipped because its image is
+     *  identical to the active image.
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] response - PLDM Response message
+     * @param[in] respMsgLen - Response message length
+     */
+    void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
+                      size_t respMsgLen);
+
+    /** @brief Mark the progress of this device as complete
+     *
+     *  Called when the device update finishes, successfully or not, so that
+     *  the overall activation progress can reach 100% even if the update
+     *  failed for some of the devices.
+     */
+    void markProgressComplete()
+    {
+        activationComplete = true;
+    }
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -276,6 +329,12 @@ class DeviceUpdater
      * @brief Send cancel update component request
      */
     void sendCancelUpdateComponentRequest();
+
+    /**
+     * @brief Send CancelUpdate request to exit update mode when no component
+     *        was transferred to the firmware device
+     */
+    void sendCancelUpdateRequest();
 
     /**
      * @brief Create a timer to handle RequestFirmwareData timeout (UA_T2)
@@ -322,8 +381,7 @@ class DeviceUpdater
     std::unique_ptr<sdeventplus::source::Defer> pldmRequest;
 
     /**
-     * @brief Map to hold component update status. True - success, False -
-     *        cancelled
+     * @brief Map to hold the update status of each component
      */
     ComponentUpdateStatusMap componentUpdateStatus;
 
