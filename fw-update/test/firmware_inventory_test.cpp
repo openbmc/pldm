@@ -36,7 +36,7 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
     std::string expectedSoftwareVersion = "2.3.4";
     std::string expectedEndpointPath =
         "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
-    Descriptors firmwareDescriptors;
+    base::Descriptors firmwareDescriptors;
     DescriptorMap firmwareDescriptorMap{};
     ComponentInfo firmwareComponentInfo;
     ComponentInfoMap firmwareComponentInfoMap{};

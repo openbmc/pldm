@@ -78,8 +78,9 @@ class AggregateUpdateManager : public UpdateManager
      */
     void createUpdateManager(
         const SoftwareIdentifier& softwareIdentifier,
-        const Descriptors& descriptors, const ComponentInfo& componentInfo,
-        const std::string& updateObjPath, const std::string& generatedId,
+        const base::Descriptors& descriptors,
+        const ComponentInfo& componentInfo, const std::string& updateObjPath,
+        const std::string& generatedId,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr);
@@ -120,7 +121,8 @@ class AggregateUpdateManager : public UpdateManager
     /**
      * @brief Map of descriptor maps keyed by software identifier
      */
-    std::map<SoftwareIdentifier, std::unique_ptr<Descriptors>> descriptorMap;
+    std::map<SoftwareIdentifier, std::unique_ptr<base::Descriptors>>
+        descriptorMap;
 
     /**
      * @brief Map of component information maps keyed by software identifier

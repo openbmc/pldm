@@ -119,7 +119,7 @@ void InventoryManager::queryDeviceIdentifiers(
         return;
     }
 
-    Descriptors descriptors{};
+    base::Descriptors descriptors{};
     while (descriptorCount-- && (deviceIdentifiersLen > 0))
     {
         uint16_t descriptorType = 0;
@@ -390,7 +390,7 @@ void InventoryManager::queryDownstreamIdentifiers(
     foreach_pldm_downstream_device(devs, dev, rc)
     {
         pldm_descriptor desc;
-        Descriptors descriptors{};
+        base::Descriptors descriptors{};
         foreach_pldm_downstream_device_descriptor(devs, dev, desc, rc)
         {
             const auto descriptorData =
@@ -578,8 +578,8 @@ void InventoryManager::getDownstreamFirmwareParameters(
     }
 }
 
-void InventoryManager::obtainFirmwareDeviceName(pldm::eid eid,
-                                                const Descriptors& descriptors)
+void InventoryManager::obtainFirmwareDeviceName(
+    pldm::eid eid, const base::Descriptors& descriptors)
 {
     auto firmwareDeviceName =
         obtainDeviceNameFromConfigurations(configurations, eid);
@@ -767,19 +767,20 @@ std::optional<SoftwareName> obtainDeviceNameFromConfigurations(
 }
 
 std::optional<SoftwareName> obtainDeviceNameFromDescriptors(
-    const Descriptors& descriptors)
+    const base::Descriptors& descriptors)
 {
     for (const auto& [descriptorType, descriptorData] : descriptors)
     {
         if (descriptorType == PLDM_FWUP_VENDOR_DEFINED)
         {
             auto vendorInfo =
-                std::get<VendorDefinedDescriptorInfo>(descriptorData);
-            auto title = std::get<VendorDefinedDescriptorTitle>(vendorInfo);
+                std::get<base::VendorDefinedDescriptorInfo>(descriptorData);
+            auto title =
+                std::get<base::VendorDefinedDescriptorTitle>(vendorInfo);
             if (title == "OpenBMC.Name")
             {
                 auto deviceNameData =
-                    std::get<VendorDefinedDescriptorData>(vendorInfo);
+                    std::get<base::VendorDefinedDescriptorData>(vendorInfo);
                 return SoftwareName{
                     reinterpret_cast<char*>(deviceNameData.data()),
                     deviceNameData.size()};
