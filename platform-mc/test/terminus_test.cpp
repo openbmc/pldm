@@ -440,3 +440,135 @@ TEST(TerminusTest, parsePDRTestNoSensorPDR)
     auto sensorAuxNames = t1.getSensorAuxiliaryNames(1);
     EXPECT_EQ(nullptr, sensorAuxNames);
 }
+
+TEST(TerminusTest, parseStateSensorPDRTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    // Sensor Auxiliary Names PDR: sensorID=1, name "STATE1" at offset 0
+    std::vector<uint8_t> pdr1{
+        0x0,
+        0x0,
+        0x0,
+        0x1,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_SENSOR_AUXILIARY_NAMES_PDR, // PDRType
+        0x0,
+        0x0,                             // recordChangeNumber
+        0x0,
+        23,                              // dataLength
+        0,
+        0x0,                             // PLDMTerminusHandle
+        0x1,
+        0x0,                             // sensorID
+        0x1,                             // sensorCount
+        0x1,                             // nameStringCount
+        'e',
+        'n',
+        0x0, // nameLanguageTag
+        0x0,
+        'S',
+        0x0,
+        'T',
+        0x0,
+        'A',
+        0x0,
+        'T',
+        0x0,
+        'E',
+        0x0,
+        '1',
+        0x0,
+        0x0 // sensorName
+    };
+
+    // State Sensor PDR: sensorID=1, two offsets with distinct state sets
+    std::vector<uint8_t> pdr2{
+        0x2,
+        0x0,
+        0x0,
+        0x0,                   // record handle
+        0x1,                   // PDRHeaderVersion
+        PLDM_STATE_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                   // recordChangeNumber
+        21,
+        0,                     // dataLength
+        0,
+        0,                     // PLDMTerminusHandle
+        0x1,
+        0x0,                   // sensorID=1
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,                     // entityType=Power Supply(120)
+        1,
+        0,                     // entityInstanceNumber
+        0x1,
+        0x0,                   // containerID=1
+        PLDM_NO_INIT,          // sensorInit
+        true,                  // sensorAuxiliaryNamesPDR
+        2,                     // compositeSensorCount
+        0x1,
+        0x0,                   // stateSetID[0]=1
+        0x1,                   // possibleStatesSize[0]
+        0x6,                   // possibleStates[0] = {1,2}
+        0x3,
+        0x0,                   // stateSetID[1]=3
+        0x1,                   // possibleStatesSize[1]
+        0x1e                   // possibleStates[1] = {1,2,3,4}
+    };
+
+    // Entity Auxiliary Names PDR: terminus name "S0"
+    std::vector<uint8_t> pdr3{
+        0x3,
+        0x0,
+        0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        3,
+        0x80,                            // entityType system software
+        0x1,
+        0x0,                             // Entity instance number =1
+        0,
+        0,                               // Overall system
+        0,                               // shared Name Count one name only
+        01,                              // nameStringCount
+        0x65,
+        0x6e,
+        0x00,
+        0x00, // Language Tag "en"
+        0x53,
+        0x00,
+        0x30,
+        0x00,
+        0x00 // Entity Name "S0"
+    };
+
+    t1.pdrs.emplace_back(pdr1);
+    t1.pdrs.emplace_back(pdr2);
+    t1.pdrs.emplace_back(pdr3);
+    t1.parseTerminusPDRs();
+
+    // The State Sensor PDR is parsed into the parse-layer representation.
+    // Component object creation is a later commit, so both offsets - including
+    // state set 3, which has no snake_case name yet - are captured here.
+    ASSERT_EQ(1, t1.stateSensorPdrs.size());
+    auto info = t1.stateSensorPdrs[0];
+    EXPECT_EQ(1, info->pdr.sensor_id);
+    EXPECT_EQ(PLDM_ENTITY_POWER_SUPPLY, info->pdr.entity_type);
+    EXPECT_EQ(1, info->pdr.entity_instance_number);
+    EXPECT_EQ(1, info->pdr.container_id);
+    EXPECT_EQ(2, info->pdr.composite_sensor_count);
+
+    ASSERT_EQ(2, info->compositeInfo.size());
+    EXPECT_EQ(1, info->compositeInfo[0].first);
+    EXPECT_EQ((std::set<uint8_t>{1, 2}), info->compositeInfo[0].second);
+    EXPECT_EQ(3, info->compositeInfo[1].first);
+    EXPECT_EQ((std::set<uint8_t>{1, 2, 3, 4}), info->compositeInfo[1].second);
+}
