@@ -72,6 +72,14 @@ class UpdateManagerBase
     Event& event;               //!< reference to PLDM daemon's main event loop
     pldm::requester::Handler<pldm::requester::Request>& handler;
     InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
+
+    /** @brief Force update flag from the StartUpdate D-Bus method. When set,
+     *         the ForceUpdate bit in UpdateOptionFlags of the UpdateComponent
+     *         request is set for every component, instructing the firmware
+     *         device to update a component even if the component image is
+     *         identical to the active image.
+     */
+    bool forceUpdate = false;
 };
 
 class UpdateManager : public UpdateManagerBase
@@ -133,11 +141,15 @@ class UpdateManager : public UpdateManagerBase
      *
      *  @param[in] packageStream - Stream of the firmware update package
      *  @param[in] packageSize - Size of the firmware update package
+     *  @param[in] forceUpdate - Instruct the firmware device to update the
+     *                           components even if the component image is
+     *                           identical to the active image
      *
      *  @return Object path of the created Software object as a string
      */
     std::string processStreamDefer(std::istream& packageStream,
-                                   uintmax_t packageSize);
+                                   uintmax_t packageSize,
+                                   bool forceUpdate = false);
 
     void updateDeviceCompletion(mctp_eid_t eid, bool status) override;
 
