@@ -3,6 +3,7 @@
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
 #include "numeric_sensor.hpp"
+#include "state_sensor_pdr.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/platform.h>
@@ -165,6 +166,16 @@ class Terminus
      */
     std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorID id);
 
+    /** @brief Get the list of parsed State Sensor PDRs
+     *
+     *  @return the parsed State Sensor info list
+     */
+    const std::vector<std::shared_ptr<StateSensorInfo>>& getStateSensorPdrs()
+        const
+    {
+        return stateSensorPdrs;
+    }
+
     /** @brief Get Numeric Sensor Object by sensorID
      *
      *  @param[in] id - sensor ID
@@ -235,6 +246,14 @@ class Terminus
      *  @return pointer to sensor Auxiliary name info struct
      */
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
+        const std::vector<uint8_t>& pdrData);
+
+    /** @brief Parse the state sensor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to parsed state sensor info struct
+     */
+    std::shared_ptr<StateSensorInfo> parseStateSensorPDR(
         const std::vector<uint8_t>& pdrData);
 
     /** @brief Create the terminus inventory path under
@@ -322,6 +341,9 @@ class Terminus
     /** @brief Compact Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief State Sensor PDR list */
+    std::vector<std::shared_ptr<StateSensorInfo>> stateSensorPdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;

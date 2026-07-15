@@ -8,7 +8,9 @@
 #include <common/utils.hpp>
 
 #include <memory>
+#include <optional>
 #include <ranges>
+#include <set>
 
 namespace pldm
 {
@@ -196,6 +198,20 @@ void Terminus::parseTerminusPDRs()
                 }
                 compactNumericSensorPdrs.emplace_back(std::move(parsedPdr));
                 sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));
+                break;
+            }
+            case PLDM_STATE_SENSOR_PDR:
+            {
+                auto parsedPdr = parseStateSensorPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                stateSensorPdrs.emplace_back(std::move(parsedPdr));
                 break;
             }
             case PLDM_ENTITY_AUXILIARY_NAMES_PDR:
@@ -608,6 +624,67 @@ void Terminus::addCompactNumericSensor(
     }
 
     addNextSensorFromPDRs();
+}
+
+std::shared_ptr<StateSensorInfo> Terminus::parseStateSensorPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    if (pdrData.size() < sizeof(pldm_state_sensor_pdr))
+    {
+        return nullptr;
+    }
+
+    auto info = std::make_shared<StateSensorInfo>();
+    auto pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrData.data());
+    info->pdr.sensor_id = pdr->sensor_id;
+    info->pdr.entity_type = pdr->entity_type;
+    info->pdr.entity_instance_number = pdr->entity_instance;
+    info->pdr.container_id = pdr->container_id;
+    info->pdr.composite_sensor_count = pdr->composite_sensor_count;
+
+    /* Walk the possible_states[] region one composite sensor at a time,
+     * bounding every read against the end of the PDR buffer. Each composite
+     * entry is a state_sensor_possible_states: a 3-byte header (state set ID
+     * plus possible states size) followed by that many state bitfield bytes. */
+    const uint8_t* statesPtr = pdr->possible_states;
+    const uint8_t* pdrEnd = pdrData.data() + pdrData.size();
+    constexpr size_t possibleStatesHdrSize =
+        sizeof(state_sensor_possible_states::state_set_id) +
+        sizeof(state_sensor_possible_states::possible_states_size);
+    for (uint8_t offset = 0; offset < pdr->composite_sensor_count; offset++)
+    {
+        if (statesPtr + possibleStatesHdrSize > pdrEnd)
+        {
+            return nullptr;
+        }
+        auto possibleStates =
+            std::start_lifetime_as<state_sensor_possible_states>(statesPtr);
+        const auto setId = possibleStates->state_set_id;
+        const uint8_t possibleStatesSize = possibleStates->possible_states_size;
+        const uint8_t* stateBytes = statesPtr + possibleStatesHdrSize;
+        if (stateBytes + possibleStatesSize > pdrEnd)
+        {
+            return nullptr;
+        }
+
+        std::set<uint8_t> possibleStateValues{};
+        for (uint8_t byteIndex = 0; byteIndex < possibleStatesSize; byteIndex++)
+        {
+            const uint8_t stateBits = stateBytes[byteIndex];
+            for (uint8_t bit = 0; bit < 8; bit++)
+            {
+                if (stateBits & (1 << bit))
+                {
+                    possibleStateValues.insert(byteIndex * 8 + bit);
+                }
+            }
+        }
+        info->compositeInfo.emplace_back(setId, std::move(possibleStateValues));
+
+        statesPtr = stateBytes + possibleStatesSize;
+    }
+
+    return info;
 }
 
 std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorID id)
