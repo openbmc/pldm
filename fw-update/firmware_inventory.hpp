@@ -52,8 +52,9 @@ class FirmwareInventory
      * future use and currently not used in the implementation.
      */
     explicit FirmwareInventory(
-        SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
-        const std::string& generatedId, const std::string& softwareVersion,
+        pkg::SoftwareIdentifier softwareIdentifier,
+        const std::string& softwarePath, const std::string& generatedId,
+        const std::string& softwareVersion,
         const std::string& associatedEndpoint,
         SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Other);
 
@@ -66,7 +67,7 @@ class FirmwareInventory
     /**
      * @brief Software identifier containing EID and component identifier
      */
-    SoftwareIdentifier softwareIdentifier;
+    pkg::SoftwareIdentifier softwareIdentifier;
 
     /**
      * @brief The D-Bus object path for the firmware inventory entry, obtained

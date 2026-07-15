@@ -71,8 +71,8 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
     requester::Handler<requester::Request> handler(
         nullptr, event, instanceIdDb, false, seconds(1), 2, milliseconds(100));
 
-    DescriptorMap descriptorMap{};
-    ComponentInfoMap componentInfoMap{};
+    pkg::DescriptorMap descriptorMap{};
+    pkg::ComponentInfoMap componentInfoMap{};
 
     AggregateUpdateManager updateManager(event, handler, instanceIdDb,
                                          descriptorMap, componentInfoMap);
@@ -80,11 +80,11 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
     FirmwareInventoryManagerTest inventoryManager(&mockHandler, configurations,
                                                   updateManager);
 
-    SoftwareIdentifier softwareIdentifier{endpointId, 100};
+    pkg::SoftwareIdentifier softwareIdentifier{endpointId, 100};
     SoftwareName softwareName{"TestDevice"};
     std::string firmwareVersion{"1.0.0"};
-    Descriptors firmwareDescriptors;
-    ComponentInfo firmwareComponentInfo;
+    pkg::Descriptors firmwareDescriptors;
+    pkg::ComponentInfo firmwareComponentInfo;
 
     inventoryManager.createFirmwareEntry(
         softwareIdentifier, softwareName, firmwareVersion, firmwareDescriptors,

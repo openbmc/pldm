@@ -209,15 +209,15 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 }
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
-    const FirmwareDeviceIDRecords& fwDeviceIDRecords,
-    const DescriptorMap& descriptorMap,
+    const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
+    const pkg::DescriptorMap& descriptorMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
         const auto& deviceIDDescriptors =
-            std::get<Descriptors>(fwDeviceIDRecords[index]);
+            std::get<pkg::Descriptors>(fwDeviceIDRecords[index]);
         for (const auto& [eid, descriptors] : descriptorMap)
         {
             if (std::includes(descriptors.begin(), descriptors.end(),
@@ -226,7 +226,8 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
             {
                 deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
                 const auto& applicableComponents =
-                    std::get<ApplicableComponents>(fwDeviceIDRecords[index]);
+                    std::get<pkg::ApplicableComponents>(
+                        fwDeviceIDRecords[index]);
                 totalNumComponentUpdates += applicableComponents.size();
             }
         }

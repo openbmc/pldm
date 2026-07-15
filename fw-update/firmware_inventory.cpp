@@ -4,7 +4,7 @@ namespace pldm::fw_update
 {
 
 FirmwareInventory::FirmwareInventory(
-    SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
+    pkg::SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
     const std::string& generatedId, const std::string& softwareVersion,
     const std::string& associatedEndpoint, SoftwareVersionPurpose purpose) :
     softwareIdentifier(softwareIdentifier),

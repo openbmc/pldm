@@ -35,9 +35,9 @@ class InventoryManagerTest : public testing::Test
     requester::Handler<requester::Request> reqHandler;
     AggregateUpdateManager updateManager;
     InventoryManager inventoryManager;
-    DescriptorMap outDescriptorMap{};
-    DownstreamDescriptorMap outDownstreamDescriptorMap{};
-    ComponentInfoMap outComponentInfoMap{};
+    pkg::DescriptorMap outDescriptorMap{};
+    pkg::DownstreamDescriptorMap outDownstreamDescriptorMap{};
+    pkg::ComponentInfoMap outComponentInfoMap{};
     Configurations configurations;
 };
 
@@ -56,7 +56,7 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
     inventoryManager.queryDeviceIdentifiers(1, responseMsg1,
                                             respPayloadLength1);
 
-    DescriptorMap descriptorMap1{
+    pkg::DescriptorMap descriptorMap1{
         {0x01,
          {{PLDM_FWUP_IANA_ENTERPRISE_ID,
            std::vector<uint8_t>{0x0a, 0x0b, 0x0c, 0xd}},
@@ -80,7 +80,7 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
         reinterpret_cast<const pldm_msg*>(queryDeviceIdentifiersResp2.data());
     inventoryManager.queryDeviceIdentifiers(2, responseMsg2,
                                             respPayloadLength2);
-    DescriptorMap descriptorMap2{
+    pkg::DescriptorMap descriptorMap2{
         {0x01,
          {{PLDM_FWUP_IANA_ENTERPRISE_ID,
            std::vector<uint8_t>{0x0a, 0x0b, 0x0c, 0xd}},
@@ -128,11 +128,11 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
     inventoryManager.queryDownstreamIdentifiers(eid, responseMsg,
                                                 respPayloadLength);
 
-    DownstreamDeviceInfo downstreamDevices = {
+    pkg::DownstreamDeviceInfo downstreamDevices = {
         {0,
          {{PLDM_FWUP_IANA_ENTERPRISE_ID,
            std::vector<uint8_t>{0x00, 0x00, 0xa0, 0x15}}}}};
-    DownstreamDescriptorMap refDownstreamDescriptorMap{
+    pkg::DownstreamDescriptorMap refDownstreamDescriptorMap{
         {eid, downstreamDevices}};
 
     ASSERT_EQ(outDownstreamDescriptorMap.size(), downstreamDeviceCount);
@@ -186,7 +186,7 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp1.data());
     inventoryManager.getFirmwareParameters(1, responseMsg1, respPayloadLength1);
 
-    ComponentInfoMap componentInfoMap1{
+    pkg::ComponentInfoMap componentInfoMap1{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
            compClassificationIndex1},
@@ -216,7 +216,7 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp2.data());
     inventoryManager.getFirmwareParameters(2, responseMsg2, respPayloadLength2);
 
-    ComponentInfoMap componentInfoMap2{
+    pkg::ComponentInfoMap componentInfoMap2{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
            compClassificationIndex1},

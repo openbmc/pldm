@@ -45,9 +45,9 @@ class InventoryManager
     explicit InventoryManager(
         const pldm::utils::DBusHandler* dbusHandler,
         pldm::requester::Handler<pldm::requester::Request>& handler,
-        InstanceIdDb& instanceIdDb, DescriptorMap& descriptorMap,
-        DownstreamDescriptorMap& downstreamDescriptorMap,
-        ComponentInfoMap& componentInfoMap,
+        InstanceIdDb& instanceIdDb, pkg::DescriptorMap& descriptorMap,
+        pkg::DownstreamDescriptorMap& downstreamDescriptorMap,
+        pkg::ComponentInfoMap& componentInfoMap,
         const Configurations& configurations,
         AggregateUpdateManager& updateManager) :
         handler(handler), instanceIdDb(instanceIdDb),
@@ -177,7 +177,7 @@ class InventoryManager
      * @param[in] descriptors - Descriptors of the firmware device
      */
     void obtainFirmwareDeviceName(pldm::eid eid,
-                                  const Descriptors& descriptors);
+                                  const pkg::Descriptors& descriptors);
 
     /** @brief Send GetFirmwareParameters command request
      *
@@ -192,16 +192,16 @@ class InventoryManager
     InstanceIdDb& instanceIdDb;
 
     /** @brief Device identifiers of the managed FDs */
-    DescriptorMap& descriptorMap;
+    pkg::DescriptorMap& descriptorMap;
 
     /** @brief Firmware Device names of the managed FDs */
     std::map<eid, SoftwareName> firmwareDeviceNameMap;
 
     /** @brief Downstream Device identifiers of the managed FDs */
-    DownstreamDescriptorMap& downstreamDescriptorMap;
+    pkg::DownstreamDescriptorMap& downstreamDescriptorMap;
 
     /** @brief Component information needed for the update of the managed FDs */
-    ComponentInfoMap& componentInfoMap;
+    pkg::ComponentInfoMap& componentInfoMap;
 
     /** @brief Configuration bindings from Entity Manager */
     const Configurations& configurations;
@@ -229,7 +229,7 @@ std::optional<SoftwareName> obtainDeviceNameFromConfigurations(
  * @return SoftwareName - The Device name, std::nullopt if not found
  */
 std::optional<SoftwareName> obtainDeviceNameFromDescriptors(
-    const Descriptors& descriptors);
+    const pkg::Descriptors& descriptors);
 
 } // namespace fw_update
 

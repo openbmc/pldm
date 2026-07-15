@@ -89,8 +89,8 @@ class UpdateManager : public UpdateManagerBase
     explicit UpdateManager(
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
-        InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap,
+        InstanceIdDb& instanceIdDb, const pkg::DescriptorMap& descriptorMap,
+        const pkg::ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
@@ -162,8 +162,8 @@ class UpdateManager : public UpdateManagerBase
      *
      */
     DeviceUpdaterInfos associatePkgToDevices(
-        const FirmwareDeviceIDRecords& fwDeviceIDRecords,
-        const DescriptorMap& descriptorMap,
+        const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const pkg::DescriptorMap& descriptorMap,
         TotalComponentUpdates& totalNumComponentUpdates);
 
     /** @brief Generate a unique software ID based on current timestamp
@@ -188,9 +188,9 @@ class UpdateManager : public UpdateManagerBase
     void completeUpdate(bool status);
 
     /** @brief Device identifiers of the managed FDs */
-    const DescriptorMap& descriptorMap;
+    const pkg::DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
-    const ComponentInfoMap& componentInfoMap;
+    const pkg::ComponentInfoMap& componentInfoMap;
 #ifdef FW_UPDATE_INOTIFY_ENABLED
     Watch watch;
 #else
@@ -201,7 +201,7 @@ class UpdateManager : public UpdateManagerBase
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
-    std::unique_ptr<PackageParser> parser;
+    std::unique_ptr<WrapPackageParser> parser;
     std::ifstream package;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>

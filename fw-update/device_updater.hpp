@@ -137,9 +137,9 @@ class DeviceUpdater
      *                             device
      */
     explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
-                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
-                           const ComponentImageInfos& compImageInfos,
-                           const ComponentInfo& compInfo,
+                           const pkg::FirmwareDeviceIDRecord& fwDeviceIDRecord,
+                           const pkg::ComponentImageInfos& compImageInfos,
+                           const pkg::ComponentInfo& compInfo,
                            uint32_t maxTransferSize,
                            UpdateManagerBase* updateManager);
 
@@ -291,17 +291,17 @@ class DeviceUpdater
     /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
      *         firmware device
      */
-    const FirmwareDeviceIDRecord& fwDeviceIDRecord;
+    const pkg::FirmwareDeviceIDRecord& fwDeviceIDRecord;
 
     /** @brief Component image information for all the components in the fw
      *         update package
      */
-    const ComponentImageInfos& compImageInfos;
+    const pkg::ComponentImageInfos& compImageInfos;
 
     /** @brief Component info for the components in this FD derived from
      *         GetFirmwareParameters response
      */
-    const ComponentInfo& compInfo;
+    const pkg::ComponentInfo& compInfo;
 
     /** @brief Maximum size in bytes of the variable payload to be requested by
      *         the FD via RequestFirmwareData command

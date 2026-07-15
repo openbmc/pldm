@@ -18,15 +18,15 @@ namespace fw_update
  *
  *  PackageParser is the class for parsing the PLDM firmware update package.
  */
-class PackageParser
+class WrapPackageParser
 {
   public:
-    PackageParser() = delete;
-    PackageParser(const PackageParser&) = delete;
-    PackageParser(PackageParser&&) = default;
-    PackageParser& operator=(const PackageParser&) = delete;
-    PackageParser& operator=(PackageParser&&) = delete;
-    ~PackageParser() = default;
+    WrapPackageParser() = delete;
+    WrapPackageParser(const WrapPackageParser&) = delete;
+    WrapPackageParser(WrapPackageParser&&) = default;
+    WrapPackageParser& operator=(const WrapPackageParser&) = delete;
+    WrapPackageParser& operator=(WrapPackageParser&&) = delete;
+    ~WrapPackageParser() = default;
 
     /** @brief Constructor
      *
@@ -37,9 +37,10 @@ class PackageParser
      *                                        ApplicableComponents field for a
      *                                        matching device.
      */
-    explicit PackageParser(PackageHeaderSize pkgHeaderSize,
-                           const PackageVersion& pkgVersion,
-                           ComponentBitmapBitLength componentBitmapBitLength) :
+    explicit WrapPackageParser(
+        pkg::PackageHeaderSize pkgHeaderSize,
+        const pkg::PackageVersion& pkgVersion,
+        pkg::ComponentBitmapBitLength componentBitmapBitLength) :
         pkgHeaderSize(pkgHeaderSize), pkgVersion(pkgVersion),
         componentBitmapBitLength(componentBitmapBitLength)
     {}
@@ -57,7 +58,7 @@ class PackageParser
      *  @return if parsing the package is successful, return firmware device ID
      *          records
      */
-    const FirmwareDeviceIDRecords& getFwDeviceIDRecords() const
+    const pkg::FirmwareDeviceIDRecords& getFwDeviceIDRecords() const
     {
         return fwDeviceIDRecords;
     }
@@ -67,16 +68,16 @@ class PackageParser
      *  @return if parsing the package is successful, return component image
      *          information
      */
-    const ComponentImageInfos& getComponentImageInfos() const
+    const pkg::ComponentImageInfos& getComponentImageInfos() const
     {
         return componentImageInfos;
     }
 
     /** @brief Device identifiers of the managed FDs */
-    const PackageHeaderSize pkgHeaderSize;
+    const pkg::PackageHeaderSize pkgHeaderSize;
 
     /** @brief Package version string */
-    const PackageVersion pkgVersion;
+    const pkg::PackageVersion pkgVersion;
 
   protected:
     /** @brief Parse the firmware device identification area
@@ -89,7 +90,7 @@ class PackageParser
      *  @return On success return the offset which is the end of the firmware
      *          device identification area, on error throw exception.
      */
-    size_t parseFDIdentificationArea(DeviceIDRecordCount deviceIdRecCount,
+    size_t parseFDIdentificationArea(pkg::DeviceIDRecordCount deviceIdRecCount,
                                      const std::vector<uint8_t>& pkgHdr,
                                      size_t offset);
 
@@ -103,7 +104,7 @@ class PackageParser
      *  @return On success return the offset which is the end of the component
      *          image information area, on error throw exception.
      */
-    size_t parseCompImageInfoArea(ComponentImageCount compImageCount,
+    size_t parseCompImageInfoArea(pkg::ComponentImageCount compImageCount,
                                   const std::vector<uint8_t>& pkgHdr,
                                   size_t offset);
 
@@ -119,17 +120,17 @@ class PackageParser
     void validatePkgTotalSize(uintmax_t pkgSize);
 
     /** @brief Firmware Device ID Records in the package */
-    FirmwareDeviceIDRecords fwDeviceIDRecords;
+    pkg::FirmwareDeviceIDRecords fwDeviceIDRecords;
 
     /** @brief Component Image Information in the package */
-    ComponentImageInfos componentImageInfos;
+    pkg::ComponentImageInfos componentImageInfos;
 
     /** @brief The number of bits that will be used to represent the bitmap in
      *         the ApplicableComponents field for matching device. The value
      *         shall be a multiple of 8 and be large enough to contain a bit
      *         for each component in the package.
      */
-    const ComponentBitmapBitLength componentBitmapBitLength;
+    const pkg::ComponentBitmapBitLength componentBitmapBitLength;
 };
 
 /** @brief Parse the package header information
@@ -139,7 +140,8 @@ class PackageParser
  *  @return On success return the PackageParser for the header format version
  *          on failure return nullptr
  */
-std::unique_ptr<PackageParser> parsePkgHeader(std::vector<uint8_t>& pkgHdrInfo);
+std::unique_ptr<WrapPackageParser> parsePkgHeader(
+    std::vector<uint8_t>& pkgHdrInfo);
 
 } // namespace fw_update
 

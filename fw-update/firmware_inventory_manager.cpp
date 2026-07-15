@@ -18,9 +18,10 @@ namespace pldm::fw_update
 {
 
 void FirmwareInventoryManager::createFirmwareEntry(
-    const SoftwareIdentifier& softwareIdentifier,
+    const pkg::SoftwareIdentifier& softwareIdentifier,
     const SoftwareName& softwareName, const std::string& activeVersion,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo,
+    const pkg::Descriptors& descriptors,
+    const pkg::ComponentInfo& componentInfo,
     std::function<void()> taskCompletionCallback)
 {
     struct timespec ts;
@@ -65,7 +66,7 @@ void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
     std::erase_if(softwareMap,
                   [&](const auto& pair) { return pair.first.first == eid; });
     updateManager.eraseUpdateManagerIf(
-        [&](const SoftwareIdentifier& softwareIdentifier) {
+        [&](const pkg::SoftwareIdentifier& softwareIdentifier) {
             return softwareIdentifier.first == eid;
         });
 }

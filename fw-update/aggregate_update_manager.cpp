@@ -26,18 +26,19 @@ Response AggregateUpdateManager::handleRequest(
 }
 
 void AggregateUpdateManager::createUpdateManager(
-    const SoftwareIdentifier& softwareIdentifier,
-    const Descriptors& descriptors, const ComponentInfo& componentInfo,
-    const std::string& updateObjPath, const std::string& generatedId,
-    const ConditionPaths& conditionPathPair, const std::string& conditionArg,
+    const pkg::SoftwareIdentifier& softwareIdentifier,
+    const pkg::Descriptors& descriptors,
+    const pkg::ComponentInfo& componentInfo, const std::string& updateObjPath,
+    const std::string& generatedId, const ConditionPaths& conditionPathPair,
+    const std::string& conditionArg,
     std::function<void()> taskCompletionCallback)
 {
     auto eid = softwareIdentifier.first;
 
     descriptorMap[softwareIdentifier] =
-        std::make_unique<Descriptors>(descriptors);
+        std::make_unique<pkg::Descriptors>(descriptors);
     componentInfoMap[softwareIdentifier] =
-        std::make_unique<ComponentInfo>(componentInfo);
+        std::make_unique<pkg::ComponentInfo>(componentInfo);
 
     updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
         eid, event, handler, instanceIdDb, updateObjPath, generatedId,
@@ -47,7 +48,7 @@ void AggregateUpdateManager::createUpdateManager(
 }
 
 void AggregateUpdateManager::eraseUpdateManager(
-    const SoftwareIdentifier& softwareIdentifier)
+    const pkg::SoftwareIdentifier& softwareIdentifier)
 {
     updateManagers.erase(softwareIdentifier);
     descriptorMap.erase(softwareIdentifier);
@@ -55,7 +56,7 @@ void AggregateUpdateManager::eraseUpdateManager(
 }
 
 void AggregateUpdateManager::eraseUpdateManagerIf(
-    std::function<bool(const SoftwareIdentifier&)>&& predicate)
+    std::function<bool(const pkg::SoftwareIdentifier&)>&& predicate)
 {
     for (auto it = updateManagers.begin(); it != updateManagers.end();)
     {

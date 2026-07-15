@@ -119,7 +119,7 @@ void InventoryManager::queryDeviceIdentifiers(
         return;
     }
 
-    Descriptors descriptors{};
+    pkg::Descriptors descriptors{};
     while (descriptorCount-- && (deviceIdentifiersLen > 0))
     {
         uint16_t descriptorType = 0;
@@ -373,8 +373,8 @@ void InventoryManager::queryDownstreamIdentifiers(
         return;
     }
 
-    DownstreamDeviceInfo initialDownstreamDevices{};
-    DownstreamDeviceInfo* downstreamDevices = nullptr;
+    pkg::DownstreamDeviceInfo initialDownstreamDevices{};
+    pkg::DownstreamDeviceInfo* downstreamDevices = nullptr;
     if (!downstreamDescriptorMap.contains(eid) ||
         downstreamIds.transfer_flag == PLDM_START ||
         downstreamIds.transfer_flag == PLDM_START_AND_END)
@@ -390,7 +390,7 @@ void InventoryManager::queryDownstreamIdentifiers(
     foreach_pldm_downstream_device(devs, dev, rc)
     {
         pldm_descriptor desc;
-        Descriptors descriptors{};
+        pkg::Descriptors descriptors{};
         foreach_pldm_downstream_device_descriptor(devs, dev, desc, rc)
         {
             const auto descriptorData =
@@ -578,8 +578,8 @@ void InventoryManager::getDownstreamFirmwareParameters(
     }
 }
 
-void InventoryManager::obtainFirmwareDeviceName(pldm::eid eid,
-                                                const Descriptors& descriptors)
+void InventoryManager::obtainFirmwareDeviceName(
+    pldm::eid eid, const pkg::Descriptors& descriptors)
 {
     auto firmwareDeviceName =
         obtainDeviceNameFromConfigurations(configurations, eid);
@@ -676,7 +676,7 @@ void InventoryManager::getFirmwareParameters(
     variable_field activeCompVerStr{};
     variable_field pendingCompVerStr{};
 
-    ComponentInfo componentInfo{};
+    pkg::ComponentInfo componentInfo{};
 
     const auto imageSetVersion = utils::toString(activeCompImageSetVerStr);
 
@@ -688,7 +688,8 @@ void InventoryManager::getFirmwareParameters(
         if (devNameIt != firmwareDeviceNameMap.end() &&
             descIt != descriptorMap.end())
         {
-            const SoftwareIdentifier totalIdentifier = std::make_pair(eid, 0);
+            const pkg::SoftwareIdentifier totalIdentifier =
+                std::make_pair(eid, 0);
 
             firmwareInventoryManager.createFirmwareEntry(
                 totalIdentifier, devNameIt->second, imageSetVersion,
@@ -725,7 +726,7 @@ void InventoryManager::getFirmwareParameters(
                             compIdentifier);
 
             firmwareInventoryManager.createFirmwareEntry(
-                SoftwareIdentifier(eid, compIdentifier), componentName,
+                pkg::SoftwareIdentifier(eid, compIdentifier), componentName,
                 utils::toString(activeCompVerStr), descriptorMap.at(eid),
                 componentInfo, [this, eid]() {
                     this->sendQueryDeviceIdentifiersRequest(eid);
@@ -767,19 +768,20 @@ std::optional<SoftwareName> obtainDeviceNameFromConfigurations(
 }
 
 std::optional<SoftwareName> obtainDeviceNameFromDescriptors(
-    const Descriptors& descriptors)
+    const pkg::Descriptors& descriptors)
 {
     for (const auto& [descriptorType, descriptorData] : descriptors)
     {
         if (descriptorType == PLDM_FWUP_VENDOR_DEFINED)
         {
             auto vendorInfo =
-                std::get<VendorDefinedDescriptorInfo>(descriptorData);
-            auto title = std::get<VendorDefinedDescriptorTitle>(vendorInfo);
+                std::get<pkg::VendorDefinedDescriptorInfo>(descriptorData);
+            auto title =
+                std::get<pkg::VendorDefinedDescriptorTitle>(vendorInfo);
             if (title == "OpenBMC.Name")
             {
                 auto deviceNameData =
-                    std::get<VendorDefinedDescriptorData>(vendorInfo);
+                    std::get<pkg::VendorDefinedDescriptorData>(vendorInfo);
                 return SoftwareName{
                     reinterpret_cast<char*>(deviceNameData.data()),
                     deviceNameData.size()};

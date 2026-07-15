@@ -29,17 +29,17 @@ class FirmwareInventoryTest : public FirmwareInventory
 
 TEST(FirmwareInventoryTest, ConstructorSetsProperties)
 {
-    SoftwareIdentifier softwareIdentifier{1, 100};
+    pkg::SoftwareIdentifier softwareIdentifier{1, 100};
     std::string expectedSoftwarePath =
         "/xyz/openbmc_project/software/PLDM_Device_TestDevice";
     std::string expectedSoftwareHash = "1234";
     std::string expectedSoftwareVersion = "2.3.4";
     std::string expectedEndpointPath =
         "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
-    Descriptors firmwareDescriptors;
-    DescriptorMap firmwareDescriptorMap{};
-    ComponentInfo firmwareComponentInfo;
-    ComponentInfoMap firmwareComponentInfoMap{};
+    pkg::Descriptors firmwareDescriptors;
+    pkg::DescriptorMap firmwareDescriptorMap{};
+    pkg::ComponentInfo firmwareComponentInfo;
+    pkg::ComponentInfoMap firmwareComponentInfoMap{};
     SoftwareVersionPurpose expectedPurpose = SoftwareVersionPurpose::Unknown;
 
     Event event(sdeventplus::Event::get_default());

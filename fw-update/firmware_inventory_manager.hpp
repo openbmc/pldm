@@ -12,7 +12,7 @@ namespace pldm::fw_update
 
 using ObjectPath = pldm::dbus::ObjectPath;
 using SoftwareMap =
-    std::map<SoftwareIdentifier, std::unique_ptr<FirmwareInventory>>;
+    std::map<pkg::SoftwareIdentifier, std::unique_ptr<FirmwareInventory>>;
 
 /**
  * @brief Get the Board path from Entity Manager for the given inventory path
@@ -59,11 +59,12 @@ class FirmwareInventoryManager
      * @param[in] componentInfo - Component information associated with the
      * firmware
      */
-    void createFirmwareEntry(
-        const SoftwareIdentifier& softwareIdentifier,
-        const SoftwareName& softwareName, const std::string& activeVersion,
-        const Descriptors& descriptors, const ComponentInfo& componentInfo,
-        std::function<void()> taskCompletionCallback);
+    void createFirmwareEntry(const pkg::SoftwareIdentifier& softwareIdentifier,
+                             const SoftwareName& softwareName,
+                             const std::string& activeVersion,
+                             const pkg::Descriptors& descriptors,
+                             const pkg::ComponentInfo& componentInfo,
+                             std::function<void()> taskCompletionCallback);
 
     /**
      * @brief Deletes the firmware inventory entry for the given EID

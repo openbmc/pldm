@@ -118,14 +118,14 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
 
   private:
     /** Descriptor information of all the discovered MCTP endpoints */
-    DescriptorMap descriptorMap;
+    pkg::DescriptorMap descriptorMap;
 
     /** Downstream descriptor information of all the discovered MCTP endpoints
      */
-    DownstreamDescriptorMap downstreamDescriptorMap;
+    pkg::DownstreamDescriptorMap downstreamDescriptorMap;
 
     /** Component information of all the discovered MCTP endpoints */
-    ComponentInfoMap componentInfoMap;
+    pkg::ComponentInfoMap componentInfoMap;
 
     /** Configuration bindings from the Entity Manager */
     Configurations configurations;

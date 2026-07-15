@@ -28,8 +28,8 @@ class AggregateUpdateManager : public UpdateManager
     explicit AggregateUpdateManager(
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
-        InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap,
+        InstanceIdDb& instanceIdDb, const pkg::DescriptorMap& descriptorMap,
+        const pkg::ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
@@ -77,8 +77,9 @@ class AggregateUpdateManager : public UpdateManager
      * upon task completion
      */
     void createUpdateManager(
-        const SoftwareIdentifier& softwareIdentifier,
-        const Descriptors& descriptors, const ComponentInfo& componentInfo,
+        const pkg::SoftwareIdentifier& softwareIdentifier,
+        const pkg::Descriptors& descriptors,
+        const pkg::ComponentInfo& componentInfo,
         const std::string& updateObjPath, const std::string& generatedId,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
@@ -95,7 +96,7 @@ class AggregateUpdateManager : public UpdateManager
      * @param[in] softwareIdentifier - The software identifier (pair of eid and
      * component identifier)
      */
-    void eraseUpdateManager(const SoftwareIdentifier& softwareIdentifier);
+    void eraseUpdateManager(const pkg::SoftwareIdentifier& softwareIdentifier);
 
     /**
      * @brief Erase UpdateManager instances that satisfy a given predicate
@@ -108,24 +109,25 @@ class AggregateUpdateManager : public UpdateManager
      * returns true if the corresponding UpdateManager should be erased
      */
     void eraseUpdateManagerIf(
-        std::function<bool(const SoftwareIdentifier&)>&& predicate);
+        std::function<bool(const pkg::SoftwareIdentifier&)>&& predicate);
 
   private:
     /**
      * @brief Map of UpdateManager instances keyed by software identifier
      */
-    std::map<SoftwareIdentifier, std::unique_ptr<ItemUpdateManager>>
+    std::map<pkg::SoftwareIdentifier, std::unique_ptr<ItemUpdateManager>>
         updateManagers;
 
     /**
      * @brief Map of descriptor maps keyed by software identifier
      */
-    std::map<SoftwareIdentifier, std::unique_ptr<Descriptors>> descriptorMap;
+    std::map<pkg::SoftwareIdentifier, std::unique_ptr<pkg::Descriptors>>
+        descriptorMap;
 
     /**
      * @brief Map of component information maps keyed by software identifier
      */
-    std::map<SoftwareIdentifier, std::unique_ptr<ComponentInfo>>
+    std::map<pkg::SoftwareIdentifier, std::unique_ptr<pkg::ComponentInfo>>
         componentInfoMap;
 };
 

@@ -47,8 +47,8 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         mctp_eid_t eid, Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const std::string& objPath,
-        const std::string& generatedId, const Descriptors& descriptors,
-        const ComponentInfo& componentInfo,
+        const std::string& generatedId, const pkg::Descriptors& descriptors,
+        const pkg::ComponentInfo& componentInfo,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
@@ -127,8 +127,8 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * otherwise.
      */
     std::optional<DeviceIDRecordOffset> associatePkgToDevice(
-        const FirmwareDeviceIDRecords& fwDeviceIDRecords,
-        const Descriptors& descriptors);
+        const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const pkg::Descriptors& descriptors);
 
   private:
     mctp_eid_t eid;
@@ -138,12 +138,12 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief The descriptors to match against
      */
-    const Descriptors& descriptors;
+    const pkg::Descriptors& descriptors;
 
     /**
      * @brief The component information of the target device
      */
-    const ComponentInfo& componentInfo;
+    const pkg::ComponentInfo& componentInfo;
 
     /**
      * @brief The package data for the firmware update
@@ -195,7 +195,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
 
     std::unique_ptr<Activation> inProgressActivation;
     std::unique_ptr<ActivationProgress> activationProgress;
-    std::unique_ptr<PackageParser> parser;
+    std::unique_ptr<WrapPackageParser> parser;
     std::unique_ptr<DeviceUpdater> deviceUpdater;
     /**
      * @brief Start time of the firmware update flow

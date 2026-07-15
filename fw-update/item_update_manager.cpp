@@ -163,13 +163,13 @@ std::string ItemUpdateManager::processFd(int fd)
 }
 
 std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
-    const FirmwareDeviceIDRecords& fwDeviceIDRecords,
-    const Descriptors& descriptors)
+    const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
+    const pkg::Descriptors& descriptors)
 {
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
         const auto& deviceIDDescriptors =
-            std::get<Descriptors>(fwDeviceIDRecords[index]);
+            std::get<pkg::Descriptors>(fwDeviceIDRecords[index]);
         if (std::includes(descriptors.begin(), descriptors.end(),
                           deviceIDDescriptors.begin(),
                           deviceIDDescriptors.end()))

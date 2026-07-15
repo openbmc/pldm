@@ -108,6 +108,8 @@ namespace fw_update
 using InventoryPath = std::string;
 using SoftwareName = std::string;
 
+namespace pkg
+{
 // Descriptor definition
 using DescriptorType = uint16_t;
 using DescriptorData = std::vector<uint8_t>;
@@ -177,6 +179,7 @@ enum class ComponentImageInfoPos : size_t
     CompSizePos = 6,
     CompVersionPos = 7,
 };
+} // namespace pkg
 
 // Pre/Post condition
 using ConditionIdentifier = SoftwareName;

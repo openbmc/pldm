@@ -33,9 +33,9 @@ class DeviceUpdaterTest : public testing::Test
 
     int fd = -1;
     std::ifstream package;
-    FirmwareDeviceIDRecord fwDeviceIDRecord;
-    ComponentImageInfos compImageInfos;
-    ComponentInfo compInfo;
+    pkg::FirmwareDeviceIDRecord fwDeviceIDRecord;
+    pkg::ComponentImageInfos compImageInfos;
+    pkg::ComponentInfo compInfo;
 };
 
 TEST_F(DeviceUpdaterTest, validatePackage)
