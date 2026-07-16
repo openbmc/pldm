@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bbb7f86_cf4e7923",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-16T06:25:50Z",
+      "side": 1,
+      "message": "Thanks for fixing!",
+      "revId": "db7aa157bee691a97de41d409c3d29484bb80e11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5c3b91b_b1899503",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-16T06:25:50Z",
+      "side": 1,
+      "message": "I do have the pldm stack on a device but that does not support firmware update, But i think the change is pretty straight forward. So i am going ahead and merging it.",
+      "range": {
+        "startLine": 22,
+        "startChar": 48,
+        "endLine": 23,
+        "endChar": 8
+      },
+      "revId": "db7aa157bee691a97de41d409c3d29484bb80e11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54854f87_a1993e15",
@@ -14,6 +54,24 @@
       "writtenOn": "2026-07-16T05:19:53Z",
       "side": 1,
       "message": "Could you please confirm this is intended as a non-functional-change fix (lifetime/compile-warning cleanup only), with no runtime behavior change in request dispatch logic",
+      "revId": "db7aa157bee691a97de41d409c3d29484bb80e11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd85322_ffcd1467",
+        "filename": "fw-update/aggregate_update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-16T06:25:50Z",
+      "side": 1,
+      "message": "The commit message itself is self explanatory. I don\u0027t think he needs to justify the tests.",
+      "parentUuid": "54854f87_a1993e15",
       "revId": "db7aa157bee691a97de41d409c3d29484bb80e11",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
