@@ -191,7 +191,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
             size_t responseLen = 0;
             int rc = PLDM_SUCCESS;
 
-            auto requestPtr = new (request.data()) pldm_msg;
+            auto requestPtr = std::start_lifetime_as<pldm_msg>(request.data());
             requestPtr->hdr.instance_id = instanceId;
 
             try
@@ -239,7 +239,7 @@ TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
             pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
             pldm::Response response;
 
-            auto requestPtr = new (request.data()) pldm_msg;
+            auto requestPtr = std::start_lifetime_as<pldm_msg>(request.data());
             requestPtr->hdr.instance_id = instanceId;
 
             co_await reqHandler.sendRecvMsg(eid, std::move(request));
@@ -307,7 +307,8 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 
     pldm::Response mockResponse(
         sizeof(pldm_msg_hdr) + PLDM_BASE_GET_TID_RESP_BYTES, 0);
-    auto mockResponseMsg = new (mockResponse.data()) pldm_msg;
+    auto mockResponseMsg =
+        std::start_lifetime_as<pldm_msg>(mockResponse.data());
 
     // Compose response message of getTID command
     pldm_base_get_tid_resp resp{PLDM_SUCCESS, expectedTid};
