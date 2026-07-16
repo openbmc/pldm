@@ -195,6 +195,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
 
     std::unique_ptr<Activation> inProgressActivation;
     std::unique_ptr<ActivationProgress> activationProgress;
+    std::unique_ptr<AssociationDefinitions> association;
     std::unique_ptr<PackageParser> parser;
     std::unique_ptr<DeviceUpdater> deviceUpdater;
     /**

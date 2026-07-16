@@ -15,6 +15,7 @@
 
 #include <sdbusplus/async.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Software/Activation/server.hpp>
 
 #include <chrono>
@@ -33,6 +34,9 @@ namespace fw_update
 using namespace sdeventplus;
 using namespace sdeventplus::source;
 using namespace pldm;
+
+using AssociationDefinitions = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
 
 using DeviceIDRecordOffset = size_t;
 using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
