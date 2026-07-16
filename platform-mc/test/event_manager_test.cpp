@@ -1,3 +1,4 @@
+#include "common/start_lifetime_as.hpp"
 #include "common/types.hpp"
 #include "mock_event_manager.hpp"
 #include "mock_terminus_manager.hpp"
@@ -226,7 +227,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
             0x0 // dataTransferHandleTimeout
         };
     auto rc = terminusManager.enqueueResponse(
-        new (getPDRRepositoryInfoResp.data()) pldm_msg,
+        std::start_lifetime_as<pldm_msg>(getPDRRepositoryInfoResp.data()),
         sizeof(getPDRRepositoryInfoResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -300,7 +301,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
         0,                             // fatalHigh
         0                              // fatalLow
     };
-    rc = terminusManager.enqueueResponse(new (getPdrResp.data()) pldm_msg,
+    rc = terminusManager.enqueueResponse(std::start_lifetime_as<pldm_msg>(getPdrResp.data()),
                                          sizeof(getPdrResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -336,7 +337,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
             0x00  // Entity Name "S0"
         };
     rc = terminusManager.enqueueResponse(
-        new (getPdrAuxNameResp.data()) pldm_msg, sizeof(getPdrAuxNameResp));
+        std::start_lifetime_as<pldm_msg>(getPdrAuxNameResp.data()), sizeof(getPdrAuxNameResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     // queue eventMessageBufferSize response(bufferSize=32)
@@ -344,7 +345,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     std::array<uint8_t, sizeof(pldm_msg_hdr) + eventMessageBufferSizeRespLen>
         eventMessageBufferSizeResp{0x0, 0x02, 0x0d, PLDM_SUCCESS, 32, 0};
     rc = terminusManager.enqueueResponse(
-        new (eventMessageBufferSizeResp.data()) pldm_msg,
+        std::start_lifetime_as<pldm_msg>(eventMessageBufferSizeResp.data()),
         sizeof(eventMessageBufferSizeResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -358,7 +359,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
                                   3,    // numberEventClassReturned
                                   0x0,  0x5,  0xfa};
     rc = terminusManager.enqueueResponse(
-        new (eventMessageSupportedResp.data()) pldm_msg,
+        std::start_lifetime_as<pldm_msg>(eventMessageSupportedResp.data()),
         sizeof(eventMessageSupportedResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -371,7 +372,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     std::array<uint8_t, sizeof(pldm_msg_hdr) + SetEventReceiverLen>
         SetEventReceiverResp{0x0, 0x02, 0x04, PLDM_SUCCESS};
     rc = terminusManager.enqueueResponse(
-        new (SetEventReceiverResp.data()) pldm_msg,
+        std::start_lifetime_as<pldm_msg>(SetEventReceiverResp.data()),
         sizeof(SetEventReceiverResp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -439,7 +440,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             4 // eventData first part
         };
     auto rc = terminusManager.enqueueResponse(
-        new (pollForPlatformEventMessage1Resp.data()) pldm_msg,
+        std::start_lifetime_as<pldm_msg>(pollForPlatformEventMessage1Resp.data()),
         sizeof(pollForPlatformEventMessage1Resp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -476,7 +477,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             0x5d // crc32
         };
     rc = terminusManager.enqueueResponse(
-        new (pollForPlatformEventMessage2Resp.data()) pldm_msg,
+        std::start_lifetime_as<pldm_msg>(pollForPlatformEventMessage2Resp.data()),
         sizeof(pollForPlatformEventMessage2Resp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -489,7 +490,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             0x0, 0x0 // eventID
         };
     rc = terminusManager.enqueueResponse(
-        new (pollForPlatformEventMessage3Resp.data()) pldm_msg,
+        std::start_lifetime_as<pldm_msg>(pollForPlatformEventMessage3Resp.data()),
         sizeof(pollForPlatformEventMessage3Resp));
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
