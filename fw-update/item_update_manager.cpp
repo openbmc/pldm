@@ -29,6 +29,8 @@ bool ItemUpdateManager::processPackage()
     inProgressActivation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPathWithSwId,
         software::Activation::Activations::NotReady, this);
+    association = std::make_unique<AssociationDefinitions>(
+        pldm::utils::DBusHandler::getBus(), objPathWithSwId.c_str());
 
     if (packageMap->getSize() < sizeof(pldm_package_header_information))
     {
@@ -177,25 +179,41 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
 
 void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
 {
-    if (!postConditionPath.empty() && status == true)
+    if (applyTime == ApplyTimeIntf::RequestedApplyTimes::Immediate)
     {
-        SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
-            .execute(postConditionPath, conditionArg,
-                     [this, status](bool conditionSuccess) {
-                         if (!updateInProgress)
-                         {
-                             return;
-                         }
+        if (status && association)
+        {
+            association->associations({{"running", "ran_on", objPath.c_str()}});
+        }
+        if (!postConditionPath.empty() && status == true)
+        {
+            SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
+                .execute(
+                    postConditionPath, conditionArg,
+                    [this, status](bool conditionSuccess) {
+                        if (!updateInProgress)
+                        {
+                            return;
+                        }
 
-                         if (!conditionSuccess)
-                         {
-                             error("Post-update condition failed for {PATH}",
-                                   "PATH", postConditionPath);
-                         }
+                        if (!conditionSuccess)
+                        {
+                            error("Post-update condition failed for {PATH}",
+                                  "PATH", postConditionPath);
+                        }
 
-                         completeUpdate(status && conditionSuccess);
-                     });
-        return;
+                        completeUpdate(status && conditionSuccess);
+                    });
+            return;
+        }
+    }
+    else
+    {
+        if (status && association)
+        {
+            association->associations(
+                {{"activating", "activated_on", objPath.c_str()}});
+        }
     }
 
     completeUpdate(status);
@@ -241,9 +259,12 @@ void ItemUpdateManager::completeUpdate(bool status)
 void ItemUpdateManager::teardownUpdate()
 {
     deviceUpdater.reset();
+    parser.reset();
+    association.reset();
     packageDataStream.reset();
     packageMap.reset();
     dupFd.reset();
+    deferHandler.reset();
     updateInProgress = false;
 }
 
@@ -301,8 +322,8 @@ void ItemUpdateManager::resetActivationState()
 {
     inProgressActivation.reset();
     activationProgress.reset();
-    dupFd.reset();
-    updateInProgress = false;
+    objPathWithSwId.clear();
+    teardownUpdate();
 }
 
 void ItemUpdateManager::updateActivationProgress()
