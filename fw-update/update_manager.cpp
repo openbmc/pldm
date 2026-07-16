@@ -151,7 +151,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     package.seekg(0);
     try
     {
-        parser->parse(packageHeader, packageSize);
+        parser->parse(packageHeader);
     }
     catch (const std::exception& e)
     {
