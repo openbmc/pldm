@@ -45,11 +45,18 @@ class ItemUpdateManagerTest : public testing::Test
         return manager.activationProgress.get();
     }
 
+    static AssociationDefinitions* associationOf(ItemUpdateManager& manager)
+    {
+        return manager.association.get();
+    }
+
     // StartUpdate defers the package processing to the event loop
-    void startUpdate(ItemUpdateManager& manager)
+    void startUpdate(ItemUpdateManager& manager,
+                     ApplyTimeIntf::RequestedApplyTimes applyTime =
+                         ApplyTimeIntf::RequestedApplyTimes::Immediate)
     {
         ASSERT_NE(packageFd, -1);
-        manager.startUpdate(sdbusplus::message::unix_fd{packageFd});
+        manager.startUpdate(sdbusplus::message::unix_fd{packageFd}, applyTime);
         event.run(std::nullopt);
     }
 
@@ -130,4 +137,63 @@ TEST_F(ItemUpdateManagerTest, activationProgressRestartsAfterTeardown)
     ASSERT_GT(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
     EXPECT_EQ(progressOf(manager)->progress(), 48);
+}
+
+TEST_F(ItemUpdateManagerTest, immediateUpdateAssociatesRunningVersion)
+{
+    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
+                              descriptors, componentInfo);
+    startUpdate(manager);
+    ASSERT_NE(associationOf(manager), nullptr);
+    EXPECT_TRUE(associationOf(manager)->associations().empty());
+
+    manager.updateDeviceCompletion(eid, true);
+
+    // The association must survive the teardown done by completeUpdate()
+    ASSERT_NE(associationOf(manager), nullptr);
+    auto associations = associationOf(manager)->associations();
+    ASSERT_EQ(associations.size(), 1);
+    EXPECT_EQ(associations[0], std::make_tuple("running", "ran_on", objPath));
+}
+
+TEST_F(ItemUpdateManagerTest, onResetUpdateAssociatesActivatingVersion)
+{
+    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
+                              descriptors, componentInfo);
+    startUpdate(manager, ApplyTimeIntf::RequestedApplyTimes::OnReset);
+    ASSERT_NE(associationOf(manager), nullptr);
+
+    manager.updateDeviceCompletion(eid, true);
+
+    ASSERT_NE(associationOf(manager), nullptr);
+    auto associations = associationOf(manager)->associations();
+    ASSERT_EQ(associations.size(), 1);
+    EXPECT_EQ(associations[0],
+              std::make_tuple("activating", "activated_on", objPath));
+}
+
+TEST_F(ItemUpdateManagerTest, failedUpdateHasNoAssociation)
+{
+    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
+                              descriptors, componentInfo);
+    startUpdate(manager);
+    ASSERT_NE(associationOf(manager), nullptr);
+
+    manager.updateDeviceCompletion(eid, false);
+
+    ASSERT_NE(associationOf(manager), nullptr);
+    EXPECT_TRUE(associationOf(manager)->associations().empty());
+}
+
+TEST_F(ItemUpdateManagerTest, resetActivationStateDropsAssociation)
+{
+    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
+                              descriptors, componentInfo);
+    startUpdate(manager);
+    manager.updateDeviceCompletion(eid, true);
+    ASSERT_NE(associationOf(manager), nullptr);
+
+    manager.resetActivationState();
+
+    EXPECT_EQ(associationOf(manager), nullptr);
 }

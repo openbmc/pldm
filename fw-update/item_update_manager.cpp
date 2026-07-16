@@ -95,6 +95,8 @@ bool ItemUpdateManager::processPackage()
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this,
         parser->pkgVersion, firmwareInventoryPath);
     events::generateTargetDetermined(firmwareInventoryPath, parser->pkgVersion);
+    association = std::make_unique<AssociationDefinitions>(
+        pldm::utils::DBusHandler::getBus(), objPathWithSwId.c_str());
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
     {
@@ -259,6 +261,22 @@ void ItemUpdateManager::completeUpdate(bool status)
     {
         events::generateUpdateSuccessful(
             firmwareInventoryPath, parser ? parser->pkgVersion : std::string{});
+
+        // An Immediate update is already running on the device, any other
+        // apply time leaves the new image staged until the device is reset.
+        if (association)
+        {
+            if (applyTime == ApplyTimeIntf::RequestedApplyTimes::Immediate)
+            {
+                association->associations(
+                    {{"running", "ran_on", objPath.c_str()}});
+            }
+            else
+            {
+                association->associations(
+                    {{"activating", "activated_on", objPath.c_str()}});
+            }
+        }
     }
     inProgressActivation->activation(
         status ? software::Activation::Activations::Active
@@ -329,6 +347,9 @@ void ItemUpdateManager::resetActivationState()
 {
     inProgressActivation.reset();
     activationProgress.reset();
+    // The association has to outlive teardownUpdate() so it stays on D-Bus
+    // together with the Activation object until the activation state is reset.
+    association.reset();
     dupFd.reset();
     updateInProgress = false;
 }
