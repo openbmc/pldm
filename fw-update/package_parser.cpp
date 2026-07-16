@@ -221,8 +221,10 @@ void PackageParser::validatePkgTotalSize(uintmax_t pkgSize)
     }
 }
 
-void PackageParser::parse(const std::vector<uint8_t>& pkgHdr, uintmax_t pkgSize)
+void PackageParser::parse(const std::vector<uint8_t>& pkgHdr)
 {
+    const uintmax_t pkgSize = pkgHdr.size();
+
     if (pkgHeaderSize >= pkgHdr.size())
     {
         error("Invalid package header size '{PKG_HDR_SIZE}' ", "PKG_HDR_SIZE",
