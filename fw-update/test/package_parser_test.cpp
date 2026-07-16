@@ -52,7 +52,7 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
     EXPECT_EQ(parser->pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
+    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
@@ -131,7 +131,7 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     EXPECT_EQ(parser->pkgHeaderSize, pkgHeaderSize);
     EXPECT_EQ(parser->pkgVersion, pkgVersion);
 
-    parser->parse(fwPkgHdr, pkgSize);
+    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
