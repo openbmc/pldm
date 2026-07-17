@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f54d79be_449c0387",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-07-17T11:54:51Z",
+      "side": 1,
+      "message": "Thanks for taking a look so quickly 👍",
+      "parentUuid": "6a10a963_8046829a",
+      "revId": "3521ed07351eb02c160405aa63a1f1a6dce7d59c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e27b3585_e04f001e",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2026-07-17T04:48:58Z",
       "side": 1,
       "message": "can you elaborate a bit more on this ? \n\nDo you mean libpldm abstracts this ? hence pldm does not need to do it ? or the spec does not have changes across multiple package format revisions ?",
+      "revId": "3521ed07351eb02c160405aa63a1f1a6dce7d59c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c064be50_8e1c93ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-07-17T11:54:51Z",
+      "side": 1,
+      "message": "\u003e Do you mean libpldm abstracts this ? \n\nyes, libpldm abstracts it, but the large size of the unit test file can make it hard to find gems like that.\n\nSee for example this test case\nhttps://github.com/openbmc/libpldm/blob/4aea3a69199cb780256f0f06b05c9e0db14f6044/tests/unit/dsp/firmware_update.cpp#L5641-L5681\n\nwhere they define pin as\n`DEFINE_PLDM_PACKAGE_FORMAT_PIN_FR02H(pin);`\nwhich is `v1.1.0`\n\nand then later check that a `v1.0.0` package was parsed successfully\n```\n    EXPECT_EQ(memcmp(PLDM_FWUP_PACKAGE_HEADER_IDENTIFIER_V1_0.data(),\n                     hdr.package_header_identifier,\n                     PLDM_FWUP_PACKAGE_HEADER_IDENTIFIER_V1_0.size()),\n              0);\n    EXPECT_EQ(hdr.package_header_format_revision, 1);\n```\n\n\u003e hence pldm does not need to do it ?\n\nIf pldm always passes the highest pin and uses all the iterator macros it should be able to parse the whole package always independently of the specific package revision without writing multiple codes.\n\nIn libpldm++ it works like that too, there is no 2 stage parsing and no need to branch into different codes, just a single function call to unpack the entire package\n\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/90802\n\n\u003e or the spec does not have changes across multiple package format revisions ?\n\nThe spec does have changes but did not yet remove any field or property or significantly changed the meaning of an existing field from what i have seen so far. Which makes it possible to use one returned struct and just keep expanding that with optional/vector/map fields depending on which new things they added.\n\n\nI\u0027m treating this as a normal query, let me know if i should expand the commit message also 👍",
+      "parentUuid": "e27b3585_e04f001e",
       "revId": "3521ed07351eb02c160405aa63a1f1a6dce7d59c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
