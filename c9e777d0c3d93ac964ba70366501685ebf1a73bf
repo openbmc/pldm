@@ -33,6 +33,24 @@
       "message": "nit: couldn\u0027t we use C++20\u0027s `std::bit_cast` for the checksum?\n\n```\nconst auto bytes \u003d std::bit_cast\u003cstd::array\u003cuint8_t, sizeof(check)\u003e\u003e(check);\nstd::vector\u003cuint8_t\u003e checksum(bytes.begin(), bytes.end());\n```\n\nnot a must tho.",
       "revId": "c9e777d0c3d93ac964ba70366501685ebf1a73bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38510446_ae47c4eb",
+        "filename": "fw-update/test/package_parser_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-07-17T12:14:47Z",
+      "side": 1,
+      "message": "Thanks, this ended up saving 3 lines, more clear and more compact 👍",
+      "parentUuid": "a96957e1_573c886b",
+      "revId": "c9e777d0c3d93ac964ba70366501685ebf1a73bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
