@@ -60,7 +60,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
      */
-    void handleMctpEndpoints(const MctpInfos& mctpInfos) override
+    void handleMctpEndpoints(const TerminusInfos& mctpInfos) override
     {
         terminusManager.discoverMctpTerminus(mctpInfos);
     }
@@ -70,7 +70,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
      */
-    void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) override
+    void handleRemovedMctpEndpoints(const TerminusInfos& mctpInfos) override
     {
         terminusManager.removeMctpTerminus(mctpInfos);
     }
@@ -263,6 +263,26 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         const std::string& terminusName) override
     {
         return terminusManager.getActiveEidByName(terminusName);
+    }
+
+    /** @brief Allocate or get TID for the MCTP endpoint
+     *
+     *  @param[in] mctpInfo - information of the target endpoint
+     *  @return TID if allocation or retrieval is successful, nullopt otherwise
+     */
+    std::optional<pldm_tid_t> allocateOrGetTid(
+        const MctpInfo& mctpInfo) override
+    {
+        return terminusManager.mapTid(mctpInfo);
+    }
+
+    /** @brief Get the PLDM transport layer
+     *
+     *  @return Pointer to the PLDM transport layer
+     */
+    PldmTransport* getTransport() override
+    {
+        return terminusManager.getTransport();
     }
 
   private:
