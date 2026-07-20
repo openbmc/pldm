@@ -107,6 +107,41 @@ void SensorManager::stopPolling(pldm_tid_t tid)
     availableState.erase(tid);
 }
 
+exec::task<void> SensorManager::doSensorPollingHelper(pldm_tid_t tid)
+{
+    std::optional<int> rcOpt{};
+    auto res = co_await stdexec::stopped_as_optional(doSensorPollingTask(tid));
+    if (res.has_value())
+    {
+        rcOpt = *res;
+    }
+    else
+    {
+        lg2::info("Stopped polling for Terminus ID {TID}", "TID", tid);
+        try
+        {
+            if (sensorPollTimers.contains(tid) && sensorPollTimers[tid] &&
+                sensorPollTimers[tid]->isRunning())
+            {
+                sensorPollTimers[tid]->stop();
+            }
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error(
+                "Terminus ID {TID}: Failed to stop polling timer. Exception: {EXCEPTION}",
+                "TID", tid, "EXCEPTION", e);
+        }
+        rcOpt = PLDM_SUCCESS;
+    }
+
+    if (auto it = doSensorPollingTaskHandles.find(tid);
+        it != doSensorPollingTaskHandles.end())
+    {
+        it->second.second = rcOpt;
+    }
+}
+
 void SensorManager::doSensorPolling(pldm_tid_t tid)
 {
     auto it = doSensorPollingTaskHandles.find(tid);
@@ -120,42 +155,14 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
         doSensorPollingTaskHandles.erase(tid);
     }
 
-    auto& [scope, rcOpt] =
+    auto& [scope, _] =
         doSensorPollingTaskHandles
             .emplace(std::piecewise_construct, std::forward_as_tuple(tid),
                      std::forward_as_tuple())
             .first->second;
-    scope.spawn(
-        stdexec::just() | stdexec::let_value([this, &rcOpt,
-                                              tid] -> exec::task<void> {
-            auto res =
-                co_await stdexec::stopped_as_optional(doSensorPollingTask(tid));
-            if (res.has_value())
-            {
-                rcOpt = *res;
-            }
-            else
-            {
-                lg2::info("Stopped polling for Terminus ID {TID}", "TID", tid);
-                try
-                {
-                    if (sensorPollTimers.contains(tid) &&
-                        sensorPollTimers[tid] &&
-                        sensorPollTimers[tid]->isRunning())
-                    {
-                        sensorPollTimers[tid]->stop();
-                    }
-                }
-                catch (const std::exception& e)
-                {
-                    lg2::error(
-                        "Terminus ID {TID}: Failed to stop polling timer. Exception: {EXCEPTION}",
-                        "TID", tid, "EXCEPTION", e);
-                }
-                rcOpt = PLDM_SUCCESS;
-            }
-        }),
-        exec::default_task_context<void>(stdexec::inline_scheduler{}));
+
+    scope.spawn(doSensorPollingHelper(tid),
+                exec::default_task_context<void>(stdexec::inline_scheduler{}));
 }
 
 exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)

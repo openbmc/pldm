@@ -81,6 +81,8 @@ class SensorManager
      */
     virtual void doSensorPolling(pldm_tid_t tid);
 
+    exec::task<void> doSensorPollingHelper(pldm_tid_t tid);
+
     /** @brief polling all sensors in each terminus
      *
      *  @param[in] tid - Destination TID
