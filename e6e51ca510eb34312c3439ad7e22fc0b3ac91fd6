@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95e3cd4b_bb40b7dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 127
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-07-20T09:56:50Z",
+      "side": 1,
+      "message": "nit: without looking too deep, it looks like not only latest libpldm but also latest fw update pkg revision `1.3.0` is supported.\n\nCan we note the fw update package version that is supported now in the commit message?\n```suggestion\nnow deprecated. Switch to the new APIs and use libpldm iterators to\nensure compatibility with the latest libpldm version and PLDM fw update pkg v1.3.0\n\n```",
+      "range": {
+        "startLine": 10,
+        "startChar": 16,
+        "endLine": 12,
+        "endChar": 1
+      },
+      "revId": "e6e51ca510eb34312c3439ad7e22fc0b3ac91fd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b4fd162_669549e3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 127
@@ -14,6 +37,23 @@
       "writtenOn": "2026-07-20T00:48:41Z",
       "side": 1,
       "message": "Can you please review this change: https://gerrit.openbmc.org/c/openbmc/pldm/+/92352",
+      "revId": "e6e51ca510eb34312c3439ad7e22fc0b3ac91fd6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4713277_ea6867c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 127
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-07-20T09:56:50Z",
+      "side": 1,
+      "message": "overall i would recommend to split the patch in 2 or possibly 3 parts\n\nfor example:\n(1) change over to newer libpldm APIs\n(2) supporting new things like downstream device\n(3) unit test expansions for the newly supported things\n\nbased on your knowledge of the patch structure you will probably have a better idea on how to split it to get the diff size down.",
       "revId": "e6e51ca510eb34312c3439ad7e22fc0b3ac91fd6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
