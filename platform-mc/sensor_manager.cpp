@@ -126,8 +126,7 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                      std::forward_as_tuple())
             .first->second;
     scope.spawn(
-        stdexec::just() | stdexec::let_value([this, &rcOpt,
-                                              tid] -> exec::task<void> {
+        [this, &rcOpt, tid]() -> exec::task<void> {
             auto res =
                 co_await stdexec::stopped_as_optional(doSensorPollingTask(tid));
             if (res.has_value())
@@ -154,7 +153,7 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                 }
                 rcOpt = PLDM_SUCCESS;
             }
-        }),
+        }(),
         exec::default_task_context<void>(stdexec::inline_scheduler{}));
 }
 
