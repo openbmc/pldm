@@ -16,6 +16,24 @@
       "message": "looks like https://gerrit.openbmc.org/c/openbmc/pldm/+/92547 is a more minimal and possibly better fix",
       "revId": "b6597656cd38d0438f293fe6d132382c4b75e7f9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4adfc270_11220832",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-21T17:42:40Z",
+      "side": 1,
+      "message": "Yeah that fixes will work and has less changes, but I think your patch is safer.",
+      "parentUuid": "fb08c411_5f497bfa",
+      "revId": "b6597656cd38d0438f293fe6d132382c4b75e7f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
