@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84b9e627_473502ba",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-21T08:10:59Z",
+      "side": 1,
+      "message": "would be safer to have a null check here.",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f295f37_8584449b",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-21T08:10:59Z",
+      "side": 1,
+      "message": "we might need an explicit transfer flag check here. An invalid transfer flag still continues the loop.",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7c19e28_0c8cf8f7",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
@@ -14,6 +48,29 @@
       "writtenOn": "2026-07-21T06:12:42Z",
       "side": 1,
       "message": "Wouldn\u0027t this be an infinite loop when:\n\n`nextPartRequired \u003d true;` and `CommandInterface::exec()` fails early before reaching `parseResponseMsg`\n\nThere are two cases where CommandInterface:exec() return early:\n\nhttps://github.com/openbmc/pldm/blob/9fd86d58bd57f01a9b40d6d1f4a88a0c069c002b/pldmtool/pldm_cmd_helper.cpp#L102\n\nhttps://github.com/openbmc/pldm/blob/9fd86d58bd57f01a9b40d6d1f4a88a0c069c002b/pldmtool/pldm_cmd_helper.cpp#L112",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0be4bc1b_b579aec6",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-21T08:10:59Z",
+      "side": 1,
+      "message": "nit: i see most of the code here is similar to GetFruRecordTableOption. A small helper function to do the same may reduce redundancy.",
+      "range": {
+        "startLine": 493,
+        "startChar": 4,
+        "endLine": 504,
+        "endChar": 36
+      },
       "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
