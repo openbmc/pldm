@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dee4132_3c4b99e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-07-21T21:58:23Z",
+      "side": 1,
+      "message": "Can you add a Tested section showing the associations show up on Dbus.",
+      "revId": "7f9e928a5e93bcedd7f9c76168cde6c93bb3fddb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6925e27e_1d3ffde7",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-07-21T21:58:23Z",
+      "side": 1,
+      "message": "I am wondering if this should happen here or as part of completeUpdate API u call at line# 205 ?",
+      "revId": "7f9e928a5e93bcedd7f9c76168cde6c93bb3fddb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
