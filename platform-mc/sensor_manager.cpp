@@ -99,9 +99,11 @@ void SensorManager::stopPolling(pldm_tid_t tid)
 
     if (doSensorPollingTaskHandles.contains(tid))
     {
-        auto& [scope, rcOpt] = doSensorPollingTaskHandles[tid];
-        scope.request_stop();
+        doSensorPollingTaskHandles[tid]->scope.request_stop();
         doSensorPollingTaskHandles.erase(tid);
+        // The coroutine holds its own shared_ptr<PollHandle> as a parameter
+        // (in the coroutine frame), so the scope outlives this erase and is
+        // destroyed cleanly after final_suspend completes its bookkeeping.
     }
 
     availableState.erase(tid);
@@ -112,37 +114,35 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
     auto it = doSensorPollingTaskHandles.find(tid);
     if (it != doSensorPollingTaskHandles.end())
     {
-        auto& [scope, rcOpt] = it->second;
-        if (!rcOpt.has_value())
+        if (!it->second->rcOpt.has_value())
         {
             return;
         }
-        doSensorPollingTaskHandles.erase(tid);
+        doSensorPollingTaskHandles.erase(it);
     }
 
-    auto& [scope, rcOpt] =
-        doSensorPollingTaskHandles
-            .emplace(std::piecewise_construct, std::forward_as_tuple(tid),
-                     std::forward_as_tuple())
-            .first->second;
-    scope.spawn(
-        [this, &rcOpt, tid]() -> exec::task<void> {
-            auto res =
-                co_await stdexec::stopped_as_optional(doSensorPollingTask(tid));
+    auto handle = std::make_shared<PollHandle>();
+    doSensorPollingTaskHandles[tid] = handle;
+    handle->scope.spawn(
+        [](SensorManager& self, pldm_tid_t tid,
+           std::shared_ptr<PollHandle> handle) -> exec::task<void> {
+            auto res = co_await stdexec::stopped_as_optional(
+                self.doSensorPollingTask(tid));
+            int rc = PLDM_SUCCESS;
             if (res.has_value())
             {
-                rcOpt = *res;
+                rc = *res;
             }
             else
             {
                 lg2::info("Stopped polling for Terminus ID {TID}", "TID", tid);
                 try
                 {
-                    if (sensorPollTimers.contains(tid) &&
-                        sensorPollTimers[tid] &&
-                        sensorPollTimers[tid]->isRunning())
+                    if (self.sensorPollTimers.contains(tid) &&
+                        self.sensorPollTimers[tid] &&
+                        self.sensorPollTimers[tid]->isRunning())
                     {
-                        sensorPollTimers[tid]->stop();
+                        self.sensorPollTimers[tid]->stop();
                     }
                 }
                 catch (const std::exception& e)
@@ -151,9 +151,9 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                         "Terminus ID {TID}: Failed to stop polling timer. Exception: {EXCEPTION}",
                         "TID", tid, "EXCEPTION", e);
                 }
-                rcOpt = PLDM_SUCCESS;
             }
-        }(),
+            handle->rcOpt = rc;
+        }(*this, tid, handle),
         exec::default_task_context<void>(stdexec::inline_scheduler{}));
 }
 
