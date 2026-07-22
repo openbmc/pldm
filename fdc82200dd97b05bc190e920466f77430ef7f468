@@ -63,6 +63,30 @@
       },
       "revId": "fdc82200dd97b05bc190e920466f77430ef7f468",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46a33144_2a90831d",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-22T12:15:46Z",
+      "side": 1,
+      "message": "Understood, thanks for the explanation!",
+      "parentUuid": "d0199664_ac6b2014",
+      "range": {
+        "startLine": 129,
+        "startChar": 15,
+        "endLine": 129,
+        "endChar": 26
+      },
+      "revId": "fdc82200dd97b05bc190e920466f77430ef7f468",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
