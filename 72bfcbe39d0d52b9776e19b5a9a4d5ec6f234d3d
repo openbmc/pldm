@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c28a426_e751cdb2",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 53
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-22T08:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5673db8a_2161ca39",
+      "revId": "72bfcbe39d0d52b9776e19b5a9a4d5ec6f234d3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa22ac29_0086814d",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25b11a12_67b0e232",
+        "filename": "docs/fw_update_configuration.md",
+        "patchSetId": 53
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-22T08:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa22ac29_0086814d",
+      "revId": "72bfcbe39d0d52b9776e19b5a9a4d5ec6f234d3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de91825f_d8ae0772",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-07-21T21:46:39Z",
       "side": 1,
       "message": "Can u check if PDI generated code has any string conversion API that u can use ?",
+      "revId": "72bfcbe39d0d52b9776e19b5a9a4d5ec6f234d3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3303d4c_fee4512b",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-07-22T08:26:50Z",
+      "side": 1,
+      "message": "Done, but this doesn\u0027t make the code cleaner, as we still would like to shave the string to a shorter one.",
+      "parentUuid": "de91825f_d8ae0772",
       "revId": "72bfcbe39d0d52b9776e19b5a9a4d5ec6f234d3d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
