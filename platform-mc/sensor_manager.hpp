@@ -111,8 +111,19 @@ class SensorManager
     /** @brief sensor polling timers */
     std::map<pldm_tid_t, std::unique_ptr<sdbusplus::Timer>> sensorPollTimers;
 
+    /** @brief Shared state for a single doSensorPolling coroutine run.
+     *  Heap-allocated so stopPolling() can erase the map entry immediately
+     *  while the coroutine keeps the scope alive via its shared_ptr parameter
+     *  until final_suspend completes the scope's internal bookkeeping.
+     */
+    struct PollHandle
+    {
+        exec::async_scope scope;
+        std::optional<int> rcOpt;
+    };
+
     /** @brief coroutine handle of doSensorPollingTasks */
-    std::map<pldm_tid_t, std::pair<exec::async_scope, std::optional<int>>>
+    std::map<pldm_tid_t, std::shared_ptr<PollHandle>>
         doSensorPollingTaskHandles;
 
     /** @brief Available state for pldm request of terminus */
