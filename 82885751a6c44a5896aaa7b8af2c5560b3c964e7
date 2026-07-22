@@ -54,6 +54,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3b99a1d_40e2dae0",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1001853
+      },
+      "writtenOn": "2026-07-22T11:14:50Z",
+      "side": 1,
+      "message": "According to Section 10.6 (\u0027FRU Record Table carriage\u0027) of the DSP0257 \nspecification, each fragmented response (chunk) contains 0 to 3 bytes of padding and a 4-byte checksum at the end.\n\nAs far as I understand, `fru_record_table_data` and `fru_record_table_length` include this padding and checksum. If so, appending them via .insert() will leave intermediate CRC and padding bytes inside the final table, which will break `FRUTablePrint` parsing (and likely cause a segfault). \n\nI think we need to strip the padding and checksum from each chunk before accumulating the data.",
+      "range": {
+        "startLine": 489,
+        "startChar": 0,
+        "endLine": 491,
+        "endChar": 68
+      },
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0be4bc1b_b579aec6",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
