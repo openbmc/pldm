@@ -126,12 +126,13 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                      std::forward_as_tuple())
             .first->second;
     scope.spawn(
-        [this, &rcOpt, tid]() -> exec::task<void> {
+        [this, tid]() -> exec::task<void> {
             auto res =
                 co_await stdexec::stopped_as_optional(doSensorPollingTask(tid));
+            int rc = PLDM_SUCCESS;
             if (res.has_value())
             {
-                rcOpt = *res;
+                rc = *res;
             }
             else
             {
@@ -151,7 +152,11 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                         "Terminus ID {TID}: Failed to stop polling timer. Exception: {EXCEPTION}",
                         "TID", tid, "EXCEPTION", e);
                 }
-                rcOpt = PLDM_SUCCESS;
+            }
+            if (auto it = doSensorPollingTaskHandles.find(tid);
+                it != doSensorPollingTaskHandles.end())
+            {
+                it->second.second = rc;
             }
         }(),
         exec::default_task_context<void>(stdexec::inline_scheduler{}));
