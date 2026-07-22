@@ -16,6 +16,24 @@
       "message": "Don\u0027t split function and its description",
       "revId": "9a23e74ae119e059e2f39370616ff5a1c5e33302",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4c562bf_5723d63c",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1838,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-22T07:51:17Z",
+      "side": 1,
+      "message": "I missed that. Thanks.",
+      "parentUuid": "048ffd7f_e04eb76f",
+      "revId": "9a23e74ae119e059e2f39370616ff5a1c5e33302",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

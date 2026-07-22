@@ -16,6 +16,24 @@
       "message": "Hi @chaul@amperecomputing.com. I made a pldmtool functionality based off your PLDM_File_Transfer support.\n\n```\n pldmtool file ReadFile -h\nRead data from a PLDM File Descriptor (-p \u003cpath\u003e | -i \u003cindex from ListFiles\u003e)\nUsage: pldmtool file ReadFile [OPTIONS]\n\nOptions:\n  -h,--help                   Print this help message and exit\n  -p,--object-path TEXT       D-Bus object path of the PLDM File\n  -i,--index INT              Index from \u0027pldmtool file ListFiles\u0027 (use instead of -p)\n  -o,--offset UINT            Byte offset to start reading from (default: 0)\n  -l,--length UINT            Number of bytes to read, 0 means whole file (default: 0)\n  -f,--output-file TEXT       Write raw bytes to this path instead of hex-dumping to stdout\n  -x,--exclusive              Request exclusive access to the file\n\n```\n\nAppreciate your review. I want your opinion on whether the pldmtool options need any addition/removal.",
       "revId": "5cef2474661e8fb299c6d1500231d51644634056",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e62bccd_7f68517c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-22T07:51:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8ca95e1_b125bf71",
+      "revId": "5cef2474661e8fb299c6d1500231d51644634056",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
