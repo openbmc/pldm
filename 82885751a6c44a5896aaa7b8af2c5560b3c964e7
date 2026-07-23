@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f988241d_d4a7beb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001853
+      },
+      "writtenOn": "2026-07-23T15:42:44Z",
+      "side": 1,
+      "message": "Thanks for the detailed response.\n\n\n\nHowever, I think we should also look at `Section 13.2 (GetFRURecordTable)`, which clarifies how multipart transfers apply here.\n\n\u003e When more than one message is used to transfer the FRU Record Table, the response\nmessages contain the non-overlapping contiguous portions of the FRU Record Table \nas **defined in Table 6**\n\n\n\nSince every response chunk is an individual \"message\", it looks like each one must be formatted according to Table 6 — meaning every single fragment includes its own  padding and a 4-byte checksum to \"protect\" that specific payload chunk.\n\n\nI’ve actually tested FRU reading with a couple of NICs (Emulex FC and NVIDIA ConnectX-7), and their firmware follows this behavior, appending a pad and CRC to every response chunk.\n\nI know testing with just two cards doesn\u0027t cover every case, but I wanted to share this perspective.",
+      "parentUuid": "6000ef32_3e405ac9",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b9e627_473502ba",
