@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6000ef32_3e405ac9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-23T07:38:30Z",
+      "side": 1,
+      "message": "Thanks for pointing this out. I went back to DSP0257 Section 10.6 (Table 6) to double-check my understanding.\n\nTable 6 defines the carriage as: FRU Record Data → Pad (0–3) → uint32 checksum. \nMy reading is that the pad and checksum are appended once to the FRU Record Table as a whole, not to each individual fragment. The receiver algorithm in the same section also seems to process all FRU Record Data first, with only the remaining trailing bytes interpreted as the pad and checksum.\n\nWith that interpretation, a multipart transfer slices the complete table, so only the final fragment contains the trailing pad/checksum while intermediate fragments contain only FRU Record Data. This also matches the responder implementation: FruImpl::getFRUTable() pads the assembled table once and appends a single CRC32. I also verified this on hardware with a table spanning multiple fragments, and the reassembled table parses correctly, with the trailing pad/checksum handled by FRUTablePrint::isTableEnd().\n\nBased on that, I believe appending each fragment directly is consistent with the specification. If you think it would make the implementation clearer, I\u0027m happy to explicitly strip the trailing checksum as well, although I believe the current logic is already aligned with the specification.",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b9e627_473502ba",
