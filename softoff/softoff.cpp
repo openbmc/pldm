@@ -231,7 +231,7 @@ int SoftPowerOff::getSensorInfo(pldm::pdr::EntityType& entityType,
 
         ResponseMsg.read(Response);
 
-        if (Response.size() == 0)
+        if (Response.empty())
         {
             error(
                 "No State Sensor PDR found for TID={TID}, EntityType={ENTITY_TYPE}, StateSetId={STATE_SET}",

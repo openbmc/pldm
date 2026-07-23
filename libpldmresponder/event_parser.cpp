@@ -84,7 +84,7 @@ StateSensorHandler::StateSensorHandler(const std::string& dirPath)
 
             auto eventStates = entry.value("event_states", emptyJsonList);
             auto propertyValues = dbus.value("property_values", emptyJsonList);
-            if ((eventStates.size() == 0) || (propertyValues.size() == 0) ||
+            if (eventStates.empty() || propertyValues.empty() ||
                 (eventStates.size() != propertyValues.size()))
             {
                 error(
