@@ -16,6 +16,24 @@
       "message": "Can you share a use case where offset + length extends beyond the 32bit range?\n\nDSP0267 v1.3.0 limits both fields to 32bits in the Component Image Information. Hence an overflow should ideally not exist. Even if it does, Update Agent should be able to check this and send Completion Code like Data Out of Range (0x82) or Invalid Transfer Length (0x83).\n\nSuggestion would be to limit the check to range of UNIT32.",
       "revId": "d5ab474d77d0bed1d17e3005d3e6cd12171dc462",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "084d9df8_42425b87",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 1003077
+      },
+      "writtenOn": "2026-07-23T14:32:56Z",
+      "side": 1,
+      "message": "Thanks. The overflow is in the addition of two individually valid `uint32`\nrequest fields, not in either field by itself.\n\nThe added regression uses the existing 1,024-byte component fixture:\n\n- `offset \u003d 0xFFFFFF75` (`4294967157`)\n- `length \u003d 0x200` (`512`, within the negotiated transfer-size range)\n- mathematical end \u003d `0x100000175` (`4294967669`)\n- old 32-bit result \u003d `0x175` (`373`)\n\nThe old check therefore compared `373` with the padded component end `1056`\nand accepted the request. The component starts at package offset `139`, so the\nold `139 + 0xFFFFFF75` seek also wrapped to package byte zero. The unpatched\nmethod returned success and package-header bytes instead of rejecting the\nrequest.\n\nUnder DSP0267 v1.3.0 section 12.6, the length itself is valid but the requested\nrange is outside the component, so `DATA_OUT_OF_RANGE` (`0x82`) is the\nappropriate response. The patch does not widen either wire field. It widens\nonly the intermediate arithmetic so the range check evaluates the mathematical\nsum and returns `0x82`.\n\nI kept the comparison against `component size + baseline transfer size`\nbecause section 12.6 permits the final request to extend by that baseline\npadding. A blanket `UINT32_MAX` cap would be a different boundary and could\nreject that permitted padding for a maximum-sized component.\n\n`RejectWrappedOffsetBeforeComponent` covers this exact request. It passes with\nthe patch, and patchset 4 is Verified+1.\n",
+      "parentUuid": "6e37c2cc_3770f3ea",
+      "revId": "d5ab474d77d0bed1d17e3005d3e6cd12171dc462",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
