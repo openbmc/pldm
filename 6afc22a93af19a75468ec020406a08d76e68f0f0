@@ -16,6 +16,24 @@
       "message": "Please add a similar size check to all functions using `fruFieldParserU32` as they too would be expecting a string of size 4.",
       "revId": "6afc22a93af19a75468ec020406a08d76e68f0f0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cc33749_26ec0b24",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-23T11:44:39Z",
+      "side": 1,
+      "message": "acknowledged, Changes in patch set 2",
+      "parentUuid": "d3871870_7be04f0f",
+      "revId": "6afc22a93af19a75468ec020406a08d76e68f0f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
