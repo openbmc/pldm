@@ -537,7 +537,7 @@ int getNumericEffecterData(const DBusInterface& dBusIntf, Handler& handler,
     {
         const auto& [dbusMappings, dbusValMaps] =
             handler.getDbusObjMaps(effecterId);
-        if (dbusMappings.size() > 0)
+        if (!dbusMappings.empty())
         {
             dbusMapping = {
                 dbusMappings[0].objectPath, dbusMappings[0].interface,

@@ -418,7 +418,7 @@ class GetPLDMCommands : public CommandInterface
             sizeof(pldm_msg_hdr) + PLDM_GET_COMMANDS_REQ_BYTES);
         auto request = new (requestMsg.data()) pldm_msg;
         ver32_t version{0xFF, 0xFF, 0xFF, 0xFF};
-        if (inputVersion.size() != 0)
+        if (!inputVersion.empty())
         {
             if (inputVersion.size() != 4)
             {
