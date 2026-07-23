@@ -50,6 +50,7 @@ matchers:
   - manojkiran.eda@gmail.com
 - partial_regex: meta/
   owners:
+  - paligill@gmail.com
   - patrick@stwcx.xyz
 - partial_regex: tools/visualize-pdr
   owners:
@@ -62,6 +63,9 @@ openbmc:
 - name: George Liu
   email: liuxiwei@ieisystem.com
   discord: George Liu
+- name: Jagpal Singh Gill
+  email: paligill@gmail.com
+  discord: jagpalgill
 - name: Manojkiran Eda
   email: manojkiran.eda@gmail.com
   discord: manojkiran
