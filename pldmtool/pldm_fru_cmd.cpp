@@ -121,8 +121,15 @@ class FRUTablePrint
                                            fruGeneralFieldTypes.end());
                     if (tlv->type == PLDM_FRU_FIELD_TYPE_IANA)
                     {
-                        fruFieldValue =
-                            fruFieldParserU32(tlv->value, tlv->length);
+                        if (tlv->length == sizeof(uint32_t))
+                        {
+                            fruFieldValue =
+                                fruFieldParserU32(tlv->value, tlv->length);
+                        }
+                        else
+                        {
+                            fruFieldValue = "Invalid IANA length";
+                        }
                     }
                     else if (tlv->type == PLDM_FRU_FIELD_TYPE_MANUFAC_DATE)
                     {
@@ -164,8 +171,15 @@ class FRUTablePrint
                     }
                     if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_IANA)
                     {
-                        fruFieldValue =
-                            fruFieldParserU32(tlv->value, tlv->length);
+                        if (tlv->length == sizeof(uint32_t))
+                        {
+                            fruFieldValue =
+                                fruFieldParserU32(tlv->value, tlv->length);
+                        }
+                        else
+                        {
+                            fruFieldValue = "Invalid IANA length";
+                        }
                     }
                     else if (tlv->type != 2)
                     {
@@ -286,10 +300,13 @@ class FRUTablePrint
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
     {
-        assert(length == 4);
         uint32_t v = 0;
-        std::memcpy(&v, value, length);
-        return std::to_string(le32toh(v));
+        if (length == sizeof(uint32_t))
+        {
+            std::memcpy(&v, value, sizeof(v));
+            return std::to_string(le32toh(v));
+        }
+        return "Invalid IANA length";
     }
 
     static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
