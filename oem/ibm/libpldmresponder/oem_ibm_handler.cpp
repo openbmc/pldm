@@ -200,24 +200,34 @@ int pldm::responder::oem_ibm_platform::Handler::
     return rc;
 }
 
-void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
-                                   uint16_t entityType, uint16_t entityInstance,
-                                   uint16_t stateSetID, pdr_utils::Repo& repo)
+struct EffecterPDRParams
 {
-    size_t pdrSize = 0;
-    pdrSize = sizeof(pldm_state_effecter_pdr) +
-              sizeof(state_effecter_possible_states);
-    std::vector<uint8_t> entry{};
-    entry.resize(pdrSize);
-    pldm_state_effecter_pdr* pdr =
-        reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
-    if (!pdr)
-    {
-        error("Failed to get record by PDR type, error - {ERROR}", "ERROR",
-              lg2::hex,
-              static_cast<unsigned>(PLDM_PLATFORM_INVALID_EFFECTER_ID));
-        return;
-    }
+    uint16_t entityType;
+    uint16_t entityInstance;
+    uint16_t stateSetId;
+    uint8_t possibleStatesSize;
+    uint8_t statesByte;
+};
+
+struct SensorPDRParams
+{
+    uint16_t entityType;
+    uint16_t entityInstance;
+    uint16_t stateSetId;
+    uint8_t possibleStatesSize;
+    uint8_t statesByte;
+};
+
+static void buildStateEffecterPDR(
+    oem_ibm_platform::Handler* platformHandler, const EffecterPDRParams& params,
+    pdr_utils::Repo& repo, const std::string& dbusPath = "")
+{
+    const size_t pdrSize = sizeof(pldm_state_effecter_pdr) +
+                           sizeof(state_effecter_possible_states);
+    std::vector<uint8_t> entry(pdrSize, 0);
+
+    auto* pdr = reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
+
     pdr->hdr.record_handle = 0;
     pdr->hdr.version = 1;
     pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
@@ -225,278 +235,62 @@ void buildAllCodeUpdateEffecterPDR(oem_ibm_platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = TERMINUS_HANDLE;
     pdr->effecter_id = platformHandler->getNextEffecterId();
-    pdr->entity_type = entityType;
-    pdr->entity_instance = entityInstance;
+    pdr->entity_type = params.entityType;
+    pdr->entity_instance = params.entityInstance;
     pdr->container_id = 1;
     pdr->effecter_semantic_id = 0;
     pdr->effecter_init = PLDM_NO_INIT;
     pdr->has_description_pdr = false;
     pdr->composite_effecter_count = 1;
 
-    auto* possibleStatesPtr = pdr->possible_states;
-    auto possibleStates =
-        reinterpret_cast<state_effecter_possible_states*>(possibleStatesPtr);
-    possibleStates->state_set_id = stateSetID;
-    possibleStates->possible_states_size = 2;
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(possibleStates);
-    if ((stateSetID == PLDM_OEM_IBM_BOOT_STATE) ||
-        (stateSetID == PLDM_OEM_IBM_BOOT_SIDE_RENAME))
-        state->states[0].byte = 6;
-    else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
-        state->states[0].byte = 126;
-    else if (stateSetID == PLDM_OEM_IBM_SYSTEM_POWER_STATE)
-        state->states[0].byte = 2;
+    auto* possibleStates =
+        reinterpret_cast<state_effecter_possible_states*>(pdr->possible_states);
+    possibleStates->state_set_id = params.stateSetId;
+    possibleStates->possible_states_size = params.possibleStatesSize;
+    possibleStates->states[0].byte = params.statesByte;
+
+    if (!dbusPath.empty())
+    {
+        platformHandler->effecterIdToDbusMap[pdr->effecter_id] = dbusPath;
+    }
+
     pldm::responder::pdr_utils::PdrEntry pdrEntry{};
     pdrEntry.data = entry.data();
     pdrEntry.size = pdrSize;
     repo.addRecord(pdrEntry);
 }
 
-void buildAllSlotEnableEffecterPDR(oem_ibm_platform::Handler* platformHandler,
-                                   pdr_utils::Repo& repo,
-                                   const std::vector<std::string>& slotobjpaths)
+static void buildStateEffecterPDRForSlots(
+    oem_ibm_platform::Handler* platformHandler, pdr_utils::Repo& repo,
+    const std::vector<std::string>& slotObjPaths)
 {
-    size_t pdrSize = 0;
-    pdrSize = sizeof(pldm_state_effecter_pdr) +
-              sizeof(state_effecter_possible_states);
-    std::vector<uint8_t> entry{};
-    entry.resize(pdrSize);
-    pldm_state_effecter_pdr* pdr =
-        reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
-    if (!pdr)
-    {
-        error("Failed to get record by PDR type, ERROR:{ERR}", "ERR", lg2::hex,
-              static_cast<unsigned>(PLDM_PLATFORM_INVALID_EFFECTER_ID));
-        return;
-    }
+    const auto& associatedEntityMap = platformHandler->getAssociateEntityMap();
 
-    auto& associatedEntityMap = platformHandler->getAssociateEntityMap();
-    for (const auto& entity_path : slotobjpaths)
+    for (const auto& entityPath : slotObjPaths)
     {
-        pdr->hdr.record_handle = 0;
-        pdr->hdr.version = 1;
-        pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
-        pdr->hdr.record_change_num = 0;
-        pdr->hdr.length =
-            sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
-        pdr->terminus_handle = TERMINUS_HANDLE;
-        pdr->effecter_id = platformHandler->getNextEffecterId();
-
-        if (entity_path != "" && associatedEntityMap.contains(entity_path))
+        if (entityPath.empty() || !associatedEntityMap.contains(entityPath))
         {
-            pdr->entity_type = associatedEntityMap.at(entity_path).entity_type;
-            pdr->entity_instance =
-                associatedEntityMap.at(entity_path).entity_instance_num;
-            pdr->container_id =
-                associatedEntityMap.at(entity_path).entity_container_id;
-            platformHandler->effecterIdToDbusMap[pdr->effecter_id] =
-                entity_path;
-        }
-        else
-        {
-            // the slots are not present, dont create the PDR
-            continue;
-        }
-        pdr->effecter_semantic_id = 0;
-        pdr->effecter_init = PLDM_NO_INIT;
-        pdr->has_description_pdr = false;
-        pdr->composite_effecter_count = 1;
-
-        auto* possibleStatesPtr = pdr->possible_states;
-        auto possibleStates = reinterpret_cast<state_effecter_possible_states*>(
-            possibleStatesPtr);
-        possibleStates->state_set_id = PLDM_OEM_IBM_PCIE_SLOT_EFFECTER_STATE;
-        possibleStates->possible_states_size = 2;
-        auto state =
-            reinterpret_cast<state_effecter_possible_states*>(possibleStates);
-        state->states[0].byte = 14;
-        pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-        pdrEntry.data = entry.data();
-        pdrEntry.size = pdrSize;
-        repo.addRecord(pdrEntry);
-    }
-}
-
-void buildAllCodeUpdateSensorPDR(oem_ibm_platform::Handler* platformHandler,
-                                 uint16_t entityType, uint16_t entityInstance,
-                                 uint16_t stateSetID, pdr_utils::Repo& repo)
-{
-    size_t pdrSize = 0;
-    pdrSize = sizeof(pldm_state_sensor_pdr) +
-              sizeof(state_sensor_possible_states);
-    std::vector<uint8_t> entry{};
-    entry.resize(pdrSize);
-    pldm_state_sensor_pdr* pdr =
-        reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
-    if (!pdr)
-    {
-        error("Failed to get record by PDR type, error - {ERROR}", "ERROR",
-              lg2::hex, static_cast<unsigned>(PLDM_PLATFORM_INVALID_SENSOR_ID));
-        return;
-    }
-    pdr->hdr.record_handle = 0;
-    pdr->hdr.version = 1;
-    pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
-    pdr->hdr.record_change_num = 0;
-    pdr->hdr.length = sizeof(pldm_state_sensor_pdr) - sizeof(pldm_pdr_hdr);
-    pdr->terminus_handle = TERMINUS_HANDLE;
-    pdr->sensor_id = platformHandler->getNextSensorId();
-    pdr->entity_type = entityType;
-    pdr->entity_instance = entityInstance;
-    pdr->container_id = 1;
-    pdr->sensor_init = PLDM_NO_INIT;
-    pdr->sensor_auxiliary_names_pdr = false;
-    pdr->composite_sensor_count = 1;
-
-    auto* possibleStatesPtr = pdr->possible_states;
-    auto possibleStates =
-        reinterpret_cast<state_sensor_possible_states*>(possibleStatesPtr);
-    possibleStates->state_set_id = stateSetID;
-    possibleStates->possible_states_size = 2;
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(possibleStates);
-    if ((stateSetID == PLDM_OEM_IBM_BOOT_STATE) ||
-        (stateSetID == PLDM_OEM_IBM_VERIFICATION_STATE) ||
-        (stateSetID == PLDM_OEM_IBM_BOOT_SIDE_RENAME))
-        state->states[0].byte = 6;
-    else if (stateSetID == PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE)
-        state->states[0].byte = 126;
-    pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-    pdrEntry.data = entry.data();
-    pdrEntry.size = pdrSize;
-    repo.addRecord(pdrEntry);
-}
-
-void buildAllSlotEnableSensorPDR(oem_ibm_platform::Handler* platformHandler,
-                                 pdr_utils::Repo& repo,
-                                 const std::vector<std::string>& slotobjpaths)
-{
-    size_t pdrSize = 0;
-    pdrSize = sizeof(pldm_state_sensor_pdr) +
-              sizeof(state_sensor_possible_states);
-    std::vector<uint8_t> entry{};
-    entry.resize(pdrSize);
-    pldm_state_sensor_pdr* pdr =
-        reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
-    if (!pdr)
-    {
-        error("Failed to get record by PDR type, ERROR:{ERR}", "ERR", lg2::hex,
-              static_cast<unsigned>(PLDM_PLATFORM_INVALID_SENSOR_ID));
-        return;
-    }
-    auto& associatedEntityMap = platformHandler->getAssociateEntityMap();
-    for (const auto& entity_path : slotobjpaths)
-    {
-        pdr->hdr.record_handle = 0;
-        pdr->hdr.version = 1;
-        pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
-        pdr->hdr.record_change_num = 0;
-        pdr->hdr.length = sizeof(pldm_state_sensor_pdr) - sizeof(pldm_pdr_hdr);
-        pdr->terminus_handle = TERMINUS_HANDLE;
-        pdr->sensor_id = platformHandler->getNextSensorId();
-        if (entity_path != "" && associatedEntityMap.contains(entity_path))
-        {
-            pdr->entity_type = associatedEntityMap.at(entity_path).entity_type;
-            pdr->entity_instance =
-                associatedEntityMap.at(entity_path).entity_instance_num;
-            pdr->container_id =
-                associatedEntityMap.at(entity_path).entity_container_id;
-        }
-        else
-        {
-            // the slots are not present, dont create the PDR
+            // slot not present — skip
             continue;
         }
 
-        pdr->sensor_init = PLDM_NO_INIT;
-        pdr->sensor_auxiliary_names_pdr = false;
-        pdr->composite_sensor_count = 1;
-
-        auto* possibleStatesPtr = pdr->possible_states;
-        auto possibleStates =
-            reinterpret_cast<state_sensor_possible_states*>(possibleStatesPtr);
-        possibleStates->state_set_id = PLDM_OEM_IBM_PCIE_SLOT_SENSOR_STATE;
-        possibleStates->possible_states_size = 1;
-        auto state =
-            reinterpret_cast<state_sensor_possible_states*>(possibleStates);
-        state->states[0].byte = 15;
-        pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-        pdrEntry.data = entry.data();
-        pdrEntry.size = pdrSize;
-        repo.addRecord(pdrEntry);
+        const auto& entity = associatedEntityMap.at(entityPath);
+        EffecterPDRParams params{entity.entity_type, entity.entity_instance_num,
+                                 PLDM_OEM_IBM_PCIE_SLOT_EFFECTER_STATE, 2, 14};
+        buildStateEffecterPDR(platformHandler, params, repo, entityPath);
     }
 }
 
-void buildAllRealSAIEffecterPDR(oem_ibm_platform::Handler* platformHandler,
-                                uint16_t entityType, uint16_t entityInstance,
+static void buildStateSensorPDR(oem_ibm_platform::Handler* platformHandler,
+                                const SensorPDRParams& params,
                                 pdr_utils::Repo& repo)
-
 {
-    size_t pdrSize = 0;
-    pdrSize = sizeof(pldm_state_effecter_pdr) +
-              sizeof(state_effecter_possible_states);
-    std::vector<uint8_t> entry{};
-    entry.resize(pdrSize);
-    pldm_state_effecter_pdr* pdr =
-        reinterpret_cast<pldm_state_effecter_pdr*>(entry.data());
-    if (!pdr)
-    {
-        error("Failed to get Real SAI effecter PDR record due to the "
-              "error {ERR_CODE}",
-              "ERR_CODE", lg2::hex,
-              static_cast<unsigned>(PLDM_PLATFORM_INVALID_EFFECTER_ID));
-        return;
-    }
-    pdr->hdr.record_handle = 0;
-    pdr->hdr.version = 1;
-    pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
-    pdr->hdr.record_change_num = 0;
-    pdr->hdr.length = sizeof(pldm_state_effecter_pdr) - sizeof(pldm_pdr_hdr);
-    pdr->terminus_handle = TERMINUS_HANDLE;
-    pdr->effecter_id = platformHandler->getNextEffecterId();
-    pdr->entity_type = entityType;
-    pdr->entity_instance = entityInstance;
-    pdr->container_id = 1;
-    pdr->effecter_semantic_id = 0;
-    pdr->effecter_init = PLDM_NO_INIT;
-    pdr->has_description_pdr = false;
-    pdr->composite_effecter_count = 1;
+    const size_t pdrSize =
+        sizeof(pldm_state_sensor_pdr) + sizeof(state_sensor_possible_states);
+    std::vector<uint8_t> entry(pdrSize, 0);
 
-    auto* possibleStatesPtr = pdr->possible_states;
-    auto possibleStates =
-        reinterpret_cast<state_effecter_possible_states*>(possibleStatesPtr);
-    possibleStates->state_set_id = PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS;
-    possibleStates->possible_states_size = 1;
-    auto state =
-        reinterpret_cast<state_effecter_possible_states*>(possibleStates);
-    state->states[0].byte = 2;
-    pldm::responder::pdr_utils::PdrEntry pdrEntry{};
-    pdrEntry.data = entry.data();
-    pdrEntry.size = pdrSize;
-    repo.addRecord(pdrEntry);
-}
+    auto* pdr = reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
 
-void buildAllRealSAISensorPDR(oem_ibm_platform::Handler* platformHandler,
-                              uint16_t entityType, uint16_t entityInstance,
-                              pdr_utils::Repo& repo)
-
-{
-    size_t pdrSize = 0;
-    pdrSize = sizeof(pldm_state_sensor_pdr) +
-              sizeof(state_sensor_possible_states);
-    std::vector<uint8_t> entry{};
-    entry.resize(pdrSize);
-    pldm_state_sensor_pdr* pdr =
-        reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
-    if (!pdr)
-    {
-        error("Failed to get Real SAI sensor PDR record due to the "
-              "error {ERR_CODE}",
-              "ERR_CODE", lg2::hex,
-              static_cast<unsigned>(PLDM_PLATFORM_INVALID_SENSOR_ID));
-        return;
-    }
     pdr->hdr.record_handle = 0;
     pdr->hdr.version = 1;
     pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
@@ -504,71 +298,120 @@ void buildAllRealSAISensorPDR(oem_ibm_platform::Handler* platformHandler,
     pdr->hdr.length = sizeof(pldm_state_sensor_pdr) - sizeof(pldm_pdr_hdr);
     pdr->terminus_handle = TERMINUS_HANDLE;
     pdr->sensor_id = platformHandler->getNextSensorId();
-    pdr->entity_type = entityType;
-    pdr->entity_instance = entityInstance;
+    pdr->entity_type = params.entityType;
+    pdr->entity_instance = params.entityInstance;
     pdr->container_id = 1;
     pdr->sensor_init = PLDM_NO_INIT;
     pdr->sensor_auxiliary_names_pdr = false;
     pdr->composite_sensor_count = 1;
 
-    auto* possibleStatesPtr = pdr->possible_states;
-    auto possibleStates =
-        reinterpret_cast<state_sensor_possible_states*>(possibleStatesPtr);
-    possibleStates->state_set_id = PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS;
-    possibleStates->possible_states_size = 2;
-    auto state =
-        reinterpret_cast<state_sensor_possible_states*>(possibleStates);
-    state->states[0].byte = 6;
+    auto* possibleStates =
+        reinterpret_cast<state_sensor_possible_states*>(pdr->possible_states);
+    possibleStates->state_set_id = params.stateSetId;
+    possibleStates->possible_states_size = params.possibleStatesSize;
+    possibleStates->states[0].byte = params.statesByte;
+
     pldm::responder::pdr_utils::PdrEntry pdrEntry{};
     pdrEntry.data = entry.data();
     pdrEntry.size = pdrSize;
     repo.addRecord(pdrEntry);
+}
+
+static void buildStateSensorPDRForSlots(
+    oem_ibm_platform::Handler* platformHandler, pdr_utils::Repo& repo,
+    const std::vector<std::string>& slotObjPaths)
+{
+    const auto& associatedEntityMap = platformHandler->getAssociateEntityMap();
+
+    for (const auto& entityPath : slotObjPaths)
+    {
+        if (entityPath.empty() || !associatedEntityMap.contains(entityPath))
+        {
+            // slot not present — skip
+            continue;
+        }
+
+        const auto& entity = associatedEntityMap.at(entityPath);
+        SensorPDRParams params{entity.entity_type, entity.entity_instance_num,
+                               PLDM_OEM_IBM_PCIE_SLOT_SENSOR_STATE, 1, 15};
+        buildStateSensorPDR(platformHandler, params, repo);
+    }
 }
 
 void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
     pdr_utils::Repo& repo)
 {
-    buildAllCodeUpdateEffecterPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                  ENTITY_INSTANCE_0, PLDM_OEM_IBM_BOOT_STATE,
-                                  repo);
-    buildAllCodeUpdateEffecterPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                  ENTITY_INSTANCE_1, PLDM_OEM_IBM_BOOT_STATE,
-                                  repo);
-    buildAllCodeUpdateEffecterPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                  ENTITY_INSTANCE_0,
-                                  PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
-    buildAllCodeUpdateEffecterPDR(this, PLDM_ENTITY_SYSTEM_CHASSIS,
-                                  ENTITY_INSTANCE_1,
-                                  PLDM_OEM_IBM_SYSTEM_POWER_STATE, repo);
+    // Code-update boot-state effecters (instance 0 and 1)
+    for (uint16_t instance : {ENTITY_INSTANCE_0, ENTITY_INSTANCE_1})
+    {
+        buildStateEffecterPDR(this,
+                              {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, instance,
+                               PLDM_OEM_IBM_BOOT_STATE, 2, 6},
+                              repo);
+    }
 
-    static constexpr auto objectPath = "/xyz/openbmc_project/inventory/system";
+    // Firmware-update-state effecter
+    buildStateEffecterPDR(
+        this,
+        {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+         PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, 2, 126},
+        repo);
+
+    // System power-state effecter
+    buildStateEffecterPDR(this,
+                          {PLDM_ENTITY_SYSTEM_CHASSIS, ENTITY_INSTANCE_1,
+                           PLDM_OEM_IBM_SYSTEM_POWER_STATE, 2, 2},
+                          repo);
+
+    // PCIe slot effecters (one PDR per discovered slot)
+    static constexpr auto inventoryRoot =
+        "/xyz/openbmc_project/inventory/system";
     const std::vector<std::string> slotInterface = {
         "xyz.openbmc_project.Inventory.Item.PCIeSlot"};
-    auto slotPaths = dBusIntf->getSubTreePaths(objectPath, 0, slotInterface);
-    buildAllSlotEnableEffecterPDR(this, repo, slotPaths);
+    auto slotPaths = dBusIntf->getSubTreePaths(inventoryRoot, 0, slotInterface);
+    buildStateEffecterPDRForSlots(this, repo, slotPaths);
 
-    buildAllRealSAIEffecterPDR(this, PLDM_OEM_IBM_ENTITY_REAL_SAI,
-                               ENTITY_INSTANCE_1, repo);
+    // Real SAI effecter
+    buildStateEffecterPDR(this,
+                          {PLDM_OEM_IBM_ENTITY_REAL_SAI, ENTITY_INSTANCE_1,
+                           PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS, 1, 2},
+                          repo);
 
-    buildAllSlotEnableSensorPDR(this, repo, slotPaths);
+    // PCIe slot sensors (one PDR per discovered slot)
+    buildStateSensorPDRForSlots(this, repo, slotPaths);
 
-    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                ENTITY_INSTANCE_0, PLDM_OEM_IBM_BOOT_STATE,
-                                repo);
-    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                ENTITY_INSTANCE_1, PLDM_OEM_IBM_BOOT_STATE,
-                                repo);
-    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                ENTITY_INSTANCE_0,
-                                PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, repo);
-    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                ENTITY_INSTANCE_0,
-                                PLDM_OEM_IBM_VERIFICATION_STATE, repo);
-    buildAllCodeUpdateSensorPDR(this, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
-                                ENTITY_INSTANCE_0,
-                                PLDM_OEM_IBM_BOOT_SIDE_RENAME, repo);
-    buildAllRealSAISensorPDR(this, PLDM_OEM_IBM_ENTITY_REAL_SAI,
-                             ENTITY_INSTANCE_1, repo);
+    // Code-update boot-state sensors (instance 0 and 1)
+    for (uint16_t instance : {ENTITY_INSTANCE_0, ENTITY_INSTANCE_1})
+    {
+        buildStateSensorPDR(this,
+                            {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, instance,
+                             PLDM_OEM_IBM_BOOT_STATE, 2, 6},
+                            repo);
+    }
+
+    // Firmware-update-state sensor
+    buildStateSensorPDR(this,
+                        {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+                         PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, 2, 126},
+                        repo);
+
+    // Verification-state sensor
+    buildStateSensorPDR(this,
+                        {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+                         PLDM_OEM_IBM_VERIFICATION_STATE, 2, 6},
+                        repo);
+
+    // Boot-side-rename sensor
+    buildStateSensorPDR(this,
+                        {PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE, ENTITY_INSTANCE_0,
+                         PLDM_OEM_IBM_BOOT_SIDE_RENAME, 2, 6},
+                        repo);
+
+    // Real SAI sensor
+    buildStateSensorPDR(this,
+                        {PLDM_OEM_IBM_ENTITY_REAL_SAI, ENTITY_INSTANCE_1,
+                         PLDM_STATE_SET_OPERATIONAL_FAULT_STATUS, 2, 6},
+                        repo);
 
     realSAISensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_REAL_SAI, ENTITY_INSTANCE_1, 1,
@@ -578,10 +421,12 @@ void pldm::responder::oem_ibm_platform::Handler::buildOEMPDR(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_VERIFICATION_STATE);
     codeUpdate->setMarkerLidSensor(sensorId);
+
     sensorId = findStateSensorId(
         repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
         ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE);
     codeUpdate->setFirmwareUpdateSensor(sensorId);
+
     sensorId =
         findStateSensorId(repo.getPdr(), 0, PLDM_OEM_IBM_ENTITY_FIRMWARE_UPDATE,
                           ENTITY_INSTANCE_0, 1, PLDM_OEM_IBM_BOOT_SIDE_RENAME);
