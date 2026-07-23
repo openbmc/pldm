@@ -286,9 +286,11 @@ class FRUTablePrint
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
     {
-        assert(length == 4);
         uint32_t v = 0;
-        std::memcpy(&v, value, length);
+        if (length == sizeof(uint32_t))
+        {
+            std::memcpy(&v, value, sizeof(v));
+        }
         return std::to_string(le32toh(v));
     }
 
