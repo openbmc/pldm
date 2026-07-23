@@ -121,8 +121,15 @@ class FRUTablePrint
                                            fruGeneralFieldTypes.end());
                     if (tlv->type == PLDM_FRU_FIELD_TYPE_IANA)
                     {
-                        fruFieldValue =
-                            fruFieldParserU32(tlv->value, tlv->length);
+                        if (tlv->length == sizeof(uint32_t))
+                        {
+                            fruFieldValue =
+                                fruFieldParserU32(tlv->value, tlv->length);
+                        }
+                        else
+                        {
+                            fruFieldValue = "Invalid IANA length";
+                        }
                     }
                     else if (tlv->type == PLDM_FRU_FIELD_TYPE_MANUFAC_DATE)
                     {
@@ -164,8 +171,15 @@ class FRUTablePrint
                     }
                     if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_IANA)
                     {
-                        fruFieldValue =
-                            fruFieldParserU32(tlv->value, tlv->length);
+                        if (tlv->length == sizeof(uint32_t))
+                        {
+                            fruFieldValue =
+                                fruFieldParserU32(tlv->value, tlv->length);
+                        }
+                        else
+                        {
+                            fruFieldValue = "Invalid IANA length";
+                        }
                     }
                     else if (tlv->type != 2)
                     {
@@ -286,9 +300,12 @@ class FRUTablePrint
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
     {
-        assert(length == 4);
+        if (length != sizeof(uint32_t))
+        {
+            return "Invalid IANA length";
+        }
         uint32_t v = 0;
-        std::memcpy(&v, value, length);
+        std::memcpy(&v, value, sizeof(v));
         return std::to_string(le32toh(v));
     }
 
