@@ -112,6 +112,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ed6a846_373fe508",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1001853
+      },
+      "writtenOn": "2026-07-23T16:16:38Z",
+      "side": 1,
+      "message": "Also see: https://gerrit.openbmc.org/c/openbmc/pldm/+/92284/comments/6000ef32_3e405ac9",
+      "parentUuid": "d3b99a1d_40e2dae0",
+      "range": {
+        "startLine": 489,
+        "startChar": 0,
+        "endLine": 491,
+        "endChar": 68
+      },
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0be4bc1b_b579aec6",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
