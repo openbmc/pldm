@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05c4875a_94326884",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:30:20Z",
+      "side": 1,
+      "message": "Suggest dropping this include — this change removes the only use of std::start_lifetime_as (grep shows start_lifetime_as now appears only on this line), so common/start_lifetime_as.hpp is no longer needed here.",
+      "revId": "c53fa4a8ff3b32b53b2c50aceb32cff440e209fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba07afb4_848ed4e7",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:30:20Z",
+      "side": 1,
+      "message": "Question (non-blocking, pre-existing): this return sits inside the for (auto pdrType : pdrTypes) loop, so an empty repo for the first type aborts the whole function and skips the remaining types. Harmless today with a single type, but the loop implies multi-type support where this would be a bug — would continue fit the loop\u0027s intent better?",
+      "revId": "c53fa4a8ff3b32b53b2c50aceb32cff440e209fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f996096_00ba1c21",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:30:20Z",
+      "side": 1,
+      "message": "nit: Consider adding the record handle so a bad PDR is locatable, e.g. \"...(record handle {HANDLE})...\", \"HANDLE\", pdrEntry.handle.recordHandle.",
+      "revId": "c53fa4a8ff3b32b53b2c50aceb32cff440e209fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
