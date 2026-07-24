@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98bd9317_2af1f04b",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T23:32:44Z",
+      "side": 1,
+      "message": "Fixtures now set hdr.length for the good path -- any negative case? A short /\nbad-length PDR test would hit the new continue/error branches, which are the\nwhole point of this change.",
+      "revId": "f236270d148db89aeb0f8e5443104e25f42e2000",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96b1bbf0_85f703e9",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T23:32:44Z",
+      "side": 1,
+      "message": "Decode failure here is log + continue, but the sibling 91788 does\nreportError(InternalFailure) + return for the same thing. Intentional that the\nseries handles a bad PDR differently?",
+      "revId": "f236270d148db89aeb0f8e5443104e25f42e2000",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48451b05_20b72846",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T23:32:44Z",
+      "side": 1,
+      "message": "entity_type is a fixed field, so this is the same every iteration. Hoist it --\n`if (pdr.entity_type !\u003d entityID) continue;` before the foreach -- so a\nnon-matching PDR skips the walk.",
+      "revId": "f236270d148db89aeb0f8e5443104e25f42e2000",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
