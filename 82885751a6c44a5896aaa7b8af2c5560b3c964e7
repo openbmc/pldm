@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6078d8e6_1760c372",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001853
+      },
+      "writtenOn": "2026-07-24T12:08:52Z",
+      "side": 1,
+      "message": "... or maybe I was right :)\n\nI still hold my view, but now I have some doubts. I think I\u0027ll try to find more PLDM-capable devices around to check how other vendors implement this.",
+      "parentUuid": "d35d3c26_80019134",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84b9e627_473502ba",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
