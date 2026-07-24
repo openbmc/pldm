@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a6f6709_c31ae93b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-07-24T03:57:55Z",
+      "side": 1,
+      "message": "Table 6 contains Table 1. Assuming if Table 1 has 8000 bytes. Then Table 6 can be formed in two ways, logically splitting Table 1 in smaller tables so that Type, Length, Value is preserved or to split Table 1 so that minimum PLDM packets can be generated. In the 2nd case Table 6\u0027s CRC and Padding would only be part of last packet.",
+      "parentUuid": "f988241d_d4a7beb2",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b9e627_473502ba",
