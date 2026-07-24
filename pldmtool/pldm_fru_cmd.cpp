@@ -286,10 +286,13 @@ class FRUTablePrint
 
     static std::string fruFieldParserU32(const uint8_t* value, uint8_t length)
     {
-        assert(length == 4);
         uint32_t v = 0;
-        std::memcpy(&v, value, length);
-        return std::to_string(le32toh(v));
+        if (length == sizeof(uint32_t))
+        {
+            std::memcpy(&v, value, sizeof(v));
+            return std::to_string(le32toh(v));
+        }
+        return "Invalid IANA length";
     }
 
     static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
