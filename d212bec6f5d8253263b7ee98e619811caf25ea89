@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315f204a_85a8f14e",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:17:57Z",
+      "side": 1,
+      "message": "This new int rc is shadowed by the auto rc at line 837 in the same loop body.\njust easy to misread -- rename to decodeRc?",
+      "revId": "d212bec6f5d8253263b7ee98e619811caf25ea89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41e0bb81_dcf1010c",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:17:57Z",
+      "side": 1,
+      "message": "This PDR comes from the remote terminus but gets reported as a BMC\nInternalFailure. Carried over from the old code -- right class for a bad remote PDR?",
+      "revId": "d212bec6f5d8253263b7ee98e619811caf25ea89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e019ca2d_cec75919",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:17:57Z",
+      "side": 1,
+      "message": "Decode failure returns, so one bad PDR skips all the remaining sensors.\ncontinue instead, so a single malformed PDR doesn\u0027t stop the rest?",
+      "revId": "d212bec6f5d8253263b7ee98e619811caf25ea89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
