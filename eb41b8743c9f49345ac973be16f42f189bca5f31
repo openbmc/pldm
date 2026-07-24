@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7faa442_7a9430a9",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1334,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:46:43Z",
+      "side": 1,
+      "message": "All fixtures set a valid hdr.length, so the new if (rc) { continue; } skip branch is never tested. A bad-length case asserting it\u0027s skipped would cover the new behavior.",
+      "revId": "eb41b8743c9f49345ac973be16f42f189bca5f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba0d3566_ae6fb316",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:46:43Z",
+      "side": 1,
+      "message": "decode now validates hdr.length, which the old overlay didn\u0027t — so a PDR with a bad length is silently skipped where it used to match. Are all State Sensor PDRs reaching this (incl. remote ones via GetPDR) guaranteed to carry a correct length?",
+      "revId": "eb41b8743c9f49345ac973be16f42f189bca5f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96a2cf09_18f46c98",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T12:46:43Z",
+      "side": 1,
+      "message": "findSensorIds loops over getStateSensorPDRsByType\u0027s output, which already decoded and filtered by entity_type. So this re-decode is redundant, the if (rc) below is dead, and the entity_type check at 894 is always true. Could the helper return the decoded struct instead?",
+      "revId": "eb41b8743c9f49345ac973be16f42f189bca5f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
