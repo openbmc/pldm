@@ -62,7 +62,7 @@ int CertHandler::readIntoMemory(uint32_t offset, uint32_t length,
     {
         return PLDM_ERROR_INVALID_DATA;
     }
-    auto rc = transferFileData(filePath.c_str(), true, offset, length, address);
+    auto rc = transferFileData(filePath, true, offset, length, address);
     fs::remove(filePath);
     if (rc)
     {
@@ -83,7 +83,7 @@ int CertHandler::read(uint32_t offset, uint32_t& length, Response& response,
     {
         return PLDM_ERROR_INVALID_DATA;
     }
-    auto rc = readFile(filePath.c_str(), offset, length, response);
+    auto rc = readFile(filePath, offset, length, response);
     fs::remove(filePath);
     if (rc)
     {
