@@ -47,7 +47,7 @@ class FirmwareInventory
      * @param[in] descriptors - Descriptors associated with the firmware
      * @param[in] componentInfo - Component information associated with the
      * firmware
-     * @param[in] purpose - Purpose of the software version, default is Unknown
+     * @param[in] purpose - Purpose of the software version, default is Other
      * @note The descriptors and componentInfo parameters are reserved for
      * future use and currently not used in the implementation.
      */
@@ -55,7 +55,7 @@ class FirmwareInventory
         SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
         const std::string& generatedId, const std::string& softwareVersion,
         const std::string& associatedEndpoint,
-        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Unknown);
+        SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Other);
 
   private:
     /**
