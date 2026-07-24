@@ -56,6 +56,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ae3d156_7149b018",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-24T08:10:38Z",
+      "side": 1,
+      "message": "hi Striman\nCan you please confirm which spec version you are checking? This implementation is based on DSP0257 1.0.0.\n\nIn DSP0257 1.0.0, Table 7 defines the FRU Record Table as:\nFRU Record Data (1 or more) + Pad + CRC\n\nThere is no partial FRU Record Data in 1.0 — the pad and CRC-32 apply to the complete table only, so no per-chunk CRC exists in this layout. Partial FRU Record Data is introduced only in DSP0257 2.0, which is not backward compatible with 1.0. To my knowledge OpenBMC\u0027s FRU support is entirely 1.0 today",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84b9e627_473502ba",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
