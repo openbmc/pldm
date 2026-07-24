@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0277c994_c24d4ebc",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-24T05:22:01Z",
+      "side": 1,
+      "message": "I think its better to also log in redfish, given that its more crucial than dbus signals.",
+      "revId": "ac6f4b7e34a621b8940232d583570d74ca00005a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69c9ebab_809df2f7",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-24T05:22:01Z",
+      "side": 1,
+      "message": "I suggest returning something instead of void, ideally int, so callers would be aware at what point the function failed.",
+      "revId": "ac6f4b7e34a621b8940232d583570d74ca00005a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dfad082_4ee4929e",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-24T05:22:01Z",
+      "side": 1,
+      "message": "newState would be a raw integer value on the redfish log, which I don\u0027t think will be meaningful. I suggest converting it to a readable string before logging.",
+      "revId": "ac6f4b7e34a621b8940232d583570d74ca00005a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abcad048_a7d5a212",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-24T05:22:01Z",
+      "side": 1,
+      "message": "would be good if we log previous state too in the redfish log message.",
+      "revId": "ac6f4b7e34a621b8940232d583570d74ca00005a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
