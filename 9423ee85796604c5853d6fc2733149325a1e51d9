@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65cdf209_2023ce76",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-07-24T04:20:01Z",
+      "side": 1,
+      "message": "How will this change verify that fruFieldParserU32 does send an error string \"Invalid IANA length\"?",
+      "revId": "9423ee85796604c5853d6fc2733149325a1e51d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d083cf1e_d0bdd176",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-07-24T04:20:01Z",
+      "side": 1,
+      "message": "Instead declare variable first as 0, and then check if length is uint32_t then perform memcpy. Incase of failure, \"Invalid IANA length\" will not be sent causing unhandled error due to mismatch length of string from caller function.",
+      "range": {
+        "startLine": 303,
+        "startChar": 8,
+        "endLine": 307,
+        "endChar": 23
+      },
+      "revId": "9423ee85796604c5853d6fc2733149325a1e51d9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
