@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d35d3c26_80019134",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001853
+      },
+      "writtenOn": "2026-07-24T11:55:29Z",
+      "side": 1,
+      "message": "By the way, I checked Emulex and ConnectX-7 cards I tested earlier. They both use v1.0.0 for FRU:\n\n```\nroot@bmc:~# pldmtool base GetPLDMVersion -t 4 -m 8\n{\n    \"CompletionCode\": \"SUCCESS\",\n    \"Response\": \"1.0.0\"\n}\n\n\n```\n\nThey both have \u003e1 record sets.\n\n```\n    // ConnectX-7\n    \"FRUTableLength\": 276,\n    \"Total number of Record Set Identifiers in table\": 2,\n    \"Total number of records in table\": 2,\n    \n    // Emulex\n    \"FRUTableLength\": 626,\n    \"Total number of Record Set Identifiers in table\": 4,\n    \"Total number of records in table\": 4,\n\n```\n\nBut what I see now:\n\n1) Nvidia ConnectX-7 sends the whole table in a single response, so its CRC at the end is expected.\n2) Emulex sends 4 separate messages (one per record), each with its own padding and CRC. **But I also see errors in its PDRs.** So their PLDM stack seems buggy and they might be misinterpreting the v1.0.0 multipart rules (and therefore, me too).\n\nSo... Maybe I was wrong :)",
+      "parentUuid": "fb0dba62_0ac013e9",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84b9e627_473502ba",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
