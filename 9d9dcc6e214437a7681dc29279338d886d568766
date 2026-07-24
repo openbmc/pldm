@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15cb3fe0_aefc4d7f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T23:56:02Z",
+      "side": 1,
+      "message": "findStateSensorId has no unit test, and this patch reparses it -- a regression\nwouldn\u0027t be caught. Add one alongside the FindStateSensorPDR tests?",
+      "revId": "9d9dcc6e214437a7681dc29279338d886d568766",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acd93d1e_69fbdefb",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T23:56:02Z",
+      "side": 1,
+      "message": "findStateSensorPDR already guarantees a stateSetId set, and this returns\nsensorPdr.sensor_id (a fixed field). Does it still need to walk states, or could\nthe match just be entityInstance + containerId?",
+      "revId": "9d9dcc6e214437a7681dc29279338d886d568766",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc789d7e_036f9482",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T23:56:02Z",
+      "side": 1,
+      "message": "entityType/entityInstance/containerId are fixed fields, constant across the walk\n-- only stateSetId varies. And findStateSensorPDR already filtered by entityType\nat 617, so that check is always true. Hoist the fixed ones, leave stateSetId inside?",
+      "revId": "9d9dcc6e214437a7681dc29279338d886d568766",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
