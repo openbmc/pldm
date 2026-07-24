@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59edba52_70bdd3bb",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1216,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T11:41:38Z",
+      "side": 1,
+      "message": "nit: says \"Failed to get\" but it\u0027s a decode failure; checkTerminusHandle (1604) says \"Failed to decode\". Aligning the wording keeps the two paths consistent.",
+      "revId": "14424a8561b8d541b89cf559b4d9042d399d1383",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e54e966_1e5b40e8",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1217,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T11:41:38Z",
+      "side": 1,
+      "message": "printStateSensorPDR is void and returns early on failure, but the caller runs DisplayInJson unconditionally (2018) with the header already filled — so a bad PDR prints a truncated JSON object. Intended?",
+      "revId": "14424a8561b8d541b89cf559b4d9042d399d1383",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b3383e_3ccce9d6",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1605,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-07-24T11:41:38Z",
+      "side": 1,
+      "message": "On decode failure this returns true, so the caller prints \"The Terminus handle doesn\u0027t match\" (1971) and drops the PDR — but the handle was never checked. Could a decode failure be surfaced distinctly?",
+      "revId": "14424a8561b8d541b89cf559b4d9042d399d1383",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
