@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb0dba62_0ac013e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001853
+      },
+      "writtenOn": "2026-07-24T11:32:48Z",
+      "side": 1,
+      "message": "My bad, I was looking at v2.0.0 in my previous comment. But I\u0027ve just checked DSP0257 v1.0.0, and I still think each response has its own padding and CRC.\n\n`DSP0257 Version 1.0.0, 9.2.3 GetFRURecordTable`:\n\n\u003e This command is defined to allow the FRU Record Table data to be transferred using a **sequence of one or more command/response messages**. When more than one command is used to transfer the FRU Record Table, the **response messages** contain the non-overlapping contiguous **portions** of FRU RecordTable **as defined in Table 7**.\n\n---\n\n\u003e There is no partial FRU Record Data in 1.0\n\n\nI\u0027m not sure that I understand you. If this is about \u0027chunk\u0027 - I didn\u0027t mean partial internal data, I meant that `FRU Record Data (1 or more)` in Table 7 represents part of FRU table (which I called \u0027chunk\u0027).\n\n\u003e FRU Record Data (1 or more) + Pad + CRC\n\u003e the pad and CRC-32 apply to the complete table only\n\nDoes it contradict the spec? Because `FRU Record Data (1 or more)` is not equal to full FRU table. It may be just part of table (`10.1 Multipart Transfers` in 1.0.0). Am I wrong?",
+      "parentUuid": "6ae3d156_7149b018",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84b9e627_473502ba",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
