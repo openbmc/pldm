@@ -609,7 +609,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
-    if (offset + length > compSize + PLDM_FWUP_BASELINE_TRANSFER_SIZE)
+    if (offset > compSize)
     {
         rc = encode_request_firmware_data_resp(
             request->hdr.instance_id, PLDM_FWUP_DATA_OUT_OF_RANGE, responseMsg,
@@ -623,10 +623,24 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
+    const auto componentBytesRemaining = compSize - offset;
     size_t padBytes = 0;
-    if (offset + length > compSize)
+    if (length > componentBytesRemaining)
     {
-        padBytes = offset + length - compSize;
+        padBytes = length - componentBytesRemaining;
+        if (padBytes > PLDM_FWUP_BASELINE_TRANSFER_SIZE)
+        {
+            rc = encode_request_firmware_data_resp(
+                request->hdr.instance_id, PLDM_FWUP_DATA_OUT_OF_RANGE,
+                responseMsg, sizeof(completionCode));
+            if (rc)
+            {
+                error(
+                    "Failed to encode request firmware date response for endpoint ID '{EID}', response code '{RC}'",
+                    "EID", eid, "RC", rc);
+            }
+            return response;
+        }
     }
 
     if (componentIndex < progress.size())
@@ -642,7 +656,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
 
     response.resize(sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
     responseMsg = new (response.data()) pldm_msg;
-    package.seekg(compOffset + offset);
+    package.seekg(static_cast<std::streamoff>(compOffset) + offset);
     package.read(
         reinterpret_cast<char*>(
             response.data() + sizeof(pldm_msg_hdr) + sizeof(completionCode)),
