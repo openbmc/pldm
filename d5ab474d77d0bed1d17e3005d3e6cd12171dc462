@@ -52,6 +52,24 @@
       "parentUuid": "084d9df8_42425b87",
       "revId": "d5ab474d77d0bed1d17e3005d3e6cd12171dc462",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c011540d_ee544b56",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 1003097
+      },
+      "writtenOn": "2026-07-25T01:21:58Z",
+      "side": 1,
+      "message": "Addressed in patchset 8. The range validation no longer adds `offset +\nlength`. It first rejects `offset \u003e compSize`, computes\n`componentBytesRemaining \u003d compSize - offset`, and derives `padBytes` only\nwhen `length` exceeds the remaining component bytes. This is overflow-free\nand still permits up to `PLDM_FWUP_BASELINE_TRANSFER_SIZE` bytes of final\nrequest padding.\n\nPatchset 8 is rebased on current master, and CI job 141916 passes with\nVerified+1.",
+      "parentUuid": "65fe74c9_a8d8bcea",
+      "revId": "d5ab474d77d0bed1d17e3005d3e6cd12171dc462",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
