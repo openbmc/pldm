@@ -5,6 +5,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <array>
 #include <exception>
 
 namespace pldm
@@ -83,6 +84,15 @@ void SensorManager::disableTerminusSensors(pldm_tid_t tid)
     {
         sensor->updateReading(true, false,
                               std::numeric_limits<double>::quiet_NaN());
+    }
+
+    // component state sensor
+    for (const auto& [sensorId, components] : terminus->getStateSensors())
+    {
+        for (const auto& component : components)
+        {
+            component->handleErrGetStateSensorReading();
+        }
     }
 }
 
@@ -277,6 +287,31 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
         }
 
+        /**
+         * State Sensor PDRs carry no update interval, so every composite state
+         * sensor which has component objects is read once per polling pass.
+         */
+        for (const auto& [stateSensorId, components] :
+             terminus->getStateSensors())
+        {
+            if (!getAvailableState(tid))
+            {
+                lg2::info(
+                    "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+                    "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+                co_await stdexec::just_stopped();
+            }
+
+            rc =
+                co_await getStateSensorReadings(tid, stateSensorId, components);
+            if (rc != PLDM_SUCCESS)
+            {
+                lg2::error(
+                    "Failed to get state sensor readings for terminus {TID}, sensor Id {ID}, error: {RC}",
+                    "TID", tid, "ID", stateSensorId, "RC", rc);
+            }
+        }
+
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
     } while ((t1 - t0) >= pollingTimeInUsec);
 
@@ -404,6 +439,106 @@ exec::task<int> SensorManager::getSensorReading(
     }
 
     sensor->updateReading(true, true, value);
+    co_return completionCode;
+}
+
+exec::task<int> SensorManager::getStateSensorReadings(
+    pldm_tid_t tid, SensorID sensorId,
+    const std::vector<std::shared_ptr<StateSensor>>& components)
+{
+    auto disableComponents = [&components]() {
+        for (const auto& component : components)
+        {
+            component->handleErrGetStateSensorReading();
+        }
+    };
+
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    /* Reading the states does not rearm them: rearming belongs to the event
+     * path, which state sensors do not take part in. */
+    bitfield8_t sensorRearm{};
+    auto rc = encode_get_state_sensor_readings_req(0, sensorId, sensorRearm, 0,
+                                                   requestMsg);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        disableComponents();
+        co_return rc;
+    }
+
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send GetStateSensorReadings message for terminus {TID}, sensor Id {ID}, error {RC}",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        disableComponents();
+        co_return rc;
+    }
+
+    if ((!sensorPollTimers.contains(tid)) ||
+        (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning()))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint8_t compSensorCount = 0;
+    /* libpldm rejects a composite sensor count outside 1..8, so the response
+     * never writes past this array. */
+    std::array<get_sensor_state_field, 8> stateField{};
+    rc = decode_get_state_sensor_readings_resp(
+        responseMsg, responseLen, &completionCode, &compSensorCount,
+        stateField.data());
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        disableComponents();
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, complete code {CC}.",
+            "TID", tid, "ID", sensorId, "CC", completionCode);
+        disableComponents();
+        co_return completionCode;
+    }
+
+    for (const auto& component : components)
+    {
+        if (component->offset >= compSensorCount)
+        {
+            lg2::error(
+                "GetStateSensorReadings for terminus ID {TID}, sensor Id {ID} returned {COUNT} states, no state at offset {OFFSET}.",
+                "TID", tid, "ID", sensorId, "COUNT", compSensorCount, "OFFSET",
+                component->offset);
+            component->handleErrGetStateSensorReading();
+            continue;
+        }
+
+        const auto& field = stateField[component->offset];
+        component->updateReading(field.sensor_op_state, field.present_state);
+    }
+
     co_return completionCode;
 }
 
