@@ -556,8 +556,7 @@ TEST(TerminusTest, parseStateSensorPDRTest)
     t1.parseTerminusPDRs();
 
     // The State Sensor PDR is parsed into the parse-layer representation.
-    // Component object creation is a later commit, so both offsets - including
-    // state set 3, which has no snake_case name yet - are captured here.
+    // Both offsets are captured, whether or not their state set is mapped.
     ASSERT_EQ(1, t1.getStateSensorPdrs().size());
     auto info = t1.getStateSensorPdrs()[0];
     EXPECT_EQ(1, info->pdr.sensor_id);
@@ -571,4 +570,8 @@ TEST(TerminusTest, parseStateSensorPDRTest)
     EXPECT_EQ((std::set<uint8_t>{1, 2}), info->compositeInfo[0].second);
     EXPECT_EQ(3, info->compositeInfo[1].first);
     EXPECT_EQ((std::set<uint8_t>{1, 2, 3, 4}), info->compositeInfo[1].second);
+
+    // Object creation runs over both offsets, and creates nothing: neither
+    // state set is mapped to a state set name yet.
+    EXPECT_TRUE(t1.getStateSensors().empty());
 }

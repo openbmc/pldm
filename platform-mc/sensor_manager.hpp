@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <utility>
+#include <vector>
 
 namespace pldm
 {
@@ -94,6 +95,23 @@ class SensorManager
      *  @return coroutine return_value - PLDM completion code
      */
     exec::task<int> getSensorReading(std::shared_ptr<NumericSensor> sensor);
+
+    /** @brief Sending getStateSensorReadings command for a composite state
+     *         sensor
+     *
+     *  One command is sent per sensor ID: its response carries the state of
+     *  every composite offset, and is fanned out to the component sensors of
+     *  that sensor ID. A component sensor the response does not cover keeps
+     *  no state.
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] sensorId - sensor ID of the composite state sensor
+     *  @param[in] components - the component sensors to be updated
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getStateSensorReadings(
+        pldm_tid_t tid, SensorID sensorId,
+        const std::vector<std::shared_ptr<StateSensor>>& components);
 
     /** @brief Reference to to PLDM daemon's main event loop.
      */
