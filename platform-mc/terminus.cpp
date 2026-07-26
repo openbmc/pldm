@@ -728,7 +728,7 @@ void Terminus::addStateSensors()
             {
                 auto sensor = std::make_shared<StateSensor>(
                     tid, info, static_cast<uint8_t>(offset),
-                    stateSetName.value(), name);
+                    stateSetName.value(), name, inventoryPath);
                 lg2::info("Created StateSensor {NAME}", "NAME", name);
                 stateSensors[sensorId].emplace_back(std::move(sensor));
             }

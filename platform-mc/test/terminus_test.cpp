@@ -571,7 +571,18 @@ TEST(TerminusTest, parseStateSensorPDRTest)
     EXPECT_EQ(3, info->compositeInfo[1].first);
     EXPECT_EQ((std::set<uint8_t>{1, 2, 3, 4}), info->compositeInfo[1].second);
 
-    // Object creation runs over both offsets, and creates nothing: neither
-    // state set is mapped to a state set name yet.
-    EXPECT_TRUE(t1.getStateSensors().empty());
+    // Object creation runs over both offsets and creates one object: offset 0
+    // reports the Health state set, offset 1 a state set which is not mapped.
+    // The object is named from the Sensor Auxiliary Names PDR and lands in the
+    // state namespace of its state set.
+    const auto& stateSensors = t1.getStateSensors();
+    ASSERT_EQ(1, stateSensors.size());
+    ASSERT_TRUE(stateSensors.contains(1));
+
+    const auto& components = stateSensors.at(1);
+    ASSERT_EQ(1, components.size());
+    EXPECT_EQ(0, components[0]->offset);
+    EXPECT_EQ("health", components[0]->stateSetName);
+    EXPECT_EQ("/xyz/openbmc_project/state/health/S0_STATE1",
+              components[0]->path);
 }
