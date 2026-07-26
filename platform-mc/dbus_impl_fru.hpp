@@ -208,5 +208,31 @@ inline std::unique_ptr<PldmEntityBase> createPldmEntity(
     }
 }
 
+/** @brief Check whether the inventory item of an entity type may be the
+ *         endpoint of a health association.
+ *
+ *  xyz.openbmc_project.State.Decorator.OperationalStatus restricts the
+ *  endpoint of its 'possessed_by' association to the inventory items whose
+ *  Redfish resource exposes a health property: Inventory.Item.Cpu,
+ *  Inventory.Item.Accelerator and Inventory.Item.PCIeDevice. No entity type
+ *  is mapped to a PCIe device by createPldmEntity(), so only the processor
+ *  and the accelerator entity types reach a permitted item.
+ *
+ *  @param[in] entityType - PLDM entity type
+ *  @return whether the inventory item may be the association endpoint
+ */
+inline bool isHealthAssociationEndpoint(uint16_t entityType)
+{
+    switch (entityType)
+    {
+        case PLDM_ENTITY_PROC:
+        case PLDM_ENTITY_GPU:
+        case PLDM_ENTITY_ACCELERATOR:
+            return true;
+        default:
+            return false;
+    }
+}
+
 } // namespace dbus_api
 } // namespace pldm

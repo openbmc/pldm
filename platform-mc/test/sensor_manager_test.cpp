@@ -7,6 +7,8 @@
 #include "test/test_instance_id.hpp"
 #include "utils_test.hpp"
 
+#include <libpldm/state_set.h>
+
 #include <sdeventplus/event.hpp>
 
 #include <format>
@@ -185,7 +187,7 @@ class StateSensorPollingTest : public testing::Test
         info->pdr.composite_sensor_count = count;
         for (uint8_t offset = 0; offset < count; offset++)
         {
-            info->compositeInfo.emplace_back(offset + 1,
+            info->compositeInfo.emplace_back(PLDM_STATE_SET_HEALTH_STATE,
                                              std::set<uint8_t>{1, 2});
         }
 
@@ -195,8 +197,8 @@ class StateSensorPollingTest : public testing::Test
         {
             components.emplace_back(
                 std::make_shared<pldm::platform_mc::StateSensor>(
-                    tid, info, offset, "test_state_set",
-                    std::format("S0_Sensor_{}_{}", sensorId, offset)));
+                    tid, info, offset, "health",
+                    std::format("S0_Sensor_{}_{}", sensorId, offset), "", 0));
         }
         return components;
     }

@@ -129,6 +129,7 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
     {
         inventoryItemInft = pldm::dbus_api::createPldmEntity(
             utils::DBusHandler::getBus(), inventoryPath, entityType);
+        inventoryEntityType = entityType;
         return true;
     }
     catch (const sdbusplus::exception_t& e)
@@ -728,7 +729,8 @@ void Terminus::addStateSensors()
             {
                 auto sensor = std::make_shared<StateSensor>(
                     tid, info, static_cast<uint8_t>(offset),
-                    stateSetName.value(), name);
+                    stateSetName.value(), name, inventoryPath,
+                    inventoryEntityType);
                 lg2::info("Created StateSensor {NAME}", "NAME", name);
                 stateSensors[sensorId].emplace_back(std::move(sensor));
             }

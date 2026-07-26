@@ -7,7 +7,9 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Object/Enable/server.hpp>
+#include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
 #include <cstdint>
 #include <memory>
@@ -26,6 +28,11 @@ using namespace pldm::pdr;
 
 using ObjectEnableIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Object::server::Enable>;
+using OperationalStatusIntf =
+    sdbusplus::server::object_t<sdbusplus::xyz::openbmc_project::State::
+                                    Decorator::server::OperationalStatus>;
+using AssociationDefinitionsIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
 
 /** @struct StateSensorInfo
  *
@@ -67,6 +74,89 @@ struct StateSensorInfo
  */
 std::optional<std::string> getStateSetName(StateSetId stateSetId);
 
+/** @brief The D-Bus interface which publishes the state values of one state
+ *         set.
+ *
+ *  A state set is published through the interface modeled after its Redfish
+ *  analog, so each state set brings its own implementation. A component state
+ *  sensor owns one of them: the one of the state set its offset reports.
+ */
+class StateSetIntf
+{
+  public:
+    StateSetIntf() = default;
+    virtual ~StateSetIntf() = default;
+
+    /** @brief Publish the state the component sensor has read.
+     *
+     *  @param[in] presentState - present state of the component sensor
+     */
+    virtual void updateState(uint8_t presentState) = 0;
+
+    /** @brief Publish that the component sensor has no state. */
+    virtual void clearState() = 0;
+};
+
+/** @brief Map a Health state set value onto the OperationalStatus Functional
+ *         property.
+ *
+ *  Functional is a boolean while the DSP0249 Health state set holds ten
+ *  values, so only Normal is functional and every other value, including the
+ *  non-critical ones, collapses onto false.
+ *
+ *  @param[in] presentState - present state of the component sensor
+ *  @return the Functional property value
+ */
+bool healthStateToFunctional(uint8_t presentState);
+
+/** @brief The Health state set, published through
+ *         xyz.openbmc_project.State.Decorator.OperationalStatus.
+ *
+ *  The Health state set reports the health of the entity the state sensor
+ *  monitors, which is what the Functional property carries.
+ */
+class HealthStateSetIntf : public StateSetIntf
+{
+  public:
+    /** @brief Constructor
+     *
+     *  @param[in] bus - D-Bus connection
+     *  @param[in] path - component state sensor object path
+     *  @param[in] inventoryPath - object path of the inventory item whose
+     *             health is reported, empty when the terminus has no
+     *             inventory object
+     *  @param[in] inventoryEntityType - PLDM entity type the inventory item
+     *             at @p inventoryPath was created from
+     */
+    HealthStateSetIntf(sdbusplus::bus_t& bus, const std::string& path,
+                       const std::string& inventoryPath,
+                       uint16_t inventoryEntityType);
+
+    void updateState(uint8_t presentState) override;
+
+    void clearState() override;
+
+  private:
+    std::unique_ptr<OperationalStatusIntf> operationalStatusIntf = nullptr;
+    std::unique_ptr<AssociationDefinitionsIntf> associationDefinitionsIntf =
+        nullptr;
+};
+
+/** @brief Create the interface publishing the state values of a state set.
+ *
+ *  @param[in] stateSetId - PLDM state set ID of the component sensor
+ *  @param[in] bus - D-Bus connection
+ *  @param[in] path - component state sensor object path
+ *  @param[in] inventoryPath - object path of the inventory item the state
+ *             sensor monitors
+ *  @param[in] inventoryEntityType - PLDM entity type the inventory item at
+ *             @p inventoryPath was created from
+ *  @return the created interface, or nullptr when the state set is unmapped
+ */
+std::unique_ptr<StateSetIntf> createStateSetIntf(
+    StateSetId stateSetId, sdbusplus::bus_t& bus, const std::string& path,
+    const std::string& inventoryPath, uint16_t inventoryEntityType);
+
 /** @brief Create the D-Bus object of a component state sensor.
  *
  *  Every component state sensor object is created through this function, so
@@ -89,9 +179,10 @@ std::unique_ptr<ObjectEnableIntf> createStateSensorObject(
  * StateSensor instances, one per offset; the composite sensor itself has no
  * D-Bus object.
  *
- * The object lives at /xyz/openbmc_project/state/<stateSetName>/<name> and
- * carries xyz.openbmc_project.Object.Enable. The interface publishing the
- * state value is added per state set as those state sets are mapped.
+ * The object lives at /xyz/openbmc_project/state/<stateSetName>/<name>. It
+ * carries xyz.openbmc_project.Object.Enable, which reports the state sensor's
+ * own operational state, plus the interface publishing the state values of the
+ * offset's state set.
  */
 class StateSensor
 {
@@ -104,10 +195,15 @@ class StateSensor
      *  @param[in] stateSetName - name of the offset's state set, the state
      *             namespace element of the object path
      *  @param[in] name - object leaf name
+     *  @param[in] inventoryPath - object path of the inventory item the state
+     *             sensor monitors
+     *  @param[in] inventoryEntityType - PLDM entity type the inventory item
+     *             at @p inventoryPath was created from
      */
     StateSensor(const pldm_tid_t tid, std::shared_ptr<StateSensorInfo> info,
                 uint8_t offset, const std::string& stateSetName,
-                const std::string& name);
+                const std::string& name, const std::string& inventoryPath,
+                uint16_t inventoryEntityType);
 
     ~StateSensor() = default;
 
@@ -130,7 +226,8 @@ class StateSensor
      *         GetStateSensorReadings response.
      *
      *  The component sensor only has a state while its own sensor operational
-     *  state is enabled, so that is what the object is enabled from.
+     *  state is enabled, so that is what the object is enabled from and what
+     *  gates publishing the state value.
      *
      *  @param[in] sensorOpState - operational state of the component sensor
      *  @param[in] presentState - present state of the component sensor
@@ -177,6 +274,10 @@ class StateSensor
 
   private:
     std::unique_ptr<ObjectEnableIntf> objectEnableIntf = nullptr;
+
+    /** @brief Interface publishing the state values of the offset's state set
+     */
+    std::unique_ptr<StateSetIntf> stateSetIntf = nullptr;
 };
 
 } // namespace platform_mc

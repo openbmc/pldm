@@ -344,6 +344,10 @@ class Terminus
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
 
+    /* @brief PLDM entity type the terminus inventory item was created from,
+     * which is what selected its Inventory.Item interface */
+    uint16_t inventoryEntityType = 0;
+
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
      */
