@@ -18,6 +18,16 @@ class MockSensorManager : public SensorManager
         SensorManager(event, terminusManager, termini, manager) {};
 
     MOCK_METHOD(void, doSensorPolling, (pldm_tid_t tid), (override));
+
+    /** @brief Expose the GetStateSensorReadings coroutine so a test can drive
+     *         it with an injected response.
+     */
+    exec::task<int> callGetStateSensorReadings(
+        pldm_tid_t tid, SensorID sensorId,
+        const std::vector<std::shared_ptr<StateSensor>>& components)
+    {
+        return getStateSensorReadings(tid, sensorId, components);
+    }
 };
 
 } // namespace platform_mc
