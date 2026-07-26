@@ -176,6 +176,17 @@ class Terminus
         return stateSensorPdrs;
     }
 
+    /** @brief Get the component State Sensor objects, keyed by the sensor ID
+     *         of the composite sensor they belong to
+     *
+     *  @return the component state sensor objects
+     */
+    const std::map<SensorID, std::vector<std::shared_ptr<StateSensor>>>&
+        getStateSensors() const
+    {
+        return stateSensors;
+    }
+
     /** @brief Get Numeric Sensor Object by sensorID
      *
      *  @param[in] id - sensor ID
@@ -255,6 +266,13 @@ class Terminus
      */
     std::shared_ptr<StateSensorInfo> parseStateSensorPDR(
         const std::vector<uint8_t>& pdrData);
+
+    /** @brief Create the component State Sensor objects of the parsed State
+     *         Sensor PDRs. One object is created per composite sensor offset
+     *         whose state set is mapped to a state set name; an offset with an
+     *         unmapped state set is skipped.
+     */
+    void addStateSensors();
 
     /** @brief Create the terminus inventory path under
      *         /xyz/openbmc_project/inventory/system/board/. The concrete
@@ -344,6 +362,15 @@ class Terminus
 
     /** @brief State Sensor PDR list */
     std::vector<std::shared_ptr<StateSensorInfo>> stateSensorPdrs{};
+
+    /** @brief Component State Sensor objects, keyed by the sensor ID of the
+     *         composite sensor they belong to. GetStateSensorReadings is
+     *         issued once per sensor ID and its response carries every
+     *         composite offset, so the poll fans one response out to the
+     *         component sensors listed under that sensor ID.
+     */
+    std::map<SensorID, std::vector<std::shared_ptr<StateSensor>>>
+        stateSensors{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;

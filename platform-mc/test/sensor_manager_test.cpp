@@ -1,11 +1,15 @@
+#include "common/start_lifetime_as.hpp"
 #include "common/types.hpp"
 #include "mock_sensor_manager.hpp"
+#include "mock_terminus_manager.hpp"
 #include "platform-mc/sensor_manager.hpp"
 #include "platform-mc/terminus_manager.hpp"
 #include "test/test_instance_id.hpp"
 #include "utils_test.hpp"
 
 #include <sdeventplus/event.hpp>
+
+#include <format>
 
 #include <gtest/gtest.h>
 
@@ -155,6 +159,174 @@ TEST_F(SensorManagerTest, sensorPollingTest)
     sensorManager.startPolling(tid);
 
     utils::runEventLoopForSeconds(event, seconds);
+
+    sensorManager.stopPolling(tid);
+}
+
+class StateSensorPollingTest : public testing::Test
+{
+  protected:
+    StateSensorPollingTest() :
+        bus(pldm::utils::DBusHandler::getBus()),
+        event(sdeventplus::Event::get_default()), instanceIdDb(),
+        reqHandler(pldmTransport, event, instanceIdDb, false),
+        mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
+        sensorManager(event, mockTerminusManager, termini, nullptr)
+    {}
+
+    /** @brief A composite state sensor with @p count offsets and a component
+     *         sensor object for each of them.
+     */
+    std::vector<std::shared_ptr<pldm::platform_mc::StateSensor>> makeComponents(
+        pldm_tid_t tid, uint16_t sensorId, uint8_t count)
+    {
+        auto info = std::make_shared<pldm::platform_mc::StateSensorInfo>();
+        info->pdr.sensor_id = sensorId;
+        info->pdr.composite_sensor_count = count;
+        for (uint8_t offset = 0; offset < count; offset++)
+        {
+            info->compositeInfo.emplace_back(offset + 1,
+                                             std::set<uint8_t>{1, 2});
+        }
+
+        std::vector<std::shared_ptr<pldm::platform_mc::StateSensor>> components;
+        components.reserve(count);
+        for (uint8_t offset = 0; offset < count; offset++)
+        {
+            components.emplace_back(
+                std::make_shared<pldm::platform_mc::StateSensor>(
+                    tid, info, offset, "test_state_set",
+                    std::format("S0_Sensor_{}_{}", sensorId, offset)));
+        }
+        return components;
+    }
+
+    PldmTransport* pldmTransport = nullptr;
+    sdbusplus::bus_t& bus;
+    sdeventplus::Event event;
+    TestInstanceIdDb instanceIdDb;
+    pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    pldm::platform_mc::MockTerminusManager mockTerminusManager;
+    pldm::platform_mc::MockSensorManager sensorManager;
+    std::map<pldm_tid_t, std::shared_ptr<pldm::platform_mc::Terminus>> termini;
+};
+
+TEST_F(StateSensorPollingTest, stateSensorReadingsFanOutTest)
+{
+    auto mappedTid =
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+    auto tid = mappedTid.value();
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    mockTerminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+    auto components = makeComponents(tid, 1, 2);
+    sensorManager.startPolling(tid);
+
+    // One response for sensor ID 1 carrying the state of both offsets.
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + 10> resp{
+        0x0,
+        0x02,
+        0x21, // response header
+        PLDM_SUCCESS,
+        2,    // compositeSensorCount
+        PLDM_SENSOR_ENABLED,
+        2,
+        1,
+        2, // offset 0 state field
+        PLDM_SENSOR_DISABLED,
+        1,
+        1,
+        1 // offset 1 state field
+    };
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    stdexec::sync_wait(
+        sensorManager.callGetStateSensorReadings(tid, 1, components));
+
+    // Each component sensor takes the state field of its own offset, and is
+    // enabled from its own operational state.
+    EXPECT_EQ(PLDM_SENSOR_ENABLED, components[0]->sensorOpState);
+    EXPECT_EQ(2, components[0]->presentState);
+    EXPECT_TRUE(components[0]->enabled());
+
+    EXPECT_EQ(PLDM_SENSOR_DISABLED, components[1]->sensorOpState);
+    EXPECT_EQ(1, components[1]->presentState);
+    EXPECT_FALSE(components[1]->enabled());
+
+    sensorManager.stopPolling(tid);
+}
+
+TEST_F(StateSensorPollingTest, stateSensorReadingsShortResponseTest)
+{
+    auto mappedTid =
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+    auto tid = mappedTid.value();
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    mockTerminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+    auto components = makeComponents(tid, 2, 2);
+    sensorManager.startPolling(tid);
+
+    // The terminus answers with fewer offsets than the PDR described.
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + 6> resp{
+        0x0,
+        0x02,
+        0x21, // response header
+        PLDM_SUCCESS,
+        1,    // compositeSensorCount
+        PLDM_SENSOR_ENABLED,
+        2,
+        1,
+        2 // offset 0 state field
+    };
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    stdexec::sync_wait(
+        sensorManager.callGetStateSensorReadings(tid, 2, components));
+
+    // The covered offset takes its state; the uncovered one has none.
+    EXPECT_EQ(2, components[0]->presentState);
+    EXPECT_TRUE(components[0]->enabled());
+
+    EXPECT_EQ(PLDM_SENSOR_UNAVAILABLE, components[1]->sensorOpState);
+    EXPECT_EQ(0, components[1]->presentState);
+    EXPECT_FALSE(components[1]->enabled());
+
+    sensorManager.stopPolling(tid);
+}
+
+TEST_F(StateSensorPollingTest, stateSensorReadingsFailureTest)
+{
+    auto mappedTid =
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+    auto tid = mappedTid.value();
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    mockTerminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+    auto components = makeComponents(tid, 3, 2);
+    sensorManager.startPolling(tid);
+
+    // Take a state first, so the failure below has something to clear.
+    components[0]->updateReading(PLDM_SENSOR_ENABLED, 2);
+    EXPECT_TRUE(components[0]->enabled());
+
+    // No response is queued, so the request fails.
+    stdexec::sync_wait(
+        sensorManager.callGetStateSensorReadings(tid, 3, components));
+
+    for (const auto& component : components)
+    {
+        EXPECT_EQ(PLDM_SENSOR_UNAVAILABLE, component->sensorOpState);
+        EXPECT_EQ(0, component->presentState);
+        EXPECT_FALSE(component->enabled());
+    }
 
     sensorManager.stopPolling(tid);
 }

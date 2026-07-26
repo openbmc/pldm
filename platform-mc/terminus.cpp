@@ -257,6 +257,8 @@ void Terminus::parseTerminusPDRs()
                   tid, "PATH", inventoryPath);
     }
 
+    addStateSensors();
+
     addNextSensorFromPDRs();
 }
 
@@ -685,6 +687,59 @@ std::shared_ptr<StateSensorInfo> Terminus::parseStateSensorPDR(
     }
 
     return info;
+}
+
+void Terminus::addStateSensors()
+{
+    for (const auto& info : stateSensorPdrs)
+    {
+        if (!info)
+        {
+            continue;
+        }
+
+        auto sensorId = info->pdr.sensor_id;
+        auto sensorNames = getSensorNames(sensorId);
+        if (sensorNames.empty())
+        {
+            lg2::error(
+                "Terminus ID {TID}: Failed to get name for State Sensor {SID}",
+                "TID", tid, "SID", sensorId);
+            continue;
+        }
+
+        for (size_t offset = 0; offset < info->compositeInfo.size(); offset++)
+        {
+            auto stateSetName =
+                getStateSetName(info->compositeInfo[offset].first);
+            if (!stateSetName)
+            {
+                continue;
+            }
+
+            /* The Sensor Auxiliary Names PDR names each composite sensor, so
+             * an offset it covers gives the component sensor its own name.
+             * Beyond that, the offset is appended to the sensor's default
+             * name to keep the component names distinct. */
+            auto name = offset < sensorNames.size()
+                            ? sensorNames[offset]
+                            : std::format("{}_{}", sensorNames.front(), offset);
+            try
+            {
+                auto sensor = std::make_shared<StateSensor>(
+                    tid, info, static_cast<uint8_t>(offset),
+                    stateSetName.value(), name);
+                lg2::info("Created StateSensor {NAME}", "NAME", name);
+                stateSensors[sensorId].emplace_back(std::move(sensor));
+            }
+            catch (const sdbusplus::exception_t& e)
+            {
+                lg2::error(
+                    "Failed to create StateSensor. error - {ERROR} name - {NAME}",
+                    "ERROR", e, "NAME", name);
+            }
+        }
+    }
 }
 
 std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorID id)
