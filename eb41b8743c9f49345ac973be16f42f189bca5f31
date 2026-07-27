@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4014e853_11704341",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1334,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T07:00:36Z",
+      "side": 1,
+      "message": "Sure, added the new test case in PS3.\nThanks for acknowledging.",
+      "parentUuid": "e7faa442_7a9430a9",
+      "revId": "eb41b8743c9f49345ac973be16f42f189bca5f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba0d3566_ae6fb316",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e84da66b_e44be80c",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 858,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T07:00:36Z",
+      "side": 1,
+      "message": "Indeed the legacy approach didn\u0027t have the length checking for header.\nThe skipping here is a fix rather than regression.",
+      "parentUuid": "ba0d3566_ae6fb316",
+      "revId": "eb41b8743c9f49345ac973be16f42f189bca5f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96a2cf09_18f46c98",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-07-24T12:46:43Z",
       "side": 1,
       "message": "findSensorIds loops over getStateSensorPDRsByType\u0027s output, which already decoded and filtered by entity_type. So this re-decode is redundant, the if (rc) below is dead, and the entity_type check at 894 is always true. Could the helper return the decoded struct instead?",
+      "revId": "eb41b8743c9f49345ac973be16f42f189bca5f31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "615da17f_4624ba94",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T07:00:36Z",
+      "side": 1,
+      "message": "I have removed the `entity_type` checking.\nHowever, I rather tend to keep the helper function using the curent logic.\nThe reason is that there could be other consumer which is expecting such implementation, altering this returning type could lead to unexpected behaviour.",
+      "parentUuid": "96a2cf09_18f46c98",
       "revId": "eb41b8743c9f49345ac973be16f42f189bca5f31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
