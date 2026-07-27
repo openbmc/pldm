@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5df0269d_69cad4e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-27T08:02:46Z",
+      "side": 1,
+      "message": "Thanks @striker_1993@mail.ru— that sounds like a great plan, and I\u0027d genuinely be interested in whatever you find across more vendors.\n\nOne thing that might help while you investigate: the accumulator here already handles the conformant multi-message case. It concatenates the non-overlapping portions and only validates/parses the single trailing CRC once, at the final End/StartAndEnd. So a device that legitimately splits the table across Start/Middle/End (with one CRC at the very end of the reconstructed table) works today — the only case it wouldn\u0027t handle is the per-message pad+CRC variant, which so far we\u0027ve only seen on the Emulex card that also reports malformed PDRs.\n\nSo I don\u0027t think we\u0027re closing the door on multi-message devices — we\u0027re just following the reference responder\u0027s single-whole-table-CRC model, with GetFRURecordTableMetadata returning one table-wide checksum as the tie-breaker.\n\nIf your survey turns up a well-behaved device that genuinely uses per-message CRCs, I\u0027m very happy to revisit and add that handling as a follow-up",
+      "parentUuid": "6078d8e6_1760c372",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "84b9e627_473502ba",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 5
