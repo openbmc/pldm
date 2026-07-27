@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "986a0e29_029a5b5e",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T11:05:15Z",
+      "side": 1,
+      "message": "Done in PS3.",
+      "parentUuid": "05c4875a_94326884",
+      "revId": "c53fa4a8ff3b32b53b2c50aceb32cff440e209fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba07afb4_848ed4e7",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d785a19c_80b3c84d",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T11:05:15Z",
+      "side": 1,
+      "message": "As of my opinion, I think the legacy approach was trying to avoid the \"partially correct\" scenario, which will makes the error silently return and hard to revert in runtime.\n\nAlso, this was a refactoring patch and thus I didn\u0027t make any changes on the code behaviour. If you found this was a bug and required fixing, I am happy to submitted another patch for it.",
+      "parentUuid": "ba07afb4_848ed4e7",
+      "revId": "c53fa4a8ff3b32b53b2c50aceb32cff440e209fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f996096_00ba1c21",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-07-24T12:30:20Z",
       "side": 1,
       "message": "nit: Consider adding the record handle so a bad PDR is locatable, e.g. \"...(record handle {HANDLE})...\", \"HANDLE\", pdrEntry.handle.recordHandle.",
+      "revId": "c53fa4a8ff3b32b53b2c50aceb32cff440e209fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4fa6d14_0cde0ac4",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T11:05:15Z",
+      "side": 1,
+      "message": "Added in PS3, thanks for acknowledging!",
+      "parentUuid": "9f996096_00ba1c21",
       "revId": "c53fa4a8ff3b32b53b2c50aceb32cff440e209fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
