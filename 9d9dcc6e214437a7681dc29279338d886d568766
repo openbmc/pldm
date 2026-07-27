@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ffcf6a7_6b6eb8ab",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T03:49:42Z",
+      "side": 1,
+      "message": "Sure, I have added several testing in PS3.\nThanks for acknowledging this.",
+      "parentUuid": "15cb3fe0_aefc4d7f",
+      "revId": "9d9dcc6e214437a7681dc29279338d886d568766",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "acd93d1e_69fbdefb",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aa5bea8_1d550422",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T03:49:42Z",
+      "side": 1,
+      "message": "Agreed that `findStateSensorPDR()` already guarantees both the entity type and state set. \nI have now removed the redundant walk and uses simple matching here.",
+      "parentUuid": "acd93d1e_69fbdefb",
+      "revId": "9d9dcc6e214437a7681dc29279338d886d568766",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc789d7e_036f9482",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-07-24T23:56:02Z",
       "side": 1,
       "message": "entityType/entityInstance/containerId are fixed fields, constant across the walk\n-- only stateSetId varies. And findStateSensorPDR already filtered by entityType\nat 617, so that check is always true. Hoist the fixed ones, leave stateSetId inside?",
+      "revId": "9d9dcc6e214437a7681dc29279338d886d568766",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bdd44e8_22e8ee82",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T03:49:42Z",
+      "side": 1,
+      "message": "Done in PS3.",
+      "parentUuid": "bc789d7e_036f9482",
       "revId": "9d9dcc6e214437a7681dc29279338d886d568766",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
