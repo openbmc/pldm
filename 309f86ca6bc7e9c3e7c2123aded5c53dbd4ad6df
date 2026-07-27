@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df101268_810ff243",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T04:45:27Z",
+      "side": 1,
+      "message": "Note that picking the last PDR was inherited from the legacy implementation.\nIn addition, this patch was only meant for refactor purpose only.\n\nThus, I will tend to not modify to keep the implementation aligns with the legacy approach.",
+      "parentUuid": "2da3484f_a6923d95",
+      "revId": "309f86ca6bc7e9c3e7c2123aded5c53dbd4ad6df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b48d4b3_5158a225",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f81b6575_4bd4caa4",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T04:45:27Z",
+      "side": 1,
+      "message": "To keep the util functions(decode and iterator) simple, I will tend to keep this logic here.\n\nHowever, it is totally okay to refine the logic here further.\nHappy to submit another patch for this if you insist.",
+      "parentUuid": "5b48d4b3_5158a225",
+      "revId": "309f86ca6bc7e9c3e7c2123aded5c53dbd4ad6df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8a8c611_5d0f50ae",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-07-24T23:42:49Z",
       "side": 1,
       "message": "sensorOffset is only set on the SW_TERMINATION_STATUS match. If no sensor carries it, the loop ends with rc \u003d\u003d 0 and the function returns PLDM_SUCCESS with a stale sensorOffset. Worth returning PLDM_ERROR when it\u0027s never found?",
+      "revId": "309f86ca6bc7e9c3e7c2123aded5c53dbd4ad6df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4cacc68_b279fac6",
+        "filename": "softoff/softoff.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T04:45:27Z",
+      "side": 1,
+      "message": "Tend to keep the logic here to align with the legacy approach.",
+      "parentUuid": "a8a8c611_5d0f50ae",
       "revId": "309f86ca6bc7e9c3e7c2123aded5c53dbd4ad6df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
