@@ -238,6 +238,7 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
         });
     if (rc)
     {
+        instanceIdDb.free(mctp_eid, instanceId);
         error(
             "Failed to send the getPDR request to remote terminus, response code '{RC}'",
             "RC", rc);
