@@ -1,0 +1,166 @@
+From 0557904637613c53374c2aa6df4a7b56853133d0 Mon Sep 17 00:00:00 2001
+From: Andy Hsu <andy.hsu.wiwynn@gmail.com>
+Date: Mon, 27 Jul 2026 05:31:57 +0000
+Subject: [PATCH] For YV4T1M-2324, when frb2 add sel log
+
+---
+ .../file_io_type_event_log.cpp                | 110 +++++++++++++++++-
+ 1 file changed, 106 insertions(+), 4 deletions(-)
+
+diff --git a/oem/meta/libpldmresponder/file_io_type_event_log.cpp b/oem/meta/libpldmresponder/file_io_type_event_log.cpp
+index 84ae633..8436bf7 100644
+--- a/oem/meta/libpldmresponder/file_io_type_event_log.cpp
++++ b/oem/meta/libpldmresponder/file_io_type_event_log.cpp
+@@ -3,18 +3,22 @@
+ #include "common/utils.hpp"
+ #include "oem/meta/utils.hpp"
+ 
++#include <com/meta/State/Watchdog/event.hpp>
+ #include <phosphor-logging/commit.hpp>
+ #include <phosphor-logging/lg2.hpp>
+ #include <sdbusplus/bus.hpp>
+ #include <xyz/openbmc_project/State/Power/event.hpp>
+ #include <xyz/openbmc_project/State/Thermal/event.hpp>
++#include <xyz/openbmc_project/State/Boot/PostCode/client.hpp>
+ 
+ #include <array>
++#include <algorithm>
+ #include <format>
+ #include <map>
+ #include <string>
+ #include <string_view>
+ #include <utility>
++#include <vector>
+ 
+ PHOSPHOR_LOG2_USING;
+ 
+@@ -775,6 +779,104 @@ static void rainbowFault(const message& eventData, const std::string&,
+     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
+ }
+ 
++static constexpr std::size_t minimumPostCodeEntries = 10;
++
++static void reportErrorPostCode(const std::string& eventType,
++                                const std::string& slotNum)
++{
++    auto& bus = pldm::utils::DBusHandler::getBus();
++    using Proxy = sdbusplus::client::xyz::openbmc_project::state::boot::PostCode<>;
++    auto path = std::string(Proxy::namespace_path::value) + "/" + std::string(Proxy::namespace_path::host) + slotNum;
++    
++    using PostCodeElement = std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>;
++    std::vector<PostCodeElement> rawPostcodes;
++
++    try{
++        auto service = pldm::utils::DBusHandler().getService(path.c_str(), Proxy::interface);
++        auto method = bus.new_method_call(service.c_str(), path.c_str(),
++                                        Proxy::interface, "GetPostCodes");
++
++        method.append(static_cast<uint16_t>(1));
++        auto ResponseMsg = bus.call(method, dbusTimeout);
++        ResponseMsg.read(rawPostcodes);
++    }
++    catch (const std::exception& e)
++    {
++        error(
++            "Failed to make a d-bus call to host-postd daemon, error - {ERROR}",
++            "ERROR", e);
++        return ;
++    }
++
++    std::vector<std::string> postCodes;
++    const auto capturedPostCodes =
++        std::min(minimumPostCodeEntries, rawPostcodes.size());
++    postCodes.reserve(capturedPostCodes == 0 ? 1 : capturedPostCodes);
++
++    if (capturedPostCodes == 0)
++    {
++        postCodes.emplace_back("Unknown");
++    }
++    else
++    {
++        const auto firstIndex = rawPostcodes.size() - capturedPostCodes;
++        for (std::size_t index = firstIndex; index < rawPostcodes.size(); ++index)
++        {
++            const auto& [code, _] = rawPostcodes[index];
++            std::string formattedPostCode = "0x";
++            for (auto byte : code)
++            {
++                formattedPostCode += std::format("{:02x}", byte);
++            }
++            postCodes.emplace_back(std::move(formattedPostCode));
++        }
++    }
++
++    std::string postCodesCsv;
++    for (std::size_t index = 0; index < postCodes.size(); ++index)
++    {
++        if (index != 0)
++        {
++            postCodesCsv += ",";
++        }
++        postCodesCsv += postCodes[index];
++    }
++
++    const auto postCodeCount = static_cast<size_t>(capturedPostCodes);
++    const auto& latestPostCode = postCodes.back();
++
++    using namespace sdbusplus::error::com::meta::state::Watchdog;
++    std::string deviceIdentifier = "FRB2 host" + slotNum;
++    lg2::commit(BiosFrb2PostCodeCaptured(
++        "DEVICE_IDENTIFIER", deviceIdentifier, "EVENT_TYPE", eventType,
++        "POST_CODE_COUNT", postCodeCount, "LATEST_POST_CODE",
++        latestPostCode, "POST_CODES_CSV", postCodesCsv));
++}
++
++static void frb12WatchdogTimerExpired(const message&, const std::string&,
++                        const std::string& slotNumStr)
++{
++    reportErrorPostCode("TimerExpired", slotNumStr);
++}
++
++static void frb2WatchdogHardReset(const message&, const std::string&,
++                        const std::string& slotNumStr)
++{
++    reportErrorPostCode("HardReset", slotNumStr);
++}
++
++static void frb2WatchdogPowerOff(const message&, const std::string&,
++                        const std::string& slotNumStr)
++{
++    reportErrorPostCode("PowerOff", slotNumStr);
++}
++
++static void frb2WatchdogPowerCycle(const message&, const std::string&,
++                        const std::string& slotNumStr)
++{
++    reportErrorPostCode("PowerCycle", slotNumStr);
++}
++
+ static void createEventLog(
+     const std::string& event,
+     sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity)
+@@ -924,7 +1026,7 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
+     {EventType::ADDC_DUMP, {report::reportError, nullptr}},
+     {EventType::BMC_COMES_OUT_OF_COLD_RESET, {report::reportError, nullptr}},
+     {EventType::BIOS_FRB12_WATCHDOG_TIMER_EXPIRED,
+-     {report::reportError, nullptr}},
++     {report::frb12WatchdogTimerExpired, nullptr}},
+     {EventType::BIC_POWER_FAILURE, {report::reportError, nullptr}},
+     {EventType::CPU_POWER_FAILURE, {report::reportError, nullptr}},
+     {EventType::V_BOOT_FAILURE, {report::reportError, nullptr}},
+@@ -943,9 +1045,9 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
+     {EventType::FAN_ERROR, {report::reportError, nullptr}},
+     {EventType::HDT_PRSNT_ASSERTION, {report::reportError, nullptr}},
+     {EventType::APML_ALERT_ASSERTION, {report::reportError, nullptr}},
+-    {EventType::FRB2_WDT_HARD_RST, {report::reportError, nullptr}},
+-    {EventType::FRB2_WDT_PWR_DOWN, {report::reportError, nullptr}},
+-    {EventType::FRB2_WDT_PWR_CYCLE, {report::reportError, nullptr}},
++    {EventType::FRB2_WDT_HARD_RST, {report::frb2WatchdogHardReset, nullptr}},
++    {EventType::FRB2_WDT_PWR_DOWN, {report::frb2WatchdogPowerOff, nullptr}},
++    {EventType::FRB2_WDT_PWR_CYCLE, {report::frb2WatchdogPowerCycle, nullptr}},
+     {EventType::OS_LOAD_WDT_EXPIRED, {report::reportError, nullptr}},
+     {EventType::OS_LOAD_WDT_HARD_RST, {report::reportError, nullptr}},
+     {EventType::OS_LOAD_WDT_PWR_DOWN, {report::reportError, nullptr}},
+-- 
+2.43.0
+
