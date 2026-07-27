@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9748ff3_0a6813d1",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T03:04:38Z",
+      "side": 1,
+      "message": "That is indeed an improvable flaw, thanks!\nI have now added the suggested negative case for the refactored section.",
+      "parentUuid": "98bd9317_2af1f04b",
+      "revId": "f236270d148db89aeb0f8e5443104e25f42e2000",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96b1bbf0_85f703e9",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8376e69_e9577e30",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T03:04:38Z",
+      "side": 1,
+      "message": "Yes, this implementation was intentional.\n`findStateSensorPDR()` was intended to find state sensors PDR, and its caller will handle empty result as `ResourceNotFound`. Please check at here: \nhttps://github.com/openbmc/pldm/blob/6e343540efde7d074932880a49b9c8a11ffe0e2d/pldmd/dbus_impl_pdr.cpp#L37\n\nIn this case, aborting one malformed record would hide the other valid records.",
+      "parentUuid": "96b1bbf0_85f703e9",
+      "revId": "f236270d148db89aeb0f8e5443104e25f42e2000",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48451b05_20b72846",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-07-24T23:32:44Z",
       "side": 1,
       "message": "entity_type is a fixed field, so this is the same every iteration. Hoist it --\n`if (pdr.entity_type !\u003d entityID) continue;` before the foreach -- so a\nnon-matching PDR skips the walk.",
+      "revId": "f236270d148db89aeb0f8e5443104e25f42e2000",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0885581_6b9baed8",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T03:04:38Z",
+      "side": 1,
+      "message": "Thanks for the catching.\nI have modified to adapt to your suggestion.",
+      "parentUuid": "48451b05_20b72846",
       "revId": "f236270d148db89aeb0f8e5443104e25f42e2000",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
