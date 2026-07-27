@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48443c32_4a665266",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T10:07:34Z",
+      "side": 1,
+      "message": "Done, renamed to `decodeRc` in PS3.",
+      "parentUuid": "315f204a_85a8f14e",
+      "revId": "d212bec6f5d8253263b7ee98e619811caf25ea89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41e0bb81_dcf1010c",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a5f37d6_b37e32b4",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T10:07:34Z",
+      "side": 1,
+      "message": "Yes, please note that the legacy approach uses this way as well.",
+      "parentUuid": "41e0bb81_dcf1010c",
+      "revId": "d212bec6f5d8253263b7ee98e619811caf25ea89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e019ca2d_cec75919",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-07-24T12:17:57Z",
       "side": 1,
       "message": "Decode failure returns, so one bad PDR skips all the remaining sensors.\ncontinue instead, so a single malformed PDR doesn\u0027t stop the rest?",
+      "revId": "d212bec6f5d8253263b7ee98e619811caf25ea89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38a97227_844c2477",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-27T10:07:34Z",
+      "side": 1,
+      "message": "Yes, this followed the legacy approach.\nSometimes, I think partly correct would be even worse than all wrong.",
+      "parentUuid": "e019ca2d_cec75919",
       "revId": "d212bec6f5d8253263b7ee98e619811caf25ea89",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
