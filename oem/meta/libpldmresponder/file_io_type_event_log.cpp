@@ -6,15 +6,20 @@
 #include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/State/Boot/PostCode/client.hpp>
 #include <xyz/openbmc_project/State/Power/event.hpp>
 #include <xyz/openbmc_project/State/Thermal/event.hpp>
 
+#include <algorithm>
 #include <array>
 #include <format>
 #include <map>
+#include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
+#include <vector>
 
 PHOSPHOR_LOG2_USING;
 
@@ -1144,6 +1149,13 @@ static const std::map<uint8_t, FaultDesc> arkeFaultsList = {
       "DEVICE", record::thermalFault}},
 };
 
+struct EventContext
+{
+    pldm_tid_t tid;
+    std::string slotNum;
+    std::optional<std::string> configPath;
+};
+
 namespace report
 {
 static void recordEventLog(const FaultDesc& fault, EventAssert eventStatus,
@@ -1161,27 +1173,31 @@ static void recordEventLog(const FaultDesc& fault, EventAssert eventStatus,
 }
 
 static void thermalFault(const message& eventData, const std::string&,
-                         const std::string& slotNum)
+                         const EventContext& context)
 {
-    auto device = "/xyz/openbmc_project/State/Thermal/host" + slotNum + "/cpu0";
+    auto device = "/xyz/openbmc_project/State/Thermal/host" + context.slotNum +
+                  "/cpu0";
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
 
-    record::thermalFault(device, eventStatus, "Thermal Trip");
+    record::thermalFault(device, eventStatus,
+                         std::string(eventList[eventData[0]]));
 }
 
-static void powerRailFault(const message& eventData, const std::string&,
-                           const std::string& slotNum)
+static void powerRailFault(const message& eventData, const std::string& event,
+                           const EventContext& context)
 {
-    auto device = "/xyz/openbmc_project/State/Power/host" + slotNum + "/power";
+    auto device = "/xyz/openbmc_project/State/Power/host" + context.slotNum +
+                  "/power";
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
 
-    record::powerRailFault(device, eventStatus, "Power Rail Fault");
+    record::powerRailFault(device, eventStatus, event);
 }
 
 static void prochotSdSensor(const message& eventData, const std::string&,
-                            const std::string& slotNum)
+                            const EventContext& context)
 {
-    auto device = "/xyz/openbmc_project/State/Thermal/host" + slotNum + "/cpu0";
+    auto device = "/xyz/openbmc_project/State/Thermal/host" + context.slotNum +
+                  "/cpu0";
 
     if (eventData[3] == 0 && eventData[4] == 0)
     {
@@ -1205,7 +1221,7 @@ static void prochotSdSensor(const message& eventData, const std::string&,
 }
 
 static void mtiaFault(const message& eventData, const std::string&,
-                      const std::string&)
+                      const EventContext&)
 {
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
     auto faultEvent = mtiaFaultsList.find(eventData[2]);
@@ -1219,8 +1235,25 @@ static void mtiaFault(const message& eventData, const std::string&,
     recordEventLog(faultEvent->second, eventStatus, eventData[3], eventData[4]);
 }
 
+static bool rebaseFaultPathToConfigParent(std::string& faultPath,
+                                          const std::string& configPath)
+{
+    const size_t configLeafPos = configPath.find_last_of('/');
+    const size_t faultLeafPos = faultPath.find_last_of('/');
+    if (configLeafPos == std::string::npos || configLeafPos == 0 ||
+        faultLeafPos == std::string::npos ||
+        faultLeafPos + 1 >= faultPath.size())
+    {
+        return false;
+    }
+
+    faultPath = configPath.substr(0, configLeafPos) +
+                faultPath.substr(faultLeafPos);
+    return true;
+}
+
 static void rainbowFault(const message& eventData, const std::string&,
-                         const std::string& slotNumStr)
+                         const EventContext& context)
 {
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
     auto faultEvent = rainbowFaultsList.find(eventData[2]);
@@ -1231,40 +1264,26 @@ static void rainbowFault(const message& eventData, const std::string&,
         return;
     }
 
-    int slot = -1;
-    try
-    {
-        slot = std::stoi(slotNumStr);
-    }
-    catch (const std::exception& e)
-    {
-        lg2::error("Invalid slot number {SLOT}", "SLOT", slotNumStr);
-    }
-
     FaultDesc updatedFault = faultEvent->second;
+    bool updatedPath = false;
 
-    if (slot != -1)
+    if (context.configPath)
     {
-        constexpr std::string_view needle = "/Santabarbara_Rainbow";
-        std::string newPath = updatedFault.object_path;
-        size_t pos = newPath.find(needle);
-
-        if (pos != std::string::npos)
+        updatedPath = rebaseFaultPathToConfigParent(updatedFault.object_path,
+                                                    *context.configPath);
+        if (!updatedPath)
         {
-            newPath.insert(pos + needle.size(), "_" + std::to_string(slot));
+            lg2::error(
+                "Failed to update Rainbow fault path from config path {CONFIG_PATH} for TID {TID}",
+                "CONFIG_PATH", *context.configPath, "TID", context.tid);
         }
-        else
-        {
-            newPath += "_" + std::to_string(slot);
-        }
-        updatedFault.object_path = std::move(newPath);
     }
 
     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
 }
 
 static void arkeFault(const message& eventData, const std::string&,
-                      const std::string& slotNumStr)
+                      const EventContext& context)
 {
     EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
     auto faultEvent = arkeFaultsList.find(eventData[2]);
@@ -1278,11 +1297,11 @@ static void arkeFault(const message& eventData, const std::string&,
     int slot = -1;
     try
     {
-        slot = std::stoi(slotNumStr);
+        slot = std::stoi(context.slotNum);
     }
     catch (const std::exception& e)
     {
-        lg2::error("Invalid slot number {SLOT}", "SLOT", slotNumStr);
+        lg2::error("Invalid slot number {SLOT}", "SLOT", context.slotNum);
     }
 
     FaultDesc updatedFault = faultEvent->second;
@@ -1307,10 +1326,161 @@ static void arkeFault(const message& eventData, const std::string&,
     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
 }
 
+static void createEventLog(
+    const std::string& event,
+    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
+    std::map<std::string, std::string> additionalData = {})
+{
+    lg2::info("{INFO}", "INFO", event);
+    auto& bus = pldm::utils::DBusHandler::getBus();
+
+    static constexpr auto loggingService = "xyz.openbmc_project.Logging";
+    static constexpr auto loggingPath = "/xyz/openbmc_project/logging";
+    static constexpr auto loggingInterface =
+        "xyz.openbmc_project.Logging.Create";
+
+    auto severityStr =
+        sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+            severity);
+
+    try
+    {
+        auto method = bus.new_method_call(loggingService, loggingPath,
+                                          loggingInterface, "Create");
+
+        method.append(event.c_str(), severityStr, additionalData);
+        bus.call_noreply(method, dbusTimeout);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to create D-Bus event log: {ERR}", "ERR", e);
+    }
+}
+
+static void frb2Watchdog(const message& eventData, const std::string&,
+                         const EventContext& context)
+{
+    using EntrySeverity =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+    using Proxy =
+        sdbusplus::client::xyz::openbmc_project::state::boot::PostCode<>;
+    using PostCodeElement =
+        std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>;
+
+    constexpr std::size_t maxPostCodeEntries = 10;
+    const auto eventType = static_cast<EventType>(eventData[0]);
+    const auto eventIndex = std::to_underlying(eventType);
+    std::vector<PostCodeElement> rawPostCodes;
+
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    const auto path =
+        std::string(Proxy::namespace_path::value) + "/" +
+        std::string(Proxy::namespace_path::host) + context.slotNum;
+    bool postCodesRead = false;
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(path.c_str(),
+                                                             Proxy::interface);
+        auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                          Proxy::interface, "GetPostCodes");
+        method.append(static_cast<uint16_t>(1));
+        auto response = bus.call(method);
+        response.read(rawPostCodes);
+        postCodesRead = true;
+    }
+    catch (const std::exception& error)
+    {
+        lg2::error("Failed to query POST codes for FRB2 watchdog: {ERROR}",
+                   "ERROR", error);
+    }
+
+    const auto capturedCount =
+        std::min(maxPostCodeEntries, rawPostCodes.size());
+    std::string postCodeHistory;
+    if (!postCodesRead || capturedCount == 0)
+    {
+        postCodeHistory = "Unknown";
+    }
+    else
+    {
+        const auto firstIndex = rawPostCodes.size() - capturedCount;
+        for (std::size_t index = firstIndex; index < rawPostCodes.size();
+             ++index)
+        {
+            if (!postCodeHistory.empty())
+            {
+                postCodeHistory += ",";
+            }
+            const auto& [code, unusedSecondaryCode] = rawPostCodes[index];
+            (void)unusedSecondaryCode;
+            postCodeHistory += "0x";
+            for (const auto byte : code)
+            {
+                postCodeHistory += std::format("{:02x}", byte);
+            }
+        }
+    }
+
+    std::map<std::string, std::string> additionalData{
+        {"WatchdogEvent", std::string(eventList[eventIndex])},
+        {"PostCodeCount", std::to_string(capturedCount)},
+        {"PostCodeHistory", std::move(postCodeHistory)},
+        {"PostCodeCaptureStatus",
+         postCodesRead ? (capturedCount == 0 ? "Empty" : "Captured")
+                       : "Unavailable"},
+    };
+    const auto logMessage = std::format(
+        "Device 'Host{}' encountered a watchdog timeout.", context.slotNum);
+    createEventLog(logMessage, EntrySeverity::Critical,
+                   std::move(additionalData));
+}
+
+static void cxlEvent(const message& eventData, const std::string& event,
+                     const EventContext&)
+{
+    using EntrySeverity =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    EventAssert eventStatus = static_cast<EventAssert>(eventData[1]);
+    auto severity = (eventStatus == EventAssert::DEASSERTED)
+                        ? EntrySeverity::Error
+                        : EntrySeverity::Informational;
+
+    createEventLog(event, severity);
+}
+
+static void platformEvent(const message&, const std::string& event,
+                          const EventContext&)
+{
+    using EntrySeverity =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    createEventLog(event, EntrySeverity::Informational);
+}
+
 static void reportError(const message&, const std::string& event,
-                        const std::string&)
+                        const EventContext&)
 {
     pldm::utils::reportError(event.c_str());
+}
+
+static void updateRetimerFwVersion(const message&, const std::string&,
+                                   const EventContext& context)
+{
+    static constexpr auto SYSTEMD_SERVICE = "org.freedesktop.systemd1";
+    static constexpr auto SYSTEMD_ROOT = "/org/freedesktop/systemd1";
+    static constexpr auto SYSTEMD_INTERFACE =
+        "org.freedesktop.systemd1.Manager";
+
+    /* The retimer is not available temporary after fw update.
+       We should update fw version on d-bus when post-complete. */
+    auto bus = sdbusplus::bus::new_default();
+    auto method = bus.new_method_call(SYSTEMD_SERVICE, SYSTEMD_ROOT,
+                                      SYSTEMD_INTERFACE, "StartUnit");
+    auto service = std::string("fw-versions-sd-retimer@") + context.slotNum +
+                   ".service";
+    method.append(service, "replace");
+    bus.call_noreply(method);
 }
 } // namespace report
 
@@ -1352,7 +1522,7 @@ static std::string dimmPmicError(const message& eventData, EventType eventType)
 } // namespace format
 
 using EventReporter = void (*)(const message&, const std::string&,
-                               const std::string&);
+                               const EventContext&);
 using EventFormatter = std::string (*)(const message&, EventType);
 
 struct EventDescriptor
@@ -1369,11 +1539,11 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::POWER_ON_SEQUENCE_FAILURE, {report::powerRailFault, nullptr}},
     {EventType::DIMM_PMIC_ERROR,
      {report::powerRailFault, format::dimmPmicError}},
-    {EventType::CXL1_HB, {nullptr, nullptr}},
-    {EventType::CXL2_HB, {nullptr, nullptr}},
-    {EventType::PLTRST_ASSERTION, {nullptr, nullptr}},
-    {EventType::POST_STARTED, {nullptr, nullptr}},
-    {EventType::POST_ENDED, {nullptr, nullptr}},
+    {EventType::CXL1_HB, {report::cxlEvent, nullptr}},
+    {EventType::CXL2_HB, {report::cxlEvent, nullptr}},
+    {EventType::PLTRST_ASSERTION, {report::platformEvent, nullptr}},
+    {EventType::POST_STARTED, {report::platformEvent, nullptr}},
+    {EventType::POST_ENDED, {report::platformEvent, nullptr}},
     {EventType::PROCHOT_IS_TRIGGERED_DUE_TO_SD_SENSOR_READING_EXCEED_UCR,
      {report::prochotSdSensor, nullptr}},
     {EventType::MTIA_FAULT, {report::mtiaFault, nullptr}},
@@ -1384,7 +1554,7 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::ADDC_DUMP, {report::reportError, nullptr}},
     {EventType::BMC_COMES_OUT_OF_COLD_RESET, {report::reportError, nullptr}},
     {EventType::BIOS_FRB12_WATCHDOG_TIMER_EXPIRED,
-     {report::reportError, nullptr}},
+     {report::frb2Watchdog, nullptr}},
     {EventType::BIC_POWER_FAILURE, {report::reportError, nullptr}},
     {EventType::CPU_POWER_FAILURE, {report::reportError, nullptr}},
     {EventType::V_BOOT_FAILURE, {report::reportError, nullptr}},
@@ -1403,9 +1573,9 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::FAN_ERROR, {report::reportError, nullptr}},
     {EventType::HDT_PRSNT_ASSERTION, {report::reportError, nullptr}},
     {EventType::APML_ALERT_ASSERTION, {report::reportError, nullptr}},
-    {EventType::FRB2_WDT_HARD_RST, {report::reportError, nullptr}},
-    {EventType::FRB2_WDT_PWR_DOWN, {report::reportError, nullptr}},
-    {EventType::FRB2_WDT_PWR_CYCLE, {report::reportError, nullptr}},
+    {EventType::FRB2_WDT_HARD_RST, {report::frb2Watchdog, nullptr}},
+    {EventType::FRB2_WDT_PWR_DOWN, {report::frb2Watchdog, nullptr}},
+    {EventType::FRB2_WDT_PWR_CYCLE, {report::frb2Watchdog, nullptr}},
     {EventType::OS_LOAD_WDT_EXPIRED, {report::reportError, nullptr}},
     {EventType::OS_LOAD_WDT_HARD_RST, {report::reportError, nullptr}},
     {EventType::OS_LOAD_WDT_PWR_DOWN, {report::reportError, nullptr}},
@@ -1431,7 +1601,7 @@ static void checkEventAssert(const message& eventData, std::string& event,
 }
 
 static std::string processEventData(const message& eventData,
-                                    const std::string& slotNum)
+                                    const EventContext& context)
 {
     std::string event;
     EventType eventType = static_cast<EventType>(eventData[0]);
@@ -1454,14 +1624,14 @@ static std::string processEventData(const message& eventData,
         }
     }
 
-    checkEventAssert(eventData, event, slotNum);
+    checkEventAssert(eventData, event, context.slotNum);
 
     return event;
 }
 
 static void addSystemEventLogAndJournal(const message& eventData,
                                         const std::string& event,
-                                        const std::string& slotNum)
+                                        const EventContext& context)
 {
     EventType eventType = static_cast<EventType>(eventData[0]);
     auto it = eventHandlers.find(eventType);
@@ -1469,12 +1639,19 @@ static void addSystemEventLogAndJournal(const message& eventData,
     {
         if (it->second.reporter)
         {
-            it->second.reporter(eventData, event, slotNum);
+            it->second.reporter(eventData, event, context);
         }
     }
     else
     {
         lg2::error("Unexpected error: {ERROR}", "ERROR", event);
+    }
+
+    // Trigger retimer fw version update on POST_ENDED and POST_COMPLETED
+    if (eventType == EventType::POST_ENDED ||
+        eventType == EventType::POST_COMPLETED)
+    {
+        report::updateRetimerFwVersion(eventData, event, context);
     }
 }
 
@@ -1519,9 +1696,10 @@ int EventLogHandler::write(const message& eventData)
         receivedEventTimeStamp[eventKey] = eventTimeStamp;
     }
 
-    std::string slotNum = pldm::oem_meta::getSlotNumberStringByTID(tid);
-    std::string event = processEventData(eventData, slotNum);
-    addSystemEventLogAndJournal(eventData, event, slotNum);
+    EventContext context{tid, pldm::oem_meta::getSlotNumberStringByTID(tid),
+                         pldm::oem_meta::getConfigPathByTID(tid)};
+    std::string event = processEventData(eventData, context);
+    addSystemEventLogAndJournal(eventData, event, context);
 
     return PLDM_SUCCESS;
 }
