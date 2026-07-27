@@ -92,7 +92,7 @@ void CommandInterface::exec()
     {
         throw pldm::InstanceIdError(instanceIdResult.error());
     }
-    auto instanceId = instanceIdResult.value();
+    instanceId = instanceIdResult.value();
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {
