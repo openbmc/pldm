@@ -1,0 +1,171 @@
+From 07a2df4d8d32b45d979b7e88472156ded71178a9 Mon Sep 17 00:00:00 2001
+From: Andy Hsu <andy.hsu.wiwynn@gmail.com>
+Date: Thu, 8 Oct 2026 06:32:49 +0000
+Subject: [PATCH 1/2] yosemite4: pldm: log FRB2 watchdog details
+
+Description
+Log FRB2 watchdog events through the generic Logging.Create interface and
+ include watchdog subtype and captured POST code history in AdditionalData.
+
+Motivation
+Record useful diagnostics when FRB2 watchdog events occur without adding
+ a platform-specific D-Bus interface.
+---
+ .../file_io_type_event_log.cpp                | 96 +++++++++++++++++--
+ 1 file changed, 89 insertions(+), 7 deletions(-)
+
+diff --git a/oem/meta/libpldmresponder/file_io_type_event_log.cpp b/oem/meta/libpldmresponder/file_io_type_event_log.cpp
+index b6bfbfe..7496fd7 100644
+--- a/oem/meta/libpldmresponder/file_io_type_event_log.cpp
++++ b/oem/meta/libpldmresponder/file_io_type_event_log.cpp
+@@ -6,16 +6,20 @@
+ #include <phosphor-logging/commit.hpp>
+ #include <phosphor-logging/lg2.hpp>
+ #include <sdbusplus/bus.hpp>
++#include <xyz/openbmc_project/State/Boot/PostCode/client.hpp>
+ #include <xyz/openbmc_project/State/Power/event.hpp>
+ #include <xyz/openbmc_project/State/Thermal/event.hpp>
+ 
++#include <algorithm>
+ #include <array>
+ #include <format>
+ #include <map>
+ #include <optional>
+ #include <string>
+ #include <string_view>
++#include <tuple>
+ #include <utility>
++#include <vector>
+ 
+ PHOSPHOR_LOG2_USING;
+ 
+@@ -1324,7 +1328,8 @@ static void arkeFault(const message& eventData, const std::string&,
+ 
+ static void createEventLog(
+     const std::string& event,
+-    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity)
++    sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level severity,
++    std::map<std::string, std::string> additionalData = {})
+ {
+     lg2::info("{INFO}", "INFO", event);
+     auto& bus = pldm::utils::DBusHandler::getBus();
+@@ -1343,8 +1348,7 @@ static void createEventLog(
+         auto method = bus.new_method_call(loggingService, loggingPath,
+                                           loggingInterface, "Create");
+ 
+-        std::map<std::string, std::string> addlData{};
+-        method.append(event.c_str(), severityStr, addlData);
++        method.append(event.c_str(), severityStr, additionalData);
+         bus.call_noreply(method, dbusTimeout);
+     }
+     catch (const std::exception& e)
+@@ -1353,6 +1357,84 @@ static void createEventLog(
+     }
+ }
+ 
++static void frb2Watchdog(const message& eventData, const std::string&,
++                         const EventContext& context)
++{
++    using EntrySeverity =
++        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
++    using Proxy =
++        sdbusplus::client::xyz::openbmc_project::state::boot::PostCode<>;
++    using PostCodeElement =
++        std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>;
++
++    constexpr std::size_t maxPostCodeEntries = 10;
++    const auto eventType = static_cast<EventType>(eventData[0]);
++    const auto eventIndex = std::to_underlying(eventType);
++    std::vector<PostCodeElement> rawPostCodes;
++
++    auto& bus = pldm::utils::DBusHandler::getBus();
++    const auto path =
++        std::string(Proxy::namespace_path::value) + "/" +
++        std::string(Proxy::namespace_path::host) + context.slotNum;
++    bool postCodesRead = false;
++    try
++    {
++        auto service = pldm::utils::DBusHandler().getService(path.c_str(),
++                                                             Proxy::interface);
++        auto method = bus.new_method_call(service.c_str(), path.c_str(),
++                                          Proxy::interface, "GetPostCodes");
++        method.append(static_cast<uint16_t>(1));
++        auto response = bus.call(method);
++        response.read(rawPostCodes);
++        postCodesRead = true;
++    }
++    catch (const std::exception& error)
++    {
++        lg2::error("Failed to query POST codes for FRB2 watchdog: {ERROR}",
++                   "ERROR", error);
++    }
++
++    const auto capturedCount =
++        std::min(maxPostCodeEntries, rawPostCodes.size());
++    std::string postCodeHistory;
++    if (!postCodesRead || capturedCount == 0)
++    {
++        postCodeHistory = "Unknown";
++    }
++    else
++    {
++        const auto firstIndex = rawPostCodes.size() - capturedCount;
++        for (std::size_t index = firstIndex; index < rawPostCodes.size();
++             ++index)
++        {
++            if (!postCodeHistory.empty())
++            {
++                postCodeHistory += ",";
++            }
++            const auto& [code, unusedSecondaryCode] = rawPostCodes[index];
++            (void)unusedSecondaryCode;
++            postCodeHistory += "0x";
++            for (const auto byte : code)
++            {
++                postCodeHistory += std::format("{:02x}", byte);
++            }
++        }
++    }
++
++    std::map<std::string, std::string> additionalData{
++        {"WatchdogEvent", std::string(eventList[eventIndex])},
++        {"PostCodeCount", std::to_string(capturedCount)},
++        {"PostCodeHistory", std::move(postCodeHistory)},
++        {"PostCodeCaptureStatus",
++         postCodesRead ? (capturedCount == 0 ? "Empty" : "Captured")
++                       : "Unavailable"},
++    };
++    const auto logMessage = std::format(
++        "Device 'Host{}' encountered a watchdog timeout.", context.slotNum);
++    createEventLog(logMessage, EntrySeverity::Critical,
++                   std::move(additionalData));
++}
++
+ static void cxlEvent(const message& eventData, const std::string& event,
+                      const EventContext&)
+ {
+@@ -1472,7 +1554,7 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
+     {EventType::ADDC_DUMP, {report::reportError, nullptr}},
+     {EventType::BMC_COMES_OUT_OF_COLD_RESET, {report::reportError, nullptr}},
+     {EventType::BIOS_FRB12_WATCHDOG_TIMER_EXPIRED,
+-     {report::reportError, nullptr}},
++     {report::frb2Watchdog, nullptr}},
+     {EventType::BIC_POWER_FAILURE, {report::reportError, nullptr}},
+     {EventType::CPU_POWER_FAILURE, {report::reportError, nullptr}},
+     {EventType::V_BOOT_FAILURE, {report::reportError, nullptr}},
+@@ -1491,9 +1573,9 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
+     {EventType::FAN_ERROR, {report::reportError, nullptr}},
+     {EventType::HDT_PRSNT_ASSERTION, {report::reportError, nullptr}},
+     {EventType::APML_ALERT_ASSERTION, {report::reportError, nullptr}},
+-    {EventType::FRB2_WDT_HARD_RST, {report::reportError, nullptr}},
+-    {EventType::FRB2_WDT_PWR_DOWN, {report::reportError, nullptr}},
+-    {EventType::FRB2_WDT_PWR_CYCLE, {report::reportError, nullptr}},
++    {EventType::FRB2_WDT_HARD_RST, {report::frb2Watchdog, nullptr}},
++    {EventType::FRB2_WDT_PWR_DOWN, {report::frb2Watchdog, nullptr}},
++    {EventType::FRB2_WDT_PWR_CYCLE, {report::frb2Watchdog, nullptr}},
+     {EventType::OS_LOAD_WDT_EXPIRED, {report::reportError, nullptr}},
+     {EventType::OS_LOAD_WDT_HARD_RST, {report::reportError, nullptr}},
+     {EventType::OS_LOAD_WDT_PWR_DOWN, {report::reportError, nullptr}},
+-- 
+2.43.0
+
