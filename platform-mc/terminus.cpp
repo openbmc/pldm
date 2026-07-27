@@ -472,6 +472,7 @@ void Terminus::addNumericSensor(
             "Terminus ID {TID}: Skip adding Numeric Sensor - invalid pointer to PDR.",
             "TID", tid);
         addNextSensorFromPDRs();
+        return;
     }
 
     auto sensorId = pdr->sensor_id;
@@ -483,6 +484,7 @@ void Terminus::addNumericSensor(
             "Terminus ID {TID}: Failed to get name for Numeric Sensor {SID}",
             "TID", tid, "SID", sensorId);
         addNextSensorFromPDRs();
+        return;
     }
 
     std::string sensorName = sensorNames.front();
@@ -578,6 +580,7 @@ void Terminus::addCompactNumericSensor(
             "Terminus ID {TID}: Skip adding Compact Numeric Sensor - invalid pointer to PDR.",
             "TID", tid);
         addNextSensorFromPDRs();
+        return;
     }
 
     auto sensorId = pdr->sensor_id;
@@ -589,6 +592,7 @@ void Terminus::addCompactNumericSensor(
             "Terminus ID {TID}: Failed to get name for Compact Numeric Sensor {SID}",
             "TID", tid, "SID", sensorId);
         addNextSensorFromPDRs();
+        return;
     }
 
     std::string sensorName = sensorNames.front();
