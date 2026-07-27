@@ -3,18 +3,22 @@
 #include "common/utils.hpp"
 #include "oem/meta/utils.hpp"
 
+#include <com/meta/State/Watchdog/event.hpp>
 #include <phosphor-logging/commit.hpp>
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/State/Boot/PostCode/client.hpp>
 #include <xyz/openbmc_project/State/Power/event.hpp>
 #include <xyz/openbmc_project/State/Thermal/event.hpp>
 
+#include <algorithm>
 #include <array>
 #include <format>
 #include <map>
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 PHOSPHOR_LOG2_USING;
 
@@ -902,6 +906,110 @@ static void rainbowFault(const message& eventData, const std::string&,
     recordEventLog(updatedFault, eventStatus, eventData[3], eventData[4]);
 }
 
+static constexpr std::size_t minimumPostCodeEntries = 10;
+
+static void reportErrorPostCode(const std::string& eventType,
+                                const std::string& slotNum)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    using Proxy =
+        sdbusplus::client::xyz::openbmc_project::state::boot::PostCode<>;
+    auto path = std::string(Proxy::namespace_path::value) + "/" +
+                std::string(Proxy::namespace_path::host) + slotNum;
+
+    using PostCodeElement =
+        std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>;
+    std::vector<PostCodeElement> rawPostcodes;
+
+    try
+    {
+        auto service = pldm::utils::DBusHandler().getService(path.c_str(),
+                                                             Proxy::interface);
+        auto method = bus.new_method_call(service.c_str(), path.c_str(),
+                                          Proxy::interface, "GetPostCodes");
+
+        method.append(static_cast<uint16_t>(1));
+        auto responseMsg = bus.call(method);
+        responseMsg.read(rawPostcodes);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to query post codes, error - {ERROR}", "ERROR", e);
+        return;
+    }
+
+    std::vector<std::string> postCodes;
+    const auto capturedPostCodes =
+        std::min(minimumPostCodeEntries, rawPostcodes.size());
+    postCodes.reserve(capturedPostCodes == 0 ? 1 : capturedPostCodes);
+
+    if (capturedPostCodes == 0)
+    {
+        postCodes.emplace_back("Unknown");
+    }
+    else
+    {
+        const auto firstIndex = rawPostcodes.size() - capturedPostCodes;
+        for (std::size_t index = firstIndex; index < rawPostcodes.size();
+             ++index)
+        {
+            const auto& [code, unusedTimestamp] = rawPostcodes[index];
+            (void)unusedTimestamp;
+
+            std::string formattedPostCode = "0x";
+            for (auto byte : code)
+            {
+                formattedPostCode += std::format("{:02x}", byte);
+            }
+            postCodes.emplace_back(std::move(formattedPostCode));
+        }
+    }
+
+    std::string postCodesCsv;
+    for (std::size_t index = 0; index < postCodes.size(); ++index)
+    {
+        if (index != 0)
+        {
+            postCodesCsv += ",";
+        }
+        postCodesCsv += postCodes[index];
+    }
+
+    const auto postCodeCount = static_cast<size_t>(capturedPostCodes);
+    const auto& latestPostCode = postCodes.back();
+
+    using namespace sdbusplus::error::com::meta::state::Watchdog;
+    std::string deviceIdentifier = "FRB2 host" + slotNum;
+    lg2::commit(BiosFrb2PostCodeCaptured(
+        "DEVICE_IDENTIFIER", deviceIdentifier, "EVENT_TYPE", eventType,
+        "POST_CODE_COUNT", postCodeCount, "LATEST_POST_CODE", latestPostCode,
+        "POST_CODES_CSV", postCodesCsv));
+}
+
+static void frb12WatchdogTimerExpired(const message&, const std::string&,
+                                      const std::string& slotNumStr)
+{
+    reportErrorPostCode("TimerExpired", slotNumStr);
+}
+
+static void frb2WatchdogHardReset(const message&, const std::string&,
+                                  const std::string& slotNumStr)
+{
+    reportErrorPostCode("HardReset", slotNumStr);
+}
+
+static void frb2WatchdogPowerOff(const message&, const std::string&,
+                                 const std::string& slotNumStr)
+{
+    reportErrorPostCode("PowerOff", slotNumStr);
+}
+
+static void frb2WatchdogPowerCycle(const message&, const std::string&,
+                                   const std::string& slotNumStr)
+{
+    reportErrorPostCode("PowerCycle", slotNumStr);
+}
+
 static void reportError(const message&, const std::string& event,
                         const std::string&)
 {
@@ -978,7 +1086,7 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::ADDC_DUMP, {report::reportError, nullptr}},
     {EventType::BMC_COMES_OUT_OF_COLD_RESET, {report::reportError, nullptr}},
     {EventType::BIOS_FRB12_WATCHDOG_TIMER_EXPIRED,
-     {report::reportError, nullptr}},
+     {report::frb12WatchdogTimerExpired, nullptr}},
     {EventType::BIC_POWER_FAILURE, {report::reportError, nullptr}},
     {EventType::CPU_POWER_FAILURE, {report::reportError, nullptr}},
     {EventType::V_BOOT_FAILURE, {report::reportError, nullptr}},
@@ -997,9 +1105,9 @@ static const std::map<EventType, EventDescriptor> eventHandlers = {
     {EventType::FAN_ERROR, {report::reportError, nullptr}},
     {EventType::HDT_PRSNT_ASSERTION, {report::reportError, nullptr}},
     {EventType::APML_ALERT_ASSERTION, {report::reportError, nullptr}},
-    {EventType::FRB2_WDT_HARD_RST, {report::reportError, nullptr}},
-    {EventType::FRB2_WDT_PWR_DOWN, {report::reportError, nullptr}},
-    {EventType::FRB2_WDT_PWR_CYCLE, {report::reportError, nullptr}},
+    {EventType::FRB2_WDT_HARD_RST, {report::frb2WatchdogHardReset, nullptr}},
+    {EventType::FRB2_WDT_PWR_DOWN, {report::frb2WatchdogPowerOff, nullptr}},
+    {EventType::FRB2_WDT_PWR_CYCLE, {report::frb2WatchdogPowerCycle, nullptr}},
     {EventType::OS_LOAD_WDT_EXPIRED, {report::reportError, nullptr}},
     {EventType::OS_LOAD_WDT_HARD_RST, {report::reportError, nullptr}},
     {EventType::OS_LOAD_WDT_PWR_DOWN, {report::reportError, nullptr}},
