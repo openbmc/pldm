@@ -92,7 +92,9 @@ void CommandInterface::exec()
     {
         throw pldm::InstanceIdError(instanceIdResult.error());
     }
-    auto instanceId = instanceIdResult.value();
+    // Assign to the member so that createRequestMsg() overrides encode the
+    // instance ID allocated from the instance ID database.
+    instanceId = instanceIdResult.value();
     auto [rc, requestMsg] = createRequestMsg();
     if (rc != PLDM_SUCCESS)
     {
