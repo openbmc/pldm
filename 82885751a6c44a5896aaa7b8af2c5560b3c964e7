@@ -143,6 +143,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0384ba5_6b29da66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-28T06:40:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5df0269d_69cad4e6",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84b9e627_473502ba",
@@ -156,6 +174,24 @@
       "writtenOn": "2026-07-21T08:10:59Z",
       "side": 1,
       "message": "would be safer to have a null check here.",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9e8f8d1_ed451106",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-28T06:40:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "84b9e627_473502ba",
       "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -177,6 +213,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebd5859a_8fbea850",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-28T06:40:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4f295f37_8584449b",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7c19e28_0c8cf8f7",
@@ -190,6 +244,24 @@
       "writtenOn": "2026-07-21T06:12:42Z",
       "side": 1,
       "message": "Wouldn\u0027t this be an infinite loop when:\n\n`nextPartRequired \u003d true;` and `CommandInterface::exec()` fails early before reaching `parseResponseMsg`\n\nThere are two cases where CommandInterface:exec() return early:\n\nhttps://github.com/openbmc/pldm/blob/9fd86d58bd57f01a9b40d6d1f4a88a0c069c002b/pldmtool/pldm_cmd_helper.cpp#L102\n\nhttps://github.com/openbmc/pldm/blob/9fd86d58bd57f01a9b40d6d1f4a88a0c069c002b/pldmtool/pldm_cmd_helper.cpp#L112",
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70ae0449_564ef9ae",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-28T06:40:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b7c19e28_0c8cf8f7",
       "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -241,6 +313,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2ed6cd4_ed8fb01c",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-28T06:40:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2ed6a846_373fe508",
+      "range": {
+        "startLine": 489,
+        "startChar": 0,
+        "endLine": 491,
+        "endChar": 68
+      },
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0be4bc1b_b579aec6",
@@ -254,6 +350,30 @@
       "writtenOn": "2026-07-21T08:10:59Z",
       "side": 1,
       "message": "nit: i see most of the code here is similar to GetFruRecordTableOption. A small helper function to do the same may reduce redundancy.",
+      "range": {
+        "startLine": 493,
+        "startChar": 4,
+        "endLine": 504,
+        "endChar": 36
+      },
+      "revId": "82885751a6c44a5896aaa7b8af2c5560b3c964e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca30c453_8361a4dc",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-28T06:40:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0be4bc1b_b579aec6",
       "range": {
         "startLine": 493,
         "startChar": 4,
