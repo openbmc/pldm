@@ -22,6 +22,30 @@
       },
       "revId": "f8f05596743c9cdb51774eb351500cdb1fdaf8ac",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "743c092a_b2f980d6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-07-28T13:35:40Z",
+      "side": 1,
+      "message": "Understood.\nI have recently submitted a patch to libpldm regarding the state sensor pdr decode function.\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/90952\n\nAlso, I have modified the implementation here to uses the function declared in the on-flight patch. Please check in PS16.",
+      "parentUuid": "df20cc92_7060c0fe",
+      "range": {
+        "startLine": 645,
+        "startChar": 0,
+        "endLine": 685,
+        "endChar": 5
+      },
+      "revId": "f8f05596743c9cdb51774eb351500cdb1fdaf8ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
