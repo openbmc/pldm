@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb443cd2_946a66e7",
+        "filename": "oem/ibm/libpldmresponder/file_io_type_cert.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-28T05:24:10Z",
+      "side": 0,
+      "message": "I am okay with the changes, please get the commit message fixed and we can get this one in. Thanks for fixing.",
+      "revId": "6e343540efde7d074932880a49b9c8a11ffe0e2d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
