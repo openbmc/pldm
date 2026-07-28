@@ -7,6 +7,8 @@
 #include <libpldm/firmware_update.h>
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <gtest/gtest.h>
 
@@ -39,7 +41,100 @@ class InventoryManagerTest : public testing::Test
     DownstreamDescriptorMap outDownstreamDescriptorMap{};
     ComponentInfoMap outComponentInfoMap{};
     Configurations configurations;
+
+    /** @brief Make the FD look as if QueryDeviceIdentifiers already
+     *         completed, so GetFirmwareParameters creates inventory entries.
+     */
+    void addFirmwareDevice(pldm::eid eid, const SoftwareName& name)
+    {
+        inventoryManager.firmwareDeviceNameMap.insert_or_assign(eid, name);
+        outDescriptorMap.insert_or_assign(
+            eid, Descriptors{{PLDM_FWUP_IANA_ENTERPRISE_ID,
+                              std::vector<uint8_t>{0x0a, 0x0b, 0x0c, 0x0d}}});
+    }
+
+    const SoftwareMap& softwareMap() const
+    {
+        return inventoryManager.firmwareInventoryManager.softwareMap;
+    }
 };
+
+namespace
+{
+
+struct TestComponent
+{
+    uint16_t classification;
+    uint16_t identifier;
+    uint8_t classificationIndex;
+    std::string activeVersion;
+};
+
+/** @brief Build a GetFirmwareParameters response (DSP0267) with
+ *         an ASCII active image set version, no pending versions and the
+ *         given component parameter table.
+ */
+std::vector<uint8_t> buildGetFirmwareParametersResp(
+    const std::string& imageSetVersion,
+    const std::vector<TestComponent>& components)
+{
+    std::vector<uint8_t> buf(sizeof(pldm_msg_hdr), 0);
+
+    auto put8 = [&buf](uint8_t v) { buf.push_back(v); };
+    auto put16 = [&put8](uint16_t v) {
+        put8(static_cast<uint8_t>(v & 0xff));
+        put8(static_cast<uint8_t>(v >> 8));
+    };
+    auto put32 = [&put16](uint32_t v) {
+        put16(static_cast<uint16_t>(v & 0xffff));
+        put16(static_cast<uint16_t>(v >> 16));
+    };
+    auto putStr = [&buf](const std::string& str) {
+        buf.insert(buf.end(), str.begin(), str.end());
+    };
+    auto putZeros = [&buf](size_t n) { buf.insert(buf.end(), n, 0); };
+
+    put8(PLDM_SUCCESS);                              // CompletionCode
+    put32(0);                                        // Capabilities
+    put16(static_cast<uint16_t>(components.size())); // ComponentCount
+    put8(PLDM_STR_TYPE_ASCII);
+    put8(static_cast<uint8_t>(imageSetVersion.size()));
+    put8(PLDM_STR_TYPE_UNKNOWN); // no pending image set version
+    put8(0);
+    putStr(imageSetVersion);
+
+    for (const auto& comp : components)
+    {
+        put16(comp.classification);
+        put16(comp.identifier);
+        put8(comp.classificationIndex);
+        put32(0); // ActiveComponentComparisonStamp
+        put8(PLDM_STR_TYPE_ASCII);
+        put8(static_cast<uint8_t>(comp.activeVersion.size()));
+        putZeros(8); // ActiveComponentReleaseDate
+        put32(0);    // PendingComponentComparisonStamp
+        put8(PLDM_STR_TYPE_UNKNOWN);
+        put8(0);
+        putZeros(8); // PendingComponentReleaseDate
+        put16(0);    // ComponentActivationMethods
+        put32(0);    // CapabilitiesDuringUpdate
+        putStr(comp.activeVersion);
+    }
+
+    return buf;
+}
+
+const pldm_msg* asMsg(const std::vector<uint8_t>& buf)
+{
+    return reinterpret_cast<const pldm_msg*>(buf.data());
+}
+
+size_t payloadLen(const std::vector<uint8_t>& buf)
+{
+    return buf.size() - sizeof(pldm_msg_hdr);
+}
+
+} // namespace
 
 TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponse)
 {
@@ -238,4 +333,107 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponseErrorCC)
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp.data());
     inventoryManager.getFirmwareParameters(1, responseMsg, respPayloadLength);
     EXPECT_EQ(outComponentInfoMap.size(), 0);
+}
+
+TEST_F(InventoryManagerTest,
+       getFirmwareParametersSingleComponentSkipsImageLevelEntry)
+{
+    // CX7-like FD: the image set version equals the only component version
+    constexpr pldm::eid eid = 1;
+    constexpr uint16_t compId = 1;
+    addFirmwareDevice(eid, "NIC0");
+
+    auto resp = buildGetFirmwareParametersResp("28.98.5416",
+                                               {{10, compId, 0, "28.98.5416"}});
+    inventoryManager.getFirmwareParameters(eid, asMsg(resp), payloadLen(resp));
+
+    EXPECT_EQ(softwareMap().size(), 1);
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, compId}));
+    EXPECT_FALSE(softwareMap().contains(SoftwareIdentifier{eid, std::nullopt}));
+    ASSERT_TRUE(outComponentInfoMap.contains(eid));
+    EXPECT_EQ(outComponentInfoMap.at(eid).size(), 1);
+}
+
+TEST_F(InventoryManagerTest,
+       getFirmwareParametersDistinctVersionsCreateImageLevelEntry)
+{
+    constexpr pldm::eid eid = 1;
+    constexpr uint16_t compId1 = 300;
+    constexpr uint16_t compId2 = 301;
+    addFirmwareDevice(eid, "Device");
+
+    auto resp = buildGetFirmwareParametersResp(
+        "DeviceVer1.0",
+        {{10, compId1, 20, "Comp1v2.0"}, {16, compId2, 30, "Comp2v3.0"}});
+    inventoryManager.getFirmwareParameters(eid, asMsg(resp), payloadLen(resp));
+
+    EXPECT_EQ(softwareMap().size(), 3);
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, std::nullopt}));
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, compId1}));
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, compId2}));
+}
+
+TEST_F(InventoryManagerTest,
+       getFirmwareParametersMultiComponentMatchSkipsImageLevelEntry)
+{
+    // The check keys on version equality, not on component count
+    constexpr pldm::eid eid = 1;
+    constexpr uint16_t compId1 = 300;
+    constexpr uint16_t compId2 = 301;
+    addFirmwareDevice(eid, "Device");
+
+    auto resp = buildGetFirmwareParametersResp(
+        "Comp2v3.0",
+        {{10, compId1, 20, "Comp1v2.0"}, {16, compId2, 30, "Comp2v3.0"}});
+    inventoryManager.getFirmwareParameters(eid, asMsg(resp), payloadLen(resp));
+
+    EXPECT_EQ(softwareMap().size(), 2);
+    EXPECT_FALSE(softwareMap().contains(SoftwareIdentifier{eid, std::nullopt}));
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, compId1}));
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, compId2}));
+}
+
+TEST_F(InventoryManagerTest,
+       getFirmwareParametersComponentIdZeroDoesNotCollideWithImageLevel)
+{
+    // CompIdentifier 0 is a valid vendor-assigned value; it must not alias
+    // the image-level entry (previously keyed as {eid, 0}).
+    constexpr pldm::eid eid = 1;
+    constexpr uint16_t compId = 0;
+    addFirmwareDevice(eid, "Device");
+
+    auto resp = buildGetFirmwareParametersResp("ImageVer1.0",
+                                               {{10, compId, 0, "Comp0v1.0"}});
+    inventoryManager.getFirmwareParameters(eid, asMsg(resp), payloadLen(resp));
+
+    EXPECT_EQ(softwareMap().size(), 2);
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, std::nullopt}));
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, compId}));
+}
+
+TEST_F(InventoryManagerTest,
+       getFirmwareParametersMalformedEntryKeepsParsedComponents)
+{
+    constexpr pldm::eid eid = 1;
+    constexpr uint16_t compClassification1 = 10;
+    constexpr uint16_t compId1 = 300;
+    constexpr uint8_t compClassificationIndex1 = 20;
+    addFirmwareDevice(eid, "Device");
+
+    auto resp = buildGetFirmwareParametersResp(
+        "DeviceVer1.0",
+        {{compClassification1, compId1, compClassificationIndex1, "Comp1v2.0"},
+         {16, 301, 30, "Comp2v3.0"}});
+    // Truncate the second component entry so that decoding it fails
+    resp.resize(resp.size() - 5);
+    inventoryManager.getFirmwareParameters(eid, asMsg(resp), payloadLen(resp));
+
+    ComponentInfoMap expected{{eid,
+                               {{std::make_pair(compClassification1, compId1),
+                                 compClassificationIndex1}}}};
+    EXPECT_EQ(outComponentInfoMap, expected);
+
+    EXPECT_EQ(softwareMap().size(), 2);
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, std::nullopt}));
+    EXPECT_TRUE(softwareMap().contains(SoftwareIdentifier{eid, compId1}));
 }

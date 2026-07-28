@@ -6,6 +6,7 @@
 #include "firmware_inventory.hpp"
 
 class FirmwareInventoryManagerTest;
+class InventoryManagerTest;
 
 namespace pldm::fw_update
 {
@@ -27,6 +28,7 @@ class FirmwareInventoryManager
 {
   public:
     friend class ::FirmwareInventoryManagerTest;
+    friend class ::InventoryManagerTest;
     FirmwareInventoryManager() = delete;
     FirmwareInventoryManager(const FirmwareInventoryManager&) = delete;
     FirmwareInventoryManager(FirmwareInventoryManager&&) = delete;
