@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d47f8bf_18c35282",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-28T09:14:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b7f2fcc3_71f97ccb",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "bff71da84464ed23943a678a4f81679a1018c6db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8dc2eaa_01ef3130",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-28T06:50:57Z",
       "side": 1,
       "message": "why are these written in different paragraphs ? can you make it in a single paragraph and explain why, what, how ? clearly ?  This looks as if it is some sort of design summary.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 27
+      },
+      "revId": "bff71da84464ed23943a678a4f81679a1018c6db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0239f9d4_560787ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-28T09:14:03Z",
+      "side": 1,
+      "message": "Acknowledged and updated",
+      "parentUuid": "c8dc2eaa_01ef3130",
       "range": {
         "startLine": 9,
         "startChar": 0,
