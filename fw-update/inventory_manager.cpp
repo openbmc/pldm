@@ -679,25 +679,7 @@ void InventoryManager::getFirmwareParameters(
     ComponentInfo componentInfo{};
 
     const auto imageSetVersion = utils::toString(activeCompImageSetVerStr);
-
-    if (!imageSetVersion.empty())
-    {
-        auto devNameIt = firmwareDeviceNameMap.find(eid);
-        auto descIt = descriptorMap.find(eid);
-
-        if (devNameIt != firmwareDeviceNameMap.end() &&
-            descIt != descriptorMap.end())
-        {
-            const SoftwareIdentifier totalIdentifier = std::make_pair(eid, 0);
-
-            firmwareInventoryManager.createFirmwareEntry(
-                totalIdentifier, devNameIt->second, imageSetVersion,
-                descIt->second, componentInfo, [this, eid]() {
-                    this->sendQueryDeviceIdentifiersRequest(eid);
-                    this->sendQueryDownstreamDevicesRequest(eid);
-                });
-        }
-    }
+    bool isImageVersionMatched = false;
 
     while (fwParams.comp_count-- && (compParamTableLen > 0))
     {
@@ -709,7 +691,7 @@ void InventoryManager::getFirmwareParameters(
             error(
                 "Failed to decode component parameter table entry for endpoint ID {EID}, response code {RC}",
                 "EID", eid, "RC", rc);
-            return;
+            break;
         }
 
         auto compClassification = compEntry.comp_classification;
@@ -717,6 +699,13 @@ void InventoryManager::getFirmwareParameters(
         componentInfo.emplace(
             std::make_pair(compClassification, compIdentifier),
             compEntry.comp_classification_index);
+
+        auto currentCompVerStr = utils::toString(activeCompVerStr);
+
+        if (!imageSetVersion.empty() && imageSetVersion == currentCompVerStr)
+        {
+            isImageVersionMatched = true;
+        }
 
         if (firmwareDeviceNameMap.contains(eid) and descriptorMap.contains(eid))
         {
@@ -726,8 +715,8 @@ void InventoryManager::getFirmwareParameters(
 
             firmwareInventoryManager.createFirmwareEntry(
                 SoftwareIdentifier(eid, compIdentifier), componentName,
-                utils::toString(activeCompVerStr), descriptorMap.at(eid),
-                componentInfo, [this, eid]() {
+                currentCompVerStr, descriptorMap.at(eid), componentInfo,
+                [this, eid]() {
                     this->sendQueryDeviceIdentifiersRequest(eid);
                     this->sendQueryDownstreamDevicesRequest(eid);
                 });
@@ -743,6 +732,25 @@ void InventoryManager::getFirmwareParameters(
                         activeCompVerStr.length + pendingCompVerStr.length;
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
+    }
+
+    if (!imageSetVersion.empty() && !isImageVersionMatched)
+    {
+        auto devNameIt = firmwareDeviceNameMap.find(eid);
+        auto descIt = descriptorMap.find(eid);
+
+        if (devNameIt != firmwareDeviceNameMap.end() &&
+            descIt != descriptorMap.end())
+        {
+            const SoftwareIdentifier totalIdentifier{eid, std::nullopt};
+
+            firmwareInventoryManager.createFirmwareEntry(
+                totalIdentifier, devNameIt->second, imageSetVersion,
+                descIt->second, componentInfo, [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
+        }
     }
 
     componentInfoMap.insert_or_assign(eid, std::move(componentInfo));
