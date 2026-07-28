@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <functional>
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -128,7 +129,7 @@ using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
 // Component information
 using CompClassification = uint16_t;
 using CompIdentifier = uint16_t;
-using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
+using SoftwareIdentifier = std::pair<eid, std::optional<CompIdentifier>>;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;

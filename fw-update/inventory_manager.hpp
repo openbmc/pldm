@@ -6,6 +6,8 @@
 #include "firmware_inventory_manager.hpp"
 #include "requester/handler.hpp"
 
+class InventoryManagerTest;
+
 namespace pldm
 {
 
@@ -23,6 +25,7 @@ namespace fw_update
 class InventoryManager
 {
   public:
+    friend class ::InventoryManagerTest;
     InventoryManager() = delete;
     InventoryManager(const InventoryManager&) = delete;
     InventoryManager(InventoryManager&&) = delete;
