@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7f2fcc3_71f97ccb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-28T06:50:57Z",
+      "side": 1,
+      "message": "Not really true, libpldm automatically would release them after the instance id expiration time.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 30
+      },
+      "revId": "bff71da84464ed23943a678a4f81679a1018c6db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8dc2eaa_01ef3130",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-28T06:50:57Z",
+      "side": 1,
+      "message": "why are these written in different paragraphs ? can you make it in a single paragraph and explain why, what, how ? clearly ?  This looks as if it is some sort of design summary.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 27
+      },
+      "revId": "bff71da84464ed23943a678a4f81679a1018c6db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a976443_4ff6567d",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-28T06:50:57Z",
+      "side": 1,
+      "message": "changes looks good. Please fix up the commit message and we can get this in.",
+      "revId": "bff71da84464ed23943a678a4f81679a1018c6db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
