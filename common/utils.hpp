@@ -7,6 +7,7 @@
 #include <libpldm/entity.h>
 #include <libpldm/pdr.h>
 #include <libpldm/platform.h>
+#include <libpldm/pldm.h>
 #include <systemd/sd-bus.h>
 #include <unistd.h>
 
@@ -594,13 +595,17 @@ void recoverMctpEndpoint(const std::string& endpointObjPath);
 
 /** @brief Print the buffer
  *
- *  @param[in]  isTx - True if the buffer is an outgoing PLDM message, false if
-                       the buffer is an incoming PLDM message
+ *  Output format:  "Tx: <N> aa bb cc ..."  or  "Rx: <N> aa bb cc ..."
+ *  where N is the MCTP endpoint ID of the remote endpoint.
+ *
+ *  @param[in]  isTx   - True if the buffer is an outgoing PLDM message, false
+ *                       if the buffer is an incoming PLDM message
  *  @param[in]  buffer - Buffer to print
+ *  @param[in]  eid    - MCTP endpoint ID of the remote endpoint
  *
  *  @return - None
  */
-void printBuffer(bool isTx, const std::vector<uint8_t>& buffer);
+void printBuffer(bool isTx, const std::vector<uint8_t>& buffer, mctp_eid_t eid);
 
 /** @brief Convert the buffer to std::string
  *

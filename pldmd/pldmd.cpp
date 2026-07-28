@@ -377,7 +377,7 @@ int main(int argc, char** argv)
             FlightRecorder::GetInstance().saveRecord(requestMsgVec, false);
             if (verbose)
             {
-                printBuffer(Rx, requestMsgVec);
+                printBuffer(Rx, requestMsgVec, TID);
             }
             // process message and send response
             auto response = processRxMsg(requestMsgVec, invoker, reqHandler,
@@ -387,7 +387,7 @@ int main(int argc, char** argv)
                 FlightRecorder::GetInstance().saveRecord(*response, true);
                 if (verbose)
                 {
-                    printBuffer(Tx, *response);
+                    printBuffer(Tx, *response, TID);
                 }
 
                 returnCode = pldmTransport.sendMsg(TID, (*response).data(),

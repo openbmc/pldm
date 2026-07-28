@@ -72,17 +72,17 @@ TEST(printBuffer, testprintBufferGoodPath)
     std::ostringstream localString;
     auto coutBuffer = std::cout.rdbuf();
     std::cout.rdbuf(localString.rdbuf());
-    printBuffer(false, buffer);
+    printBuffer(false, buffer, 8);
     std::cout.rdbuf(coutBuffer);
-    EXPECT_EQ(localString.str(), "Rx: 0a 0c 0e 19 e9 \n");
+    EXPECT_EQ(localString.str(), "Rx: <8> 0a 0c 0e 19 e9 \n");
     localString.str("");
     localString.clear();
     std::cerr << localString.str() << std::endl;
     buffer = {12, 0, 200, 12, 255};
     std::cout.rdbuf(localString.rdbuf());
-    printBuffer(true, buffer);
+    printBuffer(true, buffer, 32);
     std::cout.rdbuf(coutBuffer);
-    EXPECT_EQ(localString.str(), "Tx: 0c 00 c8 0c ff \n");
+    EXPECT_EQ(localString.str(), "Tx: <32> 0c 00 c8 0c ff \n");
 }
 
 TEST(printBuffer, testprintBufferBadPath)
@@ -91,9 +91,9 @@ TEST(printBuffer, testprintBufferBadPath)
     std::ostringstream localString;
     auto coutBuffer = std::cout.rdbuf();
     std::cout.rdbuf(localString.rdbuf());
-    printBuffer(false, buffer);
+    printBuffer(false, buffer, 8);
     EXPECT_EQ(localString.str(), "");
-    printBuffer(true, buffer);
+    printBuffer(true, buffer, 8);
     std::cout.rdbuf(coutBuffer);
     EXPECT_EQ(localString.str(), "");
 }
