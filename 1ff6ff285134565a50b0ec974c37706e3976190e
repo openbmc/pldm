@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9efeb868_5ec10f03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 55
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-07-28T16:44:31Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com @manojkiran.eda@gmail.com Can you please review this patch ?",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
