@@ -129,7 +129,7 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
     if (pldmVerbose)
     {
         std::cout << "pldmtool: ";
-        printBuffer(Tx, requestMsg);
+        printBuffer(Tx, requestMsg, mctp_eid);
     }
 
     auto tid = mctp_eid;
@@ -161,7 +161,7 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
         if (pldmVerbose)
         {
             std::cout << "pldmtool: ";
-            printBuffer(Rx, responseMsg);
+            printBuffer(Rx, responseMsg, mctp_eid);
         }
     }
 

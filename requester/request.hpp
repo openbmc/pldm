@@ -172,7 +172,7 @@ class Request final : public RequestRetryTimer
     {
         if (verbose)
         {
-            pldm::utils::printBuffer(pldm::utils::Tx, requestMsg);
+            pldm::utils::printBuffer(pldm::utils::Tx, requestMsg, eid);
         }
         pldm::flightrecorder::FlightRecorder::GetInstance().saveRecord(
             requestMsg, true);

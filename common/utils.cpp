@@ -642,14 +642,15 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
     return PLDM_INVALID_EFFECTER_ID;
 }
 
-void printBuffer(bool isTx, const std::vector<uint8_t>& buffer)
+void printBuffer(bool isTx, const std::vector<uint8_t>& buffer, mctp_eid_t eid)
 {
     if (buffer.empty())
     {
         return;
     }
 
-    std::cout << (isTx ? "Tx: " : "Rx: ");
+    std::cout << (isTx ? "Tx: " : "Rx: ")
+              << std::format("<{}> ", static_cast<unsigned>(eid));
 
     std::ranges::for_each(buffer, [](uint8_t byte) {
         std::cout << std::format("{:02x} ", byte);
