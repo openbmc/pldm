@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df20cc92_7060c0fe",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-28T09:46:05Z",
+      "side": 1,
+      "message": "Not planning to accept this sort of parsing in pldm anymore. This hand-rolls in C++ exactly the same iterator pattern that libpldm already ships today for State Effecter PDRs as `foreach_pldm_platform_state_effecter_pdr_possible_states` / `foreach_pldm_platform_state_effecter_pdr_states`. Similar iterator does not exists yet for the sensor side but that is a gap in libpldm that should be fixed there, not worked around here.\n\nAfter adding the suggested changes above in the libpldm, please rewrite parseStateSensorPDR to use them. This keeps all wire-format arithmetic inside the library, where it can be endiansafe, unit-tested and also ABI-tracked.",
+      "range": {
+        "startLine": 645,
+        "startChar": 0,
+        "endLine": 685,
+        "endChar": 5
+      },
+      "revId": "f8f05596743c9cdb51774eb351500cdb1fdaf8ac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
