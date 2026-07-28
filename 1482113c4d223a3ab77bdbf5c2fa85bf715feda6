@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "664bcc65_c6a3a9d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 45
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-07-28T16:47:09Z",
+      "side": 1,
+      "message": "Acknowledged\n\nMarking this as acknowledged as i already asked for it another comment and on discord (also to avoid any confusion with open comments).",
+      "parentUuid": "47fdc8d6_bdc722d5",
+      "revId": "1482113c4d223a3ab77bdbf5c2fa85bf715feda6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9deefed5_cebd9ef6",
