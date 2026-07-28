@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a23849_fc785971",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-07-28T10:29:28Z",
+      "side": 1,
+      "message": "Can you describe how one could recreate the issue/how you tested the fix?",
+      "revId": "922b4d472b72c679a2fd71726cce0143dbb8fa35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
