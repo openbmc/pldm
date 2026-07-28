@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc18dfb0_fa6b8f98",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-28T10:02:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1948d20_560eee6b",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 19
+      },
+      "revId": "24069b2f7831b8ae50056eb303a1b32ad88eacd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6c8b7af_1296bb3f",
@@ -64,6 +88,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "334ac1f3_e4e92e96",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-28T10:02:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6c8b7af_1296bb3f",
+      "range": {
+        "startLine": 132,
+        "startChar": 12,
+        "endLine": 132,
+        "endChar": 34
+      },
+      "revId": "24069b2f7831b8ae50056eb303a1b32ad88eacd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "971b28e7_c881842a",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-07-27T08:55:01Z",
       "side": 1,
       "message": "Perhaps we can do something like:\n```\nscope.spawn(\n    [](SensorManager\u0026 self, pldm_tid_t tid) -\u003e exec::task\u003cvoid\u003e {\n        ...\n    }(*this, tid), \n    exec::default_task_context\u003cvoid\u003e(stdexec::inline_scheduler{}));\n```",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 161,
+        "endChar": 12
+      },
+      "revId": "24069b2f7831b8ae50056eb303a1b32ad88eacd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0e9ff26_660a0eb2",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-28T10:02:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "971b28e7_c881842a",
       "range": {
         "startLine": 129,
         "startChar": 8,
