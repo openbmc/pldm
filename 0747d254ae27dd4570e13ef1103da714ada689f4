@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3c6f387_82a530c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-28T06:44:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3dc047a7_7fd3cf78",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "0747d254ae27dd4570e13ef1103da714ada689f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfa761a2_541743db",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-28T05:24:10Z",
       "side": 1,
       "message": "What is this ? The commit message should clearly explain what, why and how. Can you please re-write this commit message a bit more elaborately.",
+      "range": {
+        "startLine": 9,
+        "startChar": 13,
+        "endLine": 9,
+        "endChar": 25
+      },
+      "revId": "0747d254ae27dd4570e13ef1103da714ada689f4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6674519a_1df52a46",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-07-28T06:44:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bfa761a2_541743db",
       "range": {
         "startLine": 9,
         "startChar": 13,
