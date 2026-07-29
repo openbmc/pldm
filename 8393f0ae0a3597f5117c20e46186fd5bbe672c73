@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02f88173_3d77b419",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-29T05:35:06Z",
+      "side": 1,
+      "message": "this should go below after all the validation right? Currently even the data with invalid transferFlag will be appended.",
+      "revId": "8393f0ae0a3597f5117c20e46186fd5bbe672c73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e70f0c1_2274c463",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-29T05:35:06Z",
+      "side": 1,
+      "message": "pls use static_cast\u003cint\u003e",
+      "revId": "8393f0ae0a3597f5117c20e46186fd5bbe672c73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee3de185_29531e1a",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-29T05:35:06Z",
+      "side": 1,
+      "message": "I think its better to make one helper function. I see that any changes that are needed here, we need to make double effort.",
+      "range": {
+        "startLine": 471,
+        "startChar": 3,
+        "endLine": 484,
+        "endChar": 5
+      },
+      "revId": "8393f0ae0a3597f5117c20e46186fd5bbe672c73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
