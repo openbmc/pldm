@@ -387,6 +387,7 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
                 {
                     terminus->pdrs.emplace_back(std::move(receivedPdr));
                     recordHndl = nextRecordHndl;
+                    break;
                 }
             } while (nextDataTransferHndl != 0 &&
                      receivedRecordSize < largestRecordSize);
