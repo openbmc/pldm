@@ -52,6 +52,24 @@
       "parentUuid": "0f372dc3_9b2b096b",
       "revId": "922b4d472b72c679a2fd71726cce0143dbb8fa35",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c82a67f_9a78f112",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-07-29T04:43:39Z",
+      "side": 1,
+      "message": "Understood, but can you update the testing section to the commit message stating how you verified this fixed the crash please?",
+      "parentUuid": "0a3cd8bf_b312f008",
+      "revId": "922b4d472b72c679a2fd71726cce0143dbb8fa35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
