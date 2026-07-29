@@ -16,6 +16,24 @@
       "message": "Can you describe how one could recreate the issue/how you tested the fix?",
       "revId": "922b4d472b72c679a2fd71726cce0143dbb8fa35",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f372dc3_9b2b096b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-29T04:17:54Z",
+      "side": 1,
+      "message": "Easiest way is to have an unstable endpoint or remove eid from mctp after pldm discovery is done(Whichever will invoke the interface removed signal from mctp). Might take multiple tries, but at one point, one doSensorPollingTaskHandle coroutine will be in flight -\u003e suspended (waiting for response from endpoint), and pldm will get an interface removed signal for that endpoint, and call stopPolling() -\u003e erasing that coroutine\u0027s handle. When the coroutine tries to resume, its handle is already gone.\n\nPassing as explicit parameters for [this, tid] just makes sure those objects guaranteed to live -\u003e Not related to the use-after-free caused by stopPolling.",
+      "parentUuid": "c0a23849_fc785971",
+      "revId": "922b4d472b72c679a2fd71726cce0143dbb8fa35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
