@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "585c2c71_ca0800f1",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-30T08:59:01Z",
+      "side": 1,
+      "message": "Good catch, thanks. Moved the transfer-flag validation ahead of the append, so a chunk with an invalid transfer flag is now rejected before it\u0027s accumulated. Fixed in patchset 9.",
+      "parentUuid": "02f88173_3d77b419",
+      "revId": "8393f0ae0a3597f5117c20e46186fd5bbe672c73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e70f0c1_2274c463",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69db1c9f_98209459",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-30T08:59:01Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1e70f0c1_2274c463",
+      "revId": "8393f0ae0a3597f5117c20e46186fd5bbe672c73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee3de185_29531e1a",
@@ -48,6 +84,30 @@
       "writtenOn": "2026-07-29T05:35:06Z",
       "side": 1,
       "message": "I think its better to make one helper function. I see that any changes that are needed here, we need to make double effort.",
+      "range": {
+        "startLine": 471,
+        "startChar": 3,
+        "endLine": 484,
+        "endChar": 5
+      },
+      "revId": "8393f0ae0a3597f5117c20e46186fd5bbe672c73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac2dc523_60351b72",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-07-30T08:59:01Z",
+      "side": 1,
+      "message": "Done. Extracted the multipart request loop and the shared transfer state (dataTransferHandle, operationFlag, nextPartRequired, accumulated buffer) into a new MultipartFruCommand base class. GetFRURecordByOption and GetFruRecordTable now derive from it, so the loop lives in one place and future changes only need to be made once.",
+      "parentUuid": "ee3de185_29531e1a",
       "range": {
         "startLine": 471,
         "startChar": 3,
