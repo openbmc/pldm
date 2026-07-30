@@ -171,8 +171,8 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
 TEST_F(EventManagerTest, SetEventReceiverTest)
 {
     // Add terminus
-    auto mappedTid =
-        terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+    auto mappedTid = terminusManager.mapTid(
+        pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
@@ -225,7 +225,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
             0x0, 0x1,  0x0,  0x0,                    // repositorySize
             59,  0x0,  0x0,  0x0,                    // largestRecordSize
             0x0 // dataTransferHandleTimeout
-    };
+        };
     auto rc = terminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(getPDRRepositoryInfoResp.data()),
         sizeof(getPDRRepositoryInfoResp));
@@ -336,7 +336,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
             0x00, // Language Tag "en"
             0x53, 0x00, 0x30, 0x00,
             0x00  // Entity Name "S0"
-    };
+        };
     rc = terminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(getPdrAuxNameResp.data()),
         sizeof(getPdrAuxNameResp));
@@ -366,7 +366,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     terminusManager.updateMctpEndpointAvailability(
-        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+        pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt), true);
 
     // queue SetEventReceiver response
     const size_t SetEventReceiverLen = 1;
@@ -404,8 +404,8 @@ TEST_F(EventManagerTest, updateAvailableState)
 TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
 {
     // Add terminus
-    auto mappedTid =
-        terminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+    auto mappedTid = terminusManager.mapTid(
+        pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt));
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
         tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
@@ -440,7 +440,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             2,
             3,
             4 // eventData first part
-    };
+        };
     auto rc = terminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(
             pollForPlatformEventMessage1Resp.data()),
@@ -478,7 +478,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             0x7f,
             0x6a,
             0x5d // crc32
-    };
+        };
     rc = terminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(
             pollForPlatformEventMessage2Resp.data()),
@@ -492,7 +492,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
             0x0, 0x02, 0x0d, PLDM_SUCCESS,
             tid,     // TID
             0x0, 0x0 // eventID
-    };
+        };
     rc = terminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(
             pollForPlatformEventMessage3Resp.data()),
@@ -500,7 +500,7 @@ TEST_F(EventManagerTest, pollForPlatformEventTaskMultipartTransferTest)
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     terminusManager.updateMctpEndpointAvailability(
-        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+        pldm::MctpInfo(10, "", "", 1, std::nullopt, std::nullopt), true);
 
     EXPECT_CALL(eventManager, processCperEvent(_, _, _, _))
         .Times(1)

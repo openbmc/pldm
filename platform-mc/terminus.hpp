@@ -119,6 +119,22 @@ class Terminus
         return terminusName;
     }
 
+    /** @brief The setter to set associated path */
+    void setAssociatedPath(const EntityName& path)
+    {
+        associatedPath = path;
+    }
+
+    /** @brief The getter to get associated path */
+    std::optional<std::string_view> getAssociatedPath()
+    {
+        if (associatedPath.empty())
+        {
+            return std::nullopt;
+        }
+        return associatedPath;
+    }
+
     /** @brief Parse record data from FRU table
      *
      *  @param[in] fruData - pointer to FRU record table
@@ -181,6 +197,12 @@ class Terminus
      *  @return sensor object
      */
     std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
+
+    /** @brief Fetch sensor names from Entity Manager via D-Bus
+     *
+     *  @return success code
+     */
+    int fetchEntityManagerConfiguration();
 
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
@@ -316,6 +338,9 @@ class Terminus
     /* @brief The pointer of FRU decorator D-Bus interfaces */
     std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =
         nullptr;
+
+    /** @brief associated path */
+    EntityName associatedPath{};
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
