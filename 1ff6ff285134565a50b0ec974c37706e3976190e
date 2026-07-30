@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b4cfc73_d7858ffe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 55
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "Does this also mean , that we support adding things even after a failed update as well ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 19,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "9efeb868_5ec10f03",
@@ -14,6 +37,229 @@
       "writtenOn": "2026-07-28T16:44:31Z",
       "side": 1,
       "message": "@deepak.kodihalli.83@gmail.com @manojkiran.eda@gmail.com Can you please review this patch ?",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e609d46_e8c37fd4",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 55
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "The original design does not talk about `TargetArgs`, I think its a good addition to the design, may be worth updating the design document as well ?",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3023bd5_5dfefc63",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "Pre-condition failure directly calls teardownUpdate() and taskCompletionCallback(), while post-condition failure delegates to completeUpdate(). Can we make things a little more consistent ?",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 4
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b45d5824_1375bfd3",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "please use std::format for all the string formatting. Check for this through out the patchset.",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdaedb81_6207837d",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "Is there any schema validation to distinguish an intentionally omitted hook from an accidentally empty service name?",
+      "range": {
+        "startLine": 37,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "924e0711_ed242c69",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "We always strip everything before the last \u0027/\u0027. Is that intentional for all TargetArgs, or do we expect only object paths whose basename is meaningful?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74805e74_5dca72a7",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "If we expect them to be paths , why not use std::filesystem and get the leafnode instead ?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b888675_e6264bb7",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "can you also add in a comment from the design document that talks about how the timeout scenarios are handled ? and how JobRemoved is always guaranteed.",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53fbc390_de633481",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "magic string",
+      "range": {
+        "startLine": 159,
+        "startChar": 40,
+        "endLine": 159,
+        "endChar": 45
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408827ce_e577457d",
+        "filename": "fw-update/systemd_interface.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "doxygen missing for the entire file",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21a72d2a_1f5daf00",
+        "filename": "fw-update/systemd_interface.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "make it an rvalue reference so that the ownership transfer is explicit.",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 43
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3423bf63_cae14ecf",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-07-30T16:28:59Z",
+      "side": 1,
+      "message": "doxygen missing",
       "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
