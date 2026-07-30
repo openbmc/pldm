@@ -466,5 +466,9 @@
     {
         "path": "/usr/local/share/hostfw/running/81e006f0.lid,/var/lib/phosphor-software-manager/hostfw/running/81e006f0.lid",
         "file_traits": 1
+    },
+    {
+        "path": "/var/lib/phosphor-software-manager/hostfw/PHYP-SECURITY",
+        "file_traits": 4
     }
 ]
