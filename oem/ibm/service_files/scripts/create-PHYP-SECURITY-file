@@ -1,0 +1,23 @@
+#!/bin/sh
+mkdir -p /var/lib/phosphor-software-manager/hostfw/
+PHYP_SECURITY=/var/lib/phosphor-software-manager/hostfw/PHYP-SECURITY
+SIZE=$((1024 * 64))
+
+if [ ! -f "$PHYP_SECURITY" ]; then
+    echo "PHYP-SECURITY file not found"
+    NEED_CREATE=true
+elif [ "$(stat -c%s "$PHYP_SECURITY")" -ne "$SIZE" ]; then
+    CURRENT_SIZE=$(stat -c%s "$PHYP_SECURITY")
+    echo "Invalid PHYP-SECURITY size: $CURRENT_SIZE bytes, recreating PHYP-SECURITY file"
+    rm -f "$PHYP_SECURITY"
+    NEED_CREATE=true
+else
+    CURRENT_SIZE=$(stat -c%s "$PHYP_SECURITY")
+    echo "PHYP-SECURITY file found with correct size: $CURRENT_SIZE bytes"
+    NEED_CREATE=false
+fi
+
+if $NEED_CREATE; then
+    echo "creating new PHYP-SECURITY file"
+    truncate -s "$SIZE" "$PHYP_SECURITY"
+fi

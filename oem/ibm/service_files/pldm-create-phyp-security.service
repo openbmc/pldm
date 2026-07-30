@@ -1,0 +1,14 @@
+[Unit]
+Description=Create empty PHYP-SECURITY file
+Wants=obmc-vpnor-updatesymlinks.service
+After=obmc-vpnor-updatesymlinks.service
+Wants=obmc-flash-bios-init.service
+After=obmc-flash-bios-init.service
+
+[Service]
+ExecStart=/usr/bin/create-PHYP-SECURITY-file
+Type=oneshot
+RemainAfterExit=no
+
+[Install]
+WantedBy=pldmd.service
