@@ -45,14 +45,11 @@ matchers:
 - partial_regex: oem/ampere
   owners:
   - thu@os.amperecomputing.com
-- partial_regex: ibm
   owners:
   - manojkiran.eda@gmail.com
-- partial_regex: meta/
   owners:
   - paligill@gmail.com
   - patrick@stwcx.xyz
-- partial_regex: tools/visualize-pdr
   owners:
   - manojkiran.eda@gmail.com
 
