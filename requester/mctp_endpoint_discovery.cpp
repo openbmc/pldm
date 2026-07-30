@@ -40,6 +40,13 @@ MctpDiscovery::MctpDiscovery(
     {
         if (mapIt.second)
         {
+            if (isDuplicateUuid(std::get<pldm::eid>(mapIt.first),
+                                std::get<1>(mapIt.first),
+                                std::get<NetworkId>(mapIt.first)))
+            {
+                continue;
+            }
+
             // Only add the available endpoints to the terminus
             // Let the propertiesChanged signal tells us when it comes back
             // to Available again
@@ -263,45 +270,79 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                 if (std::find(types.begin(), types.end(), mctpTypePLDM) !=
                     types.end())
                 {
-                    info(
-                        "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
-                        "NETWORK", networkId, "EID", eid, "UUID", uuid);
                     auto mctpInfo =
                         MctpInfo(eid, uuid, "", networkId, std::nullopt);
-                    searchConfigurationFor(pldm::utils::DBusHandler(),
-                                           mctpInfo);
-                    bool tidAllocated = false;
-                    for (auto* handler : handlers)
+
+                    if (!isDuplicateUuid(eid, uuid, networkId))
                     {
-                        if (auto tid = handler->allocateOrGetTid(mctpInfo))
+                        searchConfigurationFor(pldm::utils::DBusHandler(),
+                                               mctpInfo);
+                        info(
+                            "Adding Endpoint networkId '{NETWORK}' and EID '{EID}' UUID '{UUID}'",
+                            "NETWORK", networkId, "EID", eid, "UUID", uuid);
+                        bool tidAllocated = false;
+                        for (auto* handler : handlers)
                         {
-                            if (auto* transport = handler->getTransport())
+                            if (auto tid = handler->allocateOrGetTid(mctpInfo))
                             {
-                                if (transport->mapTid(tid.value(), networkId,
-                                                      eid) != 0)
+                                if (auto* transport = handler->getTransport())
                                 {
-                                    error(
-                                        "Failed to map TID '{TID}' for EID '{EID}' network '{NETWORK}' in transport",
-                                        "TID", tid.value(), "EID", eid,
-                                        "NETWORK", networkId);
-                                    break;
+                                    if (transport->mapTid(tid.value(),
+                                                          networkId, eid) != 0)
+                                    {
+                                        error(
+                                            "Failed to map TID '{TID}' for EID '{EID}' network '{NETWORK}' in transport",
+                                            "TID", tid.value(), "EID", eid,
+                                            "NETWORK", networkId);
+                                        break;
+                                    }
                                 }
+                                mctpInfos[tid.value()] = std::move(mctpInfo);
+                                tidAllocated = true;
+                                break;
                             }
-                            mctpInfos[tid.value()] = std::move(mctpInfo);
-                            tidAllocated = true;
-                            break;
                         }
-                    }
-                    if (!tidAllocated)
-                    {
-                        error(
-                            "Failed to allocate TID for EID '{EID}' network '{NETWORK}', skipping endpoint",
-                            "EID", eid, "NETWORK", networkId);
+                        if (!tidAllocated)
+                        {
+                            error(
+                                "Failed to allocate TID for EID '{EID}' network '{NETWORK}', skipping endpoint",
+                                "EID", eid, "NETWORK", networkId);
+                        }
                     }
                 }
             }
         }
     }
+}
+
+std::optional<pldm::tid> MctpDiscovery::uuidExists(const UUID& uuid) const
+{
+    for (const auto& [tid, existingInfo] : existingMctpInfos)
+    {
+        if (std::get<1>(existingInfo) == uuid)
+        {
+            return tid;
+        }
+    }
+    return std::nullopt;
+}
+
+bool MctpDiscovery::isDuplicateUuid(pldm::eid endpointEid, const UUID& uuid,
+                                    NetworkId networkId) const
+{
+    if (uuid == emptyUUID)
+    {
+        return false;
+    }
+    if (auto matchedTid = uuidExists(uuid))
+    {
+        info(
+            "Skipping EID '{EID}' UUID '{UUID}' on NETWORK '{NETWORK}': already registered for terminus TID '{TID}'",
+            "EID", static_cast<unsigned>(endpointEid), "UUID", uuid, "NETWORK",
+            networkId, "TID", matchedTid.value());
+        return true;
+    }
+    return false;
 }
 
 void MctpDiscovery::addToExistingMctpInfos(const TerminusInfos& addedInfos)
@@ -424,6 +465,12 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             {
                 if (availability)
                 {
+                    if (isDuplicateUuid(std::get<pldm::eid>(mctpInfo),
+                                        std::get<1>(mctpInfo),
+                                        std::get<NetworkId>(mctpInfo)))
+                    {
+                        continue;
+                    }
                     // The endpoint not in existingMctpInfos and is
                     // available Add it to existingMctpInfos
                     info(

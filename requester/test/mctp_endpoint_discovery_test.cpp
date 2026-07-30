@@ -22,6 +22,17 @@ class TestMctpDiscovery : public ::testing::Test
     {
         mctpDiscovery.searchConfigurationFor(handler, mctpInfo);
     }
+    static std::optional<pldm::tid> uuidExists(
+        const pldm::MctpDiscovery& mctpDiscovery, const pldm::UUID& uuid)
+    {
+        return mctpDiscovery.uuidExists(uuid);
+    }
+    static bool isDuplicateUuid(const pldm::MctpDiscovery& mctpDiscovery,
+                                pldm::eid endpointEid, const pldm::UUID& uuid,
+                                pldm::NetworkId networkId)
+    {
+        return mctpDiscovery.isDuplicateUuid(endpointEid, uuid, networkId);
+    }
 };
 
 TEST(MctpEndpointDiscoveryTest, SingleHandleMctpEndpoint)
@@ -154,6 +165,62 @@ TEST(MctpEndpointDiscoveryTest, goodRemoveEndpoints)
         "xyz.openbmc_project.sdbusplus.test.Object", "Unused");
     mctpDiscoveryHandler->removeEndpoints(msg);
     EXPECT_EQ(mctpDiscoveryHandler->existingMctpInfos.size(), 0);
+}
+
+TEST(MctpEndpointDiscoveryTest, uuidExists)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    pldm::MockManager manager;
+    const pldm::UUID uuidA = "11111111-1111-1111-1111-111111111111";
+    const pldm::UUID uuidB = "22222222-2222-2222-2222-222222222222";
+    const pldm::TerminusInfos mctpInfos = {
+        {11, pldm::MctpInfo(11, uuidA, "", 1, std::nullopt)},
+        {12, pldm::MctpInfo(12, uuidB, "", 1, std::nullopt)}};
+
+    auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
+        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
+    mctpDiscoveryHandler->addToExistingMctpInfos(mctpInfos);
+
+    // Matching UUID returns the registered TID
+    auto tid = TestMctpDiscovery::uuidExists(*mctpDiscoveryHandler, uuidA);
+    ASSERT_TRUE(tid.has_value());
+    EXPECT_EQ(tid.value(), 11);
+
+    // Unregistered UUID is not a match
+    const pldm::UUID uuidC = "33333333-3333-3333-3333-333333333333";
+    EXPECT_FALSE(TestMctpDiscovery::uuidExists(*mctpDiscoveryHandler, uuidC)
+                     .has_value());
+}
+
+TEST(MctpEndpointDiscoveryTest, isDuplicateUuid)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    pldm::MockManager manager;
+    const pldm::UUID uuidA = "11111111-1111-1111-1111-111111111111";
+    const pldm::UUID uuidB = "22222222-2222-2222-2222-222222222222";
+    // Endpoint already registered on network 1
+    const pldm::TerminusInfos mctpInfos = {
+        {11, pldm::MctpInfo(11, uuidA, "", 1, std::nullopt)}};
+
+    auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
+        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
+    mctpDiscoveryHandler->addToExistingMctpInfos(mctpInfos);
+
+    // Same UUID reachable via a different network is a duplicate
+    EXPECT_TRUE(TestMctpDiscovery::isDuplicateUuid(*mctpDiscoveryHandler, 11,
+                                                   uuidA, 2));
+
+    // Same UUID on a different EID is also a duplicate
+    EXPECT_TRUE(TestMctpDiscovery::isDuplicateUuid(*mctpDiscoveryHandler, 99,
+                                                   uuidA, 1));
+
+    // Different UUID is not a duplicate
+    EXPECT_FALSE(TestMctpDiscovery::isDuplicateUuid(*mctpDiscoveryHandler, 11,
+                                                    uuidB, 2));
+
+    // Empty UUID is never treated as a duplicate
+    EXPECT_FALSE(TestMctpDiscovery::isDuplicateUuid(*mctpDiscoveryHandler, 11,
+                                                    pldm::emptyUUID, 2));
 }
 
 TEST(MctpEndpointDiscoveryTest, goodSearchConfigurationFor)
