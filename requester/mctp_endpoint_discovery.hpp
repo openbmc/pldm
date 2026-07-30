@@ -249,6 +249,36 @@ class MctpDiscovery
      */
     std::string getNameFromProperties(const utils::PropertyMap& properties);
 
+    /** @brief Check if an EID+UUID pair already exists in existingMctpInfos
+     *         across all networks. Used to prevent registering the same
+     *         physical device as multiple terminuses when it is reachable via
+     *         more than one MCTP network.
+     *
+     *  @param[in] endpointEid - the endpoint EID to check
+     *  @param[in] uuid        - the endpoint UUID to check
+     *
+     *  @return the TID if the EID+UUID pair already exists, std::nullopt
+     * otherwise
+     */
+    std::optional<pldm::tid> eidUuidPairExists(pldm::eid endpointEid,
+                                               const UUID& uuid) const;
+
+    /** @brief Determine whether an endpoint is a duplicate of one that is
+     *         already registered, i.e. the same EID+UUID pair exists in
+     *         existingMctpInfos. Endpoints with an empty UUID are never
+     *         treated as duplicates. When a duplicate is found, an
+     *         informational message is logged.
+     *
+     *  @param[in] endpointEid - the endpoint EID to check
+     *  @param[in] uuid        - the endpoint UUID to check
+     *  @param[in] networkId   - the endpoint network ID (for logging)
+     *
+     *  @return true if the endpoint is a duplicate and should be skipped,
+     *          false otherwise
+     */
+    bool isDuplicateEidUuid(pldm::eid endpointEid, const UUID& uuid,
+                            NetworkId networkId) const;
+
     /** @brief The configuration contains D-Bus path and the MCTP endpoint
      * information.
      */
