@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fdba78a_f2575f30",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-31T04:23:39Z",
+      "side": 1,
+      "message": "what happens if endpoint sends `transferFlag \u003d\u003d PLDM_START` second time? I assume it will keep appending it to the same table?",
+      "revId": "a692695436788b8264f4c14cbf6a52fef2dc2c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4baad21c_1380f700",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-07-31T04:23:39Z",
+      "side": 1,
+      "message": "I think another check for NextDataTransferHandle !\u003d 0 (Where basically no other portions will be sent) would be good. Similar to how `PlatformManager::getPDRs` does it in platform-mc",
+      "revId": "a692695436788b8264f4c14cbf6a52fef2dc2c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
