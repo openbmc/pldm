@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a068f6b_9004a3ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1003022
+      },
+      "writtenOn": "2026-08-02T14:14:10Z",
+      "side": 1,
+      "message": "Yes we are depending on the terminus name only by look up to TID",
+      "parentUuid": "a2c24f7d_2950feea",
+      "range": {
+        "startLine": 10,
+        "startChar": 51,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "5bea46951953d172f32816b6cd3634740fe68263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "43c0cbe1_ecf57bdd",
@@ -72,6 +96,24 @@
       "side": 1,
       "message": "terminusName returns an optional string_view, he is just constructing the string from it. Not sure we would need that though ? cant we just return an optional string_view itself ?",
       "parentUuid": "3f8d1753_679a9b21",
+      "revId": "5bea46951953d172f32816b6cd3634740fe68263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c26c4419_e9f1e4e9",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1003022
+      },
+      "writtenOn": "2026-08-02T14:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d6100aa_1bba0e8c",
       "revId": "5bea46951953d172f32816b6cd3634740fe68263",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
