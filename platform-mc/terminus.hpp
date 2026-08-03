@@ -147,16 +147,16 @@ class Terminus
      *         message that will require a multipart transfer via the
      *         PollForPlatformEvent command
      */
-    bool pollEvent;
+    bool pollEvent = false;
 
     /** @brief The sensor id is used in pollForPlatformMessage command */
-    uint16_t pollEventId;
+    uint16_t pollEventId = 0;
 
     /** @brief The dataTransferHandle from `pldmMessagePollEvent` event and will
      *         be used as `dataTransferHandle` for pollForPlatformMessage
      *         command.
      */
-    uint32_t pollDataTransferHandle;
+    uint32_t pollDataTransferHandle = 0;
 
     /** @brief Get Sensor Auxiliary Names by sensorID
      *
