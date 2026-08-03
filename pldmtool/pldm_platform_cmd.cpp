@@ -2636,6 +2636,91 @@ class GetNumericEffecterValue : public CommandInterface
     uint16_t effecterId;
 };
 
+class SetNumericSensorEnable : public CommandInterface
+{
+  public:
+    ~SetNumericSensorEnable() = default;
+    SetNumericSensorEnable() = delete;
+    SetNumericSensorEnable(const SetNumericSensorEnable&) = delete;
+    SetNumericSensorEnable(SetNumericSensorEnable&&) = default;
+    SetNumericSensorEnable& operator=(const SetNumericSensorEnable&) = delete;
+    SetNumericSensorEnable& operator=(SetNumericSensorEnable&&) = delete;
+
+    explicit SetNumericSensorEnable(const char* type, const char* name,
+                                     CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("-i, --sensor_id", sensorId,
+                        "A handle that is used to identify and access "
+                        "the sensor")
+            ->required();
+        app->add_option("-o, --op_state", opState,
+                        "The desired operational state for the sensor\n"
+                        "0=ENABLED\n"
+                        "1=DISABLED\n"
+                        "2=UNAVAILABLE")
+            ->required();
+        app->add_option("-e, --event_enable", eventEnable,
+                        "The desired event message enable state\n"
+                        "0=NO_EVENT_GENERATION\n"
+                        "1=EVENTS_DISABLED\n"
+                        "2=EVENTS_ENABLED\n"
+                        "3=OP_EVENTS_ONLY_ENABLED\n"
+                        "4=STATE_EVENTS_ONLY_ENABLED")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        constexpr size_t payloadLen = 4; // sensor_id(2) + op_state(1) + event_enable(1)
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadLen);
+
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        request->payload[0] = sensorId & 0xFF;
+        request->payload[1] = (sensorId >> 8) & 0xFF;
+        request->payload[2] = opState;
+        request->payload[3] = eventEnable;
+
+        auto rc = encode_pldm_header_only(PLDM_REQUEST, instanceId,
+                                          PLDM_PLATFORM,
+                                          PLDM_SET_NUMERIC_SENSOR_ENABLE,
+                                          request);
+
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        if (payloadLength != PLDM_SET_NUMERIC_EFFECTER_VALUE_RESP_BYTES)
+        {
+            std::cerr << "Response Message Error: "
+                      << "invalid payload length " << payloadLength
+                      << std::endl;
+            return;
+        }
+
+        uint8_t completionCode = responsePtr->payload[0];
+
+        if (completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "cc=" << (int)completionCode
+                      << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        data["Response"] = "SUCCESS";
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint16_t sensorId;
+    uint8_t opState;
+    uint8_t eventEnable;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
@@ -2680,6 +2765,12 @@ void registerCommand(CLI::App& app)
         "GetStateEffecterStates", "get the state effecter states");
     commands.push_back(std::make_unique<GetStateEffecterStates>(
         "platform", "getStateEffecterStates", getStateEffecterStates));
+
+    auto setNumericSensorEnable = platform->add_subcommand(
+        "SetNumericSensorEnable",
+        "Enable or disable a numeric sensor");
+    commands.push_back(std::make_unique<SetNumericSensorEnable>(
+        "platform", "setNumericSensorEnable", setNumericSensorEnable));
 }
 
 void parseGetPDROption()
