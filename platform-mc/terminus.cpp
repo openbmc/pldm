@@ -18,7 +18,8 @@ namespace platform_mc
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
                    sdeventplus::Event& event) :
     initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
-    synchronyConfigurationSupported(0), pollEvent(false), tid(tid),
+    synchronyConfigurationSupported(0), pollEvent(false), pollEventId(0),
+    pollDataTransferHandle(0), tid(tid),
     supportedTypes(supportedTypes), event(event)
 {}
 
