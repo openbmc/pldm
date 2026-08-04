@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe8d7ccb_1c0d6419",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:05:33Z",
+      "side": 1,
+      "message": "DSP0267 v1.3.0 reserved 0xFFFF only for ComponentClassification but not ComponentIdentifier, how are we going to ensure that changing `imageLevelCompId` won\u0027t be having the previous issue?",
+      "range": {
+        "startLine": 680,
+        "startChar": 4,
+        "endLine": 680,
+        "endChar": 45
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b804d1_dff28697",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:05:33Z",
+      "side": 1,
+      "message": "This decode error could lead to the behavioural changes as I mentioned below.\nNot sure if this is intentional.",
+      "range": {
+        "startLine": 686,
+        "startChar": 7,
+        "endLine": 688,
+        "endChar": 32
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f326424e_0dd826b1",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:05:33Z",
+      "side": 1,
+      "message": "Moving this part here could lead to unexpected behavioural changes, such as FD vanishes from the inventory due to any early return. \nIs this intentional?",
+      "range": {
+        "startLine": 732,
+        "startChar": 4,
+        "endLine": 747,
+        "endChar": 5
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
