@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bc04762_f4d2235b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:50:53Z",
+      "side": 1,
+      "message": "Thanks for the patch.",
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1ca31f5_e1fc3903",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "Good point. Right now we already catch the case that actually happens in practice — an unexpected Start on a GetNextPart — plus any out-of-range flag value. The other combos you mention (a Middle/End on the first part, or a StartAndEnd mid-stream) would only come from a broken responder, and even then nothing unsafe happens: FRUTablePrint bounds-checks every access, and the loop still ends via the End flag or the nextHandle \u003d\u003d 0 guard. So I\u0027d rather keep this patch focused for now, but happy to fold it all into the single first/valid check as a follow-up if you think it\u0027s worth it.",
       "parentUuid": "a1ca31f5_e1fc3903",
+      "range": {
+        "startLine": 328,
+        "startChar": 5,
+        "endLine": 329,
+        "endChar": 56
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e820e0ba_8e4b579e",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:50:53Z",
+      "side": 1,
+      "message": "I\u0027m fine with that.\nThanks for acknowledging this, and the patch as well!",
+      "parentUuid": "a3b208bf_b298cd7b",
       "range": {
         "startLine": 328,
         "startChar": 5,
@@ -95,6 +136,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02489348_282a2acc",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:50:53Z",
+      "side": 1,
+      "message": "Understood.",
+      "parentUuid": "a3801448_41d407ae",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 344,
+        "endChar": 21
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bfa7267_908e9bf7",
@@ -132,6 +197,30 @@
       "side": 1,
       "message": "Yeah, fair. In practice a compliant responder always moves the handle forward between parts, so we terminate on the End flag or the existing nextHandle \u003d\u003d 0 guard. A constant non-zero handle would mean the responder is misbehaving. I\u0027ve left it out to keep this focused, but it\u0027s an easy add — to drop in a \"handle must advance\" check as a follow-up if you\u0027d like.",
       "parentUuid": "8bfa7267_908e9bf7",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 24
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7322d23_b86b41a7",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:50:53Z",
+      "side": 1,
+      "message": "Well, I will treat that as a \"nice-to-have\" feature.\nOverall I am okay with this implementation.",
+      "parentUuid": "6bbd5e51_d8e0554e",
       "range": {
         "startLine": 347,
         "startChar": 4,
