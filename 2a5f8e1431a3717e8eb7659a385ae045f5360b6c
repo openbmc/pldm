@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1ca31f5_e1fc3903",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T07:04:22Z",
+      "side": 1,
+      "message": "Not sure if we should covers all the illegal cases here, such as:\n```\nconst bool first \u003d (operationFlag \u003d\u003d PLDM_GET_FIRSTPART);\nconst bool valid \u003d first ? (transferFlag \u003d\u003d PLDM_START || transferFlag \u003d\u003d PLDM_START_AND_END) : (transferFlag \u003d\u003d PLDM_MIDDLE || transferFlag \u003d\u003d PLDM_END);\nif (!valid) \n{\n    // Handle Error here...\n}\n```",
+      "range": {
+        "startLine": 328,
+        "startChar": 5,
+        "endLine": 329,
+        "endChar": 56
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "193934bb_2f5e8fa7",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T07:04:22Z",
+      "side": 1,
+      "message": "Should we have a bound check before passing the reassembled buffer to the parser?",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 344,
+        "endChar": 21
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bfa7267_908e9bf7",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T07:04:22Z",
+      "side": 1,
+      "message": "This is nice, but should we covers for the case where responder keep returning a constant non-zero handle with `Middle` forever?\n\nNot sure if this case will happen, but that could lead to unstopping loop as well.",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 24
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
