@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3b208bf_b298cd7b",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-08-04T08:51:49Z",
+      "side": 1,
+      "message": "Good point. Right now we already catch the case that actually happens in practice — an unexpected Start on a GetNextPart — plus any out-of-range flag value. The other combos you mention (a Middle/End on the first part, or a StartAndEnd mid-stream) would only come from a broken responder, and even then nothing unsafe happens: FRUTablePrint bounds-checks every access, and the loop still ends via the End flag or the nextHandle \u003d\u003d 0 guard. So I\u0027d rather keep this patch focused for now, but happy to fold it all into the single first/valid check as a follow-up if you think it\u0027s worth it.",
+      "parentUuid": "a1ca31f5_e1fc3903",
+      "range": {
+        "startLine": 328,
+        "startChar": 5,
+        "endLine": 329,
+        "endChar": 56
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "193934bb_2f5e8fa7",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 10
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3801448_41d407ae",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-08-04T08:51:49Z",
+      "side": 1,
+      "message": "This is actually already handled inside FRUTablePrint — every access is checked against table_size before we dereference. isTableEnd() stops the loop once 7 or fewer bytes are left (the up-to-3-byte pad + 4-byte CRC32 tail), so a trailing partial region never gets parsed as a record. And each field is validated before it\u0027s read: the record header, the TLV header (offsetof(value)), and the full TLV value (offset + header + length) — if anything overruns it prints a \"FRU table malformed ... out of bounds\" error and bails. So the buffer is safe to parse whatever its size; a check at the call site would just repeat these. Happy to pull one up there though if you\u0027d prefer it explicit.",
+      "parentUuid": "193934bb_2f5e8fa7",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 344,
+        "endChar": 21
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8bfa7267_908e9bf7",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 10
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-04T07:04:22Z",
       "side": 1,
       "message": "This is nice, but should we covers for the case where responder keep returning a constant non-zero handle with `Middle` forever?\n\nNot sure if this case will happen, but that could lead to unstopping loop as well.",
+      "range": {
+        "startLine": 347,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 24
+      },
+      "revId": "2a5f8e1431a3717e8eb7659a385ae045f5360b6c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bbd5e51_d8e0554e",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-08-04T08:51:49Z",
+      "side": 1,
+      "message": "Yeah, fair. In practice a compliant responder always moves the handle forward between parts, so we terminate on the End flag or the existing nextHandle \u003d\u003d 0 guard. A constant non-zero handle would mean the responder is misbehaving. I\u0027ve left it out to keep this focused, but it\u0027s an easy add — to drop in a \"handle must advance\" check as a follow-up if you\u0027d like.",
+      "parentUuid": "8bfa7267_908e9bf7",
       "range": {
         "startLine": 347,
         "startChar": 4,
