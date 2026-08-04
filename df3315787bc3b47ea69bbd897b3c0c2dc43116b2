@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac3468b5_ec836e20",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-04T14:42:47Z",
+      "side": 1,
+      "message": "Done. Added a pdr.size() \u003c sizeof(pldm_pdr_hdr) guard so a PDR too short to hold the generic header is skipped rather than dereferenced. Agreed it\u0027s worth doing even if slightly beyond the sensor-aux scope — it protects the pdrHdr-\u003etype read for every PDR type.",
+      "parentUuid": "0fb624fb_f5068dca",
+      "range": {
+        "startLine": 148,
+        "startChar": 8,
+        "endLine": 148,
+        "endChar": 71
+      },
+      "revId": "df3315787bc3b47ea69bbd897b3c0c2dc43116b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d45f0e9d_f6aa7c99",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6649ddf_2861a1ab",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-04T14:42:47Z",
+      "side": 1,
+      "message": "Done — dropped [[maybe_unused]] now that sensor is used in the truncation log. Left it on the inner count loop, which is still just a counter.",
+      "parentUuid": "d45f0e9d_f6aa7c99",
+      "range": {
+        "startLine": 338,
+        "startChar": 9,
+        "endLine": 338,
+        "endChar": 25
+      },
+      "revId": "df3315787bc3b47ea69bbd897b3c0c2dc43116b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bec7550_7eda5e4b",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-04T08:51:26Z",
       "side": 1,
       "message": "Can we have a test case to validate truncated body as well?",
+      "range": {
+        "startLine": 528,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 72
+      },
+      "revId": "df3315787bc3b47ea69bbd897b3c0c2dc43116b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b46e710f_67948b5f",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-04T14:42:47Z",
+      "side": 1,
+      "message": "Done. Added parseSensorAuxiliaryNamesPDR_TruncatedBodyRejected: a complete pldm_pdr_hdr with the body truncated before terminus_handle / sensor_id / sensor_count, so it exercises the inner offsetof(names) length check — distinct from the existing sub-header case, which the new outer guard now also catches.",
+      "parentUuid": "0bec7550_7eda5e4b",
       "range": {
         "startLine": 528,
         "startChar": 0,

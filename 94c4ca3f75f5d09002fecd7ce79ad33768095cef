@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9bbacee_38e68ff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-04T14:42:47Z",
+      "side": 1,
+      "message": "Thanks JY-Voon and Eric. PS4 addresses the three PS3 comments — added a truncated-header guard in parseTerminusPDRs with a matching truncated-body test, and dropped the now-redundant [[maybe_unused]]. Eric\u0027s PS2 nits (ranges::find, sizeof(uint16_t), and the exact-max-length test) were already folded into PS3.",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
