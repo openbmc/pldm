@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1152425_31e1cc74",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:31:27Z",
+      "side": 1,
+      "message": "Do we have such PDI?\nIs it in a on-flight patch? If so, I think we can mention this in the commit message.",
+      "range": {
+        "startLine": 31,
+        "startChar": 38,
+        "endLine": 31,
+        "endChar": 70
+      },
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02e5a936_23633604",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:31:27Z",
+      "side": 1,
+      "message": "According to the on-flight PDI patch I have found(which I believe that you are referring to this as well)\n\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/81694\n\nI noticed that the property name should be `\"CurrentSize\"` instead of `\"Size\"`.",
+      "range": {
+        "startLine": 153,
+        "startChar": 46,
+        "endLine": 153,
+        "endChar": 51
+      },
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc1f5a49_f88bfc31",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T10:31:27Z",
+      "side": 1,
+      "message": "Please fix the typo as I think PLDM File Transfer should be DSP0242.",
+      "range": {
+        "startLine": 362,
+        "startChar": 36,
+        "endLine": 362,
+        "endChar": 73
+      },
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
