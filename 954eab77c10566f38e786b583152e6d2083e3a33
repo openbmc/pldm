@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91630186_ee80bfc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T08:22:25Z",
+      "side": 1,
+      "message": "Overall this idea is nice to provide such a mapping.\nThanks for the patch!",
+      "revId": "954eab77c10566f38e786b583152e6d2083e3a33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a135e4be_3f7e35fc",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T08:22:25Z",
+      "side": 1,
+      "message": "Should be redundant now since changed to `string_view`?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 17
+      },
+      "revId": "954eab77c10566f38e786b583152e6d2083e3a33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b446f0_459c2b7f",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T08:22:25Z",
+      "side": 1,
+      "message": "Can we add some test regarding this?\nFor example, removing the terminus after getting terminus name from this function?",
+      "range": {
+        "startLine": 257,
+        "startChar": 8,
+        "endLine": 257,
+        "endChar": 38
+      },
+      "revId": "954eab77c10566f38e786b583152e6d2083e3a33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "763f1f7c_9e25a2a3",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-04T08:22:25Z",
+      "side": 1,
+      "message": "Not sure if using this approach could lead to dangling reference or staling, \nsince we are referencing to the underlying terminus.",
+      "range": {
+        "startLine": 257,
+        "startChar": 15,
+        "endLine": 257,
+        "endChar": 51
+      },
+      "revId": "954eab77c10566f38e786b583152e6d2083e3a33",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
