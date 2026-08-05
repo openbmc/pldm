@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87815907_2bc2f259",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-08-05T14:51:37Z",
+      "side": 1,
+      "message": "Change file to \"File\"",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef5aa52e_d8a96664",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-08-05T14:51:37Z",
+      "side": 1,
+      "message": "Typo : preset to \"present\"",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b518161_65259360",
+        "filename": "oem/ibm/configurations/fileTable.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-08-05T14:51:37Z",
+      "side": 1,
+      "message": "Can you please move this file at the starting as the third item so thatall lids can following after the first three files",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "421d315a_265b88bb",
+        "filename": "oem/ibm/service_files/pldm-create-phyp-security.service",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-08-05T14:51:37Z",
+      "side": 1,
+      "message": "Would be good to add below condition to guard against running when flash is not mounted\nConditionPathExists\u003d!/var/lib/phosphor-software-manager/hostfw/PHYP-SECURITY",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af197db_41090228",
+        "filename": "oem/ibm/service_files/scripts/create-PHYP-SECURITY-file",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-08-05T14:51:37Z",
+      "side": 1,
+      "message": "Remove the trailing \"/\" at the end",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db05e0e8_23515a84",
+        "filename": "oem/ibm/service_files/scripts/create-PHYP-SECURITY-file",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-08-05T14:51:37Z",
+      "side": 1,
+      "message": "Please change the size to 128K",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07d6fc86_936a2150",
+        "filename": "oem/ibm/service_files/scripts/create-PHYP-SECURITY-file",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000207
+      },
+      "writtenOn": "2026-08-05T14:51:37Z",
+      "side": 1,
+      "message": "$(stat -c%s \"$PHYP_SECURITY\") is being redundantly in 4 places. Is it possible to optimise and call it once ?",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
