@@ -153,6 +153,7 @@ void DeviceUpdater::startFwUpdateFlow()
         error(
             "Failed to encode request update request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return;
     }
 
     rc = updateManager->handler.registerRequest(
@@ -291,6 +292,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         error(
             "Failed to encode pass component table req for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return;
     }
 
     rc = updateManager->handler.registerRequest(
@@ -432,6 +434,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         error(
             "Failed to encode update component req for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return;
     }
 
     rc = updateManager->handler.registerRequest(
@@ -939,6 +942,7 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         error(
             "Failed to encode activate firmware req for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        return;
     }
 
     rc = updateManager->handler.registerRequest(
