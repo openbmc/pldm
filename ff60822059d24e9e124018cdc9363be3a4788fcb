@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "859ea558_143e56c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-08-05T13:00:53Z",
+      "side": 1,
+      "message": "Can you rewrite this to something like pldm: \u003ccommit header\u003e",
+      "revId": "ff60822059d24e9e124018cdc9363be3a4788fcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
