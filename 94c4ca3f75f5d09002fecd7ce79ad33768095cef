@@ -16,6 +16,108 @@
       "message": "Thanks JY-Voon and Eric. PS4 addresses the three PS3 comments — added a truncated-header guard in parseTerminusPDRs with a matching truncated-body test, and dropped the now-redundant [[maybe_unused]]. Eric\u0027s PS2 nits (ranges::find, sizeof(uint16_t), and the exact-max-length test) were already folded into PS3.",
       "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1088162f_fa117adb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-08-05T05:36:20Z",
+      "side": 1,
+      "message": "Few Minor Picks",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b133369_eddebacb",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-08-05T05:36:20Z",
+      "side": 1,
+      "message": "Skipping is fine, But this should not happen. If its happens, Then there is some bug on Device side PLDM terminus which can be highlighted. \n\nSo just skipping is not enough - Can you update error message with \"Invalid PDR from Terminus......\"?",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "701b1d0a_588ca0a0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-08-05T05:36:20Z",
+      "side": 1,
+      "message": "Ideally we should have parseSensorAuxiliaryNamesPDR() API in LibPLDM which is spec compliant. I thought of doing that but went into backlog list. I will try getting it in libPLDM. That is not in scope of this commit but JFYI",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "106e6688_2b0d310d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-08-05T05:36:20Z",
+      "side": 1,
+      "message": "Do we need these comments? If code is self explanatory we don\u0027t need such comments in code. Please check once. Also in other places too. \n\nAI overloads multiple comments by taking only that scope but in most cases, I observed its unnecessary. So please review as per full context.",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96fa27b2_a5c81918",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-08-05T05:36:20Z",
+      "side": 1,
+      "message": "For all Error logs, can you add Terminus reference for better debug.",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59408e8c_d38b7713",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1002621
+      },
+      "writtenOn": "2026-08-05T05:36:20Z",
+      "side": 1,
+      "message": "This comment is over killing, It can be in commit message as what exist and what changes, but when we see in future, this might not be valid. So, move this to commit messag.",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
