@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88889f7b_366784cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-05T14:54:23Z",
+      "side": 1,
+      "message": "Thanks for the review — addressed in PS5: added the Terminus TID to every error log, reworded the header-size skip as an invalid-PDR-from-terminus event, and trimmed the explanatory comments throughout to house-style density. Replies inline.",
+      "revId": "ab81d7f6ef03f0285b796d0a2590c9e91fd823b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

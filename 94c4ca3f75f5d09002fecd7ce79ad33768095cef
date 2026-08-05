@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc437cc7_bc9e5ac0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-05T14:54:23Z",
+      "side": 1,
+      "message": "Done. Reworded to \"Invalid PDR from Terminus {TID}: size {SIZE} is smaller than the PDR header; skipping\" and added the TID so a misbehaving terminus is identifiable.Done. Reworded to \"Invalid PDR from Terminus {TID}: size {SIZE} is smaller than the PDR header; skipping\" and added the TID so a misbehaving terminus is identifiable.",
+      "parentUuid": "6b133369_eddebacb",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "701b1d0a_588ca0a0",
@@ -65,6 +83,24 @@
       "writtenOn": "2026-08-05T05:36:20Z",
       "side": 1,
       "message": "Ideally we should have parseSensorAuxiliaryNamesPDR() API in LibPLDM which is spec compliant. I thought of doing that but went into backlog list. I will try getting it in libPLDM. That is not in scope of this commit but JFYI",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a794bd3_785f41e2",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-05T14:54:23Z",
+      "side": 1,
+      "message": "Agreed — a spec-compliant parseSensorAuxiliaryNamesPDR() in libpldm would be the right home, mirroring the entity-variant decoder. Out of scope for this hardening fix; glad to review if you pick it up. Thanks for the heads-up.",
+      "parentUuid": "701b1d0a_588ca0a0",
       "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -88,6 +124,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66addf94_ac07fd71",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-05T14:54:23Z",
+      "side": 1,
+      "message": "Good call. Trimmed the explanatory comments here and throughout the function to a single line each, dropping the ones the code already makes obvious. The bounds-check rationale lives in the commit message.",
+      "parentUuid": "106e6688_2b0d310d",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96fa27b2_a5c81918",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 4
@@ -99,6 +153,24 @@
       "writtenOn": "2026-08-05T05:36:20Z",
       "side": 1,
       "message": "For all Error logs, can you add Terminus reference for better debug.",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e4aa6c_a1d01e8e",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-05T14:54:23Z",
+      "side": 1,
+      "message": "Done. Every error log in parseSensorAuxiliaryNamesPDR (and the header-size skip in parseTerminusPDRs) now includes the Terminus {TID}.",
+      "parentUuid": "96fa27b2_a5c81918",
       "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -116,6 +188,24 @@
       "writtenOn": "2026-08-05T05:36:20Z",
       "side": 1,
       "message": "This comment is over killing, It can be in commit message as what exist and what changes, but when we see in future, this might not be valid. So, move this to commit messag.",
+      "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69a3b12e_ecba9293",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1002796
+      },
+      "writtenOn": "2026-08-05T14:54:23Z",
+      "side": 1,
+      "message": "Done — removed the inline comment. The what-existed/what-changed rationale is already captured in the commit message.",
+      "parentUuid": "59408e8c_d38b7713",
       "revId": "94c4ca3f75f5d09002fecd7ce79ad33768095cef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
