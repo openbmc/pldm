@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fbe8814_dbdb085b",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-08-05T07:17:18Z",
+      "side": 1,
+      "message": "Since SoftwareIdentifier currently relies on a uint16_t for the component ID, using any magic number (whether 0 or 0xFFFF) carries a theoretical risk of collision if a vendor uses that specific ID.\nWould you recommend keeping 0xFFFF as a approach since it is less likely to be used than 0, or should we consider expanding SoftwareIdentifier (e.g., adding an image_level flag) in a separate commit to fix the root cause completely?",
+      "parentUuid": "fe8d7ccb_1c0d6419",
+      "range": {
+        "startLine": 680,
+        "startChar": 4,
+        "endLine": 680,
+        "endChar": 45
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59b804d1_dff28697",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d310bc12_35c0c01f",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-08-05T07:17:18Z",
+      "side": 1,
+      "message": "This behavior is related to your next comment. Please see my reply below.",
+      "parentUuid": "59b804d1_dff28697",
+      "range": {
+        "startLine": 686,
+        "startChar": 7,
+        "endLine": 688,
+        "endChar": 32
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f326424e_0dd826b1",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-04T10:05:33Z",
       "side": 1,
       "message": "Moving this part here could lead to unexpected behavioural changes, such as FD vanishes from the inventory due to any early return. \nIs this intentional?",
+      "range": {
+        "startLine": 732,
+        "startChar": 4,
+        "endLine": 747,
+        "endChar": 5
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "561c5ac8_ecddab54",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-08-05T07:17:18Z",
+      "side": 1,
+      "message": "I moved this block to the end to check all component versions for deduplication first. However, I agree with you—an early return; in the loop would make the entire FD vanish if parsing fails.  To fix this while keeping the deduplication, I plan to change the return; to a break; in the next patchset. This way, if parsing fails, it will safely fall back to creating the image-level entry at the bottom.Let me know if this approach sounds good to you!",
+      "parentUuid": "f326424e_0dd826b1",
       "range": {
         "startLine": 732,
         "startChar": 4,
