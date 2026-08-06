@@ -85,7 +85,7 @@ class OemEventManager
      *
      *  @return PLDM completion code
      */
-    int updateBootProgress(uint32_t presentReading) const;
+    int updateBootProgress(uint64_t presentReading) const;
 
     platform_mc::Manager* manager = nullptr;
 };
