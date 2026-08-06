@@ -36,7 +36,12 @@ class CmdHandler
     Response handle(pldm_tid_t tid, Command pldmCommand,
                     const pldm_msg* request, size_t reqMsgLen)
     {
-        return handlers.at(pldmCommand)(tid, request, reqMsgLen);
+        auto handler = handlers.find(pldmCommand);
+        if (handler == handlers.end())
+        {
+            return ccOnlyResponse(request, PLDM_ERROR_UNSUPPORTED_PLDM_CMD);
+        }
+        return handler->second(tid, request, reqMsgLen);
     }
 
     /** @brief Create a response message containing only cc

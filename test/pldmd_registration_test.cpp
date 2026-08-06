@@ -55,6 +55,8 @@ TEST(Registration, testFailure)
     Invoker invoker{};
     const Response kExpectedBadTypeResponse = {0x01, 0x02, 0x03,
                                                PLDM_ERROR_INVALID_PLDM_TYPE};
+    const Response kExpectedBadCmdResponse = {0x01, 0x02, 0x03,
+                                              PLDM_ERROR_UNSUPPORTED_PLDM_CMD};
     const std::array<uint8_t, sizeof(pldm_msg)> kDummyPldmRequestBacking = {
         0x01, 0x02, 0x03};
     const pldm_msg* kDummyPldmRequest =
@@ -65,6 +67,6 @@ TEST(Registration, testFailure)
 
     invoker.registerHandler(testType, std::make_unique<TestHandler>());
     uint8_t badCmd = 0xFE;
-    ASSERT_THROW(invoker.handle(tid, testType, badCmd, nullptr, 0),
-                 std::out_of_range);
+    EXPECT_EQ(invoker.handle(tid, testType, badCmd, kDummyPldmRequest, 0),
+              kExpectedBadCmdResponse);
 }
