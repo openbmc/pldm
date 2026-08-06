@@ -20,6 +20,53 @@ namespace pldm
 {
 namespace platform_mc
 {
+
+namespace
+{
+
+/** @brief Convert decoded numeric sensor data to a double
+ *
+ *  @param[in] sensorDataSize - PLDM numeric sensor data size
+ *  @param[in] reading - Decoded numeric sensor reading
+ *  @param[out] value - Reading converted to double
+ *  @return PLDM_SUCCESS or PLDM_ERROR_INVALID_DATA
+ */
+int sensorReadingToDouble(uint8_t sensorDataSize,
+                          const union_sensor_data_size& reading, double& value)
+{
+    switch (sensorDataSize)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            value = static_cast<double>(reading.value_u8);
+            return PLDM_SUCCESS;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            value = static_cast<double>(reading.value_s8);
+            return PLDM_SUCCESS;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            value = static_cast<double>(reading.value_u16);
+            return PLDM_SUCCESS;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            value = static_cast<double>(reading.value_s16);
+            return PLDM_SUCCESS;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            value = static_cast<double>(reading.value_u32);
+            return PLDM_SUCCESS;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            value = static_cast<double>(reading.value_s32);
+            return PLDM_SUCCESS;
+        case PLDM_SENSOR_DATA_SIZE_UINT64:
+            value = static_cast<double>(reading.value_u64);
+            return PLDM_SUCCESS;
+        case PLDM_SENSOR_DATA_SIZE_SINT64:
+            value = static_cast<double>(reading.value_s64);
+            return PLDM_SUCCESS;
+        default:
+            return PLDM_ERROR_INVALID_DATA;
+    }
+}
+
+} // namespace
+
 int EventManager::handlePlatformEvent(
     pldm_tid_t tid, uint16_t eventId, uint8_t eventClass,
     const uint8_t* eventData, size_t eventDataSize)
@@ -216,7 +263,7 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
     uint8_t eventState = 0;
     uint8_t previousEventState = 0;
     uint8_t sensorDataSize = 0;
-    uint32_t presentReading = 0;
+    union_sensor_data_size presentReading{};
     auto rc = decode_numeric_sensor_data(
         sensorData, sensorDataLength, &eventState, &previousEventState,
         &sensorDataSize, &presentReading);
@@ -228,7 +275,15 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         return rc;
     }
 
-    double value = static_cast<double>(presentReading);
+    double value = 0;
+    rc = sensorReadingToDouble(sensorDataSize, presentReading, value);
+    if (rc)
+    {
+        lg2::error(
+            "Unsupported numeric sensor data size for terminus ID {TID}, sensor ID {SID}, size {SIZE}",
+            "TID", tid, "SID", sensorId, "SIZE", sensorDataSize);
+        return rc;
+    }
     lg2::error(
         "processNumericSensorEvent tid {TID}, sensorID {SID} value {VAL} previousState {PSTATE} eventState {ESTATE}",
         "TID", tid, "SID", sensorId, "VAL", value, "PSTATE", previousEventState,
