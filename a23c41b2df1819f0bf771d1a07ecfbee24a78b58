@@ -106,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3ee1e54_ebc6fd29",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-08-06T01:18:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74e2627f_ee7ec6e2",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e464008_f93e4ded",
@@ -119,6 +137,24 @@
       "writtenOn": "2026-02-02T05:35:42Z",
       "side": 1,
       "message": "I have some comments on the EM patch.",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d77f959_18176808",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-08-06T01:18:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e464008_f93e4ded",
       "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -315,6 +351,24 @@
       "side": 1,
       "message": "My understanding is that SensorAuxNames is added at the beginning of the function.\n\nfor (auto\u0026 pdr : pdrs)\n    {\n        auto pdrHdr \u003d new (pdr.data()) pldm_pdr_hdr;\n        switch (pdrHdr-\u003etype)\n        {\n            case PLDM_SENSOR_AUXILIARY_NAMES_PDR:\n            {\n                auto sensorAuxNames \u003d parseSensorAuxiliaryNamesPDR(pdr);\n                if (!sensorAuxNames)\n                {\n                    lg2::error(\n                        \"Failed to parse PDR with type {TYPE} handle {HANDLE}\",\n                        \"TYPE\", pdrHdr-\u003etype, \"HANDLE\",\n                        static_cast\u003cuint32_t\u003e(pdrHdr-\u003erecord_handle));\n                    continue;\n                }\n                sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));\n                break;\n            }",
       "parentUuid": "e8568a54_85b6960c",
+      "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16e4a639_365633a7",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 915,
+      "author": {
+        "id": 1001906
+      },
+      "writtenOn": "2026-08-06T01:18:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7e02b99_fa3d9b2b",
       "revId": "a23c41b2df1819f0bf771d1a07ecfbee24a78b58",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
