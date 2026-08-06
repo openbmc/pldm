@@ -38,9 +38,13 @@ constexpr auto bootProgressProperty = "BootProgress";
 constexpr auto bootProgressStageOem =
     "xyz.openbmc_project.State.Boot.Progress.ProgressStages.OEM";
 
-std::vector<uint8_t> bootProgressToBytes(uint32_t presentReading)
+std::vector<uint8_t> bootProgressToBytes(uint64_t presentReading)
 {
     return {
+        static_cast<uint8_t>((presentReading >> 56) & 0xff),
+        static_cast<uint8_t>((presentReading >> 48) & 0xff),
+        static_cast<uint8_t>((presentReading >> 40) & 0xff),
+        static_cast<uint8_t>((presentReading >> 32) & 0xff),
         static_cast<uint8_t>((presentReading >> 24) & 0xff),
         static_cast<uint8_t>((presentReading >> 16) & 0xff),
         static_cast<uint8_t>((presentReading >> 8) & 0xff),
@@ -172,10 +176,11 @@ int OemEventManager::processNumericSensorEvent(
     uint8_t eventState = 0;
     uint8_t previousEventState = 0;
     uint8_t sensorDataSize = 0;
-    uint32_t presentReading = 0;
-    auto rc = decode_numeric_sensor_data(
+    pldm_numeric_sensor_value presentReadingData{};
+    uint64_t presentReading = 0;
+    auto rc = decode_numeric_sensor_data_to_value(
         sensorData, sensorDataLength, &eventState, &previousEventState,
-        &sensorDataSize, &presentReading);
+        &presentReadingData);
     if (rc)
     {
         lg2::error(
@@ -184,6 +189,16 @@ int OemEventManager::processNumericSensorEvent(
             "TID", tid, "SID", sensorId, "RC", rc);
         return rc;
     }
+
+    sensorDataSize = presentReadingData.sensor_data_size;
+    if (sensorDataSize != PLDM_SENSOR_DATA_SIZE_UINT64)
+    {
+        lg2::error(
+            "Unsupported Arm boot progress sensor data size {SIZE} for terminus {TID}, sensor {SID}",
+            "SIZE", sensorDataSize, "TID", tid, "SID", sensorId);
+        return PLDM_ERROR_INVALID_DATA;
+    }
+    presentReading = presentReadingData.value.value_u64;
 
     switch (sensorId)
     {
@@ -201,7 +216,7 @@ int OemEventManager::processNumericSensorEvent(
     }
 }
 
-int OemEventManager::updateBootProgress(uint32_t presentReading) const
+int OemEventManager::updateBootProgress(uint64_t presentReading) const
 {
     auto postCode = bootProgressToBytes(presentReading);
 
