@@ -392,18 +392,64 @@ int OemEventManager::processNumericSensorEvent(
     pldm_tid_t tid, uint16_t sensorId, const uint8_t* sensorData,
     size_t sensorDataLength)
 {
+    /** @brief Convert decoded numeric sensor data for 32-bit Ampere handlers
+     *
+     *  Signed values preserve their existing 32-bit bit representation.
+     *  Sensor widths greater than 32 bits are not supported.
+     */
+    auto numericSensorReadingToUint32 =
+        [](uint8_t size, const union_sensor_data_size& reading,
+           uint32_t& value) -> int {
+        switch (size)
+        {
+            case PLDM_SENSOR_DATA_SIZE_UINT8:
+                value = static_cast<uint32_t>(reading.value_u8);
+                return PLDM_SUCCESS;
+            case PLDM_SENSOR_DATA_SIZE_SINT8:
+                value =
+                    static_cast<uint32_t>(static_cast<int32_t>(reading.value_s8));
+                return PLDM_SUCCESS;
+            case PLDM_SENSOR_DATA_SIZE_UINT16:
+                value = static_cast<uint32_t>(reading.value_u16);
+                return PLDM_SUCCESS;
+            case PLDM_SENSOR_DATA_SIZE_SINT16:
+                value = static_cast<uint32_t>(
+                    static_cast<int32_t>(reading.value_s16));
+                return PLDM_SUCCESS;
+            case PLDM_SENSOR_DATA_SIZE_UINT32:
+                value = reading.value_u32;
+                return PLDM_SUCCESS;
+            case PLDM_SENSOR_DATA_SIZE_SINT32:
+                value = static_cast<uint32_t>(reading.value_s32);
+                return PLDM_SUCCESS;
+            default:
+                return PLDM_ERROR_INVALID_DATA;
+        }
+    };
+
     uint8_t eventState = 0;
     uint8_t previousEventState = 0;
     uint8_t sensorDataSize = 0;
+    union_sensor_data_size decodedReading{};
     uint32_t presentReading = 0;
     auto rc = decode_numeric_sensor_data(
         sensorData, sensorDataLength, &eventState, &previousEventState,
-        &sensorDataSize, &presentReading);
+        &sensorDataSize, &decodedReading);
     if (rc)
     {
         lg2::error(
             "Failed to decode numericSensorState event for terminus ID {TID}, error {RC} ",
             "TID", tid, "RC", rc);
+        return rc;
+    }
+
+    rc = numericSensorReadingToUint32(sensorDataSize, decodedReading,
+                                      presentReading);
+    if (rc)
+    {
+        lg2::error(
+            "Unsupported numericSensorState data size for terminus ID {TID}, sensor ID {SID}, size {SIZE}",
+            "TID", tid, "SID", sensorId, "SIZE", sensorDataSize);
         return rc;
     }
 
