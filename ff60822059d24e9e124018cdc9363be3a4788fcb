@@ -16,6 +16,24 @@
       "message": "Can you rewrite this to something like pldm: \u003ccommit header\u003e",
       "revId": "ff60822059d24e9e124018cdc9363be3a4788fcb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ec30bec_d8937e98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-08-06T04:17:28Z",
+      "side": 1,
+      "message": "Done. Updated the commit subject in the latest patchset. Thanks for the review.",
+      "parentUuid": "859ea558_143e56c5",
+      "revId": "ff60822059d24e9e124018cdc9363be3a4788fcb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
