@@ -116,6 +116,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbbbc35f_ba8e22fe",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-06T00:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b45d5824_1375bfd3",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bdaedb81_6207837d",
@@ -185,6 +203,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b9e145_cb5cf9a8",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-06T00:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74805e74_5dca72a7",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b888675_e6264bb7",
@@ -225,6 +267,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0fd7664_2069b0bb",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-06T00:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53fbc390_de633481",
+      "range": {
+        "startLine": 159,
+        "startChar": 40,
+        "endLine": 159,
+        "endChar": 45
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "408827ce_e577457d",
@@ -238,6 +304,24 @@
       "writtenOn": "2026-07-30T16:28:59Z",
       "side": 1,
       "message": "doxygen missing for the entire file",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81246d77_0e5dd70d",
+        "filename": "fw-update/systemd_interface.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-06T00:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "408827ce_e577457d",
       "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -265,6 +349,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74cd98f0_2f9464f8",
+        "filename": "fw-update/systemd_interface.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-06T00:48:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21a72d2a_1f5daf00",
+      "range": {
+        "startLine": 34,
+        "startChar": 16,
+        "endLine": 34,
+        "endChar": 43
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3423bf63_cae14ecf",
@@ -278,6 +386,24 @@
       "writtenOn": "2026-07-30T16:28:59Z",
       "side": 1,
       "message": "doxygen missing",
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1be5aa0_b4ae68ca",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-06T00:48:23Z",
+      "side": 1,
+      "message": "Done, renamed `startFirmwareActivation()` to `startFirmwareUpdate()`",
+      "parentUuid": "3423bf63_cae14ecf",
       "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
