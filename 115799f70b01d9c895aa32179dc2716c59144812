@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18009588_a65fef41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 122
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Thanks for your time to review!",
+      "parentUuid": "b17069f4_c3c7aab9",
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7174cb25_5214fc84",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-06-24T10:50:46Z",
       "side": 1,
       "message": "not sure what this really means, can you re-write this in better words ?",
+      "range": {
+        "startLine": 179,
+        "startChar": 33,
+        "endLine": 180,
+        "endChar": 39
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2451a973_1c7011fe",
+        "filename": "common/types.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7174cb25_5214fc84",
       "range": {
         "startLine": 179,
         "startChar": 33,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5b4eb57_8688aca5",
+        "filename": "common/utils.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 1040,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "MMapHandler has been removed from this patch, marked as resolved",
+      "parentUuid": "573d1461_ed5c17a5",
+      "range": {
+        "startLine": 1031,
+        "startChar": 1,
+        "endLine": 1040,
+        "endChar": 3
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c766982e_19a0ef4d",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-06-24T10:50:46Z",
       "side": 1,
       "message": "is this inaccurate ? because the dtor only seems to only do munmap ?",
+      "range": {
+        "startLine": 801,
+        "startChar": 30,
+        "endLine": 801,
+        "endChar": 57
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ea6a8e5_041a5c65",
+        "filename": "common/utils.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "MMapHandler has been removed from this patch, marked as resolved",
+      "parentUuid": "c766982e_19a0ef4d",
       "range": {
         "startLine": 801,
         "startChar": 30,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0184dcc_7a9b136f",
+        "filename": "common/utils.hpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "MMapHandler has been removed from this patch, marked as resolved",
+      "parentUuid": "53ef5f3a_03e4d3e7",
+      "range": {
+        "startLine": 836,
+        "startChar": 4,
+        "endLine": 836,
+        "endChar": 16
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8099d514_dddeb891",
@@ -123,6 +237,54 @@
       "writtenOn": "2026-07-08T06:18:25Z",
       "side": 1,
       "message": "Downstream records need the dedicated PLDM_REQUEST_DOWNSTREAM_DEVICE_UPDATE flow, or must remain excluded until implemented.",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 5
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d53e5107_cef59b25",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8099d514_dddeb891",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 5
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65a20459_94a12664",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8099d514_dddeb891",
       "range": {
         "startLine": 114,
         "startChar": 4,
@@ -150,6 +312,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38890e00_e999635e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "148a9982_395d0593",
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f09ffc_ead78094",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "148a9982_395d0593",
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fca9c00_87d73029",
@@ -163,6 +361,30 @@
       "writtenOn": "2026-07-08T06:18:25Z",
       "side": 1,
       "message": "The new iterator no longer performs some checks enforced by the old decoder, such as rejecting zero image offsets or sizes, empty versions, and invalid comparison-stamp options. Could we restore these validations and add negative tests for them?",
+      "range": {
+        "startLine": 252,
+        "startChar": 4,
+        "endLine": 252,
+        "endChar": 53
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66356dea_6ddbb0d1",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fca9c00_87d73029",
       "range": {
         "startLine": 252,
         "startChar": 4,
@@ -196,6 +418,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e706a30d_4aad2046",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done, `CompImage` is now std::span",
+      "parentUuid": "754f1162_5d40afa6",
+      "range": {
+        "startLine": 257,
+        "startChar": 12,
+        "endLine": 259,
+        "endChar": 76
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b8fe6b6_bf919559",
@@ -219,6 +465,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66706ee0_85bdde87",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b8fe6b6_bf919559",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 79
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "475b6914_523bb9da",
@@ -232,6 +502,30 @@
       "writtenOn": "2026-07-08T06:18:25Z",
       "side": 1,
       "message": "processPackage() previously caught sdbusplus exceptions around the whole operation. D-Bus object creation can now throw out of the inotify callback and leave partial state behind. Could we restore an outer exception handler that performs cleanup before returning an error?",
+      "range": {
+        "startLine": 175,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 46
+      },
+      "revId": "115799f70b01d9c895aa32179dc2716c59144812",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a2d2484_77b66548",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 122
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-07T07:16:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "475b6914_523bb9da",
       "range": {
         "startLine": 175,
         "startChar": 4,
