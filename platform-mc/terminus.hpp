@@ -2,9 +2,11 @@
 
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
+#include "entity.hpp"
 #include "numeric_sensor.hpp"
 
 #include <libpldm/fru.h>
+#include <libpldm/pdr.h>
 #include <libpldm/platform.h>
 
 #include <sdbusplus/server/object.hpp>
@@ -22,6 +24,17 @@ namespace platform_mc
 {
 
 using namespace pldm::pdr;
+
+/** @struct EntityAssociation
+ *
+ *  The containment record of one Entity Association PDR: the container entity
+ *  and the entities it contains.
+ */
+struct EntityAssociation
+{
+    EntityKey container;             //!< Container entity
+    std::vector<EntityKey> children; //!< Contained entities
+};
 
 /**
  * @brief Terminus
@@ -173,6 +186,14 @@ class Terminus
      */
     std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
 
+    /** @brief Get the Entity object of the entity identification fields
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *
+     *  @return entity object
+     */
+    std::shared_ptr<Entity> getEntity(const EntityKey& key);
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
@@ -237,8 +258,48 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
         const std::vector<uint8_t>& pdrData);
 
+    /** @brief Parse the Entity Association PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return the containment record of the PDR
+     */
+    std::optional<EntityAssociation> parseEntityAssociationPDR(
+        const std::vector<uint8_t>& pdrData);
+
+    /** @brief Create the D-Bus object of every entity of the terminus and
+     *         the containment associations between them. The entity list is
+     *         collected from the Entity Association PDRs, the Entity
+     *         Auxiliary Names PDRs and the entity identification fields of
+     *         the sensor PDRs.
+     */
+    void addEntities();
+
+    /** @brief Create the D-Bus object of one entity. The entity is not
+     *         exposed when its entity type has no matching Inventory.Item
+     *         interface.
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     */
+    void addEntity(const EntityKey& key);
+
+    /** @brief Add the containment associations of the Entity Association
+     *         PDRs to the entity D-Bus objects
+     */
+    void addEntityAssociations();
+
+    /** @brief Get the name of an entity
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *  @param[in] typeName - the name of the entity type
+     *  @return the entity name from the Entity Auxiliary Names PDR, or the
+     *          name built from the terminus ID, the entity type name, the
+     *          entity instance number and the entity container ID when the
+     *          PDR does not name the entity
+     */
+    std::string getEntityName(const EntityKey& key, std::string_view typeName);
+
     /** @brief Create the terminus inventory path under
-     *         /xyz/openbmc_project/inventory/system/board/. The concrete
+     *         /xyz/openbmc_project/inventory/system/. The concrete
      *         Inventory.Item.* interface is selected from @p entityType.
      *
      *  @param[in] tName - the terminus name
@@ -249,10 +310,16 @@ class Terminus
      */
     bool createInventoryPath(std::string tName, uint16_t entityType);
 
-    /** @brief Find the PLDM entity type of the overall terminus entity.
+    /** @brief Find the identification fields of the overall terminus entity.
      *
      *  Uses the same Entity Auxiliary Names PDR lookup as findTerminusName()
      *  (i.e. the entry whose containerId is the system container).
+     *
+     *  @return entity identification fields, or nullopt if not found
+     */
+    std::optional<EntityKey> findTerminusEntityKey();
+
+    /** @brief Find the PLDM entity type of the overall terminus entity.
      *
      *  @return entity type, or 0 if not found
      */
@@ -298,6 +365,12 @@ class Terminus
     /* @brief Entity Auxiliary Name list */
     std::vector<std::shared_ptr<EntityAuxiliaryNames>>
         entityAuxiliaryNamesTbl{};
+
+    /** @brief Containment records of the Entity Association PDRs */
+    std::vector<EntityAssociation> entityAssociations{};
+
+    /** @brief A list of entity D-Bus objects */
+    std::vector<std::shared_ptr<Entity>> entities{};
 
     /** @brief Terminus name */
     EntityName terminusName{};
