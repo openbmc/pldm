@@ -2,9 +2,11 @@
 
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
+#include "entity.hpp"
 #include "numeric_sensor.hpp"
 
 #include <libpldm/fru.h>
+#include <libpldm/pdr.h>
 #include <libpldm/platform.h>
 
 #include <sdbusplus/server/object.hpp>
@@ -22,6 +24,19 @@ namespace platform_mc
 {
 
 using namespace pldm::pdr;
+
+/** @struct EntityAssociation
+ *
+ *  One Entity Association PDR (DSP0248 Table 95). The PDR describes one
+ *  container entity and the entities it contains. The containerID field of
+ *  the PDR is the container ID of every contained entity.
+ */
+struct EntityAssociation
+{
+    uint8_t associationType;   //!< Physical or logical containment
+    EntityKey containerEntity; //!< The container entity the PDR describes
+    std::vector<EntityKey> containedEntities; //!< Entities it contains
+};
 
 /**
  * @brief Terminus
@@ -182,6 +197,24 @@ class Terminus
      */
     std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
 
+    /** @brief Get the Entity object of the entity identification fields
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *
+     *  @return entity object
+     */
+    std::shared_ptr<Entity> getEntity(const EntityKey& key);
+
+    /** @brief Get the D-Bus object path which a sensor of an entity is
+     *         associated to
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *
+     *  @return the path of the entity D-Bus object, the terminus inventory
+     *          path when the entity has no D-Bus object
+     */
+    std::string getEntityInventoryPath(const EntityKey& key);
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
@@ -246,8 +279,57 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
         const std::vector<uint8_t>& pdrData);
 
+    /** @brief Parse the Entity Association PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return the containment record of the PDR
+     */
+    std::optional<EntityAssociation> parseEntityAssociationPDR(
+        const std::vector<uint8_t>& pdrData);
+
+    /** @brief Create the D-Bus object of every entity of the terminus and
+     *         the containment associations between them. The entity list is
+     *         collected from the Entity Association PDRs.
+     */
+    void addEntities();
+
+    /** @brief Create the D-Bus object of one entity. The entity is not
+     *         exposed when its entity type has no matching Inventory.Item
+     *         interface.
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     */
+    void addEntity(const EntityKey& key);
+
+    /** @brief Add the containment associations of the Entity Association
+     *         PDRs to the entity D-Bus objects
+     */
+    void addEntityAssociations();
+
+    /** @brief Find the English name which an Entity Auxiliary Names PDR
+     *         gives to an entity
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *  @return the entity name, nullopt when no PDR names the entity
+     */
+    std::optional<std::string> findEntityName(const EntityKey& key);
+
+    /** @brief Get the D-Bus object name of an entity, the last element of
+     *         its object path
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *  @param[in] entityTypeName - the name of the entity type, e.g. "Cpu"
+     *  @return <terminus name>_<entity name> when an Entity Auxiliary Names
+     *          PDR gives the entity a name which no other entity of the
+     *          terminus has, otherwise
+     *          Terminus_<TID>_Container_<containerId>_<type>_<instance>,
+     *          where <type> is entityTypeName
+     */
+    std::string getEntityObjectName(const EntityKey& key,
+                                    std::string_view entityTypeName);
+
     /** @brief Create the terminus inventory path under
-     *         /xyz/openbmc_project/inventory/system/board/. The concrete
+     *         /xyz/openbmc_project/inventory/system/. The concrete
      *         Inventory.Item.* interface is selected from @p entityType.
      *
      *  @param[in] tName - the terminus name
@@ -258,10 +340,16 @@ class Terminus
      */
     bool createInventoryPath(std::string tName, uint16_t entityType);
 
-    /** @brief Find the PLDM entity type of the overall terminus entity.
+    /** @brief Find the identification fields of the overall terminus entity.
      *
      *  Uses the same Entity Auxiliary Names PDR lookup as findTerminusName()
      *  (i.e. the entry whose containerId is the system container).
+     *
+     *  @return entity identification fields, or nullopt if not found
+     */
+    std::optional<EntityKey> findTerminusEntityKey();
+
+    /** @brief Find the PLDM entity type of the overall terminus entity.
      *
      *  @return entity type, or 0 if not found
      */
@@ -317,10 +405,21 @@ class Terminus
     std::vector<std::shared_ptr<EntityAuxiliaryNames>>
         entityAuxiliaryNamesTbl{};
 
+    /** @brief Containment records of the Entity Association PDRs */
+    std::vector<EntityAssociation> entityAssociations{};
+
+    /** @brief A list of entity D-Bus objects */
+    std::vector<std::shared_ptr<Entity>> entities{};
+
     /** @brief Terminus name */
     EntityName terminusName{};
     /* @brief The pointer of inventory D-Bus interface for the terminus */
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
+
+    /* @brief The Inventory.Item interface of the terminus, which holds the
+     *        PrettyName and Present properties
+     */
+    std::unique_ptr<InventoryItemIntf> terminusItemIntf = nullptr;
 
     /* @brief The pointer of FRU decorator D-Bus interfaces */
     std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =

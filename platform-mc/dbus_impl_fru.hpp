@@ -20,7 +20,9 @@
 #include <sdbusplus/server/object.hpp>
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace pldm
@@ -301,6 +303,44 @@ using PowerSupplyServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::PowerSupply;
 using AcceleratorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Accelerator;
+
+/** @brief Get the name of the given entity type
+ *
+ *  The name identifies the entity type in a D-Bus object name, so entity
+ *  types which share an Inventory.Item interface have their own name.
+ *
+ *  @param[in] entityType - PLDM entity type
+ *  @return the entity type name, nullopt when the entity type has no
+ *          matching Inventory.Item interface
+ */
+inline std::optional<std::string_view> getPldmEntityName(uint16_t entityType)
+{
+    switch (entityType)
+    {
+        case PLDM_ENTITY_SYSTEM_CHASSIS:
+            return "Chassis";
+        case PLDM_ENTITY_PROC:
+            return "Cpu";
+        case PLDM_ENTITY_MEMORY_MODULE:
+            return "Dimm";
+        case PLDM_ENTITY_FAN:
+            return "Fan";
+        case PLDM_ENTITY_POWER_SUPPLY:
+            return "PowerSupply";
+        case PLDM_ENTITY_GPU:
+            return "Gpu";
+        case PLDM_ENTITY_ACCELERATOR:
+            return "Accelerator";
+        case PLDM_ENTITY_BOARD:
+            return "Board";
+        case PLDM_ENTITY_SYS_BOARD:
+            return "SysBoard";
+        case PLDM_ENTITY_CARD:
+            return "Card";
+        default:
+            return std::nullopt;
+    }
+}
 
 /** @brief Create the PldmEntityReq which matches the given entity type.
  *  @param[in] bus - D-Bus bus
