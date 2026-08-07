@@ -133,28 +133,37 @@ class Handler : public oem_platform::Handler
                         int depth = 0;
                         std::vector<std::string> powerInterface = {
                             "xyz.openbmc_project.State.Decorator.PowerState"};
-                        pldm::utils::GetSubTreeResponse response =
-                            pldm::utils::DBusHandler().getSubtree(
-                                searchpath, depth, powerInterface);
-                        for (const auto& [objPath, serviceMap] : response)
+                        try
                         {
-                            pldm::utils::DBusMapping dbusMapping{
-                                objPath,
-                                "xyz.openbmc_project.State.Decorator.PowerState",
-                                "PowerState", "string"};
-                            value =
-                                "xyz.openbmc_project.State.Decorator.PowerState.State.Off";
-                            try
+                            pldm::utils::GetSubTreeResponse response =
+                                pldm::utils::DBusHandler().getSubtree(
+                                    searchpath, depth, powerInterface);
+                            for (const auto& [objPath, serviceMap] : response)
                             {
-                                pldm::utils::DBusHandler().setDbusProperty(
-                                    dbusMapping, value);
+                                pldm::utils::DBusMapping dbusMapping{
+                                    objPath,
+                                    "xyz.openbmc_project.State.Decorator.PowerState",
+                                    "PowerState", "string"};
+                                value =
+                                    "xyz.openbmc_project.State.Decorator.PowerState.State.Off";
+                                try
+                                {
+                                    pldm::utils::DBusHandler().setDbusProperty(
+                                        dbusMapping, value);
+                                }
+                                catch (const std::exception& e)
+                                {
+                                    error(
+                                        "Unable to set the slot power state to Off error - {ERROR}",
+                                        "ERROR", e);
+                                }
                             }
-                            catch (const std::exception& e)
-                            {
-                                error(
-                                    "Unable to set the slot power state to Off error - {ERROR}",
-                                    "ERROR", e);
-                            }
+                        }
+                        catch (const std::exception& e)
+                        {
+                            error(
+                                "Unable to get the power interface from motherboard and failed with error - {ERROR}",
+                                "ERROR", e);
                         }
                     }
                 }
