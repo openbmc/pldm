@@ -84,6 +84,17 @@ class StateSensor
         return info->pdr.composite_sensor_count;
     }
 
+    /** @brief Whether an initialization agent has to set the operational
+     *         state of the component sensors, `sensorInit` of `Table 81 -
+     *         State Sensor PDR` of DSP0248 v1.3.0. A sensor which reports
+     *         noInit is operational as the terminus starts up and takes no
+     *         SetStateSensorEnables.
+     */
+    bool requiresInit() const
+    {
+        return info->pdr.sensor_init != PLDM_NO_INIT;
+    }
+
     /** @brief Publish the state which one component sensor reports on the
      *         state set interface of the entity
      *
@@ -91,6 +102,28 @@ class StateSensor
      *  @param[in] presentState - the presentState of GetStateSensorReadings
      */
     void updatePresentState(uint8_t offset, uint8_t presentState);
+
+    /** @brief Whether SetStateSensorEnables has to be sent for the component
+     *         sensors of the sensor
+     */
+    enum class EnableState : uint8_t
+    {
+        pending,  /**< the command has not completed for the sensor */
+        enabled,  /**< the terminus enabled the component sensors */
+        rejected, /**< the terminus answered with an error completion code,
+                       so the command is not sent for the sensor again */
+    };
+
+    /** @brief Outcome of SetStateSensorEnables for the component sensors of
+     *         the sensor
+     */
+    EnableState enableState = EnableState::pending;
+
+    /** @brief Timestamp (CLOCK_MONOTONIC us) of the last successful read */
+    uint64_t timeStamp = 0;
+
+    /** @brief Minimum interval (us) between two reads of the sensor */
+    uint64_t updateTime;
 
   private:
     /** @brief Terminus ID which the sensor belongs to */
