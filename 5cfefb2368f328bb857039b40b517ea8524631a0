@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "166643f2_28ee13a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-08-07T05:33:00Z",
+      "side": 1,
+      "message": "The commit message seems odd, can you rewrite it?",
+      "revId": "5cfefb2368f328bb857039b40b517ea8524631a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
