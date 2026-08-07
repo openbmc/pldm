@@ -17,7 +17,11 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 
+#include <algorithm>
+#include <array>
 #include <memory>
+#include <optional>
+#include <string_view>
 
 namespace pldm
 {
@@ -174,6 +178,119 @@ using PowerSupplyServer =
 using AcceleratorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Accelerator;
 
+/** @brief Create the PldmEntityReq of the ItemServer interface
+ *  @param[in] bus - D-Bus bus
+ *  @param[in] path - D-Bus object path
+ *  @return unique_ptr to PldmEntityBase
+ */
+template <typename ItemServer>
+std::unique_ptr<PldmEntityBase> makePldmEntity(sdbusplus::bus_t& bus,
+                                               const std::string& path)
+{
+    return std::make_unique<PldmEntityReq<ItemServer>>(bus, path);
+}
+
+using PldmEntityCreator =
+    std::unique_ptr<PldmEntityBase> (*)(sdbusplus::bus_t&, const std::string&);
+
+/** @struct PldmEntityItem
+ *  @brief The name and the Inventory.Item interface of one PLDM entity type.
+ */
+struct PldmEntityItem
+{
+    uint16_t entityType;      //!< PLDM entity type
+    std::string_view name;    //!< Name of the entity type
+    PldmEntityCreator create; //!< Creator of the Inventory.Item interface
+    //! The entity type may be contained directly by the terminus
+    bool containedByTerminus;
+};
+
+/** @brief The PLDM entity types which have an Inventory.Item interface.
+ *
+ *  The name identifies the entity type in a D-Bus object name, so it is
+ *  unique per entity type even where two entity types share an
+ *  Inventory.Item interface.
+ *
+ *  containedByTerminus marks the entity types which the terminus inventory
+ *  object may contain directly, so that an entity of the type is reachable
+ *  from the terminus when the container of the entity has no D-Bus object.
+ */
+inline constexpr std::array<PldmEntityItem, 10> pldmEntityItems{{
+    {PLDM_ENTITY_SYSTEM_CHASSIS, "Chassis", makePldmEntity<ChassisServer>,
+     false},
+    {PLDM_ENTITY_PROC, "Cpu", makePldmEntity<CpuServer>, true},
+    {PLDM_ENTITY_MEMORY_MODULE, "Dimm", makePldmEntity<DimmServer>, false},
+    {PLDM_ENTITY_FAN, "Fan", makePldmEntity<FanServer>, false},
+    {PLDM_ENTITY_POWER_SUPPLY, "PowerSupply", makePldmEntity<PowerSupplyServer>,
+     false},
+    {PLDM_ENTITY_GPU, "Gpu", makePldmEntity<AcceleratorServer>, true},
+    {PLDM_ENTITY_ACCELERATOR, "Accelerator", makePldmEntity<AcceleratorServer>,
+     true},
+    {PLDM_ENTITY_BOARD, "Board", makePldmEntity<BoardServer>, false},
+    {PLDM_ENTITY_SYS_BOARD, "SysBoard", makePldmEntity<BoardServer>, false},
+    {PLDM_ENTITY_CARD, "Card", makePldmEntity<BoardServer>, false},
+}};
+
+/** @brief Find the entry of the given entity type
+ *  @param[in] entityType - PLDM entity type
+ *  @return pointer to the entry, nullptr when the entity type has no
+ *          Inventory.Item interface
+ */
+inline const PldmEntityItem* findPldmEntityItem(uint16_t entityType)
+{
+    auto it = std::ranges::find(pldmEntityItems, entityType,
+                                &PldmEntityItem::entityType);
+    if (it == pldmEntityItems.end())
+    {
+        return nullptr;
+    }
+    return &*it;
+}
+
+/** @brief Get the name of the given entity type
+ *  @param[in] entityType - PLDM entity type
+ *  @return the entity type name, nullopt when the entity type has no
+ *          Inventory.Item interface
+ */
+inline std::optional<std::string_view> getPldmEntityName(uint16_t entityType)
+{
+    auto item = findPldmEntityItem(entityType);
+    if (!item)
+    {
+        return std::nullopt;
+    }
+    return item->name;
+}
+
+/** @brief Check whether the terminus may contain the given entity type
+ *  directly
+ *  @param[in] entityType - PLDM entity type
+ *  @return true when the terminus inventory object may contain the entity type
+ */
+inline bool isPldmEntityContainedByTerminus(uint16_t entityType)
+{
+    auto item = findPldmEntityItem(entityType);
+    return item && item->containedByTerminus;
+}
+
+/** @brief Create the PldmEntityReq which matches the given entity type.
+ *  @param[in] bus - D-Bus bus
+ *  @param[in] path - D-Bus object path
+ *  @param[in] entityType - PLDM entity type
+ *  @return unique_ptr to PldmEntityBase, nullptr when the entity type has no
+ *          matching Inventory.Item interface
+ */
+inline std::unique_ptr<PldmEntityBase> createPldmEntityForType(
+    sdbusplus::bus_t& bus, const std::string& path, uint16_t entityType)
+{
+    auto item = findPldmEntityItem(entityType);
+    if (!item)
+    {
+        return nullptr;
+    }
+    return item->create(bus, path);
+}
+
 /** @brief Create the appropriate PldmEntityReq for the given entity type.
  *  @param[in] bus - D-Bus bus
  *  @param[in] path - D-Bus object path
@@ -183,29 +300,12 @@ using AcceleratorServer =
 inline std::unique_ptr<PldmEntityBase> createPldmEntity(
     sdbusplus::bus_t& bus, const std::string& path, uint16_t entityType)
 {
-    switch (entityType)
+    auto entity = createPldmEntityForType(bus, path, entityType);
+    if (entity)
     {
-        case PLDM_ENTITY_SYSTEM_CHASSIS:
-            return std::make_unique<PldmEntityReq<ChassisServer>>(bus, path);
-        case PLDM_ENTITY_PROC:
-            return std::make_unique<PldmEntityReq<CpuServer>>(bus, path);
-        case PLDM_ENTITY_MEMORY_MODULE:
-            return std::make_unique<PldmEntityReq<DimmServer>>(bus, path);
-        case PLDM_ENTITY_FAN:
-            return std::make_unique<PldmEntityReq<FanServer>>(bus, path);
-        case PLDM_ENTITY_POWER_SUPPLY:
-            return std::make_unique<PldmEntityReq<PowerSupplyServer>>(
-                bus, path);
-        case PLDM_ENTITY_GPU:
-        case PLDM_ENTITY_ACCELERATOR:
-            return std::make_unique<PldmEntityReq<AcceleratorServer>>(
-                bus, path);
-        case PLDM_ENTITY_BOARD:
-        case PLDM_ENTITY_SYS_BOARD:
-        case PLDM_ENTITY_CARD:
-        default:
-            return std::make_unique<PldmEntityReq<BoardServer>>(bus, path);
+        return entity;
     }
+    return std::make_unique<PldmEntityReq<BoardServer>>(bus, path);
 }
 
 } // namespace dbus_api
