@@ -3,9 +3,8 @@
 #include "common/types.hpp"
 
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
-#include <algorithm>
-#include <array>
 #include <map>
 #include <memory>
 #include <string>
@@ -40,44 +39,67 @@ class StateSetBase
     virtual void setPresentState(uint8_t presentState) = 0;
 };
 
-using StateSetCreator = std::unique_ptr<StateSetBase> (*)(sdbusplus::bus_t&,
-                                                          const std::string&);
+using OperationalStatusIntf =
+    sdbusplus::server::object_t<sdbusplus::xyz::openbmc_project::State::
+                                    Decorator::server::OperationalStatus>;
 
-/** @struct StateSetItem
- *  @brief The D-Bus interface of one state set.
+/** @class StateSetHealthState
+ *  @brief The health state set, state set ID 1 of DSP0249 v1.4.0.
+ *  @details The health of the entity is exposed by the Functional property of
+ *           State.Decorator.OperationalStatus.
  */
-struct StateSetItem
+class StateSetHealthState : public StateSetBase
 {
-    StateSetId stateSetId;  //!< DSP0249 state set ID
-    StateSetCreator create; //!< Creator of the D-Bus interface
+  public:
+    StateSetHealthState() = delete;
+    StateSetHealthState(const StateSetHealthState&) = delete;
+    StateSetHealthState& operator=(const StateSetHealthState&) = delete;
+    StateSetHealthState(StateSetHealthState&&) = delete;
+    StateSetHealthState& operator=(StateSetHealthState&&) = delete;
+    ~StateSetHealthState() override = default;
+
+    /** @brief Constructor
+     *
+     *  @param[in] bus - D-Bus bus
+     *  @param[in] path - D-Bus object path of the entity
+     */
+    StateSetHealthState(sdbusplus::bus_t& bus, const std::string& path) :
+        interface(bus, path.c_str()), path(path)
+    {}
+
+    void setPresentState(uint8_t presentState) override;
+
+    /** @brief The getter to return the health the interface carries */
+    bool functional() const
+    {
+        return interface.functional();
+    }
+
+  private:
+    /** @brief The interface which carries the health of the entity */
+    OperationalStatusIntf interface;
+
+    /** @brief The D-Bus object path of the entity */
+    std::string path;
+
+    /** @brief Whether a state the state set does not define was logged */
+    bool unknownStateLogged = false;
 };
 
-/** @brief The state sets which have a D-Bus interface.
+/** @brief Create the D-Bus interface which matches the given state set
  *
  *  The mapping is injective: two state sets do not share the property of a
  *  D-Bus interface, so the component sensors of one entity do not overwrite
- *  each other. A state set gets its entry when its interface is added.
- */
-inline constexpr std::array<StateSetItem, 0> stateSetItems{};
-
-/** @brief Create the D-Bus interface which matches the given state set
+ *  each other. A state set gets its case when its interface is added.
+ *
  *  @param[in] bus - D-Bus bus
  *  @param[in] path - D-Bus object path
  *  @param[in] stateSetId - DSP0249 state set ID
  *  @return unique_ptr to StateSetBase, nullptr when the state set has no
  *          matching D-Bus interface
  */
-inline std::unique_ptr<StateSetBase> createStateSet(
-    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId)
-{
-    auto it =
-        std::ranges::find(stateSetItems, stateSetId, &StateSetItem::stateSetId);
-    if (it == stateSetItems.end())
-    {
-        return nullptr;
-    }
-    return it->create(bus, path);
-}
+std::unique_ptr<StateSetBase> createStateSet(
+    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId);
 
 /** @class StateSets
  *  @brief The state set interfaces implemented on one D-Bus object.
