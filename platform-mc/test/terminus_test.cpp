@@ -773,11 +773,12 @@ TEST(TerminusTest, addStateSensorTest)
     EXPECT_EQ(1, stateSensor->getTid());
     EXPECT_EQ(2, stateSensor->getCompositeSensorCount());
 
-    /* No state set has a D-Bus interface yet, so the entity D-Bus object
-     * carries none and a present state publishes nothing
+    /* The state set which has a D-Bus interface gets it on the entity D-Bus
+     * object, and the component sensor of the one which has none publishes
+     * nothing
      */
     auto stateSets = entity->getStateSets();
-    EXPECT_EQ(nullptr, stateSets->getStateSet(healthStateSetId));
+    EXPECT_NE(nullptr, stateSets->getStateSet(healthStateSetId));
     EXPECT_EQ(nullptr, stateSets->getStateSet(unmappedStateSetId));
-    stateSensor->updatePresentState(0, 1);
+    stateSensor->updatePresentState(1, 1);
 }
