@@ -541,6 +541,16 @@ void Terminus::addEntityAssociations()
             }
 
             entity->addContainer(childContainerPath);
+
+            /* A port is connected to the entity which contains it, when the
+             * container is an entity type which a port may be connected to.
+             */
+            if (container && pldm::dbus_api::isPldmEntityPort(child.type) &&
+                pldm::dbus_api::isPldmEntityPortEndpoint(
+                    association.container.type))
+            {
+                entity->addConnection(container->getPath());
+            }
         }
     }
 }

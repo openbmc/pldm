@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xyz/openbmc_project/Inventory/Connector/Port/server.hpp"
 #include "xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp"
 #include "xyz/openbmc_project/Inventory/Decorator/AssetTag/server.hpp"
 #include "xyz/openbmc_project/Inventory/Decorator/Compatible/server.hpp"
@@ -7,9 +8,11 @@
 #include "xyz/openbmc_project/Inventory/Item/Accelerator/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Board/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Chassis/server.hpp"
+#include "xyz/openbmc_project/Inventory/Item/Connector/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Cpu/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Dimm/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Fan/server.hpp"
+#include "xyz/openbmc_project/Inventory/Item/PCIeSwitch/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/PowerSupply/server.hpp"
 
 #include <libpldm/entity.h>
@@ -175,8 +178,14 @@ using DimmServer =
 using FanServer = sdbusplus::xyz::openbmc_project::Inventory::Item::server::Fan;
 using PowerSupplyServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::PowerSupply;
+using PCIeSwitchServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::PCIeSwitch;
 using AcceleratorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Accelerator;
+using ConnectorServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Connector;
+using PortServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Connector::server::Port;
 
 /** @brief Create the PldmEntityReq of the ItemServer interface
  *  @param[in] bus - D-Bus bus
@@ -203,6 +212,10 @@ struct PldmEntityItem
     PldmEntityCreator create; //!< Creator of the Inventory.Item interface
     //! The entity type may be contained directly by the terminus
     bool containedByTerminus;
+    //! The entity type is exposed as a port of the entity which contains it
+    bool port;
+    //! A port may be connected to an entity type of this kind
+    bool portEndpoint;
 };
 
 /** @brief The PLDM entity types which have an Inventory.Item interface.
@@ -214,21 +227,36 @@ struct PldmEntityItem
  *  containedByTerminus marks the entity types which the terminus inventory
  *  object may contain directly, so that an entity of the type is reachable
  *  from the terminus when the container of the entity has no D-Bus object.
+ *
+ *  port marks the entity types which implement Inventory.Connector.Port, and
+ *  portEndpoint the entity types which a port may be connected to. A port is
+ *  connected to the entity which contains it.
  */
-inline constexpr std::array<PldmEntityItem, 10> pldmEntityItems{{
+inline constexpr std::array<PldmEntityItem, 13> pldmEntityItems{{
     {PLDM_ENTITY_SYSTEM_CHASSIS, "Chassis", makePldmEntity<ChassisServer>,
-     false},
-    {PLDM_ENTITY_PROC, "Cpu", makePldmEntity<CpuServer>, true},
-    {PLDM_ENTITY_MEMORY_MODULE, "Dimm", makePldmEntity<DimmServer>, false},
-    {PLDM_ENTITY_FAN, "Fan", makePldmEntity<FanServer>, false},
+     false, false, false},
+    {PLDM_ENTITY_PROC, "Cpu", makePldmEntity<CpuServer>, true, false, false},
+    {PLDM_ENTITY_MEMORY_MODULE, "Dimm", makePldmEntity<DimmServer>, false,
+     false, false},
+    {PLDM_ENTITY_FAN, "Fan", makePldmEntity<FanServer>, false, false, false},
     {PLDM_ENTITY_POWER_SUPPLY, "PowerSupply", makePldmEntity<PowerSupplyServer>,
+     false, false, false},
+    {PLDM_ENTITY_GPU, "Gpu", makePldmEntity<AcceleratorServer>, true, false,
      false},
-    {PLDM_ENTITY_GPU, "Gpu", makePldmEntity<AcceleratorServer>, true},
     {PLDM_ENTITY_ACCELERATOR, "Accelerator", makePldmEntity<AcceleratorServer>,
-     true},
-    {PLDM_ENTITY_BOARD, "Board", makePldmEntity<BoardServer>, false},
-    {PLDM_ENTITY_SYS_BOARD, "SysBoard", makePldmEntity<BoardServer>, false},
-    {PLDM_ENTITY_CARD, "Card", makePldmEntity<BoardServer>, false},
+     true, false, false},
+    {PLDM_ENTITY_NETWORK_CONTROLLER, "PCIeSwitch",
+     makePldmEntity<PCIeSwitchServer>, true, false, true},
+    {PLDM_ENTITY_OSFP, "Connector", makePldmEntity<ConnectorServer>, true,
+     false, false},
+    {PLDM_ENTITY_ETHERNET, "Ethernet", makePldmEntity<PortServer>, false, true,
+     false},
+    {PLDM_ENTITY_BOARD, "Board", makePldmEntity<BoardServer>, false, false,
+     false},
+    {PLDM_ENTITY_SYS_BOARD, "SysBoard", makePldmEntity<BoardServer>, false,
+     false, false},
+    {PLDM_ENTITY_CARD, "Card", makePldmEntity<BoardServer>, false, false,
+     false},
 }};
 
 /** @brief Find the entry of the given entity type
@@ -271,6 +299,26 @@ inline bool isPldmEntityContainedByTerminus(uint16_t entityType)
 {
     auto item = findPldmEntityItem(entityType);
     return item && item->containedByTerminus;
+}
+
+/** @brief Check whether the given entity type is exposed as a port
+ *  @param[in] entityType - PLDM entity type
+ *  @return true when the entity type implements Inventory.Connector.Port
+ */
+inline bool isPldmEntityPort(uint16_t entityType)
+{
+    auto item = findPldmEntityItem(entityType);
+    return item && item->port;
+}
+
+/** @brief Check whether a port may be connected to the given entity type
+ *  @param[in] entityType - PLDM entity type of the container of the port
+ *  @return true when a port may be connected to the entity type
+ */
+inline bool isPldmEntityPortEndpoint(uint16_t entityType)
+{
+    auto item = findPldmEntityItem(entityType);
+    return item && item->portEndpoint;
 }
 
 /** @brief Create the PldmEntityReq which matches the given entity type.

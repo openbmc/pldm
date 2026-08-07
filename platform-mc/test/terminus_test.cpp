@@ -369,7 +369,7 @@ TEST(TerminusTest, createPldmEntityTest)
     };
 
     // clang-format off
-    std::array<EntityTestCase, 10> testCases = {{
+    std::array<EntityTestCase, 13> testCases = {{
         {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},
         {PLDM_ENTITY_PROC,           "cpu"},
         {PLDM_ENTITY_MEMORY_MODULE,  "dimm"},
@@ -377,6 +377,9 @@ TEST(TerminusTest, createPldmEntityTest)
         {PLDM_ENTITY_POWER_SUPPLY,   "powersupply"},
         {PLDM_ENTITY_GPU,            "gpu/accelerator"},
         {PLDM_ENTITY_ACCELERATOR,    "accelerator"},
+        {PLDM_ENTITY_NETWORK_CONTROLLER, "networkadapter"},
+        {PLDM_ENTITY_OSFP,           "connector"},
+        {PLDM_ENTITY_ETHERNET,       "ethernet"},
         {PLDM_ENTITY_BOARD,          "board"},
         {PLDM_ENTITY_SYS_BOARD,      "sysboard/board"},
         {PLDM_ENTITY_CARD,           "card/board"},
@@ -573,7 +576,7 @@ TEST(TerminusTest, parseEntityAssociationPDRTest)
         PLDM_PDR_ENTITY_ASSOCIATION, // PDRType
         0x1,
         0x0,                         // recordChangeNumber
-        0x16,
+        0x1c,
         0,                           // dataLength
         /* Entity Association PDR Data*/
         0x3,
@@ -585,7 +588,7 @@ TEST(TerminusTest, parseEntityAssociationPDRTest)
         0x0,  // container entity instance number = 1
         0x1,
         0x0,  // container entity container ID = 1
-        2,    // numberOfChildren
+        3,    // numberOfChildren
         PLDM_ENTITY_PROC,
         0x0,  // child entityType processor
         0x1,
@@ -594,6 +597,12 @@ TEST(TerminusTest, parseEntityAssociationPDRTest)
         0x0,  // child entity container ID = 3
         PLDM_ENTITY_MEMORY_MODULE,
         0x0,  // child entityType memory module
+        0x1,
+        0x0,  // child entity instance number = 1
+        0x3,
+        0x0,  // child entity container ID = 3
+        0xd6,
+        0x0,  // child entityType OSFP
         0x1,
         0x0,  // child entity instance number = 1
         0x3,
@@ -653,6 +662,14 @@ TEST(TerminusTest, parseEntityAssociationPDRTest)
     ASSERT_NE(nullptr, containedByTerminusEntity);
     EXPECT_EQ(containers, containedByTerminusEntity->getContainers());
 
+    /* The connector of a terminus is contained by the terminus inventory
+     * path, so that it is reachable when the cage which holds it has no
+     * entity D-Bus object
+     */
+    auto connectorEntity = t1.getEntity({PLDM_ENTITY_OSFP, 1, 3});
+    ASSERT_NE(nullptr, connectorEntity);
+    EXPECT_EQ(containers, connectorEntity->getContainers());
+
     /* Any other entity type of the container is not contained by the terminus
      */
     auto hiddenEntity = t1.getEntity({PLDM_ENTITY_MEMORY_MODULE, 1, 3});
@@ -689,6 +706,137 @@ TEST(TerminusTest, getPldmEntityNameTest)
                       bus, basePath + std::string(item.name), item.entityType))
             << "Failed for " << item.name;
     }
+}
+
+TEST(TerminusTest, pldmEntityPortRoleTest)
+{
+    /* A port entity implements Inventory.Connector.Port */
+    EXPECT_TRUE(pldm::dbus_api::isPldmEntityPort(PLDM_ENTITY_ETHERNET));
+    EXPECT_FALSE(
+        pldm::dbus_api::isPldmEntityPort(PLDM_ENTITY_NETWORK_CONTROLLER));
+    EXPECT_FALSE(pldm::dbus_api::isPldmEntityPort(PLDM_ENTITY_OSFP));
+    EXPECT_FALSE(pldm::dbus_api::isPldmEntityPort(0xFFFF));
+
+    /* A port is connected to the network controller which contains it */
+    EXPECT_TRUE(pldm::dbus_api::isPldmEntityPortEndpoint(
+        PLDM_ENTITY_NETWORK_CONTROLLER));
+    EXPECT_FALSE(
+        pldm::dbus_api::isPldmEntityPortEndpoint(PLDM_ENTITY_ETHERNET));
+    EXPECT_FALSE(
+        pldm::dbus_api::isPldmEntityPortEndpoint(PLDM_ENTITY_SYS_BOARD));
+    EXPECT_FALSE(pldm::dbus_api::isPldmEntityPortEndpoint(0xFFFF));
+}
+
+TEST(TerminusTest, addPortConnectionAssociationTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    /* A network controller which contains two Ethernet ports */
+    std::vector<uint8_t> networkControllerPdr{
+        0x10, 0x0, 0x0,
+        0x0,                         // record handle
+        0x1,                         // PDRHeaderVersion
+        PLDM_PDR_ENTITY_ASSOCIATION, // PDRType
+        0x1,
+        0x0,                         // recordChangeNumber
+        0x16,
+        0,                           // dataLength
+        /* Entity Association PDR Data*/
+        0xe8,
+        0x3, // containerID = 1000
+        0x1, // associationType physical
+        0x90,
+        0x0, // container entityType network controller
+        0x1,
+        0x0, // container entity instance number = 1
+        0x64,
+        0x0, // container entity container ID = 100
+        2,   // numberOfChildren
+        0x2c,
+        0x1, // child entityType ethernet
+        0x1,
+        0x0, // child entity instance number = 1
+        0xe8,
+        0x3, // child entity container ID = 1000
+        0x2c,
+        0x1, // child entityType ethernet
+        0x2,
+        0x0, // child entity instance number = 2
+        0xe8,
+        0x3  // child entity container ID = 1000
+    };
+
+    /* An Ethernet port whose container is not an entity type which a port may
+     * be connected to
+     */
+    std::vector<uint8_t> sysBoardPdr{
+        0x11, 0x0, 0x0,
+        0x0,                         // record handle
+        0x1,                         // PDRHeaderVersion
+        PLDM_PDR_ENTITY_ASSOCIATION, // PDRType
+        0x1,
+        0x0,                         // recordChangeNumber
+        0x10,
+        0,                           // dataLength
+        /* Entity Association PDR Data*/
+        0xe9,
+        0x3, // containerID = 1001
+        0x1, // associationType physical
+        0x40,
+        0x0, // container entityType system board
+        0x1,
+        0x0, // container entity instance number = 1
+        0x0,
+        0x0, // container entity container ID = 0
+        1,   // numberOfChildren
+        0x2c,
+        0x1, // child entityType ethernet
+        0x1,
+        0x0, // child entity instance number = 1
+        0xe9,
+        0x3  // child entity container ID = 1001
+    };
+
+    t1.pdrs.emplace_back(networkControllerPdr);
+    t1.pdrs.emplace_back(sysBoardPdr);
+    t1.parseTerminusPDRs();
+
+    const std::string pcieSwitchPath =
+        "/xyz/openbmc_project/inventory/system/Terminus_1_PCIeSwitch_1_100";
+
+    std::vector<std::tuple<std::string, std::string, std::string>> containment{
+        {"contained_by", "containing", pcieSwitchPath}};
+    std::vector<std::tuple<std::string, std::string, std::string>> connection{
+        {"connected_to", "connecting", pcieSwitchPath}};
+
+    /* A port publishes both the containment and the connection association to
+     * the network controller which contains it
+     */
+    auto firstPort = t1.getEntity({PLDM_ENTITY_ETHERNET, 1, 1000});
+    ASSERT_NE(nullptr, firstPort);
+    EXPECT_EQ(containment, firstPort->getContainers());
+    EXPECT_EQ(connection, firstPort->getConnections());
+
+    auto secondPort = t1.getEntity({PLDM_ENTITY_ETHERNET, 2, 1000});
+    ASSERT_NE(nullptr, secondPort);
+    EXPECT_EQ(containment, secondPort->getContainers());
+    EXPECT_EQ(connection, secondPort->getConnections());
+
+    /* The endpoint of the connection is not itself a port */
+    auto pcieSwitch = t1.getEntity({PLDM_ENTITY_NETWORK_CONTROLLER, 1, 100});
+    ASSERT_NE(nullptr, pcieSwitch);
+    EXPECT_EQ(pcieSwitchPath, pcieSwitch->getPath());
+    EXPECT_TRUE(pcieSwitch->getConnections().empty());
+
+    /* A port whose container is not a connection endpoint publishes the
+     * containment association only
+     */
+    auto unconnectedPort = t1.getEntity({PLDM_ENTITY_ETHERNET, 1, 1001});
+    ASSERT_NE(nullptr, unconnectedPort);
+    EXPECT_FALSE(unconnectedPort->getContainers().empty());
+    EXPECT_TRUE(unconnectedPort->getConnections().empty());
 }
 
 TEST(TerminusTest, addStateSensorTest)
