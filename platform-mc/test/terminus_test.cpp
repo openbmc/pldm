@@ -690,3 +690,140 @@ TEST(TerminusTest, getPldmEntityNameTest)
             << "Failed for " << item.name;
     }
 }
+
+TEST(TerminusTest, addStateSensorTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    constexpr uint16_t unmappedEntityType = 0xFFFF;
+    constexpr pldm::pdr::StateSetId healthStateSetId = 1;
+    constexpr pldm::pdr::StateSetId unmappedStateSetId = 3;
+
+    // Entity Auxiliary Names PDR: terminus name "S0"
+    std::vector<uint8_t> entityAuxNamesPdr{
+        0x1, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number = 1
+        0,
+        0,    // Overall system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+
+    // State Sensor PDR: sensorID = 1, on a power supply entity, with the
+    // health state set at offset 0 and an unmapped state set at offset 1
+    std::vector<uint8_t> stateSensorPdr{
+        0x2, 0x0, 0x0,
+        0x0,                   // record handle
+        0x1,                   // PDRHeaderVersion
+        PLDM_STATE_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                   // recordChangeNumber
+        21,
+        0,                     // dataLength
+        /* State Sensor PDR Data*/
+        0,
+        0,            // PLDMTerminusHandle
+        0x1,
+        0x0,          // sensorID = 1
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,            // entityType power supply
+        1,
+        0,            // entityInstanceNumber = 1
+        0x1,
+        0x0,          // containerID = 1
+        PLDM_NO_INIT, // sensorInit
+        false,        // sensorAuxiliaryNamesPDR
+        2,            // compositeSensorCount
+        healthStateSetId,
+        0x0,          // stateSetID[0] health state
+        0x1,          // possibleStatesSize[0]
+        0x6,          // possibleStates[0] = {1,2}
+        unmappedStateSetId,
+        0x0,          // stateSetID[1] with no D-Bus interface
+        0x1,          // possibleStatesSize[1]
+        0x1e          // possibleStates[1] = {1,2,3,4}
+    };
+
+    // State Sensor PDR: sensorID = 2, on an entity type with no Inventory
+    // Item interface, so no D-Bus object is published for its entity
+    std::vector<uint8_t> unresolvedStateSensorPdr{
+        0x3, 0x0, 0x0,
+        0x0,                   // record handle
+        0x1,                   // PDRHeaderVersion
+        PLDM_STATE_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                   // recordChangeNumber
+        17,
+        0,                     // dataLength
+        /* State Sensor PDR Data*/
+        0,
+        0,            // PLDMTerminusHandle
+        0x2,
+        0x0,          // sensorID = 2
+        0xff,
+        0xff,         // entityType with no Item interface
+        1,
+        0,            // entityInstanceNumber = 1
+        0x1,
+        0x0,          // containerID = 1
+        PLDM_NO_INIT, // sensorInit
+        false,        // sensorAuxiliaryNamesPDR
+        1,            // compositeSensorCount
+        healthStateSetId,
+        0x0,          // stateSetID[0] health state
+        0x1,          // possibleStatesSize[0]
+        0x6           // possibleStates[0] = {1,2}
+    };
+
+    t1.pdrs.emplace_back(entityAuxNamesPdr);
+    t1.pdrs.emplace_back(stateSensorPdr);
+    t1.pdrs.emplace_back(unresolvedStateSensorPdr);
+    t1.parseTerminusPDRs();
+
+    /* The entity of a State Sensor PDR gets its D-Bus object */
+    auto entity = t1.getEntity({PLDM_ENTITY_POWER_SUPPLY, 1, 1});
+    ASSERT_NE(nullptr, entity);
+    EXPECT_EQ(
+        "/xyz/openbmc_project/inventory/system/Terminus_1_PowerSupply_1_1",
+        entity->getPath());
+
+    /* The state sensor of an entity type with no Inventory Item interface has
+     * no D-Bus object to publish on, so it is not constructed
+     */
+    EXPECT_EQ(nullptr, t1.getEntity({unmappedEntityType, 1, 1}));
+    ASSERT_EQ(1, t1.stateSensors.size());
+    EXPECT_EQ(nullptr, t1.getStateSensorObject(2));
+
+    /* The state sensor of the resolved entity keeps every composite sensor
+     * offset of its State Sensor PDR
+     */
+    auto stateSensor = t1.getStateSensorObject(1);
+    ASSERT_NE(nullptr, stateSensor);
+    EXPECT_EQ(1, stateSensor->getTid());
+    EXPECT_EQ(2, stateSensor->getCompositeSensorCount());
+
+    /* No state set has a D-Bus interface yet, so the entity D-Bus object
+     * carries none and a present state publishes nothing
+     */
+    auto stateSets = entity->getStateSets();
+    EXPECT_EQ(nullptr, stateSets->getStateSet(healthStateSetId));
+    EXPECT_EQ(nullptr, stateSets->getStateSet(unmappedStateSetId));
+    stateSensor->updatePresentState(0, 1);
+}
