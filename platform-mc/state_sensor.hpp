@@ -84,6 +84,17 @@ class StateSensor
         return info->pdr.composite_sensor_count;
     }
 
+    /** @brief Whether an initialization agent has to set the operational
+     *         state of the component sensors, `sensorInit` of `Table 81 -
+     *         State Sensor PDR` of DSP0248 v1.3.0. A sensor which reports
+     *         noInit is operational as the terminus starts up and takes no
+     *         SetStateSensorEnables.
+     */
+    bool requiresInit() const
+    {
+        return info->pdr.sensor_init != PLDM_NO_INIT;
+    }
+
     /** @brief Publish the state which one component sensor reports on the
      *         state set interface of the entity
      *
@@ -91,6 +102,40 @@ class StateSensor
      *  @param[in] presentState - the presentState of GetStateSensorReadings
      */
     void updatePresentState(uint8_t offset, uint8_t presentState);
+
+    /** @brief Log the operational state which one component sensor reports
+     *         when it differs from the one the previous reading reported
+     *  @details A component sensor which is not enabled reports no state, so
+     *           the entity keeps publishing the state of the last reading,
+     *           which nothing on D-Bus tells a consumer about.
+     *
+     *  @param[in] offset - composite sensor offset of the component sensor
+     *  @param[in] opState - the sensorOperationalState of
+     *                       GetStateSensorReadings
+     */
+    void updateOpState(uint8_t offset, uint8_t opState);
+
+    /** @brief Whether SetStateSensorEnables has to be sent for the component
+     *         sensors of the sensor
+     */
+    enum class EnableState : uint8_t
+    {
+        pending,  /**< the command has not completed for the sensor */
+        enabled,  /**< the terminus enabled the component sensors */
+        rejected, /**< the terminus answered with an error completion code,
+                       so the command is not sent for the sensor again */
+    };
+
+    /** @brief Outcome of SetStateSensorEnables for the component sensors of
+     *         the sensor
+     */
+    EnableState enableState = EnableState::pending;
+
+    /** @brief Timestamp (CLOCK_MONOTONIC us) of the last successful read */
+    uint64_t timeStamp = 0;
+
+    /** @brief Minimum interval (us) between two reads of the sensor */
+    uint64_t updateTime;
 
   private:
     /** @brief Terminus ID which the sensor belongs to */
@@ -110,6 +155,14 @@ class StateSensor
      *         D-Bus interface. The interfaces are owned by stateSets.
      */
     std::vector<StateSetBase*> componentStateSets;
+
+    /** @brief The operational state which each component sensor reported on
+     *         the previous reading, indexed by its composite sensor offset,
+     *         so that only a change of the operational state is logged. A
+     *         component sensor is taken to start out enabled, which keeps the
+     *         readings of a terminus that never leaves that state silent.
+     */
+    std::vector<uint8_t> componentOpStates;
 };
 
 } // namespace platform_mc

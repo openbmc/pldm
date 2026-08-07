@@ -18,6 +18,13 @@ class MockSensorManager : public SensorManager
         SensorManager(event, terminusManager, termini, manager) {};
 
     MOCK_METHOD(void, doSensorPolling, (pldm_tid_t tid), (override));
+
+    /* Expose the polling task and the state sensor commands so a test can
+     * drive them directly
+     */
+    using SensorManager::doSensorPollingTask;
+    using SensorManager::getStateSensorReadings;
+    using SensorManager::setStateSensorEnables;
 };
 
 } // namespace platform_mc
