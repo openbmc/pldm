@@ -27,29 +27,59 @@ bool Entity::addContainer(const std::string& containerPath)
         return std::get<2>(*container) == containerPath;
     }
 
-    auto& bus = pldm::utils::DBusHandler::getBus();
-    containerAssociationsIntf =
-        std::make_unique<ContainerAssociationsIntf>(bus, path.c_str());
-    containerAssociationsIntf->associations(
-        {{"contained_by", "containing", containerPath}});
+    addAssociation("contained_by", "containing", containerPath);
 
     return true;
 }
 
-std::optional<ContainerAssociation> Entity::getContainer() const
+std::optional<AssociationDefinition> Entity::getContainer() const
 {
-    if (!containerAssociationsIntf)
+    auto containers = getAssociations("contained_by");
+    if (containers.empty())
     {
         return std::nullopt;
     }
 
-    auto definitions = containerAssociationsIntf->associations();
-    if (definitions.empty())
+    return containers.front();
+}
+
+void Entity::addAssociation(const std::string& forward,
+                            const std::string& reverse,
+                            const std::string& endpointPath)
+{
+    if (!associationsIntf)
     {
-        return std::nullopt;
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        associationsIntf =
+            std::make_unique<AssociationsIntf>(bus, path.c_str());
     }
 
-    return definitions.front();
+    AssociationDefinition definition{forward, reverse, endpointPath};
+    auto definitions = associationsIntf->associations();
+    if (std::find(definitions.begin(), definitions.end(), definition) !=
+        definitions.end())
+    {
+        return;
+    }
+
+    definitions.emplace_back(std::move(definition));
+    associationsIntf->associations(std::move(definitions));
+}
+
+std::vector<AssociationDefinition> Entity::getAssociations(
+    const std::string& forward) const
+{
+    if (!associationsIntf)
+    {
+        return {};
+    }
+
+    auto definitions = associationsIntf->associations();
+    std::erase_if(definitions, [&forward](const AssociationDefinition& def) {
+        return std::get<0>(def) != forward;
+    });
+
+    return definitions;
 }
 
 } // namespace platform_mc
