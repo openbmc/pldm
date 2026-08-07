@@ -257,6 +257,20 @@ void Terminus::parseTerminusPDRs()
                 sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));
                 break;
             }
+            case PLDM_STATE_SENSOR_PDR:
+            {
+                auto parsedPdr = parseStateSensorPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                stateSensorPdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             case PLDM_ENTITY_AUXILIARY_NAMES_PDR:
             {
                 auto entityNames = parseEntityAuxiliaryNamesPDR(pdr);
@@ -317,6 +331,8 @@ void Terminus::parseTerminusPDRs()
 
     addEntities();
 
+    addStateSensors();
+
     addNextSensorFromPDRs();
 }
 
@@ -360,6 +376,59 @@ std::optional<EntityAssociation> Terminus::parseEntityAssociationPDR(
     free(extracted);
 
     return association;
+}
+
+std::shared_ptr<StateSensorInfo> Terminus::parseStateSensorPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    auto info = std::make_shared<StateSensorInfo>();
+    int rc = decode_pldm_platform_state_sensor_pdr(pdrData.data(),
+                                                   pdrData.size(), &info->pdr);
+    if (rc)
+    {
+        lg2::error("Failed to decode State Sensor PDR, error - {ERROR}",
+                   "ERROR", rc);
+        return nullptr;
+    }
+
+    pldm_platform_state_sensor_possible_states states{};
+    foreach_pldm_platform_state_sensor_pdr_possible_states(
+        pdrData.data(), pdrData.size(), states, rc)
+    {
+        const StateSetId setId = states.state_set_id;
+        PossibleStates possibleStateValues{};
+        uint8_t byteIndex = 0;
+        bitfield8_t bitfield{};
+        foreach_pldm_platform_state_sensor_pdr_states(states, bitfield, rc)
+        {
+            for (uint8_t bit = 0; bit < 8; bit++)
+            {
+                if (bitfield.byte & (1 << bit))
+                {
+                    possibleStateValues.insert(byteIndex * 8 + bit);
+                }
+            }
+            byteIndex++;
+        }
+        if (rc)
+        {
+            lg2::error(
+                "Failed to decode possible states of State Sensor PDR of sensorID {SENSORID}, error - {ERROR}",
+                "SENSORID", info->pdr.sensor_id, "ERROR", rc);
+            return nullptr;
+        }
+
+        info->componentInfo.emplace_back(setId, std::move(possibleStateValues));
+    }
+    if (rc)
+    {
+        lg2::error(
+            "Failed to walk possible states of State Sensor PDR of sensorID {SENSORID}, error - {ERROR}",
+            "SENSORID", info->pdr.sensor_id, "ERROR", rc);
+        return nullptr;
+    }
+
+    return info;
 }
 
 std::optional<std::string> Terminus::findEntityName(const EntityKey& key)
@@ -585,6 +654,44 @@ std::shared_ptr<StateSets> Terminus::getEntityStateSets(const EntityKey& key)
     if (terminusEntityKey && key == *terminusEntityKey)
     {
         return terminusStateSets;
+    }
+
+    return nullptr;
+}
+
+void Terminus::addStateSensors()
+{
+    for (const auto& info : stateSensorPdrs)
+    {
+        EntityKey key{info->pdr.entity_type, info->pdr.entity_instance_number,
+                      info->pdr.container_id};
+
+        auto stateSets = getEntityStateSets(key);
+        if (!stateSets)
+        {
+            lg2::error(
+                "Terminus ID {TID}: Skip state sensor {SENSORID} - no D-Bus object for Entity type {TYPE} instance {INSTANCE} container {CONTAINER}.",
+                "TID", tid, "SENSORID", info->pdr.sensor_id, "TYPE", key.type,
+                "INSTANCE", key.instanceIdx, "CONTAINER", key.containerId);
+            continue;
+        }
+
+        stateSensors.emplace_back(
+            std::make_shared<StateSensor>(tid, info, std::move(stateSets)));
+    }
+}
+
+std::shared_ptr<StateSensor> Terminus::getStateSensorObject(SensorID id)
+{
+    auto it =
+        std::find_if(stateSensors.begin(), stateSensors.end(),
+                     [id](const std::shared_ptr<StateSensor>& stateSensor) {
+                         return stateSensor && stateSensor->getSensorId() == id;
+                     });
+
+    if (it != stateSensors.end())
+    {
+        return *it;
     }
 
     return nullptr;
