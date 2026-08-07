@@ -21,18 +21,19 @@ Entity::Entity(const EntityKey& key, const std::string& path,
     inventoryItemIntf->present(true);
 }
 
-void Entity::addContainer(const std::string& containerPath)
+void Entity::addAssociation(const std::string& forward,
+                            const std::string& reverse,
+                            const std::string& endpointPath)
 {
-    if (!containerAssociationsIntf)
+    if (!associationsIntf)
     {
         auto& bus = pldm::utils::DBusHandler::getBus();
-        containerAssociationsIntf =
-            std::make_unique<ContainerAssociationsIntf>(bus, path.c_str());
+        associationsIntf =
+            std::make_unique<AssociationsIntf>(bus, path.c_str());
     }
 
-    ContainerAssociation definition{"contained_by", "containing",
-                                    containerPath};
-    auto definitions = containerAssociationsIntf->associations();
+    AssociationDefinition definition{forward, reverse, endpointPath};
+    auto definitions = associationsIntf->associations();
     if (std::find(definitions.begin(), definitions.end(), definition) !=
         definitions.end())
     {
@@ -40,17 +41,33 @@ void Entity::addContainer(const std::string& containerPath)
     }
 
     definitions.emplace_back(std::move(definition));
-    containerAssociationsIntf->associations(std::move(definitions));
+    associationsIntf->associations(std::move(definitions));
 }
 
-std::vector<ContainerAssociation> Entity::getContainers() const
+std::vector<AssociationDefinition> Entity::getAssociations(
+    const std::string& forward) const
 {
-    if (!containerAssociationsIntf)
+    if (!associationsIntf)
     {
         return {};
     }
 
-    return containerAssociationsIntf->associations();
+    auto definitions = associationsIntf->associations();
+    std::erase_if(definitions, [&forward](const AssociationDefinition& def) {
+        return std::get<0>(def) != forward;
+    });
+
+    return definitions;
+}
+
+void Entity::addContainer(const std::string& containerPath)
+{
+    addAssociation("contained_by", "containing", containerPath);
+}
+
+std::vector<AssociationDefinition> Entity::getContainers() const
+{
+    return getAssociations("contained_by");
 }
 
 } // namespace platform_mc
