@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d8f0511_4bbe6e44",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2683,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-07T05:14:54Z",
+      "side": 1,
+      "message": "We have libpldm encode API for this right? Why not use them?",
+      "range": {
+        "startLine": 2680,
+        "startChar": 8,
+        "endLine": 2683,
+        "endChar": 42
+      },
+      "revId": "45d877ad49643e8e43f64189ac2418bed0943c86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
