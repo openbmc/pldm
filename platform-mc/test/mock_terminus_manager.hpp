@@ -22,9 +22,11 @@ class MockTerminusManager : public TerminusManager
     {}
 
     exec::task<int> sendRecvPldmMsgOverMctp(
-        mctp_eid_t /*eid*/, Request& /*request*/, const pldm_msg** responseMsg,
+        mctp_eid_t /*eid*/, Request& request, const pldm_msg** responseMsg,
         size_t* responseLen) override
     {
+        lastRequest = request;
+
         if (responseMsgs.empty() || responseMsg == nullptr ||
             responseLen == nullptr)
         {
@@ -68,6 +70,9 @@ class MockTerminusManager : public TerminusManager
 
     std::queue<pldm_msg*> responseMsgs;
     std::queue<size_t> responseLens;
+
+    /** @brief The last request sent, so a test can assert how it is encoded */
+    Request lastRequest;
 };
 
 } // namespace platform_mc

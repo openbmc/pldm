@@ -92,6 +92,23 @@ class StateSensor
      */
     void updatePresentState(uint8_t offset, uint8_t presentState);
 
+    /** @brief Whether the component sensors of the sensor have been enabled
+     *         by SetStateSensorEnables
+     */
+    bool enabled = false;
+
+    /** @brief Whether the terminus answered SetStateSensorEnables with an
+     *         error completion code. The answer is definitive, so the command
+     *         is not sent for the sensor again.
+     */
+    bool enableRejected = false;
+
+    /** @brief Timestamp (CLOCK_MONOTONIC us) of the last successful read */
+    uint64_t timeStamp = 0;
+
+    /** @brief Minimum interval (us) between two reads of the sensor */
+    uint64_t updateTime;
+
   private:
     /** @brief Terminus ID which the sensor belongs to */
     pldm_tid_t tid;
