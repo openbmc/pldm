@@ -7,6 +7,7 @@
 
 #include <common/utils.hpp>
 
+#include <cstdlib>
 #include <memory>
 #include <ranges>
 
@@ -14,6 +15,9 @@ namespace pldm
 {
 namespace platform_mc
 {
+
+/** @brief The base of the inventory D-Bus object paths of a terminus */
+constexpr auto inventoryPathBase = "/xyz/openbmc_project/inventory/system/";
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
                    sdeventplus::Event& event) :
@@ -88,7 +92,7 @@ std::optional<std::string_view> Terminus::findTerminusName()
     return std::nullopt;
 }
 
-uint16_t Terminus::findTerminusEntityType()
+std::optional<EntityKey> Terminus::findTerminusEntityKey()
 {
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
@@ -103,7 +107,18 @@ uint16_t Terminus::findTerminusEntityType()
     if (it != entityAuxiliaryNamesTbl.end())
     {
         const auto& [key, entityNames] = **it;
-        return key.type;
+        return key;
+    }
+
+    return std::nullopt;
+}
+
+uint16_t Terminus::findTerminusEntityType()
+{
+    auto key = findTerminusEntityKey();
+    if (key)
+    {
+        return key->type;
     }
 
     return 0;
@@ -122,7 +137,7 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
         return false;
     }
 
-    inventoryPath = "/xyz/openbmc_project/inventory/system/board/" + tName;
+    inventoryPath = inventoryPathBase + tName;
     try
     {
         inventoryItemInft = pldm::dbus_api::createPldmEntity(
@@ -212,6 +227,20 @@ void Terminus::parseTerminusPDRs()
                 entityAuxiliaryNamesTbl.emplace_back(std::move(entityNames));
                 break;
             }
+            case PLDM_PDR_ENTITY_ASSOCIATION:
+            {
+                auto association = parseEntityAssociationPDR(pdr);
+                if (!association)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                entityAssociations.emplace_back(std::move(*association));
+                break;
+            }
             default:
             {
                 lg2::error("Unsupported PDR with type {TYPE} handle {HANDLE}",
@@ -241,7 +270,196 @@ void Terminus::parseTerminusPDRs()
                   tid, "PATH", inventoryPath);
     }
 
+    addEntities();
+
     addNextSensorFromPDRs();
+}
+
+std::optional<EntityAssociation> Terminus::parseEntityAssociationPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    if (pdrData.size() > UINT16_MAX)
+    {
+        return std::nullopt;
+    }
+
+    size_t numEntities = 0;
+    pldm_entity* extracted = nullptr;
+    pldm_entity_association_pdr_extract(
+        pdrData.data(), static_cast<uint16_t>(pdrData.size()), &numEntities,
+        &extracted);
+    if (!extracted)
+    {
+        return std::nullopt;
+    }
+
+    /* The container is the first extracted entity, the contained entities
+     * follow it.
+     */
+    EntityAssociation association{
+        EntityKey{extracted[0].entity_type, extracted[0].entity_instance_num,
+                  extracted[0].entity_container_id},
+        {}};
+    for (const auto& idx : std::views::iota(1, static_cast<int>(numEntities)))
+    {
+        association.children.emplace_back(EntityKey{
+            extracted[idx].entity_type, extracted[idx].entity_instance_num,
+            extracted[idx].entity_container_id});
+    }
+    free(extracted);
+
+    return association;
+}
+
+std::string Terminus::getEntityName(const EntityKey& key,
+                                    std::string_view typeName)
+{
+    auto it = std::find_if(
+        entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
+        [&key](
+            const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+            const auto& [entityKey, entityNames] = *entityAuxiliaryNames;
+            return (entityAuxiliaryNames && entityKey == key &&
+                    entityNames.size());
+        });
+
+    if (it != entityAuxiliaryNamesTbl.end())
+    {
+        const auto& [entityKey, entityNames] = **it;
+        for (const auto& [languageTag, name] : entityNames)
+        {
+            if (languageTag == "en" && !name.empty())
+            {
+                return std::format("{}_{}", terminusName, name);
+            }
+        }
+    }
+
+    return std::format("Terminus_{}_{}_{}", tid, typeName, key.instanceIdx);
+}
+
+void Terminus::addEntity(const EntityKey& key)
+{
+    auto terminusEntityKey = findTerminusEntityKey();
+    if (terminusEntityKey && key == *terminusEntityKey)
+    {
+        /* The overall terminus entity is exposed by the terminus inventory
+         * path.
+         */
+        return;
+    }
+
+    if (getEntity(key))
+    {
+        return;
+    }
+
+    auto typeName = pldm::dbus_api::getPldmEntityName(key.type);
+    if (!typeName)
+    {
+        lg2::info(
+            "Terminus ID {TID}: Skip Entity type {TYPE} instance {INSTANCE} - no Inventory Item interface.",
+            "TID", tid, "TYPE", key.type, "INSTANCE", key.instanceIdx);
+        return;
+    }
+
+    auto name = getEntityName(key, *typeName);
+    auto path = inventoryPathBase + name;
+
+    try
+    {
+        auto itemIntf = pldm::dbus_api::createPldmEntityForType(
+            utils::DBusHandler::getBus(), path, key.type);
+        entities.emplace_back(
+            std::make_shared<Entity>(key, path, name, std::move(itemIntf)));
+        lg2::info("Terminus ID {TID}: Created Entity path {PATH}.", "TID", tid,
+                  "PATH", path);
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        lg2::error("Failed to create Entity {PATH} error - {ERROR}", "PATH",
+                   path, "ERROR", e);
+    }
+}
+
+void Terminus::addEntities()
+{
+    for (const auto& association : entityAssociations)
+    {
+        addEntity(association.container);
+        for (const auto& child : association.children)
+        {
+            addEntity(child);
+        }
+    }
+
+    for (const auto& entityAuxiliaryNames : entityAuxiliaryNamesTbl)
+    {
+        addEntity(std::get<EntityKey>(*entityAuxiliaryNames));
+    }
+
+    for (const auto& pdr : numericSensorPdrs)
+    {
+        addEntity(EntityKey{pdr->entity_type, pdr->entity_instance_num,
+                            pdr->container_id});
+    }
+
+    for (const auto& pdr : compactNumericSensorPdrs)
+    {
+        addEntity(EntityKey{pdr->entity_type, pdr->entity_instance,
+                            pdr->container_id});
+    }
+
+    addEntityAssociations();
+}
+
+void Terminus::addEntityAssociations()
+{
+    auto terminusEntityKey = findTerminusEntityKey();
+
+    for (const auto& association : entityAssociations)
+    {
+        std::string containerPath{};
+        auto container = getEntity(association.container);
+        if (container)
+        {
+            containerPath = container->getPath();
+        }
+        else if (terminusEntityKey &&
+                 association.container == *terminusEntityKey)
+        {
+            containerPath = inventoryPath;
+        }
+
+        if (containerPath.empty())
+        {
+            continue;
+        }
+
+        for (const auto& child : association.children)
+        {
+            auto entity = getEntity(child);
+            if (entity)
+            {
+                entity->addContainer(containerPath);
+            }
+        }
+    }
+}
+
+std::shared_ptr<Entity> Terminus::getEntity(const EntityKey& key)
+{
+    auto it = std::find_if(entities.begin(), entities.end(),
+                           [&key](const std::shared_ptr<Entity>& entity) {
+                               return entity && entity->getKey() == key;
+                           });
+
+    if (it != entities.end())
+    {
+        return *it;
+    }
+
+    return nullptr;
 }
 
 void Terminus::addNextSensorFromPDRs()
