@@ -11,6 +11,7 @@ test_src = declare_dependency(
         '../entity.cpp',
         '../state_sensor.cpp',
         '../state_set.cpp',
+        '../state_set_health_state.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
     include_directories: ['../../requester', '../../pldmd'],
