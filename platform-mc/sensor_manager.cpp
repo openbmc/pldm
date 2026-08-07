@@ -5,12 +5,19 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
+#include <array>
 #include <exception>
 
 namespace pldm
 {
 namespace platform_mc
 {
+
+/* A state sensor is a composite of up to eight component sensors,
+ * `Table 81 - State Sensor PDR` of DSP0248 v1.3.0.
+ */
+static constexpr uint8_t maxCompositeSensorCount = 8;
 
 SensorManager::SensorManager(sdeventplus::Event& event,
                              TerminusManager& terminusManager,
@@ -35,6 +42,7 @@ void SensorManager::startPolling(pldm_tid_t tid)
     }
 
     roundRobinSensorItMap[tid] = 0;
+    roundRobinStateSensorItMap[tid] = 0;
 
     updateAvailableState(tid, true);
 
@@ -96,6 +104,7 @@ void SensorManager::stopPolling(pldm_tid_t tid)
     }
 
     roundRobinSensorItMap.erase(tid);
+    roundRobinStateSensorItMap.erase(tid);
 
     if (doSensorPollingTaskHandles.contains(tid))
     {
@@ -164,6 +173,7 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
     uint64_t elapsed = 0;
     uint64_t pollingTimeInUsec = pollingTime * 1000;
     uint8_t rc = PLDM_SUCCESS;
+    bool budgetSpent = false;
 
     do
     {
@@ -195,7 +205,11 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_return PLDM_SUCCESS;
         }
 
-        auto& terminus = termini[tid];
+        /* Take a local shared_ptr copy so the Terminus object stays alive
+         * even if the map entry is erased while this coroutine is suspended
+         * at a co_await point.
+         */
+        auto terminus = termini[tid];
         if (!terminus)
         {
             lg2::info(
@@ -218,9 +232,16 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
 
         auto& numericSensors = terminus->numericSensors;
-        auto toBeUpdated = numericSensors.size();
+        auto& stateSensors = terminus->stateSensors;
 
-        if (!roundRobinSensorItMap.contains(tid))
+        /* Turns which each list has left in the pass, so that every sensor of
+         * the terminus is visited once before any of them is visited again
+         */
+        auto numericToBeUpdated = numericSensors.size();
+        auto stateToBeUpdated = stateSensors.size();
+
+        if ((!roundRobinSensorItMap.contains(tid)) ||
+            (!roundRobinStateSensorItMap.contains(tid)))
         {
             lg2::info(
                 "Terminus ID {TID} does not have a round robin sensor iteration {NOW}.",
@@ -228,8 +249,16 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_return PLDM_ERROR;
         }
         auto& sensorIt = roundRobinSensorItMap[tid];
+        auto& stateSensorIt = roundRobinStateSensorItMap[tid];
 
-        while (((t1 - t0) < pollingTimeInUsec) && (toBeUpdated > 0))
+        /* The numeric sensors and the state sensors of the terminus keep a
+         * round robin cursor of their own and take turns under the budget of
+         * the pass, so that neither list can hold the other back.
+         */
+        bool pollState = false;
+
+        while (((t1 - t0) < pollingTimeInUsec) &&
+               ((numericToBeUpdated + stateToBeUpdated) > 0))
         {
             if (!getAvailableState(tid))
             {
@@ -239,46 +268,151 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
                 co_await stdexec::just_stopped();
             }
 
-            if (sensorIt >= numericSensors.size())
+            /* A list which has no turn left in the pass hands its turn to
+             * the other one.
+             */
+            if (!stateToBeUpdated)
             {
-                sensorIt = 0;
+                pollState = false;
+            }
+            else if (!numericToBeUpdated)
+            {
+                pollState = true;
             }
 
-            auto sensor = numericSensors[sensorIt];
-
-            sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
-            elapsed = t1 - sensor->timeStamp;
-            if ((sensor->updateTime <= elapsed) || (!sensor->timeStamp))
+            if (pollState)
             {
-                rc = co_await getSensorReading(sensor);
-
-                if ((!sensorPollTimers.contains(tid)) ||
-                    (sensorPollTimers[tid] &&
-                     !sensorPollTimers[tid]->isRunning()))
+                if (stateSensorIt >= stateSensors.size())
                 {
-                    co_return PLDM_ERROR;
+                    stateSensorIt = 0;
                 }
+
+                rc = co_await updateStateSensor(tid, terminus,
+                                                stateSensors[stateSensorIt]);
+                if (rc != PLDM_SUCCESS)
+                {
+                    co_return rc;
+                }
+
+                stateSensorIt++;
+                stateToBeUpdated--;
+            }
+            else
+            {
+                if (sensorIt >= numericSensors.size())
+                {
+                    sensorIt = 0;
+                }
+
+                auto sensor = numericSensors[sensorIt];
+
                 sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
-                if (rc == PLDM_SUCCESS)
+                elapsed = t1 - sensor->timeStamp;
+                if ((sensor->updateTime <= elapsed) || (!sensor->timeStamp))
                 {
-                    sensor->timeStamp = t1;
+                    rc = co_await getSensorReading(sensor);
+
+                    if ((!sensorPollTimers.contains(tid)) ||
+                        (sensorPollTimers[tid] &&
+                         !sensorPollTimers[tid]->isRunning()))
+                    {
+                        co_return PLDM_ERROR;
+                    }
+                    sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
+                    if (rc == PLDM_SUCCESS)
+                    {
+                        sensor->timeStamp = t1;
+                    }
+                    else
+                    {
+                        lg2::error(
+                            "Failed to get sensor value for terminus {TID}, error: {RC}",
+                            "TID", tid, "RC", rc);
+                    }
                 }
-                else
-                {
-                    lg2::error(
-                        "Failed to get sensor value for terminus {TID}, error: {RC}",
-                        "TID", tid, "RC", rc);
-                }
+
+                sensorIt++;
+                numericToBeUpdated--;
             }
 
-            toBeUpdated--;
-            sensorIt++;
+            pollState = !pollState;
 
             sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
         }
 
-        sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
-    } while ((t1 - t0) >= pollingTimeInUsec);
+        /* The loop stops on the budget of the pass while sensors are still to
+         * be visited, so the pass is run again.
+         */
+        budgetSpent = ((numericToBeUpdated + stateToBeUpdated) > 0);
+    } while (budgetSpent);
+
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> SensorManager::updateStateSensor(
+    pldm_tid_t tid, std::shared_ptr<Terminus> terminus,
+    std::shared_ptr<StateSensor> stateSensor)
+{
+    uint64_t t1 = 0;
+    uint64_t elapsed = 0;
+    uint8_t rc = PLDM_SUCCESS;
+
+    if (!terminus || !stateSensor)
+    {
+        lg2::error("Call `updateStateSensor` with a null pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
+    elapsed = t1 - stateSensor->timeStamp;
+    if ((stateSensor->updateTime > elapsed) && stateSensor->timeStamp)
+    {
+        co_return PLDM_SUCCESS;
+    }
+
+    if (stateSensor->enableState == StateSensor::EnableState::pending &&
+        stateSensor->requiresInit() &&
+        terminus->doesSupportCommand(PLDM_PLATFORM,
+                                     PLDM_SET_STATE_SENSOR_ENABLES))
+    {
+        rc = co_await setStateSensorEnables(stateSensor);
+        if (rc == PLDM_SUCCESS)
+        {
+            lg2::info(
+                "Terminus ID {TID}: Enabled the component sensors of state sensor {ID}.",
+                "TID", tid, "ID", stateSensor->getSensorId());
+        }
+        else
+        {
+            lg2::error(
+                "Failed to enable state sensor {ID} of terminus {TID}, error: {RC}",
+                "ID", stateSensor->getSensorId(), "TID", tid, "RC", rc);
+        }
+    }
+
+    /* The state sensor is read whether or not the command above enabled it:
+     * a sensor which the terminus enabled by itself reports its state, and a
+     * sensor which is disabled reports so through its operational state.
+     */
+    rc = co_await getStateSensorReadings(stateSensor);
+
+    if ((!sensorPollTimers.contains(tid)) ||
+        (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning()))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
+    if (rc == PLDM_SUCCESS)
+    {
+        stateSensor->timeStamp = t1;
+    }
+    else
+    {
+        lg2::error(
+            "Failed to get state sensor readings for terminus {TID}, error: {RC}",
+            "TID", tid, "RC", rc);
+    }
 
     co_return PLDM_SUCCESS;
 }
@@ -404,6 +538,206 @@ exec::task<int> SensorManager::getSensorReading(
     }
 
     sensor->updateReading(true, true, value);
+    co_return completionCode;
+}
+
+exec::task<int> SensorManager::setStateSensorEnables(
+    std::shared_ptr<StateSensor> sensor)
+{
+    if (!sensor)
+    {
+        lg2::error("Call `setStateSensorEnables` with null `sensor` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    auto tid = sensor->getTid();
+    auto sensorId = sensor->getSensorId();
+    auto compositeSensorCount = sensor->getCompositeSensorCount();
+    if (!compositeSensorCount ||
+        compositeSensorCount > PLDM_PLATFORM_SET_STATE_SENSOR_ENABLES_MAX_COUNT)
+    {
+        lg2::error(
+            "State sensor {ID} of terminus ID {TID} has an out of range composite sensor count {COUNT}.",
+            "ID", sensorId, "TID", tid, "COUNT", compositeSensorCount);
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    /* The state sensors are read by polling, so event messages are disabled
+     * for every component sensor of the composite. noEventGeneration is the
+     * capability a sensor reports, not a value a requester can set.
+     */
+    pldm_platform_set_state_sensor_enables_req req{};
+    req.sensor_id = sensorId;
+    req.composite_sensor_count = compositeSensorCount;
+    for (uint8_t offset = 0; offset < compositeSensorCount; offset++)
+    {
+        req.op_fields[offset].sensor_operational_state = PLDM_SENSOR_ENABLED;
+        req.op_fields[offset].sensor_event_message_enable =
+            PLDM_EVENTS_DISABLED;
+    }
+
+    Request request(sizeof(pldm_msg_hdr) +
+                    PLDM_PLATFORM_SET_STATE_SENSOR_ENABLES_MAX_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    size_t payloadLength = request.size() - sizeof(pldm_msg_hdr);
+    auto rc = encode_pldm_platform_set_state_sensor_enables_req(
+        0, &req, requestMsg, &payloadLength);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request SetStateSensorEnables for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        co_return rc;
+    }
+    request.resize(sizeof(pldm_msg_hdr) + payloadLength);
+
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send SetStateSensorEnables message for terminus {TID}, sensor Id {ID}, error {RC}",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    if ((!sensorPollTimers.contains(tid)) ||
+        (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning()))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    pldm_platform_set_state_sensor_enables_resp resp{};
+    rc = decode_pldm_platform_set_state_sensor_enables_resp(
+        responseMsg, responseLen, &resp);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response SetStateSensorEnables for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    if (resp.completion_code != PLDM_SUCCESS)
+    {
+        /* The terminus answered, so the command is not sent for the sensor
+         * again. Only a transport failure leaves the sensor pending, which is
+         * the outcome worth retrying.
+         */
+        sensor->enableState = StateSensor::EnableState::rejected;
+        lg2::error(
+            "Error : SetStateSensorEnables for terminus ID {TID}, sensor Id {ID}, complete code {CC}.",
+            "TID", tid, "ID", sensorId, "CC", resp.completion_code);
+    }
+    else
+    {
+        sensor->enableState = StateSensor::EnableState::enabled;
+    }
+
+    co_return resp.completion_code;
+}
+
+exec::task<int> SensorManager::getStateSensorReadings(
+    std::shared_ptr<StateSensor> sensor)
+{
+    if (!sensor)
+    {
+        lg2::error("Call `getStateSensorReadings` with null `sensor` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    auto tid = sensor->getTid();
+    auto sensorId = sensor->getSensorId();
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    bitfield8_t sensorRearm{};
+    auto rc = encode_get_state_sensor_readings_req(0, sensorId, sensorRearm, 0,
+                                                   requestMsg);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send GetStateSensorReadings message for terminus {TID}, sensor Id {ID}, error {RC}",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    if ((!sensorPollTimers.contains(tid)) ||
+        (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning()))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    /* decode_get_state_sensor_readings_resp() takes compositeSensorCount
+     * from the response and writes up to that many entries, so the buffer
+     * holds the largest composite the spec allows.
+     */
+    uint8_t completionCode = PLDM_SUCCESS;
+    uint8_t compositeSensorCount = 0;
+    std::array<get_sensor_state_field, maxCompositeSensorCount> stateField{};
+    rc = decode_get_state_sensor_readings_resp(
+        responseMsg, responseLen, &completionCode, &compositeSensorCount,
+        stateField.data());
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, error {RC}.",
+            "TID", tid, "ID", sensorId, "RC", rc);
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : GetStateSensorReadings for terminus ID {TID}, sensor Id {ID}, complete code {CC}.",
+            "TID", tid, "ID", sensorId, "CC", completionCode);
+        co_return completionCode;
+    }
+
+    compositeSensorCount =
+        std::min(compositeSensorCount, sensor->getCompositeSensorCount());
+    for (uint8_t offset = 0; offset < compositeSensorCount; offset++)
+    {
+        /* A component sensor which is not enabled does not report the state
+         * of the entity.
+         */
+        if (stateField[offset].sensor_op_state != PLDM_SENSOR_ENABLED)
+        {
+            continue;
+        }
+        sensor->updatePresentState(offset, stateField[offset].present_state);
+    }
+
     co_return completionCode;
 }
 
