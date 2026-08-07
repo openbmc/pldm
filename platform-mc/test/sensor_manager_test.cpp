@@ -1,5 +1,7 @@
+#include "common/start_lifetime_as.hpp"
 #include "common/types.hpp"
 #include "mock_sensor_manager.hpp"
+#include "mock_terminus_manager.hpp"
 #include "platform-mc/sensor_manager.hpp"
 #include "platform-mc/terminus_manager.hpp"
 #include "test/test_instance_id.hpp"
@@ -7,9 +9,15 @@
 
 #include <sdeventplus/event.hpp>
 
+#include <array>
+#include <optional>
+#include <tuple>
+
 #include <gtest/gtest.h>
 
 using namespace ::testing;
+
+using EnableState = pldm::platform_mc::StateSensor::EnableState;
 
 class SensorManagerTest : public testing::Test
 {
@@ -157,4 +165,646 @@ TEST_F(SensorManagerTest, sensorPollingTest)
     utils::runEventLoopForSeconds(event, seconds);
 
     sensorManager.stopPolling(tid);
+}
+
+class StateSensorManagerTest : public testing::Test
+{
+  protected:
+    /** @brief A GetStateSensorReadings response of a composite of two
+     *         component sensors
+     */
+    using StateSensorReadingsResp =
+        std::array<uint8_t, sizeof(pldm_msg_hdr) + 2 + (4 * 2)>;
+
+    StateSensorManagerTest() :
+        bus(pldm::utils::DBusHandler::getBus()),
+        event(sdeventplus::Event::get_default()), instanceIdDb(),
+        reqHandler(pldmTransport, event, instanceIdDb, false),
+        mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
+        sensorManager(event, mockTerminusManager, termini, nullptr)
+    {}
+
+    /** @brief A State Sensor PDR of a composite of two component sensors on
+     *         the power supply entity
+     *
+     *  @param[in] recordHandle - the record handle the PDR carries
+     *  @param[in] sensorId - the sensor ID the PDR reports
+     *  @param[in] sensorInit - the `sensorInit` the PDR reports
+     */
+    std::vector<uint8_t> makeStateSensorPdr(
+        uint8_t recordHandle, uint8_t sensorId, uint8_t sensorInit)
+    {
+        auto pdr = stateSensorPdr;
+        pdr[recordHandleOffset] = recordHandle;
+        pdr[sensorIdOffset] = sensorId;
+        pdr[sensorInitOffset] = sensorInit;
+        return pdr;
+    }
+
+    /** @brief A Numeric Sensor PDR on the power supply entity
+     *
+     *  @param[in] recordHandle - the record handle the PDR carries
+     *  @param[in] sensorId - the sensor ID the PDR reports
+     */
+    std::vector<uint8_t> makeNumericSensorPdr(uint8_t recordHandle,
+                                              uint8_t sensorId)
+    {
+        auto pdr = numericSensorPdr;
+        pdr[recordHandleOffset] = recordHandle;
+        pdr[sensorIdOffset] = sensorId;
+        return pdr;
+    }
+
+    /** @brief Discover a terminus which reports @p sensorPdrs on the power
+     *         supply entity, and start its polling so the state sensor
+     *         commands can be sent.
+     */
+    void discoverTerminus(const std::vector<std::vector<uint8_t>>& sensorPdrs)
+    {
+        pldm::MctpInfo mctpInfo(10, "", "", 1, std::nullopt);
+        auto mappedTid = mockTerminusManager.mapTid(mctpInfo);
+        tid = mappedTid.value();
+
+        /* The terminus manager drops a request to an endpoint which is not
+         * known to be available
+         */
+        mockTerminusManager.updateMctpEndpointAvailability(mctpInfo, true);
+        termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+            tid, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        for (const auto& sensorPdr : sensorPdrs)
+        {
+            termini[tid]->pdrs.push_back(sensorPdr);
+        }
+        termini[tid]->pdrs.push_back(entityAuxNamesPdr);
+
+        /* SetStateSensorEnables is only sent to a terminus which supports it */
+        std::vector<uint8_t> pldmCmds(
+            PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8));
+        auto idx = PLDM_PLATFORM * (PLDM_MAX_CMDS_PER_TYPE / 8) +
+                   (PLDM_SET_STATE_SENSOR_ENABLES / 8);
+        pldmCmds[idx] = pldmCmds[idx] |
+                        (1 << (PLDM_SET_STATE_SENSOR_ENABLES % 8));
+        termini[tid]->setSupportedCommands(pldmCmds);
+
+        termini[tid]->parseTerminusPDRs();
+        sensorManager.startPolling(tid);
+    }
+
+    /** @brief Discover a terminus whose only State Sensor PDR reports
+     *         @p sensorInit
+     */
+    std::shared_ptr<pldm::platform_mc::StateSensor> discoverStateSensor(
+        uint8_t sensorInit = PLDM_NO_INIT)
+    {
+        discoverTerminus({makeStateSensorPdr(0x1, 0x1, sensorInit)});
+
+        if (termini[tid]->stateSensors.empty())
+        {
+            return nullptr;
+        }
+        return termini[tid]->stateSensors[0];
+    }
+
+    /** @brief The PLDM command of the request which was sent at @p index */
+    uint8_t sentCommand(size_t index)
+    {
+        auto& request = mockTerminusManager.sentRequests.at(index);
+        return std::start_lifetime_as<pldm_msg>(request.data())->hdr.command;
+    }
+
+    /** @brief A GetStateSensorReadings response of a composite of two
+     *         component sensors, both enabled and in state 1
+     */
+    static StateSensorReadingsResp makeStateSensorReadingsResp()
+    {
+        return {
+            0x0,
+            0x02,
+            PLDM_GET_STATE_SENSOR_READINGS,
+            PLDM_SUCCESS,
+            2,                   // compositeSensorCount
+            PLDM_SENSOR_ENABLED, // sensorOpState[0]
+            0x1,                 // presentState[0]
+            0x1,                 // previousState[0]
+            0x1,                 // eventState[0]
+            PLDM_SENSOR_ENABLED, // sensorOpState[1]
+            0x1,                 // presentState[1]
+            0x1,                 // previousState[1]
+            0x1                  // eventState[1]
+        };
+    }
+
+    /** @brief The sensor ID which the request sent at @p index addresses.
+     *         Both state sensor commands carry it as the first field of the
+     *         payload.
+     */
+    uint16_t sentSensorId(size_t index)
+    {
+        auto& request = mockTerminusManager.sentRequests.at(index);
+        return request.at(sizeof(pldm_msg_hdr)) |
+               (request.at(sizeof(pldm_msg_hdr) + 1) << 8);
+    }
+
+    PldmTransport* pldmTransport = nullptr;
+    sdbusplus::bus_t& bus;
+    sdeventplus::Event event;
+    TestInstanceIdDb instanceIdDb;
+    pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    pldm::platform_mc::MockTerminusManager mockTerminusManager;
+    pldm::platform_mc::MockSensorManager sensorManager;
+    std::map<pldm_tid_t, std::shared_ptr<pldm::platform_mc::Terminus>> termini;
+    pldm_tid_t tid = 0;
+
+    /** @brief Offset of the record handle in stateSensorPdr */
+    static constexpr size_t recordHandleOffset = 0;
+
+    /** @brief Offset of `sensorID` in stateSensorPdr */
+    static constexpr size_t sensorIdOffset = 12;
+
+    /** @brief Offset of `sensorInit` in stateSensorPdr */
+    static constexpr size_t sensorInitOffset = 20;
+
+    /** @brief The `sensorInit` value enableSensor of `Table 81 - State Sensor
+     *         PDR` of DSP0248 v1.3.0. libpldm names the effecter scheme only.
+     */
+    static constexpr uint8_t enableSensorInit = 2;
+
+    // Numeric Sensor PDR: sensorID = 1, temperature of the power supply
+    std::vector<uint8_t> numericSensorPdr{
+        0x1,
+        0x0,
+        0x0,
+        0x0,                     // record handle
+        0x1,                     // PDRHeaderVersion
+        PLDM_NUMERIC_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                     // recordChangeNumber
+        PLDM_PDR_NUMERIC_SENSOR_PDR_FIXED_LENGTH +
+            PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_SENSOR_DATA_SIZE_MIN_LENGTH +
+            PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_RANGE_FIELD_MIN_LENGTH,
+        0,                             // dataLength
+        0,
+        0,                             // PLDMTerminusHandle
+        0x1,
+        0x0,                           // sensorID = 1
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,                             // entityType power supply
+        1,
+        0,                             // entityInstanceNumber = 1
+        0x1,
+        0x0,                           // containerID = 1
+        PLDM_NO_INIT,                  // sensorInit
+        false,                         // sensorAuxiliaryNamesPDR
+        PLDM_SENSOR_UNIT_DEGRESS_C,    // baseUint(2) = degrees C
+        1,                             // unitModifier = 1
+        0,                             // rateUnit
+        0,                             // baseOEMUnitHandle
+        0,                             // auxUnit
+        0,                             // auxUnitModifier
+        0,                             // auxRateUnit
+        0,                             // rel
+        0,                             // auxOEMUnitHandle
+        true,                          // isLinear
+        PLDM_RANGE_FIELD_FORMAT_SINT8, // sensorDataSize
+        0,
+        0,
+        0xc0,
+        0x3f, // resolution = 1.5
+        0,
+        0,
+        0x80,
+        0x3f, // offset = 1.0
+        0,
+        0,    // accuracy
+        0,    // plusTolerance
+        0,    // minusTolerance
+        2,    // hysteresis
+        0,    // supportedThresholds
+        0,    // thresholdAndHysteresisVolatility
+        0,
+        0,
+        0x80,
+        0x3f, // stateTransistionInterval = 1.0
+        0,
+        0,
+        0x80,
+        0x3f,                          // updateInverval = 1.0
+        255,                           // maxReadable
+        0,                             // minReadable
+        PLDM_RANGE_FIELD_FORMAT_UINT8, // rangeFieldFormat
+        0,                             // rangeFieldsupport
+        0,                             // nominalValue
+        0,                             // normalMax
+        0,                             // normalMin
+        0,                             // warningHigh
+        0,                             // warningLow
+        0,                             // criticalHigh
+        0,                             // criticalLow
+        0,                             // fatalHigh
+        0                              // fatalLow
+    };
+
+    // State Sensor PDR: sensorID = 1, composite of two component sensors
+    std::vector<uint8_t> stateSensorPdr{
+        0x1, 0x0, 0x0,
+        0x0,                   // record handle
+        0x1,                   // PDRHeaderVersion
+        PLDM_STATE_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                   // recordChangeNumber
+        21,
+        0,                     // dataLength
+        /* State Sensor PDR Data*/
+        0,
+        0,            // PLDMTerminusHandle
+        0x1,
+        0x0,          // sensorID = 1
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,            // entityType power supply
+        1,
+        0,            // entityInstanceNumber = 1
+        0x1,
+        0x0,          // containerID = 1
+        PLDM_NO_INIT, // sensorInit
+        false,        // sensorAuxiliaryNamesPDR
+        2,            // compositeSensorCount
+        0x1,
+        0x0,          // stateSetID[0] = 1
+        0x1,          // possibleStatesSize[0]
+        0x6,          // possibleStates[0] = {1,2}
+        0x3,
+        0x0,          // stateSetID[1] = 3
+        0x1,          // possibleStatesSize[1]
+        0x1e          // possibleStates[1] = {1,2,3,4}
+    };
+
+    // Entity Auxiliary Names PDR: terminus name "S0"
+    std::vector<uint8_t> entityAuxNamesPdr{
+        0x2, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number = 1
+        0,
+        0,    // Overall system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+};
+
+TEST_F(StateSensorManagerTest, setStateSensorEnablesTest)
+{
+    auto sensor = discoverStateSensor();
+    ASSERT_NE(nullptr, sensor);
+    EXPECT_EQ(EnableState::pending, sensor->enableState);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_SENSOR_ENABLES_RESP_BYTES>
+        resp{0x0, 0x02, PLDM_SET_STATE_SENSOR_ENABLES, PLDM_SUCCESS};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    auto res = stdexec::sync_wait(sensorManager.setStateSensorEnables(sensor));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(PLDM_SUCCESS, std::get<0>(*res));
+    EXPECT_EQ(EnableState::enabled, sensor->enableState);
+
+    /* The request enables every component sensor of the composite and asks
+     * for no event message, and is trimmed to the two encoded fields
+     */
+    const auto& request = mockTerminusManager.sentRequests.back();
+    ASSERT_EQ(sizeof(pldm_msg_hdr) + 3 + (2 * 2), request.size());
+    EXPECT_EQ(1, request[sizeof(pldm_msg_hdr)]);     // sensorID low byte
+    EXPECT_EQ(0, request[sizeof(pldm_msg_hdr) + 1]); // sensorID high byte
+    EXPECT_EQ(2, request[sizeof(pldm_msg_hdr) + 2]); // compositeSensorCount
+    for (size_t offset = 0; offset < 2; offset++)
+    {
+        EXPECT_EQ(PLDM_SENSOR_ENABLED,
+                  request[sizeof(pldm_msg_hdr) + 3 + (offset * 2)]);
+        EXPECT_EQ(PLDM_EVENTS_DISABLED,
+                  request[sizeof(pldm_msg_hdr) + 4 + (offset * 2)]);
+    }
+}
+
+TEST_F(StateSensorManagerTest, setStateSensorEnablesErrorTest)
+{
+    auto sensor = discoverStateSensor();
+    ASSERT_NE(nullptr, sensor);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_SENSOR_ENABLES_RESP_BYTES>
+        resp{0x0, 0x02, PLDM_SET_STATE_SENSOR_ENABLES,
+             PLDM_PLATFORM_INVALID_SENSOR_ID};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    /* The completion code of the terminus is returned, and the answer is
+     * definitive, so the command is not sent for the sensor again
+     */
+    auto res = stdexec::sync_wait(sensorManager.setStateSensorEnables(sensor));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(PLDM_PLATFORM_INVALID_SENSOR_ID, std::get<0>(*res));
+    EXPECT_EQ(EnableState::rejected, sensor->enableState);
+}
+
+TEST_F(StateSensorManagerTest, getStateSensorReadingsTest)
+{
+    auto sensor = discoverStateSensor();
+    ASSERT_NE(nullptr, sensor);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + 2 + (4 * 2)> resp{
+        0x0,
+        0x02,
+        PLDM_GET_STATE_SENSOR_READINGS,
+        PLDM_SUCCESS,
+        2,                    // compositeSensorCount
+        PLDM_SENSOR_ENABLED,  // sensorOpState[0]
+        0x1,                  // presentState[0]
+        0x1,                  // previousState[0]
+        0x1,                  // eventState[0]
+        PLDM_SENSOR_DISABLED, // sensorOpState[1]
+        0x2,                  // presentState[1]
+        0x2,                  // previousState[1]
+        0x2                   // eventState[1]
+    };
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    auto res = stdexec::sync_wait(sensorManager.getStateSensorReadings(sensor));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(PLDM_SUCCESS, std::get<0>(*res));
+
+    /* The request reads the sensor without rearming any component sensor */
+    const auto& request = mockTerminusManager.sentRequests.back();
+    ASSERT_EQ(sizeof(pldm_msg_hdr) + PLDM_GET_STATE_SENSOR_READINGS_REQ_BYTES,
+              request.size());
+    EXPECT_EQ(1, request[sizeof(pldm_msg_hdr)]);     // sensorID low byte
+    EXPECT_EQ(0, request[sizeof(pldm_msg_hdr) + 1]); // sensorID high byte
+    EXPECT_EQ(0, request[sizeof(pldm_msg_hdr) + 2]); // sensorRearm
+}
+
+TEST_F(StateSensorManagerTest, getStateSensorReadingsErrorTest)
+{
+    auto sensor = discoverStateSensor();
+    ASSERT_NE(nullptr, sensor);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> resp{
+        0x0, 0x02, PLDM_GET_STATE_SENSOR_READINGS,
+        PLDM_PLATFORM_INVALID_SENSOR_ID};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    /* libpldm rejects a completion-code-only response as too short, so the
+     * completion code of the terminus is not surfaced. The read still fails,
+     * so the polling task does not take it as successful.
+     */
+    auto res = stdexec::sync_wait(sensorManager.getStateSensorReadings(sensor));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(PLDM_ERROR_INVALID_LENGTH, std::get<0>(*res));
+}
+
+TEST_F(StateSensorManagerTest, pollingSkipsEnableOfNoInitSensorTest)
+{
+    auto sensor = discoverStateSensor(PLDM_NO_INIT);
+    ASSERT_NE(nullptr, sensor);
+    EXPECT_EQ(false, sensor->requiresInit());
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + 2 + (4 * 2)> readingsResp{
+        0x0,
+        0x02,
+        PLDM_GET_STATE_SENSOR_READINGS,
+        PLDM_SUCCESS,
+        2,                   // compositeSensorCount
+        PLDM_SENSOR_ENABLED, // sensorOpState[0]
+        0x1,                 // presentState[0]
+        0x1,                 // previousState[0]
+        0x1,                 // eventState[0]
+        PLDM_SENSOR_ENABLED, // sensorOpState[1]
+        0x1,                 // presentState[1]
+        0x1,                 // previousState[1]
+        0x1                  // eventState[1]
+    };
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(readingsResp.data()),
+                  sizeof(readingsResp)));
+
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+
+    /* The component sensors are operational as the terminus starts up, so
+     * the sensor is read without SetStateSensorEnables
+     */
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(0));
+    EXPECT_EQ(EnableState::pending, sensor->enableState);
+}
+
+TEST_F(StateSensorManagerTest, pollingEnablesSensorWhichRequiresInitTest)
+{
+    auto sensor = discoverStateSensor(enableSensorInit);
+    ASSERT_NE(nullptr, sensor);
+    EXPECT_EQ(true, sensor->requiresInit());
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_SENSOR_ENABLES_RESP_BYTES>
+        enableResp{0x0, 0x02, PLDM_SET_STATE_SENSOR_ENABLES, PLDM_SUCCESS};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(enableResp.data()),
+                  sizeof(enableResp)));
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + 2 + (4 * 2)> readingsResp{
+        0x0,
+        0x02,
+        PLDM_GET_STATE_SENSOR_READINGS,
+        PLDM_SUCCESS,
+        2,                   // compositeSensorCount
+        PLDM_SENSOR_ENABLED, // sensorOpState[0]
+        0x1,                 // presentState[0]
+        0x1,                 // previousState[0]
+        0x1,                 // eventState[0]
+        PLDM_SENSOR_ENABLED, // sensorOpState[1]
+        0x1,                 // presentState[1]
+        0x1,                 // previousState[1]
+        0x1                  // eventState[1]
+    };
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(readingsResp.data()),
+                  sizeof(readingsResp)));
+
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+
+    /* An initialization agent has to enable the component sensors, so the
+     * sensor is enabled before it is read
+     */
+    ASSERT_EQ(2, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_SET_STATE_SENSOR_ENABLES, sentCommand(0));
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(1));
+    EXPECT_EQ(EnableState::enabled, sensor->enableState);
+}
+
+TEST_F(StateSensorManagerTest, pollingRoundRobinsStateSensorsTest)
+{
+    /* Two state sensors of one entity, so both are on the round robin of the
+     * terminus
+     */
+    discoverTerminus({makeStateSensorPdr(0x1, 0x1, PLDM_NO_INIT),
+                      makeStateSensorPdr(0x3, 0x2, PLDM_NO_INIT)});
+    ASSERT_EQ(2, termini[tid]->stateSensors.size());
+
+    auto firstResp = makeStateSensorReadingsResp();
+    auto secondResp = makeStateSensorReadingsResp();
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(firstResp.data()),
+                  sizeof(firstResp)));
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(secondResp.data()),
+                  sizeof(secondResp)));
+
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+
+    /* The round robin moves on once a sensor has been read, so a pass reads
+     * every state sensor of the terminus rather than the first one twice
+     */
+    ASSERT_EQ(2, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(0));
+    EXPECT_EQ(0x1, sentSensorId(0));
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(1));
+    EXPECT_EQ(0x2, sentSensorId(1));
+}
+
+TEST_F(StateSensorManagerTest, pollingEnablesEveryStateSensorWhichRequiresInit)
+{
+    /* The first sensor takes an initialization agent, the second one is
+     * operational as the terminus starts up
+     */
+    discoverTerminus({makeStateSensorPdr(0x1, 0x1, enableSensorInit),
+                      makeStateSensorPdr(0x3, 0x2, PLDM_NO_INIT)});
+    ASSERT_EQ(2, termini[tid]->stateSensors.size());
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_SENSOR_ENABLES_RESP_BYTES>
+        enableResp{0x0, 0x02, PLDM_SET_STATE_SENSOR_ENABLES, PLDM_SUCCESS};
+    auto firstResp = makeStateSensorReadingsResp();
+    auto secondResp = makeStateSensorReadingsResp();
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(enableResp.data()),
+                  sizeof(enableResp)));
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(firstResp.data()),
+                  sizeof(firstResp)));
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(secondResp.data()),
+                  sizeof(secondResp)));
+
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+
+    /* SetStateSensorEnables is sent for the sensor which asks for it only,
+     * and both sensors are read
+     */
+    ASSERT_EQ(3, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_SET_STATE_SENSOR_ENABLES, sentCommand(0));
+    EXPECT_EQ(0x1, sentSensorId(0));
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(1));
+    EXPECT_EQ(0x1, sentSensorId(1));
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(2));
+    EXPECT_EQ(0x2, sentSensorId(2));
+
+    EXPECT_EQ(EnableState::enabled, termini[tid]->stateSensors[0]->enableState);
+    EXPECT_EQ(EnableState::pending, termini[tid]->stateSensors[1]->enableState);
+}
+
+TEST_F(StateSensorManagerTest, pollingAlternatesNumericAndStateSensorsTest)
+{
+    /* Two numeric sensors and two state sensors of one terminus, so a pass
+     * has to share its budget between the two lists
+     */
+    discoverTerminus(
+        {makeNumericSensorPdr(0x1, 0x1), makeNumericSensorPdr(0x2, 0x2),
+         makeStateSensorPdr(0x3, 0x3, PLDM_NO_INIT),
+         makeStateSensorPdr(0x4, 0x4, PLDM_NO_INIT)});
+    /* The numeric sensors are created on a deferred event source, so the
+     * event loop is run before the pass
+     */
+    EXPECT_CALL(sensorManager, doSensorPolling(tid)).Times(AnyNumber());
+    utils::runEventLoopForSeconds(event, 1);
+    ASSERT_EQ(2, termini[tid]->numericSensors.size());
+    ASSERT_EQ(2, termini[tid]->stateSensors.size());
+
+    /* No response is queued, so every read fails and every sensor stays due
+     * for the pass. The pass is asserted on the requests it sends.
+     */
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+
+    /* The two lists are visited in turn under the budget of the pass, so a
+     * state sensor is read before the second numeric sensor rather than
+     * after the whole numeric list
+     */
+    ASSERT_EQ(4, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_GET_SENSOR_READING, sentCommand(0));
+    EXPECT_EQ(0x1, sentSensorId(0));
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(1));
+    EXPECT_EQ(0x3, sentSensorId(1));
+    EXPECT_EQ(PLDM_GET_SENSOR_READING, sentCommand(2));
+    EXPECT_EQ(0x2, sentSensorId(2));
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(3));
+    EXPECT_EQ(0x4, sentSensorId(3));
+}
+
+TEST_F(StateSensorManagerTest, pollingReadsStateSensorsOfANumericOnlyBudgetTest)
+{
+    /* A terminus whose numeric sensors alone reach the budget of a pass
+     * still reaches its state sensor, because the two lists take turns
+     */
+    discoverTerminus(
+        {makeNumericSensorPdr(0x1, 0x1), makeNumericSensorPdr(0x2, 0x2),
+         makeNumericSensorPdr(0x3, 0x3),
+         makeStateSensorPdr(0x4, 0x4, PLDM_NO_INIT)});
+    EXPECT_CALL(sensorManager, doSensorPolling(tid)).Times(AnyNumber());
+    utils::runEventLoopForSeconds(event, 1);
+    ASSERT_EQ(3, termini[tid]->numericSensors.size());
+    ASSERT_EQ(1, termini[tid]->stateSensors.size());
+
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+
+    /* The state sensor takes the second turn of the pass, and the numeric
+     * list carries on once its own turns run out
+     */
+    ASSERT_EQ(4, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_GET_SENSOR_READING, sentCommand(0));
+    EXPECT_EQ(0x1, sentSensorId(0));
+    EXPECT_EQ(PLDM_GET_STATE_SENSOR_READINGS, sentCommand(1));
+    EXPECT_EQ(0x4, sentSensorId(1));
+    EXPECT_EQ(PLDM_GET_SENSOR_READING, sentCommand(2));
+    EXPECT_EQ(0x2, sentSensorId(2));
+    EXPECT_EQ(PLDM_GET_SENSOR_READING, sentCommand(3));
+    EXPECT_EQ(0x3, sentSensorId(3));
 }

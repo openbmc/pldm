@@ -88,12 +88,42 @@ class SensorManager
      */
     exec::task<int> doSensorPollingTask(pldm_tid_t tid);
 
+    /** @brief Enable and read one state sensor of a terminus for one turn of
+     *         the round robin
+     *
+     *  The sensor is left untouched when the time from its last successful
+     *  read has not reached its update interval.
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] terminus - the terminus which owns the state sensor
+     *  @param[in] stateSensor - the state sensor to be updated
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> updateStateSensor(pldm_tid_t tid,
+                                      std::shared_ptr<Terminus> terminus,
+                                      std::shared_ptr<StateSensor> stateSensor);
+
     /** @brief Sending getSensorReading command for the sensor
      *
      *  @param[in] sensor - the sensor to be updated
      *  @return coroutine return_value - PLDM completion code
      */
     exec::task<int> getSensorReading(std::shared_ptr<NumericSensor> sensor);
+
+    /** @brief Sending setStateSensorEnables command to enable every component
+     *         sensor of the state sensor
+     *
+     *  @param[in] sensor - the state sensor to be enabled
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> setStateSensorEnables(std::shared_ptr<StateSensor> sensor);
+
+    /** @brief Sending getStateSensorReadings command for the state sensor
+     *
+     *  @param[in] sensor - the state sensor to be updated
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getStateSensorReadings(std::shared_ptr<StateSensor> sensor);
 
     /** @brief Reference to to PLDM daemon's main event loop.
      */
@@ -131,6 +161,9 @@ class SensorManager
 
     /** @brief Round robin sensor iter of terminus */
     std::map<pldm_tid_t, SensorID> roundRobinSensorItMap;
+
+    /** @brief Round robin state sensor iter of terminus */
+    std::map<pldm_tid_t, SensorID> roundRobinStateSensorItMap;
 
     /** @brief pointer to Manager */
     Manager* manager;
