@@ -9,9 +9,15 @@ namespace pldm
 namespace platform_mc
 {
 
+/* A State Sensor PDR carries no updateInterval, so the sensor is re-read at
+ * the interval a numeric sensor uses when its PDR omits one, in milliseconds.
+ */
+static constexpr uint64_t defaultStateSensorUpdaterInterval = 999;
+
 StateSensor::StateSensor(pldm_tid_t tid, std::shared_ptr<StateSensorInfo> info,
                          std::shared_ptr<StateSets> stateSets) :
-    tid(tid), info(std::move(info)), stateSets(std::move(stateSets))
+    updateTime(defaultStateSensorUpdaterInterval * 1000), tid(tid),
+    info(std::move(info)), stateSets(std::move(stateSets))
 {
     for (const auto& componentInfo : this->info->componentInfo)
     {
@@ -26,6 +32,8 @@ StateSensor::StateSensor(pldm_tid_t tid, std::shared_ptr<StateSensorInfo> info,
         }
         componentStateSets.emplace_back(stateSet);
     }
+
+    componentOpStates.assign(componentStateSets.size(), PLDM_SENSOR_ENABLED);
 }
 
 void StateSensor::updatePresentState(uint8_t offset, uint8_t presentState)
@@ -45,6 +53,28 @@ void StateSensor::updatePresentState(uint8_t offset, uint8_t presentState)
     }
 
     stateSet->setPresentState(presentState);
+}
+
+void StateSensor::updateOpState(uint8_t offset, uint8_t opState)
+{
+    if (offset >= componentOpStates.size())
+    {
+        lg2::error(
+            "Terminus ID {TID}: State sensor {SENSORID} has no composite sensor offset {OFFSET}.",
+            "TID", tid, "SENSORID", info->pdr.sensor_id, "OFFSET", offset);
+        return;
+    }
+
+    auto previous = std::exchange(componentOpStates[offset], opState);
+    if (previous == opState)
+    {
+        return;
+    }
+
+    lg2::error(
+        "Terminus ID {TID}: Composite sensor offset {OFFSET} of state sensor {SENSORID} changed operational state from {PREVOPSTATE} to {OPSTATE}.",
+        "TID", tid, "OFFSET", offset, "SENSORID", info->pdr.sensor_id,
+        "PREVOPSTATE", previous, "OPSTATE", opState);
 }
 
 } // namespace platform_mc
