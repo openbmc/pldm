@@ -1,0 +1,111 @@
+#pragma once
+
+#include "common/types.hpp"
+#include "dbus_impl_fru.hpp"
+
+#include <sdbusplus/server/object.hpp>
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/server.hpp>
+
+#include <memory>
+#include <optional>
+#include <string>
+#include <tuple>
+#include <vector>
+
+namespace pldm
+{
+namespace platform_mc
+{
+
+using namespace pldm::pdr;
+
+using InventoryItemIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Inventory::server::Item>;
+using ContainerAssociationsIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
+using ContainerAssociation = std::tuple<std::string, std::string, std::string>;
+
+/**
+ * @brief Entity
+ *
+ * The D-Bus object of one PLDM entity of a terminus. The object implements
+ * xyz.openbmc_project.Inventory.Item, the Inventory.Item.<Type> interface
+ * which matches the entity type, and the containment association to the entity
+ * which contains it.
+ */
+class Entity
+{
+  public:
+    Entity() = delete;
+    Entity(const Entity&) = delete;
+    Entity& operator=(const Entity&) = delete;
+    Entity(Entity&&) = delete;
+    Entity& operator=(Entity&&) = delete;
+    ~Entity() = default;
+
+    /** @brief Constructor
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *  @param[in] path - the D-Bus object path of the entity
+     *  @param[in] name - the entity name
+     *  @param[in] typeItemIntf - the Inventory.Item.<Type> interface which
+     *                            matches the entity type
+     */
+    Entity(const EntityKey& key, const std::string& path,
+           const std::string& name,
+           std::unique_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf);
+
+    /** @brief The getter to return the entity identification fields */
+    const EntityKey& getKey() const
+    {
+        return key;
+    }
+
+    /** @brief The getter to return the entity D-Bus object path */
+    const std::string& getPath() const
+    {
+        return path;
+    }
+
+    /** @brief Add the containment association to the entity which
+     *         physically contains this entity
+     *
+     *  An entity has one physical container, so the association is added
+     *  only once. Adding the same container again does nothing, and a
+     *  different container is not added.
+     *
+     *  @param[in] containerPath - D-Bus object path of the container entity
+     *  @return true when the entity is contained by containerPath, false when
+     *          it already has a different container
+     */
+    bool addContainer(const std::string& containerPath);
+
+    /** @brief The getter to return the containment association of the
+     *         entity, nullopt when the entity has no container
+     */
+    std::optional<ContainerAssociation> getContainer() const;
+
+  private:
+    /** @brief The entity identification fields of the PDR */
+    EntityKey key;
+
+    /** @brief The D-Bus object path of the entity */
+    std::string path;
+
+    /** @brief The Inventory.Item.<Type> interface which matches the entity
+     *         type, e.g. Inventory.Item.Cpu
+     */
+    std::unique_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf;
+
+    /** @brief The Inventory.Item interface, which holds the PrettyName and
+     *         Present properties
+     */
+    std::unique_ptr<InventoryItemIntf> inventoryItemIntf;
+
+    /** @brief The pointer of the Association.Definitions interface */
+    std::unique_ptr<ContainerAssociationsIntf> containerAssociationsIntf;
+};
+
+} // namespace platform_mc
+} // namespace pldm

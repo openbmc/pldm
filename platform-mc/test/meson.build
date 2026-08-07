@@ -8,6 +8,7 @@ test_src = declare_dependency(
         '../numeric_sensor.cpp',
         '../event_manager.cpp',
         '../dbus_to_terminus_effecters.cpp',
+        '../entity.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
     include_directories: ['../../requester', '../../pldmd'],
