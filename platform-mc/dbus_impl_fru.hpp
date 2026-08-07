@@ -10,6 +10,7 @@
 #include "xyz/openbmc_project/Inventory/Item/Cpu/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Dimm/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Fan/server.hpp"
+#include "xyz/openbmc_project/Inventory/Item/NetworkAdapter/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/PowerSupply/server.hpp"
 
 #include <libpldm/entity.h>
@@ -175,6 +176,8 @@ using DimmServer =
 using FanServer = sdbusplus::xyz::openbmc_project::Inventory::Item::server::Fan;
 using PowerSupplyServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::PowerSupply;
+using NetworkAdapterServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::NetworkAdapter;
 using AcceleratorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Accelerator;
 
@@ -209,7 +212,7 @@ struct PldmEntityItem
  *  unique per entity type even where two entity types share an
  *  Inventory.Item interface.
  */
-inline constexpr std::array<PldmEntityItem, 10> pldmEntityItems{{
+inline constexpr std::array<PldmEntityItem, 11> pldmEntityItems{{
     {PLDM_ENTITY_SYSTEM_CHASSIS, "Chassis", makePldmEntity<ChassisServer>},
     {PLDM_ENTITY_PROC, "Cpu", makePldmEntity<CpuServer>},
     {PLDM_ENTITY_MEMORY_MODULE, "Dimm", makePldmEntity<DimmServer>},
@@ -218,6 +221,8 @@ inline constexpr std::array<PldmEntityItem, 10> pldmEntityItems{{
      makePldmEntity<PowerSupplyServer>},
     {PLDM_ENTITY_GPU, "Gpu", makePldmEntity<AcceleratorServer>},
     {PLDM_ENTITY_ACCELERATOR, "Accelerator", makePldmEntity<AcceleratorServer>},
+    {PLDM_ENTITY_NETWORK_CONTROLLER, "NetworkAdapter",
+     makePldmEntity<NetworkAdapterServer>},
     {PLDM_ENTITY_BOARD, "Board", makePldmEntity<BoardServer>},
     {PLDM_ENTITY_SYS_BOARD, "SysBoard", makePldmEntity<BoardServer>},
     {PLDM_ENTITY_CARD, "Card", makePldmEntity<BoardServer>},
