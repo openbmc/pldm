@@ -1,5 +1,9 @@
 #include "state_set.hpp"
 
+#include "state_set_health_state.hpp"
+
+#include <libpldm/state_set.h>
+
 #include <common/utils.hpp>
 #include <phosphor-logging/lg2.hpp>
 
@@ -11,11 +15,12 @@ namespace platform_mc
 {
 
 std::unique_ptr<StateSetBase> createStateSet(
-    [[maybe_unused]] sdbusplus::bus_t& bus,
-    [[maybe_unused]] const std::string& path, StateSetId stateSetId)
+    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId)
 {
     switch (stateSetId)
     {
+        case PLDM_STATE_SET_HEALTH_STATE:
+            return std::make_unique<StateSetHealthState>(bus, path);
         default:
             return nullptr;
     }
