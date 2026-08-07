@@ -553,6 +553,23 @@ void Terminus::addEntityAssociations()
                     "Terminus ID {TID}: Entity {PATH} already has a container, skip container {CONTAINER}.",
                     "TID", tid, "PATH", entity->getPath(), "CONTAINER",
                     containerPath);
+                continue;
+            }
+
+            /* A pair of entity types may publish a further association on
+             * top of the containment, which is how the contained entity is
+             * reached from its container.
+             */
+            if (container)
+            {
+                auto assoc = pldm::dbus_api::findPldmEntityAssociation(
+                    contained.type, association.containerEntity.type);
+                if (assoc)
+                {
+                    entity->addAssociation(std::string(assoc->forward),
+                                           std::string(assoc->reverse),
+                                           container->getPath());
+                }
             }
         }
     }
