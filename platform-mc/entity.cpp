@@ -12,7 +12,8 @@ namespace platform_mc
 Entity::Entity(const EntityKey& key, const std::string& path,
                const std::string& name,
                std::unique_ptr<pldm::dbus_api::PldmEntityBase> itemIntf) :
-    key(key), path(path), itemIntf(std::move(itemIntf))
+    key(key), path(path), itemIntf(std::move(itemIntf)),
+    stateSets(std::make_shared<StateSets>(path))
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     inventoryItemIntf = std::make_unique<InventoryItemIntf>(bus, path.c_str());
