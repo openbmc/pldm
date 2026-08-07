@@ -440,3 +440,204 @@ TEST(TerminusTest, parsePDRTestNoSensorPDR)
     auto sensorAuxNames = t1.getSensorAuxiliaryNames(1);
     EXPECT_EQ(nullptr, sensorAuxNames);
 }
+
+TEST(TerminusTest, parseEntityAssociationPDRTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    constexpr uint16_t terminusEntityType = 0x8003;
+    constexpr uint16_t unmappedEntityType = 0xFFFF;
+
+    std::vector<uint8_t> entityAuxNamesPdr{
+        0x1, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number =1
+        0,
+        0,    // Overall system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+
+    std::vector<uint8_t> procAuxNamesPdr{
+        0x2, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x15,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        PLDM_ENTITY_PROC,
+        0x0,  // entityType processor
+        0x1,
+        0x0,  // Entity instance number = 1
+        0x1,
+        0x0,  // Container ID = 1
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x43, 0x00, 0x70, 0x00, 0x75, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "Cpu0"
+    };
+
+    std::vector<uint8_t> entityAssociationPdr{
+        0x3, 0x0, 0x0,
+        0x0,                         // record handle
+        0x1,                         // PDRHeaderVersion
+        PLDM_PDR_ENTITY_ASSOCIATION, // PDRType
+        0x1,
+        0x0,                         // recordChangeNumber
+        0x1c,
+        0,                           // dataLength
+        /* Entity Association PDR Data*/
+        0x1,
+        0x0,  // containerID = 1
+        0x1,  // associationType physical
+        3,
+        0x80, // container entityType system software
+        0x1,
+        0x0,  // container entity instance number = 1
+        0x0,
+        0x0,  // container entity container ID = 0
+        3,    // numberOfChildren
+        PLDM_ENTITY_PROC,
+        0x0,  // child entityType processor
+        0x1,
+        0x0,  // child entity instance number = 1
+        0x1,
+        0x0,  // child entity container ID = 1
+        PLDM_ENTITY_PROC,
+        0x0,  // child entityType processor
+        0x2,
+        0x0,  // child entity instance number = 2
+        0x1,
+        0x0,  // child entity container ID = 1
+        0xff,
+        0xff, // child entityType with no Item interface
+        0x1,
+        0x0,  // child entity instance number = 1
+        0x1,
+        0x0   // child entity container ID = 1
+    };
+
+    std::vector<uint8_t> otherContainerPdr{
+        0x4, 0x0, 0x0,
+        0x0,                         // record handle
+        0x1,                         // PDRHeaderVersion
+        PLDM_PDR_ENTITY_ASSOCIATION, // PDRType
+        0x1,
+        0x0,                         // recordChangeNumber
+        0x10,
+        0,                           // dataLength
+        /* Entity Association PDR Data*/
+        0x2,
+        0x0,  // containerID = 2
+        0x1,  // associationType physical
+        3,
+        0x80, // container entityType system software
+        0x1,
+        0x0,  // container entity instance number = 1
+        0x0,
+        0x0,  // container entity container ID = 0
+        1,    // numberOfChildren
+        PLDM_ENTITY_PROC,
+        0x0,  // child entityType processor
+        0x2,
+        0x0,  // child entity instance number = 2
+        0x2,
+        0x0   // child entity container ID = 2
+    };
+
+    t1.pdrs.emplace_back(entityAuxNamesPdr);
+    t1.pdrs.emplace_back(procAuxNamesPdr);
+    t1.pdrs.emplace_back(entityAssociationPdr);
+    t1.pdrs.emplace_back(otherContainerPdr);
+    t1.parseTerminusPDRs();
+
+    EXPECT_EQ("S0", t1.getTerminusName().value());
+
+    /* The overall terminus entity is exposed by the terminus inventory path */
+    EXPECT_EQ(nullptr, t1.getEntity({terminusEntityType, 1, 0}));
+
+    /* The Entity Auxiliary Names PDR names the entity object */
+    auto namedEntity = t1.getEntity({PLDM_ENTITY_PROC, 1, 1});
+    ASSERT_NE(nullptr, namedEntity);
+    EXPECT_EQ("/xyz/openbmc_project/inventory/system/S0_Cpu0",
+              namedEntity->getPath());
+
+    /* An unnamed entity is named after the terminus ID and the entity
+     * identification fields
+     */
+    auto unnamedEntity = t1.getEntity({PLDM_ENTITY_PROC, 2, 1});
+    ASSERT_NE(nullptr, unnamedEntity);
+    EXPECT_EQ("/xyz/openbmc_project/inventory/system/Terminus_1_Cpu_2_1",
+              unnamedEntity->getPath());
+
+    /* An entity instance number is unique within the container of the entity,
+     * so two entities of the same type and instance number in two containers
+     * are two objects
+     */
+    auto otherContainerEntity = t1.getEntity({PLDM_ENTITY_PROC, 2, 2});
+    ASSERT_NE(nullptr, otherContainerEntity);
+    EXPECT_EQ("/xyz/openbmc_project/inventory/system/Terminus_1_Cpu_2_2",
+              otherContainerEntity->getPath());
+
+    /* An entity type with no Inventory Item interface is not exposed */
+    EXPECT_EQ(nullptr, t1.getEntity({unmappedEntityType, 1, 1}));
+
+    /* The container is the terminus inventory path */
+    std::vector<std::tuple<std::string, std::string, std::string>> containers{
+        {"contained_by", "containing",
+         "/xyz/openbmc_project/inventory/system/S0"}};
+    EXPECT_EQ(containers, namedEntity->getContainers());
+    EXPECT_EQ(containers, unnamedEntity->getContainers());
+}
+
+TEST(TerminusTest, getPldmEntityNameTest)
+{
+    auto name = [](uint16_t entityType) {
+        return pldm::dbus_api::getPldmEntityName(entityType).value_or("");
+    };
+
+    /* The entity type name identifies the entity type, so entity types which
+     * share an Inventory.Item interface still have their own name
+     */
+    EXPECT_EQ("Cpu", name(PLDM_ENTITY_PROC));
+    EXPECT_EQ("Gpu", name(PLDM_ENTITY_GPU));
+    EXPECT_EQ("Accelerator", name(PLDM_ENTITY_ACCELERATOR));
+    EXPECT_EQ("Board", name(PLDM_ENTITY_BOARD));
+    EXPECT_EQ("SysBoard", name(PLDM_ENTITY_SYS_BOARD));
+    EXPECT_EQ("Card", name(PLDM_ENTITY_CARD));
+
+    /* An entity type with no Inventory.Item interface has no name */
+    EXPECT_FALSE(pldm::dbus_api::getPldmEntityName(0xFFFF).has_value());
+
+    /* Every named entity type creates its Inventory.Item interface */
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    std::string basePath = "/xyz/openbmc_project/inventory/name_test/";
+    for (const auto& item : pldm::dbus_api::pldmEntityItems)
+    {
+        EXPECT_NE(nullptr,
+                  pldm::dbus_api::createPldmEntityForType(
+                      bus, basePath + std::string(item.name), item.entityType))
+            << "Failed for " << item.name;
+    }
+}
