@@ -133,9 +133,18 @@ class Handler : public oem_platform::Handler
                         int depth = 0;
                         std::vector<std::string> powerInterface = {
                             "xyz.openbmc_project.State.Decorator.PowerState"};
-                        pldm::utils::GetSubTreeResponse response =
-                            pldm::utils::DBusHandler().getSubtree(
+                        pldm::utils::GetSubTreeResponse response;
+                        try
+                        {
+                            response = pldm::utils::DBusHandler().getSubtree(
                                 searchpath, depth, powerInterface);
+                        }
+                        catch (const std::exception& e)
+                        {
+                            error(
+                                "Unable to get the power interface from motherboard and failed with error - {ERROR}",
+                                "ERROR", e);
+                        }
                         for (const auto& [objPath, serviceMap] : response)
                         {
                             pldm::utils::DBusMapping dbusMapping{
