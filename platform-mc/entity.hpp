@@ -2,6 +2,7 @@
 
 #include "common/types.hpp"
 #include "dbus_impl_fru.hpp"
+#include "state_set.hpp"
 
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
@@ -31,7 +32,8 @@ using ContainerAssociation = std::tuple<std::string, std::string, std::string>;
  * The D-Bus object of one PLDM entity of a terminus. The object implements
  * xyz.openbmc_project.Inventory.Item, the Inventory.Item interface which
  * matches the entity type, and the containment association to the entity
- * which contains it.
+ * which contains it. It also holds the state set interfaces through which the
+ * state sensors of the entity publish the state of the entity.
  */
 class Entity
 {
@@ -78,6 +80,14 @@ class Entity
      */
     std::vector<ContainerAssociation> getContainers() const;
 
+    /** @brief The getter to return the state set interfaces implemented on
+     *         the D-Bus object of the entity
+     */
+    std::shared_ptr<StateSets> getStateSets() const
+    {
+        return stateSets;
+    }
+
   private:
     /** @brief The entity identification fields of the PDR */
     EntityKey key;
@@ -94,6 +104,9 @@ class Entity
 
     /** @brief The pointer of the Association.Definitions interface */
     std::unique_ptr<ContainerAssociationsIntf> containerAssociationsIntf;
+
+    /** @brief The state set interfaces of the entity */
+    std::shared_ptr<StateSets> stateSets;
 };
 
 } // namespace platform_mc
