@@ -22,6 +22,7 @@ tests = [
     'platform_manager_test',
     'sensor_manager_test',
     'numeric_sensor_test',
+    'state_set_test',
     'event_manager_test',
     'dbus_to_terminus_effecter_test',
 ]
