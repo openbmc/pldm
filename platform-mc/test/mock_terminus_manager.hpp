@@ -3,6 +3,7 @@
 #include "platform-mc/terminus_manager.hpp"
 
 #include <queue>
+#include <vector>
 
 #include <gmock/gmock.h>
 
@@ -22,9 +23,11 @@ class MockTerminusManager : public TerminusManager
     {}
 
     exec::task<int> sendRecvPldmMsgOverMctp(
-        mctp_eid_t /*eid*/, Request& /*request*/, const pldm_msg** responseMsg,
+        mctp_eid_t /*eid*/, Request& request, const pldm_msg** responseMsg,
         size_t* responseLen) override
     {
+        sentRequests.push_back(request);
+
         if (responseMsgs.empty() || responseMsg == nullptr ||
             responseLen == nullptr)
         {
@@ -68,6 +71,11 @@ class MockTerminusManager : public TerminusManager
 
     std::queue<pldm_msg*> responseMsgs;
     std::queue<size_t> responseLens;
+
+    /** @brief Every request sent, so a test can assert which commands are
+     *         issued and how each one is encoded
+     */
+    std::vector<Request> sentRequests;
 };
 
 } // namespace platform_mc
