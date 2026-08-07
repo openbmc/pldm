@@ -22,9 +22,9 @@ using namespace pldm::pdr;
 
 using InventoryItemIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Inventory::server::Item>;
-using ContainerAssociationsIntf = sdbusplus::server::object_t<
+using AssociationsIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
-using ContainerAssociation = std::tuple<std::string, std::string, std::string>;
+using AssociationDefinition = std::tuple<std::string, std::string, std::string>;
 
 /**
  * @brief Entity
@@ -32,8 +32,10 @@ using ContainerAssociation = std::tuple<std::string, std::string, std::string>;
  * The D-Bus object of one PLDM entity of a terminus. The object implements
  * xyz.openbmc_project.Inventory.Item, the Inventory.Item interface which
  * matches the entity type, and the containment association to the entity
- * which contains it. It also holds the state set interfaces through which the
- * state sensors of the entity publish the state of the entity.
+ * which contains it. A port entity also publishes the connection association
+ * to the entity it is connected to. It also holds the state set interfaces
+ * through which the state sensors of the entity publish the state of the
+ * entity.
  */
 class Entity
 {
@@ -76,9 +78,21 @@ class Entity
      */
     void addContainer(const std::string& containerPath);
 
+    /** @brief Add the connection association to the entity which this port
+     *         entity is connected to
+     *
+     *  @param[in] endpointPath - D-Bus object path of the entity at the other
+     *                            end of the connection
+     */
+    void addConnection(const std::string& endpointPath);
+
     /** @brief The getter to return the containment associations of the entity
      */
-    std::vector<ContainerAssociation> getContainers() const;
+    std::vector<AssociationDefinition> getContainers() const;
+
+    /** @brief The getter to return the connection associations of the entity
+     */
+    std::vector<AssociationDefinition> getConnections() const;
 
     /** @brief The getter to return the state set interfaces implemented on
      *         the D-Bus object of the entity
@@ -102,8 +116,26 @@ class Entity
     /** @brief The pointer of the Inventory.Item interface */
     std::unique_ptr<InventoryItemIntf> inventoryItemIntf;
 
+    /** @brief Add an association definition to the entity, ignoring a
+     *         definition which the entity already publishes
+     *
+     *  @param[in] forward - forward name of the association
+     *  @param[in] reverse - reverse name of the association
+     *  @param[in] endpointPath - D-Bus object path of the other endpoint
+     */
+    void addAssociation(const std::string& forward, const std::string& reverse,
+                        const std::string& endpointPath);
+
+    /** @brief The getter to return the associations with the given forward
+     *         name
+     *
+     *  @param[in] forward - forward name of the association
+     */
+    std::vector<AssociationDefinition> getAssociations(
+        const std::string& forward) const;
+
     /** @brief The pointer of the Association.Definitions interface */
-    std::unique_ptr<ContainerAssociationsIntf> containerAssociationsIntf;
+    std::unique_ptr<AssociationsIntf> associationsIntf;
 
     /** @brief The state set interfaces of the entity */
     std::shared_ptr<StateSets> stateSets;
