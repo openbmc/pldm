@@ -533,6 +533,22 @@ void Terminus::addEntityAssociations()
             }
 
             entity->addContainer(containerPath);
+
+            /* A pair of entity types may publish a further association on
+             * top of the containment, which is how the contained entity is
+             * reached from its container.
+             */
+            if (container)
+            {
+                auto assoc = pldm::dbus_api::findPldmEntityAssociation(
+                    child.type, association.container.type);
+                if (assoc)
+                {
+                    entity->addAssociation(std::string(assoc->forward),
+                                           std::string(assoc->reverse),
+                                           container->getPath());
+                }
+            }
         }
     }
 }

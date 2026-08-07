@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xyz/openbmc_project/Inventory/Connector/Port/server.hpp"
 #include "xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp"
 #include "xyz/openbmc_project/Inventory/Decorator/AssetTag/server.hpp"
 #include "xyz/openbmc_project/Inventory/Decorator/Compatible/server.hpp"
@@ -7,9 +8,11 @@
 #include "xyz/openbmc_project/Inventory/Item/Accelerator/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Board/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Chassis/server.hpp"
+#include "xyz/openbmc_project/Inventory/Item/Connector/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Cpu/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Dimm/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/Fan/server.hpp"
+#include "xyz/openbmc_project/Inventory/Item/PCIeSwitch/server.hpp"
 #include "xyz/openbmc_project/Inventory/Item/PowerSupply/server.hpp"
 
 #include <libpldm/entity.h>
@@ -175,8 +178,14 @@ using DimmServer =
 using FanServer = sdbusplus::xyz::openbmc_project::Inventory::Item::server::Fan;
 using PowerSupplyServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::PowerSupply;
+using PCIeSwitchServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::PCIeSwitch;
 using AcceleratorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Accelerator;
+using ConnectorServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Item::server::Connector;
+using PortServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Connector::server::Port;
 
 /** @brief Create the PldmEntityReq of the ItemServer interface
  *  @param[in] bus - D-Bus bus
@@ -218,6 +227,10 @@ inline constexpr auto pldmEntityItems = std::to_array<PldmEntityItem>({
      makePldmEntity<PowerSupplyServer>},
     {PLDM_ENTITY_GPU, "Gpu", makePldmEntity<AcceleratorServer>},
     {PLDM_ENTITY_ACCELERATOR, "Accelerator", makePldmEntity<AcceleratorServer>},
+    {PLDM_ENTITY_NETWORK_CONTROLLER, "PCIeSwitch",
+     makePldmEntity<PCIeSwitchServer>},
+    {PLDM_ENTITY_OSFP, "Connector", makePldmEntity<ConnectorServer>},
+    {PLDM_ENTITY_ETHERNET, "Ethernet", makePldmEntity<PortServer>},
     {PLDM_ENTITY_BOARD, "Board", makePldmEntity<BoardServer>},
     {PLDM_ENTITY_SYS_BOARD, "SysBoard", makePldmEntity<BoardServer>},
     {PLDM_ENTITY_CARD, "Card", makePldmEntity<BoardServer>},
@@ -252,6 +265,52 @@ inline std::optional<std::string_view> getPldmEntityName(uint16_t entityType)
         return std::nullopt;
     }
     return item->name;
+}
+
+/** @struct PldmEntityAssociation
+ *  @brief One association which a contained entity publishes to the entity
+ *         which contains it, for a pair of PLDM entity types.
+ */
+struct PldmEntityAssociation
+{
+    uint16_t containedType;   //!< PLDM entity type of the contained entity
+    uint16_t containerType;   //!< PLDM entity type of the container entity
+    std::string_view forward; //!< Forward name of the association
+    std::string_view reverse; //!< Reverse name of the association
+};
+
+/** @brief The association which a pair of entity types publishes on top of
+ *         the containment association which every contained entity publishes.
+ *
+ *  An Ethernet port is reached from the network controller which contains it
+ *  through the connection association.
+ */
+inline constexpr auto pldmEntityAssociations =
+    std::to_array<PldmEntityAssociation>({
+        {PLDM_ENTITY_ETHERNET, PLDM_ENTITY_NETWORK_CONTROLLER, "connected_to",
+         "connecting"},
+    });
+
+/** @brief Find the association of the given pair of entity types
+ *  @param[in] containedType - PLDM entity type of the contained entity
+ *  @param[in] containerType - PLDM entity type of the container entity
+ *  @return pointer to the entry, nullptr when the pair publishes the
+ *          containment association only
+ */
+inline const PldmEntityAssociation* findPldmEntityAssociation(
+    uint16_t containedType, uint16_t containerType)
+{
+    auto it = std::ranges::find_if(
+        pldmEntityAssociations,
+        [containedType, containerType](const PldmEntityAssociation& assoc) {
+            return assoc.containedType == containedType &&
+                   assoc.containerType == containerType;
+        });
+    if (it == pldmEntityAssociations.end())
+    {
+        return nullptr;
+    }
+    return &*it;
 }
 
 /** @brief Create the PldmEntityReq which matches the given entity type.
