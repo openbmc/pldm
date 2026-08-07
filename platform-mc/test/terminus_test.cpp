@@ -369,7 +369,7 @@ TEST(TerminusTest, createPldmEntityTest)
     };
 
     // clang-format off
-    std::array<EntityTestCase, 10> testCases = {{
+    std::array<EntityTestCase, 13> testCases = {{
         {PLDM_ENTITY_SYSTEM_CHASSIS, "chassis"},
         {PLDM_ENTITY_PROC,           "cpu"},
         {PLDM_ENTITY_MEMORY_MODULE,  "dimm"},
@@ -377,6 +377,9 @@ TEST(TerminusTest, createPldmEntityTest)
         {PLDM_ENTITY_POWER_SUPPLY,   "powersupply"},
         {PLDM_ENTITY_GPU,            "gpu/accelerator"},
         {PLDM_ENTITY_ACCELERATOR,    "accelerator"},
+        {PLDM_ENTITY_NETWORK_CONTROLLER, "networkadapter"},
+        {PLDM_ENTITY_OSFP,           "connector"},
+        {PLDM_ENTITY_ETHERNET,       "ethernet"},
         {PLDM_ENTITY_BOARD,          "board"},
         {PLDM_ENTITY_SYS_BOARD,      "sysboard/board"},
         {PLDM_ENTITY_CARD,           "card/board"},
