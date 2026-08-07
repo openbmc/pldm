@@ -4,6 +4,7 @@
 #include "dbus_impl_fru.hpp"
 #include "entity.hpp"
 #include "numeric_sensor.hpp"
+#include "state_sensor.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/pdr.h>
@@ -156,6 +157,9 @@ class Terminus
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 
+    /** @brief A list of stateSensors */
+    std::vector<std::shared_ptr<StateSensor>> stateSensors{};
+
     /** @brief The flag indicates that the terminus FIFO contains a large
      *         message that will require a multipart transfer via the
      *         PollForPlatformEvent command
@@ -193,6 +197,14 @@ class Terminus
      *  @return entity object
      */
     std::shared_ptr<Entity> getEntity(const EntityKey& key);
+
+    /** @brief Get the State Sensor object of the entity identification fields
+     *
+     *  @param[in] id - sensor ID
+     *
+     *  @return state sensor object
+     */
+    std::shared_ptr<StateSensor> getStateSensorObject(SensorID id);
 
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
@@ -258,6 +270,14 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
         const std::vector<uint8_t>& pdrData);
 
+    /** @brief Parse the state sensor PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to parsed state sensor info struct
+     */
+    std::shared_ptr<StateSensorInfo> parseStateSensorPDR(
+        const std::vector<uint8_t>& pdrData);
+
     /** @brief Parse the Entity Association PDRs
      *
      *  @param[in] pdrData - the response PDRs from GetPDR command
@@ -286,6 +306,20 @@ class Terminus
      *         PDRs to the entity D-Bus objects
      */
     void addEntityAssociations();
+
+    /** @brief Get the state set interfaces of the D-Bus object of an entity
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *  @return the state set interfaces of the entity D-Bus object, nullptr
+     *          when no D-Bus object is published for the entity
+     */
+    std::shared_ptr<StateSets> getEntityStateSets(const EntityKey& key);
+
+    /** @brief Construct the StateSensor class of every state sensor of the
+     *         terminus. A state sensor whose entity has no D-Bus object is
+     *         not constructed.
+     */
+    void addStateSensors();
 
     /** @brief Get the name of an entity
      *
@@ -371,6 +405,11 @@ class Terminus
     /** @brief A list of entity D-Bus objects */
     std::vector<std::shared_ptr<Entity>> entities{};
 
+    /** @brief The state set interfaces of the terminus inventory path, on
+     *         which the state sensors of the overall terminus entity publish
+     */
+    std::shared_ptr<StateSets> terminusStateSets{};
+
     /** @brief Terminus name */
     EntityName terminusName{};
     /* @brief The pointer of inventory D-Bus interface for the terminus */
@@ -394,6 +433,9 @@ class Terminus
     /** @brief Compact Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief State Sensor PDR list */
+    std::vector<std::shared_ptr<StateSensorInfo>> stateSensorPdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;
