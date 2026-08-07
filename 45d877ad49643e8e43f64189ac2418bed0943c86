@@ -22,6 +22,30 @@
       },
       "revId": "45d877ad49643e8e43f64189ac2418bed0943c86",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0803500_bd0d3c5b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2683,
+      "author": {
+        "id": 1003057
+      },
+      "writtenOn": "2026-08-07T06:30:36Z",
+      "side": 1,
+      "message": "libpldm currently only provides decode_set_numeric_sensor_enable_req (for the responder/daemon side). There is no corresponding encode_set_numeric_sensor_enable_req for the requester side. That\u0027s why the payload is manually constructed here. I can add an encode API to libpldm as a separate patch if that\u0027s the preferred approach.",
+      "parentUuid": "8d8f0511_4bbe6e44",
+      "range": {
+        "startLine": 2680,
+        "startChar": 8,
+        "endLine": 2683,
+        "endChar": 42
+      },
+      "revId": "45d877ad49643e8e43f64189ac2418bed0943c86",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
