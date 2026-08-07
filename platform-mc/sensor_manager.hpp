@@ -95,6 +95,21 @@ class SensorManager
      */
     exec::task<int> getSensorReading(std::shared_ptr<NumericSensor> sensor);
 
+    /** @brief Sending setStateSensorEnables command to enable every component
+     *         sensor of the state sensor
+     *
+     *  @param[in] sensor - the state sensor to be enabled
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> setStateSensorEnables(std::shared_ptr<StateSensor> sensor);
+
+    /** @brief Sending getStateSensorReadings command for the state sensor
+     *
+     *  @param[in] sensor - the state sensor to be updated
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getStateSensorReadings(std::shared_ptr<StateSensor> sensor);
+
     /** @brief Reference to to PLDM daemon's main event loop.
      */
     sdeventplus::Event& event;
@@ -131,6 +146,9 @@ class SensorManager
 
     /** @brief Round robin sensor iter of terminus */
     std::map<pldm_tid_t, SensorID> roundRobinSensorItMap;
+
+    /** @brief Round robin state sensor iter of terminus */
+    std::map<pldm_tid_t, SensorID> roundRobinStateSensorItMap;
 
     /** @brief pointer to Manager */
     Manager* manager;
