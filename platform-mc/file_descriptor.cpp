@@ -83,8 +83,8 @@ FileDescriptor::FileDescriptor(
     supDirIdentifier = pdr->superior_directory_file_identifier;
     maxSize = pdr->file_maximum_size;
     maxFdCount = pdr->file_maximum_file_descriptor_count;
-    std::string fileName(reinterpret_cast<const char*>(pdr->file_name.ptr),
-                         pdr->file_name.length);
+    fileName.assign(reinterpret_cast<const char*>(pdr->file_name.ptr),
+                    pdr->file_name.length);
     name(fileName);
     source(SourceType::ComputerSystem);
     if (pdr->oem_file_classification)
@@ -441,8 +441,8 @@ exec::task<int> FileDescriptor::readTask(size_t offset, size_t length,
     co_return rc;
 }
 
-sdbusplus::message::unix_fd FileDescriptor::open(size_t offset, size_t length,
-                                                 bool exclusivity)
+sdbusplus::message::unix_fd FileDescriptor::startFileTransfer(
+    size_t offset, size_t length, bool exclusivity)
 {
     if (isDirectory)
     {
@@ -498,6 +498,12 @@ sdbusplus::message::unix_fd FileDescriptor::open(size_t offset, size_t length,
         exec::default_task_context<void>(stdexec::inline_scheduler{}));
 
     return sockets[CLIENT_IDX];
+}
+
+sdbusplus::message::unix_fd FileDescriptor::open(size_t offset, size_t length,
+                                                 bool exclusivity)
+{
+    return startFileTransfer(offset, length, exclusivity);
 }
 
 FileSize FileDescriptor::getFileSize() const

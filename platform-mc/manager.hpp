@@ -257,6 +257,23 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return terminus->second->getTerminusName();
     }
 
+    /** @brief Get the PLDM File Descriptor objects for a terminus.
+     *
+     *  @param[in] tid - Terminus ID
+     *  @return File Descriptor objects discovered for the terminus
+     */
+    std::vector<std::shared_ptr<FileDescriptor>> getFileDescriptors(
+        pldm_tid_t tid)
+    {
+        auto terminus = termini.find(tid);
+        if (terminus == termini.end() || !terminus->second)
+        {
+            return {};
+        }
+
+        return terminus->second->fileDescriptors;
+    }
+
     /** @brief Register OEM flow to poll the PLDM Event use
      *         PollForPlatformEventMessage command
      *
