@@ -52,6 +52,30 @@ class FileDescriptor : virtual public FileInterface
 
     ~FileDescriptor() = default;
 
+    /** @brief Start a PLDM file transfer and return a stream FD.
+     *
+     * This is the internal equivalent of the D-Bus Open() method. It reuses
+     * the existing file-transfer task and state handling without requiring an
+     * in-process D-Bus method call.
+     *
+     *  @param[in] offset - The offset to start reading at
+     *  @param[in] length - The desired length to read
+     *  @param[in] exclusivity - Whether to call DfOpen exclusively
+     *
+     *  @return Unix file descriptor that streams the file data
+     */
+    sdbusplus::message::unix_fd startFileTransfer(size_t offset, size_t length,
+                                                  bool exclusivity);
+
+    /** @brief Get current file size from the associated size sensor. */
+    FileSize getFileSize() const;
+
+    /** @brief Get the PLDM file name from the File Descriptor PDR. */
+    const std::string& getFileName() const
+    {
+        return fileName;
+    }
+
   private:
     bool isDirectory = false;
     bool isRegular = false;
@@ -62,6 +86,7 @@ class FileDescriptor : virtual public FileInterface
     FileID supDirIdentifier;
     FileSize maxSize;
     FDCount maxFdCount;
+    std::string fileName;
     std::string oemClassName;
     TerminusManager& terminusManager;
 
@@ -152,13 +177,6 @@ class FileDescriptor : virtual public FileInterface
     {
         return getFileSize();
     }
-
-    /** @brief Get current file size from the current reading of the associated
-     * File Size Monitoring sensor
-     *
-     *  @return current file size
-     */
-    FileSize getFileSize() const;
 };
 } // namespace platform_mc
 } // namespace pldm
