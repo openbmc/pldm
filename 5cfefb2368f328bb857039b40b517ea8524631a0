@@ -34,6 +34,24 @@
       "parentUuid": "166643f2_28ee13a2",
       "revId": "5cfefb2368f328bb857039b40b517ea8524631a0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fea369fb_50ab0bd6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-08-10T09:46:44Z",
+      "side": 1,
+      "message": "I still see the same issue, I think the CI is also failing for that",
+      "parentUuid": "636ddb58_a1088b06",
+      "revId": "5cfefb2368f328bb857039b40b517ea8524631a0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
