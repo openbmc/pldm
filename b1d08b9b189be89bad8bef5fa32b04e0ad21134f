@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99901a58_de95a53e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-08-10T20:21:21Z",
+      "side": 1,
+      "message": "Can we also account for target updates when the forceUpdate flag is set? \nEven if we don’t support this behavior for target updates in this commit, we should ensure the scenario is handled gracefully.",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "82945a70_48c79b50",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 5
@@ -37,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "881da770_e1966bd3",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-08-10T20:21:21Z",
+      "side": 1,
+      "message": "Can we check the `forceUpdate` flag here and log an informational or error message based on the option passed by the UA and the FD response?\n\nFor e.g., if forceUpdate is true and compCompatibilityRespCode \u003d\u003d PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL, this should be treated as an error and the update should fail rather than be skipped.",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c47f310e_a4f27939",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 5
@@ -65,6 +99,74 @@
       "writtenOn": "2026-08-09T18:00:31Z",
       "side": 1,
       "message": "Why aren\u0027t we updating the ActivationProgress here?",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82e76e52_ae98b402",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-08-10T20:21:21Z",
+      "side": 1,
+      "message": "Why is state changed to completed before even starting image transfer ?",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bdffb95_4017fb89",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-08-10T20:21:21Z",
+      "side": 1,
+      "message": "Unrelated to this change, but this looks problematic. \n\nWhy is this hardcoded to 0? If there are multiple components, isn\u0027t the last component always reset to 0 here?",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aaaf40b_6ef0c891",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-08-10T20:21:21Z",
+      "side": 1,
+      "message": "Please add tests for the following scenarios:\n\n1. One component update fails due to a downgrade compatibility error, while another component update succeeds on the same device.\n2. One component update is skipped because the component version is identical, while another component update succeeds on the same device.",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11bb2392_3fc9029e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-08-10T20:21:21Z",
+      "side": 1,
+      "message": "Could you please create a separate PR for the CancelUpdate command? \nThis fixes an existing bug and shouldn’t be tied to the forceUpdate feature, as it can be merged independently.",
       "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
