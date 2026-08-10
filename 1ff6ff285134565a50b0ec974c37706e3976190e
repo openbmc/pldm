@@ -301,6 +301,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f17e89a_d9a4487f",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-08-10T08:57:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c729cf35_6ea9332c",
+      "range": {
+        "startLine": 37,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "924e0711_ed242c69",
@@ -385,6 +409,30 @@
       "side": 1,
       "message": "Not intentional — it was left over from when the argument was a raw D-Bus object path. The argument is now a comma-separated key\u003dvalue string, and the object path is already reduced to its leaf in firmware_inventory_manager.cpp before generateArg(), so the filename() call was a no-op that would silently truncate everything before the last / if any value ever contained one. Removed it; serviceName() no longer throws, so the extra try/catch in execute() is gone as well.",
       "parentUuid": "924e0711_ed242c69",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "1ff6ff285134565a50b0ec974c37706e3976190e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb36fe4_2fc4e37b",
+        "filename": "fw-update/systemd_interface.cpp",
+        "patchSetId": 55
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-08-10T08:57:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "47118c43_51ee9831",
       "range": {
         "startLine": 117,
         "startChar": 0,
