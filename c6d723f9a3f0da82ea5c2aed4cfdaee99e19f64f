@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cddab80_f8155968",
+        "filename": "oem/ampere/event/oem_event_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-10T05:32:58Z",
+      "side": 1,
+      "message": "Not sure if we need this?\nSuppose you are referring to this CL below, isn\u0027t it has been covered at `src/dsp/platform.c`, L1725~L1763?\n\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/93303",
+      "range": {
+        "startLine": 395,
+        "startChar": 4,
+        "endLine": 428,
+        "endChar": 6
+      },
+      "revId": "c6d723f9a3f0da82ea5c2aed4cfdaee99e19f64f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a479f4e_a161259b",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-10T05:32:58Z",
+      "side": 1,
+      "message": "Also, I just noticed that there is a very similar logic in SensorManager.cpp.\n\nhttps://github.com/openbmc/pldm/blob/ecb4b2bbe88d55e778d78f62d6521b0ade8035bc/platform-mc/sensor_manager.cpp#L381\n\nI think it would be better to make this function as a util function and reuse there.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 1
+      },
+      "revId": "c6d723f9a3f0da82ea5c2aed4cfdaee99e19f64f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a4f561_b604ce3d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-10T05:32:58Z",
+      "side": 1,
+      "message": "Did you submitted another patch to libpldm to expand for this?\nI noticed that the current libpldm didn\u0027t supports for this.\n\nhttps://github.com/openbmc/libpldm/blob/fd368385ce3f2cce80c37f379883f18f08e96387/include/libpldm/platform.h#L836\n\nI suppose you are referring to this commit:\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/93288\n\nIf so, I think it should be better to mention in your commit message.",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 32
+      },
+      "revId": "c6d723f9a3f0da82ea5c2aed4cfdaee99e19f64f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
