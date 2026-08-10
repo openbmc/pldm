@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4892f21_05bdd434",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-10T04:15:11Z",
+      "side": 1,
+      "message": "I noticed you have applied the changes, thanks.",
+      "parentUuid": "1fbe8814_dbdb085b",
+      "range": {
+        "startLine": 680,
+        "startChar": 4,
+        "endLine": 680,
+        "endChar": 45
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59b804d1_dff28697",
@@ -95,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2467cf34_004ddb24",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-10T04:15:11Z",
+      "side": 1,
+      "message": "Resolved, thanks!",
+      "parentUuid": "d310bc12_35c0c01f",
+      "range": {
+        "startLine": 686,
+        "startChar": 7,
+        "endLine": 688,
+        "endChar": 32
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f326424e_0dd826b1",
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "I moved this block to the end to check all component versions for deduplication first. However, I agree with you—an early return; in the loop would make the entire FD vanish if parsing fails.  To fix this while keeping the deduplication, I plan to change the return; to a break; in the next patchset. This way, if parsing fails, it will safely fall back to creating the image-level entry at the bottom.Let me know if this approach sounds good to you!",
       "parentUuid": "f326424e_0dd826b1",
+      "range": {
+        "startLine": 732,
+        "startChar": 4,
+        "endLine": 747,
+        "endChar": 5
+      },
+      "revId": "08b9ad851ed23b4a33d7e1c790efdc311ac53f07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750aa4da_7d35014d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-10T04:15:11Z",
+      "side": 1,
+      "message": "I think it should be good, thanks for the patch as well.",
+      "parentUuid": "561c5ac8_ecddab54",
       "range": {
         "startLine": 732,
         "startChar": 4,
