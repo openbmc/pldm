@@ -28,6 +28,13 @@ class TestBIOSEnumAttribute : public ::testing::Test
     {
         return attribute.defaultValue;
     }
+
+    uint8_t getValueIndex(BIOSEnumAttribute& attribute,
+                          const std::string& value,
+                          const std::vector<std::string>& pVs)
+    {
+        return attribute.getValueIndex(value, pVs);
+    }
 };
 
 TEST_F(TestBIOSEnumAttribute, CtorTest)
@@ -233,4 +240,40 @@ TEST_F(TestBIOSEnumAttribute, setAttrValueOnDbus)
     enumReadWrite.setAttrValueOnDbus(
         new (attrValueEntry.data()) pldm_bios_attr_val_table_entry,
         new (attrEntry.data()) pldm_bios_attr_table_entry, biosStringTable);
+}
+
+TEST_F(TestBIOSEnumAttribute, GetValueIndexThrowsOnUnknownValue)
+{
+    auto json = R"({
+         "attribute_name" : "CodeUpdatePolicy",
+         "possible_values" : [ "Concurrent", "Disruptive" ],
+         "value_names" : [ "Concurrent", "Disruptive" ],
+         "default_values" : [ "Concurrent" ],
+         "read_only" : true,
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName"
+      })"_json;
+
+    BIOSEnumAttribute attr{json, nullptr};
+    EXPECT_THROW(getValueIndex(attr, "unknown", {"Concurrent", "Disruptive"}),
+                 std::invalid_argument);
+}
+
+TEST_F(TestBIOSEnumAttribute, GetValueIndexReturnsCorrectIndex)
+{
+    auto json = R"({
+         "attribute_name" : "CodeUpdatePolicy",
+         "possible_values" : [ "Concurrent", "Disruptive" ],
+         "value_names" : [ "Concurrent", "Disruptive" ],
+         "default_values" : [ "Concurrent" ],
+         "read_only" : true,
+         "help_text" : "HelpText",
+         "display_name" : "DisplayName"
+      })"_json;
+
+    BIOSEnumAttribute attr{json, nullptr};
+    EXPECT_EQ(getValueIndex(attr, "Concurrent", {"Concurrent", "Disruptive"}),
+              0);
+    EXPECT_EQ(getValueIndex(attr, "Disruptive", {"Concurrent", "Disruptive"}),
+              1);
 }
