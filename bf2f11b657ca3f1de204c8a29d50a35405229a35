@@ -16,6 +16,24 @@
       "message": "The pre/post-condition callbacks capture `this`, but the `ItemUpdateManager` can be deleted if the MCTP endpoint disappears while a condition is still running. When systemd later completes the job, the callback will access an object that no longer exists. Could we cancel pending callbacks when the manager is destroyed, or use some form of lifetime tracking here?",
       "revId": "bf2f11b657ca3f1de204c8a29d50a35405229a35",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06fa8502_81013f6f",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 58
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-11T05:52:16Z",
+      "side": 1,
+      "message": "Fixed with lifetime tracking: the manager holds a shared_ptr token, both condition callbacks capture a weak_ptr and return early once it expired.",
+      "parentUuid": "bc284e2b_ac996eb8",
+      "revId": "bf2f11b657ca3f1de204c8a29d50a35405229a35",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
