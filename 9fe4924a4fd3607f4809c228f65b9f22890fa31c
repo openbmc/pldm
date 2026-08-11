@@ -34,6 +34,24 @@
       "parentUuid": "de49151a_23649e14",
       "revId": "9fe4924a4fd3607f4809c228f65b9f22890fa31c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a41e327_2c64bc9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-08-11T06:45:42Z",
+      "side": 1,
+      "message": "Done. A Yosemite4 consumer change has been submitted at [change 93400]. I\u0027m keeping it WIP since the option doesn\u0027t exist in the pldm yet, which causes the yosemite4 CI build to fail. Will activate it once this merges.\n\n[change 93400]: https://gerrit.openbmc.org/c/openbmc/openbmc/+/93400",
+      "parentUuid": "13b4f5c6_acf0f10e",
+      "revId": "9fe4924a4fd3607f4809c228f65b9f22890fa31c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
