@@ -1,7 +1,13 @@
 #include "fw-update/device_updater.hpp"
 #include "fw-update/package_parser.hpp"
+#include "fw-update/update_manager.hpp"
+#include "requester/handler.hpp"
+#include "requester/request.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <libpldm/firmware_update.h>
+
+#include <sdeventplus/event.hpp>
 
 #include <fstream>
 
@@ -10,6 +16,38 @@
 
 using namespace pldm;
 using namespace pldm::fw_update;
+
+namespace
+{
+/** @brief Minimal UpdateManagerBase stub that records the device completion
+ *         status reported by a DeviceUpdater and lets a test toggle the force
+ *         update flag.
+ */
+class StubUpdateManager : public UpdateManagerBase
+{
+  public:
+    StubUpdateManager(
+        sdeventplus::Event& event,
+        pldm::requester::Handler<pldm::requester::Request>& handler,
+        pldm::InstanceIdDb& instanceIdDb) :
+        UpdateManagerBase(event, handler, instanceIdDb)
+    {}
+
+    void updateDeviceCompletion(mctp_eid_t eid, bool status) override
+    {
+        completionEid = eid;
+        completionStatus = status;
+        completionCalled = true;
+    }
+    void updateActivationProgress() override {}
+    void activatePackage() override {}
+    void resetActivationState() override {}
+
+    mctp_eid_t completionEid = 0;
+    bool completionStatus = false;
+    bool completionCalled = false;
+};
+} // namespace
 
 class DeviceUpdaterTest : public testing::Test
 {
@@ -183,4 +221,214 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
         reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data());
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
+}
+
+TEST_F(DeviceUpdaterTest, computeUpdateOptionFlags)
+{
+    // Neither the package nor the StartUpdate D-Bus method request a force
+    // update
+    EXPECT_EQ(computeUpdateOptionFlags(compImageInfos[0], false).bits.bit0, 0u);
+    // ForceUpdate set in the StartUpdate D-Bus method
+    EXPECT_EQ(computeUpdateOptionFlags(compImageInfos[0], true).bits.bit0, 1u);
+    // Package requests the force update for the component
+    auto comp = compImageInfos[0];
+    std::get<static_cast<size_t>(ComponentImageInfoPos::CompOptionsPos)>(comp) =
+        CompOptions{1};
+    EXPECT_EQ(computeUpdateOptionFlags(comp, false).bits.bit0, 1u);
+}
+
+TEST_F(DeviceUpdaterTest, SkipComponentUpdateOnIdenticalImage)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    // UpdateComponent response indicating the component will not be updated
+    // because the component comparison stamp is identical
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9>
+        updateComponentResp = {
+            0x0A,
+            0x05,
+            0x14,
+            PLDM_SUCCESS,
+            PLDM_CCR_COMP_CANNOT_BE_UPDATED,
+            PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00};
+    auto respMsg =
+        reinterpret_cast<const pldm_msg*>(updateComponentResp.data());
+    deviceUpdater.updateComponent(
+        0, respMsg, updateComponentResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 99);
+
+    // Successful CancelUpdate response completes the device update
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 10> cancelUpdateResp =
+        {0x0A, 0x05, 0x1D, PLDM_SUCCESS, 0x00, 0x00, 0x00,
+         0x00, 0x00, 0x00, 0x00,         0x00, 0x00};
+    auto cancelMsg = reinterpret_cast<const pldm_msg*>(cancelUpdateResp.data());
+    deviceUpdater.cancelUpdate(0, cancelMsg,
+                               cancelUpdateResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 100);
+}
+
+TEST_F(DeviceUpdaterTest, ComponentUpdateFailureOnOtherResponseCode)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    // UpdateComponent response indicating the component will not be updated
+    // for a reason other than an identical comparison stamp is not skipped
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9>
+        updateComponentResp = {
+            0x0A,
+            0x05,
+            0x14,
+            PLDM_SUCCESS,
+            PLDM_CCR_COMP_CANNOT_BE_UPDATED,
+            PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00};
+    auto respMsg =
+        reinterpret_cast<const pldm_msg*>(updateComponentResp.data());
+    deviceUpdater.updateComponent(
+        0, respMsg, updateComponentResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 0);
+
+    // A successful CancelUpdate response after a failed component does not
+    // complete the device update
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 10> cancelUpdateResp =
+        {0x0A, 0x05, 0x1D, PLDM_SUCCESS, 0x00, 0x00, 0x00,
+         0x00, 0x00, 0x00, 0x00,         0x00, 0x00};
+    auto cancelMsg = reinterpret_cast<const pldm_msg*>(cancelUpdateResp.data());
+    deviceUpdater.cancelUpdate(0, cancelMsg,
+                               cancelUpdateResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 0);
+}
+
+/** @brief UpdateComponent response declining a component with the given
+ *         ComponentCompatibilityResponse code
+ */
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9> updateComponentDeclined(
+    uint8_t respCode)
+{
+    return {0x0A,     0x05, 0x14, PLDM_SUCCESS, PLDM_CCR_COMP_CANNOT_BE_UPDATED,
+            respCode, 0x00, 0x00, 0x00,         0x00,
+            0x00,     0x00};
+}
+
+// Successful CancelUpdate response
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 10> cancelUpdateResp = {
+    0x0A, 0x05, 0x1D, PLDM_SUCCESS, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,         0x00, 0x00};
+
+class DeviceUpdaterManagerTest : public DeviceUpdaterTest
+{
+  protected:
+    DeviceUpdaterManagerTest() :
+        event(sdeventplus::Event::get_default()),
+        reqHandler(nullptr, event, instanceIdDb, false),
+        manager(event, reqHandler, instanceIdDb)
+    {}
+
+    /** @brief Build a copy of the fixture's device record and component image
+     *         info list describing a device with two applicable components
+     */
+    void makeTwoComponents(FirmwareDeviceIDRecord& record,
+                           ComponentImageInfos& comps)
+    {
+        record = fwDeviceIDRecord;
+        std::get<ApplicableComponents>(record) = ApplicableComponents{0, 1};
+        comps = compImageInfos;
+        comps.push_back(compImageInfos[0]);
+    }
+
+    sdeventplus::Event event;
+    TestInstanceIdDb instanceIdDb;
+    pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    StubUpdateManager manager;
+};
+
+TEST_F(DeviceUpdaterManagerTest, ForceUpdateOnIdenticalImageFailsDevice)
+{
+    // When ForceUpdate is requested but the firmware device still declines the
+    // component because its image is identical, the device update fails.
+    manager.forceUpdate = true;
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, &manager);
+
+    auto resp =
+        updateComponentDeclined(PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL);
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(resp.data()),
+        resp.size() - sizeof(pldm_msg_hdr));
+
+    deviceUpdater.cancelUpdate(
+        0, reinterpret_cast<const pldm_msg*>(cancelUpdateResp.data()),
+        cancelUpdateResp.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_TRUE(manager.completionCalled);
+    EXPECT_FALSE(manager.completionStatus);
+}
+
+TEST_F(DeviceUpdaterManagerTest, SkippedComponentDoesNotMaskFailedComponent)
+{
+    // One component is skipped (identical image) and another is declined for a
+    // different reason on the same device; the device update must fail.
+    FirmwareDeviceIDRecord record;
+    ComponentImageInfos comps;
+    makeTwoComponents(record, comps);
+    DeviceUpdater deviceUpdater(0, package, record, comps, compInfo, 512,
+                                &manager);
+
+    auto skip =
+        updateComponentDeclined(PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL);
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(skip.data()),
+        skip.size() - sizeof(pldm_msg_hdr));
+
+    auto fail = updateComponentDeclined(PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER);
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(fail.data()),
+        fail.size() - sizeof(pldm_msg_hdr));
+
+    deviceUpdater.cancelUpdate(
+        0, reinterpret_cast<const pldm_msg*>(cancelUpdateResp.data()),
+        cancelUpdateResp.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_TRUE(manager.completionCalled);
+    EXPECT_FALSE(manager.completionStatus);
+}
+
+TEST_F(DeviceUpdaterManagerTest, AllComponentsSkippedCompletesDevice)
+{
+    // Every component on the device is skipped because its image is identical;
+    // the device update completes successfully.
+    FirmwareDeviceIDRecord record;
+    ComponentImageInfos comps;
+    makeTwoComponents(record, comps);
+    DeviceUpdater deviceUpdater(0, package, record, comps, compInfo, 512,
+                                &manager);
+
+    auto skip =
+        updateComponentDeclined(PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL);
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(skip.data()),
+        skip.size() - sizeof(pldm_msg_hdr));
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(skip.data()),
+        skip.size() - sizeof(pldm_msg_hdr));
+
+    deviceUpdater.cancelUpdate(
+        0, reinterpret_cast<const pldm_msg*>(cancelUpdateResp.data()),
+        cancelUpdateResp.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_TRUE(manager.completionCalled);
+    EXPECT_TRUE(manager.completionStatus);
 }

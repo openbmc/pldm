@@ -60,7 +60,9 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         postConditionPath(conditionPathPair.second),
         baseConditionArg(conditionArg), conditionArg(conditionArg),
         taskCompletionCallback(std::move(taskCompletionCallback))
-    {}
+    {
+        allowedForceUpdate(true);
+    }
 
     /**
      * @brief Handle PLDM requests for the item-based update manager
@@ -108,11 +110,15 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * OnStart, etc.) This will be passed to post-condition services to allow
      *                       conditional handling (e.g., skip reset if not
      * immediate)
+     * @param[in] forceUpdate Instruct the firmware device to update the
+     *                        components even if the component image is
+     *                        identical to the active image
      */
     virtual sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,
         ApplyTimeIntf::RequestedApplyTimes applyTime =
-            ApplyTimeIntf::RequestedApplyTimes::Immediate) override;
+            ApplyTimeIntf::RequestedApplyTimes::Immediate,
+        bool forceUpdate = false) override;
 
     /**
      * @brief Associate the firmware update package with the target device
