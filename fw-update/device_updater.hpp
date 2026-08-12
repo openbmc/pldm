@@ -265,6 +265,19 @@ class DeviceUpdater
     void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
                                size_t respMsgLen);
 
+    /**
+     * @brief Handler for CancelUpdate command response
+     *
+     *  CancelUpdate is sent to exit update mode when no component was
+     *  transferred to the firmware device.
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] response - PLDM Response message
+     * @param[in] respMsgLen - Response message length
+     */
+    void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
+                      size_t respMsgLen);
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -285,6 +298,12 @@ class DeviceUpdater
      * @brief Send cancel update component request
      */
     void sendCancelUpdateComponentRequest();
+
+    /**
+     * @brief Send CancelUpdate request to exit update mode when no component
+     *        was transferred to the firmware device
+     */
+    void sendCancelUpdateRequest();
 
     /**
      * @brief Create a timer to handle RequestFirmwareData timeout (UA_T2)

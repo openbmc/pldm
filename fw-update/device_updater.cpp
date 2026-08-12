@@ -1,6 +1,7 @@
 #include "device_updater.hpp"
 
 #include "activation.hpp"
+#include "common/start_lifetime_as.hpp"
 #include "update_manager.hpp"
 
 #include <libpldm/firmware_update.h>
@@ -532,7 +533,14 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
                     return;
                 }
             }
-            updateManager->updateDeviceCompletion(eid, false);
+            // No component was transferred to the firmware device. Send
+            // CancelUpdate so it exits update mode instead of being left in
+            // update mode until its FD_T1 timeout; the device completion is
+            // then reported once the CancelUpdate response is received.
+            componentIndex = 0;
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event,
+                std::bind(&DeviceUpdater::sendCancelUpdateRequest, this));
         }
         else
         {
@@ -1092,7 +1100,12 @@ void DeviceUpdater::cancelUpdateComponent(
                 return;
             }
         }
-        updateManager->updateDeviceCompletion(eid, false);
+        // No component update succeeded, send CancelUpdate to exit update
+        // mode. The device completion is reported when the CancelUpdate
+        // response is received.
+        pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+            updateManager->event,
+            std::bind(&DeviceUpdater::sendCancelUpdateRequest, this));
     }
     else
     {
@@ -1105,6 +1118,96 @@ void DeviceUpdater::cancelUpdateComponent(
                       componentIndex));
     }
     return;
+}
+
+void DeviceUpdater::sendCancelUpdateRequest()
+{
+    pldmRequest.reset();
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        updateManager->updateDeviceCompletion(eid, false);
+        throw pldm::InstanceIdError(instanceIdResult.error());
+    }
+    auto instanceId = instanceIdResult.value();
+    Request request(sizeof(pldm_msg_hdr));
+    auto* requestMsg = std::start_lifetime_as<pldm_msg>(request.data());
+
+    auto rc = encode_cancel_update_req(instanceId, requestMsg,
+                                       PLDM_CANCEL_UPDATE_REQ_BYTES);
+    if (rc)
+    {
+        updateManager->instanceIdDb.free(eid, instanceId);
+        error(
+            "Failed to encode cancel update request for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
+        return;
+    }
+
+    rc = updateManager->handler.registerRequest(
+        eid, instanceId, PLDM_FWUP, PLDM_CANCEL_UPDATE, std::move(request),
+        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            this->cancelUpdate(eid, response, respMsgLen);
+        });
+    if (rc)
+    {
+        error(
+            "Failed to send cancel update request for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+        updateManager->updateDeviceCompletion(eid, false);
+    }
+}
+
+void DeviceUpdater::cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
+                                 size_t respMsgLen)
+{
+    if (response == nullptr || !respMsgLen)
+    {
+        error("No response received for cancel update for endpoint ID '{EID}'",
+              "EID", eid);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateDeviceCompletion(eid, false);
+        }
+        return;
+    }
+
+    uint8_t completionCode = 0;
+    bool8_t nonFunctioningComponentIndication = false;
+    bitfield64_t nonFunctioningComponentBitmap{0};
+    auto rc = decode_cancel_update_resp(response, respMsgLen, &completionCode,
+                                        &nonFunctioningComponentIndication,
+                                        &nonFunctioningComponentBitmap);
+    if (rc)
+    {
+        error(
+            "Failed to decode cancel update response for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateDeviceCompletion(eid, false);
+        }
+        return;
+    }
+    if (completionCode)
+    {
+        error(
+            "Failed to cancel update for endpoint ID '{EID}', completion code '{CC}'",
+            "EID", eid, "CC", completionCode);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateDeviceCompletion(eid, false);
+        }
+        return;
+    }
+
+    // CancelUpdate is sent when no component was transferred to the firmware
+    // device, so the device update did not complete.
+    if (updateManager != nullptr)
+    {
+        updateManager->updateDeviceCompletion(eid, false);
+    }
 }
 
 uint8_t DeviceUpdater::getProgress() const
