@@ -9,7 +9,8 @@ namespace fw_update
 
 sdbusplus::object_path Update::startUpdate(
     sdbusplus::message::unix_fd image,
-    ApplyTimeIntf::RequestedApplyTimes applyTime [[maybe_unused]])
+    ApplyTimeIntf::RequestedApplyTimes applyTime [[maybe_unused]],
+    bool forceUpdate)
 {
     namespace software = sdbusplus::xyz::openbmc_project::Software::server;
     // If a firmware activation of a package is in progress, don't proceed with
@@ -43,7 +44,7 @@ sdbusplus::object_path Update::startUpdate(
     }
 
     return sdbusplus::object_path(updateManager->processStreamDefer(
-        imageStream, imageStream.str().size()));
+        imageStream, imageStream.str().size(), forceUpdate));
 }
 
 } // namespace fw_update
