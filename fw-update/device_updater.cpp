@@ -516,13 +516,13 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
             "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' cannot be updated, response code '{RESP_CODE}', skipping",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESP_CODE",
             compCompatibilityRespCode);
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
 
         if (componentIndex == applicableComponents.size() - 1)
         {
             for (const auto& compStatus : componentUpdateStatus)
             {
-                if (compStatus.second)
+                if (compStatus.second == ComponentUpdateStatus::Accepted)
                 {
                     componentIndex = 0;
                     pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -548,14 +548,14 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     info(
         "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' can be updated",
         "EID", eid, "COMPONENT_VERSION", compVersion);
-    componentUpdateStatus[componentIndex] = true;
+    componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Accepted;
     createRequestFwDataTimer();
 }
 
 void DeviceUpdater::createRequestFwDataTimer()
 {
     reqFwDataTimer = std::make_unique<sdbusplus::Timer>([this]() -> void {
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
         updateManager->updateDeviceCompletion(eid, false);
     });
@@ -747,7 +747,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             transferResult);
         updateManager->updateDeviceCompletion(eid, false);
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
     }
 
@@ -815,7 +815,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             verifyResult);
         updateManager->updateDeviceCompletion(eid, false);
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
     }
 
@@ -883,7 +883,8 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         {
             componentIndex = 0;
             componentUpdateStatus.clear();
-            componentUpdateStatus[componentIndex] = true;
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Accepted;
             if (updateManager != nullptr)
             {
                 pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -895,7 +896,8 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         else
         {
             componentIndex++;
-            componentUpdateStatus[componentIndex] = true;
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Accepted;
             if (updateManager != nullptr)
             {
                 pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -914,7 +916,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         {
             updateManager->updateDeviceCompletion(eid, false);
         }
-        componentUpdateStatus[componentIndex] = false;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
     }
 
@@ -1091,7 +1093,7 @@ void DeviceUpdater::cancelUpdateComponent(
     {
         for (auto& compStatus : componentUpdateStatus)
         {
-            if (compStatus.second)
+            if (compStatus.second == ComponentUpdateStatus::Accepted)
             {
                 // If at least one component update succeeded, proceed with
                 // activation
@@ -1110,7 +1112,7 @@ void DeviceUpdater::cancelUpdateComponent(
     {
         // Move to next component and update its status
         componentIndex++;
-        componentUpdateStatus[componentIndex] = true;
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Accepted;
         pldmRequest = std::make_unique<sdeventplus::source::Defer>(
             updateManager->event,
             std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
