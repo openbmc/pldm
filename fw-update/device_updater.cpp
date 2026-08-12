@@ -9,6 +9,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <functional>
+#include <string_view>
 
 PHOSPHOR_LOG2_USING;
 
@@ -89,6 +90,54 @@ void UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
     progress = static_cast<uint8_t>(std::floor(
         1.0 * componentXferProgressPercent * totalUpdated / totalSize));
     return;
+}
+
+namespace
+{
+/** @brief Reason string for a ComponentCompatibilityResponse code in the
+ *         UpdateComponent response, DSP0267 Table 22
+ */
+constexpr std::string_view compCompatibilityRespCodeReason(uint8_t respCode)
+{
+    switch (respCode)
+    {
+        case PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL:
+            return "component comparison stamp is identical";
+        case PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER:
+            return "component comparison stamp is lower";
+        case PLDM_CCRC_INVALID_COMP_COMPARISON_STAMP:
+            return "invalid component comparison stamp";
+        case PLDM_CCRC_COMP_CONFLICT:
+            return "component conflict";
+        case PLDM_CCRC_COMP_PREREQUISITES_NOT_MET:
+            return "component prerequisites not met";
+        case PLDM_CCRC_COMP_NOT_SUPPORTED:
+            return "component not supported";
+        case PLDM_CCRC_COMP_SECURITY_RESTRICTIONS:
+            return "component security restrictions";
+        case PLDM_CCRC_INCOMPLETE_COMP_IMAGE_SET:
+            return "incomplete component image set";
+        case PLDM_CCRC_COMP_INFO_NO_MATCH:
+            return "component information no match";
+        case PLDM_CCRC_COMP_VER_STR_IDENTICAL:
+            return "component version string is identical";
+        case PLDM_CCRC_COMP_VER_STR_LOWER:
+            return "component version string is lower";
+        default:
+            return "vendor defined or unknown response code";
+    }
+}
+} // namespace
+
+bitfield32_t computeUpdateOptionFlags(const ComponentImageInfo& comp,
+                                      bool forceUpdate)
+{
+    bitfield32_t updateOptionFlags{};
+    updateOptionFlags.bits.bit0 =
+        std::get<static_cast<size_t>(ComponentImageInfoPos::CompOptionsPos)>(
+            comp)[0] ||
+        forceUpdate;
+    return updateOptionFlags;
 }
 
 DeviceUpdater::DeviceUpdater(
@@ -406,8 +455,8 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
     }
 
     // UpdateOptionFlags
-    bitfield32_t updateOptionFlags;
-    updateOptionFlags.bits.bit0 = std::get<3>(comp)[0];
+    bitfield32_t updateOptionFlags = computeUpdateOptionFlags(
+        comp, updateManager != nullptr && updateManager->forceUpdate);
     // ComponentVersion
     const auto& compVersion = std::get<7>(comp);
     variable_field compVerStrInfo{};
@@ -512,11 +561,55 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
 
     if (compCompatibilityResp == PLDM_CCR_COMP_CANNOT_BE_UPDATED)
     {
-        info(
-            "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' cannot be updated, response code '{RESP_CODE}', skipping",
-            "EID", eid, "COMPONENT_VERSION", compVersion, "RESP_CODE",
-            compCompatibilityRespCode);
-        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
+        bool forceUpdate = updateManager != nullptr &&
+                           updateManager->forceUpdate;
+        if (compCompatibilityRespCode ==
+                PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL &&
+            !forceUpdate)
+        {
+            info(
+                "Component image at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' is identical to the active image, skipping update. Retry with ForceUpdate set to update anyway.",
+                "EID", eid, "COMPONENT_VERSION", compVersion);
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Skipped;
+            if (componentIndex < progress.size())
+            {
+                progress[componentIndex].updateState(
+                    UpdateProgress::state::Apply);
+                if (updateManager != nullptr)
+                {
+                    updateManager->updateActivationProgress();
+                }
+            }
+        }
+        else if (compCompatibilityRespCode ==
+                 PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL)
+        {
+            // ForceUpdate was requested but the firmware device still declined
+            // the component because its image is identical to the active
+            // image. The forced update did not take effect, so treat it as a
+            // failure rather than a skip.
+            error(
+                "Component image at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' is identical to the active image and was not updated despite ForceUpdate being set.",
+                "EID", eid, "COMPONENT_VERSION", compVersion);
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Failed;
+        }
+        else
+        {
+            error(
+                "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' will not be updated, response code '{RESP_CODE}' ({REASON})",
+                "EID", eid, "COMPONENT_VERSION", compVersion, "RESP_CODE",
+                compCompatibilityRespCode, "REASON",
+                compCompatibilityRespCodeReason(compCompatibilityRespCode));
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Failed;
+        }
+
+        if (updateManager == nullptr)
+        {
+            return true;
+        }
 
         if (componentIndex == applicableComponents.size() - 1)
         {
@@ -533,9 +626,8 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
                 }
             }
             // No component was transferred to the firmware device. Send
-            // CancelUpdate so it exits update mode instead of being left in
-            // update mode until its FD_T1 timeout; the device completion is
-            // then reported once the CancelUpdate response is received.
+            // CancelUpdate to exit update mode; the device completion is
+            // reported as successful only if no component failed.
             componentIndex = 0;
             pldmRequest = std::make_unique<sdeventplus::source::Defer>(
                 updateManager->event,
@@ -1190,6 +1282,7 @@ void DeviceUpdater::sendCancelUpdateRequest()
 void DeviceUpdater::cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
                                  size_t respMsgLen)
 {
+    bool acknowledged = false;
     if (response == nullptr || !respMsgLen)
     {
         error("No response received for cancel update for endpoint ID '{EID}'",
@@ -1215,15 +1308,35 @@ void DeviceUpdater::cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
                 "Failed to cancel update for endpoint ID '{EID}', completion code '{CC}'",
                 "EID", eid, "CC", completionCode);
         }
+        else
+        {
+            acknowledged = true;
+        }
     }
 
-    // CancelUpdate is only sent when the update is abandoned, so the device
-    // update did not complete whatever the CancelUpdate response. If the
-    // CancelUpdate itself fails, the firmware device exits update mode when
-    // its FD_T1 timeout expires.
+    // CancelUpdate is sent when the update ends without any component being
+    // updated. The device update is successful only if the firmware device
+    // acknowledged the CancelUpdate and every component was skipped because
+    // its image is identical to the active image; a component declined for
+    // any other reason, a failed component update, or a response that could
+    // not be handled fails the device update.
+    bool success = acknowledged;
+    for (const auto& compStatus : componentUpdateStatus)
+    {
+        if (compStatus.second == ComponentUpdateStatus::Failed)
+        {
+            success = false;
+            break;
+        }
+    }
+    if (success)
+    {
+        progressComplete = true;
+    }
     if (updateManager != nullptr)
     {
-        updateManager->updateDeviceCompletion(eid, false);
+        updateManager->updateActivationProgress();
+        updateManager->updateDeviceCompletion(eid, success);
     }
 }
 

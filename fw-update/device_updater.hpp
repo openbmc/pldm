@@ -22,11 +22,15 @@ namespace fw_update
  *  Accepted: the firmware device accepted the component for update. This is
  *            set optimistically once the component can be updated, before
  *            the transfer, verification and apply steps have completed.
+ *  Skipped: the firmware device declined the component update because the
+ *           component image is identical to the active image. This is not
+ *           treated as a failure.
  */
 enum class ComponentUpdateStatus
 {
     Failed,
     Accepted,
+    Skipped,
 };
 
 /** @brief Type alias for component update status tracking
@@ -35,6 +39,21 @@ enum class ComponentUpdateStatus
 using ComponentUpdateStatusMap = std::map<size_t, ComponentUpdateStatus>;
 
 class UpdateManagerBase;
+
+/** @brief Compute the UpdateOptionFlags for the UpdateComponent request
+ *
+ *  The ForceUpdate bit (bit0) is set if the firmware update package requests
+ *  it for the component or if the force update flag was set in the StartUpdate
+ *  D-Bus method.
+ *
+ *  @param[in] comp - Component image information from the package
+ *  @param[in] forceUpdate - Force update flag from the StartUpdate D-Bus
+ *                           method
+ *
+ *  @return UpdateOptionFlags for the UpdateComponent request
+ */
+bitfield32_t computeUpdateOptionFlags(const ComponentImageInfo& comp,
+                                      bool forceUpdate);
 
 /** @class UpdateProgress
  *
@@ -282,11 +301,13 @@ class DeviceUpdater
      * @brief Handler for CancelUpdate command response
      *
      *  CancelUpdate is sent to take the firmware device out of update mode
-     *  when the update is abandoned after the device entered update mode: no
-     *  component was updated, each one having been declined by the device or
-     *  having failed to update, or a PassComponentTable or UpdateComponent
-     *  response could not be handled. The device completion is reported here
-     *  as a failure, whatever the CancelUpdate response.
+     *  when the update ends after the device entered update mode without any
+     *  component being updated: each component was declined or skipped by the
+     *  device or failed to update, or a PassComponentTable or UpdateComponent
+     *  response could not be handled. The device update is reported as
+     *  successful only if the device acknowledged the CancelUpdate and every
+     *  component was skipped because its image is identical to the active
+     *  image.
      *
      * @param[in] eid - Remote MCTP endpoint
      * @param[in] response - PLDM Response message
@@ -389,8 +410,7 @@ class DeviceUpdater
     std::unique_ptr<sdeventplus::source::Defer> pldmRequest;
 
     /**
-     * @brief Map to hold component update status. True - success, False -
-     *        cancelled
+     * @brief Map to hold the update status of each component
      */
     ComponentUpdateStatusMap componentUpdateStatus;
 
