@@ -282,6 +282,17 @@ class DeviceUpdater
     void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
                       size_t respMsgLen);
 
+    /** @brief Mark the progress of this device as complete
+     *
+     *  Called when the device update finishes, successfully or not, so that
+     *  the overall activation progress can reach 100% even if the update
+     *  failed for some of the devices.
+     */
+    void markProgressComplete()
+    {
+        progressComplete = true;
+    }
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -387,11 +398,13 @@ class DeviceUpdater
      */
     std::vector<UpdateProgress> progress;
     /**
-     * @brief Whether this device has gone through application. Needed because
-     *        UpdateProgress handles each component but application happens at
-     *        the device level
+     * @brief Whether the update progress of this device is complete. Set when
+     *        the device finishes its update, whether it succeeded or failed,
+     *        so that the device reports 100% progress. Needed because
+     *        UpdateProgress tracks each component while completion happens at
+     *        the device level.
      */
-    bool activationComplete;
+    bool progressComplete;
 };
 
 } // namespace fw_update
