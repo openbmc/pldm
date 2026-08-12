@@ -200,8 +200,11 @@ class DeviceUpdater
      *  @param[in] eid - Remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
+     *
+     *  @return true if the update can continue, false if the response could
+     *          not be handled, in which case the caller abandons the update
      */
-    void passCompTable(mctp_eid_t eid, const pldm_msg* response,
+    bool passCompTable(mctp_eid_t eid, const pldm_msg* response,
                        size_t respMsgLen);
 
     /** @brief Handler for UpdateComponent command response
@@ -209,11 +212,17 @@ class DeviceUpdater
      *  The response of the UpdateComponent is processed and will wait for
      *  FD to request the firmware data.
      *
+     *  A component the firmware device declines is not a failure to handle
+     *  the response: the update moves on to the next component.
+     *
      *  @param[in] eid - Remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
+     *
+     *  @return true if the update can continue, false if the response could
+     *          not be handled, in which case the caller abandons the update
      */
-    void updateComponent(mctp_eid_t eid, const pldm_msg* response,
+    bool updateComponent(mctp_eid_t eid, const pldm_msg* response,
                          size_t respMsgLen);
 
     /** @brief Handler for RequestFirmwareData request
@@ -269,6 +278,23 @@ class DeviceUpdater
     void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
                                size_t respMsgLen);
 
+    /**
+     * @brief Handler for CancelUpdate command response
+     *
+     *  CancelUpdate is sent to take the firmware device out of update mode
+     *  when the update is abandoned after the device entered update mode: no
+     *  component was updated, each one having been declined by the device or
+     *  having failed to update, or a PassComponentTable or UpdateComponent
+     *  response could not be handled. The device completion is reported here
+     *  as a failure, whatever the CancelUpdate response.
+     *
+     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] response - PLDM Response message
+     * @param[in] respMsgLen - Response message length
+     */
+    void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
+                      size_t respMsgLen);
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -289,6 +315,24 @@ class DeviceUpdater
      * @brief Send cancel update component request
      */
     void sendCancelUpdateComponentRequest();
+
+    /**
+     * @brief Send CancelUpdate request so that the firmware device exits update
+     *        mode when the update is abandoned
+     */
+    void sendCancelUpdateRequest();
+
+    /**
+     * @brief Record the current component as failed and send CancelUpdate
+     *
+     *  The single place that abandons the update after the firmware device has
+     *  entered update mode: when a PassComponentTable or UpdateComponent
+     *  response cannot be handled (called once by the caller of those
+     *  handlers, so their error paths only need to return false), and when no
+     *  component was updated. The device completion is reported when the
+     *  CancelUpdate response is received.
+     */
+    void failAndCancelUpdate();
 
     /**
      * @brief Create a timer to handle RequestFirmwareData timeout (UA_T2)
