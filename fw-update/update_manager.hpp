@@ -175,6 +175,7 @@ class UpdateManager : public UpdateManagerBase
     const std::string swRootPath{"/xyz/openbmc_project/software/"};
 
     std::unique_ptr<Activation> activation;
+    std::unique_ptr<ActivationProgress> activationProgress;
 
   private:
     /** @brief Starts firmware activation for all associated devices.
@@ -197,7 +198,6 @@ class UpdateManager : public UpdateManagerBase
     std::unique_ptr<Update> updater;
 #endif
 
-    std::unique_ptr<ActivationProgress> activationProgress;
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;

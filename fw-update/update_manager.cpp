@@ -378,6 +378,12 @@ void UpdateManager::completeUpdate(bool status)
     auto dur =
         std::chrono::duration<double, std::milli>(endTime - startTime).count();
     info("Firmware update time: {DURATION}ms", "DURATION", dur);
+
+    // The update is finished, whether it succeeded or failed, so report full
+    // progress as ItemUpdateManager does. The progress is set before the
+    // activation state, which ends the update for a client such as bmcweb.
+    activationProgress->progress(100);
+    lastProgress = 100;
     activation->activation(status ? software::Activation::Activations::Active
                                   : software::Activation::Activations::Failed);
 
