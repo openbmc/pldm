@@ -321,6 +321,7 @@ void ItemUpdateManager::resetActivationState()
     activationProgress.reset();
     dupFd.reset();
     updateInProgress = false;
+    forceUpdate = false;
 }
 
 void ItemUpdateManager::updateActivationProgress()
@@ -338,13 +339,14 @@ void ItemUpdateManager::updateActivationProgress()
 
 sdbusplus::object_path ItemUpdateManager::startUpdate(
     sdbusplus::message::unix_fd image,
-    ApplyTimeIntf::RequestedApplyTimes applyTime)
+    ApplyTimeIntf::RequestedApplyTimes applyTime, bool forceUpdate)
 {
     if (updateInProgress)
     {
         error("Update already in progress");
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
+    this->forceUpdate = forceUpdate;
     if (image.fd < 0)
     {
         error("Invalid package file descriptor");
