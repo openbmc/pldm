@@ -234,6 +234,16 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
 
 void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
 {
+    // The device update is finished, mark the device progress as complete so
+    // that ActivationProgress reaches 100% even if the update failed for
+    // some of the devices.
+    if (auto search = deviceUpdaterMap.find(eid);
+        search != deviceUpdaterMap.end())
+    {
+        search->second->markProgressComplete();
+        updateActivationProgress();
+    }
+
     deviceUpdateCompletionMap.emplace(eid, status);
     if (deviceUpdateCompletionMap.size() == deviceUpdaterMap.size())
     {
