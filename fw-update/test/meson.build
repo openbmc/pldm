@@ -4,6 +4,7 @@ tests = [
     'inventory_manager_test',
     'package_parser_test',
     'device_updater_test',
+    'update_manager_test',
     'firmware_inventory_manager_test',
     'firmware_inventory_test',
     'condition_collector_test',
