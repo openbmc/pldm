@@ -136,6 +136,30 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
     EXPECT_EQ(deviceUpdater.getProgress(), 48);
 }
 
+TEST_F(DeviceUpdaterTest, UnhandledResponsesReportedToCaller)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    // A missing response cannot be handled, so the handlers report it to their
+    // caller, which abandons the update with CancelUpdate.
+    EXPECT_FALSE(deviceUpdater.passCompTable(0, nullptr, 0));
+    EXPECT_FALSE(deviceUpdater.updateComponent(0, nullptr, 0));
+
+    // Neither can a response with a non-zero completion code.
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> passCompTableResp{
+        0x0A, 0x05, PLDM_PASS_COMPONENT_TABLE, PLDM_ERROR};
+    EXPECT_FALSE(deviceUpdater.passCompTable(
+        0, reinterpret_cast<const pldm_msg*>(passCompTableResp.data()),
+        passCompTableResp.size() - sizeof(pldm_msg_hdr)));
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> updateComponentResp{
+        0x0A, 0x05, PLDM_UPDATE_COMPONENT, PLDM_ERROR};
+    EXPECT_FALSE(deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(updateComponentResp.data()),
+        updateComponentResp.size() - sizeof(pldm_msg_hdr)));
+}
+
 TEST_F(DeviceUpdaterTest, RejectWrappedOffsetBeforeComponent)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
