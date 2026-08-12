@@ -15,7 +15,12 @@ namespace pldm
 namespace fw_update
 {
 
-/** @brief Update status of a component in the firmware update package */
+/** @brief Update status of a component in the firmware update package
+ *
+ *  Skipped indicates the firmware device declined the component update
+ *  because the component image is identical to the active component image,
+ *  which is not treated as a failure.
+ */
 enum class ComponentUpdateStatus
 {
     Failed,
@@ -23,6 +28,10 @@ enum class ComponentUpdateStatus
      *         set optimistically once the component can be updated, before the
      *         transfer, verification and apply steps have completed. */
     Accepted,
+    /** @brief The firmware device declined the component update because the
+     *         component image is identical to the active image. This is not
+     *         treated as a failure. */
+    Skipped,
 };
 
 /** @brief Type alias for component update status tracking
@@ -31,6 +40,21 @@ enum class ComponentUpdateStatus
 using ComponentUpdateStatusMap = std::map<size_t, ComponentUpdateStatus>;
 
 class UpdateManagerBase;
+
+/** @brief Compute the UpdateOptionFlags for the UpdateComponent request
+ *
+ *  The ForceUpdate bit (bit0) is set if the firmware update package requests
+ *  it for the component or if the force update flag was set in the StartUpdate
+ *  D-Bus method.
+ *
+ *  @param[in] comp - Component image information from the package
+ *  @param[in] forceUpdate - Force update flag from the StartUpdate D-Bus
+ *                           method
+ *
+ *  @return UpdateOptionFlags for the UpdateComponent request
+ */
+bitfield32_t computeUpdateOptionFlags(const ComponentImageInfo& comp,
+                                      bool forceUpdate);
 
 /** @class UpdateProgress
  *
@@ -363,8 +387,7 @@ class DeviceUpdater
     std::unique_ptr<sdeventplus::source::Defer> pldmRequest;
 
     /**
-     * @brief Map to hold component update status. True - success, False -
-     *        cancelled
+     * @brief Map to hold the update status of each component
      */
     ComponentUpdateStatusMap componentUpdateStatus;
 

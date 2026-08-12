@@ -94,8 +94,8 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
 }
 
-std::string UpdateManager::processStreamDefer(std::istream& package,
-                                              uintmax_t packageSize)
+std::string UpdateManager::processStreamDefer(
+    std::istream& package, uintmax_t packageSize, bool forceUpdate)
 {
     auto swId = getSwId();
     objPath = swRootPath + swId;
@@ -107,6 +107,11 @@ std::string UpdateManager::processStreamDefer(std::istream& package,
             "No devices discovered, cannot process the PLDM fw update package.");
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
+
+    this->forceUpdate = forceUpdate;
+    info("Processing firmware update package with force update set to "
+         "'{FORCE_UPDATE}'",
+         "FORCE_UPDATE", forceUpdate);
 
     updateDeferHandler = std::make_unique<sdeventplus::source::Defer>(
         event, [this, &package, packageSize](sdeventplus::source::EventBase&) {
@@ -413,6 +418,7 @@ void UpdateManager::resetActivationState()
     parser.reset();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
+    forceUpdate = false;
 }
 
 void UpdateManager::updateActivationProgress()
