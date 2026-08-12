@@ -197,10 +197,15 @@ $ pldmtool base GetPLDMTypes
 
 ## Understanding pldmtool output error scenario
 
-When the pldmtool receives the wrong response for the request sent it errors out
-with a response code and completion code. The completion code represents the
-type of error and is defined in every pldm type `pldm_\<type\>_completion_codes`
-enum values.
+When a command fails, pldmtool may report a response code (`rc`) and completion
+code (`cc`).
+
+- `rc != 0` indicates a local request, transport, or response-processing error.
+- `rc == 0` and `cc != 0` indicates that the request reached the endpoint and
+  the endpoint returned a PLDM completion code.
+
+The completion code represents the type of error and is defined in every PLDM
+type's `pldm_\<type\>_completion_codes` enum values.
 
 Example:
 
