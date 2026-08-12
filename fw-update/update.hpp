@@ -36,11 +36,14 @@ class Update : public UpdateIntf
            UpdateManager* updateManager) :
         UpdateIntf(bus, path.c_str()), updateManager(updateManager),
         objPath(path)
-    {}
+    {
+        allowedForceUpdate(true);
+    }
 
     sdbusplus::object_path startUpdate(
         sdbusplus::message::unix_fd image,
-        ApplyTimeIntf::RequestedApplyTimes applyTime) override;
+        ApplyTimeIntf::RequestedApplyTimes applyTime,
+        bool forceUpdate) override;
 
     ~Update() noexcept override = default;
 
