@@ -15,11 +15,24 @@ namespace pldm
 namespace fw_update
 {
 
-/** @brief Type alias for component update status tracking
- *         Maps component index to its update completion status (true indicates
- *         successful completion, false indicates cancellation)
+/** @brief Update status of a component in the firmware update package
+ *
+ *  Failed: the component update failed, or the firmware device declined the
+ *          component for a reason that is treated as a failure.
+ *  Accepted: the firmware device accepted the component for update. This is
+ *            set optimistically once the component can be updated, before
+ *            the transfer, verification and apply steps have completed.
  */
-using ComponentUpdateStatusMap = std::map<size_t, bool>;
+enum class ComponentUpdateStatus
+{
+    Failed,
+    Accepted,
+};
+
+/** @brief Type alias for component update status tracking
+ *         Maps component index to its update status
+ */
+using ComponentUpdateStatusMap = std::map<size_t, ComponentUpdateStatus>;
 
 class UpdateManagerBase;
 
