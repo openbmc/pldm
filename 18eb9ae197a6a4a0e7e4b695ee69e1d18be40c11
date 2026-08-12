@@ -46,6 +46,30 @@
       },
       "revId": "18eb9ae197a6a4a0e7e4b695ee69e1d18be40c11",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb2e70f9_33a6e322",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-08-12T14:40:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f26a767f_8b762065",
+      "range": {
+        "startLine": 299,
+        "startChar": 1,
+        "endLine": 301,
+        "endChar": 36
+      },
+      "revId": "18eb9ae197a6a4a0e7e4b695ee69e1d18be40c11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
