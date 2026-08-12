@@ -99,7 +99,7 @@ DeviceUpdater::DeviceUpdater(
     eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
     compImageInfos(compImageInfos), compInfo(compInfo),
     maxTransferSize(maxTransferSize), updateManager(updateManager),
-    activationComplete{false}
+    progressComplete{false}
 {
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -1001,7 +1001,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         return;
     }
 
-    activationComplete = true;
+    progressComplete = true;
     if (updateManager == nullptr)
     {
         return;
@@ -1230,7 +1230,7 @@ uint8_t DeviceUpdater::getProgress() const
         return 0;
     }
 
-    if (activationComplete)
+    if (progressComplete)
     {
         return firmwareActivationProgressPercent;
     }
