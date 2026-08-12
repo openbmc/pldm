@@ -213,6 +213,26 @@ $ pldmtool platform getpdr -d 17
 Response Message Error: rc=0 , cc=130
 ```
 
+## Troubleshooting
+
+When a command fails, check the response code (`rc`) and completion code
+(`cc`). The response code indicates a local request or response processing
+error, while the completion code is returned by the PLDM endpoint.
+
+Common causes include:
+
+- An unsupported PLDM type or command
+- An incorrect MCTP endpoint ID
+- An unreachable endpoint
+- An invalid request payload
+
+Use the command-specific help option to check the required arguments and
+payload format before retrying the request:
+
+```bash
+pldmtool <pldmType> <commandName> -h
+```
+
 ## pldmtool with mctp_eid option
 
 Use **-m** or **--mctp_eid** option to send pldm request message to remote mctp
