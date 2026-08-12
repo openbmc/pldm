@@ -115,6 +115,18 @@ Options:
   -v,--verbose
 ```
 
+### FRU record table
+
+To retrieve the FRU record table from an MCTP endpoint, use its endpoint ID with
+the `-m` option:
+
+```bash
+pldmtool fru GetFruRecordTable -m <MCTP_EID>
+```
+
+Replace `<MCTP_EID>` with the endpoint ID discovered on the target system. The
+endpoint must support the PLDM FRU type and the `GetFruRecordTable` command.
+
 ## pldmtool raw command usage
 
 pldmtool raw command option accepts request message in the hexadecimal bytes and
