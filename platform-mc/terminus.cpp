@@ -58,21 +58,46 @@ bool Terminus::doesSupportCommand(uint8_t type, uint8_t command)
     return false;
 }
 
+std::optional<ContainerID> Terminus::findTerminusLocatorContainerId()
+{
+    for (auto& pdr : pdrs)
+    {
+        auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(pdr.data());
+        if (pdrHdr->type == PLDM_TERMINUS_LOCATOR_PDR)
+        {
+            if (pdr.size() >= sizeof(pldm_terminus_locator_pdr))
+            {
+                auto tlPdr =
+                    std::start_lifetime_as<pldm_terminus_locator_pdr>(
+                        pdr.data());
+                ContainerID containerId = tlPdr->container_id;
+                return containerId;
+            }
+            break;
+        }
+    }
+
+    return std::nullopt;
+}
+
 std::optional<std::string_view> Terminus::findTerminusName()
 {
+    auto containerId = findTerminusLocatorContainerId();
+    if (!containerId.has_value())
+    {
+        return std::nullopt;
+    }
+
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
-        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+        [containerId](
+            const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+            if (!entityAuxiliaryNames)
+            {
+                return false;
+            }
             const auto& [key, entityNames] = *entityAuxiliaryNames;
-            /**
-             * There is only one Overall system container entity in one
-             * terminus. The entity auxiliary name PDR of that terminus with the
-             * that type of containerID will include terminus name.
-             */
-            return (
-                entityAuxiliaryNames &&
-                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
-                entityNames.size());
+            return (key.containerId == *containerId && entityNames.size());
         });
 
     if (it != entityAuxiliaryNamesTbl.end())
@@ -90,14 +115,22 @@ std::optional<std::string_view> Terminus::findTerminusName()
 
 uint16_t Terminus::findTerminusEntityType()
 {
+    auto containerId = findTerminusLocatorContainerId();
+    if (!containerId.has_value())
+    {
+        return 0;
+    }
+
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
-        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+        [containerId](
+            const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+            if (!entityAuxiliaryNames)
+            {
+                return false;
+            }
             const auto& [key, entityNames] = *entityAuxiliaryNames;
-            return (
-                entityAuxiliaryNames &&
-                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
-                entityNames.size());
+            return (key.containerId == *containerId && entityNames.size());
         });
 
     if (it != entityAuxiliaryNamesTbl.end())

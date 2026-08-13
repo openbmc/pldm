@@ -180,6 +180,13 @@ class Terminus
     std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
 
   private:
+    /** @brief Find the container ID reported in the terminus's own Terminus
+     *         Locator PDR.
+     *  @return container ID, or std::nullopt if no Terminus Locator PDR was
+     *          found
+     */
+    std::optional<ContainerID> findTerminusLocatorContainerId();
+
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
      *  @return terminus name in string option
@@ -250,7 +257,8 @@ class Terminus
      *  @param[in] tName - the terminus name
      *  @param[in] entityType - PLDM entity type of the overall terminus
      *                          entity (from the Entity Auxiliary Names PDR
-     *                          whose containerId is the system container)
+     *                          whose containerId matches the terminus
+     *                          locator PDR's container ID)
      *  @return true/false: True if there is no error in creating inventory path
      */
     bool createInventoryPath(std::string tName, uint16_t entityType);
@@ -258,7 +266,8 @@ class Terminus
     /** @brief Find the PLDM entity type of the overall terminus entity.
      *
      *  Uses the same Entity Auxiliary Names PDR lookup as findTerminusName()
-     *  (i.e. the entry whose containerId is the system container).
+     *  (i.e. the entry whose containerId matches the terminus locator PDR's
+     *  container ID).
      *
      *  @return entity type, or 0 if not found
      */
