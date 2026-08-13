@@ -109,6 +109,12 @@ class Terminus
         terminusName = tName;
     }
 
+    /** @brief Set the parent chassis/board path for contained_by association */
+    void setParentChassisPath(const std::string& path)
+    {
+        parentChassisPath = path;
+    }
+
     /** @brief The getter to get terminus's mctp medium */
     std::optional<std::string_view> getTerminusName()
     {
@@ -306,6 +312,13 @@ class Terminus
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
+
+    /* @brief Parent chassis/board path for contained_by association */
+    std::string parentChassisPath;
+
+    /* @brief Association definitions interface for containment */
+    std::unique_ptr<AssociationDefinitionsInft> associationDefinitionsIntf =
+        nullptr;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work

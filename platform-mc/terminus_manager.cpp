@@ -4,6 +4,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <filesystem>
+
 PHOSPHOR_LOG2_USING;
 
 namespace pldm
@@ -439,6 +441,34 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         lg2::info("Terminus {TID} has default Terminus Name {NAME}", "NAME",
                   mctpInfoName.value(), "TID", tid);
         termini[tid]->setTerminusName(mctpInfoName.value());
+    }
+
+    /* Resolve the parent chassis path from the configured_by association */
+    try
+    {
+        pldm::utils::DBusHandler dbusHandler;
+        sdbusplus::object_path configuredByPath(
+            constructEndpointObjPath(mctpInfo) + "/configured_by");
+        sdbusplus::object_path inventorySubtree(
+            "/xyz/openbmc_project/inventory");
+        auto response = dbusHandler.getAssociatedSubTree(
+            configuredByPath, inventorySubtree, 0, {});
+        if (!response.empty())
+        {
+            auto emConfigPath = response.begin()->first;
+            auto parentPath =
+                std::filesystem::path(emConfigPath).parent_path().string();
+            lg2::info(
+                "Terminus {TID}: resolved parent chassis {PATH}", "TID", tid,
+                "PATH", parentPath);
+            termini[tid]->setParentChassisPath(parentPath);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        lg2::info(
+            "Terminus {TID}: no configured_by association, skipping containment - {ERROR}",
+            "TID", tid, "ERROR", e);
     }
 
     co_return PLDM_SUCCESS;
