@@ -441,6 +441,32 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         termini[tid]->setTerminusName(mctpInfoName.value());
     }
 
+    /* Resolve the EM config path from the configured_by association */
+    try
+    {
+        pldm::utils::DBusHandler dbusHandler;
+        sdbusplus::message::object_path mctpEndpointPath(
+            constructEndpointObjPath(mctpInfo));
+        auto response = dbusHandler.getAssociatedSubTree(
+            mctpEndpointPath / "configured_by",
+            sdbusplus::message::object_path("/xyz/openbmc_project/inventory"),
+            0, {});
+        if (!response.empty())
+        {
+            auto emConfigPath = response.begin()->first;
+            lg2::info(
+                "Terminus {TID}: resolved EM config path {PATH}", "TID", tid,
+                "PATH", emConfigPath);
+            termini[tid]->setEmConfigPath(emConfigPath);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        lg2::info(
+            "Terminus {TID}: no configured_by association found - {ERROR}",
+            "TID", tid, "ERROR", e);
+    }
+
     co_return PLDM_SUCCESS;
 }
 
