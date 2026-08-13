@@ -127,16 +127,33 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
     {
         inventoryItemInft = pldm::dbus_api::createPldmEntity(
             utils::DBusHandler::getBus(), inventoryPath, entityType);
-        return true;
     }
     catch (const sdbusplus::exception_t& e)
     {
         lg2::error(
             "Failed to create Inventory Board interface for device {PATH}",
             "PATH", inventoryPath);
+        return false;
     }
 
-    return false;
+    if (!emConfigPath.empty())
+    {
+        try
+        {
+            associationDefinitionsIntf = std::make_unique<AssociationDefinitionsInft>(
+                utils::DBusHandler::getBus(), inventoryPath.c_str());
+            associationDefinitionsIntf->associations(
+                {{"configured_by", "configures", emConfigPath}});
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            lg2::error(
+                "Failed to create configured_by association for {PATH}: {ERROR}",
+                "PATH", inventoryPath, "ERROR", e);
+        }
+    }
+
+    return true;
 }
 
 void Terminus::parseTerminusPDRs()
