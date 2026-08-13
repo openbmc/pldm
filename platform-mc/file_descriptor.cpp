@@ -29,12 +29,12 @@ using NotAllowedMetaData = xyz::openbmc_project::Common::NotAllowed;
 using PurposeType =
     sdbusplus::common::xyz::openbmc_project::pldm::File::PurposeType;
 
-// Maximum retry allowed to tolerate failures in polling for the server socket
-// readiness, or tolerate EAGAIN/EWOULDBLOCK in writing data to it.
-constexpr auto MAX_SOCKET_POLL_RETRY = 5;
+// Maximum retry allowed to tolerate local socket back-pressure while the
+// consumer drains a large file-transfer stream.
+constexpr auto MAX_SOCKET_POLL_RETRY = 120;
 
 // Timeout in microsecond used in select() for the server socket.
-constexpr auto SOCKET_SELECT_TIMEOUT_US = 2000;
+constexpr auto SOCKET_SELECT_TIMEOUT_US = 50000;
 
 // The transfer part size to be negotiated with File Host.
 constexpr auto REQUESTER_PART_SIZE = 0x100;
