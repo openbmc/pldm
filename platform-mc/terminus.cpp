@@ -249,8 +249,14 @@ void Terminus::parseTerminusPDRs()
     {
         lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
                   "NAME", tName.value());
-        terminusName = std::format("{}_{}", tName.value(),
-                                   findTerminusEntityInstanceIdx());
+        // Prepend EM config Name to the terminus name if it exists
+        terminusName =
+            terminusName.empty()
+                ? static_cast<std::string>(tName.value())
+                : terminusName + "_" + static_cast<std::string>(tName.value());
+
+        terminusName =
+            std::format("{}_{}", terminusName, findTerminusEntityInstanceIdx());
     }
 
     if (terminusName.empty())
