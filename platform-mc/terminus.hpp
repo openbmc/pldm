@@ -109,6 +109,12 @@ class Terminus
         terminusName = tName;
     }
 
+    /** @brief Set the EM config path for configured_by association */
+    void setEmConfigPath(const std::string& path)
+    {
+        emConfigPath = path;
+    }
+
     /** @brief The getter to get terminus's mctp medium */
     std::optional<std::string_view> getTerminusName()
     {
@@ -306,6 +312,13 @@ class Terminus
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
+
+    /* @brief EM config path for configured_by association */
+    std::string emConfigPath;
+
+    /* @brief Association definitions interface */
+    std::unique_ptr<AssociationDefinitionsInft> associationDefinitionsIntf =
+        nullptr;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work
