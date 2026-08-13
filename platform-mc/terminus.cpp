@@ -227,7 +227,9 @@ void Terminus::parseTerminusPDRs()
     {
         lg2::info("Terminus {TID} has Auxiliary Name {NAME}.", "TID", tid,
                   "NAME", tName.value());
-        terminusName = static_cast<std::string>(tName.value());
+        terminusName = terminusName.empty()
+                           ? static_cast<std::string>(tName.value())
+                           : terminusName + "_" + static_cast<std::string>(tName.value());
     }
 
     if (terminusName.empty())
