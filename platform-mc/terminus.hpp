@@ -198,8 +198,29 @@ class Terminus
     }
 
   private:
+    /** @brief Find the container ID reported in the Terminus Locator PDR.
+     *
+     *  @return container ID, or std::nullopt if there is no valid Terminus
+     *          Locator PDR
+     */
+    std::optional<ContainerID> findTerminusLocatorContainerId();
+
+    /** @brief Find the Entity Auxiliary Names entry of the overall terminus
+     *         entity.
+     *
+     *  Searches entityAuxiliaryNamesTbl for the entry whose containerId
+     *  matches the Terminus Locator PDR's container ID. If there is no
+     *  Terminus Locator PDR, the system container ID is used instead.
+     *
+     *  @return matching entry, or nullptr if not found
+     */
+    std::shared_ptr<EntityAuxiliaryNames>
+        findOverallTerminusEntityAuxiliaryNames();
+
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
-     *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
+     *
+     *  Uses the entry returned by findOverallTerminusEntityAuxiliaryNames().
+     *
      *  @return terminus name in string option
      */
     std::optional<std::string_view> findTerminusName();
@@ -267,16 +288,14 @@ class Terminus
      *
      *  @param[in] tName - the terminus name
      *  @param[in] entityType - PLDM entity type of the overall terminus
-     *                          entity (from the Entity Auxiliary Names PDR
-     *                          whose containerId is the system container)
+     *                          entity, see findTerminusEntityType()
      *  @return true/false: True if there is no error in creating inventory path
      */
     bool createInventoryPath(std::string tName, uint16_t entityType);
 
     /** @brief Find the PLDM entity type of the overall terminus entity.
      *
-     *  Uses the same Entity Auxiliary Names PDR lookup as findTerminusName()
-     *  (i.e. the entry whose containerId is the system container).
+     *  Uses the entry returned by findOverallTerminusEntityAuxiliaryNames().
      *
      *  @return entity type, or 0 if not found
      */
@@ -284,8 +303,7 @@ class Terminus
 
     /** @brief Find the entity instance index of the overall terminus entity.
      *
-     *  Uses the same Entity Auxiliary Names PDR lookup as findTerminusName()
-     *  (i.e. the entry whose containerId is the system container).
+     *  Uses the entry returned by findOverallTerminusEntityAuxiliaryNames().
      *
      *  @return entity instance number, or 0 if not found
      */

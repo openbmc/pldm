@@ -58,77 +58,91 @@ bool Terminus::doesSupportCommand(uint8_t type, uint8_t command)
     return false;
 }
 
-std::optional<std::string_view> Terminus::findTerminusName()
+std::optional<ContainerID> Terminus::findTerminusLocatorContainerId()
 {
-    auto it = std::find_if(
-        entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
-        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
-            const auto& [key, entityNames] = *entityAuxiliaryNames;
-            /**
-             * There is only one Overall system container entity in one
-             * terminus. The entity auxiliary name PDR of that terminus with the
-             * that type of containerID will include terminus name.
-             */
-            return (
-                entityAuxiliaryNames &&
-                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
-                entityNames.size());
-        });
-
-    if (it != entityAuxiliaryNamesTbl.end())
+    for (auto& pdr : pdrs)
     {
-        const auto& [key, entityNames] = **it;
-        if (!entityNames.size())
+        auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(pdr.data());
+        if (pdrHdr->type == PLDM_TERMINUS_LOCATOR_PDR)
         {
-            return std::nullopt;
+            if (pdr.size() >= sizeof(pldm_terminus_locator_pdr))
+            {
+                auto tlPdr = std::start_lifetime_as<pldm_terminus_locator_pdr>(
+                    pdr.data());
+                return static_cast<ContainerID>(tlPdr->container_id);
+            }
+            break;
         }
-        return entityNames[0].second;
     }
 
     return std::nullopt;
 }
 
-uint16_t Terminus::findTerminusEntityType()
+std::shared_ptr<EntityAuxiliaryNames>
+    Terminus::findOverallTerminusEntityAuxiliaryNames()
 {
+    // Without a Terminus Locator PDR, use the SYSTEM container ID.
+    const ContainerID containerId = findTerminusLocatorContainerId().value_or(
+        PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID);
+
     auto it = std::find_if(
         entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
-        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+        [containerId](
+            const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
+            if (!entityAuxiliaryNames)
+            {
+                return false;
+            }
             const auto& [key, entityNames] = *entityAuxiliaryNames;
-            return (
-                entityAuxiliaryNames &&
-                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
-                entityNames.size());
+            return (key.containerId == containerId && entityNames.size());
         });
 
     if (it != entityAuxiliaryNamesTbl.end())
     {
-        const auto& [key, entityNames] = **it;
-        return key.type;
+        return *it;
     }
 
-    return 0;
+    return nullptr;
+}
+
+std::optional<std::string_view> Terminus::findTerminusName()
+{
+    auto entityAuxiliaryNames = findOverallTerminusEntityAuxiliaryNames();
+    if (!entityAuxiliaryNames)
+    {
+        return std::nullopt;
+    }
+
+    const auto& [key, entityNames] = *entityAuxiliaryNames;
+    if (!entityNames.size())
+    {
+        return std::nullopt;
+    }
+    return entityNames[0].second;
+}
+
+uint16_t Terminus::findTerminusEntityType()
+{
+    auto entityAuxiliaryNames = findOverallTerminusEntityAuxiliaryNames();
+    if (!entityAuxiliaryNames)
+    {
+        return 0;
+    }
+
+    const auto& [key, entityNames] = *entityAuxiliaryNames;
+    return key.type;
 }
 
 EntityInstance Terminus::findTerminusEntityInstanceIdx()
 {
-    auto it = std::find_if(
-        entityAuxiliaryNamesTbl.begin(), entityAuxiliaryNamesTbl.end(),
-        [](const std::shared_ptr<EntityAuxiliaryNames>& entityAuxiliaryNames) {
-            // entityAuxiliaryNames is guaranteed to be non null by
-            // parseTerminusPDRs()
-            const auto& [key, entityNames] = *entityAuxiliaryNames;
-            return (
-                key.containerId == PLDM_PLATFORM_ENTITY_SYSTEM_CONTAINER_ID &&
-                entityNames.size());
-        });
-
-    if (it != entityAuxiliaryNamesTbl.end())
+    auto entityAuxiliaryNames = findOverallTerminusEntityAuxiliaryNames();
+    if (!entityAuxiliaryNames)
     {
-        const auto& [key, entityNames] = **it;
-        return key.instanceIdx;
+        return 0;
     }
 
-    return 0;
+    const auto& [key, entityNames] = *entityAuxiliaryNames;
+    return key.instanceIdx;
 }
 
 bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
