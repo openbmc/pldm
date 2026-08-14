@@ -17,7 +17,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <span>
-#include <spanstream>
 #include <string>
 #include <system_error>
 
@@ -46,27 +45,14 @@ bool ItemUpdateManager::processPackage()
         return false;
     }
 
-    auto buffer = std::vector<uint8_t>(packageMap->getBytes().begin(),
-                                       packageMap->getBytes().end());
-    parser = parsePkgHeader(buffer);
+    // Parsed straight out of the mapping, the component image views of the
+    // parser point into it. packageMap therefore has to outlive the parser.
+    parser = parsePkgHeader(std::as_const(*packageMap).getBytes());
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
         inProgressActivation->activation(
             software::Activation::Activations::Invalid);
-        packageMap.reset();
-        return false;
-    }
-    try
-    {
-        parser->parse(buffer);
-    }
-    catch (const std::exception& e)
-    {
-        error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        inProgressActivation->activation(
-            software::Activation::Activations::Invalid);
-        parser.reset();
         packageMap.reset();
         return false;
     }
@@ -78,6 +64,7 @@ bool ItemUpdateManager::processPackage()
         error("Failed to associate package to device");
         inProgressActivation->activation(
             software::Activation::Activations::Invalid);
+        parser.reset();
         packageMap.reset();
         return false;
     }
@@ -86,12 +73,9 @@ bool ItemUpdateManager::processPackage()
     const auto& compImageInfos = parser->getComponentImageInfos();
     static constexpr uint32_t MAXIMUM_TRANSFER_SIZE = 4096;
 
-    auto packageSpan = packageMap->getChars();
-    packageDataStream =
-        std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
-        eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
-        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
+        eid, fwDeviceIDRecords[*deviceIdRecordOffset], compImageInfos,
+        componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
     {
@@ -273,8 +257,10 @@ void ItemUpdateManager::completeUpdate(bool status)
 
 void ItemUpdateManager::teardownUpdate()
 {
+    // deviceUpdater refers into the parser, which refers into packageMap, so
+    // they have to be released in that order.
     deviceUpdater.reset();
-    packageDataStream.reset();
+    parser.reset();
     packageMap.reset();
     dupFd.reset();
     updateInProgress = false;
@@ -329,6 +315,11 @@ void ItemUpdateManager::resetActivationState()
 {
     inProgressActivation.reset();
     activationProgress.reset();
+    // deviceUpdater refers into the parser, which refers into packageMap, so
+    // they have to be released in that order.
+    deviceUpdater.reset();
+    parser.reset();
+    packageMap.reset();
     dupFd.reset();
     updateInProgress = false;
 }

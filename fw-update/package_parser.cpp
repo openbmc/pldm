@@ -23,15 +23,14 @@ using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 static pkg::ComponentImageInfo convertComponentImageInfo(
-    const ComponentImageInfo& c, const uint8_t* pkgPtr)
+    const ComponentImageInfo& c)
 {
     return {c.componentClassification,
             c.componentIdentifier,
             c.compComparisonStamp,
             c.componentOptions,
             c.requestedComponentActivationMethod,
-            c.componentLocation.ptr - pkgPtr,
-            c.componentLocation.length,
+            pkg::CompImage{c.componentLocation.ptr, c.componentLocation.length},
             c.componentVersion};
 }
 
@@ -62,30 +61,23 @@ static pkg::FirmwareDeviceIDRecord convertFirmwareDeviceIDRecord(
 
 const static PackagePin currentPin = PackagePin::v1;
 
-void WrapPackageParser::parse(const std::vector<uint8_t>& pkgHdr)
+WrapPackageParser::WrapPackageParser(std::span<const uint8_t> pkgHdr)
 {
     auto expected = pldm::fw_update::PackageParser::parse(pkgHdr, currentPin);
 
-    std::unique_ptr<Package> package;
-
-    if (expected.has_value())
-    {
-        package = std::move(expected.value());
-    }
-    else
+    if (!expected.has_value())
     {
         error("Package parsing failed: {ERR}", "ERR", expected.error().msg);
         throw InternalFailure();
     }
 
-    // populate member variables
-
-    const uint8_t* pkgPtr = pkgHdr.data();
+    // Only used to populate the members below. The component image views point
+    // into pkgHdr, not into the package, so it does not have to be kept alive.
+    const std::unique_ptr<Package> package = std::move(expected.value());
 
     for (const ComponentImageInfo& cii : package->componentImageInformation)
     {
-        componentImageInfos.emplace_back(
-            convertComponentImageInfo(cii, pkgPtr));
+        componentImageInfos.emplace_back(convertComponentImageInfo(cii));
     }
 
     for (const FirmwareDeviceIDRecord& fdir : package->firmwareDeviceIdRecords)
@@ -94,18 +86,17 @@ void WrapPackageParser::parse(const std::vector<uint8_t>& pkgHdr)
     }
 }
 
-std::unique_ptr<WrapPackageParser> parsePkgHeader(std::vector<uint8_t>& pkgHdr)
+std::unique_ptr<WrapPackageParser> parsePkgHeader(
+    std::span<const uint8_t> pkgHdr)
 {
-    auto expected = pldm::fw_update::PackageParser::parse(pkgHdr, currentPin);
-
-    if (!expected.has_value())
+    try
     {
-        error("{ERR}, RC = {RC}", "ERR", expected.error().msg, "RC",
-              expected.error().rc.value_or(0));
+        return std::make_unique<WrapPackageParser>(pkgHdr);
+    }
+    catch (const InternalFailure&)
+    {
         return nullptr;
     }
-
-    return std::make_unique<WrapPackageParser>();
 }
 
 } // namespace fw_update
