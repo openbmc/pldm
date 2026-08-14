@@ -23,15 +23,14 @@ using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 static pkg::ComponentImageInfo convertComponentImageInfo(
-    const ComponentImageInfo& c, const uint8_t* pkgPtr)
+    const ComponentImageInfo& c)
 {
     return {c.componentClassification,
             c.componentIdentifier,
             c.compComparisonStamp,
             c.componentOptions,
             c.requestedComponentActivationMethod,
-            c.componentLocation.ptr - pkgPtr,
-            c.componentLocation.length,
+            pkg::CompImage{c.componentLocation.ptr, c.componentLocation.length},
             c.componentVersion};
 }
 
@@ -62,32 +61,25 @@ static pkg::FirmwareDeviceIDRecord convertFirmwareDeviceIDRecord(
 
 const static PackagePin currentPin = PackagePin::v1;
 
-void pkg::PackageParser::parse(const std::vector<uint8_t>& pkgHdr)
+void pkg::PackageParser::parse(std::span<const uint8_t> pkgHdr)
 {
     auto expected = pldm::fw_update::PackageParser::parse(pkgHdr, currentPin);
 
-    std::unique_ptr<Package> package;
-
-    if (expected.has_value())
-    {
-        package = std::move(expected.value());
-    }
-    else
+    if (!expected.has_value())
     {
         error("Package parsing failed: {ERR}, RC = {RC}", "ERR",
               expected.error().msg, "RC", expected.error().rc.value_or(0));
         throw InternalFailure();
     }
 
-    // populate member variables
-
-    const uint8_t* pkgPtr = pkgHdr.data();
+    // Only used to populate the members below. The component image views point
+    // into pkgHdr, not into the package, so it does not have to be kept alive.
+    const std::unique_ptr<Package> package = std::move(expected.value());
 
     for (const pldm::fw_update::ComponentImageInfo& cii :
          package->componentImageInformation)
     {
-        componentImageInfos.emplace_back(
-            convertComponentImageInfo(cii, pkgPtr));
+        componentImageInfos.emplace_back(convertComponentImageInfo(cii));
     }
 
     for (const pldm::fw_update::FirmwareDeviceIDRecord& fdir :
@@ -98,7 +90,7 @@ void pkg::PackageParser::parse(const std::vector<uint8_t>& pkgHdr)
 }
 
 std::unique_ptr<pkg::PackageParser> pkg::PackageParser::parsePkgHeader(
-    std::vector<uint8_t>& pkgHdr)
+    std::span<const uint8_t> pkgHdr)
 {
     auto res = std::make_unique<PackageParser>();
 

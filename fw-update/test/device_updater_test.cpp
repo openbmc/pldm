@@ -33,6 +33,11 @@ class DeviceUpdaterTest : public testing::Test
     DeviceUpdaterTest() :
         package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate)
     {
+        packageData.resize(package.tellg());
+        package.seekg(0);
+        package.read(reinterpret_cast<char*>(packageData.data()),
+                     packageData.size());
+
         fwDeviceIDRecord = {
             1,
             {0x00},
@@ -42,13 +47,24 @@ class DeviceUpdaterTest : public testing::Test
                                    0x15, 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49,
                                    0xD6, 0x75}}},
             {}};
-        compImageInfos = {
-            {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
+        compImageInfos = {{10, 100, 0xFFFFFFFF, 0, 0,
+                           pkg::CompImage{packageData.data() + compImageOffset,
+                                          compImageSize},
+                           "VersionString3"}};
         compInfo = {{std::make_pair(10, 100), 1}};
     }
 
+    static constexpr size_t compImageOffset = 139;
+    static constexpr size_t compImageSize = 1024;
+
     int fd = -1;
     std::ifstream package;
+
+    /** @brief The test package. Has to be declared before compImageInfos, whose
+     *         component image views point into it.
+     */
+    std::vector<uint8_t> packageData;
+
     pkg::FirmwareDeviceIDRecord fwDeviceIDRecord;
     pkg::ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
@@ -57,31 +73,39 @@ class DeviceUpdaterTest : public testing::Test
 TEST_F(DeviceUpdaterTest, validatePackage)
 {
     constexpr uintmax_t testPkgSize = 1163;
-    uintmax_t packageSize = package.tellg();
-    EXPECT_EQ(packageSize, testPkgSize);
+    EXPECT_EQ(packageData.size(), testPkgSize);
 
-    package.seekg(0);
-    std::vector<uint8_t> packageHeader(testPkgSize);
-    package.read(new (packageHeader.data()) char, testPkgSize);
-
-    auto parser = pkg::PackageParser::parsePkgHeader(packageHeader);
-    EXPECT_NE(parser, nullptr);
-
-    package.seekg(0);
+    auto parser = pkg::PackageParser::parsePkgHeader(packageData);
+    ASSERT_NE(parser, nullptr);
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& testPkgCompImageInfos = parser->getComponentImageInfos();
 
-    EXPECT_EQ(fwDeviceIDRecords.size(), 1);
-    EXPECT_EQ(compImageInfos.size(), 1);
+    ASSERT_EQ(fwDeviceIDRecords.size(), 1);
     EXPECT_EQ(fwDeviceIDRecords[0], fwDeviceIDRecord);
-    EXPECT_EQ(testPkgCompImageInfos, compImageInfos);
+
+    // pkg::ComponentImageInfo holds a std::span, which is not equality
+    // comparable, so the entries are compared field by field
+    ASSERT_EQ(testPkgCompImageInfos.size(), compImageInfos.size());
+    for (size_t i = 0; i < testPkgCompImageInfos.size(); ++i)
+    {
+        const auto& actual = testPkgCompImageInfos[i];
+        const auto& expected = compImageInfos[i];
+
+        EXPECT_EQ(std::get<pkg::CompVersion>(actual),
+                  std::get<pkg::CompVersion>(expected));
+
+        const auto& actualImage = std::get<pkg::CompImage>(actual);
+        const auto& expectedImage = std::get<pkg::CompImage>(expected);
+        EXPECT_EQ(actualImage.data(), expectedImage.data());
+        EXPECT_EQ(actualImage.size(), expectedImage.size());
+    }
 }
 
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -153,8 +177,8 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
 
 TEST_F(DeviceUpdaterTest, UnhandledResponsesReportedToCaller)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     // A missing response cannot be handled, so the handlers report it to their
     // caller, which abandons the update with CancelUpdate.
@@ -177,8 +201,8 @@ TEST_F(DeviceUpdaterTest, UnhandledResponsesReportedToCaller)
 
 TEST_F(DeviceUpdaterTest, RejectWrappedOffsetBeforeComponent)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     // The component starts at byte 139. In the affected implementation,
     // compOffset + offset wraps to zero and offset + length wraps to 373.
@@ -196,8 +220,8 @@ TEST_F(DeviceUpdaterTest, RejectWrappedOffsetBeforeComponent)
 
 TEST_F(DeviceUpdaterTest, AllowBaselinePaddingAtComponentEnd)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -216,8 +240,8 @@ TEST_F(DeviceUpdaterTest, AllowBaselinePaddingAtComponentEnd)
 
 TEST_F(DeviceUpdaterTest, RejectOffsetPastComponentEnd)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -243,7 +267,7 @@ TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
 
     // Bind to the map-owned entry, as UpdateManager::processStream does
     ComponentInfoMap componentInfoMap{{eid, compInfo}};
-    DeviceUpdater deviceUpdater(eid, package, fwDeviceIDRecord, compImageInfos,
+    DeviceUpdater deviceUpdater(eid, fwDeviceIDRecord, compImageInfos,
                                 componentInfoMap.at(eid), 512, &updateManager);
 
     // InventoryManager::removeFDs() erases the entry mid-update
@@ -267,8 +291,8 @@ TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
 
 TEST_F(DeviceUpdaterTest, FullUpdateProgress)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>

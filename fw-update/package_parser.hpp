@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <span>
 #include <vector>
 
 namespace pldm
@@ -21,7 +22,11 @@ namespace pkg
 
 /** @class PackageParser
  *
- *  PackageParser is the class for parsing the PLDM firmware update package.
+ *  PackageParser parses the PLDM firmware update package via libpldm++ and
+ *  presents the result using the data structures of this repository.
+ *
+ *  @note The component images are exposed as views into @a pkgHdr, so the
+ *        buffer the package was parsed from has to outlive this object.
  */
 class PackageParser
 {
@@ -55,14 +60,13 @@ class PackageParser
 
     /** @brief Parse the package header information
      *
-     *  @param[in] pkgHdrInfo - package header information section in the
-     * package
+     *  @param[in] pkgHdr - the whole firmware update package
      *
      *  @return On success return the PackageParser for the header format
      * version, on failure throws exception
      */
     static std::unique_ptr<PackageParser> parsePkgHeader(
-        std::vector<uint8_t>& pkgHdr);
+        std::span<const uint8_t> pkgHdr);
 
   private:
     /** @brief Parse the firmware update package
@@ -71,7 +75,7 @@ class PackageParser
      *
      *  @note Throws exception is parsing fails
      */
-    void parse(const std::vector<uint8_t>& pkgHdr);
+    void parse(std::span<const uint8_t> pkgHdr);
 
     /** @brief Firmware Device ID Records in the package */
     pkg::FirmwareDeviceIDRecords fwDeviceIDRecords;
