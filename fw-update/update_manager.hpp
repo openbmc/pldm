@@ -86,16 +86,29 @@ class UpdateManager : public UpdateManagerBase
     UpdateManager& operator=(UpdateManager&&) = delete;
     virtual ~UpdateManager() = default;
 
+    /** @brief Constructor
+     *
+     *  @param[in] event - Reference to PLDM daemon's main event loop
+     *  @param[in] handler - PLDM request handler
+     *  @param[in] instanceIdDb - Managing instance ID for PLDM requests
+     *  @param[in] descriptorMap - Device identifiers of the managed FDs
+     *  @param[in] downstreamDescriptorMap - Device identifiers of the
+     * downstream devices of the managed FDs
+     *  @param[in] componentInfoMap - Component info for the managed FDs
+     */
     explicit UpdateManager(
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const pkg::DescriptorMap& descriptorMap,
+        const pkg::DownstreamDescriptorMap& downstreamDescriptorMap,
         const pkg::ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
-        descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
+        descriptorMap(descriptorMap),
+        downstreamDescriptorMap(downstreamDescriptorMap),
+        componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
               [this](const std::string& packageFilePath) {
@@ -165,12 +178,28 @@ class UpdateManager : public UpdateManagerBase
      */
     void clearPackageData();
 
-    /** @brief
+    /** @brief Match the device ID records of a package against the discovered
+     *         devices
      *
+     *  Downstream device ID records are matched as well, but only to report
+     *  that the package targets a device which cannot be updated yet.
+     *
+     *  @param[in] fwDeviceIDRecords - FD records of the package
+     *  @param[in] downstreamDeviceIDRecords - downstream device records of the
+     *                                         package
+     *  @param[in] descriptorMap - Device identifiers of the managed FDs
+     *  @param[in] downstreamDescriptorMap - Device identifiers of the
+     *                                       downstream devices
+     *  @param[out] totalNumComponentUpdates - number of component updates the
+     *                                         matched records add up to
+     *
+     *  @return the FDs to update, together with the record which matched them
      */
     DeviceUpdaterInfos associatePkgToDevices(
         const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
+        const pkg::DownstreamDeviceIDRecords& downstreamDeviceIDRecords,
         const pkg::DescriptorMap& descriptorMap,
+        const pkg::DownstreamDescriptorMap& downstreamDescriptorMap,
         TotalComponentUpdates& totalNumComponentUpdates);
 
     /** @brief Generate a unique software ID based on current timestamp
@@ -196,6 +225,9 @@ class UpdateManager : public UpdateManagerBase
 
     /** @brief Device identifiers of the managed FDs */
     const pkg::DescriptorMap& descriptorMap;
+    /** @brief Device identifiers of the downstream devices of the managed FDs
+     */
+    const pkg::DownstreamDescriptorMap& downstreamDescriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
     const pkg::ComponentInfoMap& componentInfoMap;
 #ifdef FW_UPDATE_INOTIFY_ENABLED

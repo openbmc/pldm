@@ -44,7 +44,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
         updateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap),
+                      downstreamDescriptorMap, componentInfoMap),
         inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap, configurations,
                      updateManager)
