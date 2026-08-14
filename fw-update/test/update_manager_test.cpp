@@ -17,7 +17,7 @@ class UpdateManagerTest : public testing::Test
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
         updateManager(event, reqHandler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                      downstreamDescriptorMap, componentInfoMap)
     {}
 
     /** @brief A record whose only applicable component is component 0 */
@@ -37,6 +37,7 @@ class UpdateManagerTest : public testing::Test
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> reqHandler;
     DescriptorMap descriptorMap{};
+    DownstreamDescriptorMap downstreamDescriptorMap{};
     ComponentInfoMap componentInfoMap{};
     AggregateUpdateManager updateManager;
 };
@@ -53,8 +54,8 @@ TEST_F(UpdateManagerTest, associatePkgToDevicesMatchesRecordWithOneDescriptor)
     const pkg::FirmwareDeviceIDRecords records{record(base::Descriptors{uuid})};
     TotalComponentUpdates total = 0;
 
-    const auto infos =
-        updateManager.associatePkgToDevices(records, descriptorMap, total);
+    const auto infos = updateManager.associatePkgToDevices(
+        records, {}, descriptorMap, downstreamDescriptorMap, total);
 
     ASSERT_EQ(infos.size(), 1);
     EXPECT_EQ(infos[0].first, 1);
@@ -78,8 +79,8 @@ TEST_F(UpdateManagerTest,
         record(base::Descriptors{titleA, titleB})};
     TotalComponentUpdates total = 0;
 
-    const auto infos =
-        updateManager.associatePkgToDevices(records, descriptorMap, total);
+    const auto infos = updateManager.associatePkgToDevices(
+        records, {}, descriptorMap, downstreamDescriptorMap, total);
 
     ASSERT_EQ(infos.size(), 1);
     EXPECT_EQ(infos[0].first, 1);
@@ -98,8 +99,8 @@ TEST_F(UpdateManagerTest, associatePkgToDevicesRejectsAnUnknownDescriptor)
         record(base::Descriptors{titleA, titleB})};
     TotalComponentUpdates total = 0;
 
-    const auto infos =
-        updateManager.associatePkgToDevices(records, descriptorMap, total);
+    const auto infos = updateManager.associatePkgToDevices(
+        records, {}, descriptorMap, downstreamDescriptorMap, total);
 
     EXPECT_TRUE(infos.empty());
     EXPECT_EQ(total, 0);
