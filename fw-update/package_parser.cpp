@@ -96,7 +96,24 @@ static pkg::FirmwareDeviceIDRecord convertFirmwareDeviceIDRecord(
             f.firmwareDevicePackageData};
 }
 
-const static PackagePin currentPin = PackagePin::v1;
+static pkg::DownstreamDeviceIDRecord convertDownstreamDeviceIDRecord(
+    const DownstreamDeviceIDRecord& d)
+{
+    base::Descriptors recordDescriptors;
+    for (const auto& [k, v] : d.downstreamDeviceRecordDescriptors)
+    {
+        recordDescriptors.insert({k, convertDescriptor(*v)});
+    }
+
+    return {d.downstreamDeviceUpdateOptionFlags,
+            d.downstreamDeviceApplicableComponents,
+            d.downstreamDeviceSelfContainedActivationMinVersionString,
+            d.downstreamDeviceSelfContainedActivationMinVersionComparisonStamp,
+            recordDescriptors,
+            d.downstreamDevicePackageData};
+}
+
+const static PackagePin currentPin = PackagePin::v1_3_0;
 
 void pkg::PackageParser::parse(std::span<const uint8_t> pkgHdr)
 {
@@ -123,6 +140,13 @@ void pkg::PackageParser::parse(std::span<const uint8_t> pkgHdr)
          package->firmwareDeviceIdRecords)
     {
         fwDeviceIDRecords.emplace_back(convertFirmwareDeviceIDRecord(fdir));
+    }
+
+    for (const pldm::fw_update::DownstreamDeviceIDRecord& ddir :
+         package->downstreamDeviceIdRecords)
+    {
+        downstreamDeviceIDRecords.emplace_back(
+            convertDownstreamDeviceIDRecord(ddir));
     }
 }
 

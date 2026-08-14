@@ -72,10 +72,12 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
         nullptr, event, instanceIdDb, false, seconds(1), 2, milliseconds(100));
 
     DescriptorMap descriptorMap{};
+    DownstreamDescriptorMap downstreamDescriptorMap{};
     ComponentInfoMap componentInfoMap{};
 
-    AggregateUpdateManager updateManager(event, handler, instanceIdDb,
-                                         descriptorMap, componentInfoMap);
+    AggregateUpdateManager updateManager(
+        event, handler, instanceIdDb, descriptorMap, downstreamDescriptorMap,
+        componentInfoMap);
 
     FirmwareInventoryManagerTest inventoryManager(&mockHandler, configurations,
                                                   updateManager);

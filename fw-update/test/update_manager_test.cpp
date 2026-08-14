@@ -26,7 +26,7 @@ class UpdateManagerTest : public testing::Test
         package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate),
         packageSize(package.tellg()),
         updateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                      downstreamDescriptorMap, componentInfoMap)
     {
         // Process the test package, which matches the device with eid, so
         // that the update is in progress.
@@ -73,6 +73,7 @@ class UpdateManagerTest : public testing::Test
            std::vector<uint8_t>{0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5, 0x41, 0x15,
                                 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49, 0xD6,
                                 0x75}}}}};
+    const DownstreamDescriptorMap downstreamDescriptorMap{};
     const ComponentInfoMap componentInfoMap{
         {eid, {{std::make_pair(10, 100), 1}}}};
     Event event;
@@ -241,6 +242,7 @@ class UpdateManagerCompInfoTest : public testing::Test
          std::vector<uint8_t>{0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5, 0x41, 0x15,
                               0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49, 0xD6, 0x75}}};
     DescriptorMap descriptorMap;
+    DownstreamDescriptorMap downstreamDescriptorMap;
     ComponentInfoMap componentInfoMap;
     Event event;
     TestInstanceIdDb instanceIdDb;
@@ -257,7 +259,7 @@ TEST_F(UpdateManagerCompInfoTest, skipDeviceMissingComponentInfo)
     componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
-                          componentInfoMap);
+                          downstreamDescriptorMap, componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
 
     // The device with component info is serviced by a DeviceUpdater
@@ -282,7 +284,7 @@ TEST_F(UpdateManagerCompInfoTest, skipDeviceEmptyComponentInfo)
                         {eidWithEmptyCompInfo, {}}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
-                          componentInfoMap);
+                          downstreamDescriptorMap, componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
 
     // The device with component info is serviced by a DeviceUpdater
@@ -310,10 +312,10 @@ TEST_F(UpdateManagerCompInfoTest, componentCountExcludesSkippedDevices)
         {1, {0x00}, "VersionString2", uuidDescriptors, {}}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
-                          componentInfoMap);
+                          downstreamDescriptorMap, componentInfoMap);
     TotalComponentUpdates totalNumComponentUpdates = 0;
     auto deviceUpdaterInfos = manager.associatePkgToDevices(
-        fwDeviceIDRecords, descriptorMap, componentInfoMap,
+        fwDeviceIDRecords, {}, descriptorMap, componentInfoMap, {},
         totalNumComponentUpdates);
 
     // Only the device with non-empty component info is matched and counted
@@ -329,7 +331,7 @@ TEST_F(UpdateManagerCompInfoTest, allDevicesMissingComponentInfoTerminates)
     descriptorMap = {{eidWithoutCompInfo, uuidDescriptors}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
-                          componentInfoMap);
+                          downstreamDescriptorMap, componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), -1);
 
     // The update must terminate as Invalid instead of wedging in Activating
@@ -347,7 +349,7 @@ TEST_F(UpdateManagerCompInfoTest, skippedDeviceFailsUpdate)
     componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
-                          componentInfoMap);
+                          downstreamDescriptorMap, componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
     manager.updateDeviceCompletion(eidWithCompInfo, true);
 
@@ -390,7 +392,8 @@ TEST_F(UpdateManagerTest, associatePkgToDevicesMatchesRecordWithOneDescriptor)
     TotalComponentUpdates total = 0;
 
     const auto infos = updateManager.associatePkgToDevices(
-        records, deviceDescriptors, compInfo, total);
+        records, {}, deviceDescriptors, compInfo, downstreamDescriptorMap,
+        total);
 
     ASSERT_EQ(infos.size(), 1);
     EXPECT_EQ(infos[0].first, 1);
@@ -417,7 +420,8 @@ TEST_F(UpdateManagerTest,
     TotalComponentUpdates total = 0;
 
     const auto infos = updateManager.associatePkgToDevices(
-        records, deviceDescriptors, compInfo, total);
+        records, {}, deviceDescriptors, compInfo, downstreamDescriptorMap,
+        total);
 
     ASSERT_EQ(infos.size(), 1);
     EXPECT_EQ(infos[0].first, 1);
@@ -439,7 +443,8 @@ TEST_F(UpdateManagerTest, associatePkgToDevicesRejectsAnUnknownDescriptor)
     TotalComponentUpdates total = 0;
 
     const auto infos = updateManager.associatePkgToDevices(
-        records, deviceDescriptors, compInfo, total);
+        records, {}, deviceDescriptors, compInfo, downstreamDescriptorMap,
+        total);
 
     EXPECT_TRUE(infos.empty());
     EXPECT_EQ(total, 0);
