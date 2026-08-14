@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb6721cb_b2bcc196",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "99901a58_de95a53e",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82945a70_48c79b50",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-09T18:00:31Z",
       "side": 1,
       "message": "nit: Use constexpr",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25c8ec70_71e3f5aa",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82945a70_48c79b50",
       "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d949e13_143101f0",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "The unit tests construct DeviceUpdater with a null UpdateManagerBase*.",
+      "parentUuid": "f45004fe_e345cc15",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "881da770_e1966bd3",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-08-10T20:21:21Z",
       "side": 1,
       "message": "Can we check the `forceUpdate` flag here and log an informational or error message based on the option passed by the UA and the FD response?\n\nFor e.g., if forceUpdate is true and compCompatibilityRespCode \u003d\u003d PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL, this should be treated as an error and the update should fail rather than be skipped.",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf1592e2_5e6adc4e",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 567,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "881da770_e1966bd3",
       "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cf57a75_51baf648",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c47f310e_a4f27939",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "587c3bcc_06cd189a",
@@ -99,6 +189,24 @@
       "writtenOn": "2026-08-09T18:00:31Z",
       "side": 1,
       "message": "Why aren\u0027t we updating the ActivationProgress here?",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7be790f8_9ce404f0",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "a failed component hasn\u0027t progressed, so advancing it would misreport progress. Instead it\u0027s reconciled at the device level: updateDeviceCompletion() calls markProgressComplete() + updateActivationProgress() (change https://gerrit.openbmc.org/c/openbmc/pldm/+/93481), so ActivationProgress still reaches 100% on a failed device without faking component progress.\nThe component-cancel path is handled separately by https://gerrit.openbmc.org/c/openbmc/pldm/+/93532, which adds a terminal UpdateProgress::state for cancellation that reports full progress.",
+      "parentUuid": "587c3bcc_06cd189a",
       "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3e9bfc9_2df6bb99",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "This is pre-existing behaviour (components are optimistically marked Completed and flipped to Failed on error) and is tied to the componentIndex/status reset discussed at line 953. I\u0027d rather fix both together in a dedicated change so this MR stays scoped to ForceUpdate + skip-identical. Tracking it as a follow-up.",
+      "parentUuid": "82e76e52_ae98b402",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bdffb95_4017fb89",
@@ -133,6 +259,24 @@
       "writtenOn": "2026-08-10T20:21:21Z",
       "side": 1,
       "message": "Unrelated to this change, but this looks problematic. \n\nWhy is this hardcoded to 0? If there are multiple components, isn\u0027t the last component always reset to 0 here?",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "725ead63_e34488ed",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6bdffb95_4017fb89",
       "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +298,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45e30c9d_610dedb3",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7aaaf40b_6ef0c891",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11bb2392_3fc9029e",
@@ -167,6 +329,24 @@
       "writtenOn": "2026-08-10T20:21:21Z",
       "side": 1,
       "message": "Could you please create a separate PR for the CancelUpdate command? \nThis fixes an existing bug and shouldn’t be tied to the forceUpdate feature, as it can be merged independently.",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e9ed678_0a4f467d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Done: https://gerrit.openbmc.org/c/openbmc/pldm/+/93480",
+      "parentUuid": "11bb2392_3fc9029e",
       "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -188,6 +368,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "997b8468_8f12159d",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41629391_db2ffcf9",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27c45ada_89f481a3",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41629391_db2ffcf9",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfb1d418_72ce30fa",
@@ -201,6 +417,24 @@
       "writtenOn": "2026-08-09T18:00:31Z",
       "side": 1,
       "message": "nit: Not relevant to current set of changes, please create a different commit",
+      "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb54aff_5681b971",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-08-14T11:42:27Z",
+      "side": 1,
+      "message": "Done: https://gerrit.openbmc.org/c/openbmc/pldm/+/93481",
+      "parentUuid": "bfb1d418_72ce30fa",
       "revId": "b1d08b9b189be89bad8bef5fa32b04e0ad21134f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
