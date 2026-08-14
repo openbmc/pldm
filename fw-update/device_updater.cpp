@@ -50,6 +50,12 @@ void UpdateProgress::updateState(state newState)
         case state::Apply:
             progress = componentApplyProgressPercent;
             break;
+        case state::Cancelled:
+            // A cancelled component update is terminal; mark it fully
+            // progressed so that it does not stall the aggregate activation
+            // progress.
+            progress = firmwareActivationProgressPercent;
+            break;
         default:
             warning("Invalid state {STATE} provided", "STATE", newState);
             return;
@@ -1119,6 +1125,16 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
 
 void DeviceUpdater::sendCancelUpdateComponentRequest()
 {
+    // The current component update is being cancelled; move its progress to
+    // the terminal Cancelled state.
+    if (componentIndex < progress.size())
+    {
+        progress[componentIndex].updateState(UpdateProgress::state::Cancelled);
+        if (updateManager != nullptr)
+        {
+            updateManager->updateActivationProgress();
+        }
+    }
     pldmRequest.reset();
     auto instanceIdResult = updateManager->instanceIdDb.next(eid);
     if (!instanceIdResult)
