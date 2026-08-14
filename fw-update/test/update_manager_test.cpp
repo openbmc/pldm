@@ -22,7 +22,7 @@ class UpdateManagerTest : public testing::Test
         package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate),
         packageSize(package.tellg()),
         updateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap)
+                      downstreamDescriptorMap, componentInfoMap)
     {
         // Process the test package, which matches the device with eid, so
         // that the update is in progress.
@@ -69,6 +69,7 @@ class UpdateManagerTest : public testing::Test
            std::vector<uint8_t>{0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5, 0x41, 0x15,
                                 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49, 0xD6,
                                 0x75}}}}};
+    const DownstreamDescriptorMap downstreamDescriptorMap{};
     const ComponentInfoMap componentInfoMap{
         {eid, {{std::make_pair(10, 100), 1}}}};
     Event event;
@@ -216,8 +217,8 @@ TEST_F(UpdateManagerTest, associatePkgToDevicesMatchesRecordWithOneDescriptor)
     const pkg::FirmwareDeviceIDRecords records{record(base::Descriptors{uuid})};
     TotalComponentUpdates total = 0;
 
-    const auto infos =
-        updateManager.associatePkgToDevices(records, deviceDescriptors, total);
+    const auto infos = updateManager.associatePkgToDevices(
+        records, {}, deviceDescriptors, downstreamDescriptorMap, total);
 
     ASSERT_EQ(infos.size(), 1);
     EXPECT_EQ(infos[0].first, 1);
@@ -242,8 +243,8 @@ TEST_F(UpdateManagerTest,
         record(base::Descriptors{titleA, titleB})};
     TotalComponentUpdates total = 0;
 
-    const auto infos =
-        updateManager.associatePkgToDevices(records, deviceDescriptors, total);
+    const auto infos = updateManager.associatePkgToDevices(
+        records, {}, deviceDescriptors, downstreamDescriptorMap, total);
 
     ASSERT_EQ(infos.size(), 1);
     EXPECT_EQ(infos[0].first, 1);
@@ -263,8 +264,8 @@ TEST_F(UpdateManagerTest, associatePkgToDevicesRejectsAnUnknownDescriptor)
         record(base::Descriptors{titleA, titleB})};
     TotalComponentUpdates total = 0;
 
-    const auto infos =
-        updateManager.associatePkgToDevices(records, deviceDescriptors, total);
+    const auto infos = updateManager.associatePkgToDevices(
+        records, {}, deviceDescriptors, downstreamDescriptorMap, total);
 
     EXPECT_TRUE(infos.empty());
     EXPECT_EQ(total, 0);
