@@ -38,6 +38,7 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
         "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
     Descriptors firmwareDescriptors;
     DescriptorMap firmwareDescriptorMap{};
+    DownstreamDescriptorMap firmwareDownstreamDescriptorMap{};
     ComponentInfo firmwareComponentInfo;
     ComponentInfoMap firmwareComponentInfoMap{};
     SoftwareVersionPurpose expectedPurpose = SoftwareVersionPurpose::Unknown;
@@ -49,7 +50,7 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
 
     AggregateUpdateManager updateManager(
         event, handler, instanceIdDb, firmwareDescriptorMap,
-        firmwareComponentInfoMap);
+        firmwareDownstreamDescriptorMap, firmwareComponentInfoMap);
 
     FirmwareInventoryTest inventory(
         softwareIdentifier, expectedSoftwarePath, expectedSoftwareHash,

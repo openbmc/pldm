@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <functional>
 #include <map>
+#include <optional>
 #include <set>
 #include <span>
 #include <string>
@@ -158,6 +159,17 @@ using WrapFirmwareDeviceIDRecord =
                ComponentImageSetVersion, Descriptors,
                FirmwareDevicePackageData>;
 using FirmwareDeviceIDRecords = std::vector<WrapFirmwareDeviceIDRecord>;
+
+// DownstreamDeviceIDRecords, added by PLDM fw update package v1.1.0
+using SelfContainedActivationMinVersion = std::optional<std::string>;
+using SelfContainedActivationMinVersionComparisonStamp =
+    std::optional<uint32_t>;
+using WrapDownstreamDeviceIDRecord =
+    std::tuple<DeviceUpdateOptionFlags, ApplicableComponents,
+               SelfContainedActivationMinVersion,
+               SelfContainedActivationMinVersionComparisonStamp, Descriptors,
+               FirmwareDevicePackageData>;
+using DownstreamDeviceIDRecords = std::vector<WrapDownstreamDeviceIDRecord>;
 
 // ComponentImageInformation
 using ComponentImageCount = uint16_t;

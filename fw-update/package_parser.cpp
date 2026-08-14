@@ -97,7 +97,24 @@ static WrapFirmwareDeviceIDRecord convertFirmwareDeviceIDRecord(
             f.firmwareDevicePackageData};
 }
 
-const static PackagePin currentPin = PackagePin::v1;
+static WrapDownstreamDeviceIDRecord convertDownstreamDeviceIDRecord(
+    const DownstreamDeviceIDRecord& d)
+{
+    Descriptors recordDescriptors;
+    for (const auto& [k, v] : d.downstreamDeviceRecordDescriptors)
+    {
+        recordDescriptors.insert({k, convertDescriptor(*v)});
+    }
+
+    return {d.downstreamDeviceUpdateOptionFlags,
+            d.downstreamDeviceApplicableComponents,
+            d.downstreamDeviceSelfContainedActivationMinVersionString,
+            d.downstreamDeviceSelfContainedActivationMinVersionComparisonStamp,
+            recordDescriptors,
+            d.downstreamDevicePackageData};
+}
+
+const static PackagePin currentPin = PackagePin::v1_3_0;
 
 WrapPackageParser::WrapPackageParser(std::span<const uint8_t> pkgHdr)
 {
@@ -122,6 +139,13 @@ WrapPackageParser::WrapPackageParser(std::span<const uint8_t> pkgHdr)
     for (const FirmwareDeviceIDRecord& fdir : package->firmwareDeviceIdRecords)
     {
         fwDeviceIDRecords.emplace_back(convertFirmwareDeviceIDRecord(fdir));
+    }
+
+    for (const DownstreamDeviceIDRecord& ddir :
+         package->downstreamDeviceIdRecords)
+    {
+        downstreamDeviceIDRecords.emplace_back(
+            convertDownstreamDeviceIDRecord(ddir));
     }
 }
 

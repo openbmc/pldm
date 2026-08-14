@@ -147,9 +147,9 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             InvalidImage();
     }
 
-    auto deviceUpdaterInfos =
-        associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
-                              totalNumComponentUpdates);
+    auto deviceUpdaterInfos = associatePkgToDevices(
+        parser->getFwDeviceIDRecords(), parser->getDownstreamDeviceIDRecords(),
+        descriptorMap, downstreamDescriptorMap, totalNumComponentUpdates);
     if (!deviceUpdaterInfos.size())
     {
         error(
@@ -217,7 +217,9 @@ static std::vector<Descriptor> sortedDescriptors(const Descriptors& descriptors)
 
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
+    const DownstreamDeviceIDRecords& downstreamDeviceIDRecords,
     const DescriptorMap& descriptorMap,
+    const DownstreamDescriptorMap& downstreamDescriptorMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
@@ -246,6 +248,33 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
             }
         }
     }
+
+    // Downstream devices cannot be updated yet, they need the dedicated
+    // PLDM_REQUEST_DOWNSTREAM_DEVICE_UPDATE flow. Report the records which
+    // would apply, so that such a package does not silently do nothing.
+    for (size_t index = 0; index < downstreamDeviceIDRecords.size(); ++index)
+    {
+        const auto recordDescriptors = sortedDescriptors(
+            std::get<Descriptors>(downstreamDeviceIDRecords[index]));
+        for (const auto& [eid, downstreamDeviceInfo] : downstreamDescriptorMap)
+        {
+            for (const auto& [downstreamDeviceIndex, descriptors] :
+                 downstreamDeviceInfo)
+            {
+                const auto deviceDescriptors = sortedDescriptors(descriptors);
+                if (std::includes(
+                        deviceDescriptors.begin(), deviceDescriptors.end(),
+                        recordDescriptors.begin(), recordDescriptors.end()))
+                {
+                    warning(
+                        "Skipping downstream device ID record '{INDEX}' which matched downstream device '{DOWNSTREAM_INDEX}' of endpoint ID '{EID}', downstream device update is not supported yet",
+                        "INDEX", index, "DOWNSTREAM_INDEX",
+                        downstreamDeviceIndex, "EID", eid);
+                }
+            }
+        }
+    }
+
     return deviceUpdaterInfos;
 }
 

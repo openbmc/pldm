@@ -53,6 +53,16 @@ class WrapPackageParser
         return fwDeviceIDRecords;
     }
 
+    /** @brief Get downstream device ID records from the package
+     *
+     *  @return if parsing the package is successful, return downstream device
+     *          ID records. Empty for packages older than v1.1.0.
+     */
+    const DownstreamDeviceIDRecords& getDownstreamDeviceIDRecords() const
+    {
+        return downstreamDeviceIDRecords;
+    }
+
     /** @brief Get component image information from the package
      *
      *  @return if parsing the package is successful, return component image
@@ -66,6 +76,9 @@ class WrapPackageParser
   private:
     /** @brief Firmware Device ID Records in the package */
     FirmwareDeviceIDRecords fwDeviceIDRecords;
+
+    /** @brief Downstream Device ID Records in the package */
+    DownstreamDeviceIDRecords downstreamDeviceIDRecords;
 
     /** @brief Component Image Information in the package */
     ComponentImageInfos componentImageInfos;

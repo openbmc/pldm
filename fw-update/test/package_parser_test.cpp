@@ -120,6 +120,8 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     ASSERT_EQ(outCompImageInfos.size(), 1);
     expectCompImageInfo(outCompImageInfos[0], fwPkgHdr, 10, 100, 0xFFFFFFFF, 0,
                         0, 139, 27, "VersionString3");
+
+    EXPECT_TRUE(parser->getDownstreamDeviceIDRecords().empty());
 }
 
 TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
