@@ -609,7 +609,12 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
-    if (offset + length > compSize + PLDM_FWUP_BASELINE_TRANSFER_SIZE)
+    // offset, length and compSize are all uint32_t, so the sums have to be
+    // computed in a wider type to not wrap around.
+    const uint64_t end = static_cast<uint64_t>(offset) + length;
+
+    if (end >
+        static_cast<uint64_t>(compSize) + PLDM_FWUP_BASELINE_TRANSFER_SIZE)
     {
         rc = encode_request_firmware_data_resp(
             request->hdr.instance_id, PLDM_FWUP_DATA_OUT_OF_RANGE, responseMsg,
@@ -624,9 +629,9 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     }
 
     size_t padBytes = 0;
-    if (offset + length > compSize)
+    if (end > compSize)
     {
-        padBytes = offset + length - compSize;
+        padBytes = end - compSize;
     }
 
     if (componentIndex < progress.size())
