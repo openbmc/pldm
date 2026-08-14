@@ -117,9 +117,13 @@ using VendorDefinedDescriptorTitle = std::string;
 using VendorDefinedDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorInfo =
     std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
-using Descriptors =
-    std::multimap<DescriptorType,
-                  std::variant<DescriptorData, VendorDefinedDescriptorInfo>>;
+using DescriptorValue =
+    std::variant<DescriptorData, VendorDefinedDescriptorInfo>;
+using Descriptors = std::multimap<DescriptorType, DescriptorValue>;
+using Descriptor = std::pair<DescriptorType, DescriptorValue>;
+/** @brief Descriptors ordered by the whole entry, not by DescriptorType alone
+ */
+using SortedDescriptors = std::multiset<Descriptor>;
 using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
     std::unordered_map<DownstreamDeviceIndex, Descriptors>;

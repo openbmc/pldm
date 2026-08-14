@@ -2,6 +2,7 @@ fw_update_test_src = declare_dependency(sources: fw_update_sources)
 
 tests = [
     'inventory_manager_test',
+    'update_manager_test',
     'package_parser_test',
     'device_updater_test',
     'firmware_inventory_manager_test',
