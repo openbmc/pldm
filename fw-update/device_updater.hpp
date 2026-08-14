@@ -73,6 +73,7 @@ class UpdateProgress
         Update,
         Verify,
         Apply,
+        Cancelled,
     };
 
     /** @brief Construct an UpdateProgress object given to the total component
