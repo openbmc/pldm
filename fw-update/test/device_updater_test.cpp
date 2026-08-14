@@ -432,3 +432,95 @@ TEST_F(DeviceUpdaterManagerTest, AllComponentsSkippedCompletesDevice)
     EXPECT_TRUE(manager.completionCalled);
     EXPECT_TRUE(manager.completionStatus);
 }
+
+namespace
+{
+// UpdateComponent response indicating the component can be updated
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9>
+    updateComponentCanBeUpdatedResp = {
+        0x0A, 0x05, 0x14, PLDM_SUCCESS, PLDM_CCR_COMP_CAN_BE_UPDATED,
+        0x00, 0x00, 0x00, 0x00,         0x00,
+        0x00, 0x00};
+// VerifyComplete request with a successful verify result
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> verifyCompleteReq = {
+    0x8C, 0x05, 0x17, PLDM_FWUP_VERIFY_SUCCESS};
+// ApplyComplete request with a successful apply result
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> applyCompleteReq = {
+    0x8D, 0x05, 0x18, PLDM_FWUP_APPLY_SUCCESS, 0x00, 0x00};
+// ActivateFirmware response with a success completion code
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> activateFirmwareResp = {
+    0x0E, 0x05, 0x1A, PLDM_SUCCESS, 0x00, 0x00};
+} // namespace
+
+// Drive the given component through a successful update-and-apply flow
+static void applyComponentSuccessfully(DeviceUpdater& deviceUpdater)
+{
+    deviceUpdater.updateComponent(
+        0,
+        reinterpret_cast<const pldm_msg*>(
+            updateComponentCanBeUpdatedResp.data()),
+        updateComponentCanBeUpdatedResp.size() - sizeof(pldm_msg_hdr));
+    deviceUpdater.verifyComplete(
+        reinterpret_cast<const pldm_msg*>(verifyCompleteReq.data()),
+        verifyCompleteReq.size() - sizeof(pldm_msg_hdr));
+    deviceUpdater.applyComplete(
+        reinterpret_cast<const pldm_msg*>(applyCompleteReq.data()),
+        applyCompleteReq.size() - sizeof(pldm_msg_hdr));
+}
+
+TEST_F(DeviceUpdaterManagerTest,
+       FailedComponentFailsDeviceDespiteAnotherSucceeding)
+{
+    // One component is declined for a non-identical reason while another
+    // component on the same device updates successfully; the overall device
+    // update must fail.
+    FirmwareDeviceIDRecord record;
+    ComponentImageInfos comps;
+    makeTwoComponents(record, comps);
+    DeviceUpdater deviceUpdater(0, package, record, comps, compInfo, 512,
+                                &manager);
+
+    auto fail = updateComponentDeclined(PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER);
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(fail.data()),
+        fail.size() - sizeof(pldm_msg_hdr));
+
+    applyComponentSuccessfully(deviceUpdater);
+
+    deviceUpdater.activateFirmware(
+        0, reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data()),
+        activateFirmwareResp.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_TRUE(manager.completionCalled);
+    EXPECT_FALSE(manager.completionStatus);
+    EXPECT_EQ(deviceUpdater.getProgress(), 100);
+}
+
+TEST_F(DeviceUpdaterManagerTest,
+       SkippedComponentWithSuccessfulComponentCompletesDevice)
+{
+    // One component is skipped because its image is identical while another
+    // component on the same device updates successfully; the overall device
+    // update completes successfully.
+    FirmwareDeviceIDRecord record;
+    ComponentImageInfos comps;
+    makeTwoComponents(record, comps);
+    DeviceUpdater deviceUpdater(0, package, record, comps, compInfo, 512,
+                                &manager);
+
+    auto skip =
+        updateComponentDeclined(PLDM_CCRC_COMP_COMPARISON_STAMP_IDENTICAL);
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(skip.data()),
+        skip.size() - sizeof(pldm_msg_hdr));
+
+    applyComponentSuccessfully(deviceUpdater);
+
+    deviceUpdater.activateFirmware(
+        0, reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data()),
+        activateFirmwareResp.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_TRUE(manager.completionCalled);
+    EXPECT_TRUE(manager.completionStatus);
+    EXPECT_EQ(deviceUpdater.getProgress(), 100);
+}
