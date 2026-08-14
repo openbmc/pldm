@@ -7,6 +7,7 @@
 #include <functional>
 #include <map>
 #include <set>
+#include <span>
 #include <string>
 #include <unordered_map>
 #include <variant>
@@ -163,13 +164,16 @@ using ComponentImageCount = uint16_t;
 using CompComparisonStamp = uint32_t;
 using CompOptions = std::bitset<16>;
 using ReqCompActivationMethod = std::bitset<16>;
-using CompLocationOffset = uint32_t;
-using CompSize = uint32_t;
 using CompVersion = std::string;
+/** @brief View of a component image inside the firmware update package.
+ *
+ *  @note The view is only valid while the buffer the package was parsed from
+ *        is alive.
+ */
+using CompImage = std::span<const uint8_t>;
 using WrapComponentImageInfo =
     std::tuple<CompClassification, CompIdentifier, CompComparisonStamp,
-               CompOptions, ReqCompActivationMethod, CompLocationOffset,
-               CompSize, CompVersion>;
+               CompOptions, ReqCompActivationMethod, CompImage, CompVersion>;
 using ComponentImageInfos = std::vector<WrapComponentImageInfo>;
 
 enum class ComponentImageInfoPos : size_t
@@ -179,9 +183,8 @@ enum class ComponentImageInfoPos : size_t
     CompComparisonStampPos = 2,
     CompOptionsPos = 3,
     ReqCompActivationMethodPos = 4,
-    CompLocationOffsetPos = 5,
-    CompSizePos = 6,
-    CompVersionPos = 7,
+    CompImagePos = 5,
+    CompVersionPos = 6,
 };
 
 } // namespace fw_update

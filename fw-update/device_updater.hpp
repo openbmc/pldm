@@ -124,7 +124,6 @@ class DeviceUpdater
     /** @brief Constructor
      *
      *  @param[in] eid - Endpoint ID of the firmware device
-     *  @param[in] package - File stream for firmware update package
      *  @param[in] fwDeviceIDRecord - FirmwareDeviceIDRecord in the fw update
      *                                package that matches this firmware device
      *  @param[in] compImageInfos - Component image information for all the
@@ -136,12 +135,11 @@ class DeviceUpdater
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
      */
-    explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
-                           const WrapFirmwareDeviceIDRecord& fwDeviceIDRecord,
-                           const ComponentImageInfos& compImageInfos,
-                           const ComponentInfo& compInfo,
-                           uint32_t maxTransferSize,
-                           UpdateManagerBase* updateManager);
+    explicit DeviceUpdater(
+        mctp_eid_t eid, const WrapFirmwareDeviceIDRecord& fwDeviceIDRecord,
+        const ComponentImageInfos& compImageInfos,
+        const ComponentInfo& compInfo, uint32_t maxTransferSize,
+        UpdateManagerBase* updateManager);
 
     /** @brief Get the progress of updating this device as percentage
      *
@@ -284,9 +282,6 @@ class DeviceUpdater
 
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
-
-    /** @brief File stream for firmware update package */
-    std::istream& package;
 
     /** @brief FirmwareDeviceIDRecord in the fw update package that matches this
      *         firmware device

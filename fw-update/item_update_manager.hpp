@@ -6,7 +6,6 @@
 #include <xyz/openbmc_project/Software/Update/server.hpp>
 
 #include <span>
-#include <spanstream>
 
 namespace pldm::fw_update
 {
@@ -137,11 +136,6 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @brief The package data for the firmware update
      */
     std::unique_ptr<pldm::utils::MMapHandler> packageMap;
-
-    /**
-     * @brief The package data stream for the firmware update
-     */
-    std::unique_ptr<std::ispanstream> packageDataStream;
 
     /**
      * @brief Process the firmware update package

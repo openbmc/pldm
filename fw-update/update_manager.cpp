@@ -126,39 +126,23 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        parser.reset();
+        clearPackageData();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
 
     package.seekg(0);
-    std::vector<uint8_t> packageHeader(packageSize);
-    package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
+    packageData.assign(packageSize, 0);
+    package.read(reinterpret_cast<char*>(packageData.data()), packageSize);
 
-    parser = parsePkgHeader(packageHeader);
+    parser = parsePkgHeader(packageData);
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        parser.reset();
-        throw sdbusplus::error::xyz::openbmc_project::software::update::
-            InvalidImage();
-    }
-
-    package.seekg(0);
-    try
-    {
-        parser->parse(packageHeader);
-    }
-    catch (const std::exception& e)
-    {
-        error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        parser.reset();
+        clearPackageData();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -173,7 +157,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        parser.reset();
+        clearPackageData();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             Incompatible();
     }
@@ -182,16 +166,26 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     const auto& compImageInfos = parser->getComponentImageInfos();
 
     static constexpr uint32_t MAXIMUM_TRANSFER_SIZE = 4096;
-    for (const auto& deviceUpdaterInfo : deviceUpdaterInfos)
+    for (const auto& [eid, index] : deviceUpdaterInfos)
     {
-        const auto& fwDeviceIDRecord =
-            fwDeviceIDRecords[deviceUpdaterInfo.second];
-        auto search = componentInfoMap.find(deviceUpdaterInfo.first);
-        deviceUpdaterMap.emplace(
-            deviceUpdaterInfo.first,
-            std::make_unique<DeviceUpdater>(
-                deviceUpdaterInfo.first, package, fwDeviceIDRecord,
-                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+        const auto& fwDeviceIDRecord = fwDeviceIDRecords[index];
+        auto search = componentInfoMap.find(eid);
+        const bool inserted =
+            deviceUpdaterMap
+                .emplace(eid, std::make_unique<DeviceUpdater>(
+                                  eid, fwDeviceIDRecord, compImageInfos,
+                                  search->second, MAXIMUM_TRANSFER_SIZE, this))
+                .second;
+        if (!inserted)
+        {
+            // Only one DeviceUpdater can drive an FD at a time, so the
+            // components of the record we drop are never transferred.
+            error(
+                "Endpoint ID '{EID}' is matched by more than one device ID record, ignoring the record at offset '{OFFSET}'",
+                "EID", eid, "OFFSET", index);
+            totalNumComponentUpdates -=
+                std::get<ApplicableComponents>(fwDeviceIDRecord).size();
+        }
     }
 
     activation = std::make_unique<Activation>(
@@ -346,9 +340,18 @@ void UpdateManager::resetActivationState()
     }
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
-    parser.reset();
+    clearPackageData();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
+}
+
+void UpdateManager::clearPackageData()
+{
+    // The component image views of the parser point into packageData, so the
+    // parser has to be destroyed first.
+    parser.reset();
+    packageData.clear();
+    packageData.shrink_to_fit();
 }
 
 void UpdateManager::updateActivationProgress()

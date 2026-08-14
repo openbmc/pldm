@@ -17,6 +17,11 @@ class DeviceUpdaterTest : public testing::Test
     DeviceUpdaterTest() :
         package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate)
     {
+        packageData.resize(package.tellg());
+        package.seekg(0);
+        package.read(reinterpret_cast<char*>(packageData.data()),
+                     packageData.size());
+
         fwDeviceIDRecord = {
             1,
             {0x00},
@@ -27,12 +32,23 @@ class DeviceUpdaterTest : public testing::Test
                                    0xD6, 0x75}}},
             {}};
         compImageInfos = {
-            {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
+            {10, 100, 0xFFFFFFFF, 0, 0,
+             CompImage{packageData.data() + compImageOffset, compImageSize},
+             "VersionString3"}};
         compInfo = {{std::make_pair(10, 100), 1}};
     }
 
+    static constexpr size_t compImageOffset = 139;
+    static constexpr size_t compImageSize = 1024;
+
     int fd = -1;
     std::ifstream package;
+
+    /** @brief The test package. Has to be declared before compImageInfos, whose
+     *         component image views point into it.
+     */
+    std::vector<uint8_t> packageData;
+
     WrapFirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
@@ -41,32 +57,39 @@ class DeviceUpdaterTest : public testing::Test
 TEST_F(DeviceUpdaterTest, validatePackage)
 {
     constexpr uintmax_t testPkgSize = 1163;
-    uintmax_t packageSize = package.tellg();
-    EXPECT_EQ(packageSize, testPkgSize);
+    EXPECT_EQ(packageData.size(), testPkgSize);
 
-    package.seekg(0);
-    std::vector<uint8_t> packageHeader(testPkgSize);
-    package.read(new (packageHeader.data()) char, testPkgSize);
+    auto parser = parsePkgHeader(packageData);
+    ASSERT_NE(parser, nullptr);
 
-    auto parser = parsePkgHeader(packageHeader);
-    EXPECT_NE(parser, nullptr);
-
-    package.seekg(0);
-
-    parser->parse(packageHeader);
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& testPkgCompImageInfos = parser->getComponentImageInfos();
 
-    EXPECT_EQ(fwDeviceIDRecords.size(), 1);
-    EXPECT_EQ(compImageInfos.size(), 1);
+    ASSERT_EQ(fwDeviceIDRecords.size(), 1);
     EXPECT_EQ(fwDeviceIDRecords[0], fwDeviceIDRecord);
-    EXPECT_EQ(testPkgCompImageInfos, compImageInfos);
+
+    // WrapComponentImageInfo holds a std::span, which is not equality
+    // comparable, so the entries are compared field by field
+    ASSERT_EQ(testPkgCompImageInfos.size(), compImageInfos.size());
+    for (size_t i = 0; i < testPkgCompImageInfos.size(); ++i)
+    {
+        const auto& actual = testPkgCompImageInfos[i];
+        const auto& expected = compImageInfos[i];
+
+        EXPECT_EQ(std::get<CompVersion>(actual),
+                  std::get<CompVersion>(expected));
+
+        const auto& actualImage = std::get<CompImage>(actual);
+        const auto& expectedImage = std::get<CompImage>(expected);
+        EXPECT_EQ(actualImage.data(), expectedImage.data());
+        EXPECT_EQ(actualImage.size(), expectedImage.size());
+    }
 }
 
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -138,8 +161,8 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
 
 TEST_F(DeviceUpdaterTest, FullUpdateProgress)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -187,8 +210,8 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
 
 TEST_F(DeviceUpdaterTest, RequestFwDataOffsetWraparound)
 {
-    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+    DeviceUpdater deviceUpdater(0, fwDeviceIDRecord, compImageInfos, compInfo,
+                                512, nullptr);
 
     // Offset 0xFFFFFFF0 with length 512 wraps around in uint32_t arithmetic
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +

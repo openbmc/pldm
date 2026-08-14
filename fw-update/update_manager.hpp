@@ -151,6 +151,13 @@ class UpdateManager : public UpdateManagerBase
 
     void resetActivationState() override;
 
+    /** @brief Release the package and everything referring into it
+     *
+     *  @note deviceUpdaterMap refers into the parser, so it has to be cleared
+     *        before calling this.
+     */
+    void clearPackageData();
+
     /** @brief
      *
      */
@@ -184,6 +191,13 @@ class UpdateManager : public UpdateManagerBase
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
+
+    /** @brief The firmware update package.
+     *
+     *  @note Has to outlive parser, whose component image views point into it.
+     */
+    std::vector<uint8_t> packageData;
+
     std::unique_ptr<WrapPackageParser> parser;
     std::ifstream package;
 

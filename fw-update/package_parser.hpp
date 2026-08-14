@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <span>
 #include <vector>
 
 namespace pldm
@@ -16,27 +17,31 @@ namespace pldm
 namespace fw_update
 {
 
-/** @class PackageParser
+/** @class WrapPackageParser
  *
- *  PackageParser is the class for parsing the PLDM firmware update package.
+ *  WrapPackageParser parses the PLDM firmware update package via libpldm++ and
+ *  presents the result using the data structures of this repository.
+ *
+ *  @note The component images are exposed as views into @a pkgHdr, so the
+ *        buffer the package was parsed from has to outlive this object.
  */
 class WrapPackageParser
 {
   public:
-    explicit WrapPackageParser() {}
+    WrapPackageParser() = delete;
     WrapPackageParser(const WrapPackageParser&) = delete;
     WrapPackageParser(WrapPackageParser&&) = default;
     WrapPackageParser& operator=(const WrapPackageParser&) = delete;
     WrapPackageParser& operator=(WrapPackageParser&&) = delete;
     ~WrapPackageParser() = default;
 
-    /** @brief Parse the firmware update package
+    /** @brief Constructor, parses the firmware update package
      *
-     *  @param[in] pkgHdr - Package
+     *  @param[in] pkgHdr - the whole firmware update package
      *
-     *  @note Throws exception is parsing fails
+     *  @note Throws InternalFailure if parsing fails
      */
-    void parse(const std::vector<uint8_t>& pkgHdr);
+    explicit WrapPackageParser(std::span<const uint8_t> pkgHdr);
 
     /** @brief Get firmware device ID records from the package
      *
@@ -64,20 +69,16 @@ class WrapPackageParser
 
     /** @brief Component Image Information in the package */
     ComponentImageInfos componentImageInfos;
-
-    // populated by parse(...)
-    std::unique_ptr<Package> package;
 };
 
-/** @brief Parse the package header information
+/** @brief Parse the firmware update package
  *
- *  @param[in] pkgHdrInfo - package header information section in the package
+ *  @param[in] pkgHdr - the whole firmware update package
  *
- *  @return On success return the PackageParser for the header format version
- *          on failure return nullptr
+ *  @return On success return the WrapPackageParser, on failure return nullptr
  */
 std::unique_ptr<WrapPackageParser> parsePkgHeader(
-    std::vector<uint8_t>& pkgHdrInfo);
+    std::span<const uint8_t> pkgHdr);
 
 } // namespace fw_update
 

@@ -23,6 +23,43 @@ void imageInsert(std::vector<uint8_t>& fwPkgHdr, std::vector<uint8_t>& image)
     fwPkgHdr.insert(fwPkgHdr.end(), image.begin(), image.end());
 }
 
+/** @brief Check one entry of the parsed component image information
+ *
+ *  @param[in] actual - the parsed entry
+ *  @param[in] package - the package the entry was parsed from
+ *  @param[in] offset - where in @a package the component image is expected
+ *  @param[in] size - the expected size of the component image
+ */
+void expectCompImageInfo(const WrapComponentImageInfo& actual,
+                         const std::vector<uint8_t>& package,
+                         CompClassification classification,
+                         CompIdentifier identifier, CompComparisonStamp stamp,
+                         CompOptions options, ReqCompActivationMethod method,
+                         size_t offset, size_t size, const CompVersion& version)
+{
+    using Pos = ComponentImageInfoPos;
+
+    EXPECT_EQ(std::get<static_cast<size_t>(Pos::CompClassificationPos)>(actual),
+              classification);
+    EXPECT_EQ(std::get<static_cast<size_t>(Pos::CompIdentifierPos)>(actual),
+              identifier);
+    EXPECT_EQ(
+        std::get<static_cast<size_t>(Pos::CompComparisonStampPos)>(actual),
+        stamp);
+    EXPECT_EQ(std::get<static_cast<size_t>(Pos::CompOptionsPos)>(actual),
+              options);
+    EXPECT_EQ(
+        std::get<static_cast<size_t>(Pos::ReqCompActivationMethodPos)>(actual),
+        method);
+
+    // The component image has to be a view into the package, not a copy
+    const auto& image = std::get<CompImage>(actual);
+    EXPECT_EQ(image.data(), package.data() + offset);
+    EXPECT_EQ(image.size(), size);
+
+    EXPECT_EQ(std::get<CompVersion>(actual), version);
+}
+
 TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
 {
     std::vector<uint8_t> fwPkgHdr{
@@ -46,10 +83,10 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     imageGenerate(compImage, pkgImageSize);
     imageInsert(fwPkgHdr, compImage);
     auto parser = parsePkgHeader(fwPkgHdr);
+    ASSERT_NE(parser, nullptr);
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(WrapPackageParser).name());
 
-    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
@@ -63,10 +100,10 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     };
     EXPECT_EQ(outfwDeviceIDRecords, fwDeviceIDRecords);
 
-    auto outCompImageInfos = parser->getComponentImageInfos();
-    ComponentImageInfos compImageInfos{
-        {10, 100, 0xFFFFFFFF, 0, 0, 139, 27, "VersionString3"}};
-    EXPECT_EQ(outCompImageInfos, compImageInfos);
+    const auto& outCompImageInfos = parser->getComponentImageInfos();
+    ASSERT_EQ(outCompImageInfos.size(), 1);
+    expectCompImageInfo(outCompImageInfos[0], fwPkgHdr, 10, 100, 0xFFFFFFFF, 0,
+                        0, 139, 27, "VersionString3");
 }
 
 TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
@@ -120,12 +157,12 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     imageInsert(fwPkgHdr, compImage3);
 
     auto parser = parsePkgHeader(fwPkgHdr);
+    ASSERT_NE(parser, nullptr);
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(WrapPackageParser).name());
 
     EXPECT_EQ(fwPkgHdr.size(), pkgSize);
 
-    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
@@ -159,12 +196,14 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     };
     EXPECT_EQ(outfwDeviceIDRecords, fwDeviceIDRecords);
 
-    auto outCompImageInfos = parser->getComponentImageInfos();
-    ComponentImageInfos compImageInfos{
-        {10, 100, 0xFFFFFFFF, 0, 0, 326, 27, "VersionString5"},
-        {10, 200, 0xFFFFFFFF, 0, 1, 353, 27, "VersionString6"},
-        {11, 300, 0xFFFFFFFF, 1, 12, 380, 27, "VersionString7"}};
-    EXPECT_EQ(outCompImageInfos, compImageInfos);
+    const auto& outCompImageInfos = parser->getComponentImageInfos();
+    ASSERT_EQ(outCompImageInfos.size(), 3);
+    expectCompImageInfo(outCompImageInfos[0], fwPkgHdr, 10, 100, 0xFFFFFFFF, 0,
+                        0, 326, 27, "VersionString5");
+    expectCompImageInfo(outCompImageInfos[1], fwPkgHdr, 10, 200, 0xFFFFFFFF, 0,
+                        1, 353, 27, "VersionString6");
+    expectCompImageInfo(outCompImageInfos[2], fwPkgHdr, 11, 300, 0xFFFFFFFF, 1,
+                        12, 380, 27, "VersionString7");
 }
 
 TEST(PackageParser, InvalidPkgHeaderInfoIncomplete)
