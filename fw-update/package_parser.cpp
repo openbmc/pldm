@@ -23,9 +23,46 @@ namespace fw_update
 using InternalFailure =
     sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
+/** @brief Checks which the deprecated decode_pldm_comp_image_info() enforced
+ *         but the libpldm package iterators do not.
+ *
+ *  @note Throws InternalFailure if the component image information is not
+ *        usable for an update.
+ */
+static void validateComponentImageInfo(const ComponentImageInfo& c)
+{
+    if (c.componentLocation.ptr == nullptr || c.componentLocation.length == 0)
+    {
+        error(
+            "Component image is empty for classification '{CLASSIFICATION}' and identifier '{IDENTIFIER}'",
+            "CLASSIFICATION", c.componentClassification, "IDENTIFIER",
+            c.componentIdentifier);
+        throw InternalFailure();
+    }
+
+    // An empty ComponentVersionString is rejected by libpldm++ itself, so it is
+    // not checked here.
+
+    // DSP0267: when the UseComponentComparisonStamp bit is not set, the
+    // ComponentComparisonStamp shall be 0xFFFFFFFF.
+    constexpr uint32_t unusedComparisonStamp = 0xFFFFFFFF;
+    constexpr size_t useComparisonStampBit = 1;
+    if (!c.componentOptions.test(useComparisonStampBit) &&
+        c.compComparisonStamp != unusedComparisonStamp)
+    {
+        error(
+            "Component comparison stamp '{STAMP}' has to be 0xFFFFFFFF while UseComponentComparisonStamp is not set, for identifier '{IDENTIFIER}'",
+            "STAMP", c.compComparisonStamp, "IDENTIFIER",
+            c.componentIdentifier);
+        throw InternalFailure();
+    }
+}
+
 static WrapComponentImageInfo convertComponentImageInfo(
     const ComponentImageInfo& c)
 {
+    validateComponentImageInfo(c);
+
     return {c.componentClassification,
             c.componentIdentifier,
             c.compComparisonStamp,
