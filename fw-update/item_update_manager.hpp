@@ -8,7 +8,6 @@
 #include <memory>
 #include <optional>
 #include <span>
-#include <spanstream>
 #include <variant>
 
 class ItemUpdateManagerTest;
@@ -155,11 +154,6 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     std::unique_ptr<pldm::utils::MMapHandler> packageMap;
 
     /**
-     * @brief The package data stream for the firmware update
-     */
-    std::unique_ptr<std::ispanstream> packageDataStream;
-
-    /**
      * @brief Process the firmware update package
      *
      * @return true on success, false on failure
@@ -200,7 +194,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief Common teardown path for cleaning up update resources
      *
-     * Resets deviceUpdater, packageDataStream, packageMap, dupFd and
+     * Resets deviceUpdater, parser, packageMap, dupFd and
      * marks updateInProgress as false. Should be called from all cleanup
      * paths to ensure consistent resource management.
      */

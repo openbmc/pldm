@@ -214,6 +214,13 @@ class UpdateManager : public UpdateManagerBase
     std::string objPath;
 
     std::filesystem::path fwPackageFilePath;
+
+    /** @brief The firmware update package.
+     *
+     *  @note Has to outlive parser, whose component image views point into it.
+     */
+    std::vector<uint8_t> packageData;
+
     std::unique_ptr<pkg::PackageParser> parser;
     std::ifstream package;
 
