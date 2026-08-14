@@ -184,3 +184,21 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+TEST_F(DeviceUpdaterTest, RequestFwDataOffsetWraparound)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    // Offset 0xFFFFFFF0 with length 512 wraps around in uint32_t arithmetic
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0xF0, 0xFF, 0xFF,
+                     0xFF, 0x00, 0x02, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
+    auto response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+
+    EXPECT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_DATA_OUT_OF_RANGE);
+}
