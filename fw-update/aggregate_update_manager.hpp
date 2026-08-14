@@ -22,6 +22,8 @@ class AggregateUpdateManager : public UpdateManager
      * @param[in] handler - PLDM request handler
      * @param[in] instanceIdDb - Reference to the instance ID database
      * @param[in] descriptorMap - Descriptor map for the update manager
+     * @param[in] downstreamDescriptorMap - Downstream descriptor map for the
+     * update manager
      * @param[in] componentInfoMap - Component information map for the update
      * manager
      */
@@ -29,12 +31,14 @@ class AggregateUpdateManager : public UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const pkg::DescriptorMap& descriptorMap,
+        const pkg::DownstreamDescriptorMap& downstreamDescriptorMap,
         const pkg::ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap, conditionPathPair, conditionArg,
+                      downstreamDescriptorMap, componentInfoMap,
+                      conditionPathPair, conditionArg,
                       std::move(taskCompletionCallback))
     {}
 
