@@ -73,6 +73,15 @@ class UpdateProgress
         Update,
         Verify,
         Apply,
+        /** @brief The update agent has requested cancellation of this
+         *         component's update by sending CancelUpdateComponent. This is
+         *         a BMC-side workflow state: it is entered when the request is
+         *         sent, before the firmware device acknowledges, and reports
+         *         full progress because no further BMC-side work remains for
+         *         the component. It does not indicate that the firmware device
+         *         has confirmed the cancellation.
+         */
+        Cancelled,
     };
 
     /** @brief Construct an UpdateProgress object given to the total component

@@ -76,6 +76,15 @@ class DeviceUpdaterTest : public testing::Test
     ComponentInfo compInfo;
 };
 
+TEST(UpdateProgressTest, CancelledStateMarksComponentComplete)
+{
+    // A cancelled component update is terminal and should report full progress
+    // so it does not stall the aggregate activation progress.
+    UpdateProgress progress(1024, 0);
+    progress.updateState(UpdateProgress::state::Cancelled);
+    EXPECT_EQ(progress.getProgress(), 100);
+}
+
 TEST_F(DeviceUpdaterTest, validatePackage)
 {
     constexpr uintmax_t testPkgSize = 1163;
