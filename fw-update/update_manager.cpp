@@ -8,6 +8,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <algorithm>
 #include <cassert>
 #include <filesystem>
 #include <fstream>
@@ -212,11 +213,23 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
+
+    // Sorting the descriptors of each device once, rather than once per record
+    std::unordered_map<eid, pkg::SortedDescriptors> sortedDescriptorMap;
+    for (const auto& [eid, descriptors] : descriptorMap)
+    {
+        sortedDescriptorMap.emplace(
+            eid,
+            pkg::SortedDescriptors(descriptors.begin(), descriptors.end()));
+    }
+
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
-        const auto& deviceIDDescriptors =
+        const auto& recordDescriptors =
             std::get<pkg::Descriptors>(fwDeviceIDRecords[index]);
-        for (const auto& [eid, descriptors] : descriptorMap)
+        const pkg::SortedDescriptors deviceIDDescriptors(
+            recordDescriptors.begin(), recordDescriptors.end());
+        for (const auto& [eid, descriptors] : sortedDescriptorMap)
         {
             if (std::includes(descriptors.begin(), descriptors.end(),
                               deviceIDDescriptors.begin(),
