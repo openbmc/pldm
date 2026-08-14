@@ -356,3 +356,91 @@ TEST_F(UpdateManagerCompInfoTest, skippedDeviceFailsUpdate)
     EXPECT_EQ(manager.activation->activation(),
               software::Activation::Activations::Failed);
 }
+
+namespace
+{
+
+/** @brief A record whose only applicable component is component 0 */
+pkg::FirmwareDeviceIDRecord record(base::Descriptors descriptors)
+{
+    return {0, {0}, "VersionString", std::move(descriptors), {}};
+}
+
+base::Descriptor vendorDefined(const std::string& title,
+                               std::vector<uint8_t> data)
+{
+    return {PLDM_FWUP_VENDOR_DEFINED,
+            base::VendorDefinedDescriptorInfo{title, std::move(data)}};
+}
+
+} // namespace
+
+TEST_F(UpdateManagerTest, associatePkgToDevicesMatchesRecordWithOneDescriptor)
+{
+    DescriptorMap deviceDescriptors{};
+    const base::Descriptor uuid{
+        PLDM_FWUP_UUID,
+        base::DescriptorData{0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5, 0x41, 0x15,
+                             0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49, 0xD6, 0x75}};
+
+    deviceDescriptors[1] = base::Descriptors{uuid};
+
+    const pkg::FirmwareDeviceIDRecords records{record(base::Descriptors{uuid})};
+    const ComponentInfoMap compInfo{{1, {{std::make_pair(10, 100), 1}}}};
+    TotalComponentUpdates total = 0;
+
+    const auto infos = updateManager.associatePkgToDevices(
+        records, deviceDescriptors, compInfo, total);
+
+    ASSERT_EQ(infos.size(), 1);
+    EXPECT_EQ(infos[0].first, 1);
+    EXPECT_EQ(infos[0].second, 0);
+    EXPECT_EQ(total, 1);
+}
+
+TEST_F(UpdateManagerTest,
+       associatePkgToDevicesMatchesVendorDefinedDescriptorsInAnyOrder)
+{
+    DescriptorMap deviceDescriptors{};
+    // Two vendor-defined descriptors share PLDM_FWUP_VENDOR_DEFINED, so a
+    // std::multimap keeps them in insertion order rather than in value order.
+    // The device and the record list the same pair in opposite orders, which
+    // std::includes only handles if both sides are ordered by the whole entry.
+    const auto titleA = vendorDefined("TitleA", {0xAA, 0xAA});
+    const auto titleB = vendorDefined("TitleB", {0xBB, 0xBB});
+
+    deviceDescriptors[1] = base::Descriptors{titleB, titleA};
+
+    const pkg::FirmwareDeviceIDRecords records{
+        record(base::Descriptors{titleA, titleB})};
+    const ComponentInfoMap compInfo{{1, {{std::make_pair(10, 100), 1}}}};
+    TotalComponentUpdates total = 0;
+
+    const auto infos = updateManager.associatePkgToDevices(
+        records, deviceDescriptors, compInfo, total);
+
+    ASSERT_EQ(infos.size(), 1);
+    EXPECT_EQ(infos[0].first, 1);
+}
+
+TEST_F(UpdateManagerTest, associatePkgToDevicesRejectsAnUnknownDescriptor)
+{
+    DescriptorMap deviceDescriptors{};
+    const auto titleA = vendorDefined("TitleA", {0xAA, 0xAA});
+    const auto titleB = vendorDefined("TitleB", {0xBB, 0xBB});
+
+    // The device only carries TitleA, so a record asking for both must not
+    // match it
+    deviceDescriptors[1] = base::Descriptors{titleA};
+
+    const pkg::FirmwareDeviceIDRecords records{
+        record(base::Descriptors{titleA, titleB})};
+    const ComponentInfoMap compInfo{{1, {{std::make_pair(10, 100), 1}}}};
+    TotalComponentUpdates total = 0;
+
+    const auto infos = updateManager.associatePkgToDevices(
+        records, deviceDescriptors, compInfo, total);
+
+    EXPECT_TRUE(infos.empty());
+    EXPECT_EQ(total, 0);
+}
