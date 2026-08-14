@@ -12,6 +12,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -166,13 +167,19 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
     const pkg::FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const pkg::Descriptors& descriptors)
 {
+    const pkg::SortedDescriptors sortedDeviceDescriptors(descriptors.begin(),
+                                                         descriptors.end());
+
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
-        const auto& deviceIDDescriptors =
+        const auto& recordDescriptors =
             std::get<pkg::Descriptors>(fwDeviceIDRecords[index]);
-        if (std::includes(descriptors.begin(), descriptors.end(),
-                          deviceIDDescriptors.begin(),
-                          deviceIDDescriptors.end()))
+        const pkg::SortedDescriptors sortedRecordDescriptors(
+            recordDescriptors.begin(), recordDescriptors.end());
+
+        if (std::includes(
+                sortedDeviceDescriptors.begin(), sortedDeviceDescriptors.end(),
+                sortedRecordDescriptors.begin(), sortedRecordDescriptors.end()))
         {
             return index;
         }
