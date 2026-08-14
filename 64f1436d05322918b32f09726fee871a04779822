@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dec64bb5_d26b8b77",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-14T05:50:36Z",
+      "side": 1,
+      "message": "agreed",
+      "parentUuid": "956939f1_775b38ae",
+      "range": {
+        "startLine": 97,
+        "startChar": 12,
+        "endLine": 106,
+        "endChar": 13
+      },
+      "revId": "64f1436d05322918b32f09726fee871a04779822",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "924a9fd6_3ad0dd9f",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aec52d4_305a91a9",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-14T05:50:36Z",
+      "side": 1,
+      "message": "added something similar",
+      "parentUuid": "924a9fd6_3ad0dd9f",
+      "range": {
+        "startLine": 233,
+        "startChar": 4,
+        "endLine": 237,
+        "endChar": 5
+      },
+      "revId": "64f1436d05322918b32f09726fee871a04779822",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07450d9d_4b64bbe7",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-08-04T08:01:25Z",
       "side": 1,
       "message": "`strnlen()` will stops at the first NUL instead of trailing run.\nSuggested to use the following approach to avoid data loss:\n```\nstd::string_view sv(reinterpret_cast\u003cconst char*\u003e(value), length);\nauto end \u003d sv.find_last_not_of(\u0027\\0\u0027);\nreturn end \u003d\u003d std::string_view::npos ? std::string{} : std::string(sv.substr(0, end+1));\n```",
+      "range": {
+        "startLine": 318,
+        "startChar": 8,
+        "endLine": 319,
+        "endChar": 54
+      },
+      "revId": "64f1436d05322918b32f09726fee871a04779822",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b3fb478_bc4593d1",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-14T05:50:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07450d9d_4b64bbe7",
       "range": {
         "startLine": 318,
         "startChar": 8,
