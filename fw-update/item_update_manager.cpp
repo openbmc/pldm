@@ -10,6 +10,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -139,9 +140,18 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
 {
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
-        const auto& deviceIDDescriptors =
-            std::get<Descriptors>(fwDeviceIDRecords[index]);
-        if (std::includes(descriptors.begin(), descriptors.end(),
+        // Descriptors is a multimap ordered by DescriptorType only, so it has
+        // to be sorted before it can be compared as a sequence.
+        std::vector<Descriptor> deviceIDDescriptors(
+            std::get<Descriptors>(fwDeviceIDRecords[index]).begin(),
+            std::get<Descriptors>(fwDeviceIDRecords[index]).end());
+        std::sort(deviceIDDescriptors.begin(), deviceIDDescriptors.end());
+
+        std::vector<Descriptor> sortedDescriptors(descriptors.begin(),
+                                                  descriptors.end());
+        std::sort(sortedDescriptors.begin(), sortedDescriptors.end());
+
+        if (std::includes(sortedDescriptors.begin(), sortedDescriptors.end(),
                           deviceIDDescriptors.begin(),
                           deviceIDDescriptors.end()))
         {

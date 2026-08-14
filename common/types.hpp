@@ -115,9 +115,15 @@ using VendorDefinedDescriptorTitle = std::string;
 using VendorDefinedDescriptorData = std::vector<uint8_t>;
 using VendorDefinedDescriptorInfo =
     std::tuple<VendorDefinedDescriptorTitle, VendorDefinedDescriptorData>;
-using Descriptors =
-    std::multimap<DescriptorType, std::variant<WrapDescriptorData,
-                                               VendorDefinedDescriptorInfo>>;
+using DescriptorValue =
+    std::variant<WrapDescriptorData, VendorDefinedDescriptorInfo>;
+using Descriptors = std::multimap<DescriptorType, DescriptorValue>;
+/** @brief A single entry of Descriptors, used where the descriptors of a record
+ *         have to be compared as an ordered sequence. std::multimap only orders
+ *         by key, so entries sharing a DescriptorType (vendor-defined ones) are
+ *         not ordered by value.
+ */
+using Descriptor = std::pair<DescriptorType, DescriptorValue>;
 using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
     std::unordered_map<DownstreamDeviceIndex, Descriptors>;

@@ -7,6 +7,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <algorithm>
 #include <cassert>
 #include <filesystem>
 #include <fstream>
@@ -204,17 +205,41 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 #endif
 }
 
+/** @brief Order the descriptors of a record so that they can be compared as a
+ *         sequence.
+ *
+ *  Descriptors is a std::multimap, which only orders by DescriptorType. A
+ *  record may hold more than one vendor-defined descriptor, which all share
+ *  DescriptorType PLDM_FWUP_VENDOR_DEFINED, and those are only ordered by
+ *  insertion. std::includes requires both ranges to be sorted by the same
+ *  comparator, so it cannot be used on Descriptors directly.
+ */
+static std::vector<Descriptor> sortedDescriptors(const Descriptors& descriptors)
+{
+    std::vector<Descriptor> sorted(descriptors.begin(), descriptors.end());
+    std::sort(sorted.begin(), sorted.end());
+    return sorted;
+}
+
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const DescriptorMap& descriptorMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
+
+    // Sorting the descriptors of each device once, rather than once per record
+    std::unordered_map<eid, std::vector<Descriptor>> sortedDescriptorMap;
+    for (const auto& [eid, descriptors] : descriptorMap)
+    {
+        sortedDescriptorMap.emplace(eid, sortedDescriptors(descriptors));
+    }
+
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
-        const auto& deviceIDDescriptors =
-            std::get<Descriptors>(fwDeviceIDRecords[index]);
-        for (const auto& [eid, descriptors] : descriptorMap)
+        const auto deviceIDDescriptors =
+            sortedDescriptors(std::get<Descriptors>(fwDeviceIDRecords[index]));
+        for (const auto& [eid, descriptors] : sortedDescriptorMap)
         {
             if (std::includes(descriptors.begin(), descriptors.end(),
                               deviceIDDescriptors.begin(),
