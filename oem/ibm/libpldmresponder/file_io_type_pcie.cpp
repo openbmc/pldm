@@ -142,7 +142,7 @@ int PCIeInfoHandler::write(const char* buffer, uint32_t, uint32_t& length,
         std::ofstream pcieData(infoFile, std::ios::out | std::ios::binary |
                                              std::ios::app);
 
-        if (!buffer)
+        if (buffer)
         {
             pcieData.write(buffer, length);
         }
