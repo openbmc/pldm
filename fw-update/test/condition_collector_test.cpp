@@ -28,23 +28,34 @@ class ConditionCollectorTest : public testing::Test
     fs::path testConfigPath;
 };
 
-TEST_F(ConditionCollectorTest, EmptyPathReturnsEmpty)
+TEST_F(ConditionCollectorTest, UnconfiguredLookupReturnsDefault)
 {
-    ConditionConfigManager manager("");
-    EXPECT_EQ(manager.preCondition("BIC"), "");
-    EXPECT_EQ(manager.postCondition("BIC"), "");
-    EXPECT_EQ(manager.conditions("BIC"), ConditionPaths());
+    ConditionConfigManager emptyPathManager("");
+    EXPECT_EQ(emptyPathManager.getCondition("BIC"), ComponentCondition());
+
+    ConditionConfigManager missingFileManager("/nonexistent/path/config.json");
+    EXPECT_EQ(missingFileManager.getCondition("BIC"), ComponentCondition());
+
+    const std::string configContent = R"(
+    {
+        "Components": [
+            {
+                "Component": "BIC",
+                "PreUpdateTarget": "bic-pre.service",
+                "PostUpdateTarget": "bic-post.service"
+            }
+        ]
+    }
+    )";
+    std::ofstream configFile(testConfigPath);
+    configFile << configContent;
+    configFile.close();
+
+    ConditionConfigManager loadedManager(testConfigPath);
+    EXPECT_EQ(loadedManager.getCondition("UNKNOWN"), ComponentCondition());
 }
 
-TEST_F(ConditionCollectorTest, NonExistentFileReturnsEmpty)
-{
-    fs::path nonExistentPath = "/nonexistent/path/config.json";
-    ConditionConfigManager manager(nonExistentPath);
-    EXPECT_EQ(manager.preCondition("BIC"), "");
-    EXPECT_EQ(manager.postCondition("BIC"), "");
-}
-
-TEST_F(ConditionCollectorTest, ValidConfigParsingPreCondition)
+TEST_F(ConditionCollectorTest, ValidConfigParsing)
 {
     const std::string configContent = R"(
     {
@@ -63,12 +74,10 @@ TEST_F(ConditionCollectorTest, ValidConfigParsingPreCondition)
     configFile.close();
 
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("BIC"), "bic-pre-update.service");
-    EXPECT_EQ(manager.postCondition("BIC"), "bic-post-update@.service");
-
-    auto [pre, post] = manager.conditions("BIC");
-    EXPECT_EQ(pre, "bic-pre-update.service");
-    EXPECT_EQ(post, "bic-post-update@.service");
+    ComponentCondition condition = manager.getCondition("BIC");
+    EXPECT_EQ(condition.preUpdateTarget, "bic-pre-update.service");
+    EXPECT_EQ(condition.postUpdateTarget, "bic-post-update@.service");
+    EXPECT_FALSE(condition.stopSensorPolling);
 }
 
 TEST_F(ConditionCollectorTest, GenerateArgFromBoardName)
@@ -99,8 +108,9 @@ TEST_F(ConditionCollectorTest, EmptyConditionStrings)
     configFile.close();
 
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("NIC"), "");
-    EXPECT_EQ(manager.postCondition("NIC"), "");
+    ComponentCondition condition = manager.getCondition("NIC");
+    EXPECT_EQ(condition.preUpdateTarget, "");
+    EXPECT_EQ(condition.postUpdateTarget, "");
 }
 
 TEST_F(ConditionCollectorTest, MultipleComponentsParsing)
@@ -131,38 +141,17 @@ TEST_F(ConditionCollectorTest, MultipleComponentsParsing)
 
     ConditionConfigManager manager(testConfigPath);
 
-    EXPECT_EQ(manager.preCondition("BIOS"), "bios-pre.service");
-    EXPECT_EQ(manager.postCondition("BIOS"), "bios-post.service");
+    ComponentCondition bios = manager.getCondition("BIOS");
+    EXPECT_EQ(bios.preUpdateTarget, "bios-pre.service");
+    EXPECT_EQ(bios.postUpdateTarget, "bios-post.service");
 
-    EXPECT_EQ(manager.preCondition("BIOS_VR"), "");
-    EXPECT_EQ(manager.postCondition("BIOS_VR"), "vr-post.service");
+    ComponentCondition biosVr = manager.getCondition("BIOS_VR");
+    EXPECT_FALSE(biosVr.preUpdateTarget);
+    EXPECT_EQ(biosVr.postUpdateTarget, "vr-post.service");
 
-    EXPECT_EQ(manager.preCondition("EC"), "ec-pre.service");
-    EXPECT_EQ(manager.postCondition("EC"), "");
-}
-
-TEST_F(ConditionCollectorTest, NonExistentComponentReturnsEmpty)
-{
-    const std::string configContent = R"(
-    {
-        "Components": [
-            {
-                "Component": "BIC",
-                "PreUpdateTarget": "bic-pre.service",
-                "PostUpdateTarget": "bic-post.service"
-            }
-        ]
-    }
-    )";
-
-    std::ofstream configFile(testConfigPath);
-    configFile << configContent;
-    configFile.close();
-
-    ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("UNKNOWN"), "");
-    EXPECT_EQ(manager.postCondition("UNKNOWN"), "");
-    EXPECT_EQ(manager.conditions("UNKNOWN"), ConditionPaths());
+    ComponentCondition ec = manager.getCondition("EC");
+    EXPECT_EQ(ec.preUpdateTarget, "ec-pre.service");
+    EXPECT_FALSE(ec.postUpdateTarget);
 }
 
 TEST_F(ConditionCollectorTest, InvalidJsonFormat)
@@ -175,7 +164,7 @@ TEST_F(ConditionCollectorTest, InvalidJsonFormat)
 
     // Should not throw, just handle gracefully
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("BIC"), "");
+    EXPECT_EQ(manager.getCondition("BIC"), ComponentCondition());
 }
 
 TEST_F(ConditionCollectorTest, MissingComponentsKey)
@@ -191,7 +180,7 @@ TEST_F(ConditionCollectorTest, MissingComponentsKey)
     configFile.close();
 
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("BIC"), "");
+    EXPECT_EQ(manager.getCondition("BIC"), ComponentCondition());
 }
 
 TEST_F(ConditionCollectorTest, MissingComponentNameField)
@@ -213,13 +202,13 @@ TEST_F(ConditionCollectorTest, MissingComponentNameField)
 
     // Should skip invalid entry and not crash
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("BIC"), "");
+    EXPECT_EQ(manager.getCondition("BIC"), ComponentCondition());
 }
 
 TEST_F(ConditionCollectorTest, BothTargetFieldsAbsent)
 {
     // Neither PreUpdateTarget nor PostUpdateTarget is present —
-    // entry should be skipped and queries should return empty string
+    // both should come back unset, not just empty
     const std::string configContent = R"(
     {
         "Components": [
@@ -235,14 +224,15 @@ TEST_F(ConditionCollectorTest, BothTargetFieldsAbsent)
     configFile.close();
 
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("BIC"), "");
-    EXPECT_EQ(manager.postCondition("BIC"), "");
+    ComponentCondition condition = manager.getCondition("BIC");
+    EXPECT_FALSE(condition.preUpdateTarget);
+    EXPECT_FALSE(condition.postUpdateTarget);
 }
 
 TEST_F(ConditionCollectorTest, OnlyPreTargetAbsent)
 {
     // PostUpdateTarget is present but PreUpdateTarget is absent —
-    // pre should default to empty string, post should be populated
+    // pre should come back unset, post should be populated
     const std::string configContent = R"(
     {
         "Components": [
@@ -259,14 +249,15 @@ TEST_F(ConditionCollectorTest, OnlyPreTargetAbsent)
     configFile.close();
 
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("BIOS"), "");
-    EXPECT_EQ(manager.postCondition("BIOS"), "bios-post.service");
+    ComponentCondition condition = manager.getCondition("BIOS");
+    EXPECT_FALSE(condition.preUpdateTarget);
+    EXPECT_EQ(condition.postUpdateTarget, "bios-post.service");
 }
 
 TEST_F(ConditionCollectorTest, OnlyPostTargetAbsent)
 {
     // PreUpdateTarget is present but PostUpdateTarget is absent —
-    // post should default to empty string, pre should be populated
+    // post should come back unset, pre should be populated
     const std::string configContent = R"(
     {
         "Components": [
@@ -283,6 +274,110 @@ TEST_F(ConditionCollectorTest, OnlyPostTargetAbsent)
     configFile.close();
 
     ConditionConfigManager manager(testConfigPath);
-    EXPECT_EQ(manager.preCondition("NIC"), "nic-pre.service");
-    EXPECT_EQ(manager.postCondition("NIC"), "");
+    ComponentCondition condition = manager.getCondition("NIC");
+    EXPECT_EQ(condition.preUpdateTarget, "nic-pre.service");
+    EXPECT_FALSE(condition.postUpdateTarget);
+}
+
+TEST_F(ConditionCollectorTest, StopSensorPollingTrueWithoutTargets)
+{
+    // A component may opt into stopping sensor polling without configuring
+    // either a pre or post condition service.
+    const std::string configContent = R"(
+    {
+        "Components": [
+            {
+                "Component": "BIC",
+                "StopSensorPolling": true
+            }
+        ]
+    }
+    )";
+
+    std::ofstream configFile(testConfigPath);
+    configFile << configContent;
+    configFile.close();
+
+    ConditionConfigManager manager(testConfigPath);
+    ComponentCondition condition = manager.getCondition("BIC");
+    EXPECT_TRUE(condition.stopSensorPolling);
+    EXPECT_FALSE(condition.preUpdateTarget);
+    EXPECT_FALSE(condition.postUpdateTarget);
+}
+
+TEST_F(ConditionCollectorTest, StopSensorPollingFalseIsDefault)
+{
+    // Omitting the property defaults to false, same as an explicit false.
+    const std::string configContent = R"(
+    {
+        "Components": [
+            {
+                "Component": "BIC",
+                "PreUpdateTarget": "bic-pre.service"
+            },
+            {
+                "Component": "NIC",
+                "PreUpdateTarget": "nic-pre.service",
+                "StopSensorPolling": false
+            }
+        ]
+    }
+    )";
+
+    std::ofstream configFile(testConfigPath);
+    configFile << configContent;
+    configFile.close();
+
+    ConditionConfigManager manager(testConfigPath);
+    EXPECT_FALSE(manager.getCondition("BIC").stopSensorPolling);
+    EXPECT_FALSE(manager.getCondition("NIC").stopSensorPolling);
+}
+
+TEST_F(ConditionCollectorTest, StopSensorPollingCombinedWithConditions)
+{
+    const std::string configContent = R"(
+    {
+        "Components": [
+            {
+                "Component": "BIC",
+                "PreUpdateTarget": "bic-pre.service",
+                "PostUpdateTarget": "bic-post.service",
+                "StopSensorPolling": true
+            }
+        ]
+    }
+    )";
+
+    std::ofstream configFile(testConfigPath);
+    configFile << configContent;
+    configFile.close();
+
+    ConditionConfigManager manager(testConfigPath);
+    ComponentCondition condition = manager.getCondition("BIC");
+    EXPECT_TRUE(condition.stopSensorPolling);
+    EXPECT_EQ(condition.preUpdateTarget, "bic-pre.service");
+    EXPECT_EQ(condition.postUpdateTarget, "bic-post.service");
+}
+
+TEST_F(ConditionCollectorTest, StopSensorPollingWrongTypeIsIgnored)
+{
+    // Ignore non-boolean StopSensorPolling values, treating them the same as
+    // an absent property without throwing or crashing.
+    const std::string configContent = R"(
+    {
+        "Components": [
+            {
+                "Component": "BIC",
+                "StopSensorPolling": "true"
+            }
+        ]
+    }
+    )";
+
+    std::ofstream configFile(testConfigPath);
+    configFile << configContent;
+    configFile.close();
+
+    ConditionConfigManager manager(testConfigPath);
+    EXPECT_FALSE(manager.getCondition("BIC").stopSensorPolling);
 }

@@ -11,6 +11,7 @@
 #include <format>
 #include <fstream>
 #include <optional>
+#include <unordered_map>
 
 PHOSPHOR_LOG2_USING;
 
@@ -26,6 +27,9 @@ struct ComponentCondition
     std::string component;
     std::optional<std::string> preUpdateTarget;
     std::optional<std::string> postUpdateTarget;
+    bool stopSensorPolling = false;
+
+    bool operator==(const ComponentCondition&) const = default;
 };
 
 // Custom from_json for ComponentCondition
@@ -47,6 +51,11 @@ inline void from_json(const Json& j, ComponentCondition& cc)
     {
         cc.postUpdateTarget = j["PostUpdateTarget"].get<std::string>();
     }
+
+    if (j.contains("StopSensorPolling") && j["StopSensorPolling"].is_boolean())
+    {
+        cc.stopSensorPolling = j["StopSensorPolling"].get<bool>();
+    }
 }
 
 class ConditionConfigManager
@@ -63,6 +72,9 @@ class ConditionConfigManager
             error("Json file does not exist: {JSPATH}", "JSPATH", jsonPath);
             return;
         }
+
+        info("Found condition file: {JSPATH}", "JSPATH", jsonPath);
+
         std::ifstream jsonFile(jsonPath);
         if (!jsonFile.is_open())
         {
@@ -85,32 +97,32 @@ class ConditionConfigManager
                 {
                     ComponentCondition cc =
                         componentJson.get<ComponentCondition>();
-                    ConditionPath prePath = cc.preUpdateTarget.value_or("");
-                    ConditionPath postPath = cc.postUpdateTarget.value_or("");
+
+                    info(
+                        "Parsed component {COMPONENT} condition: pre='{PRE}' post='{POST}' stopSensorPolling={STOP}",
+                        "COMPONENT", cc.component, "PRE",
+                        cc.preUpdateTarget.value_or(""), "POST",
+                        cc.postUpdateTarget.value_or(""), "STOP",
+                        cc.stopSensorPolling);
 
                     // The schema requires a non-empty unit name and omission of
                     // the property to skip a condition. Warn on a present but
                     // empty name so a misconfiguration is not silently treated
                     // as an intentionally omitted hook.
-                    if (prePath.empty() && cc.preUpdateTarget)
+                    if (cc.preUpdateTarget && cc.preUpdateTarget->empty())
                     {
                         warning(
                             "Empty 'PreUpdateTarget' for component {COMPONENT}, treating it as no pre-condition",
                             "COMPONENT", cc.component);
                     }
-                    if (postPath.empty() && cc.postUpdateTarget)
+                    if (cc.postUpdateTarget && cc.postUpdateTarget->empty())
                     {
                         warning(
                             "Empty 'PostUpdateTarget' for component {COMPONENT}, treating it as no post-condition",
                             "COMPONENT", cc.component);
                     }
 
-                    // Skip entries where both pre and post conditions are empty
-                    if (!prePath.empty() || !postPath.empty())
-                    {
-                        conditionMap.insert_or_assign(
-                            cc.component, ConditionPaths{prePath, postPath});
-                    }
+                    conditionMap.insert_or_assign(cc.component, cc);
                 }
                 catch (const std::exception& e)
                 {
@@ -128,25 +140,14 @@ class ConditionConfigManager
         }
     }
 
-    ConditionPath preCondition(const ConditionIdentifier& name) const
-    {
-        if (conditionMap.contains(name))
-        {
-            return conditionMap.at(name).first;
-        }
-        return "";
-    }
-
-    ConditionPath postCondition(const ConditionIdentifier& name) const
-    {
-        if (conditionMap.contains(name))
-        {
-            return conditionMap.at(name).second;
-        }
-        return "";
-    }
-
-    ConditionPaths conditions(const ConditionIdentifier& name) const
+    /** @brief The named component's condition config
+     *
+     *  @param[in] name - ConditionIdentifier (component name) to look up
+     *
+     *  @return The component's ComponentCondition; a default-constructed
+     *          ComponentCondition when the component is not configured
+     */
+    ComponentCondition getCondition(const ConditionIdentifier& name) const
     {
         if (conditionMap.contains(name))
         {
@@ -156,7 +157,7 @@ class ConditionConfigManager
     }
 
   private:
-    PrePostConditionMap conditionMap;
+    std::unordered_map<ConditionIdentifier, ComponentCondition> conditionMap;
 };
 
 /**

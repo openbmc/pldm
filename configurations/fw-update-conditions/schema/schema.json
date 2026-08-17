@@ -35,6 +35,11 @@
                     "type": "string",
                     "pattern": "^[^/]+\\.(service|target)$",
                     "description": "Systemd unit name to run after a successful update, for example ABC_PostUpdate.service. A template unit name such as ABC_PostUpdate@.service receives all supported named arguments as its instance name. Omit this property when the component has no post-condition."
+                },
+                "StopSensorPolling": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "When true, PLDM pauses sensor polling during the update and resumes it afterward. Use for devices that do not support concurrent sensor/event traffic during firmware updates."
                 }
             }
         }

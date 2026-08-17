@@ -92,6 +92,12 @@ bool ItemUpdateManager::processPackage()
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
     inProgressActivation->activation(software::Activation::Activations::Ready);
+
+    if (stopSensorPollingDuringUpdate && sensorPollingCallback)
+    {
+        sensorPollingCallback(eid, SensorPollingAction::Stop);
+    }
+
     if (!preConditionPath.empty())
     {
         SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
@@ -232,6 +238,11 @@ void ItemUpdateManager::completeUpdate(bool status)
     if (!updateInProgress)
     {
         return;
+    }
+
+    if (stopSensorPollingDuringUpdate && sensorPollingCallback)
+    {
+        sensorPollingCallback(eid, SensorPollingAction::Resume);
     }
 
     // A failing pre-update condition completes the update before the firmware
