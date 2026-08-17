@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c0602a0_6b8dcc1b",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000928
+      },
+      "writtenOn": "2026-08-17T05:16:18Z",
+      "side": 1,
+      "message": "why no return false ?",
+      "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
