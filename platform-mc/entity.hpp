@@ -58,7 +58,7 @@ class Entity
      */
     Entity(const EntityKey& key, const std::string& path,
            const std::string& name,
-           std::unique_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf);
+           std::shared_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf);
 
     /** @brief The getter to return the entity identification fields */
     const EntityKey& getKey() const
@@ -124,9 +124,10 @@ class Entity
     std::string path;
 
     /** @brief The Inventory.Item.<Type> interface which matches the entity
-     *         type, e.g. Inventory.Item.Cpu
+     *         type, e.g. Inventory.Item.Cpu, which the state sets that publish
+     *         on it share
      */
-    std::unique_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf;
+    std::shared_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf;
 
     /** @brief The Inventory.Item interface, which holds the PrettyName and
      *         Present properties

@@ -9,10 +9,15 @@ namespace platform_mc
 
 Entity::Entity(const EntityKey& key, const std::string& path,
                const std::string& name,
-               std::unique_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf) :
+               std::shared_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf) :
     key(key), path(path), typeItemIntf(std::move(typeItemIntf)),
     stateSets(std::make_shared<StateSets>(path))
 {
+    if (auto portIntf = pldm::dbus_api::getPortIntf(this->typeItemIntf))
+    {
+        stateSets->addInterface(std::move(portIntf));
+    }
+
     auto& bus = pldm::utils::DBusHandler::getBus();
     inventoryItemIntf = std::make_unique<InventoryItemIntf>(bus, path.c_str());
     inventoryItemIntf->prettyName(name);
