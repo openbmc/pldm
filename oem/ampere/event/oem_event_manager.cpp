@@ -920,9 +920,13 @@ int OemEventManager::processOemMsgPollEvent(pldm_tid_t tid, uint16_t eventId,
                                             const uint8_t* eventData,
                                             size_t eventDataSize)
 {
-    EFI_AMPERE_ERROR_DATA ampHdr;
+    EFI_AMPERE_ERROR_DATA ampHdr{};
 
-    decodeCperRecord(eventData, eventDataSize, &ampHdr);
+    if (!decodeCperRecord(eventData, eventDataSize, &ampHdr))
+    {
+        lg2::error("Failed to decode malformed CPER event");
+        return PLDM_ERROR_INVALID_DATA;
+    }
 
     addCperSELLog(tid, eventId, &ampHdr);
 
