@@ -5,6 +5,7 @@
 #include <libpldm/state_set.h>
 
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Inventory/Item/server.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
 #include <algorithm>
@@ -43,8 +44,18 @@ class StateSetBase
     virtual void setPresentState(uint8_t presentState) = 0;
 };
 
-using StateSetCreator = std::unique_ptr<StateSetBase> (*)(sdbusplus::bus_t&,
-                                                          const std::string&);
+using InventoryItemIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::Inventory::server::Item>;
+
+/** @brief Creator of the D-Bus interface of one state set.
+ *
+ *  A state set which publishes on Inventory.Item takes the interface the
+ *  entity D-Bus object already implements, so the state sets of one entity do
+ *  not implement it twice.
+ */
+using StateSetCreator = std::unique_ptr<StateSetBase> (*)(
+    sdbusplus::bus_t&, const std::string&,
+    const std::shared_ptr<InventoryItemIntf>&);
 
 /** @struct StateSetItem
  *  @brief The D-Bus interface of one state set.
@@ -84,8 +95,9 @@ class StateSetHealthState : public StateSetBase
     {}
 
     /** @brief Creator of the interface, `StateSetCreator` of the state set */
-    static std::unique_ptr<StateSetBase> create(sdbusplus::bus_t& bus,
-                                                const std::string& path)
+    static std::unique_ptr<StateSetBase> create(
+        sdbusplus::bus_t& bus, const std::string& path,
+        const std::shared_ptr<InventoryItemIntf>& /*itemIntf*/)
     {
         return std::make_unique<StateSetHealthState>(bus, path);
     }
@@ -109,25 +121,80 @@ class StateSetHealthState : public StateSetBase
     bool unknownStateLogged = false;
 };
 
+/** @class StateSetPresence
+ *  @brief The presence state set, state set ID 13 of DSP0249 v1.4.0.
+ *  @details The presence of the entity is exposed by the Present property of
+ *           Inventory.Item, the interface the entity D-Bus object implements.
+ */
+class StateSetPresence : public StateSetBase
+{
+  public:
+    StateSetPresence() = delete;
+    StateSetPresence(const StateSetPresence&) = delete;
+    StateSetPresence& operator=(const StateSetPresence&) = delete;
+    StateSetPresence(StateSetPresence&&) = delete;
+    StateSetPresence& operator=(StateSetPresence&&) = delete;
+    ~StateSetPresence() override = default;
+
+    /** @brief Constructor
+     *
+     *  @param[in] path - D-Bus object path of the entity
+     *  @param[in] itemIntf - the Inventory.Item interface of the entity
+     */
+    StateSetPresence(const std::string& path,
+                     std::shared_ptr<InventoryItemIntf> itemIntf) :
+        path(path), interface(std::move(itemIntf))
+    {}
+
+    /** @brief Creator of the interface, `StateSetCreator` of the state set */
+    static std::unique_ptr<StateSetBase> create(
+        sdbusplus::bus_t& /*bus*/, const std::string& path,
+        const std::shared_ptr<InventoryItemIntf>& itemIntf)
+    {
+        return std::make_unique<StateSetPresence>(path, itemIntf);
+    }
+
+    void setPresentState(uint8_t presentState) override;
+
+    /** @brief The getter to return the presence the interface carries */
+    bool present() const
+    {
+        return interface->present();
+    }
+
+  private:
+    /** @brief The D-Bus object path of the entity */
+    std::string path;
+
+    /** @brief The interface which carries the presence of the entity */
+    std::shared_ptr<InventoryItemIntf> interface;
+
+    /** @brief Whether a state the state set does not define was logged */
+    bool unknownStateLogged = false;
+};
+
 /** @brief The state sets which have a D-Bus interface.
  *
  *  The mapping is injective: two state sets do not share the property of a
  *  D-Bus interface, so the component sensors of one entity do not overwrite
  *  each other. A state set gets its entry when its interface is added.
  */
-inline constexpr std::array<StateSetItem, 1> stateSetItems{
+inline constexpr std::array<StateSetItem, 2> stateSetItems{
     StateSetItem{PLDM_STATE_SET_HEALTH_STATE, &StateSetHealthState::create},
+    StateSetItem{PLDM_STATE_SET_PRESENCE, &StateSetPresence::create},
 };
 
 /** @brief Create the D-Bus interface which matches the given state set
  *  @param[in] bus - D-Bus bus
  *  @param[in] path - D-Bus object path
+ *  @param[in] itemIntf - the Inventory.Item interface of the D-Bus object
  *  @param[in] stateSetId - DSP0249 state set ID
  *  @return unique_ptr to StateSetBase, nullptr when the state set has no
  *          matching D-Bus interface
  */
 inline std::unique_ptr<StateSetBase> createStateSet(
-    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId)
+    sdbusplus::bus_t& bus, const std::string& path,
+    const std::shared_ptr<InventoryItemIntf>& itemIntf, StateSetId stateSetId)
 {
     auto it =
         std::ranges::find(stateSetItems, stateSetId, &StateSetItem::stateSetId);
@@ -135,7 +202,7 @@ inline std::unique_ptr<StateSetBase> createStateSet(
     {
         return nullptr;
     }
-    return it->create(bus, path);
+    return it->create(bus, path, itemIntf);
 }
 
 /** @class StateSets
@@ -158,8 +225,12 @@ class StateSets
      *
      *  @param[in] path - the D-Bus object path the interfaces are
      *                    implemented on
+     *  @param[in] itemIntf - the Inventory.Item interface of the D-Bus object
      */
-    explicit StateSets(const std::string& path) : path(path) {}
+    StateSets(const std::string& path,
+              std::shared_ptr<InventoryItemIntf> itemIntf) :
+        path(path), itemIntf(std::move(itemIntf))
+    {}
 
     /** @brief Get the D-Bus interface of the state set, implementing it on
      *         the D-Bus object when it is not implemented yet
@@ -173,6 +244,11 @@ class StateSets
   private:
     /** @brief The D-Bus object path the interfaces are implemented on */
     std::string path;
+
+    /** @brief The Inventory.Item interface of the D-Bus object, which the
+     *         state sets that publish on it take instead of implementing it
+     */
+    std::shared_ptr<InventoryItemIntf> itemIntf;
 
     /** @brief The interface of each implemented state set */
     std::map<StateSetId, std::unique_ptr<StateSetBase>> stateSets;

@@ -142,7 +142,12 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
     {
         inventoryItemInft = pldm::dbus_api::createPldmEntity(
             utils::DBusHandler::getBus(), inventoryPath, entityType);
-        terminusStateSets = std::make_shared<StateSets>(inventoryPath);
+        terminusInventoryItemIntf = std::make_shared<InventoryItemIntf>(
+            utils::DBusHandler::getBus(), inventoryPath.c_str());
+        terminusInventoryItemIntf->prettyName(tName);
+        terminusInventoryItemIntf->present(true);
+        terminusStateSets = std::make_shared<StateSets>(
+            inventoryPath, terminusInventoryItemIntf);
         return true;
     }
     catch (const sdbusplus::exception_t& e)

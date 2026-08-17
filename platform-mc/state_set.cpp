@@ -50,6 +50,33 @@ void StateSetHealthState::setPresentState(uint8_t presentState)
     interface.functional(functional);
 }
 
+void StateSetPresence::setPresentState(uint8_t presentState)
+{
+    switch (presentState)
+    {
+        case PLDM_STATE_SET_PRESENCE_PRESENT:
+            interface->present(true);
+            break;
+        case PLDM_STATE_SET_PRESENCE_NOT_PRESENT:
+            interface->present(false);
+            break;
+        default:
+            /* A `Present` of false is reported as a Redfish `State` of
+             * `Absent`, a claim a state the state set does not define does not
+             * support, so the presence keeps the value of the last reading a
+             * state value was defined for. A terminus which reports such a
+             * state keeps reporting it, so the entity is logged once.
+             */
+            if (!std::exchange(unknownStateLogged, true))
+            {
+                lg2::error(
+                    "The presence state set has no state value {STATE}, so the presence of the entity on {PATH} is left unchanged.",
+                    "STATE", presentState, "PATH", path);
+            }
+            break;
+    }
+}
+
 StateSetBase* StateSets::getStateSet(StateSetId stateSetId)
 {
     auto it = stateSets.find(stateSetId);
@@ -62,7 +89,7 @@ StateSetBase* StateSets::getStateSet(StateSetId stateSetId)
     try
     {
         stateSet = createStateSet(pldm::utils::DBusHandler::getBus(), path,
-                                  stateSetId);
+                                  itemIntf, stateSetId);
     }
     catch (const sdbusplus::exception_t& e)
     {
