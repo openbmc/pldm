@@ -34,7 +34,7 @@ typedef struct
     uint16_t length;
 } __attribute__((packed)) CommonEventData;
 
-void decodeCperRecord(const uint8_t* data, size_t eventDataSize,
+bool decodeCperRecord(const uint8_t* data, size_t eventDataSize,
                       EFI_AMPERE_ERROR_DATA* ampSpecHdr);
 void addCperSELLog(uint8_t TID, uint16_t eventID, EFI_AMPERE_ERROR_DATA* p);
 
