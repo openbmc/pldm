@@ -18,7 +18,7 @@ namespace oem_ampere
 {
 
 // Returns one if two EFI GUIDs are equal, zero otherwise.
-int guid_equal(EFI_GUID* a, EFI_GUID* b)
+int guid_equal(const EFI_GUID* a, const EFI_GUID* b)
 {
     // Check top base 3 components.
     if (a->Data1 != b->Data1 || a->Data2 != b->Data2 || a->Data3 != b->Data3)
@@ -38,71 +38,104 @@ int guid_equal(EFI_GUID* a, EFI_GUID* b)
     return 1;
 }
 
-static void decodeSecAmpere(void* section, EFI_AMPERE_ERROR_DATA* ampSpecHdr)
+static bool decodeSecAmpere(const uint8_t* section, size_t sectionSize,
+                            EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 {
+    if (sectionSize < sizeof(EFI_AMPERE_ERROR_DATA))
+    {
+        return false;
+    }
     std::memcpy(ampSpecHdr, section, sizeof(EFI_AMPERE_ERROR_DATA));
+    return true;
 }
 
-static void decodeSecArm(void* section, EFI_AMPERE_ERROR_DATA* ampSpecHdr)
+static bool decodeSecArm(const uint8_t* section, size_t sectionSize,
+                         EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 {
-    int len = 0;
-    EFI_ARM_ERROR_RECORD* proc = nullptr;
-    EFI_ARM_ERROR_INFORMATION_ENTRY* errInfo = nullptr;
-    EFI_ARM_CONTEXT_INFORMATION_HEADER* ctxInfo = nullptr;
+    if (sectionSize < sizeof(EFI_ARM_ERROR_RECORD))
+    {
+        return false;
+    }
 
-    proc = reinterpret_cast<EFI_ARM_ERROR_RECORD*>(section);
-    errInfo = reinterpret_cast<EFI_ARM_ERROR_INFORMATION_ENTRY*>(proc + 1);
+    EFI_ARM_ERROR_RECORD proc{};
+    std::memcpy(&proc, section, sizeof(proc));
 
-    len = proc->SectionLength -
-          (sizeof(EFI_ARM_ERROR_RECORD) +
-           proc->ErrInfoNum * (sizeof(EFI_ARM_ERROR_INFORMATION_ENTRY)));
-    if (len < 0)
+    if (proc.SectionLength > sectionSize ||
+        proc.SectionLength < sizeof(EFI_ARM_ERROR_RECORD) ||
+        proc.ErrInfoNum >
+            (proc.SectionLength - sizeof(EFI_ARM_ERROR_RECORD)) /
+                sizeof(EFI_ARM_ERROR_INFORMATION_ENTRY))
     {
         lg2::error("Section length is too small, section_length {LENGTH}",
-                   "LENGTH", static_cast<int>(proc->SectionLength));
-        return;
+                   "LENGTH", static_cast<int>(proc.SectionLength));
+        return false;
     }
 
-    ctxInfo = reinterpret_cast<EFI_ARM_CONTEXT_INFORMATION_HEADER*>(
-        errInfo + proc->ErrInfoNum);
+    size_t offset = sizeof(EFI_ARM_ERROR_RECORD) +
+                    proc.ErrInfoNum *
+                        sizeof(EFI_ARM_ERROR_INFORMATION_ENTRY);
+    size_t remaining = proc.SectionLength - offset;
 
-    for ([[maybe_unused]] const auto& i :
-         std::views::iota(0, static_cast<int>(proc->ContextInfoNum)))
+    for (size_t i = 0; i < proc.ContextInfoNum; i++)
     {
-        int size = sizeof(EFI_ARM_CONTEXT_INFORMATION_HEADER) +
-                   ctxInfo->RegisterArraySize;
-        len -= size;
-        ctxInfo = reinterpret_cast<EFI_ARM_CONTEXT_INFORMATION_HEADER*>(
-            (long)ctxInfo + size);
+        if (remaining < sizeof(EFI_ARM_CONTEXT_INFORMATION_HEADER))
+        {
+            return false;
+        }
+
+        EFI_ARM_CONTEXT_INFORMATION_HEADER contextInfo{};
+        std::memcpy(&contextInfo, section + offset, sizeof(contextInfo));
+        size_t contextSize = sizeof(EFI_ARM_CONTEXT_INFORMATION_HEADER) +
+                             contextInfo.RegisterArraySize;
+        if (contextSize < sizeof(EFI_ARM_CONTEXT_INFORMATION_HEADER) ||
+            contextSize > remaining)
+        {
+            return false;
+        }
+
+        offset += contextSize;
+        remaining -= contextSize;
     }
 
-    if (len > 0)
+    if (remaining < sizeof(EFI_AMPERE_ERROR_DATA))
     {
-        /* Get Ampere Specific header data */
-        std::memcpy(ampSpecHdr, (void*)ctxInfo, sizeof(EFI_AMPERE_ERROR_DATA));
+        return false;
     }
+
+    std::memcpy(ampSpecHdr, section + offset, sizeof(EFI_AMPERE_ERROR_DATA));
+    return true;
 }
 
-static void decodeSecPlatformMemory(void* section,
+static bool decodeSecPlatformMemory(const uint8_t* section, size_t sectionSize,
                                     EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 {
-    EFI_PLATFORM_MEMORY_ERROR_DATA* mem =
-        reinterpret_cast<EFI_PLATFORM_MEMORY_ERROR_DATA*>(section);
-    if (mem->ErrorType == MEM_ERROR_TYPE_PARITY)
+    if (sectionSize < sizeof(EFI_PLATFORM_MEMORY_ERROR_DATA))
+    {
+        return false;
+    }
+    EFI_PLATFORM_MEMORY_ERROR_DATA mem{};
+    std::memcpy(&mem, section, sizeof(mem));
+    if (mem.ErrorType == MEM_ERROR_TYPE_PARITY)
     {
         /* IP Type from bit 0 to 11 of TypeId */
         ampSpecHdr->TypeId = (ampSpecHdr->TypeId & 0xf800) + ERROR_TYPE_ID_MCU;
         ampSpecHdr->SubtypeId = SUBTYPE_ID_PARITY;
     }
+    return true;
 }
 
-static void decodeSecPcie(void* section, EFI_AMPERE_ERROR_DATA* ampSpecHdr)
+static bool decodeSecPcie(const uint8_t* section, size_t sectionSize,
+                          EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 {
-    EFI_PCIE_ERROR_DATA* pcieErr =
-        reinterpret_cast<EFI_PCIE_ERROR_DATA*>(section);
-    if (pcieErr->ValidFields & CPER_PCIE_VALID_PORT_TYPE)
+    if (sectionSize < sizeof(EFI_PCIE_ERROR_DATA))
     {
-        if (pcieErr->PortType == CPER_PCIE_PORT_TYPE_ROOT_PORT)
+        return false;
+    }
+    EFI_PCIE_ERROR_DATA pcieErr{};
+    std::memcpy(&pcieErr, section, sizeof(pcieErr));
+    if (pcieErr.ValidFields & CPER_PCIE_VALID_PORT_TYPE)
+    {
+        if (pcieErr.PortType == CPER_PCIE_PORT_TYPE_ROOT_PORT)
         {
             ampSpecHdr->SubtypeId = ERROR_SUBTYPE_PCIE_AER_ROOT_PORT;
         }
@@ -111,73 +144,91 @@ static void decodeSecPcie(void* section, EFI_AMPERE_ERROR_DATA* ampSpecHdr)
             ampSpecHdr->SubtypeId = ERROR_SUBTYPE_PCIE_AER_DEVICE;
         }
     }
+    return true;
 }
 
-static void decodeCperSection(const uint8_t* data, long basePos,
+static bool decodeCperSection(const uint8_t* data, size_t eventDataSize,
                               EFI_AMPERE_ERROR_DATA* ampSpecHdr,
-                              EFI_ERROR_SECTION_DESCRIPTOR* secDesc)
+                              const EFI_ERROR_SECTION_DESCRIPTOR* secDesc)
 {
-    long pos = basePos + secDesc->SectionOffset;
-    char* section = new char[secDesc->SectionLength];
-    std::memcpy(section, &data[pos], secDesc->SectionLength);
-    pos += secDesc->SectionLength;
-    EFI_GUID* ptr = reinterpret_cast<EFI_GUID*>(&secDesc->SectionType);
+    constexpr size_t basePos = sizeof(CommonEventData);
+    if (eventDataSize < basePos || secDesc->SectionOffset >
+                                    eventDataSize - basePos ||
+        secDesc->SectionLength >
+            eventDataSize - basePos - secDesc->SectionOffset)
+    {
+        return false;
+    }
+
+    const uint8_t* section = data + basePos + secDesc->SectionOffset;
+    size_t sectionSize = secDesc->SectionLength;
+    const EFI_GUID* ptr = reinterpret_cast<const EFI_GUID*>(&secDesc->SectionType);
+    bool decoded = true;
     if (guid_equal(ptr, &gEfiAmpereErrorSectionGuid))
     {
         lg2::info("RAS Section Type : Ampere Specific");
-        decodeSecAmpere(section, ampSpecHdr);
+        decoded = decodeSecAmpere(section, sectionSize, ampSpecHdr);
     }
     else if (guid_equal(ptr, &gEfiArmProcessorErrorSectionGuid))
     {
         lg2::info("RAS Section Type : ARM");
-        decodeSecArm(section, ampSpecHdr);
+        decoded = decodeSecArm(section, sectionSize, ampSpecHdr);
     }
     else if (guid_equal(ptr, &gEfiPlatformMemoryErrorSectionGuid))
     {
         lg2::info("RAS Section Type : Memory");
-        decodeSecPlatformMemory(section, ampSpecHdr);
+        decoded = decodeSecPlatformMemory(section, sectionSize, ampSpecHdr);
     }
     else if (guid_equal(ptr, &gEfiPcieErrorSectionGuid))
     {
         lg2::info("RAS Section Type : PCIE");
-        decodeSecPcie(section, ampSpecHdr);
+        decoded = decodeSecPcie(section, sectionSize, ampSpecHdr);
     }
     else
     {
         lg2::error("Section Type is not supported");
     }
 
-    delete[] section;
+    return decoded;
 }
 
-void decodeCperRecord(const uint8_t* data, size_t /* eventDataSize */,
+bool decodeCperRecord(const uint8_t* data, size_t eventDataSize,
                       EFI_AMPERE_ERROR_DATA* ampSpecHdr)
 {
+    constexpr size_t basePos = sizeof(CommonEventData);
+    if (data == nullptr || ampSpecHdr == nullptr ||
+        eventDataSize < basePos + sizeof(EFI_COMMON_ERROR_RECORD_HEADER))
+    {
+        return false;
+    }
+
     EFI_COMMON_ERROR_RECORD_HEADER cperHeader;
-    long pos = sizeof(CommonEventData);
-    long basePos = sizeof(CommonEventData);
+    size_t pos = basePos;
 
     std::memcpy(&cperHeader, &data[pos],
                 sizeof(EFI_COMMON_ERROR_RECORD_HEADER));
     pos += sizeof(EFI_COMMON_ERROR_RECORD_HEADER);
 
-    EFI_ERROR_SECTION_DESCRIPTOR* secDesc =
-        new EFI_ERROR_SECTION_DESCRIPTOR[cperHeader.SectionCount];
-    for ([[maybe_unused]] const auto& i :
-         std::views::iota(0, static_cast<int>(cperHeader.SectionCount)))
+    const size_t remainingEventData = eventDataSize - pos;
+    const size_t sectionCount = cperHeader.SectionCount;
+    if (sectionCount >
+        remainingEventData / sizeof(EFI_ERROR_SECTION_DESCRIPTOR))
     {
-        std::memcpy(&secDesc[i], &data[pos],
-                    sizeof(EFI_ERROR_SECTION_DESCRIPTOR));
-        pos += sizeof(EFI_ERROR_SECTION_DESCRIPTOR);
+        return false;
     }
 
-    for ([[maybe_unused]] const auto& i :
-         std::views::iota(0, static_cast<int>(cperHeader.SectionCount)))
+    for (size_t i = 0; i < sectionCount; i++)
     {
-        decodeCperSection(data, basePos, ampSpecHdr, &secDesc[i]);
+        EFI_ERROR_SECTION_DESCRIPTOR secDesc;
+        std::memcpy(&secDesc, &data[pos], sizeof(secDesc));
+        pos += sizeof(secDesc);
+        if (!decodeCperSection(data, eventDataSize, ampSpecHdr, &secDesc))
+        {
+            return false;
+        }
     }
 
-    delete[] secDesc;
+    return true;
 }
 
 void addCperSELLog(pldm_tid_t tid, uint16_t eventID, EFI_AMPERE_ERROR_DATA* p)
