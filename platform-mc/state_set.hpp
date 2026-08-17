@@ -127,6 +127,38 @@ class StateSets
         return *std::static_pointer_cast<Intf>(intf);
     }
 
+    /** @brief Add a D-Bus interface which the D-Bus object already implements
+     *
+     *  The state sets which publish on the interface then share it instead of
+     *  implementing it a second time.
+     *
+     *  @tparam Intf - sdbusplus::server::object_t of one D-Bus interface
+     *  @param[in] intf - the interface, which the state sets keep alive
+     */
+    template <typename Intf>
+    void addInterface(std::shared_ptr<Intf> intf)
+    {
+        interfaces[Intf::interface] = std::move(intf);
+    }
+
+    /** @brief Find a D-Bus interface of the D-Bus object, without implementing
+     *         it
+     *
+     *  @tparam Intf - sdbusplus::server::object_t of one D-Bus interface
+     *  @return the interface, nullptr when the D-Bus object does not implement
+     *          it
+     */
+    template <typename Intf>
+    Intf* findInterface()
+    {
+        auto it = interfaces.find(Intf::interface);
+        if (it == interfaces.end() || !it->second)
+        {
+            return nullptr;
+        }
+        return static_cast<Intf*>(it->second.get());
+    }
+
   private:
     /** @brief The D-Bus object path the interfaces are implemented on */
     std::string path;
