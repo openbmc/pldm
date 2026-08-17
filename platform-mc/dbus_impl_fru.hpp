@@ -25,6 +25,7 @@
 #include <memory>
 #include <optional>
 #include <string_view>
+#include <type_traits>
 
 namespace pldm
 {
@@ -44,6 +45,13 @@ using AssetIntf = sdbusplus::server::object_t<AssetServer>;
 using AssetTagIntf = sdbusplus::server::object_t<AssetTagServer>;
 using RevisionIntf = sdbusplus::server::object_t<RevisionServer>;
 using CompatibleIntf = sdbusplus::server::object_t<CompatibleServer>;
+
+/* The port interface is declared ahead of the entity, which hands it to the
+ * state sets that publish on it.
+ */
+using PortServer =
+    sdbusplus::xyz::openbmc_project::Inventory::Connector::server::Port;
+using PortIntf = sdbusplus::server::object_t<PortServer>;
 
 /** @class PldmEntityBase
  *  @brief Abstract base for PLDM inventory entities.
@@ -89,6 +97,14 @@ class PldmEntityBase
 
     /** @brief Set value of names in Decorator.Compatible */
     virtual std::vector<std::string> names(std::vector<std::string> values) = 0;
+
+    /** @brief The getter to return the Inventory.Connector.Port interface the
+     *         entity implements
+     *
+     *  @return the interface, nullptr when the entity type does not implement
+     *          it
+     */
+    virtual PortIntf* port() = 0;
 
   protected:
     PldmEntityBase(sdbusplus::bus_t& /*bus*/, const std::string& /*path*/) {}
@@ -165,7 +181,41 @@ class PldmEntityReq :
     {
         return CompatibleIntf::names(std::move(values));
     }
+
+    PortIntf* port() override
+    {
+        if constexpr (std::is_same_v<ItemServer, PortServer>)
+        {
+            return this;
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
 };
+
+/** @brief The Inventory.Connector.Port interface of the entity, which the
+ *         state sets that publish on it share instead of implementing it
+ *
+ *  The returned pointer keeps the entity alive, so the interface stays
+ *  registered for as long as a state set publishes on it.
+ *
+ *  @param[in] entity - the D-Bus interfaces of the entity
+ *  @return the interface, empty when the entity type does not implement
+ *          Inventory.Connector.Port
+ */
+inline std::shared_ptr<PortIntf> getPortIntf(
+    const std::shared_ptr<PldmEntityBase>& entity)
+{
+    auto* port = entity ? entity->port() : nullptr;
+    if (!port)
+    {
+        return {};
+    }
+
+    return {entity, port};
+}
 
 // Item interface server types
 using BoardServer =
@@ -184,8 +234,6 @@ using AcceleratorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Accelerator;
 using ConnectorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Connector;
-using PortServer =
-    sdbusplus::xyz::openbmc_project::Inventory::Connector::server::Port;
 
 /** @brief Create a PldmEntityReq with the given Inventory.Item server type
  *  @tparam ItemServer - The sdbusplus server type for the Item interface
