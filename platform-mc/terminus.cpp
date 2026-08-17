@@ -164,6 +164,10 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
         terminusItemIntf->prettyName(tName);
         terminusItemIntf->present(true);
         terminusStateSets = std::make_shared<StateSets>(inventoryPath);
+        if (auto portIntf = pldm::dbus_api::getPortIntf(inventoryItemInft))
+        {
+            terminusStateSets->addInterface(std::move(portIntf));
+        }
         return true;
     }
     catch (const sdbusplus::exception_t& e)
