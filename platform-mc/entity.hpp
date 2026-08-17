@@ -57,7 +57,7 @@ class Entity
      */
     Entity(const EntityKey& key, const std::string& path,
            const std::string& name,
-           std::unique_ptr<pldm::dbus_api::PldmEntityBase> itemIntf);
+           std::shared_ptr<pldm::dbus_api::PldmEntityBase> itemIntf);
 
     /** @brief The getter to return the entity identification fields */
     const EntityKey& getKey() const
@@ -115,9 +115,10 @@ class Entity
     /** @brief The D-Bus object path of the entity */
     std::string path;
 
-    /** @brief The pointer of the Inventory.Item interface of the entity type
+    /** @brief The pointer of the Inventory.Item interface of the entity type,
+     *         which the state sets that publish on it share
      */
-    std::unique_ptr<pldm::dbus_api::PldmEntityBase> itemIntf;
+    std::shared_ptr<pldm::dbus_api::PldmEntityBase> itemIntf;
 
     /** @brief The pointer of the Inventory.Item interface */
     std::unique_ptr<InventoryItemIntf> inventoryItemIntf;
