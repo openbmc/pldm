@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "742ff052_9bdd3d01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-08-17T09:58:24Z",
+      "side": 1,
+      "message": "Hey JY-Voon - Apologies, I have accidentally merged this code and broke the build , since the libpldm API\u0027s are not marked stable yet (I have not paid enough attention to notice these details,,sorry). I just merged a revert for both of the commits in this chain to fix the build.\n\nCan you please re-push these commits and mark them as WIP until the libpldm patches are merged ?",
+      "revId": "2cd857d1dcdb440e0bb8cdcd36334ca52ae3a112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
