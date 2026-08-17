@@ -6,7 +6,6 @@
 
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Association/Definitions/server.hpp>
-#include <xyz/openbmc_project/Inventory/Item/server.hpp>
 
 #include <memory>
 #include <string>
@@ -20,8 +19,6 @@ namespace platform_mc
 
 using namespace pldm::pdr;
 
-using InventoryItemIntf = sdbusplus::server::object_t<
-    sdbusplus::xyz::openbmc_project::Inventory::server::Item>;
 using ContainerAssociationsIntf = sdbusplus::server::object_t<
     sdbusplus::xyz::openbmc_project::Association::server::Definitions>;
 using ContainerAssociation = std::tuple<std::string, std::string, std::string>;
@@ -99,8 +96,10 @@ class Entity
      */
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> itemIntf;
 
-    /** @brief The pointer of the Inventory.Item interface */
-    std::unique_ptr<InventoryItemIntf> inventoryItemIntf;
+    /** @brief The pointer of the Inventory.Item interface, which the state
+     *         sets that publish on it share
+     */
+    std::shared_ptr<InventoryItemIntf> inventoryItemIntf;
 
     /** @brief The pointer of the Association.Definitions interface */
     std::unique_ptr<ContainerAssociationsIntf> containerAssociationsIntf;
