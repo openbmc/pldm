@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3b45c41_a8e99ffc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-08-17T08:54:13Z",
+      "side": 1,
+      "message": "nit: These sort of links here does not really add any value. Please remove them. The Unit tests in the commits are good enough \u0026 CI will test your code anyways if the unit tests are good.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 3
+      },
+      "revId": "674ed3cefe285db756c883d2d8474bb3da12f4cb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
