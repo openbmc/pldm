@@ -114,37 +114,30 @@ std::vector<std::vector<uint8_t>> findStateSensorPDR(
                                                   record, &outData, &size);
             if (record)
             {
-                struct pldm_platform_state_sensor_pdr pdr{};
-                int rc =
-                    decode_pldm_platform_state_sensor_pdr(outData, size, &pdr);
-                if (rc)
-                {
-                    error(
-                        "Failed to decode state sensor PDR, response code '{RC}'",
-                        "RC", rc);
-                    continue;
-                }
+                auto pdr =
+                    std::start_lifetime_as<pldm_state_sensor_pdr>(outData);
+                auto compositeSensorCount = pdr->composite_sensor_count;
+                auto possible_states_start = pdr->possible_states;
 
-                if (pdr.entity_type != entityID)
+                for (auto sensors = 0x00; sensors < compositeSensorCount;
+                     sensors++)
                 {
-                    continue;
-                }
+                    auto possibleStates =
+                        std::start_lifetime_as<state_sensor_possible_states>(
+                            possible_states_start);
+                    auto setId = possibleStates->state_set_id;
+                    auto possibleStateSize =
+                        possibleStates->possible_states_size;
 
-                struct state_sensor_possible_states states{};
-                foreach_pldm_platform_state_sensor_pdr_possible_states(
-                    outData, size, states, rc)
-                {
-                    if (states.state_set_id == stateSetId)
+                    if (pdr->entity_type == entityID && setId == stateSetId)
                     {
-                        pdrs.emplace_back(&outData[0], &outData[size]);
+                        std::vector<uint8_t> sensor_pdr(&outData[0],
+                                                        &outData[size]);
+                        pdrs.emplace_back(std::move(sensor_pdr));
                         break;
                     }
-                }
-                if (rc)
-                {
-                    error(
-                        "Failed to iterate state sensor PDR possible states, response code '{RC}'",
-                        "RC", rc);
+                    possible_states_start += possibleStateSize + sizeof(setId) +
+                                             sizeof(possibleStateSize);
                 }
             }
 
@@ -621,22 +614,26 @@ uint16_t findStateSensorId(const pldm_pdr* pdrRepo, uint8_t tid,
     auto pdrs = findStateSensorPDR(tid, entityType, stateSetId, pdrRepo);
     for (auto pdr : pdrs)
     {
-        struct pldm_platform_state_sensor_pdr sensorPdr{};
-        int rc = decode_pldm_platform_state_sensor_pdr(pdr.data(), pdr.size(),
-                                                       &sensorPdr);
-        if (rc)
-        {
-            error("Failed to decode state sensor PDR, response code '{RC}'",
-                  "RC", rc);
-            continue;
-        }
+        auto sensorPdr =
+            std::start_lifetime_as<pldm_state_sensor_pdr>(pdr.data());
+        auto compositeSensorCount = sensorPdr->composite_sensor_count;
+        auto possible_states_start = sensorPdr->possible_states;
 
-        // findStateSensorPDR only returns records whose entity type matches
-        // and that carry a state set with the requested ID
-        if (entityInstance == sensorPdr.entity_instance_number &&
-            containerId == sensorPdr.container_id)
+        for (auto sensors = 0x00; sensors < compositeSensorCount; sensors++)
         {
-            return sensorPdr.sensor_id;
+            auto possibleStates =
+                std::start_lifetime_as<state_sensor_possible_states>(
+                    possible_states_start);
+            auto setId = possibleStates->state_set_id;
+            auto possibleStateSize = possibleStates->possible_states_size;
+            if (entityType == sensorPdr->entity_type &&
+                entityInstance == sensorPdr->entity_instance &&
+                stateSetId == setId && containerId == sensorPdr->container_id)
+            {
+                return sensorPdr->sensor_id;
+            }
+            possible_states_start +=
+                possibleStateSize + sizeof(setId) + sizeof(possibleStateSize);
         }
     }
     return PLDM_INVALID_EFFECTER_ID;
