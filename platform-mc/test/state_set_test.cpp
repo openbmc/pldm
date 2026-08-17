@@ -17,12 +17,13 @@ TEST(StateSetTest, createStateSetTest)
     std::string path = "/xyz/openbmc_project/inventory/test/state_set";
     auto itemIntf = std::make_shared<InventoryItemIntf>(bus, path.c_str());
 
-    /* The health state set and the presence state set have a D-Bus interface
-     */
+    /* The health, presence and link state sets have a D-Bus interface */
     EXPECT_NE(nullptr,
               createStateSet(bus, path, itemIntf, PLDM_STATE_SET_HEALTH_STATE));
     EXPECT_NE(nullptr,
               createStateSet(bus, path, itemIntf, PLDM_STATE_SET_PRESENCE));
+    EXPECT_NE(nullptr,
+              createStateSet(bus, path, itemIntf, PLDM_STATE_SET_LINK_STATE));
 
     /* A state set whose interface is not added yet has none */
     EXPECT_EQ(nullptr, createStateSet(bus, path, itemIntf,
@@ -124,6 +125,43 @@ TEST(StateSetTest, presenceUnknownStateTest)
     stateSet.setPresentState(PLDM_STATE_SET_PRESENCE_NOT_PRESENT);
     stateSet.setPresentState(0xff);
     EXPECT_EQ(false, stateSet.present());
+}
+
+TEST(StateSetTest, linkStateStatusTest)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    StateSetLinkState stateSet(
+        bus, "/xyz/openbmc_project/inventory/test/link_status");
+
+    /* Each reading replaces the previous one, so the link comes back when the
+     * terminus reports it connected again
+     */
+    stateSet.setPresentState(PLDM_STATE_SET_LINK_STATE_DISCONNECTED);
+    EXPECT_EQ(LinkStatusValue::Disconnected, stateSet.linkStatus());
+
+    stateSet.setPresentState(PLDM_STATE_SET_LINK_STATE_CONNECTED);
+    EXPECT_EQ(LinkStatusValue::Connected, stateSet.linkStatus());
+
+    stateSet.setPresentState(PLDM_STATE_SET_LINK_STATE_DISCONNECTED);
+    EXPECT_EQ(LinkStatusValue::Disconnected, stateSet.linkStatus());
+}
+
+TEST(StateSetTest, linkStateUnknownStateTest)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    StateSetLinkState stateSet(
+        bus, "/xyz/openbmc_project/inventory/test/link_status_unknown");
+
+    /* A state the state set does not define keeps the link status of the last
+     * reading a state value was defined for
+     */
+    stateSet.setPresentState(PLDM_STATE_SET_LINK_STATE_DISCONNECTED);
+    stateSet.setPresentState(0xff);
+    EXPECT_EQ(LinkStatusValue::Disconnected, stateSet.linkStatus());
+
+    stateSet.setPresentState(PLDM_STATE_SET_LINK_STATE_CONNECTED);
+    stateSet.setPresentState(0xff);
+    EXPECT_EQ(LinkStatusValue::Connected, stateSet.linkStatus());
 }
 
 TEST(StateSetTest, stateSetsShareOneInterfaceTest)
