@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "efda08c1_b73673c2",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-17T06:16:01Z",
+      "side": 1,
+      "message": "I agree currently it doesn\u0027t, but I don\u0027t see why not. Are there any documentation that specifically prohibits pldmtool from calling dbus methods?\n\nFrom Deepak\u0027s comment I can infer he is not fully against it.\nhttps://discord.com/channels/775381525260664832/778790638563885086/1515397806142132294 \n\nSo it is safe to assume that its not a hard no right?",
+      "parentUuid": "f3c31721_781f0c4d",
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02e5a936_23633604",
         "filename": "pldmtool/pldm_file_cmd.cpp",
         "patchSetId": 6
