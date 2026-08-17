@@ -414,7 +414,7 @@ class Terminus
     /** @brief Terminus name */
     EntityName terminusName{};
     /* @brief The pointer of inventory D-Bus interface for the terminus */
-    std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
+    std::shared_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
 
     /* @brief Inventory D-Bus object path of the terminus */
     std::string inventoryPath;
