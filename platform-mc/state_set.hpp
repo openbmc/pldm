@@ -6,6 +6,7 @@
 
 #include <sdbusplus/bus.hpp>
 #include <xyz/openbmc_project/Inventory/Item/server.hpp>
+#include <xyz/openbmc_project/State/Decorator/LinkStatus/server.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
 #include <algorithm>
@@ -173,15 +174,72 @@ class StateSetPresence : public StateSetBase
     bool unknownStateLogged = false;
 };
 
+using LinkStatusIntf = sdbusplus::server::object_t<
+    sdbusplus::xyz::openbmc_project::State::Decorator::server::LinkStatus>;
+using LinkStatusValue = sdbusplus::xyz::openbmc_project::State::Decorator::
+    server::LinkStatus::Status;
+
+/** @class StateSetLinkState
+ *  @brief The link state set, state set ID 33 of DSP0249 v1.4.0.
+ *  @details The link status of the entity is exposed by the LinkStatus
+ *           property of State.Decorator.LinkStatus.
+ */
+class StateSetLinkState : public StateSetBase
+{
+  public:
+    StateSetLinkState() = delete;
+    StateSetLinkState(const StateSetLinkState&) = delete;
+    StateSetLinkState& operator=(const StateSetLinkState&) = delete;
+    StateSetLinkState(StateSetLinkState&&) = delete;
+    StateSetLinkState& operator=(StateSetLinkState&&) = delete;
+    ~StateSetLinkState() override = default;
+
+    /** @brief Constructor
+     *
+     *  @param[in] bus - D-Bus bus
+     *  @param[in] path - D-Bus object path of the entity
+     */
+    StateSetLinkState(sdbusplus::bus_t& bus, const std::string& path) :
+        interface(bus, path.c_str()), path(path)
+    {}
+
+    /** @brief Creator of the interface, `StateSetCreator` of the state set */
+    static std::unique_ptr<StateSetBase> create(
+        sdbusplus::bus_t& bus, const std::string& path,
+        const std::shared_ptr<InventoryItemIntf>& /*itemIntf*/)
+    {
+        return std::make_unique<StateSetLinkState>(bus, path);
+    }
+
+    void setPresentState(uint8_t presentState) override;
+
+    /** @brief The getter to return the link status the interface carries */
+    LinkStatusValue linkStatus() const
+    {
+        return interface.linkStatus();
+    }
+
+  private:
+    /** @brief The interface which carries the link status of the entity */
+    LinkStatusIntf interface;
+
+    /** @brief The D-Bus object path of the entity */
+    std::string path;
+
+    /** @brief Whether a state the state set does not define was logged */
+    bool unknownStateLogged = false;
+};
+
 /** @brief The state sets which have a D-Bus interface.
  *
  *  The mapping is injective: two state sets do not share the property of a
  *  D-Bus interface, so the component sensors of one entity do not overwrite
  *  each other. A state set gets its entry when its interface is added.
  */
-inline constexpr std::array<StateSetItem, 2> stateSetItems{
+inline constexpr std::array<StateSetItem, 3> stateSetItems{
     StateSetItem{PLDM_STATE_SET_HEALTH_STATE, &StateSetHealthState::create},
     StateSetItem{PLDM_STATE_SET_PRESENCE, &StateSetPresence::create},
+    StateSetItem{PLDM_STATE_SET_LINK_STATE, &StateSetLinkState::create},
 };
 
 /** @brief Create the D-Bus interface which matches the given state set
