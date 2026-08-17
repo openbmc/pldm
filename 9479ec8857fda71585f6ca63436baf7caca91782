@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503e0895_8d451bd7",
+        "filename": "pldmtool/README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-08-17T05:58:32Z",
+      "side": 1,
+      "message": "We do have this covered in #Understanding pldmtool output error scenario as well, right? Do we want this explicitly again?",
+      "revId": "9479ec8857fda71585f6ca63436baf7caca91782",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
