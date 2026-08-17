@@ -77,6 +77,33 @@ void StateSetPresence::setPresentState(uint8_t presentState)
     }
 }
 
+void StateSetLinkState::setPresentState(uint8_t presentState)
+{
+    switch (presentState)
+    {
+        case PLDM_STATE_SET_LINK_STATE_CONNECTED:
+            interface.linkStatus(LinkStatusValue::Connected);
+            break;
+        case PLDM_STATE_SET_LINK_STATE_DISCONNECTED:
+            interface.linkStatus(LinkStatusValue::Disconnected);
+            break;
+        default:
+            /* The interface carries no value for a link the terminus reports
+             * neither connected nor disconnected, so the link status keeps the
+             * value of the last reading a state value was defined for. A
+             * terminus which reports such a state keeps reporting it, so the
+             * entity is logged once.
+             */
+            if (!std::exchange(unknownStateLogged, true))
+            {
+                lg2::error(
+                    "The link state set has no state value {STATE}, so the link status of the entity on {PATH} is left unchanged.",
+                    "STATE", presentState, "PATH", path);
+            }
+            break;
+    }
+}
+
 StateSetBase* StateSets::getStateSet(StateSetId stateSetId)
 {
     auto it = stateSets.find(stateSetId);
