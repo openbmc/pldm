@@ -1,5 +1,6 @@
 #pragma once
 
+#include "condition_collector.hpp"
 #include "update_manager.hpp"
 
 #include <xyz/openbmc_project/Software/ApplyTime/server.hpp>
@@ -42,6 +43,13 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @param[in] generatedId The software hash identifier
      * @param[in] descriptors The descriptors for the device
      * @param[in] componentInfo The component information for the device
+     * @param[in] condition The device's condition config
+     * @param[in] conditionArg Named arguments known before an update, passed
+     * to a parameterized condition service
+     * @param[in] taskCompletionCallback Callback invoked once the update
+     * completes
+     * @param[in] sensorPollingCallback Callback to pause and resume sensor
+     * polling for the device's terminus during the update
      */
     explicit ItemUpdateManager(
         mctp_eid_t eid, Event& event,
@@ -49,17 +57,22 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         InstanceIdDb& instanceIdDb, const std::string& objPath,
         const std::string& generatedId, const Descriptors& descriptors,
         const ComponentInfo& componentInfo,
-        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const ComponentCondition& condition = ComponentCondition{},
         const std::string& conditionArg = std::string{},
-        std::function<void()> taskCompletionCallback = nullptr) :
+        std::function<void()> taskCompletionCallback = nullptr,
+        std::function<void(mctp_eid_t, SensorPollingAction)>
+            sensorPollingCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
         ItemUpdateIntf(pldm::utils::DBusHandler::getBus(),
                        std::format("{}_{}", objPath, generatedId).c_str()),
         eid(eid), objPath(objPath), descriptors(descriptors),
-        componentInfo(componentInfo), preConditionPath(conditionPathPair.first),
-        postConditionPath(conditionPathPair.second),
+        componentInfo(componentInfo),
+        preConditionPath(condition.preUpdateTarget.value_or("")),
+        postConditionPath(condition.postUpdateTarget.value_or("")),
+        stopSensorPollingDuringUpdate(condition.stopSensorPolling),
         baseConditionArg(conditionArg), conditionArg(conditionArg),
-        taskCompletionCallback(std::move(taskCompletionCallback))
+        taskCompletionCallback(std::move(taskCompletionCallback)),
+        sensorPollingCallback(std::move(sensorPollingCallback))
     {}
 
     /**
@@ -232,6 +245,12 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     std::string postConditionPath;
 
     /**
+     * @brief Whether this device's condition config sets
+     * 'StopSensorPolling' to true
+     */
+    bool stopSensorPollingDuringUpdate;
+
+    /**
      * @brief Named arguments known before an update is requested
      */
     std::string baseConditionArg;
@@ -253,6 +272,12 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     std::string applyTimeToString() const;
 
     std::function<void()> taskCompletionCallback;
+
+    /**
+     * @brief Callback to pause/resume sensor polling for this device's
+     * terminus. A no-op when unset.
+     */
+    std::function<void(mctp_eid_t, SensorPollingAction)> sensorPollingCallback;
 
     bool updateInProgress = false;
 
