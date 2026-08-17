@@ -109,6 +109,15 @@ void SensorManager::stopPolling(pldm_tid_t tid)
     availableState.erase(tid);
 }
 
+void SensorManager::pauseSensorPollTimer(pldm_tid_t tid)
+{
+    if (sensorPollTimers.contains(tid) && sensorPollTimers[tid] &&
+        sensorPollTimers[tid]->isRunning())
+    {
+        sensorPollTimers[tid]->stop();
+    }
+}
+
 void SensorManager::doSensorPolling(pldm_tid_t tid)
 {
     auto it = doSensorPollingTaskHandles.find(tid);

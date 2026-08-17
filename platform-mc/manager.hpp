@@ -129,6 +129,30 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         sensorManager.stopPolling(tid);
     }
 
+    /** @brief Helper function to pause sensor polling timer
+     *         of the terminus TID
+     */
+    void pauseSensorPollingTimer(pldm_tid_t tid)
+    {
+        sensorManager.pauseSensorPollTimer(tid);
+    }
+
+    /** @brief Helper function to resume sensor polling timer
+     *         of the terminus TID
+     */
+    void resumeSensorPollingTimer(pldm_tid_t tid)
+    {
+        sensorManager.startSensorPollTimer(tid);
+    }
+
+    /** @brief Helper function to look up the TID currently associated with
+     *         an EID
+     */
+    std::optional<pldm_tid_t> getTidByEid(mctp_eid_t eid) const
+    {
+        return terminusManager.getTidByEid(eid);
+    }
+
     /** @brief Sensor event handler function
      *
      *  @param[in] request - Event message

@@ -40,6 +40,15 @@ using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
 /**
+ * @brief Sensor-polling action requested around a device's firmware update
+ */
+enum class SensorPollingAction
+{
+    Pause,
+    Resume,
+};
+
+/**
  * @brief The base class of the UpdateManager and the
  *        ItemBaseUpdateManager
  */
@@ -90,10 +99,7 @@ class UpdateManager : public UpdateManagerBase
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap,
-        const ConditionPaths& conditionPathPair = ConditionPaths{},
-        const std::string& conditionArg = std::string{},
-        std::function<void()> taskCompletionCallback = nullptr) :
+        const ComponentInfoMap& componentInfoMap) :
         UpdateManagerBase(event, handler, instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
@@ -107,10 +113,22 @@ class UpdateManager : public UpdateManagerBase
                                          "/xyz/openbmc_project/software/pldm",
                                          this)),
 #endif
-        totalNumComponentUpdates(0), preConditionPath(conditionPathPair.first),
-        postConditionPath(conditionPathPair.second), conditionArg(conditionArg),
-        taskCompletionCallback(std::move(taskCompletionCallback))
+        totalNumComponentUpdates(0)
     {}
+
+    /**
+     * @brief Set the callback used to pause/resume sensor polling for a
+     * device's terminus around its firmware update
+     *
+     * @param[in] sensorPollingCallback Callback invoked with the terminus TID
+     * and the requested action
+     */
+    void setSensorPollingCallback(
+        std::function<void(mctp_eid_t, SensorPollingAction)>
+            sensorPollingCallback)
+    {
+        this->sensorPollingCallback = std::move(sensorPollingCallback);
+    }
 
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
@@ -219,7 +237,23 @@ class UpdateManager : public UpdateManagerBase
     std::string preConditionPath;
     std::string postConditionPath;
     std::string conditionArg;
+
+    /**
+     * @brief Whether this package's condition config sets
+     * 'StopSensorPolling' to true, applied to every device in the package
+     */
+    bool stopSensorPollingDuringUpdate = false;
+
     std::function<void()> taskCompletionCallback;
+
+  protected:
+    /**
+     * @brief Callback to pause/resume sensor polling for a device's
+     * terminus. A no-op when unset.
+     */
+    std::function<void(mctp_eid_t, SensorPollingAction)> sensorPollingCallback;
+
+  private:
     bool updateInProgress = false;
 
     /** @brief The last progress that was calculated. Used to avoid spamming

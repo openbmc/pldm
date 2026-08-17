@@ -49,6 +49,10 @@ class SensorManager
      */
     void startSensorPollTimer(pldm_tid_t tid);
 
+    /** @brief Helper function to pause sensor polling timer
+     */
+    void pauseSensorPollTimer(pldm_tid_t tid);
+
     /** @brief Helper function to set all terminus sensor as nan when the
      *  terminus is not available for pldm request
      */

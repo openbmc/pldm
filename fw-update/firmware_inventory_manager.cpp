@@ -46,12 +46,12 @@ void FirmwareInventoryManager::createFirmwareEntry(
         "{}/{}_{}", SoftwareVersion::namespace_path, boardName, softwareName);
     const auto generatedId = std::to_string(utils::generateSwId());
 
-    auto conditions = conditionConfigManager.conditions(softwareName);
+    auto condition = conditionConfigManager.getCondition(softwareName);
     auto conditionArg = generateArg(boardName);
 
     updateManager.createUpdateManager(
         softwareIdentifier, descriptors, componentInfo, softwarePath,
-        generatedId, conditions, conditionArg,
+        generatedId, condition, conditionArg,
         std::move(taskCompletionCallback));
 
     softwareMap.insert_or_assign(softwareIdentifier,

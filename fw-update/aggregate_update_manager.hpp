@@ -29,13 +29,9 @@ class AggregateUpdateManager : public UpdateManager
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
-        const ComponentInfoMap& componentInfoMap,
-        const ConditionPaths& conditionPathPair = ConditionPaths{},
-        const std::string& conditionArg = std::string{},
-        std::function<void()> taskCompletionCallback = nullptr) :
+        const ComponentInfoMap& componentInfoMap) :
         UpdateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap, conditionPathPair, conditionArg,
-                      std::move(taskCompletionCallback))
+                      componentInfoMap)
     {}
 
     /**
@@ -69,8 +65,7 @@ class AggregateUpdateManager : public UpdateManager
      * software identifier
      * @param[in] updateObjPath - The D-Bus object path for the update manager
      * @param[in] generatedId - The software hash identifier
-     * @param[in] conditionPathPair - The condition paths associated with the
-     * update manager
+     * @param[in] condition - The component's condition config
      * @param[in] conditionArg - The condition argument associated with the
      * update manager
      * @param[in] taskCompletionCallback - The callback function to be called
@@ -80,7 +75,7 @@ class AggregateUpdateManager : public UpdateManager
         const SoftwareIdentifier& softwareIdentifier,
         const Descriptors& descriptors, const ComponentInfo& componentInfo,
         const std::string& updateObjPath, const std::string& generatedId,
-        const ConditionPaths& conditionPathPair = ConditionPaths{},
+        const ComponentCondition& condition = ComponentCondition{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr);
 

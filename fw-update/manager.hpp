@@ -50,6 +50,21 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      updateManager)
     {}
 
+    /**
+     * @brief Set the callback used to pause/resume sensor polling for a
+     * device's terminus around its firmware update
+     *
+     * @param[in] sensorPollingCallback Callback invoked with the terminus TID
+     * and the requested action
+     */
+    void setSensorPollingCallback(
+        std::function<void(mctp_eid_t, SensorPollingAction)>
+            sensorPollingCallback)
+    {
+        updateManager.setSensorPollingCallback(
+            std::move(sensorPollingCallback));
+    }
+
     /** @brief Helper function to invoke registered handlers for
      *         the added MCTP endpoints
      *
