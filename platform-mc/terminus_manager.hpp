@@ -113,6 +113,19 @@ class TerminusManager
      */
     std::optional<pldm_tid_t> toTid(const MctpInfo& mctpInfo) const;
 
+    /** @brief Look up the TID currently associated with an EID
+     *
+     *  Matches on EID only. When more than one network is in use and an EID
+     *  could exist on more than one of them, use toTid() with the full
+     *  MctpInfo instead for a precise match.
+     *
+     *  @param[in] eid - MCTP endpoint ID
+     *
+     *  @return tid - Terminus tid, std::nullopt when no terminus with this
+     *          EID is known
+     */
+    std::optional<pldm_tid_t> getTidByEid(mctp_eid_t eid) const;
+
     /** @brief Member functions to find the TID for MCTP interface. Response the
      *         Terminus TID when mctpInfo is already in the data base. Response
      *         new tid from pool when mctpInfo is new.

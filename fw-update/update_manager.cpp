@@ -327,6 +327,14 @@ void UpdateManager::activatePackage()
         return;
     }
 
+    if (stopSensorPollingDuringUpdate && sensorPollingCallback)
+    {
+        for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
+        {
+            sensorPollingCallback(eid, SensorPollingAction::Stop);
+        }
+    }
+
     if (!preConditionPath.empty())
     {
         SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
@@ -371,6 +379,14 @@ void UpdateManager::completeUpdate(bool status)
     if (!updateInProgress)
     {
         return;
+    }
+
+    if (stopSensorPollingDuringUpdate && sensorPollingCallback)
+    {
+        for (const auto& [eid, deviceUpdaterPtr] : deviceUpdaterMap)
+        {
+            sensorPollingCallback(eid, SensorPollingAction::Resume);
+        }
     }
 
     updateInProgress = false;

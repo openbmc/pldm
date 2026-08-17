@@ -52,6 +52,23 @@ std::optional<pldm_tid_t> TerminusManager::toTid(const MctpInfo& mctpInfo) const
     return mctpInfoTableIt->first;
 }
 
+std::optional<pldm_tid_t> TerminusManager::getTidByEid(mctp_eid_t eid) const
+{
+    if (!pldm::utils::isValidEID(eid))
+    {
+        return std::nullopt;
+    }
+
+    auto mctpInfoTableIt =
+        std::find_if(mctpInfoTable.begin(), mctpInfoTable.end(),
+                     [eid](auto& v) { return std::get<0>(v.second) == eid; });
+    if (mctpInfoTableIt == mctpInfoTable.end())
+    {
+        return std::nullopt;
+    }
+    return mctpInfoTableIt->first;
+}
+
 std::optional<pldm_tid_t> TerminusManager::storeTerminusInfo(
     const MctpInfo& mctpInfo, pldm_tid_t tid)
 {

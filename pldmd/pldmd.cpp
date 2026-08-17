@@ -341,6 +341,32 @@ int main(int argc, char** argv)
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(&dbusHandler, event, reqHandler,
                                              instanceIdDb);
+    fwManager->setSensorPollingCallback([pm = platformManager.get()](
+                                            mctp_eid_t eid,
+                                            fw_update::SensorPollingAction
+                                                action) {
+        auto tid = pm->getTidByEid(eid);
+        if (!tid)
+        {
+            warning(
+                "No TID found for EID {EID}, skipping sensor polling change",
+                "EID", eid);
+            return;
+        }
+        if (action == fw_update::SensorPollingAction::Stop)
+        {
+            pm->stopSensorPolling(*tid);
+            info("Stopped sensor polling for TID {TID} during firmware update",
+                 "TID", *tid);
+        }
+        else
+        {
+            pm->startSensorPolling(*tid);
+            info("Resumed sensor polling for TID {TID} after firmware update",
+                 "TID", *tid);
+        }
+    });
+
     MctpDiscovery mctpDiscoveryHandler(
         bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
                  fwManager.get(), platformManager.get()});
