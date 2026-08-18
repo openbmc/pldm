@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03def94e_5b30cd14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T11:17:11Z",
+      "side": 1,
+      "message": "Let\u0027s add this patch as consumer of https://gerrit.openbmc.org/c/openbmc/libpldm/+/92309 in its commit message.",
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d4232f_2e25540b",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1230,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T11:17:11Z",
+      "side": 1,
+      "message": "Is it possible to use `pldm_platform_state_sensor_possible_states`?",
+      "range": {
+        "startLine": 1230,
+        "startChar": 15,
+        "endLine": 1230,
+        "endChar": 44
+      },
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a494be97_b52fa16d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1235,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T11:17:11Z",
+      "side": 1,
+      "message": "Can\u0027t we use json native arrays?",
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "572d44c8_761a0dc4",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T11:17:11Z",
+      "side": 1,
+      "message": "can we use std::format here?",
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb81ad86_1255d76e",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T11:17:11Z",
+      "side": 1,
+      "message": "shouldn\u0027t this variable be different that what is used by enclosing loop?",
+      "range": {
+        "startLine": 1243,
+        "startChar": 76,
+        "endLine": 1243,
+        "endChar": 78
+      },
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
