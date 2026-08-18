@@ -9,6 +9,7 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/BIOSConfig/Manager/server.hpp>
 
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 
@@ -242,11 +243,19 @@ int BIOSConfig::checkAttributeTable(const Table& table)
                     }
                 }
 
-                for (size_t i = 0; i < defIndices.size(); i++)
+                if (std::any_of(defIndices.begin(), defIndices.end(),
+                                [&pvHandls](uint8_t defIndex) {
+                                    return defIndex >= pvHandls.size();
+                                }))
+                {
+                    return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                }
+
+                for (auto defIndex : defIndices)
                 {
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
                         stringTable->data(), stringTable->size(),
-                        pvHandls[defIndices[i]]);
+                        pvHandls[defIndex]);
                     if (stringEntry == nullptr)
                     {
                         return PLDM_INVALID_BIOS_ATTR_HANDLE;
@@ -397,9 +406,17 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     tableEntry, handles.data(), handles.size());
 
                 // get current_value
-                for (size_t i = 0; i < handles.size(); i++)
+                if (std::any_of(handles.begin(), handles.end(),
+                                [&pvHandls](uint8_t handle) {
+                                    return handle >= pvHandls.size();
+                                }))
                 {
-                    currentValue = getValue(pvHandls[handles[i]], *stringTable);
+                    return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                }
+
+                for (auto handle : handles)
+                {
+                    currentValue = getValue(pvHandls[handle], *stringTable);
                 }
 
                 uint8_t defNum = 0;
@@ -411,10 +428,17 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     attrEntry, defIndices.data(), defIndices.size());
 
                 // get default_value
-                for (size_t i = 0; i < defIndices.size(); i++)
+                if (std::any_of(defIndices.begin(), defIndices.end(),
+                                [&pvHandls](uint8_t defIndex) {
+                                    return defIndex >= pvHandls.size();
+                                }))
                 {
-                    defaultValue =
-                        getValue(pvHandls[defIndices[i]], *stringTable);
+                    return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                }
+
+                for (auto defIndex : defIndices)
+                {
+                    defaultValue = getValue(pvHandls[defIndex], *stringTable);
                 }
 
                 break;
