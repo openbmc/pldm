@@ -322,6 +322,7 @@ exec::task<int> SensorManager::getSensorReading(
         lg2::error(
             "Failed to send GetSensorReading message for terminus {TID}, sensor Id {ID}, error {RC}",
             "TID", tid, "ID", sensorId, "RC", rc);
+        sensor->handleErrGetSensorReading();
         co_return rc;
     }
 
@@ -358,6 +359,7 @@ exec::task<int> SensorManager::getSensorReading(
         lg2::error(
             "Error : GetSensorReading for terminus ID {TID}, sensor Id {ID}, complete code {CC}.",
             "TID", tid, "ID", sensorId, "CC", completionCode);
+        sensor->handleErrGetSensorReading();
         co_return completionCode;
     }
 
