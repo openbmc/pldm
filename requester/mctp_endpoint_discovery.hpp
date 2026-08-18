@@ -6,10 +6,14 @@
 #include <libpldm/pldm.h>
 
 #include <sdbusplus/bus/match.hpp>
+#include <sdeventplus/event.hpp>
+#include <sdeventplus/utility/timer.hpp>
 #include <xyz/openbmc_project/Common/UUID/common.hpp>
 #include <xyz/openbmc_project/MCTP/Endpoint/client.hpp>
 
+#include <chrono>
 #include <initializer_list>
+#include <set>
 #include <vector>
 
 using MCTPEndpoint = sdbusplus::common::xyz::openbmc_project::mctp::Endpoint;
@@ -68,10 +72,13 @@ class MctpDiscovery
      *
      *  @param[in] bus - reference to systemd bus
      *  @param[in] list - initializer list to the MctpDiscoveryHandlerIntf
+     *  @param[in] event - reference to the main event loop, used for
+     *                     bridgeLearnTimer's bridge-pool-learn retries
      */
     explicit MctpDiscovery(
         sdbusplus::bus_t& bus,
-        std::initializer_list<MctpDiscoveryHandlerIntf*> list);
+        std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+        sdeventplus::Event& event);
 
     /** @brief reference to the systemd bus */
     sdbusplus::bus_t& bus;
@@ -239,11 +246,120 @@ class MctpDiscovery
     std::map<std::string, std::unique_ptr<sdbusplus::bus::match_t>>
         associationMatches;
 
+    /** @brief Cache of resolved bridge pool ranges, keyed by the
+     * bridge's own EID. */
+    std::map<eid, std::pair<eid, eid>> bridgePoolCache;
+
+    /** @brief Endpoints awaiting a bridge that has not resolved yet. */
+    std::vector<MctpInfo> pendingBridgeChildren;
+
+    /** @brief Bridge-pool-learn retry state for one bridge: which
+     * PoolOffset values (from its EM config, never the raw pool range -
+     * see getConfiguredPoolOffsets) still haven't had a successful
+     * LearnEndpoint, and how many retry rounds have been spent on them.
+     */
+    struct PendingBridgeLearn
+    {
+        NetworkId networkId;
+        eid poolStart;
+        std::set<uint64_t> pendingOffsets;
+        int attempts = 0;
+    };
+
+    /** @brief Bridges with at least one PoolOffset that failed
+     * LearnEndpoint, keyed by the bridge's own EID. Entries are removed
+     * once every configured offset succeeds, or after
+     * bridgeLearnMaxAttempts retries (see retryBridgeLearn) - a
+     * permanently-unresponsive device (e.g. a hardware fault) shouldn't
+     * be retried forever.
+     */
+    std::map<eid, PendingBridgeLearn> pendingBridgeLearns;
+
+    /** @brief How often retryBridgeLearn re-attempts pendingBridgeLearns.
+     * Matches mctp-reactor's own retry cadence (MCTPReactor tick()),
+     * since both are working around the same class of problem: a
+     * downstream device that may still be powering on.
+     */
+    static constexpr auto bridgeLearnRetryInterval = std::chrono::seconds(5);
+
+    /** @brief Give up on a bridge's still-failing offsets after this many
+     * retryBridgeLearn rounds (~60s at bridgeLearnRetryInterval) rather
+     * than retrying a genuinely-dead device forever.
+     */
+    static constexpr int bridgeLearnMaxAttempts = 12;
+
+    /** @brief Timer driving retryBridgeLearn. Only armed while
+     * pendingBridgeLearns is non-empty - idle (no CPU/D-Bus cost) the
+     * rest of the time, same as mctp-reactor's tick() effectively is
+     * once every device it tracks is assigned.
+     */
+    sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic>
+        bridgeLearnTimer;
+
     /** @brief Resolve the association for the MCTP endpoint and update the
      * internal configuration map if the association is found.
      */
     bool resolveAssociation(const pldm::utils::DBusHandler& handler,
                             MctpInfo& mctpInfo);
+
+    /** @brief Fallback for downstream endpoints bridged behind a
+     * mctpd-managed bridge with no configured_by association of their
+     * own: identify which known bridge's
+     * mctpd-allocated EID pool the endpoint's EID falls into, then match
+     * a MCTPBridgeChild record sharing that bridge's parent inventory
+     * path by PoolOffset (eid - PoolStart).
+     */
+    bool matchBridgePoolConfig(const pldm::utils::DBusHandler& handler,
+                               MctpInfo& mctpInfo);
+
+    /** @brief Query mctpd's Bridge1 D-Bus interface for a terminus's
+     * downstream EID pool range, caching the result. Returns
+     * std::nullopt if the terminus has no Bridge1 interface (i.e. is not
+     * a bridge).
+     */
+    std::optional<std::pair<eid, eid>> getBridgePoolRange(
+        const pldm::utils::DBusHandler& handler, NetworkId networkId,
+        eid bridgeEid);
+
+    /** @brief Retry bridge-pool matching for endpoints that could not be
+     * matched because their bridge was not yet known; called whenever a
+     * new configuration is resolved, in case it turns out to be a
+     * bridge.
+     */
+    void retryPendingBridgeChildren(const pldm::utils::DBusHandler& handler,
+                                    eid bridgeEid);
+
+    /** @brief Ask mctpd to learn every EID in a bridge's downstream
+     * pool. mctp-reactor only sets up the bridge's own endpoint (which
+     * allocates the pool); nothing else enumerates the pool's members,
+     * so this closes that gap directly from pldmd once a bridge is
+     * confirmed. LearnEndpoint is idempotent in mctpd (a no-op for an
+     * already-known EID), so this can be called freely without
+     * tracking which members are already known.
+     */
+    void learnBridgePoolMembers(const pldm::utils::DBusHandler& handler,
+                                NetworkId networkId, eid bridgeEid,
+                                const std::string& bridgeObjPath,
+                                eid poolStart, eid poolEnd);
+
+    /** @brief Query which PoolOffset values actually have a
+     * MCTPBridgeChild EntityManager record under a bridge's parent
+     * board path, so learnBridgePoolMembers()/retryBridgeLearn() only
+     * ever attempt LearnEndpoint for EIDs that are supposed to have a
+     * device - never permanently-unwired pool offsets. Same
+     * getSubtree query matchBridgePoolConfig() uses, scoped to the
+     * bridge's parent path.
+     */
+    std::set<uint64_t> getConfiguredPoolOffsets(
+        const pldm::utils::DBusHandler& handler,
+        const std::string& bridgeObjPath);
+
+    /** @brief bridgeLearnTimer callback - retry LearnEndpoint for every
+     * still-pending offset in pendingBridgeLearns. A downstream device
+     * may still be powering on when a bridge is first confirmed, so an
+     * initial LearnEndpoint failure isn't necessarily permanent.
+     */
+    void retryBridgeLearn();
 };
 
 } // namespace pldm

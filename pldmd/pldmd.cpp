@@ -342,8 +342,10 @@ int main(int argc, char** argv)
         std::make_unique<fw_update::Manager>(&dbusHandler, event, reqHandler,
                                              instanceIdDb);
     MctpDiscovery mctpDiscoveryHandler(
-        bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
-                 fwManager.get(), platformManager.get()});
+        bus,
+        std::initializer_list<MctpDiscoveryHandlerIntf*>{
+            fwManager.get(), platformManager.get()},
+        event);
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (revents & (POLLHUP | POLLERR))
