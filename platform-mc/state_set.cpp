@@ -77,6 +77,36 @@ void StateSetPresence::setPresentState(uint8_t presentState)
     }
 }
 
+void StateSetPerformance::setPresentState(uint8_t presentState)
+{
+    switch (presentState)
+    {
+        case PLDM_STATE_SET_PERFORMANCE_NORMAL:
+            interface.performance(PerformanceValue::Normal);
+            break;
+        case PLDM_STATE_SET_PERFORMANCE_THROTTLED:
+            interface.performance(PerformanceValue::Throttled);
+            break;
+        case PLDM_STATE_SET_PERFORMANCE_DEGRADED:
+            interface.performance(PerformanceValue::Degraded);
+            break;
+        default:
+            /* The interface carries no value for an entity the terminus
+             * reports neither normal, throttled nor degraded, so the
+             * performance keeps the value of the last reading a state value
+             * was defined for. A terminus which reports such a state keeps
+             * reporting it, so the entity is logged once.
+             */
+            if (!std::exchange(unknownStateLogged, true))
+            {
+                lg2::error(
+                    "The performance state set has no state value {STATE}, so the performance of the entity on {PATH} is left unchanged.",
+                    "STATE", presentState, "PATH", path);
+            }
+            break;
+    }
+}
+
 void StateSetLinkState::setPresentState(uint8_t presentState)
 {
     switch (presentState)

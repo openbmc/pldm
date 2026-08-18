@@ -17,11 +17,15 @@ TEST(StateSetTest, createStateSetTest)
     std::string path = "/xyz/openbmc_project/inventory/test/state_set";
     auto itemIntf = std::make_shared<InventoryItemIntf>(bus, path.c_str());
 
-    /* The health, presence and link state sets have a D-Bus interface */
+    /* The health, presence, performance and link state sets have a D-Bus
+     * interface
+     */
     EXPECT_NE(nullptr,
               createStateSet(bus, path, itemIntf, PLDM_STATE_SET_HEALTH_STATE));
     EXPECT_NE(nullptr,
               createStateSet(bus, path, itemIntf, PLDM_STATE_SET_PRESENCE));
+    EXPECT_NE(nullptr,
+              createStateSet(bus, path, itemIntf, PLDM_STATE_SET_PERFORMANCE));
     EXPECT_NE(nullptr,
               createStateSet(bus, path, itemIntf, PLDM_STATE_SET_LINK_STATE));
 
@@ -125,6 +129,43 @@ TEST(StateSetTest, presenceUnknownStateTest)
     stateSet.setPresentState(PLDM_STATE_SET_PRESENCE_NOT_PRESENT);
     stateSet.setPresentState(0xff);
     EXPECT_EQ(false, stateSet.present());
+}
+
+TEST(StateSetTest, performanceStatusTest)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    StateSetPerformance stateSet(
+        bus, "/xyz/openbmc_project/inventory/test/performance");
+
+    /* Each reading replaces the previous one, so the entity comes back to its
+     * expected performance when the terminus reports it normal again
+     */
+    stateSet.setPresentState(PLDM_STATE_SET_PERFORMANCE_THROTTLED);
+    EXPECT_EQ(PerformanceValue::Throttled, stateSet.performance());
+
+    stateSet.setPresentState(PLDM_STATE_SET_PERFORMANCE_DEGRADED);
+    EXPECT_EQ(PerformanceValue::Degraded, stateSet.performance());
+
+    stateSet.setPresentState(PLDM_STATE_SET_PERFORMANCE_NORMAL);
+    EXPECT_EQ(PerformanceValue::Normal, stateSet.performance());
+}
+
+TEST(StateSetTest, performanceUnknownStateTest)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    StateSetPerformance stateSet(
+        bus, "/xyz/openbmc_project/inventory/test/performance_unknown");
+
+    /* A state the state set does not define keeps the performance of the last
+     * reading a state value was defined for
+     */
+    stateSet.setPresentState(PLDM_STATE_SET_PERFORMANCE_THROTTLED);
+    stateSet.setPresentState(0xff);
+    EXPECT_EQ(PerformanceValue::Throttled, stateSet.performance());
+
+    stateSet.setPresentState(PLDM_STATE_SET_PERFORMANCE_DEGRADED);
+    stateSet.setPresentState(0xff);
+    EXPECT_EQ(PerformanceValue::Degraded, stateSet.performance());
 }
 
 TEST(StateSetTest, linkStateStatusTest)
