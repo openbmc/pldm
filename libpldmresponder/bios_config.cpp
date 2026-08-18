@@ -244,6 +244,10 @@ int BIOSConfig::checkAttributeTable(const Table& table)
 
                 for (size_t i = 0; i < defIndices.size(); i++)
                 {
+                    if (defIndices[i] >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
                         stringTable->data(), stringTable->size(),
                         pvHandls[defIndices[i]]);
@@ -399,6 +403,10 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 // get current_value
                 for (size_t i = 0; i < handles.size(); i++)
                 {
+                    if (handles[i] >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
                     currentValue = getValue(pvHandls[handles[i]], *stringTable);
                 }
 
@@ -413,6 +421,10 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 // get default_value
                 for (size_t i = 0; i < defIndices.size(); i++)
                 {
+                    if (defIndices[i] >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
                     defaultValue =
                         getValue(pvHandls[defIndices[i]], *stringTable);
                 }
