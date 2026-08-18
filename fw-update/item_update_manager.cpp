@@ -94,35 +94,46 @@ bool ItemUpdateManager::processPackage()
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
     {
+        info("Executing pre-update condition {PATH} for EID {EID}", "PATH",
+             preConditionPath, "EID", eid);
         SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
-            .execute(preConditionPath, conditionArg,
-                     [this, alive = std::weak_ptr(aliveToken)](bool success) {
-                         if (alive.expired())
-                         {
-                             // This manager was erased while the condition was
-                             // running
-                             return;
-                         }
+            .execute(
+                preConditionPath, conditionArg,
+                [this, alive = std::weak_ptr(aliveToken)](bool success) {
+                    if (alive.expired())
+                    {
+                        // This manager was erased while the condition was
+                        // running
+                        warning(
+                            "Pre-update condition completed after its update manager was erased, dropping the result");
+                        return;
+                    }
 
-                         if (!updateInProgress)
-                         {
-                             return;
-                         }
+                    if (!updateInProgress)
+                    {
+                        warning(
+                            "Pre-update condition {PATH} completed while no update is in progress, dropping the result",
+                            "PATH", preConditionPath);
+                        return;
+                    }
 
-                         if (!success)
-                         {
-                             error("Pre-update condition failed for {PATH}",
-                                   "PATH", preConditionPath);
-                             completeUpdate(false);
-                             return;
-                         }
+                    if (!success)
+                    {
+                        error("Pre-update condition failed for {PATH}", "PATH",
+                              preConditionPath);
+                        completeUpdate(false);
+                        return;
+                    }
 
-                         startFirmwareUpdate();
-                     });
+                    info("Pre-update condition {PATH} succeeded", "PATH",
+                         preConditionPath);
+                    startFirmwareUpdate();
+                });
 
         return true;
     }
 
+    info("No pre-update condition configured for EID {EID}", "EID", eid);
     startFirmwareUpdate();
 
     return true;
@@ -184,31 +195,55 @@ void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
 {
     if (!postConditionPath.empty() && status == true)
     {
+        info("Executing post-update condition {PATH} for EID {EID}", "PATH",
+             postConditionPath, "EID", eid);
         SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
-            .execute(postConditionPath, conditionArg,
-                     [this, status, alive = std::weak_ptr(aliveToken)](
-                         bool conditionSuccess) {
-                         if (alive.expired())
-                         {
-                             // This manager was erased while the condition was
-                             // running
-                             return;
-                         }
+            .execute(
+                postConditionPath, conditionArg,
+                [this, status,
+                 alive = std::weak_ptr(aliveToken)](bool conditionSuccess) {
+                    if (alive.expired())
+                    {
+                        // This manager was erased while the condition was
+                        // running
+                        warning(
+                            "Post-update condition completed after its update manager was erased, dropping the result");
+                        return;
+                    }
 
-                         if (!updateInProgress)
-                         {
-                             return;
-                         }
+                    if (!updateInProgress)
+                    {
+                        warning(
+                            "Post-update condition {PATH} completed while no update is in progress, dropping the result",
+                            "PATH", postConditionPath);
+                        return;
+                    }
 
-                         if (!conditionSuccess)
-                         {
-                             error("Post-update condition failed for {PATH}",
-                                   "PATH", postConditionPath);
-                         }
+                    if (!conditionSuccess)
+                    {
+                        error("Post-update condition failed for {PATH}", "PATH",
+                              postConditionPath);
+                    }
+                    else
+                    {
+                        info("Post-update condition {PATH} succeeded", "PATH",
+                             postConditionPath);
+                    }
 
-                         completeUpdate(status && conditionSuccess);
-                     });
+                    completeUpdate(status && conditionSuccess);
+                });
         return;
+    }
+
+    if (postConditionPath.empty())
+    {
+        info("No post-update condition configured for EID {EID}", "EID", eid);
+    }
+    else
+    {
+        info(
+            "Skipping post-update condition {PATH} because the device update failed",
+            "PATH", postConditionPath);
     }
 
     completeUpdate(status);

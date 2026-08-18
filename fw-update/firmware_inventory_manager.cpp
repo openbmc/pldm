@@ -49,6 +49,11 @@ void FirmwareInventoryManager::createFirmwareEntry(
     auto conditions = conditionConfigManager.conditions(softwareName);
     auto conditionArg = generateArg(boardName);
 
+    info(
+        "Firmware entry {SOFTWARE} of EID {EID} uses pre={PRE}, post={POST}, args={ARGS}",
+        "SOFTWARE", softwareName, "EID", eid, "PRE", conditions.first, "POST",
+        conditions.second, "ARGS", conditionArg);
+
     updateManager.createUpdateManager(
         softwareIdentifier, descriptors, componentInfo, softwarePath,
         generatedId, conditions, conditionArg,

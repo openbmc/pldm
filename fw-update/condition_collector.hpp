@@ -110,6 +110,10 @@ class ConditionConfigManager
                     {
                         conditionMap.insert_or_assign(
                             cc.component, ConditionPaths{prePath, postPath});
+                        info(
+                            "Update condition for component {COMPONENT}: pre={PRE}, post={POST}",
+                            "COMPONENT", cc.component, "PRE", prePath, "POST",
+                            postPath);
                     }
                 }
                 catch (const std::exception& e)
@@ -126,6 +130,9 @@ class ConditionConfigManager
                   "JSPATH", jsonPath, "ERROR", e.what());
             return;
         }
+
+        info("Loaded update conditions of {COUNT} components from {JSPATH}",
+             "COUNT", conditionMap.size(), "JSPATH", jsonPath);
     }
 
     ConditionPath preCondition(const ConditionIdentifier& name) const

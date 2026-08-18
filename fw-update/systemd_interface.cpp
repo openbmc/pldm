@@ -58,6 +58,10 @@ void SystemdInterface::execute(const ConditionPath& conditionPath,
 
     const auto service = conditionUnitName(conditionPath, args);
 
+    info(
+        "Starting condition unit {UNIT}, configured as {PATH} with args {ARGS}",
+        "UNIT", service, "PATH", conditionPath, "ARGS", args);
+
     releaseCompletedSlots();
 
     try
@@ -93,8 +97,8 @@ void SystemdInterface::execute(const ConditionPath& conditionPath,
                     taskCallbacks.insert_or_assign(jobPath,
                                                    std::move(taskCallback));
                 }
-                debug("Started Service: {SERV}", "SERV", service);
-                debug("Job path: {JOB}", "JOB", jobPath);
+                info("Condition unit {UNIT} started, waiting for job {JOB}",
+                     "UNIT", service, "JOB", jobPath);
             }
             catch (const std::exception& e)
             {
@@ -200,10 +204,10 @@ void SystemdInterface::handleSystemdJobRemoved(sdbusplus::message_t& msg)
         taskCallbacks.erase(it);
 
         const bool success = (result == SYSTEMD_JOB_RESULT_DONE);
-        debug(
-            "Condition execution completed: id={ID}, job={JOB}, unit={UNIT}, result={RESULT}",
-            "ID", jobId, "JOB", returnedJobPath, "UNIT", unit, "RESULT",
-            result);
+        info(
+            "Condition unit {UNIT} completed: id={ID}, job={JOB}, result={RESULT}, success={SUCCESS}",
+            "UNIT", unit, "ID", jobId, "JOB", returnedJobPath, "RESULT", result,
+            "SUCCESS", success);
 
         if (taskCallback)
         {
