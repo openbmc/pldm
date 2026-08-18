@@ -90,7 +90,9 @@ void CommandInterface::exec()
     auto instanceIdResult = instanceIdDb.next(mctp_eid);
     if (!instanceIdResult)
     {
-        throw pldm::InstanceIdError(instanceIdResult.error());
+        // InstanceIdDb::next() already lg2::error()s this failure; avoid
+        // printing it a second time via std::cerr.
+        throw CLI::RuntimeError(1);
     }
     auto instanceId = instanceIdResult.value();
     auto [rc, requestMsg] = createRequestMsg();
@@ -99,7 +101,7 @@ void CommandInterface::exec()
         instanceIdDb.free(mctp_eid, instanceId);
         std::cerr << "Failed to encode request message for " << pldmType << ":"
                   << commandName << " rc = " << rc << "\n";
-        return;
+        throw CLI::RuntimeError(1);
     }
 
     std::vector<uint8_t> responseMsg;
@@ -109,7 +111,7 @@ void CommandInterface::exec()
     {
         instanceIdDb.free(mctp_eid, instanceId);
         std::cerr << "pldmSendRecv: Failed to receive RC = " << rc << "\n";
-        return;
+        throw CLI::RuntimeError(1);
     }
 
     auto responsePtr = reinterpret_cast<struct pldm_msg*>(responseMsg.data());
