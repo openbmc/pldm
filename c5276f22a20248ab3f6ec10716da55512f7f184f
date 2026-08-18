@@ -16,6 +16,24 @@
       "message": "@unive.tien.wiwynn@gmail.com Can you please -\n\n1. Add a Tested section and add some relevant details on which platform it was tested on ?\n2. Confirm that the relevant testing has been performed on the latest change set to avoid any regressions with the base functionality ?",
       "revId": "c5276f22a20248ab3f6ec10716da55512f7f184f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f70b08_efaebfe3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 59
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-18T09:43:45Z",
+      "side": 1,
+      "message": "Done, trace flow comes from [93649].\nMinor changes are made: \n- RuntimeMaxSec is ignored for Type\u003doneshot, so the timeout guidance and both examples now name TimeoutStartSec.\n\n[93649]: https://gerrit.openbmc.org/c/openbmc/pldm/+/93649",
+      "parentUuid": "083545b1_71119f40",
+      "revId": "c5276f22a20248ab3f6ec10716da55512f7f184f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
