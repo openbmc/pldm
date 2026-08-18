@@ -242,11 +242,15 @@ int BIOSConfig::checkAttributeTable(const Table& table)
                     }
                 }
 
-                for (size_t i = 0; i < defIndices.size(); i++)
+                for (auto defIndex : defIndices)
                 {
+                    if (defIndex >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
                         stringTable->data(), stringTable->size(),
-                        pvHandls[defIndices[i]]);
+                        pvHandls[defIndex]);
                     if (stringEntry == nullptr)
                     {
                         return PLDM_INVALID_BIOS_ATTR_HANDLE;
@@ -397,9 +401,13 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     tableEntry, handles.data(), handles.size());
 
                 // get current_value
-                for (size_t i = 0; i < handles.size(); i++)
+                for (auto handle : handles)
                 {
-                    currentValue = getValue(pvHandls[handles[i]], *stringTable);
+                    if (handle >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
+                    currentValue = getValue(pvHandls[handle], *stringTable);
                 }
 
                 uint8_t defNum = 0;
@@ -411,10 +419,13 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                     attrEntry, defIndices.data(), defIndices.size());
 
                 // get default_value
-                for (size_t i = 0; i < defIndices.size(); i++)
+                for (auto defIndex : defIndices)
                 {
-                    defaultValue =
-                        getValue(pvHandls[defIndices[i]], *stringTable);
+                    if (defIndex >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
+                    defaultValue = getValue(pvHandls[defIndex], *stringTable);
                 }
 
                 break;
