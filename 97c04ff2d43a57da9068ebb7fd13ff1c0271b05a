@@ -16,6 +16,40 @@
       "message": "why no return false ?",
       "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0fc9285_5d07cc8d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-08-18T09:06:52Z",
+      "side": 1,
+      "message": "Can false be returned when `emConfigPath` is empty?",
+      "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f48ecd89_7e7657f7",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-08-18T09:06:52Z",
+      "side": 1,
+      "message": "For empty response, error log be added?",
+      "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
