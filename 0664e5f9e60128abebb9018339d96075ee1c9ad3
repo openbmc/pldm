@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9953e392_f865d1f4",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1329,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T08:54:41Z",
+      "side": 1,
+      "message": "is it possible to use new `pldm_platform_state_sensor_pdr` for the test cases?",
+      "revId": "0664e5f9e60128abebb9018339d96075ee1c9ad3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd05a0c4_ddfe3051",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1330,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T08:54:41Z",
+      "side": 1,
+      "message": "can we use `pldm_platform_state_sensor_possible_states`?",
+      "revId": "0664e5f9e60128abebb9018339d96075ee1c9ad3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae37b10_e112b7ee",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1460,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-18T08:54:41Z",
+      "side": 1,
+      "message": "For new test cases can we use new pldm_platform* structs and functions wherever possible?",
+      "revId": "0664e5f9e60128abebb9018339d96075ee1c9ad3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
