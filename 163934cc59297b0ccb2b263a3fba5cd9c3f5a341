@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1d01e17_792d7934",
+        "filename": "oem/ibm/configurations/fileTable.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-08-18T09:19:13Z",
+      "side": 1,
+      "message": "this might change the filehandle numbers for the existing files - lets not change all of that, rather i feel its okay to add this at the end.",
+      "parentUuid": "4b518161_65259360",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "421d315a_265b88bb",
         "filename": "oem/ibm/service_files/pldm-create-phyp-security.service",
         "patchSetId": 4
@@ -99,6 +117,24 @@
       "writtenOn": "2026-08-05T14:51:37Z",
       "side": 1,
       "message": "Please change the size to 128K",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b751c22b_844bfdd9",
+        "filename": "oem/ibm/service_files/scripts/create-PHYP-SECURITY-file",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-08-18T09:19:13Z",
+      "side": 1,
+      "message": "64k is good enough. we dont need 128k.",
+      "parentUuid": "db05e0e8_23515a84",
       "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
