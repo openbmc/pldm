@@ -68,7 +68,9 @@ using MctpInfos = std::vector<MctpInfo>;
 
 const std::vector<std::string> interfaceFilter = {
     "xyz.openbmc_project.Configuration.MCTPI2CTarget",
-    "xyz.openbmc_project.Configuration.MCTPI3CTarget"};
+    "xyz.openbmc_project.Configuration.MCTPI3CTarget",
+    "xyz.openbmc_project.Configuration.MCTPUSBDevice",
+    "xyz.openbmc_project.Configuration.MCTPBridgeChild"};
 
 /**
  * In `Table 2 - Special endpoint IDs` of DSP0236.

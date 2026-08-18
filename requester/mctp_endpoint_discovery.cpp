@@ -8,9 +8,13 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <algorithm>
+#include <functional>
 #include <map>
+#include <optional>
+#include <set>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <vector>
 
 using namespace sdbusplus::match_rules;
@@ -21,7 +25,8 @@ namespace pldm
 {
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
-    std::initializer_list<MctpDiscoveryHandlerIntf*> list) :
+    std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+    sdeventplus::Event& event) :
     bus(bus),
     mctpEndpointAddedSignal(
         bus, interfacesAdded(MCTPPath),
@@ -32,7 +37,9 @@ MctpDiscovery::MctpDiscovery(
     mctpEndpointPropChangedSignal(
         bus, propertiesChangedNamespace(MCTPPath, MCTPInterfaceCC),
         [this](sdbusplus::message_t& msg) { this->propertiesChangedCb(msg); }),
-    handlers(list)
+    handlers(list),
+    bridgeLearnTimer(
+        event, std::bind(std::mem_fn(&MctpDiscovery::retryBridgeLearn), this))
 {
     std::map<MctpInfo, Availability> currentMctpInfoMap;
     getMctpInfos(currentMctpInfoMap);
@@ -575,6 +582,8 @@ void MctpDiscovery::searchConfigurationFor(
                     {
                         this->addToExistingMctpInfos(MctpInfos(1, mctpInfo));
                         this->handleMctpEndpoints(MctpInfos(1, mctpInfo));
+                        this->retryPendingBridgeChildren(
+                            dhandler, std::get<pldm::eid>(mctpInfo));
                     }
                 }
             });
@@ -593,6 +602,411 @@ void MctpDiscovery::searchConfigurationFor(
     if (resolveAssociation(handler, mctpInfo))
     {
         associationMatches.erase(mctpReactorObjectPath);
+        retryPendingBridgeChildren(handler, std::get<pldm::eid>(mctpInfo));
+    }
+    else if (matchBridgePoolConfig(handler, mctpInfo))
+    {
+        associationMatches.erase(mctpReactorObjectPath);
+    }
+    else
+    {
+        // Bridge not confirmed yet - retry when another endpoint resolves.
+        pendingBridgeChildren.push_back(mctpInfo);
+    }
+}
+
+namespace
+{
+// EM's $bus-arithmetic template always produces a JSON string even for numeric
+// fields; a literal integer in the config stays a native D-Bus numeric. Accept
+// both.
+std::optional<uint64_t> toUint64(const pldm::utils::PropertyValue& val)
+{
+    return std::visit(
+        [](auto&& v) -> std::optional<uint64_t> {
+            using T = std::decay_t<decltype(v)>;
+            if constexpr (std::is_same_v<T, std::string>)
+            {
+                try
+                {
+                    return static_cast<uint64_t>(std::stoull(v));
+                }
+                catch (const std::exception&)
+                {
+                    return std::nullopt;
+                }
+            }
+            else if constexpr (std::is_arithmetic_v<T>)
+            {
+                return static_cast<uint64_t>(v);
+            }
+            else
+            {
+                return std::nullopt;
+            }
+        },
+        val);
+}
+} // namespace
+
+std::optional<std::pair<eid, eid>> MctpDiscovery::getBridgePoolRange(
+    const pldm::utils::DBusHandler& handler, NetworkId networkId, eid bridgeEid)
+{
+    auto cacheIt = bridgePoolCache.find(bridgeEid);
+    if (cacheIt != bridgePoolCache.end())
+    {
+        return cacheIt->second;
+    }
+
+    constexpr auto bridgeIntf = "au.com.codeconstruct.MCTP.Bridge1";
+    std::string endpointObjPath =
+        std::string(MCTPPath) + "/networks/" + std::to_string(networkId) +
+        "/endpoints/" + std::to_string(bridgeEid);
+
+    try
+    {
+        auto properties = handler.getDbusPropertiesVariant(
+            MCTPService, endpointObjPath.c_str(), bridgeIntf);
+
+        auto startIt = properties.find("PoolStart");
+        auto endIt = properties.find("PoolEnd");
+        auto start = startIt == properties.end() ? std::nullopt
+                                                 : toUint64(startIt->second);
+        auto end =
+            endIt == properties.end() ? std::nullopt : toUint64(endIt->second);
+        if (!start || !end)
+        {
+            return std::nullopt;
+        }
+
+        auto range =
+            std::make_pair(static_cast<eid>(*start), static_cast<eid>(*end));
+        bridgePoolCache[bridgeEid] = range;
+        return range;
+    }
+    catch (const std::exception&)
+    {
+        return std::nullopt;
+    }
+}
+
+bool MctpDiscovery::matchBridgePoolConfig(
+    const pldm::utils::DBusHandler& handler, MctpInfo& mctpInfo)
+{
+    constexpr auto staticEndpointIntf =
+        "xyz.openbmc_project.Configuration.MCTPBridgeChild";
+    const auto childEid = std::get<eid>(mctpInfo);
+    const auto networkId = std::get<NetworkId>(mctpInfo);
+
+    for (const auto& [bridgeObjPath, bridgeInfo] : configurations)
+    {
+        const auto bridgeEid = std::get<eid>(bridgeInfo);
+        if (bridgeEid == childEid ||
+            std::get<NetworkId>(bridgeInfo) != networkId)
+        {
+            continue;
+        }
+
+        auto range = getBridgePoolRange(handler, networkId, bridgeEid);
+        if (!range || childEid < range->first || childEid > range->second)
+        {
+            continue;
+        }
+
+        const uint64_t offset = childEid - range->first;
+
+        // EM configs for pool members are siblings of the bridge record,
+        // not children - scope the search to the bridge's parent path.
+        auto lastSlash = bridgeObjPath.find_last_of('/');
+        if (lastSlash == std::string::npos)
+        {
+            continue;
+        }
+        std::string boardPath = bridgeObjPath.substr(0, lastSlash);
+
+        pldm::utils::GetSubTreeResponse response;
+        try
+        {
+            response = handler.getSubtree(boardPath, 0, {staticEndpointIntf});
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error(
+                "Failed to query bridge-child configs under {PATH}, error - {ERR}",
+                "PATH", boardPath, "ERR", e);
+            continue;
+        }
+
+        for (const auto& [objPath, serviceMap] : response)
+        {
+            for (const auto& serviceEntry : serviceMap)
+            {
+                const auto& service = serviceEntry.first;
+                try
+                {
+                    auto properties = handler.getDbusPropertiesVariant(
+                        service.c_str(), objPath.c_str(), staticEndpointIntf);
+
+                    auto offsetIt = properties.find("PoolOffset");
+                    auto offsetParsed = offsetIt == properties.end()
+                                            ? std::nullopt
+                                            : toUint64(offsetIt->second);
+                    if (!offsetParsed || *offsetParsed != offset)
+                    {
+                        continue;
+                    }
+
+                    auto nameIt = properties.find("Name");
+                    if (nameIt != properties.end() &&
+                        std::holds_alternative<std::string>(nameIt->second))
+                    {
+                        std::get<4>(mctpInfo) =
+                            std::get<std::string>(nameIt->second);
+                    }
+                    std::get<5>(mctpInfo) = objPath;
+
+                    configurations.insert_or_assign(objPath, mctpInfo);
+                    lg2::info(
+                        "Matched bridge-child config {PATH} for EID {EID} via bridge {BRIDGE} at offset {OFFSET}",
+                        "PATH", objPath, "EID", childEid, "BRIDGE", bridgeEid,
+                        "OFFSET", offset);
+                    return true;
+                }
+                catch (const std::exception& e)
+                {
+                    lg2::error(
+                        "Error reading bridge-child config at {PATH}, error - {ERR}",
+                        "PATH", objPath, "ERR", e);
+                }
+            }
+        }
+    }
+    return false;
+}
+
+void MctpDiscovery::retryPendingBridgeChildren(
+    const pldm::utils::DBusHandler& handler, eid bridgeEid)
+{
+    auto configIt =
+        std::find_if(configurations.begin(), configurations.end(),
+                     [bridgeEid](const auto& entry) {
+                         return std::get<eid>(entry.second) == bridgeEid;
+                     });
+    if (configIt == configurations.end())
+    {
+        return;
+    }
+
+    auto networkId = std::get<NetworkId>(configIt->second);
+    auto range = getBridgePoolRange(handler, networkId, bridgeEid);
+    if (!range)
+    {
+        return;
+    }
+
+    // mctp-reactor only assigns the bridge's own EID; enumerate the pool here.
+    learnBridgePoolMembers(handler, networkId, bridgeEid, configIt->first,
+                           range->first, range->second);
+
+    if (pendingBridgeChildren.empty())
+    {
+        return;
+    }
+
+    auto pending = std::move(pendingBridgeChildren);
+    pendingBridgeChildren.clear();
+
+    for (auto mctpInfo : pending)
+    {
+        if (matchBridgePoolConfig(handler, mctpInfo))
+        {
+            addToExistingMctpInfos(MctpInfos(1, mctpInfo));
+            handleMctpEndpoints(MctpInfos(1, mctpInfo));
+        }
+        else
+        {
+            pendingBridgeChildren.push_back(mctpInfo);
+        }
+    }
+}
+
+std::set<uint64_t> MctpDiscovery::getConfiguredPoolOffsets(
+    const pldm::utils::DBusHandler& handler, const std::string& bridgeObjPath)
+{
+    constexpr auto staticEndpointIntf =
+        "xyz.openbmc_project.Configuration.MCTPBridgeChild";
+    std::set<uint64_t> offsets;
+
+    auto lastSlash = bridgeObjPath.find_last_of('/');
+    if (lastSlash == std::string::npos)
+    {
+        return offsets;
+    }
+    std::string boardPath = bridgeObjPath.substr(0, lastSlash);
+
+    pldm::utils::GetSubTreeResponse response;
+    try
+    {
+        response = handler.getSubtree(boardPath, 0, {staticEndpointIntf});
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error(
+            "Failed to query bridge-child configs under {PATH}, error - {ERR}",
+            "PATH", boardPath, "ERR", e);
+        return offsets;
+    }
+
+    for (const auto& [objPath, serviceMap] : response)
+    {
+        for (const auto& serviceEntry : serviceMap)
+        {
+            const auto& service = serviceEntry.first;
+            try
+            {
+                auto properties = handler.getDbusPropertiesVariant(
+                    service.c_str(), objPath.c_str(), staticEndpointIntf);
+                auto offsetIt = properties.find("PoolOffset");
+                auto offsetParsed = offsetIt == properties.end()
+                                        ? std::nullopt
+                                        : toUint64(offsetIt->second);
+                if (offsetParsed)
+                {
+                    offsets.insert(*offsetParsed);
+                }
+            }
+            catch (const std::exception& e)
+            {
+                lg2::error(
+                    "Error reading bridge-child config at {PATH}, error - {ERR}",
+                    "PATH", objPath, "ERR", e);
+            }
+        }
+    }
+    return offsets;
+}
+
+void MctpDiscovery::learnBridgePoolMembers(
+    const pldm::utils::DBusHandler& handler, NetworkId networkId, eid bridgeEid,
+    const std::string& bridgeObjPath, eid poolStart, eid poolEnd)
+{
+    constexpr auto networkIntf = "au.com.codeconstruct.MCTP.Network1";
+    std::string networkObjPath =
+        std::string(MCTPPath) + "/networks/" + std::to_string(networkId);
+
+    // Only attempt offsets with an EM config record - unwired pool slots
+    // would fail every retry indefinitely.
+    auto offsets = getConfiguredPoolOffsets(handler, bridgeObjPath);
+    if (offsets.empty())
+    {
+        return;
+    }
+
+    std::set<uint64_t> failedOffsets;
+    for (const auto offset : offsets)
+    {
+        eid candidate = poolStart + static_cast<eid>(offset);
+        if (candidate > poolEnd)
+        {
+            continue;
+        }
+        try
+        {
+            auto& bus = pldm::utils::DBusHandler::getBus();
+            auto method =
+                bus.new_method_call(MCTPService, networkObjPath.c_str(),
+                                    networkIntf, "LearnEndpoint");
+            method.append(candidate);
+            bus.call(method);
+        }
+        catch (const std::exception& e)
+        {
+            lg2::error(
+                "Failed to LearnEndpoint {EID} (offset {OFFSET}) on network {NET}, error - {ERR}",
+                "EID", candidate, "OFFSET", offset, "NET", networkId, "ERR", e);
+            failedOffsets.insert(offset);
+        }
+    }
+
+    if (failedOffsets.empty())
+    {
+        pendingBridgeLearns.erase(bridgeEid);
+        return;
+    }
+
+    // Device may still be powering on - retry rather than treating first
+    // failure as permanent.
+    auto& pending = pendingBridgeLearns[bridgeEid];
+    pending.networkId = networkId;
+    pending.poolStart = poolStart;
+    pending.pendingOffsets = std::move(failedOffsets);
+    pending.attempts = 0;
+
+    if (!bridgeLearnTimer.isEnabled())
+    {
+        bridgeLearnTimer.restart(bridgeLearnRetryInterval);
+    }
+}
+
+void MctpDiscovery::retryBridgeLearn()
+{
+    constexpr auto networkIntf = "au.com.codeconstruct.MCTP.Network1";
+
+    for (auto it = pendingBridgeLearns.begin();
+         it != pendingBridgeLearns.end();)
+    {
+        auto& pending = it->second;
+        pending.attempts++;
+
+        std::string networkObjPath = std::string(MCTPPath) + "/networks/" +
+                                     std::to_string(pending.networkId);
+
+        std::set<uint64_t> stillFailed;
+        for (const auto offset : pending.pendingOffsets)
+        {
+            eid candidate = pending.poolStart + static_cast<eid>(offset);
+            try
+            {
+                auto& bus = pldm::utils::DBusHandler::getBus();
+                auto method =
+                    bus.new_method_call(MCTPService, networkObjPath.c_str(),
+                                        networkIntf, "LearnEndpoint");
+                method.append(candidate);
+                bus.call(method);
+            }
+            catch (const std::exception&)
+            {
+                stillFailed.insert(offset);
+            }
+        }
+
+        if (stillFailed.empty())
+        {
+            it = pendingBridgeLearns.erase(it);
+            continue;
+        }
+
+        if (pending.attempts >= bridgeLearnMaxAttempts)
+        {
+            lg2::error(
+                "Giving up on LearnEndpoint for bridge {EID}, network {NET} - {COUNT} pool offset(s) never responded after {ATTEMPTS} attempts",
+                "EID", it->first, "NET", pending.networkId, "COUNT",
+                stillFailed.size(), "ATTEMPTS", pending.attempts);
+            it = pendingBridgeLearns.erase(it);
+            continue;
+        }
+
+        pending.pendingOffsets = std::move(stillFailed);
+        ++it;
+    }
+
+    if (pendingBridgeLearns.empty())
+    {
+        bridgeLearnTimer.setEnabled(false);
+    }
+    else
+    {
+        bridgeLearnTimer.restart(bridgeLearnRetryInterval);
     }
 }
 
@@ -611,6 +1025,13 @@ void MctpDiscovery::removeConfigs(const MctpInfos& removedInfos)
 
             return eidValue == eidToRemove && netValue == netToRemove;
         });
+
+        std::erase_if(pendingBridgeChildren,
+                      [eidToRemove, netToRemove](const auto& mctpInfo) {
+                          return std::get<eid>(mctpInfo) == eidToRemove &&
+                                 std::get<NetworkId>(mctpInfo) == netToRemove;
+                      });
+        bridgePoolCache.erase(eidToRemove);
     }
 }
 
