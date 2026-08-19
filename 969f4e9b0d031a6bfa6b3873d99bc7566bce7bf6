@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbc942c5_3cf67c9c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-19T08:02:08Z",
+      "side": 1,
+      "message": "Sure, I have added a lines in the commit message for that patch.",
+      "parentUuid": "03def94e_5b30cd14",
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21d4232f_2e25540b",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-08-18T11:17:11Z",
       "side": 1,
       "message": "Is it possible to use `pldm_platform_state_sensor_possible_states`?",
+      "range": {
+        "startLine": 1230,
+        "startChar": 15,
+        "endLine": 1230,
+        "endChar": 44
+      },
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32c27b72_8c63fe20",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1230,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-19T08:02:08Z",
+      "side": 1,
+      "message": "Sure, I have modified this in PS7.",
+      "parentUuid": "21d4232f_2e25540b",
       "range": {
         "startLine": 1230,
         "startChar": 15,
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "061575a8_cbd757a0",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1235,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-19T08:02:08Z",
+      "side": 1,
+      "message": "Done, modified so that the composite entries are now emitted as a compositeStates array of objects.",
+      "parentUuid": "a494be97_b52fa16d",
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "572d44c8_761a0dc4",
@@ -75,6 +135,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9900db5_ab7d169e",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-19T08:02:08Z",
+      "side": 1,
+      "message": "Acknowledged, switched to uses `std::format()` in PS7.",
+      "parentUuid": "572d44c8_761a0dc4",
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb81ad86_1255d76e",
@@ -88,6 +166,30 @@
       "writtenOn": "2026-08-18T11:17:11Z",
       "side": 1,
       "message": "shouldn\u0027t this variable be different that what is used by enclosing loop?",
+      "range": {
+        "startLine": 1243,
+        "startChar": 76,
+        "endLine": 1243,
+        "endChar": 78
+      },
+      "revId": "969f4e9b0d031a6bfa6b3873d99bc7566bce7bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f460f1a_70b89b6e",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-19T08:02:08Z",
+      "side": 1,
+      "message": "Done. The inner states loop now uses its own `statesRc`, so the outer loop\u0027s `rc` is no longer aliased and the check after the loop is unambiguous.",
+      "parentUuid": "fb81ad86_1255d76e",
       "range": {
         "startLine": 1243,
         "startChar": 76,
