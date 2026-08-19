@@ -16,6 +16,23 @@
       "message": "@kevin.tung.openbmc@gmail.com Please rebase your patch",
       "revId": "468eba73c7a309c5bb3b58a781a8eaf5a609a75c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6075b54_e97901c5",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-08-19T19:49:25Z",
+      "side": 1,
+      "message": "Please update the schema in https://github.com/openbmc/docs/blob/master/designs/code-update.md and add some description providing the intent for the change. Add the related docs PR in the commit description for this change.",
+      "revId": "468eba73c7a309c5bb3b58a781a8eaf5a609a75c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
