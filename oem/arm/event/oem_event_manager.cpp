@@ -25,8 +25,18 @@ namespace
 
 using BootRawValue = std::tuple<std::vector<uint8_t>, std::vector<uint8_t>>;
 
+enum class StateSensorEventType
+{
+    PLDM_FILE_STATE_SENSOR_CRASHLOG,
+    PLDM_FILE_STATE_SENSOR_UNSUPPORTED,
+};
+
 constexpr auto bootProgressTerminusName = "PHX";
 constexpr uint16_t bootProgressSensorId = 1;
+constexpr uint16_t firstCrashlogStateSensorId = 2;
+constexpr uint8_t crashlogStateSensorStride = 2;
+constexpr uint8_t deviceFileNotChangedState = 1;
+constexpr uint8_t deviceFileUpdatedState = 2;
 constexpr auto bootRawObjectPath = "/xyz/openbmc_project/state/boot/raw0";
 constexpr auto bootRawInterface = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto bootRawProperty = "Value";
@@ -37,6 +47,27 @@ constexpr auto bootProgressLastUpdateProperty = "BootProgressLastUpdate";
 constexpr auto bootProgressProperty = "BootProgress";
 constexpr auto bootProgressStageOem =
     "xyz.openbmc_project.State.Boot.Progress.ProgressStages.OEM";
+
+bool isCrashlogFileStateSensor(uint16_t sensorId)
+{
+    if (sensorId < firstCrashlogStateSensorId)
+    {
+        return false;
+    }
+
+    auto offset = sensorId - firstCrashlogStateSensorId;
+    return (offset % crashlogStateSensorStride) == 0;
+}
+
+StateSensorEventType getStateSensorEventType(uint16_t sensorId)
+{
+    if (isCrashlogFileStateSensor(sensorId))
+    {
+        return StateSensorEventType::PLDM_FILE_STATE_SENSOR_CRASHLOG;
+    }
+
+    return StateSensorEventType::PLDM_FILE_STATE_SENSOR_UNSUPPORTED;
+}
 
 std::vector<uint8_t> bootProgressToBytes(uint32_t presentReading)
 {
@@ -136,11 +167,6 @@ int OemEventManager::decodeSensorEvent(pldm_tid_t tid, const uint8_t* eventData,
                "TID", tid, "SID", sensorId, "CLASS", sensorEventClassType,
                "OFFSET", eventClassDataOffset);
 
-    if (sensorEventClassType != PLDM_NUMERIC_SENSOR_STATE)
-    {
-        return PLDM_SUCCESS;
-    }
-
     if (eventClassDataOffset > eventDataSize)
     {
         lg2::error("Invalid Arm sensor event data. Class data offset {OFFSET} "
@@ -152,8 +178,19 @@ int OemEventManager::decodeSensorEvent(pldm_tid_t tid, const uint8_t* eventData,
     const auto* sensorData = eventData + eventClassDataOffset;
     auto sensorDataLength = eventDataSize - eventClassDataOffset;
 
-    return processNumericSensorEvent(tid, sensorId, sensorData,
-                                     sensorDataLength);
+    if (sensorEventClassType == PLDM_NUMERIC_SENSOR_STATE)
+    {
+        return processNumericSensorEvent(tid, sensorId, sensorData,
+                                         sensorDataLength);
+    }
+
+    if (sensorEventClassType == PLDM_STATE_SENSOR_STATE)
+    {
+        return processStateSensorEvent(tid, sensorId, sensorData,
+                                       sensorDataLength);
+    }
+
+    return PLDM_SUCCESS;
 }
 
 int OemEventManager::processNumericSensorEvent(
@@ -199,6 +236,59 @@ int OemEventManager::processNumericSensorEvent(
                 "TID", tid, "SID", sensorId);
             return PLDM_SUCCESS;
     }
+}
+
+int OemEventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
+                                             const uint8_t* sensorData,
+                                             size_t sensorDataLength)
+{
+    uint8_t sensorOffset = 0;
+    uint8_t eventState = 0;
+    uint8_t previousEventState = 0;
+    auto rc =
+        decode_state_sensor_data(sensorData, sensorDataLength, &sensorOffset,
+                                 &eventState, &previousEventState);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode Arm state sensor event for terminus {TID}, "
+            "sensor {SID}, error {RC}",
+            "TID", tid, "SID", sensorId, "RC", rc);
+        return rc;
+    }
+
+    switch (getStateSensorEventType(sensorId))
+    {
+        case StateSensorEventType::PLDM_FILE_STATE_SENSOR_CRASHLOG:
+            if (eventState == deviceFileNotChangedState)
+            {
+                lg2::debug("Device File state reset to NotChanged from "
+                           "terminus {TID}, sensor {SID}",
+                           "TID", tid, "SID", sensorId);
+                return PLDM_SUCCESS;
+            }
+
+            if (eventState == deviceFileUpdatedState)
+            {
+                lg2::info("Crashlog Device File state event from terminus "
+                          "{TID}, sensor {SID}",
+                          "TID", tid, "SID", sensorId);
+                return PLDM_SUCCESS;
+            }
+
+            lg2::debug("Ignoring unsupported Device File state {STATE} from "
+                       "terminus {TID}, sensor {SID}",
+                       "STATE", eventState, "TID", tid, "SID", sensorId);
+            return PLDM_SUCCESS;
+        case StateSensorEventType::PLDM_FILE_STATE_SENSOR_UNSUPPORTED:
+            lg2::debug(
+                "Ignoring unsupported Arm state sensor event from terminus "
+                "{TID}, sensor {SID}",
+                "TID", tid, "SID", sensorId);
+            return PLDM_SUCCESS;
+    }
+
+    return PLDM_SUCCESS;
 }
 
 int OemEventManager::updateBootProgress(uint32_t presentReading) const
