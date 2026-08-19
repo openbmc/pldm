@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a1d05c_d623a50e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-08-19T19:47:32Z",
+      "side": 1,
+      "message": "@kevin.tung.openbmc@gmail.com Please rebase your patch",
+      "revId": "468eba73c7a309c5bb3b58a781a8eaf5a609a75c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
