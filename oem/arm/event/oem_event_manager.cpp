@@ -1,6 +1,7 @@
 #include "oem_event_manager.hpp"
 
 #include "common/utils.hpp"
+#include "crashlog.hpp"
 #include "platform-mc/manager.hpp"
 
 #include <libpldm/platform.h>
@@ -33,10 +34,6 @@ enum class StateSensorEventType
 
 constexpr auto bootProgressTerminusName = "PHX";
 constexpr uint16_t bootProgressSensorId = 1;
-constexpr uint16_t firstCrashlogStateSensorId = 2;
-constexpr uint8_t crashlogStateSensorStride = 2;
-constexpr uint8_t deviceFileNotChangedState = 1;
-constexpr uint8_t deviceFileUpdatedState = 2;
 constexpr auto bootRawObjectPath = "/xyz/openbmc_project/state/boot/raw0";
 constexpr auto bootRawInterface = "xyz.openbmc_project.State.Boot.Raw";
 constexpr auto bootRawProperty = "Value";
@@ -48,20 +45,9 @@ constexpr auto bootProgressProperty = "BootProgress";
 constexpr auto bootProgressStageOem =
     "xyz.openbmc_project.State.Boot.Progress.ProgressStages.OEM";
 
-bool isCrashlogFileStateSensor(uint16_t sensorId)
-{
-    if (sensorId < firstCrashlogStateSensorId)
-    {
-        return false;
-    }
-
-    auto offset = sensorId - firstCrashlogStateSensorId;
-    return (offset % crashlogStateSensorStride) == 0;
-}
-
 StateSensorEventType getStateSensorEventType(uint16_t sensorId)
 {
-    if (isCrashlogFileStateSensor(sensorId))
+    if (crashlog::isFileStateSensor(sensorId))
     {
         return StateSensorEventType::PLDM_FILE_STATE_SENSOR_CRASHLOG;
     }
@@ -260,26 +246,8 @@ int OemEventManager::processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
     switch (getStateSensorEventType(sensorId))
     {
         case StateSensorEventType::PLDM_FILE_STATE_SENSOR_CRASHLOG:
-            if (eventState == deviceFileNotChangedState)
-            {
-                lg2::debug("Device File state reset to NotChanged from "
-                           "terminus {TID}, sensor {SID}",
-                           "TID", tid, "SID", sensorId);
-                return PLDM_SUCCESS;
-            }
-
-            if (eventState == deviceFileUpdatedState)
-            {
-                lg2::info("Crashlog Device File state event from terminus "
-                          "{TID}, sensor {SID}",
-                          "TID", tid, "SID", sensorId);
-                return PLDM_SUCCESS;
-            }
-
-            lg2::debug("Ignoring unsupported Device File state {STATE} from "
-                       "terminus {TID}, sensor {SID}",
-                       "STATE", eventState, "TID", tid, "SID", sensorId);
-            return PLDM_SUCCESS;
+            return crashlog::processFileStateEvent(manager, tid, sensorId,
+                                                   eventState);
         case StateSensorEventType::PLDM_FILE_STATE_SENSOR_UNSUPPORTED:
             lg2::debug(
                 "Ignoring unsupported Arm state sensor event from terminus "
