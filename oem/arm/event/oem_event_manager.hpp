@@ -79,6 +79,21 @@ class OemEventManager
                                   const uint8_t* sensorData,
                                   size_t sensorDataLength);
 
+    /** @brief Decode and route Arm OEM state sensor events.
+     *
+     * Device File state sensor events are parsed so the Arm OEM path can react
+     * to crashlog file-ready notifications.
+     *
+     * @param[in] tid Terminus ID that emitted the event.
+     * @param[in] sensorId State sensor ID.
+     * @param[in] sensorData State sensor payload bytes.
+     * @param[in] sensorDataLength Number of payload bytes.
+     * @return PLDM completion code.
+     */
+    int processStateSensorEvent(pldm_tid_t tid, uint16_t sensorId,
+                                const uint8_t* sensorData,
+                                size_t sensorDataLength);
+
     /** @brief Update boot progress D-Bus properties
      *
      *  @param[in] presentReading - Boot progress reading from the sensor event
