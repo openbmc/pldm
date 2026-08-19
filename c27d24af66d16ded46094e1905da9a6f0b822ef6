@@ -22,6 +22,30 @@
       },
       "revId": "c27d24af66d16ded46094e1905da9a6f0b822ef6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa1969b0_193968b6",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-19T07:27:16Z",
+      "side": 1,
+      "message": "Sure, I have dropped the parentheses in PS5.\nThanks for acknowledging this!",
+      "parentUuid": "68764e79_cce2b804",
+      "range": {
+        "startLine": 220,
+        "startChar": 55,
+        "endLine": 220,
+        "endChar": 79
+      },
+      "revId": "c27d24af66d16ded46094e1905da9a6f0b822ef6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
