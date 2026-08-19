@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65cd6ae3_d224cc30",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-08-19T07:01:56Z",
+      "side": 1,
+      "message": "Is Completed the right name for the existing true state? This change is described as mechanical, but true is assigned in updateComponent() immediately after PLDM_CCR_COMP_CAN_BE_UPDATED, before transfer, verification, and apply succeed. The same state is also assigned while scheduling the next component. Could we name this Accepted or EligibleForUpdate to preserve the current semantics, and reserve Completed for a successful ApplyComplete in a later behavior-changing patch?",
+      "range": {
+        "startLine": 22,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "108ba5383e3d41d2f52b00638571c596c2dd7626",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
