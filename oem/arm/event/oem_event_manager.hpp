@@ -81,8 +81,7 @@ class OemEventManager
 
     /** @brief Decode and route Arm OEM state sensor events.
      *
-     * Device File state sensor events are parsed so the Arm OEM path can react
-     * to crashlog file-ready notifications.
+     * Device File state sensor events are routed to the crashlog collector.
      *
      * @param[in] tid Terminus ID that emitted the event.
      * @param[in] sensorId State sensor ID.
