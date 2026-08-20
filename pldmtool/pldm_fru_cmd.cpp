@@ -1,12 +1,18 @@
 #include "pldm_fru_cmd.hpp"
 
+#include "common/utils.hpp"
 #include "pldm_cmd_helper.hpp"
 
+#include <libpldm/edac.h>
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>
 #endif
 
 #include <endian.h>
+
+#include <algorithm>
+#include <fstream>
+#include <limits>
 
 namespace pldmtool
 {
@@ -442,6 +448,342 @@ class GetFruRecordTable : public CommandInterface
     }
 };
 
+class SetFruRecordTable : public CommandInterface
+{
+  public:
+    ~SetFruRecordTable() = default;
+    SetFruRecordTable() = delete;
+    SetFruRecordTable(const SetFruRecordTable&) = delete;
+    SetFruRecordTable(SetFruRecordTable&&) = default;
+    SetFruRecordTable& operator=(const SetFruRecordTable&) = delete;
+    SetFruRecordTable& operator=(SetFruRecordTable&&) = delete;
+
+    explicit SetFruRecordTable(const char* type, const char* name,
+                               CLI::App* app) :
+        CommandInterface(type, name, app), maxTransferSize(0), sentOffset(0),
+        curChunkLength(0), dataTransferHandle(0), partsSent(0),
+        morePartsToSend(false)
+    {
+        app->add_option("-f, --file", fruJsonPath,
+                        "JSON file describing the FRU record table to set")
+            ->required()
+            ->check(CLI::ExistingFile);
+        app->add_option(
+            "-s, --maxsize", maxTransferSize,
+            "Maximum FRU table bytes carried per request message. 0 (default) "
+            "sends the whole table in a single transfer");
+    }
+
+    void exec() override
+    {
+        try
+        {
+            fruTable = buildFruRecordTable();
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Failed to build FRU record table from " << fruJsonPath
+                      << ": " << e.what() << std::endl;
+            return;
+        }
+
+        sentOffset = 0;
+        dataTransferHandle = 0;
+        partsSent = 0;
+        do
+        {
+            // Reset before each request so that a request which fails early
+            // in CommandInterface::exec() (before parseResponseMsg runs)
+            // terminates the loop instead of spinning forever.
+            morePartsToSend = false;
+            CommandInterface::exec();
+        } while (morePartsToSend);
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        const size_t remaining = fruTable.size() - sentOffset;
+        curChunkLength =
+            (maxTransferSize == 0)
+                ? remaining
+                : std::min(static_cast<size_t>(maxTransferSize), remaining);
+
+        uint8_t transferFlag = 0;
+        if (sentOffset == 0 && curChunkLength == fruTable.size())
+        {
+            transferFlag = PLDM_START_AND_END;
+        }
+        else if (sentOffset == 0)
+        {
+            transferFlag = PLDM_START;
+        }
+        else if (curChunkLength == remaining)
+        {
+            transferFlag = PLDM_END;
+        }
+        else
+        {
+            transferFlag = PLDM_MIDDLE;
+        }
+
+        const size_t payloadLength =
+            PLDM_SET_FRU_RECORD_TABLE_MIN_REQ_BYTES + curChunkLength;
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadLength);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_set_fru_record_table_req(
+            instanceId, dataTransferHandle, transferFlag,
+            fruTable.data() + sentOffset, curChunkLength, request,
+            payloadLength);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t cc = 0;
+        uint32_t nextDataTransferHandle = 0;
+
+        auto rc = decode_set_fru_record_table_resp(
+            responsePtr, payloadLength, &cc, &nextDataTransferHandle);
+        if (rc != PLDM_SUCCESS || cc != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc=" << (int)cc << std::endl;
+            morePartsToSend = false;
+            return;
+        }
+
+        sentOffset += curChunkLength;
+        dataTransferHandle = nextDataTransferHandle;
+        partsSent++;
+
+        if (sentOffset < fruTable.size())
+        {
+            morePartsToSend = true;
+            return;
+        }
+
+        morePartsToSend = false;
+        ordered_json output;
+        output["Result"] = "Success";
+        output["FRUTableLength"] = fruTable.size();
+        output["NumberOfPartsSent"] = partsSent;
+        output["NextDataTransferHandle"] = nextDataTransferHandle;
+        pldmtool::helper::DisplayInJson(output);
+    }
+
+  private:
+    static uint8_t parseRecordType(const nlohmann::json& value)
+    {
+        if (value.is_string())
+        {
+            const auto name = value.get<std::string>();
+            if (name == "General")
+            {
+                return PLDM_FRU_RECORD_TYPE_GENERAL;
+            }
+            if (name == "OEM")
+            {
+                return PLDM_FRU_RECORD_TYPE_OEM;
+            }
+            throw std::invalid_argument(
+                "RecordType must be \"General\", \"OEM\", or a numeric value");
+        }
+        return value.get<uint8_t>();
+    }
+
+    static uint8_t parseEncodingType(const nlohmann::json& value)
+    {
+        static const std::map<std::string, uint8_t> encodings{
+            {"Unspecified", PLDM_FRU_ENCODING_UNSPECIFIED},
+            {"ASCII", PLDM_FRU_ENCODING_ASCII},
+            {"UTF8", PLDM_FRU_ENCODING_UTF8},
+            {"UTF16", PLDM_FRU_ENCODING_UTF16},
+            {"UTF16LE", PLDM_FRU_ENCODING_UTF16LE},
+            {"UTF16BE", PLDM_FRU_ENCODING_UTF16BE}};
+        if (value.is_string())
+        {
+            auto it = encodings.find(value.get<std::string>());
+            if (it == encodings.end())
+            {
+                throw std::invalid_argument("Unknown EncodingType");
+            }
+            return it->second;
+        }
+        return value.get<uint8_t>();
+    }
+
+    // Vendor IANA: uint32 little-endian; string: raw bytes; array: byte
+    // sequence.
+    static std::vector<uint8_t> encodeFieldValue(const nlohmann::json& value,
+                                                 bool isVendorIana)
+    {
+        std::vector<uint8_t> bytes;
+        if (isVendorIana)
+        {
+            if (!value.is_number_unsigned())
+            {
+                throw std::invalid_argument(
+                    "Vendor IANA FieldValue must be an unsigned integer");
+            }
+            uint32_t iana = htole32(value.get<uint32_t>());
+            bytes.resize(sizeof(iana));
+            std::memcpy(bytes.data(), &iana, sizeof(iana));
+        }
+        else if (value.is_string())
+        {
+            const auto str = value.get<std::string>();
+            bytes.assign(str.begin(), str.end());
+        }
+        else if (value.is_array())
+        {
+            for (const auto& element : value)
+            {
+                const auto byte = element.get<int>();
+                if (byte < 0 || byte > 0xff)
+                {
+                    throw std::invalid_argument(
+                        "FieldValue byte out of range 0-255");
+                }
+                bytes.push_back(static_cast<uint8_t>(byte));
+            }
+        }
+        else
+        {
+            throw std::invalid_argument(
+                "Unsupported FieldValue: expected string or array of bytes");
+        }
+        if (bytes.empty())
+        {
+            throw std::invalid_argument("FieldValue must not be empty");
+        }
+        if (bytes.size() > std::numeric_limits<uint8_t>::max())
+        {
+            throw std::invalid_argument("FieldValue length exceeds 255 bytes");
+        }
+        return bytes;
+    }
+
+    // Build the complete FRU record table blob from the JSON description:
+    // one or more FRU records, followed by pad bytes to a 4-byte boundary and
+    // a trailing CRC-32 integrity checksum (DSP0257 v1.0.1 Table 7).
+    std::vector<uint8_t> buildFruRecordTable()
+    {
+        std::ifstream jsonFile(fruJsonPath);
+        if (!jsonFile)
+        {
+            throw std::runtime_error("unable to open file");
+        }
+        auto data = nlohmann::json::parse(jsonFile);
+
+        const auto& records = data.at("FRURecords");
+        if (!records.is_array() || records.empty())
+        {
+            throw std::invalid_argument(
+                "\"FRURecords\" must be a non-empty array");
+        }
+
+        constexpr size_t recordHeaderSize =
+            sizeof(pldm_fru_record_data_format) - sizeof(pldm_fru_record_tlv);
+
+        std::vector<uint8_t> table;
+        for (const auto& record : records)
+        {
+            const uint16_t recordSetId =
+                record.at("RecordSetIdentifier").get<uint16_t>();
+            const uint8_t recordType = parseRecordType(record.at("RecordType"));
+            const uint8_t encodingType =
+                record.contains("EncodingType")
+                    ? parseEncodingType(record.at("EncodingType"))
+                    : static_cast<uint8_t>(PLDM_FRU_ENCODING_ASCII);
+
+            // DSP0257 v1.0.1: Vendor IANA field type is 1 for OEM (Table 6),
+            // 15 for General (Table 5, PLDM_FRU_FIELD_TYPE_IANA).
+            constexpr uint8_t oemVendorIanaFieldType = 1;
+            const uint8_t vendorIanaFieldType =
+                (recordType == PLDM_FRU_RECORD_TYPE_OEM)
+                    ? oemVendorIanaFieldType
+                    : static_cast<uint8_t>(PLDM_FRU_FIELD_TYPE_IANA);
+
+            std::vector<uint8_t> tlvs;
+            uint8_t numFruFields = 0;
+            bool hasIana = false;
+            for (const auto& field : record.at("FieldEntries"))
+            {
+                const uint8_t fieldType = field.at("FieldType").get<uint8_t>();
+                const bool isVendorIana = (fieldType == vendorIanaFieldType);
+                auto fieldBytes =
+                    encodeFieldValue(field.at("FieldValue"), isVendorIana);
+
+                tlvs.emplace_back(fieldType);
+                tlvs.emplace_back(static_cast<uint8_t>(fieldBytes.size()));
+                tlvs.insert(tlvs.end(), fieldBytes.begin(), fieldBytes.end());
+                numFruFields++;
+                if (isVendorIana)
+                {
+                    hasIana = true;
+                }
+            }
+
+            if (numFruFields == 0)
+            {
+                throw std::invalid_argument(
+                    "each FRU record must contain at least one field");
+            }
+            // DSP0257 v1.0.1 Table 6: OEM records SHALL carry Vendor IANA;
+            // warn (not fatal) to match libpldmresponder behavior.
+            if (recordType == PLDM_FRU_RECORD_TYPE_OEM && !hasIana)
+            {
+                std::cerr
+                    << "Warning: OEM FRU record (RecordSetIdentifier "
+                    << recordSetId
+                    << ") has no Vendor IANA field; DSP0257 v1.0.1 Table 6 "
+                       "requires an OEM record to contain a field of type 1 "
+                       "(Vendor IANA)"
+                    << std::endl;
+            }
+
+            auto curSize = table.size();
+            table.resize(curSize + recordHeaderSize + tlvs.size());
+            auto rc = encode_fru_record(table.data(), table.size(), &curSize,
+                                        recordSetId, recordType, numFruFields,
+                                        encodingType, tlvs.data(), tlvs.size());
+            if (rc != PLDM_SUCCESS)
+            {
+                throw std::runtime_error(
+                    "encode_fru_record failed, rc=" + std::to_string(rc));
+            }
+        }
+
+        if (table.empty())
+        {
+            throw std::invalid_argument("FRU record table is empty");
+        }
+
+        // DSP0257 v1.0.1 Table 7: pad the record data to a 4-byte boundary and
+        // append the CRC-32 integrity checksum computed over the padded data.
+        const uint8_t padBytes = pldm::utils::getNumPadBytes(table.size());
+        table.insert(table.end(), padBytes, 0);
+
+        uint32_t checksum =
+            htole32(pldm_edac_crc32(table.data(), table.size()));
+        const auto* checksumBytes = reinterpret_cast<const uint8_t*>(&checksum);
+        table.insert(table.end(), checksumBytes,
+                     checksumBytes + sizeof(checksum));
+
+        return table;
+    }
+
+    std::string fruJsonPath;
+    uint32_t maxTransferSize;
+    std::vector<uint8_t> fruTable;
+    size_t sentOffset;
+    size_t curChunkLength;
+    uint32_t dataTransferHandle;
+    uint32_t partsSent;
+    bool morePartsToSend;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fru = app.add_subcommand("fru", "FRU type command");
@@ -460,6 +802,11 @@ void registerCommand(CLI::App& app)
         fru->add_subcommand("GetFruRecordTable", "get FRU Record Table");
     commands.push_back(std::make_unique<GetFruRecordTable>(
         "fru", "GetFruRecordTable", getFruRecordTable));
+
+    auto setFruRecordTable =
+        fru->add_subcommand("SetFruRecordTable", "set FRU Record Table");
+    commands.push_back(std::make_unique<SetFruRecordTable>(
+        "fru", "SetFruRecordTable", setFruRecordTable));
 }
 
 } // namespace fru
