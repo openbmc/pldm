@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a5df35d_611dc918",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-20T09:32:10Z",
+      "side": 1,
+      "message": "Hi @alexander.hansen@9elements.com,\nSorry for the long delay in getting to this.",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae939e8_05c74e49",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-20T09:32:10Z",
+      "side": 1,
+      "message": "A record with more than one vendor-defined descriptor looks like it keeps only the first. libpldm++ holds `recordDescriptors` in a `std::map` keyed on the descriptor type, and every vendor-defined descriptor shares `PLDM_FWUP_VENDOR_DEFINED`, so the second `emplace()` is a no-op — which is also why `Descriptors` is a `std::multimap` on this side.\n\nWith a package built by `pldm_fwup_pkg_creator.py` from one record holding a UUID plus two vendor-defined descriptors (`TitleA` and `TitleB`):\n\n- master: 3 descriptors, both vendor-defined ones present\n- this patch: 2 descriptors, only `TitleA`\n\nlibpldm++ has already declared `PackageParser::parse` stable, and changing the container type would not be an append, so it would trip the ABI check. I should have caught this during the libpldm++ review. Nothing for this change to do — noting it while libpldm++ still has no other consumers.",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b937cf9c_41e38c08",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-20T09:32:10Z",
+      "side": 1,
+      "message": "Is this still needed? `WrapPackageParser::parse()` does the same parse, so the\nnullptr check here and the try/catch in the callers now cover the same\nfailure.",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef50e672_ffebc82e",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-20T09:32:10Z",
+      "side": 1,
+      "message": "Could this be a local in `parse()`?\nNothing seems to read it after `parse()` returns.",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

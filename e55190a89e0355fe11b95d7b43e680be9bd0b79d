@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cc4fbf5_56c3299e",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-20T09:32:10Z",
+      "side": 0,
+      "message": "\u003e libpldm already validates the offset and size of component images when using the iterator macros.\n\nThe iterator path is more permissive than the deprecated decoder. These are rejected on master but accepted here:\n\n- a `ComponentSize` of 0\n- a `ComponentComparisonStamp` that is set while `UseComponentComparisonStamp` is clear\n\n`decode_pldm_comp_image_info()` checks both, and also rejects a `comp_location_offset` of 0, but `decode_pldm_package_component_image_information_from_iter()` does not carry any of them over. Nothing to change here as far as I can see — the gap looks like it belongs in libpldm — but the packages do get through now, and a zero-size component fails partway through the transfer rather than being rejected up front.",
+      "range": {
+        "startLine": 191,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 63
+      },
+      "revId": "e55190a89e0355fe11b95d7b43e680be9bd0b79d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
