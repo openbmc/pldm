@@ -675,29 +675,9 @@ void InventoryManager::getFirmwareParameters(
     variable_field pendingCompVerStr{};
 
     ComponentInfo componentInfo{};
+    std::map<CompIdentifier, std::string> componentVersions;
 
-    const auto imageSetVersion = utils::toString(activeCompImageSetVerStr);
-
-    if (!imageSetVersion.empty())
-    {
-        auto devNameIt = firmwareDeviceNameMap.find(eid);
-        auto descIt = descriptorMap.find(eid);
-
-        if (devNameIt != firmwareDeviceNameMap.end() &&
-            descIt != descriptorMap.end())
-        {
-            const SoftwareIdentifier totalIdentifier = std::make_pair(eid, 0);
-
-            firmwareInventoryManager.createFirmwareEntry(
-                totalIdentifier, devNameIt->second, imageSetVersion,
-                descIt->second, componentInfo, [this, eid]() {
-                    this->sendQueryDeviceIdentifiersRequest(eid);
-                    this->sendQueryDownstreamDevicesRequest(eid);
-                });
-        }
-    }
-
-    while (fwParams.comp_count-- && (compParamTableLen > 0))
+    for (uint16_t index = 0; index < fwParams.comp_count; ++index)
     {
         auto rc = decode_get_firmware_parameters_resp_comp_entry(
             compParamPtr, compParamTableLen, &compEntry, &activeCompVerStr,
@@ -712,35 +692,54 @@ void InventoryManager::getFirmwareParameters(
 
         auto compClassification = compEntry.comp_classification;
         auto compIdentifier = compEntry.comp_identifier;
+        // Copy from the packed struct; references cannot bind to its fields
+        CompActivationMethods compActivationMethods =
+            compEntry.comp_activation_methods.value;
         componentInfo.emplace(
             std::make_pair(compClassification, compIdentifier),
-            compEntry.comp_classification_index);
+            CompInfo{compEntry.comp_classification_index,
+                     compActivationMethods});
 
-        if (firmwareDeviceNameMap.contains(eid) and descriptorMap.contains(eid))
-        {
-            auto componentName =
-                std::format("{}_Component_{}", firmwareDeviceNameMap.at(eid),
-                            compIdentifier);
-
-            firmwareInventoryManager.createFirmwareEntry(
-                SoftwareIdentifier(eid, compIdentifier), componentName,
-                utils::toString(activeCompVerStr), descriptorMap.at(eid),
-                componentInfo, [this, eid]() {
-                    this->sendQueryDeviceIdentifiersRequest(eid);
-                    this->sendQueryDownstreamDevicesRequest(eid);
-                });
-        }
-        else
-        {
-            error(
-                "Firmware device name or descriptor map not found for endpoint ID {EID}",
-                "EID", eid);
-        }
+        componentVersions.emplace(compIdentifier,
+                                  utils::toString(activeCompVerStr));
 
         compParamPtr += sizeof(pldm_component_parameter_entry) +
                         activeCompVerStr.length + pendingCompVerStr.length;
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
+    }
+
+    if (compParamTableLen != 0)
+    {
+        error("Unexpected component parameter table data for endpoint ID {EID}",
+              "EID", eid);
+        return;
+    }
+
+    if (firmwareDeviceNameMap.contains(eid) && descriptorMap.contains(eid))
+    {
+        auto publish = [&](CompIdentifier id, const std::string& name,
+                           const std::string& version) {
+            const SoftwareIdentifier identifier{eid, id};
+            firmwareInventoryManager.createFirmwareEntry(
+                identifier, name, version, descriptorMap.at(eid), componentInfo,
+                [this, eid]() {
+                    this->sendQueryDeviceIdentifiersRequest(eid);
+                    this->sendQueryDownstreamDevicesRequest(eid);
+                });
+        };
+
+        const auto& deviceName = firmwareDeviceNameMap.at(eid);
+        const auto imageSetVersion = utils::toString(activeCompImageSetVerStr);
+        if (!imageSetVersion.empty())
+        {
+            publish(0, deviceName, imageSetVersion);
+        }
+        for (const auto& [id, version] : componentVersions)
+        {
+            publish(id, std::format("{}_Component_{}", deviceName, id),
+                    version);
+        }
     }
 
     componentInfoMap.insert_or_assign(eid, std::move(componentInfo));

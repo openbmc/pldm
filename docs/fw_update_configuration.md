@@ -22,6 +22,24 @@ To enable inotify-based firmware update monitoring:
 meson setup build -Dfw-update-pkg-inotify=enabled
 ```
 
+## Activation
+
+`Immediate` requests self-contained activation when an applied component
+supports it. Capabilities come from `GetFirmwareParameters`; an `ApplyComplete`
+request can replace the methods for that component. Skipped components do not
+affect the decision. Components using automatic activation do not prevent other
+components from using self-contained activation.
+
+`OnReset` does not itself request self-contained activation. An applied package
+component can explicitly request that method. Inotify updates use `OnReset`.
+Components requiring an external reset or power cycle retain that requirement;
+the daemon does not perform one solely because `Immediate` was requested.
+
+After self-contained activation is accepted, the task waits for the device's
+status. Temporary silence is retried within the advertised activation window,
+with a 15-second minimum for devices reporting very short estimates. Explicit
+failure or invalid status data fails the update.
+
 ## Pre and Post Update Condition Services
 
 PLDM firmware update supports optional pre and post update condition services

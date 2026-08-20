@@ -28,7 +28,7 @@ class ItemUpdateManagerTest : public testing::Test
                         std::vector<uint8_t>{0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5,
                                              0x41, 0x15, 0x95, 0xF4, 0x48, 0x70,
                                              0x1D, 0x49, 0xD6, 0x75}}};
-        componentInfo = {{std::make_pair(10, 100), 1}};
+        componentInfo = {{std::make_pair(10, 100), CompInfo{1, 0}}};
     }
 
     ~ItemUpdateManagerTest() override
