@@ -333,5 +333,6 @@ if get_option('tests').allowed()
     subdir('host-bmc/test')
     subdir('requester/test')
     subdir('platform-mc/test')
+    subdir('pldmtool/test')
     subdir('test')
 endif
