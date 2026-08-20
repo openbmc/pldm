@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd6d056_cb652264",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2026-08-20T03:18:52Z",
+      "side": 1,
+      "message": "I don\u0027t know why you are adding those lines to the commit message?",
+      "revId": "714d2f7fff52febe714e74d1644b55a3cabcd354",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
