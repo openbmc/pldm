@@ -9,6 +9,8 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <bitset>
+
 namespace pldm
 {
 
@@ -256,6 +258,24 @@ class DeviceUpdater
     void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
                                size_t respMsgLen);
 
+    /** @brief Aggregate ReqCompActivationMethod bitmask across every component
+     *         in the package applicable to this device. See DSP0267 Table 5
+     *         for bit definitions. Set at construction time.
+     */
+    std::bitset<16> requiredActivationMethods() const
+    {
+        return pkgCompActivationMethods;
+    }
+
+    /** @brief Endpoint's EstimatedTimeForActivation (seconds) from the
+     *         ActivateFirmware response (DSP0267 Table 22). Zero if the
+     *         response has not been received or the field was zero.
+     */
+    uint16_t estimatedActivationSeconds() const
+    {
+        return estimatedTimeForActivation;
+    }
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -350,6 +370,20 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /** @brief OR of the ReqCompActivationMethod bitfields (DSP0267 Table 5,
+     *         ComponentImageInformation) across every component applicable to
+     *         this device. Bits: 0=Automatic, 1=SelfContained,
+     *         2=MediumSpecificReset, 3=SystemReboot, 4=DCPowerCycle,
+     *         5=ACPowerCycle. Aggregated by UpdateManager to decide whether the
+     *         operator must perform a manual step to activate.
+     */
+    std::bitset<16> pkgCompActivationMethods;
+
+    /** @brief Endpoint's estimate (seconds) returned in the ActivateFirmware
+     *         response (DSP0267 Table 22). Zero if not set.
+     */
+    uint16_t estimatedTimeForActivation = 0;
 };
 
 } // namespace fw_update

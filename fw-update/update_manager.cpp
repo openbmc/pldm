@@ -8,6 +8,8 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <algorithm>
+#include <bitset>
 #include <cassert>
 #include <filesystem>
 #include <fstream>
@@ -23,6 +25,54 @@ namespace fw_update
 
 namespace fs = std::filesystem;
 namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+
+namespace
+{
+
+// ComponentActivationMethods bit indices per DSP0267 Table 5.
+constexpr std::size_t actMethodSelfContained = 1;
+constexpr std::size_t actMethodMediumSpecificReset = 2;
+constexpr std::size_t actMethodSystemReboot = 3;
+constexpr std::size_t actMethodDCPowerCycle = 4;
+constexpr std::size_t actMethodACPowerCycle = 5;
+
+// Worst-case wins: any device needing a heavier action determines the
+// package-level required action.
+const char* selectRequiredMethod(const std::bitset<16>& agg)
+{
+    if (agg.test(actMethodACPowerCycle))
+    {
+        return "ACPowerCycle";
+    }
+    if (agg.test(actMethodDCPowerCycle))
+    {
+        return "DCPowerCycle";
+    }
+    if (agg.test(actMethodSystemReboot))
+    {
+        return "SystemReboot";
+    }
+    if (agg.test(actMethodMediumSpecificReset))
+    {
+        return "MediumSpecificReset";
+    }
+    if (agg.test(actMethodSelfContained))
+    {
+        return "SelfContained";
+    }
+    return "Automatic";
+}
+
+// True if the operator must perform an out-of-band action for the newly
+// installed firmware to become active.
+bool requiresOperatorAction(const std::bitset<16>& agg)
+{
+    return agg.test(actMethodMediumSpecificReset) ||
+           agg.test(actMethodSystemReboot) || agg.test(actMethodDCPowerCycle) ||
+           agg.test(actMethodACPowerCycle);
+}
+
+} // namespace
 
 std::string UpdateManager::getSwId()
 {
@@ -378,13 +428,61 @@ void UpdateManager::completeUpdate(bool status)
     auto dur =
         std::chrono::duration<double, std::milli>(endTime - startTime).count();
     info("Firmware update time: {DURATION}ms", "DURATION", dur);
-    activation->activation(status ? software::Activation::Activations::Active
-                                  : software::Activation::Activations::Failed);
+
+    auto finalState = status ? software::Activation::Activations::Active
+                             : software::Activation::Activations::Failed;
+
+    if (status)
+    {
+        // Aggregate the ReqCompActivationMethod bitfields (DSP0267 Table 5)
+        // across every device in the package and take the worst-case estimated
+        // activation time.
+        std::bitset<16> aggMethods;
+        uint16_t maxEstimatedTime = 0;
+        for (const auto& [eid, updater] : deviceUpdaterMap)
+        {
+            aggMethods |= updater->requiredActivationMethods();
+            maxEstimatedTime = std::max(maxEstimatedTime,
+                                        updater->estimatedActivationSeconds());
+        }
+
+        if (requiresOperatorAction(aggMethods))
+        {
+            const std::string requiredMethod = selectRequiredMethod(aggMethods);
+            info(
+                "Firmware update requires manual activation: {METHOD} (mask {MASK})",
+                "METHOD", requiredMethod, "MASK", lg2::hex,
+                aggMethods.to_ulong());
+            // Tell the operator the exact manual step needed and hold the
+            // package in Staged until the action is performed.
+            emitAwaitActivationEvent(requiredMethod, maxEstimatedTime);
+            finalState = software::Activation::Activations::Staged;
+        }
+    }
+
+    activation->activation(finalState);
 
     if (taskCompletionCallback)
     {
         taskCompletionCallback();
     }
+}
+
+void UpdateManager::emitAwaitActivationEvent(const std::string& method,
+                                             uint16_t estimatedTimeSeconds)
+{
+    static constexpr auto messageId =
+        "OpenBMC.0.1.FirmwareUpdateAwaitingActivation";
+
+    const std::string image = parser ? parser->pkgVersion : std::string{};
+    const std::string messageArgs = method + "," + image;
+
+    // Emit a Redfish EventLog record. bmcweb renders journal entries that carry
+    // REDFISH_MESSAGE_ID/REDFISH_MESSAGE_ARGS through the message registry.
+    warning("Firmware update to {IMAGE} is awaiting {METHOD} to activate",
+            "IMAGE", image, "METHOD", method, "REDFISH_MESSAGE_ID", messageId,
+            "REDFISH_MESSAGE_ARGS", messageArgs, "ESTIMATED_ACTIVATION_TIME_S",
+            estimatedTimeSeconds);
 }
 
 void UpdateManager::resetActivationState()
