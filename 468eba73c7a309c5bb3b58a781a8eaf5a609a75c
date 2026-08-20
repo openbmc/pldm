@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a88f1425_83b098d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-20T06:24:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14a1d05c_d623a50e",
+      "revId": "468eba73c7a309c5bb3b58a781a8eaf5a609a75c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6075b54_e97901c5",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-19T19:49:25Z",
       "side": 1,
       "message": "Please update the schema in https://github.com/openbmc/docs/blob/master/designs/code-update.md and add some description providing the intent for the change. Add the related docs PR in the commit description for this change.",
+      "revId": "468eba73c7a309c5bb3b58a781a8eaf5a609a75c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee21a053_b2532d6a",
+        "filename": "configurations/fw-update-conditions/schema/schema.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-20T06:24:19Z",
+      "side": 1,
+      "message": "Raised https://gerrit.openbmc.org/c/openbmc/docs/+/93751 to update the schema.",
+      "parentUuid": "e6075b54_e97901c5",
       "revId": "468eba73c7a309c5bb3b58a781a8eaf5a609a75c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
