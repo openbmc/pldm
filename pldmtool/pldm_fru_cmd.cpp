@@ -1,6 +1,7 @@
 #include "pldm_fru_cmd.hpp"
 
 #include "pldm_cmd_helper.hpp"
+#include "pldm_timestamp104.hpp"
 
 #ifdef OEM_IBM
 #include <libpldm/oem/ibm/fru.h>
@@ -152,7 +153,7 @@ class FRUTablePrint
                     else if (tlv->type == PLDM_FRU_FIELD_TYPE_MANUFAC_DATE)
                     {
                         fruFieldValue =
-                            fruFieldParserTimestamp(tlv->value, tlv->length);
+                            formatTimestamp104({tlv->value, tlv->length});
                     }
                     else
                     {
@@ -326,11 +327,6 @@ class FRUTablePrint
         uint32_t v = 0;
         std::memcpy(&v, value, sizeof(v));
         return std::to_string(le32toh(v));
-    }
-
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
-    {
-        return std::string("TODO");
     }
 
     static std::string fruFieldIPZParser(const uint8_t* value, uint8_t length)
