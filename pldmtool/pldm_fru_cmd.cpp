@@ -8,6 +8,9 @@
 
 #include <endian.h>
 
+#include <algorithm>
+#include <cctype>
+
 namespace pldmtool
 {
 
@@ -177,13 +180,30 @@ class FRUTablePrint
                         fruFieldValue =
                             fruFieldValuestring(tlv->value, tlv->length);
                     }
+#else
+                    // DSP0257 v1.0.1 Table 6: OEM record field type 1 is
+                    // Vendor IANA (a uint32); types 2-254 are vendor-defined.
+                    // Label and decode type 1 so non-IBM builds still emit OEM
+                    // fields, and render the rest as ASCII or packed hex.
+                    constexpr uint8_t oemVendorIanaFieldType = 1;
+                    FruFieldTypeMap.emplace(oemVendorIanaFieldType,
+                                            "Vendor IANA");
+                    if (tlv->type == oemVendorIanaFieldType)
+                    {
+                        fruFieldValue =
+                            fruFieldParserU32(tlv->value, tlv->length);
+                    }
+                    else
+                    {
+                        fruFieldValue =
+                            fruFieldParserPrintable(tlv->value, tlv->length);
+                    }
+#endif
                     frudata["FRU Field Type"] =
                         typeToString(FruFieldTypeMap, tlv->type);
                     frudata["FRU Field Length"] = (int)(tlv->length);
                     frudata["FRU Field Value"] = fruFieldValue;
                     frufielddata.emplace_back(frudata);
-
-#endif
                 }
                 p += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
             }
@@ -345,6 +365,34 @@ class FRUTablePrint
         {
             tempStream << "0x" << std::setfill('0') << std::setw(2) << std::hex
                        << (unsigned)value[i] << " ";
+        }
+        return tempStream.str();
+    }
+
+    // DSP0257 v1.0.1 Table 6: OEM FRU record field types 2-254 are
+    // vendor-defined, so payload semantics are unknown. Print as ASCII when
+    // every byte is printable, otherwise as a single packed hex string
+    // ("0xNN..") so numeric OEM data stays readable in the JSON output.
+    static std::string fruFieldParserPrintable(const uint8_t* value,
+                                               uint8_t length)
+    {
+        if (length == 0)
+        {
+            return {};
+        }
+        const bool allPrintable =
+            std::all_of(value, value + length, [](uint8_t b) {
+                return std::isprint(static_cast<unsigned char>(b)) != 0;
+            });
+        if (allPrintable)
+        {
+            return std::string(reinterpret_cast<const char*>(value), length);
+        }
+        std::ostringstream tempStream;
+        tempStream << "0x" << std::setfill('0') << std::hex;
+        for (uint8_t i = 0; i < length; ++i)
+        {
+            tempStream << std::setw(2) << static_cast<unsigned>(value[i]);
         }
         return tempStream.str();
     }
