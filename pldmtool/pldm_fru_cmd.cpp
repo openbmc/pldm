@@ -143,6 +143,11 @@ class FRUTablePrint
                 }
                 else
                 {
+                    // DSP0257 v1.0.1 Table 6: type 1 is Vendor IANA (uint32);
+                    // types 2-254 are vendor-defined and dumped as raw hex.
+                    constexpr uint8_t oemVendorIanaFieldType = 0x01;
+                    FruFieldTypeMap.emplace(oemVendorIanaFieldType,
+                                            "Vendor IANA");
 #ifdef OEM_IBM
                     if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_RT)
                     {
@@ -162,28 +167,29 @@ class FRUTablePrint
                         FruFieldTypeMap.insert(fruOemFieldTypes.begin(),
                                                fruOemFieldTypes.end());
                     }
-                    if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_IANA)
+#endif
+                    if (tlv->type == oemVendorIanaFieldType)
                     {
                         fruFieldValue =
                             fruFieldParserU32(tlv->value, tlv->length);
                     }
-                    else if (tlv->type != 2)
-                    {
-                        fruFieldValue =
-                            fruFieldIPZParser(tlv->value, tlv->length);
-                    }
-                    else
+#ifdef OEM_IBM
+                    else if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_RT)
                     {
                         fruFieldValue =
                             fruFieldValuestring(tlv->value, tlv->length);
+                    }
+#endif
+                    else
+                    {
+                        fruFieldValue =
+                            fruFieldIPZParser(tlv->value, tlv->length);
                     }
                     frudata["FRU Field Type"] =
                         typeToString(FruFieldTypeMap, tlv->type);
                     frudata["FRU Field Length"] = (int)(tlv->length);
                     frudata["FRU Field Value"] = fruFieldValue;
                     frufielddata.emplace_back(frudata);
-
-#endif
                 }
                 p += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
             }
