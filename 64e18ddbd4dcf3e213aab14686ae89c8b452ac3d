@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ebda012_9f39482d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-08-20T16:00:26Z",
+      "side": 1,
+      "message": "Can you provide an input (timestamp104 bytes) and output (ISO-8601 String) as well for better understanding?",
+      "revId": "64e18ddbd4dcf3e213aab14686ae89c8b452ac3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
