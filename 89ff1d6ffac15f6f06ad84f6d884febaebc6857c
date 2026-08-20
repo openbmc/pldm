@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1488205c_767e439e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-08-20T16:09:09Z",
+      "side": 1,
+      "message": "Limiting the vendor-defined types as space separated hex bytes. Not all strings could be ASCII even if its printable. Example bytes can be UTF-16 character. Example 0x0061 in UTF-16 is \u0027a\u0027 but decoding it as ASCII would render the string as \u0027 a\u0027 (whitespace before \u0027a\u0027).",
+      "revId": "89ff1d6ffac15f6f06ad84f6d884febaebc6857c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88936bd9_7caf37ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-08-20T16:09:09Z",
+      "side": 1,
+      "message": "Change is good, just a suggestion related to OEM Value field decoding.",
+      "revId": "89ff1d6ffac15f6f06ad84f6d884febaebc6857c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
