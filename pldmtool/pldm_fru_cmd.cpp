@@ -292,9 +292,50 @@ class FRUTablePrint
         return std::to_string(le32toh(v));
     }
 
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
+    // DSP0240 v1.2.0 section 2.5 timestamp104 (13 bytes, little-endian).
+    // Output is an ISO-8601 datetime with microseconds and UTC offset. A
+    // time resolution value of 15 (byte 12 low nibble) means "unknown time".
+    static std::string fruFieldParserTimestamp(const uint8_t* value,
+                                               uint8_t length)
     {
-        return std::string("TODO");
+        if (length != 13)
+        {
+            return "<malformed: expected 13 bytes, got " +
+                   std::to_string(length) + ">";
+        }
+
+        if ((value[12] & 0x0F) == 15)
+        {
+            return "<unknown>";
+        }
+
+        int16_t utcOffsetMin;
+        std::memcpy(&utcOffsetMin, value, sizeof(utcOffsetMin));
+        utcOffsetMin = static_cast<int16_t>(le16toh(utcOffsetMin));
+
+        uint32_t microsec = static_cast<uint32_t>(value[2]) |
+                            (static_cast<uint32_t>(value[3]) << 8) |
+                            (static_cast<uint32_t>(value[4]) << 16);
+
+        uint16_t year;
+        std::memcpy(&year, value + 10, sizeof(year));
+        year = le16toh(year);
+
+        const int offAbs = (utcOffsetMin < 0) ? -utcOffsetMin : utcOffsetMin;
+        const char offSign = (utcOffsetMin < 0) ? '-' : '+';
+        const int offHours = offAbs / 60;
+        const int offMins = offAbs % 60;
+
+        std::ostringstream ss;
+        ss << std::dec << std::setfill('0') << std::setw(4) << year << '-'
+           << std::setw(2) << static_cast<unsigned>(value[9]) << '-'
+           << std::setw(2) << static_cast<unsigned>(value[8]) << 'T'
+           << std::setw(2) << static_cast<unsigned>(value[7]) << ':'
+           << std::setw(2) << static_cast<unsigned>(value[6]) << ':'
+           << std::setw(2) << static_cast<unsigned>(value[5]) << '.'
+           << std::setw(6) << microsec << offSign << std::setw(2) << offHours
+           << ':' << std::setw(2) << offMins;
+        return ss.str();
     }
 
     static std::string fruFieldIPZParser(const uint8_t* value, uint8_t length)
