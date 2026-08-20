@@ -18,7 +18,7 @@
 namespace pldm::fw_update
 {
 
-namespace sdbusRule = sdbusplus::bus::match::rules;
+namespace sdbusRule = sdbusplus::match_rules;
 
 /** @brief Escapes a string so that it is valid inside a systemd unit name.
  *
@@ -140,7 +140,7 @@ class SystemdInterface
 
     sdbusplus::bus_t& bus;
 
-    sdbusplus::bus::match_t systemdSignals;
+    sdbusplus::match systemdSignals;
 
     std::map<sdbusplus::object_path, TaskCallback> taskCallbacks;
 
