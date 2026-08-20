@@ -23,6 +23,20 @@ using namespace pldmtool::helper;
 
 std::vector<std::unique_ptr<CommandInterface>> commands;
 
+// timestamp104 byte offsets, DSP0240 v1.2.0 section 2.5
+constexpr size_t timestamp104UtcOffsetPos = 0;
+constexpr size_t timestamp104MicrosecondPos = 2;
+constexpr size_t timestamp104SecondPos = 5;
+constexpr size_t timestamp104MinutePos = 6;
+constexpr size_t timestamp104HourPos = 7;
+constexpr size_t timestamp104DayPos = 8;
+constexpr size_t timestamp104MonthPos = 9;
+constexpr size_t timestamp104YearPos = 10;
+constexpr size_t timestamp104ResolutionPos = 12;
+constexpr uint8_t timestamp104ResolutionMask = 0x0F;
+constexpr uint8_t timestamp104ResolutionUnknown = 15;
+constexpr int minutesPerHour = 60;
+
 } // namespace
 
 class GetFruRecordTableMetadata : public CommandInterface
@@ -328,9 +342,62 @@ class FRUTablePrint
         return std::to_string(le32toh(v));
     }
 
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
+    // DSP0240 v1.2.0 section 2.5 timestamp104 (13 bytes, little-endian).
+    // Output is an ISO-8601 datetime with microseconds and UTC offset. A
+    // time resolution value of 15 (byte 12 low nibble) means "unknown time".
+    static std::string fruFieldParserTimestamp(const uint8_t* value,
+                                               uint8_t length)
     {
-        return std::string("TODO");
+        if (value == nullptr)
+        {
+            return "<malformed: null value>";
+        }
+
+        if (length != PLDM_TIMESTAMP104_SIZE)
+        {
+            return "<malformed: expected " +
+                   std::to_string(PLDM_TIMESTAMP104_SIZE) + " bytes, got " +
+                   std::to_string(length) + ">";
+        }
+
+        if ((value[timestamp104ResolutionPos] & timestamp104ResolutionMask) ==
+            timestamp104ResolutionUnknown)
+        {
+            return "<unknown>";
+        }
+
+        int16_t utcOffsetMin;
+        std::memcpy(&utcOffsetMin, value + timestamp104UtcOffsetPos,
+                    sizeof(utcOffsetMin));
+        utcOffsetMin = static_cast<int16_t>(le16toh(utcOffsetMin));
+
+        const uint8_t* us = value + timestamp104MicrosecondPos;
+        uint32_t microsec = static_cast<uint32_t>(us[0]) |
+                            (static_cast<uint32_t>(us[1]) << 8) |
+                            (static_cast<uint32_t>(us[2]) << 16);
+
+        uint16_t year;
+        std::memcpy(&year, value + timestamp104YearPos, sizeof(year));
+        year = le16toh(year);
+
+        const int offAbs = (utcOffsetMin < 0) ? -utcOffsetMin : utcOffsetMin;
+        const char offSign = (utcOffsetMin < 0) ? '-' : '+';
+        const int offHours = offAbs / minutesPerHour;
+        const int offMins = offAbs % minutesPerHour;
+
+        std::ostringstream ss;
+        ss << std::dec << std::setfill('0') << std::setw(4) << year << '-'
+           << std::setw(2) << static_cast<unsigned>(value[timestamp104MonthPos])
+           << '-' << std::setw(2)
+           << static_cast<unsigned>(value[timestamp104DayPos]) << 'T'
+           << std::setw(2) << static_cast<unsigned>(value[timestamp104HourPos])
+           << ':' << std::setw(2)
+           << static_cast<unsigned>(value[timestamp104MinutePos]) << ':'
+           << std::setw(2)
+           << static_cast<unsigned>(value[timestamp104SecondPos]) << '.'
+           << std::setw(6) << microsec << offSign << std::setw(2) << offHours
+           << ':' << std::setw(2) << offMins;
+        return ss.str();
     }
 
     static std::string fruFieldIPZParser(const uint8_t* value, uint8_t length)
