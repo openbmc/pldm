@@ -187,6 +187,18 @@ class UpdateManager : public UpdateManagerBase
      */
     void completeUpdate(bool status);
 
+    /** @brief Emit an OpenBMC.0.1.FirmwareUpdateAwaitingActivation Redfish
+     *         event describing the manual action required to activate the newly
+     *         installed firmware.
+     *
+     *  @param[in] method - DSP0267 activation method (e.g. "ACPowerCycle",
+     *                      "DCPowerCycle", "SystemReboot",
+     *                      "MediumSpecificReset").
+     *  @param[in] estimatedTimeSeconds - Endpoint's estimate; 0 if unknown.
+     */
+    void emitAwaitActivationEvent(const std::string& method,
+                                  uint16_t estimatedTimeSeconds);
+
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */

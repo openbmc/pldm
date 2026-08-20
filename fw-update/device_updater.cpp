@@ -109,6 +109,13 @@ DeviceUpdater::DeviceUpdater(
         const auto& componentSize =
             std::get<6>(compImageInfos[applicableComponent]);
         progress.emplace_back(componentSize, eid);
+
+        // OR the ReqCompActivationMethod bitfield (DSP0267 Table 5) from every
+        // applicable component; UpdateManager collapses this across all devices
+        // to decide whether a manual activation step is required.
+        pkgCompActivationMethods |= std::get<static_cast<size_t>(
+            ComponentImageInfoPos::ReqCompActivationMethodPos)>(
+            compImageInfos[applicableComponent]);
     }
 }
 
@@ -992,6 +999,9 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     }
 
     activationComplete = true;
+    // Save the endpoint's estimate so UpdateManager can report it alongside the
+    // awaiting-activation event.
+    this->estimatedTimeForActivation = estimatedTimeForActivation;
     if (updateManager == nullptr)
     {
         return;
