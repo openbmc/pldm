@@ -33,6 +33,9 @@ foreach t : tests
             t.underscorify(),
             t + '.cpp',
             cpp_args: t == 'device_updater_flow_test' ? ['-fno-access-control'] : [],
+            link_args: t == 'device_updater_flow_test' ? [
+                '-Wl,--wrap=sd_event_source_set_time',
+            ] : [],
             implicit_include_directories: false,
             include_directories: '../../pldmd',
             dependencies: test_deps,

@@ -74,7 +74,7 @@ class UpdateManagerTest : public testing::Test
                                 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49, 0xD6,
                                 0x75}}}}};
     const ComponentInfoMap componentInfoMap{
-        {eid, {{std::make_pair(10, 100), 1}}}};
+        {eid, {{std::make_pair(10, 100), CompInfo{1, 0}}}}};
     Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> handler;
@@ -254,7 +254,8 @@ TEST_F(UpdateManagerCompInfoTest, skipDeviceMissingComponentInfo)
     constexpr mctp_eid_t eidWithoutCompInfo = 2;
     descriptorMap = {{eidWithCompInfo, uuidDescriptors},
                      {eidWithoutCompInfo, uuidDescriptors}};
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}}};
+    componentInfoMap = {
+        {eidWithCompInfo, {{std::make_pair(10, 100), CompInfo{1, 0}}}}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
                           componentInfoMap);
@@ -278,8 +279,9 @@ TEST_F(UpdateManagerCompInfoTest, skipDeviceEmptyComponentInfo)
     descriptorMap = {{eidWithCompInfo, uuidDescriptors},
                      {eidWithEmptyCompInfo, uuidDescriptors}};
     // GetFirmwareParameters succeeded but reported zero components
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}},
-                        {eidWithEmptyCompInfo, {}}};
+    componentInfoMap = {
+        {eidWithCompInfo, {{std::make_pair(10, 100), CompInfo{1, 0}}}},
+        {eidWithEmptyCompInfo, {}}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
                           componentInfoMap);
@@ -304,8 +306,9 @@ TEST_F(UpdateManagerCompInfoTest, componentCountExcludesSkippedDevices)
     descriptorMap = {{eidWithCompInfo, uuidDescriptors},
                      {eidWithoutCompInfo, uuidDescriptors},
                      {eidWithEmptyCompInfo, uuidDescriptors}};
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}},
-                        {eidWithEmptyCompInfo, {}}};
+    componentInfoMap = {
+        {eidWithCompInfo, {{std::make_pair(10, 100), CompInfo{1, 0}}}},
+        {eidWithEmptyCompInfo, {}}};
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1, {0x00}, "VersionString2", uuidDescriptors, {}}};
 
@@ -344,7 +347,8 @@ TEST_F(UpdateManagerCompInfoTest, skippedDeviceFailsUpdate)
     constexpr mctp_eid_t eidWithoutCompInfo = 2;
     descriptorMap = {{eidWithCompInfo, uuidDescriptors},
                      {eidWithoutCompInfo, uuidDescriptors}};
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}}};
+    componentInfoMap = {
+        {eidWithCompInfo, {{std::make_pair(10, 100), CompInfo{1, 0}}}}};
 
     UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
                           componentInfoMap);

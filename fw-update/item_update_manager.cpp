@@ -284,7 +284,7 @@ Response ItemUpdateManager::handleRequest(
     mctp_eid_t eid, uint8_t command, const pldm_msg* request, size_t reqMsgLen)
 {
     Response response(sizeof(pldm_msg), 0);
-    if (eid != this->eid || !deviceUpdater)
+    if (eid != this->eid || !deviceUpdater || deviceUpdater->isComplete())
     {
         auto ptr = std::start_lifetime_as<pldm_msg>(response.data());
         auto rc = encode_cc_only_resp(request->hdr.instance_id,
@@ -361,7 +361,7 @@ sdbusplus::object_path ItemUpdateManager::startUpdate(
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
     updateInProgress = true;
-    this->applyTime = applyTime;
+    setRequestedApplyTime(applyTime);
 
     // Every parameterized condition service receives all supported named
     // arguments, so the requested apply time is always appended here.
@@ -381,7 +381,7 @@ std::string ItemUpdateManager::applyTimeToString() const
     constexpr std::string_view applyTimePrefix =
         "xyz.openbmc_project.Software.ApplyTime.RequestedApplyTimes.";
     auto applyTimeStr =
-        ApplyTimeIntf::convertRequestedApplyTimesToString(applyTime);
+        ApplyTimeIntf::convertRequestedApplyTimesToString(requestedApplyTime);
     if (applyTimeStr.starts_with(applyTimePrefix))
     {
         return applyTimeStr.substr(applyTimePrefix.size());

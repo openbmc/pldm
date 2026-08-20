@@ -131,7 +131,9 @@ using CompIdentifier = uint16_t;
 using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
-using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
+using CompActivationMethods = uint16_t;
+using CompInfo = std::tuple<CompClassificationIndex, CompActivationMethods>;
+using ComponentInfo = std::map<CompKey, CompInfo>;
 using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
 
 // PackageHeaderInformation

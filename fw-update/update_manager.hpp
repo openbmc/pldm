@@ -74,9 +74,33 @@ class UpdateManagerBase
     virtual void activatePackage() = 0;
     virtual void resetActivationState() = 0;
 
+    /** @brief Record the RequestedApplyTime for the current update
+     *
+     *  @param[in] applyTime - The apply time requested via StartUpdate
+     */
+    void setRequestedApplyTime(ApplyTimeIntf::RequestedApplyTimes applyTime)
+    {
+        requestedApplyTime = applyTime;
+    }
+
+    /** @brief Whether the current update requested Immediate apply time
+     *
+     *  @return true if the requested apply time is Immediate
+     */
+    bool isApplyTimeImmediate() const
+    {
+        return requestedApplyTime ==
+               ApplyTimeIntf::RequestedApplyTimes::Immediate;
+    }
+
     Event& event;               //!< reference to PLDM daemon's main event loop
     pldm::requester::Handler<pldm::requester::Request>& handler;
     InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
+
+  protected:
+    /** @brief RequestedApplyTime of the current update, from StartUpdate */
+    ApplyTimeIntf::RequestedApplyTimes requestedApplyTime =
+        ApplyTimeIntf::RequestedApplyTimes::OnReset;
 };
 
 class UpdateManager : public UpdateManagerBase
@@ -102,6 +126,9 @@ class UpdateManager : public UpdateManagerBase
 #ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
               [this](const std::string& packageFilePath) {
+                  // No StartUpdate caller on this path
+                  setRequestedApplyTime(
+                      ApplyTimeIntf::RequestedApplyTimes::OnReset);
                   return this->processPackage(
                       std::filesystem::path(packageFilePath));
               }),

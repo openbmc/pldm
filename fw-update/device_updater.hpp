@@ -10,6 +10,7 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <chrono>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -136,10 +137,10 @@ class DeviceUpdater
   public:
     DeviceUpdater() = delete;
     DeviceUpdater(const DeviceUpdater&) = delete;
-    DeviceUpdater(DeviceUpdater&&) = default;
+    DeviceUpdater(DeviceUpdater&&) = delete;
     DeviceUpdater& operator=(const DeviceUpdater&) = delete;
     DeviceUpdater& operator=(DeviceUpdater&&) = delete;
-    ~DeviceUpdater() = default;
+    ~DeviceUpdater();
 
     /** @brief Constructor
      *
@@ -176,6 +177,12 @@ class DeviceUpdater
      * @return The percentage as an int [0-100], 0 is no progress, 100 is done.
      */
     uint8_t getProgress() const;
+
+    /** @brief Whether terminal completion has been scheduled or reported */
+    bool isComplete() const
+    {
+        return completionPending;
+    }
 
     /** @brief Start the firmware update flow for the FD
      *
@@ -315,7 +322,15 @@ class DeviceUpdater
     using ResponseHandler =
         std::function<void(mctp_eid_t, const pldm_msg*, size_t)>;
 
-    /** @brief Send GetStatus; return an error if registration fails */
+    /** @brief Retire the outstanding GetStatus request */
+    void cancelGetStatusRequest();
+
+    /** @brief Report a terminal result after the current callback returns */
+    void completeUpdate(bool success);
+
+    /** @brief Send GetStatus; a missing response is distinct from invalid data
+     *  @return 0 if accepted, otherwise an error with no callback
+     */
     [[nodiscard]] int sendGetStatusRequest(ResponseHandler callback);
 
     /** @brief Advance after a valid post-apply status, otherwise abort */
@@ -363,6 +378,23 @@ class DeviceUpdater
      * @brief Create a timer to handle RequestFirmwareData timeout (UA_T2)
      */
     void createRequestFwDataTimer();
+
+    /** @brief Use applied-component capabilities and requested apply time */
+    bool shouldRequestSelfContainedActivation() const;
+
+    /** @brief Poll until activation finishes or its advertised deadline expires
+     */
+    void startSelfContainedActivationPolling(uint16_t estimatedTime);
+
+    /** @brief Poll timer callback: send one GetStatus request */
+    void pollActivationStatus();
+
+    /** @brief Schedule another poll within the activation deadline */
+    void scheduleActivationPoll();
+
+    /** @brief Validate the activation state or schedule another status poll */
+    void handleActivationStatus(
+        const std::optional<pldm_get_status_resp>& status);
 
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
@@ -439,8 +471,49 @@ class DeviceUpdater
      */
     bool activationComplete;
 
-    /** @brief Suppress status callbacks after destruction */
+    /** @brief Effective activation methods, keyed by applied package component
+     */
+    std::map<size_t, CompActivationMethods> appliedActivationMethods;
+
+    /**
+     * @brief Whether ActivateFirmware requested self-contained activation
+     */
+    bool selfContainedActivationRequested = false;
+
+    bool completionPending = false;
+
+    /** @brief Invalidate callbacks before retiring their requester entries */
     std::shared_ptr<bool> aliveToken = std::make_shared<bool>(true);
+
+    /** @brief Only one post-apply or activation status request is outstanding
+     */
+    std::optional<uint8_t> getStatusInstanceId;
+
+    /**
+     * @brief Absolute activation deadline, including time spent awaiting
+     * replies
+     */
+    std::chrono::steady_clock::time_point activationDeadline{};
+
+    /**
+     * @brief One-shot timer between GetStatus polls during self-contained
+     *        activation
+     */
+    std::unique_ptr<sdbusplus::Timer> activationPollTimer;
+
+    /** @brief Bounds activation even while GetStatus is queued or in flight */
+    std::unique_ptr<sdbusplus::Timer> activationDeadlineTimer;
+
+    /**
+     * @brief Interval between GetStatus polls during self-contained
+     *        activation
+     */
+    static constexpr std::chrono::seconds activationPollInterval{5};
+
+    /**
+     * @brief Grace period for devices reporting zero or very small estimates
+     */
+    static constexpr std::chrono::seconds minActivationWait{15};
 };
 
 } // namespace fw_update

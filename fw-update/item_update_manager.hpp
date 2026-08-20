@@ -274,12 +274,10 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * requested. Ignored for a condition service that is not parameterized.
      */
     std::string conditionArg;
-    ApplyTimeIntf::RequestedApplyTimes applyTime =
-        ApplyTimeIntf::RequestedApplyTimes::Immediate;
 
     /**
-     * @brief Convert applyTime enum to string representation
-     * @return String representation of applyTime
+     * @brief Convert the requested apply time enum to string representation
+     * @return String representation of the requested apply time
      */
     std::string applyTimeToString() const;
 

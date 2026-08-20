@@ -190,6 +190,9 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     constexpr uint16_t compClassification2 = 16;
     constexpr uint16_t compIdentifier2 = 301;
     constexpr uint8_t compClassificationIndex2 = 30;
+    // ComponentActivationMethods in the encoded component parameter table
+    // entries below (self-contained bit set)
+    constexpr uint16_t compActivationMethods = 0x0002;
 
     constexpr size_t respPayloadLength1 = 119;
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength1>
@@ -213,9 +216,9 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     ComponentInfoMap componentInfoMap1{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
-           compClassificationIndex1},
+           CompInfo{compClassificationIndex1, compActivationMethods}},
           {std::make_pair(compClassification2, compIdentifier2),
-           compClassificationIndex2}}}};
+           CompInfo{compClassificationIndex2, compActivationMethods}}}}};
     EXPECT_EQ(outComponentInfoMap.size(), componentInfoMap1.size());
     EXPECT_EQ(outComponentInfoMap, componentInfoMap1);
 
@@ -226,7 +229,7 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     constexpr uint16_t compIdentifier3 = 302;
     constexpr uint8_t compClassificationIndex3 = 40;
 
-    constexpr size_t respPayloadLength2 = 119;
+    constexpr size_t respPayloadLength2 = 71;
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + respPayloadLength2>
         getFirmwareParametersResp2{
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01,
@@ -243,12 +246,12 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     ComponentInfoMap componentInfoMap2{
         {1,
          {{std::make_pair(compClassification1, compIdentifier1),
-           compClassificationIndex1},
+           CompInfo{compClassificationIndex1, compActivationMethods}},
           {std::make_pair(compClassification2, compIdentifier2),
-           compClassificationIndex2}}},
+           CompInfo{compClassificationIndex2, compActivationMethods}}}},
         {2,
          {{std::make_pair(compClassification3, compIdentifier3),
-           compClassificationIndex3}}}};
+           CompInfo{compClassificationIndex3, compActivationMethods}}}}};
     EXPECT_EQ(outComponentInfoMap.size(), componentInfoMap2.size());
     EXPECT_EQ(outComponentInfoMap, componentInfoMap2);
 }
