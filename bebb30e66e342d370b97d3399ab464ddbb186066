@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57083357_e4af9cea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-08-20T04:45:20Z",
+      "side": 1,
+      "message": "updated in the latest commit message",
+      "parentUuid": "54a34ca3_c34b6ca4",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 49
+      },
+      "revId": "bebb30e66e342d370b97d3399ab464ddbb186066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ee4da87_5c162473",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-07-20T09:32:42Z",
       "side": 1,
       "message": "I am not sure if this explains the problem \u0026 the solution clearly \u0026 also Why this helps a bit more eloborately?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 28
+      },
+      "revId": "bebb30e66e342d370b97d3399ab464ddbb186066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "485ca9a5_94d66a53",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-08-20T04:45:20Z",
+      "side": 1,
+      "message": "updated in the latest commit message",
+      "parentUuid": "1ee4da87_5c162473",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "197bc823_03c37b69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-08-20T04:45:20Z",
+      "side": 1,
+      "message": "Clarified in the latest commit message. This change only affects the lifetime and cleanup of internal temporary PDR-processing state. PLDM message formats, PDR encoding, protocol behavior, and external D-Bus interfaces remain unchanged.",
+      "parentUuid": "a73d93c4_0f868f27",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 20
+      },
+      "revId": "bebb30e66e342d370b97d3399ab464ddbb186066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de2fc481_50142e20",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-07-20T09:32:42Z",
       "side": 1,
       "message": "this test is not good enough, we dont have any tests for PDR exchange,PDR exchange is considered a crutial task in any pldm communication.Probably add the tests ? and make sure they dont break with your change ?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 65
+      },
+      "revId": "bebb30e66e342d370b97d3399ab464ddbb186066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0734f7d3_3a554617",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-08-20T04:45:20Z",
+      "side": 1,
+      "message": "Tested with hardware and added regression tests",
+      "parentUuid": "de2fc481_50142e20",
       "range": {
         "startLine": 32,
         "startChar": 0,
