@@ -8,6 +8,10 @@
 
 #include <endian.h>
 
+#include <chrono>
+#include <cstdlib>
+#include <cstring>
+#include <format>
 #include <string_view>
 
 namespace pldmtool
@@ -22,6 +26,21 @@ namespace
 using namespace pldmtool::helper;
 
 std::vector<std::unique_ptr<CommandInterface>> commands;
+
+// timestamp104 layout, DSP0240 v1.2.0 section 2.5
+constexpr size_t timestamp104UtcOffsetPos = 0;
+constexpr size_t timestamp104MicrosecondPos = 2;
+constexpr size_t timestamp104SecondPos = 5;
+constexpr size_t timestamp104MinutePos = 6;
+constexpr size_t timestamp104HourPos = 7;
+constexpr size_t timestamp104DayPos = 8;
+constexpr size_t timestamp104MonthPos = 9;
+constexpr size_t timestamp104YearPos = 10;
+constexpr size_t timestamp104ResolutionPos = 12;
+constexpr uint8_t timestamp104TimeResolutionMask = 0x0F;
+constexpr uint8_t timestamp104TimeResolutionNull = 15;
+constexpr uint8_t timestamp104UtcResolutionMask = 0xF0;
+constexpr uint8_t timestamp104UtcResolutionUnspecified = 0x00;
 
 } // namespace
 
@@ -328,9 +347,58 @@ class FRUTablePrint
         return std::to_string(le32toh(v));
     }
 
-    static std::string fruFieldParserTimestamp(const uint8_t*, uint8_t)
+    // DSP0240 v1.2.0 section 2.5 timestamp104, rendered as ISO 8601.
+    static std::string fruFieldParserTimestamp(const uint8_t* value,
+                                               uint8_t length)
     {
-        return std::string("TODO");
+        if (value == nullptr)
+        {
+            return "<malformed: null value>";
+        }
+
+        if (length != PLDM_TIMESTAMP104_SIZE)
+        {
+            return std::format("<malformed: expected {} bytes, got {}>",
+                               PLDM_TIMESTAMP104_SIZE, length);
+        }
+
+        const uint8_t resolution = value[timestamp104ResolutionPos];
+        if ((resolution & timestamp104TimeResolutionMask) ==
+            timestamp104TimeResolutionNull)
+        {
+            return "<unknown>";
+        }
+
+        const uint8_t* us = value + timestamp104MicrosecondPos;
+        const uint32_t microsec =
+            static_cast<uint32_t>(us[0]) | (static_cast<uint32_t>(us[1]) << 8) |
+            (static_cast<uint32_t>(us[2]) << 16);
+
+        uint16_t year;
+        std::memcpy(&year, value + timestamp104YearPos, sizeof(year));
+        year = le16toh(year);
+
+        std::string datetime = std::format(
+            "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}.{:06}", year,
+            value[timestamp104MonthPos], value[timestamp104DayPos],
+            value[timestamp104HourPos], value[timestamp104MinutePos],
+            value[timestamp104SecondPos], microsec);
+
+        if ((resolution & timestamp104UtcResolutionMask) ==
+            timestamp104UtcResolutionUnspecified)
+        {
+            return datetime;
+        }
+
+        uint16_t rawOffset;
+        std::memcpy(&rawOffset, value + timestamp104UtcOffsetPos,
+                    sizeof(rawOffset));
+        const auto utcOffsetMin = static_cast<int16_t>(le16toh(rawOffset));
+        const std::chrono::hh_mm_ss offset{
+            std::chrono::minutes{std::abs(utcOffsetMin)}};
+        return std::format("{}{}{:02}:{:02}", datetime,
+                           utcOffsetMin < 0 ? '-' : '+', offset.hours().count(),
+                           offset.minutes().count());
     }
 
     static std::string fruFieldIPZParser(const uint8_t* value, uint8_t length)
