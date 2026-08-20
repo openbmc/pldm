@@ -177,13 +177,31 @@ class FRUTablePrint
                         fruFieldValue =
                             fruFieldValuestring(tlv->value, tlv->length);
                     }
+#else
+                    // DSP0257 v1.0.1 Table 6: OEM record field type 1 is
+                    // Vendor IANA (a uint32); types 2-254 are vendor-defined.
+                    // Decode type 1 so non-IBM builds still emit OEM fields,
+                    // and dump the vendor-defined rest as raw hex bytes since
+                    // their payload semantics are unknown.
+                    constexpr uint8_t oemVendorIanaFieldType = 1;
+                    FruFieldTypeMap.emplace(oemVendorIanaFieldType,
+                                            "Vendor IANA");
+                    if (tlv->type == oemVendorIanaFieldType)
+                    {
+                        fruFieldValue =
+                            fruFieldParserU32(tlv->value, tlv->length);
+                    }
+                    else
+                    {
+                        fruFieldValue =
+                            fruFieldIPZParser(tlv->value, tlv->length);
+                    }
+#endif
                     frudata["FRU Field Type"] =
                         typeToString(FruFieldTypeMap, tlv->type);
                     frudata["FRU Field Length"] = (int)(tlv->length);
                     frudata["FRU Field Value"] = fruFieldValue;
                     frufielddata.emplace_back(frudata);
-
-#endif
                 }
                 p += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
             }
