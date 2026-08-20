@@ -111,6 +111,15 @@ int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
             uint8_t transferFlag = data->info.data.transferFlag;
             uint16_t offset = data->info.data.offset;
 
+            if (offset > sb.st_size)
+            {
+                error(
+                    "Invalid offset={OFFSET} beyond file size={SIZE} on Http boot certification file",
+                    "OFFSET", offset, "SIZE", sb.st_size);
+                close(fd);
+                return PLDM_DATA_OUT_OF_RANGE;
+            }
+
             int ret = lseek(fd, offset, SEEK_SET);
             if (ret < 0)
             {
@@ -124,7 +133,7 @@ int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
             if (offset + data->length >= sb.st_size)
             {
                 transferFlag = PLDM_END;
-                data->length = sb.st_size - offset; // Revise length
+                data->length = sb.st_size - offset; // Revise length, offset already <= st_size
             }
             else
             {
@@ -141,8 +150,8 @@ int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
                 return PLDM_ERROR;
             }
 
-            ret = ::read(fd, buffer, data->length);
-            if (ret < 0)
+            ssize_t bytesRead = ::read(fd, buffer, data->length);
+            if (bytesRead < 0)
             {
                 error(
                     "Failed to read file content at offset={OFFSET} of length={LENGTH} on Http boot certification file",
@@ -151,6 +160,10 @@ int HttpBootHandler::read(struct pldm_oem_meta_file_io_read_resp* data)
                 close(fd);
                 return PLDM_ERROR;
             }
+
+            // Only expose bytes actually read; short reads must not copy
+            // uninitialized buffer memory or over-report the length.
+            data->length = static_cast<uint8_t>(bytesRead);
 
             memcpy(pldm_oem_meta_file_io_read_resp_data(data), buffer,
                    data->length);
