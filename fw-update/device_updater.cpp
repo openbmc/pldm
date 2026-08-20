@@ -9,6 +9,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <functional>
 
 PHOSPHOR_LOG2_USING;
@@ -115,6 +116,57 @@ DeviceUpdater::DeviceUpdater(
             std::get<6>(compImageInfos[applicableComponent]);
         progress.emplace_back(componentSize, eid);
     }
+}
+
+DeviceUpdater::~DeviceUpdater()
+{
+    aliveToken.reset();
+    cancelGetStatusRequest();
+}
+
+void DeviceUpdater::cancelGetStatusRequest()
+{
+    if (getStatusInstanceId && updateManager != nullptr)
+    {
+        updateManager->handler.unregisterRequest(eid, *getStatusInstanceId,
+                                                 PLDM_FWUP, PLDM_GET_STATUS);
+        getStatusInstanceId.reset();
+    }
+}
+
+void DeviceUpdater::completeUpdate(bool success)
+{
+    if (completionPending)
+    {
+        return;
+    }
+    completionPending = true;
+    if (!success)
+    {
+        events::generateActivateFailed(targetPath, pkgVersion);
+    }
+    if (activationPollTimer)
+    {
+        activationPollTimer->stop();
+    }
+    if (activationDeadlineTimer)
+    {
+        activationDeadlineTimer->stop();
+    }
+    // Per-item completion destroys this updater. Let the dispatching request
+    // or timer callback return before notifying the owner.
+    pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+        updateManager->event, [this, success](auto&) {
+            pldmRequest.reset();
+            aliveToken.reset();
+            cancelGetStatusRequest();
+            activationComplete = success;
+            if (success)
+            {
+                updateManager->updateActivationProgress();
+            }
+            updateManager->updateDeviceCompletion(eid, success);
+        });
 }
 
 void DeviceUpdater::startFwUpdateFlow()
@@ -266,7 +318,8 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
-    CompClassificationIndex compClassificationIndex = compInfoIter->second;
+    CompClassificationIndex compClassificationIndex =
+        std::get<0>(compInfoIter->second);
     // ComponentComparisonStamp
     pkg::CompComparisonStamp compComparisonStamp = std::get<static_cast<size_t>(
         pkg::ComponentImageInfoPos::CompComparisonStampPos)>(comp);
@@ -398,7 +451,8 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
-    CompClassificationIndex compClassificationIndex = compInfoIter->second;
+    CompClassificationIndex compClassificationIndex =
+        std::get<0>(compInfoIter->second);
 
     // UpdateOptionFlags
     bitfield32_t updateOptionFlags;
@@ -875,6 +929,16 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' with '{COMPONENT_VERSION}' apply complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        auto key = std::make_pair(std::get<0>(comp), std::get<1>(comp));
+        auto inventory = compInfo.find(key);
+        CompActivationMethods methods =
+            inventory == compInfo.end() ? 0 : std::get<1>(inventory->second);
+        if (applyResult == PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD)
+        {
+            methods = compActivationModification.value;
+        }
+        appliedActivationMethods[applicableComponents[componentIndex]] =
+            methods;
         if (componentIndex < progress.size())
         {
             progress[componentIndex].updateState(UpdateProgress::state::Apply);
@@ -889,7 +953,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
             pldmRequest = std::make_unique<sdeventplus::source::Defer>(
                 updateManager->event, [this](auto&) {
                     pldmRequest.reset();
-                    if (sendGetStatusRequest())
+                    if (sendGetStatusRequest(&DeviceUpdater::handleApplyState))
                     {
                         handleApplyState(eid, nullptr, 0);
                     }
@@ -926,6 +990,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
 void DeviceUpdater::handleApplyState(mctp_eid_t eid, const pldm_msg* response,
                                      size_t respMsgLen)
 {
+    getStatusInstanceId.reset();
     auto status = parseGetStatusResponse(eid, response, respMsgLen);
     if (status && status->current_state == PLDM_FD_STATE_READY_XFER &&
         status->aux_state == PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER &&
@@ -985,9 +1050,13 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = new (request.data()) pldm_msg;
 
+    selfContainedActivationRequested = shouldRequestSelfContainedActivation();
     auto rc = encode_activate_firmware_req(
-        instanceId, PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
-        sizeof(pldm_activate_firmware_req));
+        instanceId,
+        selfContainedActivationRequested
+            ? PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS
+            : PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS,
+        requestMsg, sizeof(pldm_activate_firmware_req));
     if (rc)
     {
         updateManager->instanceIdDb.free(eid, instanceId);
@@ -1055,6 +1124,12 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         return;
     }
 
+    if (selfContainedActivationRequested)
+    {
+        startSelfContainedActivationPolling(estimatedTimeForActivation);
+        return;
+    }
+
     activationComplete = true;
     if (updateManager == nullptr)
     {
@@ -1065,8 +1140,13 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     updateManager->updateDeviceCompletion(eid, true);
 }
 
-int DeviceUpdater::sendGetStatusRequest()
+int DeviceUpdater::sendGetStatusRequest(
+    void (DeviceUpdater::*handler)(mctp_eid_t, const pldm_msg*, size_t))
 {
+    if (getStatusInstanceId)
+    {
+        return PLDM_ERROR_NOT_READY;
+    }
     auto instanceIdResult = updateManager->instanceIdDb.next(eid);
     if (!instanceIdResult)
     {
@@ -1090,11 +1170,13 @@ int DeviceUpdater::sendGetStatusRequest()
         return rc;
     }
 
+    getStatusInstanceId = instanceId;
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_GET_STATUS, std::move(request),
-        guarded(&DeviceUpdater::handleApplyState));
+        guarded(handler));
     if (rc)
     {
+        getStatusInstanceId.reset();
         error(
             "Failed to send get status request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
@@ -1130,6 +1212,159 @@ std::optional<pldm_get_status_resp> DeviceUpdater::parseGetStatusResponse(
 
     status.update_option_flags_enabled = updateOptionFlagsEnabled;
     return status;
+}
+
+bool DeviceUpdater::shouldRequestSelfContainedActivation() const
+{
+    if (updateManager == nullptr)
+    {
+        return false;
+    }
+    bool capable = false;
+    bool requested = updateManager->isApplyTimeImmediate();
+    for (const auto& [index, methods] : appliedActivationMethods)
+    {
+        capable |= (methods & (1 << PLDM_ACTIVATION_SELF_CONTAINED)) != 0;
+        requested |= std::get<static_cast<size_t>(
+            pkg::ComponentImageInfoPos::ReqCompActivationMethodPos)>(
+                         compImageInfos[index])
+                         .test(PLDM_ACTIVATION_SELF_CONTAINED);
+    }
+    return capable && requested;
+}
+
+void DeviceUpdater::startSelfContainedActivationPolling(uint16_t estimatedTime)
+{
+    const auto wait =
+        std::max(std::chrono::seconds(estimatedTime), minActivationWait);
+    activationDeadline = std::chrono::steady_clock::now() + wait;
+    info(
+        "Waiting for self-contained activation for endpoint ID '{EID}', estimated time '{TIME}' seconds",
+        "EID", eid, "TIME", estimatedTime);
+    try
+    {
+        activationDeadlineTimer = std::make_unique<
+            sdbusplus::Timer>(updateManager->event.get(), [this]() {
+            error("Self-contained activation timed out for endpoint ID '{EID}'",
+                  "EID", eid);
+            completeUpdate(false);
+        });
+        activationDeadlineTimer->start(wait, false);
+        scheduleActivationPoll();
+    }
+    catch (const std::runtime_error& e)
+    {
+        error(
+            "Failed to arm activation deadline for endpoint ID '{EID}': {ERROR}",
+            "EID", eid, "ERROR", e);
+        completeUpdate(false);
+    }
+}
+
+void DeviceUpdater::scheduleActivationPoll()
+{
+    const auto remaining =
+        activationDeadline - std::chrono::steady_clock::now();
+    if (remaining <= std::chrono::steady_clock::duration::zero())
+    {
+        error("Self-contained activation timed out for endpoint ID '{EID}'",
+              "EID", eid);
+        completeUpdate(false);
+        return;
+    }
+    try
+    {
+        if (!activationPollTimer)
+        {
+            activationPollTimer = std::make_unique<sdbusplus::Timer>(
+                updateManager->event.get(),
+                [this]() { pollActivationStatus(); });
+        }
+        activationPollTimer->start(
+            std::min(std::chrono::duration_cast<std::chrono::microseconds>(
+                         remaining),
+                     std::chrono::duration_cast<std::chrono::microseconds>(
+                         activationPollInterval)),
+            false);
+    }
+    catch (const std::runtime_error& e)
+    {
+        error(
+            "Failed to arm activation poll timer for endpoint ID '{EID}': {ERROR}",
+            "EID", eid, "ERROR", e);
+        completeUpdate(false);
+    }
+}
+
+void DeviceUpdater::pollActivationStatus()
+{
+    if (sendGetStatusRequest(&DeviceUpdater::handleActivationResponse))
+    {
+        scheduleActivationPoll();
+    }
+}
+
+void DeviceUpdater::handleActivationResponse(
+    mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
+{
+    getStatusInstanceId.reset();
+    if (completionPending)
+    {
+        return;
+    }
+    if (response == nullptr || !respMsgLen)
+    {
+        // Activation may temporarily make the FD unresponsive.
+        scheduleActivationPoll();
+        return;
+    }
+    handleActivationStatus(parseGetStatusResponse(eid, response, respMsgLen));
+}
+
+void DeviceUpdater::handleActivationStatus(
+    const std::optional<pldm_get_status_resp>& status)
+{
+    if (!status)
+    {
+        completeUpdate(false);
+        return;
+    }
+
+    if (status->aux_state == PLDM_FD_IDLE_SELF_CONTAINED_ACTIVATION_FAILURE ||
+        status->aux_state_status != PLDM_FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS)
+    {
+        error(
+            "Device reported self-contained activation failure for endpoint ID '{EID}', aux state '{AUX_STATE}', aux state status '{AUX_STATUS}'",
+            "EID", eid, "AUX_STATE", status->aux_state, "AUX_STATUS",
+            status->aux_state_status);
+        completeUpdate(false);
+        return;
+    }
+
+    if (status->current_state == PLDM_FD_STATE_IDLE &&
+        status->aux_state == PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER)
+    {
+        const bool activationReason =
+            status->reason_code == PLDM_FD_INITIALIZATION ||
+            status->reason_code == PLDM_FD_ACTIVATE_FW;
+        completeUpdate(activationReason &&
+                       std::chrono::steady_clock::now() <= activationDeadline);
+        return;
+    }
+
+    if (status->current_state == PLDM_FD_STATE_ACTIVATE &&
+        (status->aux_state == PLDM_FD_OPERATION_IN_PROGRESS ||
+         status->aux_state == PLDM_FD_OPERATION_SUCCESSFUL))
+    {
+        scheduleActivationPoll();
+        return;
+    }
+
+    error(
+        "Unexpected state while polling self-contained activation for endpoint ID '{EID}', state '{STATE}', aux state '{AUX_STATE}', aux state status '{AUX_STATUS}'",
+        "EID", eid, "STATE", status->current_state, "AUX_STATE",
+        status->aux_state, "AUX_STATUS", status->aux_state_status);
+    completeUpdate(false);
 }
 
 void DeviceUpdater::sendCancelUpdateComponentRequest()

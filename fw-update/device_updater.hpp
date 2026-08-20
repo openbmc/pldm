@@ -10,6 +10,7 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <chrono>
 #include <memory>
 #include <optional>
 #include <string>
@@ -141,7 +142,7 @@ class DeviceUpdater
     DeviceUpdater(DeviceUpdater&&) = delete;
     DeviceUpdater& operator=(const DeviceUpdater&) = delete;
     DeviceUpdater& operator=(DeviceUpdater&&) = delete;
-    ~DeviceUpdater() = default;
+    ~DeviceUpdater();
 
     /** @brief Constructor
      *
@@ -178,6 +179,15 @@ class DeviceUpdater
      * @return The percentage as an int [0-100], 0 is no progress, 100 is done.
      */
     uint8_t getProgress() const;
+
+    /** @brief Whether terminal completion has been scheduled or reported
+     *
+     *  @return true once the update result is final
+     */
+    bool isComplete() const
+    {
+        return completionPending;
+    }
 
     /** @brief Start the firmware update flow for the FD
      *
@@ -322,11 +332,14 @@ class DeviceUpdater
         mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
 
   private:
-    /** @brief Send GetStatus command request after a component is applied
+    /** @brief Send GetStatus command request
+     *
+     *  @param[in] handler - the member function handling the response
      *
      *  @return PLDM_SUCCESS if the request was sent, otherwise an error code
      */
-    [[nodiscard]] int sendGetStatusRequest();
+    [[nodiscard]] int sendGetStatusRequest(
+        void (DeviceUpdater::*handler)(mctp_eid_t, const pldm_msg*, size_t));
 
     /** @brief Handler for GetStatus command response after a component is
      *         applied
@@ -340,6 +353,17 @@ class DeviceUpdater
      */
     void handleApplyState(mctp_eid_t eid, const pldm_msg* response,
                           size_t respMsgLen);
+
+    /** @brief Retire the outstanding GetStatus request */
+    void cancelGetStatusRequest();
+
+    /** @brief Report the activation result after the current callback returns
+     *
+     *  A failure also reports ActivateFailed. Only the first call has effect.
+     *
+     *  @param[in] success - Whether the device activated the firmware
+     */
+    void completeUpdate(bool success);
 
     /** @brief Send PassComponentTable command request
      *
@@ -423,6 +447,44 @@ class DeviceUpdater
         };
     }
 
+    /** @brief Whether ActivateFirmware requests self-contained activation
+     *
+     *  @return true if an applied component supports self-contained
+     *          activation, and either Immediate was requested or an applied
+     *          package component requests that method
+     */
+    bool shouldRequestSelfContainedActivation() const;
+
+    /** @brief Poll until activation finishes or its advertised deadline expires
+     *
+     *  @param[in] estimatedTime - Activation time estimated by the FD, in
+     *                             seconds; at least minActivationWait is
+     *                             allowed
+     */
+    void startSelfContainedActivationPolling(uint16_t estimatedTime);
+
+    /** @brief Poll timer callback: send one GetStatus request */
+    void pollActivationStatus();
+
+    /** @brief Schedule another poll within the activation deadline */
+    void scheduleActivationPoll();
+
+    /** @brief Handler for GetStatus command response during activation
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] response - PLDM response message, nullptr if none arrived
+     *  @param[in] respMsgLen - Response message length
+     */
+    void handleActivationResponse(mctp_eid_t eid, const pldm_msg* response,
+                                  size_t respMsgLen);
+
+    /** @brief Validate the activation state or schedule another status poll
+     *
+     *  @param[in] status - Decoded status, nullopt if the response was invalid
+     */
+    void handleActivationStatus(
+        const std::optional<pldm_get_status_resp>& status);
+
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 
@@ -492,7 +554,9 @@ class DeviceUpdater
      */
     std::vector<UpdateProgress> progress;
 
-    /** @brief Expires with this non-copyable, non-movable updater */
+    /** @brief Expires when the update completes or with this non-copyable,
+     *         non-movable updater
+     */
     struct LifetimeToken
     {};
     std::shared_ptr<LifetimeToken> aliveToken =
@@ -505,6 +569,48 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /** @brief Effective activation methods, keyed by applied package component
+     */
+    std::map<size_t, CompActivationMethods> appliedActivationMethods;
+
+    /**
+     * @brief Whether ActivateFirmware requested self-contained activation
+     */
+    bool selfContainedActivationRequested = false;
+
+    /** @brief Whether completeUpdate() has fixed the update result */
+    bool completionPending = false;
+
+    /** @brief Only one post-apply or activation status request is outstanding
+     */
+    std::optional<uint8_t> getStatusInstanceId;
+
+    /**
+     * @brief Absolute activation deadline, including time spent awaiting
+     * replies
+     */
+    std::chrono::steady_clock::time_point activationDeadline{};
+
+    /**
+     * @brief One-shot timer between GetStatus polls during self-contained
+     *        activation
+     */
+    std::unique_ptr<sdbusplus::Timer> activationPollTimer;
+
+    /** @brief Bounds activation even while GetStatus is queued or in flight */
+    std::unique_ptr<sdbusplus::Timer> activationDeadlineTimer;
+
+    /**
+     * @brief Interval between GetStatus polls during self-contained
+     *        activation
+     */
+    static constexpr std::chrono::seconds activationPollInterval{5};
+
+    /**
+     * @brief Grace period for devices reporting zero or very small estimates
+     */
+    static constexpr std::chrono::seconds minActivationWait{15};
 };
 
 } // namespace fw_update
