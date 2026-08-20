@@ -110,7 +110,14 @@ class FRUTablePrint
             p += sizeof(pldm_fru_record_data_format) -
                  sizeof(pldm_fru_record_tlv);
 
+            constexpr uint8_t oemVendorIanaFieldType = 0x01;
             std::map<uint8_t, std::string> FruFieldTypeMap;
+            if (record->record_type != PLDM_FRU_RECORD_TYPE_GENERAL)
+            {
+                // DSP0257 v1.0.1 Table 6: type 1 is Vendor IANA (uint32);
+                // types 2-254 are vendor-defined and dumped as raw hex.
+                FruFieldTypeMap.emplace(oemVendorIanaFieldType, "Vendor IANA");
+            }
             std::string fruFieldValue;
 
             constexpr auto tlv_hdr_size = offsetof(pldm_fru_record_tlv, value);
@@ -169,11 +176,22 @@ class FRUTablePrint
                 }
                 else
                 {
+                    if (tlv->type == oemVendorIanaFieldType)
+                    {
+                        fruFieldValue =
+                            fruFieldParserU32(tlv->value, tlv->length);
+                    }
+                    else
+                    {
+                        fruFieldValue =
+                            fruFieldIPZParser(tlv->value, tlv->length);
+                    }
 #ifdef OEM_IBM
                     if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_RT)
                     {
                         auto oemIPZValue =
                             fruFieldValuestring(tlv->value, tlv->length);
+                        fruFieldValue = oemIPZValue;
 
                         if (populateMaps.contains(oemIPZValue))
                         {
@@ -188,28 +206,12 @@ class FRUTablePrint
                         FruFieldTypeMap.insert(fruOemFieldTypes.begin(),
                                                fruOemFieldTypes.end());
                     }
-                    if (tlv->type == PLDM_OEM_FRU_FIELD_TYPE_IANA)
-                    {
-                        fruFieldValue =
-                            fruFieldParserU32(tlv->value, tlv->length);
-                    }
-                    else if (tlv->type != 2)
-                    {
-                        fruFieldValue =
-                            fruFieldIPZParser(tlv->value, tlv->length);
-                    }
-                    else
-                    {
-                        fruFieldValue =
-                            fruFieldValuestring(tlv->value, tlv->length);
-                    }
+#endif
                     frudata["FRU Field Type"] =
                         typeToString(FruFieldTypeMap, tlv->type);
                     frudata["FRU Field Length"] = (int)(tlv->length);
                     frudata["FRU Field Value"] = fruFieldValue;
                     frufielddata.emplace_back(frudata);
-
-#endif
                 }
                 p += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
             }
