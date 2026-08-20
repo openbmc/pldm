@@ -712,9 +712,13 @@ void InventoryManager::getFirmwareParameters(
 
         auto compClassification = compEntry.comp_classification;
         auto compIdentifier = compEntry.comp_identifier;
+        // Copy from the packed struct; references cannot bind to its fields
+        CompActivationMethods compActivationMethods =
+            compEntry.comp_activation_methods.value;
         componentInfo.emplace(
             std::make_pair(compClassification, compIdentifier),
-            compEntry.comp_classification_index);
+            CompInfo{compEntry.comp_classification_index,
+                     compActivationMethods});
 
         if (firmwareDeviceNameMap.contains(eid) and descriptorMap.contains(eid))
         {

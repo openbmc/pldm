@@ -319,7 +319,8 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
                                       const pldm_msg* request, size_t reqMsgLen)
 {
     Response response(sizeof(pldm_msg), 0);
-    if (deviceUpdaterMap.contains(eid))
+    if (deviceUpdaterMap.contains(eid) &&
+        !deviceUpdaterMap.at(eid)->isComplete())
     {
         auto search = deviceUpdaterMap.find(eid);
         if (command == PLDM_REQUEST_FIRMWARE_DATA)
