@@ -74,7 +74,8 @@ void pkg::PackageParser::parse(const std::vector<uint8_t>& pkgHdr)
     }
     else
     {
-        error("Package parsing failed: {ERR}", "ERR", expected.error().msg);
+        error("Package parsing failed: {ERR}, RC = {RC}", "ERR",
+              expected.error().msg, "RC", expected.error().rc.value_or(0));
         throw InternalFailure();
     }
 
@@ -96,19 +97,14 @@ void pkg::PackageParser::parse(const std::vector<uint8_t>& pkgHdr)
     }
 }
 
-std::unique_ptr<pkg::PackageParser> pkg::parsePkgHeader(
+std::unique_ptr<pkg::PackageParser> pkg::PackageParser::parsePkgHeader(
     std::vector<uint8_t>& pkgHdr)
 {
-    auto expected = pldm::fw_update::PackageParser::parse(pkgHdr, currentPin);
+    auto res = std::make_unique<PackageParser>();
 
-    if (!expected.has_value())
-    {
-        error("{ERR}, RC = {RC}", "ERR", expected.error().msg, "RC",
-              expected.error().rc.value_or(0));
-        return nullptr;
-    }
+    res->parse(pkgHdr);
 
-    return std::make_unique<pkg::PackageParser>();
+    return res;
 }
 
 } // namespace fw_update
