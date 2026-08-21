@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1efec00_2242cd32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-21T07:38:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2660b96f_6eea33ee",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54399a32_b902abea",
@@ -71,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4951fd3f_03ed5cf2",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-21T07:38:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e61bec2_dd603cf0",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bae8970_90a4a9a4",
@@ -102,6 +138,24 @@
       "side": 1,
       "message": "I can’t share the exact platform details but let me describe a similar scenario to better illustrate the problem.\n\nConsider a 2-socket platform, where each CPU is assigned with unique TIDs. Both CPUs may share the same entity name, for example, `IntelCPU`, while still having different `entityInstanceNumber` values.\n\nWithout this change, the BMC would end up creating duplicate D-Bus object paths for entities with identical names. By incorporating the instance number, the resulting D-Bus object paths would look like this:\n\n    /xyz/openbmc_project/inventory/system/board/IntelCPU_1\n    /xyz/openbmc_project/inventory/system/board/IntelCPU_2\n\nHere, `1` and `2` correspond to the respective `entityInstanceNumber`.",
       "parentUuid": "0bae8970_90a4a9a4",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cceb5612_0c6df2ed",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-21T07:38:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd80a680_830420e1",
       "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
