@@ -134,23 +134,10 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     package.seekg(0);
     std::vector<uint8_t> packageHeader(packageSize);
     package.read(reinterpret_cast<char*>(packageHeader.data()), packageSize);
-
-    parser = pkg::parsePkgHeader(packageHeader);
-    if (parser == nullptr)
-    {
-        error("Invalid PLDM package header information");
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        parser.reset();
-        throw sdbusplus::error::xyz::openbmc_project::software::update::
-            InvalidImage();
-    }
-
     package.seekg(0);
     try
     {
-        parser->parse(packageHeader);
+        parser = pkg::WrapPackageParser::parsePkgHeader(packageHeader);
     }
     catch (const std::exception& e)
     {

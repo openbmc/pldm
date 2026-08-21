@@ -2,10 +2,15 @@
 
 #include <libpldm/edac.h>
 
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <typeinfo>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+using InternalFailure =
+    sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure;
 
 using namespace pldm::fw_update;
 
@@ -45,11 +50,10 @@ TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
     std::vector<uint8_t> compImage;
     imageGenerate(compImage, pkgImageSize);
     imageInsert(fwPkgHdr, compImage);
-    auto parser = pkg::parsePkgHeader(fwPkgHdr);
+    auto parser = pkg::WrapPackageParser::parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(pkg::WrapPackageParser).name());
 
-    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     pkg::FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
@@ -119,13 +123,13 @@ TEST(PackageParser, ValidPkgMultipleDescriptorsMultipleComponents)
     imageInsert(fwPkgHdr, compImage2);
     imageInsert(fwPkgHdr, compImage3);
 
-    auto parser = pkg::parsePkgHeader(fwPkgHdr);
+    auto parser =
+        pldm::fw_update::pkg::WrapPackageParser::parsePkgHeader(fwPkgHdr);
     auto obj = parser.get();
     EXPECT_EQ(typeid(*obj).name(), typeid(pkg::WrapPackageParser).name());
 
     EXPECT_EQ(fwPkgHdr.size(), pkgSize);
 
-    parser->parse(fwPkgHdr);
     auto outfwDeviceIDRecords = parser->getFwDeviceIDRecords();
     pkg::FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1,
@@ -173,8 +177,9 @@ TEST(PackageParser, InvalidPkgHeaderInfoIncomplete)
                                   0x49, 0x43, 0x98, 0x00, 0xA0, 0x2F,
                                   0x05, 0x9A, 0xCA, 0x02};
 
-    auto parser = pkg::parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
+    EXPECT_THROW(
+        pldm::fw_update::pkg::WrapPackageParser::parsePkgHeader(fwPkgHdr),
+        InternalFailure);
 }
 
 TEST(PackageParser, InvalidPkgNotSupportedHeaderFormat)
@@ -186,8 +191,9 @@ TEST(PackageParser, InvalidPkgNotSupportedHeaderFormat)
         0x07, 0x00, 0x08, 0x00, 0x01, 0x0E, 0x56, 0x65, 0x72, 0x73,
         0x69, 0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x31};
 
-    auto parser = pkg::parsePkgHeader(fwPkgHdr);
-    EXPECT_EQ(parser, nullptr);
+    EXPECT_THROW(
+        pldm::fw_update::pkg::WrapPackageParser::parsePkgHeader(fwPkgHdr),
+        InternalFailure);
 }
 
 TEST(PackageParser, InvalidPkgBadChecksum)
@@ -212,5 +218,7 @@ TEST(PackageParser, InvalidPkgBadChecksum)
     std::vector<uint8_t> compImage;
     imageGenerate(compImage, pkgImageSize);
     imageInsert(fwPkgHdr, compImage);
-    EXPECT_EQ(pkg::parsePkgHeader(fwPkgHdr), nullptr);
+    EXPECT_THROW(
+        pldm::fw_update::pkg::WrapPackageParser::parsePkgHeader(fwPkgHdr),
+        InternalFailure);
 }

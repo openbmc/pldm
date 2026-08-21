@@ -33,14 +33,6 @@ class WrapPackageParser
     WrapPackageParser& operator=(WrapPackageParser&&) = delete;
     ~WrapPackageParser() = default;
 
-    /** @brief Parse the firmware update package
-     *
-     *  @param[in] pkgHdr - Package
-     *
-     *  @note Throws exception is parsing fails
-     */
-    void parse(const std::vector<uint8_t>& pkgHdr);
-
     /** @brief Get firmware device ID records from the package
      *
      *  @return if parsing the package is successful, return firmware device ID
@@ -61,23 +53,32 @@ class WrapPackageParser
         return componentImageInfos;
     }
 
+    /** @brief Parse the package header information
+     *
+     *  @param[in] pkgHdrInfo - package header information section in the
+     * package
+     *
+     *  @return On success return the PackageParser for the header format
+     * version on failure return nullptr
+     */
+    static std::unique_ptr<WrapPackageParser> parsePkgHeader(
+        std::vector<uint8_t>& pkgHdrInfo);
+
   private:
+    /** @brief Parse the firmware update package
+     *
+     *  @param[in] pkgHdr - Package
+     *
+     *  @note Throws exception is parsing fails
+     */
+    void parse(const std::vector<uint8_t>& pkgHdr);
+
     /** @brief Firmware Device ID Records in the package */
     pkg::FirmwareDeviceIDRecords fwDeviceIDRecords;
 
     /** @brief Component Image Information in the package */
     pkg::ComponentImageInfos componentImageInfos;
 };
-
-/** @brief Parse the package header information
- *
- *  @param[in] pkgHdrInfo - package header information section in the package
- *
- *  @return On success return the PackageParser for the header format version
- *          on failure return nullptr
- */
-std::unique_ptr<WrapPackageParser> parsePkgHeader(
-    std::vector<uint8_t>& pkgHdrInfo);
 
 } // namespace pkg
 
