@@ -55,16 +55,9 @@ bool ItemUpdateManager::processPackage()
 
     auto buffer = std::vector<uint8_t>(packageMap->getBytes().begin(),
                                        packageMap->getBytes().end());
-    parser = pkg::parsePkgHeader(buffer);
-    if (parser == nullptr)
-    {
-        error("Invalid PLDM package header information");
-        events::generateVerificationFailed(firmwareInventoryPath, {});
-        return failInvalidPackage();
-    }
     try
     {
-        parser->parse(buffer);
+        parser = pkg::PackageParser::parsePkgHeader(buffer);
     }
     catch (const std::exception& e)
     {
@@ -78,8 +71,7 @@ bool ItemUpdateManager::processPackage()
     if (!deviceIdRecordOffset)
     {
         error("Failed to associate package to device");
-        events::generateUpdateNotApplicable(firmwareInventoryPath,
-                                            "TODO");
+        events::generateUpdateNotApplicable(firmwareInventoryPath, "TODO");
         return failInvalidPackage();
     }
 
@@ -92,8 +84,8 @@ bool ItemUpdateManager::processPackage()
         std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
-        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this,
-        "TODO", firmwareInventoryPath);
+        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this, "TODO",
+        firmwareInventoryPath);
     events::generateTargetDetermined(firmwareInventoryPath, "TODO");
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
@@ -257,8 +249,8 @@ void ItemUpdateManager::completeUpdate(bool status)
 
     if (status)
     {
-        events::generateUpdateSuccessful(
-            firmwareInventoryPath, parser ? "TODO" : std::string{});
+        events::generateUpdateSuccessful(firmwareInventoryPath,
+                                         parser ? "TODO" : std::string{});
     }
     inProgressActivation->activation(
         status ? software::Activation::Activations::Active
