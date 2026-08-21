@@ -53,15 +53,9 @@ bool ItemUpdateManager::processPackage()
 
     auto buffer = std::vector<uint8_t>(packageMap->getBytes().begin(),
                                        packageMap->getBytes().end());
-    parser = pkg::parsePkgHeader(buffer);
-    if (parser == nullptr)
-    {
-        error("Invalid PLDM package header information");
-        return failInvalidPackage();
-    }
     try
     {
-        parser->parse(buffer);
+        parser = pkg::PackageParser::parsePkgHeader(buffer);
     }
     catch (const std::exception& e)
     {
