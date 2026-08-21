@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "197b5b4e_a954159d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-21T09:59:28Z",
+      "side": 1,
+      "message": "I was pushing changes to https://gerrit.openbmc.org/c/openbmc/pldm/+/91246/8 and it ended up commiting to all of its parent. I will see if i can revert my mess up.",
+      "revId": "b691cd122809e9617e47a0308eca849f5f374170",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
