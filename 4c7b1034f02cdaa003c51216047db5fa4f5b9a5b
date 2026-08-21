@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e29d309_02652302",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 129
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-21T10:00:21Z",
+      "side": 1,
+      "message": "This will be supressed/abandoned and rebased onto 92352 (migrate to libpldm++ PackageParser), which now owns the parser rewrite, and what was left has been split into five smaller changes:\n\n- 93831 fw-update: sort descriptors before comparing\n- 93832 fw-update: widen RequestFirmwareData offsets\n- 93833 fw-update: hold component images as spans\n- 93834 fw-update: restore component image validation\n- 93835 fw-update: support package format revision 1.3.0\n\nSorry for how long this one dragged on, and thanks for the review effort — it all fed into the split.",
+      "revId": "4c7b1034f02cdaa003c51216047db5fa4f5b9a5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
