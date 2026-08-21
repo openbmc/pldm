@@ -16,6 +16,24 @@
       "message": "@Kyle.Hsieh@quantatw.com Please address merge conflicts.",
       "revId": "59b01e3eb33bcf8521c6671e8551a0f9ea0b53db",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76e41575_86fe67b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-08-21T02:10:10Z",
+      "side": 1,
+      "message": "Thanks for your reminder.",
+      "parentUuid": "371d92e5_9e35126f",
+      "revId": "59b01e3eb33bcf8521c6671e8551a0f9ea0b53db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

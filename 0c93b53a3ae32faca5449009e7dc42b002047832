@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e7c20f5_d70997e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-08-21T02:10:10Z",
+      "side": 1,
+      "message": "Hi all,\n\nI have resolved the merge conflicts and rebased the commit onto the latest master.\n\nCould you please take another look and help re-apply your +1? Thanks!",
+      "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
