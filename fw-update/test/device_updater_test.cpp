@@ -48,12 +48,11 @@ TEST_F(DeviceUpdaterTest, validatePackage)
     std::vector<uint8_t> packageHeader(testPkgSize);
     package.read(new (packageHeader.data()) char, testPkgSize);
 
-    auto parser = parsePkgHeader(packageHeader);
+    auto parser = WrapPackageParser::parsePkgHeader(packageHeader);
     EXPECT_NE(parser, nullptr);
 
     package.seekg(0);
 
-    parser->parse(packageHeader);
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& testPkgCompImageInfos = parser->getComponentImageInfos();
 

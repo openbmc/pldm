@@ -47,18 +47,9 @@ bool ItemUpdateManager::processPackage()
 
     auto buffer = std::vector<uint8_t>(packageMap->getBytes().begin(),
                                        packageMap->getBytes().end());
-    parser = parsePkgHeader(buffer);
-    if (parser == nullptr)
-    {
-        error("Invalid PLDM package header information");
-        inProgressActivation->activation(
-            software::Activation::Activations::Invalid);
-        packageMap.reset();
-        return false;
-    }
     try
     {
-        parser->parse(buffer);
+        parser = WrapPackageParser::parsePkgHeader(buffer);
     }
     catch (const std::exception& e)
     {
