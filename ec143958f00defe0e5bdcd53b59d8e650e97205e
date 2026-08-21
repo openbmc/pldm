@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1eed17d_f04441d6",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-21T06:13:50Z",
+      "side": 1,
+      "message": "Call `updateDeviceCompletion()` here before throwing",
+      "revId": "ec143958f00defe0e5bdcd53b59d8e650e97205e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e57911c_17d5c197",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1131,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-21T06:13:50Z",
+      "side": 1,
+      "message": "Use the repo\u0027s `start_lifetime_as` instead of placement new here",
+      "revId": "ec143958f00defe0e5bdcd53b59d8e650e97205e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d18ab56_697e3bdb",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-21T06:13:50Z",
+      "side": 1,
+      "message": "Can we add this in the force update patch? This isn\u0027t relevant here",
+      "revId": "ec143958f00defe0e5bdcd53b59d8e650e97205e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
