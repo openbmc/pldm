@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff570438_57ff5d7e",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-08-24T00:09:56Z",
+      "side": 1,
+      "message": "As a note, I\u0027m open to arguments justifying breaking `libpldm([+]+)?` API/ABI in order to fix (entangled?) design deficiencies.",
+      "parentUuid": "96544629_12ef7497",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c78cfdf5_a8dbaf40",
         "filename": "fw-update/package_parser.cpp",
         "patchSetId": 11
