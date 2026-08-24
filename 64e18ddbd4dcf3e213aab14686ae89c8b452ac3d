@@ -16,6 +16,24 @@
       "message": "Can you provide an input (timestamp104 bytes) and output (ISO-8601 String) as well for better understanding?",
       "revId": "64e18ddbd4dcf3e213aab14686ae89c8b452ac3d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb400c53_bbcb78fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-08-24T08:18:09Z",
+      "side": 1,
+      "message": "Sure, here\u0027s a concrete example.\n\nInput (13 bytes, wire order):\n  4A 01  40 E2 01  2D 1E 0F 14 08  EA 07  00\n\nDecoded fields (per DSP0240 v1.2.0 §2.5):\n  UTC offset   : value[0..1]  LE \u003d 0x014A \u003d  330 min \u003d +05:30\n  Microseconds : value[2..4]  LE \u003d 0x01E240 \u003d 123456\n  Seconds      : value[5]         \u003d 0x2D \u003d 45\n  Minutes      : value[6]         \u003d 0x1E \u003d 30\n  Hours        : value[7]         \u003d 0x0F \u003d 15\n  Day          : value[8]         \u003d 0x14 \u003d 20\n  Month        : value[9]         \u003d 0x08 \u003d 8\n  Year         : value[10..11] LE \u003d 0x07EA \u003d 2026\n  Time res     : value[12] \u0026 0x0F \u003d 0 (valid)\n\nOutput ISO-8601:\n  2026-08-20T15:30:45.123456+05:30\n\nSpecial cases:\n- If value[12] \u0026 0x0F \u003d\u003d 15 (unknown time resolution),\n  the field prints \"\u003cunknown\u003e\".\n- If length !\u003d 13 bytes, the field prints\n  \"\u003cmalformed: expected 13 bytes, got N\u003e\".",
+      "parentUuid": "9ebda012_9f39482d",
+      "revId": "64e18ddbd4dcf3e213aab14686ae89c8b452ac3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
