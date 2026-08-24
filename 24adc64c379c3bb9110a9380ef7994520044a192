@@ -126,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6204c9bd_22f3af5c",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-08-24T14:22:38Z",
+      "side": 1,
+      "message": "We could also \u0027fix\u0027 it by simply copy-pasting all the things in\nlibpldm++ in `pldm::fw_update` into libpldm++ `pldm::fwup` or similar namespace and creating updated code there, without directly removing the old symbols, giving users time to migrate.\n\nI doubt there is many users but that\u0027s an option too.\n\nupsides:\n- also solves the name collisions with pldm repo\n\ndownsides:\n- the amount of code and bloat this introduces\n- whole entire implementation probably needs copied\n- need to keep track of it to remove the old symbols in later releases.\n\n\nIf we go with a simple ABI break and change existing code it will be easier for us but harder on users (if there are any besides the fw update code in openbmc).\n\n\nWhichever way we go we could use this opportunity to get a few other changes done as well:\n- record the package format version (pldm Package parser had this and used it in d ebug prints, see `fw-update/update_manager.cpp`)\n- record any other fields that are missing\n\n@andrew@codeconstruct.com.au which option do you want to see? Or should i push both of these for evaluation?",
+      "parentUuid": "ff570438_57ff5d7e",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c78cfdf5_a8dbaf40",
         "filename": "fw-update/package_parser.cpp",
         "patchSetId": 11
@@ -278,6 +296,24 @@
       "side": 1,
       "message": "No what I meant was that does libpldmutils doesn\u0027t require libpldmcpp",
       "parentUuid": "8c431394_d25fe60c",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70705704_8e099907",
+        "filename": "meson.build",
+        "patchSetId": 11
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-08-24T14:22:38Z",
+      "side": 1,
+      "message": "Sorry, i misunderstood your original comment. Removed the dependency.",
+      "parentUuid": "54ccb351_28501fe8",
       "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
