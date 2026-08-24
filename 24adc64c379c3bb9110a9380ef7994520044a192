@@ -262,6 +262,24 @@
       "parentUuid": "a449c5fd_62266439",
       "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54ccb351_28501fe8",
+        "filename": "meson.build",
+        "patchSetId": 11
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-24T06:02:02Z",
+      "side": 1,
+      "message": "No what I meant was that does libpldmutils doesn\u0027t require libpldmcpp",
+      "parentUuid": "8c431394_d25fe60c",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
