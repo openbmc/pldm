@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faff5b44_16b1bd50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-24T10:44:49Z",
+      "side": 1,
+      "message": "Please mentions unmerged patches that need to be cherry-picked for this machine image to work.",
+      "range": {
+        "startLine": 22,
+        "startChar": 45,
+        "endLine": 22,
+        "endChar": 56
+      },
+      "revId": "254490c6083775fd9792e38ae83ea977c997c68c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba3b0255_976d97fa",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-24T10:44:49Z",
+      "side": 1,
+      "message": "nit: should this be error?",
+      "range": {
+        "startLine": 123,
+        "startChar": 60,
+        "endLine": 123,
+        "endChar": 73
+      },
+      "revId": "254490c6083775fd9792e38ae83ea977c997c68c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6803e339_d9d14747",
+        "filename": "common/utils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-24T10:44:49Z",
+      "side": 1,
+      "message": "We should make sure that the logs in this patch and https://gerrit.openbmc.org/c/openbmc/pldm/+/91788 follow similar patterns.",
+      "revId": "254490c6083775fd9792e38ae83ea977c997c68c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
