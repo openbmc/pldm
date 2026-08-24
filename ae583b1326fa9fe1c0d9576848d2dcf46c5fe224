@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "647e23dc_a774659e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-08-24T14:28:13Z",
+      "side": 1,
+      "message": "`punished` is a strong word. pldm change is being proposed because it is not ABI stable and easier to make these changes here.\n\nDo you see another solution which would be better than this change to achieve the goal of having a common implementation.\n\nYour comment seems valid but how can i resolve it?",
+      "parentUuid": "a5728519_733f03f4",
+      "revId": "ae583b1326fa9fe1c0d9576848d2dcf46c5fe224",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7194c875_431be3b9",
         "filename": "/COMMIT_MSG",
         "patchSetId": 7
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-24T09:43:14Z",
       "side": 1,
       "message": "I would suggest moving them to a sub-namespace instead of prefixing words. \n\nSomething like this \n\n```\n// common/types.hpp\nnamespace pldm::fw_update::pkg {\n    using DescriptorData \u003d std::vector\u003cuint8_t\u003e;\n    using FirmwareDeviceIDRecord \u003d std::tuple\u003c...\u003e;\n    using ComponentImageInfo \u003d std::tuple\u003c...\u003e;\n}\n```",
+      "revId": "ae583b1326fa9fe1c0d9576848d2dcf46c5fe224",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "302e3706_6e4d3cf4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-08-24T14:28:13Z",
+      "side": 1,
+      "message": "right, that solves it better and avoids future problems. `pkg` namespace is short enough to be practical. \n\nChanged it to use `pldm::fw_update::pkg` namespace.",
+      "parentUuid": "7194c875_431be3b9",
       "revId": "ae583b1326fa9fe1c0d9576848d2dcf46c5fe224",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
