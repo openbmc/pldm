@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e31ce7c_b6b29eca",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-24T05:55:12Z",
+      "side": 1,
+      "message": "All 4 new tests cover the success path only. Worth adding a decode-failure test like FindStateSensorPDR has.",
+      "revId": "b15d16614ff2ed3dd3a3f7c3477873d257c6db12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f975d093_7ffd611f",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-24T05:55:12Z",
+      "side": 1,
+      "message": "for (auto pdr : pdrs) copies the whole vector each iteration. Suggest const auto\u0026 instead.",
+      "revId": "b15d16614ff2ed3dd3a3f7c3477873d257c6db12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6c24d47_0f0619c7",
+        "filename": "common/utils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-24T05:55:12Z",
+      "side": 1,
+      "message": "This log message is identical to the one in findStateSensorPDR(). Adding the function name would help distinguish them.",
+      "revId": "b15d16614ff2ed3dd3a3f7c3477873d257c6db12",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
