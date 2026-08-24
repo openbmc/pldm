@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fe12e28_2120b1e1",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-24T07:39:07Z",
+      "side": 1,
+      "message": "State and numeric sensor loops share the same time budget — if numeric fills it, state sensors get zero turns that cycle.",
+      "revId": "5df90cfc3d8c5101e8b8de04925f98a7f37104ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cc789b_c7ee8244",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-24T07:39:07Z",
+      "side": 1,
+      "message": "terminus is a reference, and this patch adds two more co_await points. If the tid gets erased mid-await, terminus dangles. initTerminus() already fixes this with a local shared_ptr copy — worth doing the same here?",
+      "revId": "5df90cfc3d8c5101e8b8de04925f98a7f37104ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7727ec3b_04b354f5",
+        "filename": "platform-mc/test/sensor_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-24T07:39:07Z",
+      "side": 1,
+      "message": "All 6 new tests use a single sensor — none cover multiple sensors competing for the budget. Worth adding one.",
+      "revId": "5df90cfc3d8c5101e8b8de04925f98a7f37104ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
