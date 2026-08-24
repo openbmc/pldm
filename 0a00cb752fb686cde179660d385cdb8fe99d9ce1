@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8015fff4_249a125c",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-24T06:03:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1152425_31e1cc74",
+      "range": {
+        "startLine": 31,
+        "startChar": 38,
+        "endLine": 31,
+        "endChar": 70
+      },
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3c31721_781f0c4d",
@@ -59,6 +83,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49396161_eb654964",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-24T06:03:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efda08c1_b73673c2",
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02e5a936_23633604",
@@ -72,6 +114,30 @@
       "writtenOn": "2026-08-04T10:31:27Z",
       "side": 1,
       "message": "According to the on-flight PDI patch I have found(which I believe that you are referring to this as well)\n\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/81694\n\nI noticed that the property name should be `\"CurrentSize\"` instead of `\"Size\"`.",
+      "range": {
+        "startLine": 153,
+        "startChar": 46,
+        "endLine": 153,
+        "endChar": 51
+      },
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cdfe017_8facc93a",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-24T06:03:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02e5a936_23633604",
       "range": {
         "startLine": 153,
         "startChar": 46,
@@ -105,6 +171,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee0736e2_ce06f7e8",
+        "filename": "pldmtool/pldm_file_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-24T06:03:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc1f5a49_f88bfc31",
+      "range": {
+        "startLine": 362,
+        "startChar": 36,
+        "endLine": 362,
+        "endChar": 73
+      },
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76f15561_f60c318e",
@@ -118,6 +208,24 @@
       "writtenOn": "2026-08-04T14:17:15Z",
       "side": 1,
       "message": "I think it is better to split File descriptor PDR parsing and File commands to two separate commits",
+      "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "482edb19_74fa3875",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2073,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-24T06:03:54Z",
+      "side": 1,
+      "message": "agreed. I will split them",
+      "parentUuid": "76f15561_f60c318e",
       "revId": "0a00cb752fb686cde179660d385cdb8fe99d9ce1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
