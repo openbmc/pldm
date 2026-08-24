@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "123c3d74_6c12d204",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-08-24T11:05:03Z",
+      "side": 1,
+      "message": "Could you confirm how the identical-image case is represented in\ncomponentUpdateStatus? Since activateFirmware() treats\nComponentUpdateStatus::Failed as a device-level failure, the skipped path must not record the component as Failed. The test should verify that one skipped component plus one successfully applied component reports overall success.",
+      "range": {
+        "startLine": 21,
+        "startChar": 57,
+        "endLine": 21,
+        "endChar": 65
+      },
+      "revId": "1014e9dd1f02097fc2ad208901c3d1d3b5fc6aac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
