@@ -16,6 +16,23 @@
       "message": "nit: `pldm` is being punished for an issue it didn\u0027t introduce? 😄",
       "revId": "ae583b1326fa9fe1c0d9576848d2dcf46c5fe224",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7194c875_431be3b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-24T09:43:14Z",
+      "side": 1,
+      "message": "I would suggest moving them to a sub-namespace instead of prefixing words. \n\nSomething like this \n\n```\n// common/types.hpp\nnamespace pldm::fw_update::pkg {\n    using DescriptorData \u003d std::vector\u003cuint8_t\u003e;\n    using FirmwareDeviceIDRecord \u003d std::tuple\u003c...\u003e;\n    using ComponentImageInfo \u003d std::tuple\u003c...\u003e;\n}\n```",
+      "revId": "ae583b1326fa9fe1c0d9576848d2dcf46c5fe224",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
