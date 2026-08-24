@@ -35,6 +35,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b77de86_d7ba07b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-08-24T10:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef5aa52e_d8a96664",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4036a4a9_5923325d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-08-24T10:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87815907_2bc2f259",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b518161_65259360",
@@ -70,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60f1cc17_dedf8e86",
+        "filename": "oem/ibm/configurations/fileTable.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-08-24T10:26:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d1d01e17_792d7934",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "421d315a_265b88bb",
@@ -87,6 +141,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd1d109a_27a897e1",
+        "filename": "oem/ibm/service_files/pldm-create-phyp-security.service",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-08-24T10:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "421d315a_265b88bb",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3af197db_41090228",
@@ -100,6 +172,24 @@
       "writtenOn": "2026-08-05T14:51:37Z",
       "side": 1,
       "message": "Remove the trailing \"/\" at the end",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38031a36_a83a7afa",
+        "filename": "oem/ibm/service_files/scripts/create-PHYP-SECURITY-file",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-08-24T10:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3af197db_41090228",
       "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -152,6 +242,24 @@
       "writtenOn": "2026-08-05T14:51:37Z",
       "side": 1,
       "message": "$(stat -c%s \"$PHYP_SECURITY\") is being redundantly in 4 places. Is it possible to optimise and call it once ?",
+      "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfbf0dfb_3f1a4be2",
+        "filename": "oem/ibm/service_files/scripts/create-PHYP-SECURITY-file",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-08-24T10:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07d6fc86_936a2150",
       "revId": "163934cc59297b0ccb2b263a3fba5cd9c3f5a341",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
