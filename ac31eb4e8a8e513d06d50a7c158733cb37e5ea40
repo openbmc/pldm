@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "450e14e3_1c0812bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-25T09:24:14Z",
+      "side": 1,
+      "message": "pls mention the version of the DMTF spec too",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d3923a2_f592dd17",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-25T09:24:14Z",
+      "side": 1,
+      "message": "same here. pls specify version of the DMTF spec used or referred to.",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b90a93a1_d8125cef",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-25T09:24:14Z",
+      "side": 1,
+      "message": "I would suggest renaming one of them to improve readability.",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94025b17_e462999c",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-25T09:24:14Z",
+      "side": 1,
+      "message": "some unit test coverage would be good",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a3dd00f_4e4d5bb5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-25T09:24:14Z",
+      "side": 1,
+      "message": "This is dead code.\n\n`bool requiresOperatorAction(const std::bitset\u003c16\u003e\u0026 agg)` returns everything except `actMethodSelfContained` so this part of the condition will never be reached.",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
