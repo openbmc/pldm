@@ -16,6 +16,23 @@
       "message": "I see this was removed as part of this commit: https://github.com/openbmc/pldm/commit/9560a2b9bcc34c3553aa1e716b8ec810bb3cc020#diff-30d8f6be6320feeacf686be94f48c70869b52630e01ea625f0f15adc0d57c3e4\n\nI had to spend time to find why my pldm is breaking after checking out to latest.",
       "revId": "b094150813569b069cc12e995a1133f4b0060c04",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abeb153d_fc7a07da",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-25T06:27:15Z",
+      "side": 0,
+      "message": "https://github.com/openbmc/pldm/blob/dff776ef7887ef64a67b39426607bb3b4f1ac500/fw-update/item_update_manager.cpp#L86\n\nYou might have to remove this too",
+      "revId": "b094150813569b069cc12e995a1133f4b0060c04",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
