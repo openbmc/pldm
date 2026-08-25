@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e17600b3_1ba9ce9a",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-25T02:23:31Z",
+      "side": 1,
+      "message": "Thanks for acknowledging this.\nInitially, I thought we can fixes this by enlarging the time budget.\n\nHowever, that might be making the polling interval become too large and still most of the time were spent on numeric sensor.\n\nAt the end, I decided to use separated time pool for them so that the 2 issues get fixed together.",
+      "parentUuid": "4fe12e28_2120b1e1",
+      "revId": "5df90cfc3d8c5101e8b8de04925f98a7f37104ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64cc789b_c7ee8244",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "038c8490_84df249a",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-25T02:23:31Z",
+      "side": 1,
+      "message": "Done, thanks for mentioning this.",
+      "parentUuid": "64cc789b_c7ee8244",
+      "revId": "5df90cfc3d8c5101e8b8de04925f98a7f37104ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7727ec3b_04b354f5",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-08-24T07:39:07Z",
       "side": 1,
       "message": "All 6 new tests use a single sensor — none cover multiple sensors competing for the budget. Worth adding one.",
+      "revId": "5df90cfc3d8c5101e8b8de04925f98a7f37104ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b68d6b_80fb0687",
+        "filename": "platform-mc/test/sensor_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-25T02:23:31Z",
+      "side": 1,
+      "message": "Sure, I have added 2 more for it.",
+      "parentUuid": "7727ec3b_04b354f5",
       "revId": "5df90cfc3d8c5101e8b8de04925f98a7f37104ea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
