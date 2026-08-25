@@ -1,0 +1,10 @@
+Code-Review+1: Mayank Metha D <mayank.metha@intel.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Tan Siewert <tan@siewert.io>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Tue, 25 Aug 2026 05:13:34 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/92394
+Comments-Total: 3
+Project: openbmc/pldm
+Branch: refs/heads/master
