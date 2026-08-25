@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7ac13f8_37816f61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-08-25T09:06:20Z",
+      "side": 1,
+      "message": "depending on how we fix the issues found with current libpldm++ API we may end up not needing this change, setting it as WIP for now",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1b09d819_377cacb0",
         "filename": "fw-update/package_parser.hpp",
         "patchSetId": 8
