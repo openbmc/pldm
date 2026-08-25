@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae46db22_1e17a1b6",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-25T05:49:21Z",
+      "side": 1,
+      "message": "This needs an update to fix build failure (same in other places)\n\n ref: https://github.com/openbmc/sdbusplus/commit/eca33ec369c98ba7b759a63f008e2b6fc5c3fff2\n```suggestion\n    sdbusplus::object_path objPath; //!\u003c File object path\n```",
+      "revId": "e82db10db5a66aa38d86e213db96e74a8bc1a1c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
