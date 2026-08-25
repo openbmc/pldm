@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f99c23fb_a538f37e",
+        "filename": "platform-mc/manager.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-08-25T07:01:36Z",
+      "side": 1,
+      "message": "Should we mention that string point by return value will become invalid if Terminus is removed?",
+      "revId": "a450497c9fdc547990626649fba5e054e73095d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
