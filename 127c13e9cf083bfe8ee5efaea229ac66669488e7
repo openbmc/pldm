@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fe3bda1_8e4043fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-25T01:16:47Z",
+      "side": 1,
+      "message": "Hi @deepak.kodihalli.83@gmail.com @manojkiran.eda@gmail.com @thu@os.amperecomputing.com, could you please help review this patch when you have a chance? Thanks.",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
