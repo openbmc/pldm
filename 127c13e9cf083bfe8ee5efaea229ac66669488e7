@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc539e4_34292321",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-25T14:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54aa9811_6db03fb5",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42ed10d1_1efc08bd",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-08-25T07:40:08Z",
       "side": 1,
       "message": "nit: Please set a default",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ce6cd3_3c7189d1",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-25T14:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42ed10d1_1efc08bd",
       "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4078614_f8b1465e",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-25T14:06:52Z",
+      "side": 1,
+      "message": "removed.",
+      "parentUuid": "f1ce14a6_f26bfbab",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be2039a3_2c111d03",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-08-25T07:40:08Z",
       "side": 1,
       "message": "Where is this boolean being set to true?",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5905aa4_cbf143c7",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-25T14:06:52Z",
+      "side": 1,
+      "message": "stopSensorPollingDuringUpdate(condition.stopSensorPolling)\n\ncondition is the per-device ComponentCondition passed into ItemUpdateManager\u0027s constructor, sourced from the parsed JSON config\u0027s \"StopSensorPolling\" field .",
+      "parentUuid": "be2039a3_2c111d03",
       "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -103,6 +175,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a374aba_59d7a21d",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-25T14:06:52Z",
+      "side": 1,
+      "message": "protected so AggregateUpdateManager::createUpdateManager() can read the inherited member directly to forward it into each ItemUpdateManager it creates — private would block that derived-class access.",
+      "parentUuid": "e264425d_847e8df8",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0e6e447_7b132d4b",
@@ -116,6 +206,24 @@
       "writtenOn": "2026-08-25T07:40:08Z",
       "side": 1,
       "message": "We should ideally be reverting back to the state before the update instead of resuming unconditionally",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10948022_c0172a91",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1002253
+      },
+      "writtenOn": "2026-08-25T14:06:52Z",
+      "side": 1,
+      "message": "I changed it to simply pause the sensor polling timer without destroying any\ntracked availability state before the update, and then resume the sensor\npolling timer afterward. It seems that resuming the sensor polling timer works\nfine, but please let me know if I have missed any cases. Thanks.",
+      "parentUuid": "f0e6e447_7b132d4b",
       "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
