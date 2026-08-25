@@ -16,6 +16,108 @@
       "message": "Hi @deepak.kodihalli.83@gmail.com @manojkiran.eda@gmail.com @thu@os.amperecomputing.com, could you please help review this patch when you have a chance? Thanks.",
       "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54aa9811_6db03fb5",
+        "filename": "fw-update/condition_collector.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T07:40:08Z",
+      "side": 1,
+      "message": "log doesn\u0027t follow phosphor-logging guideline https://github.com/openbmc/docs/blob/master/anti-patterns.md#ill-defined-data-structuring-in-lg2-message-strings",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ed10d1_1efc08bd",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T07:40:08Z",
+      "side": 1,
+      "message": "nit: Please set a default",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1ce14a6_f26bfbab",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T07:40:08Z",
+      "side": 1,
+      "message": "nit: Where is this include being used?",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be2039a3_2c111d03",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T07:40:08Z",
+      "side": 1,
+      "message": "Where is this boolean being set to true?",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e264425d_847e8df8",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T07:40:08Z",
+      "side": 1,
+      "message": "nit: Why use protected instead of private?",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0e6e447_7b132d4b",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T07:40:08Z",
+      "side": 1,
+      "message": "We should ideally be reverting back to the state before the update instead of resuming unconditionally",
+      "revId": "127c13e9cf083bfe8ee5efaea229ac66669488e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
