@@ -35,6 +35,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45b2b22e_9c0fad5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T10:17:05Z",
+      "side": 1,
+      "message": "I believe we should be achieving this using MessageRegistries in general without having to change an internal D-Bus property",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b90a93a1_d8125cef",
@@ -71,6 +88,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe2f3061_66dbaea1",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T10:17:05Z",
+      "side": 1,
+      "message": "This doesn\u0027t take into account that multiple bits can be set at the same time. If both the bits for ACPowerCycle and SelfContained are set for all the devices, we would default to ACPowerCycle",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a3dd00f_4e4d5bb5",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 2
@@ -82,6 +116,40 @@
       "writtenOn": "2026-08-25T09:24:14Z",
       "side": 1,
       "message": "This is dead code.\n\n`bool requiresOperatorAction(const std::bitset\u003c16\u003e\u0026 agg)` returns everything except `actMethodSelfContained` so this part of the condition will never be reached.",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cffd35d4_2be03940",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T10:17:05Z",
+      "side": 1,
+      "message": "We currently don\u0027t publish any event saying that there the updated versions are active. Any successful update after this update would leave a stale event implying a manual activation is still required",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "655e8d5d_70f4f2d6",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-25T10:17:05Z",
+      "side": 1,
+      "message": "Bmcweb will currently leave the update task\u0027s TaskState at \"Stopping\" on Redfish without ever reaching a completion state",
       "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
