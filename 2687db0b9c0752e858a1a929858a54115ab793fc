@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb340af1_67c7ea1f",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-26T22:05:56Z",
+      "side": 1,
+      "message": "`descriptors` is const, move this out of the loop",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be3045af_8d090cd1",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-26T22:05:56Z",
+      "side": 1,
+      "message": "nit: Use pkg::Descriptors instead of the vector type",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2899214_e5772a5a",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-26T22:05:56Z",
+      "side": 1,
+      "message": "nit: Same as above",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cb9d9c4_f598fc65",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-08-26T22:05:56Z",
+      "side": 1,
+      "message": "Can we use std::for_each so it looks cleaner?",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
