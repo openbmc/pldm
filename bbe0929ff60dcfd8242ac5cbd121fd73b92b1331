@@ -16,6 +16,24 @@
       "message": "When a TLV bounds check sets malformed \u003d true, the loop exits but execution still reaches this DisplayInJson() call and emits the partially parsed frutable. Could we suppress the output or return a failure when malformed is true? Otherwise a malformed response may appear to callers as a valid partial FRU tabl",
       "revId": "bbe0929ff60dcfd8242ac5cbd121fd73b92b1331",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "577f41f0_717bbaa4",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-26T10:03:04Z",
+      "side": 1,
+      "message": "I have made it so that when malformed, we output a error and the partial data is not added to the output. This way they can know there was malformed data from the error while also making sure that malformed content isn\u0027t added to the output",
+      "parentUuid": "1fadae1e_a091b690",
+      "revId": "bbe0929ff60dcfd8242ac5cbd121fd73b92b1331",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
