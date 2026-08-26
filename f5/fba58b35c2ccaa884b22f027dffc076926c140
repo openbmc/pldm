@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Meghana Vangapandu <meghanav@ami.com>
+Code-Review+2: Deepak Kodihalli <deepak.kodihalli.83@gmail.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Wed, 26 Aug 2026 13:57:42 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/93770
+Comments-Total: 1
+Project: openbmc/pldm
+Branch: refs/heads/master
