@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8283c25b_b28875d4",
+        "filename": "platform-mc/entity.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-26T02:37:34Z",
+      "side": 1,
+      "message": "Pre-existing line, but this patch lets Presence actually drive this interface now — didn\u0027t matter before, races now. Worth removing?",
+      "revId": "20ef15ea7bbef9cc93e03cd749767df78e76ec92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b31d529_e9582371",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-26T02:37:34Z",
+      "side": 1,
+      "message": "This is new — present(true) is hardcoded, then the same interface is shared with the Presence state set, racing against the real value.",
+      "revId": "20ef15ea7bbef9cc93e03cd749767df78e76ec92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f44f936c_77ef8253",
+        "filename": "platform-mc/test/state_set_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-26T02:37:34Z",
+      "side": 1,
+      "message": "New tests only cover the classes in isolation — no test exercises the actual Entity/Terminus wiring. No entity_test.cpp, and terminus_test.cpp has zero present() coverage.",
+      "revId": "20ef15ea7bbef9cc93e03cd749767df78e76ec92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
