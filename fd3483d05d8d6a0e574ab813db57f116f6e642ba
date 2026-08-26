@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1646f0_d995bdb7",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-26T02:42:00Z",
+      "side": 1,
+      "message": "This is the 3rd copy of this log block (Health and Presence already have it). Worth extracting into a shared helper?",
+      "revId": "fd3483d05d8d6a0e574ab813db57f116f6e642ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2c4a384_57b067e0",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-26T02:42:00Z",
+      "side": 1,
+      "message": "LinkStatus defaults to Connected, while Functional and Present both default to false. Was that intentional?",
+      "revId": "fd3483d05d8d6a0e574ab813db57f116f6e642ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd3abec0_1d0ac007",
+        "filename": "platform-mc/test/state_set_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1002810
+      },
+      "writtenOn": "2026-08-26T02:42:00Z",
+      "side": 1,
+      "message": "This test never checks the default value. Worth adding that check?",
+      "revId": "fd3483d05d8d6a0e574ab813db57f116f6e642ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
