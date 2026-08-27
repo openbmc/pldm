@@ -15,6 +15,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 
 namespace pldm
 {
@@ -31,12 +32,18 @@ using namespace pldm::pdr;
 class StateSetBase
 {
   public:
-    StateSetBase() = default;
+    StateSetBase() = delete;
     StateSetBase(const StateSetBase&) = delete;
     StateSetBase& operator=(const StateSetBase&) = delete;
     StateSetBase(StateSetBase&&) = delete;
     StateSetBase& operator=(StateSetBase&&) = delete;
     virtual ~StateSetBase() = default;
+
+    /** @brief Constructor
+     *
+     *  @param[in] path - D-Bus object path of the entity
+     */
+    explicit StateSetBase(const std::string& path) : path(path) {}
 
     /** @brief Set the property of the interface from the state which a
      *         component sensor of the state set reports
@@ -44,6 +51,26 @@ class StateSetBase
      *  @param[in] presentState - the presentState of GetStateSensorReadings
      */
     virtual void setPresentState(uint8_t presentState) = 0;
+
+  protected:
+    /** @brief Whether a state the state set does not define is to be logged
+     *
+     *  @details A terminus which reports a state the state set does not
+     *           define keeps reporting it, so the entity is logged once.
+     *
+     *  @return true for the first such state, false for the ones which follow
+     */
+    bool logUnknownStateOnce()
+    {
+        return !std::exchange(unknownStateLogged, true);
+    }
+
+    /** @brief The D-Bus object path of the entity */
+    std::string path;
+
+  private:
+    /** @brief Whether a state the state set does not define was logged */
+    bool unknownStateLogged = false;
 };
 
 using InventoryItemIntf = sdbusplus::server::object_t<
@@ -93,7 +120,7 @@ class StateSetHealthState : public StateSetBase
      *  @param[in] path - D-Bus object path of the entity
      */
     StateSetHealthState(sdbusplus::bus_t& bus, const std::string& path) :
-        interface(bus, path.c_str()), path(path)
+        StateSetBase(path), interface(bus, path.c_str())
     {}
 
     /** @brief Creator of the interface, `StateSetCreator` of the state set */
@@ -115,12 +142,6 @@ class StateSetHealthState : public StateSetBase
   private:
     /** @brief The interface which carries the health of the entity */
     OperationalStatusIntf interface;
-
-    /** @brief The D-Bus object path of the entity */
-    std::string path;
-
-    /** @brief Whether a state the state set does not define was logged */
-    bool unknownStateLogged = false;
 };
 
 /** @class StateSetPresence
@@ -145,7 +166,7 @@ class StateSetPresence : public StateSetBase
      */
     StateSetPresence(const std::string& path,
                      std::shared_ptr<InventoryItemIntf> itemIntf) :
-        path(path), interface(std::move(itemIntf))
+        StateSetBase(path), interface(std::move(itemIntf))
     {}
 
     /** @brief Creator of the interface, `StateSetCreator` of the state set */
@@ -165,14 +186,8 @@ class StateSetPresence : public StateSetBase
     }
 
   private:
-    /** @brief The D-Bus object path of the entity */
-    std::string path;
-
     /** @brief The interface which carries the presence of the entity */
     std::shared_ptr<InventoryItemIntf> interface;
-
-    /** @brief Whether a state the state set does not define was logged */
-    bool unknownStateLogged = false;
 };
 
 using LinkStatusIntf = sdbusplus::server::object_t<
@@ -202,7 +217,7 @@ class StateSetLinkState : public StateSetBase
      *  @param[in] path - D-Bus object path of the entity
      */
     StateSetLinkState(sdbusplus::bus_t& bus, const std::string& path) :
-        interface(bus, path.c_str()), path(path)
+        StateSetBase(path), interface(bus, path.c_str())
     {}
 
     /** @brief Creator of the interface, `StateSetCreator` of the state set */
@@ -224,12 +239,6 @@ class StateSetLinkState : public StateSetBase
   private:
     /** @brief The interface which carries the link status of the entity */
     LinkStatusIntf interface;
-
-    /** @brief The D-Bus object path of the entity */
-    std::string path;
-
-    /** @brief Whether a state the state set does not define was logged */
-    bool unknownStateLogged = false;
 };
 
 using PerformanceIntf = sdbusplus::server::object_t<
@@ -258,7 +267,7 @@ class StateSetPerformance : public StateSetBase
      *  @param[in] path - D-Bus object path of the entity
      */
     StateSetPerformance(sdbusplus::bus_t& bus, const std::string& path) :
-        interface(bus, path.c_str()), path(path)
+        StateSetBase(path), interface(bus, path.c_str())
     {}
 
     /** @brief Creator of the interface, `StateSetCreator` of the state set */
@@ -280,12 +289,6 @@ class StateSetPerformance : public StateSetBase
   private:
     /** @brief The interface which carries the performance of the entity */
     PerformanceIntf interface;
-
-    /** @brief The D-Bus object path of the entity */
-    std::string path;
-
-    /** @brief Whether a state the state set does not define was logged */
-    bool unknownStateLogged = false;
 };
 
 /** @brief The state sets which have a D-Bus interface.
