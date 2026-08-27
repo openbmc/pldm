@@ -23,6 +23,7 @@ exec::task<int> PlatformManager::initTerminus()
      * co_await point, which would invalidate range-for iterators and references
      * into the map, causing use-after-free. */
     std::vector<pldm_tid_t> tids;
+    tids.reserve(termini.size());
     for (auto& [tid, _] : termini)
     {
         tids.push_back(tid);
@@ -330,6 +331,10 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
     uint8_t transferCrc = 0;
 
     terminus->pdrs.clear();
+    if (recordCount != std::numeric_limits<uint32_t>::max())
+    {
+        terminus->pdrs.reserve(recordCount);
+    }
     uint32_t receivedRecordCount = 0;
 
     do
@@ -351,8 +356,8 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
         if (transferFlag == PLDM_PLATFORM_TRANSFER_START_AND_END)
         {
             // single-part
-            terminus->pdrs.emplace_back(std::vector<uint8_t>(
-                recvBuf.begin(), recvBuf.begin() + responseCnt));
+            terminus->pdrs.emplace_back(recvBuf.begin(),
+                                        recvBuf.begin() + responseCnt);
             recordHndl = nextRecordHndl;
         }
         else
@@ -361,8 +366,12 @@ exec::task<int> PlatformManager::getPDRs(std::shared_ptr<Terminus> terminus)
             uint32_t receivedRecordSize = responseCnt;
             auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(recvBuf.data());
             uint16_t recordChgNum = le16toh(pdrHdr->record_change_num);
-            std::vector<uint8_t> receivedPdr(recvBuf.begin(),
-                                             recvBuf.begin() + responseCnt);
+            std::vector<uint8_t> receivedPdr;
+            if (largestRecordSize != std::numeric_limits<uint32_t>::max())
+            {
+                receivedPdr.reserve(largestRecordSize);
+            }
+            receivedPdr.assign(recvBuf.begin(), recvBuf.begin() + responseCnt);
             do
             {
                 rc = co_await getPDR(
@@ -650,6 +659,14 @@ exec::task<int> PlatformManager::eventMessageSupported(
         co_return rc;
     }
 
+    if (responseLen < PLDM_EVENT_MESSAGE_SUPPORTED_MIN_RESP_BYTES)
+    {
+        lg2::error(
+            "Invalid response length for EventMessageSupported for terminus ID {TID}",
+            "TID", tid);
+        co_return PLDM_ERROR_INVALID_LENGTH;
+    }
+
     uint8_t completionCode = 0;
     uint8_t eventClassCount = static_cast<uint8_t>(responseLen) -
                               PLDM_EVENT_MESSAGE_SUPPORTED_MIN_RESP_BYTES;
@@ -840,7 +857,8 @@ exec::task<int> PlatformManager::getFRURecordTables(
     std::vector<uint8_t> recvBuf(PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES);
 
     size_t fruLength = 0;
-    std::vector<uint8_t> receivedFru(0);
+    std::vector<uint8_t> receivedFru;
+    receivedFru.reserve(PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES);
     do
     {
         auto rc = co_await getFRURecordTable(

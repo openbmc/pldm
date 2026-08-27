@@ -35,7 +35,7 @@ class SensorManager
     SensorManager(SensorManager&&) = delete;
     SensorManager& operator=(const SensorManager&) = delete;
     SensorManager& operator=(SensorManager&&) = delete;
-    virtual ~SensorManager() = default;
+    virtual ~SensorManager();
 
     explicit SensorManager(sdeventplus::Event& event,
                            TerminusManager& terminusManager,
