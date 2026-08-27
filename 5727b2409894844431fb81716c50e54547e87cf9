@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcaf122c_779ff551",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:39:00Z",
+      "side": 1,
+      "message": "Please add testing details.",
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "659418fe_f1a9329a",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:39:00Z",
+      "side": 1,
+      "message": "Should we update the design doc on how the polling interval for state sensors is determined? Also why do we prevent polling instead of events?",
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14661a3f_b6b380e0",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:39:00Z",
+      "side": 1,
+      "message": "Any impact to numeric sensor refresh times?",
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbad1f38_cae1426c",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:39:00Z",
+      "side": 1,
+      "message": "Better to move this to a new function.",
+      "range": {
+        "startLine": 305,
+        "startChar": 1,
+        "endLine": 381,
+        "endChar": 0
+      },
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
