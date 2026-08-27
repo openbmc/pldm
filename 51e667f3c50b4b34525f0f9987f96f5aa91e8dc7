@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c37a481_551577f7",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:27:50Z",
+      "side": 1,
+      "message": "Per commit msg this commit message doesn\u0027t implement PDIs yet so do we need the getter in this patch?",
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2287a0ad_0ed12e6c",
+        "filename": "platform-mc/state_sensor.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:27:50Z",
+      "side": 1,
+      "message": "How do we test this patch if it\u0027s not creating ant state PDIs?",
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd17f2e0_be9bc1cc",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:27:50Z",
+      "side": 1,
+      "message": "Not following what this is,",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 27
+      },
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f757943f_25157d8b",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:27:50Z",
+      "side": 1,
+      "message": "Do these need to be correlated?",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 50
+      },
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7d15549_af038469",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:27:50Z",
+      "side": 1,
+      "message": "Again this is a bit confusing as the commit message says no D-Bus objects are created. If this commit adds State PDIs to entity D-Bus objects then that should be in the testing details.",
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
