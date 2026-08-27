@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a19d3c4_c7f5f154",
+        "filename": "platform-mc/entity.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T16:55:38Z",
+      "side": 1,
+      "message": "Is this used?",
+      "revId": "714e6f62e3ead11ae53848939834576788e89990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "034a548c_60fbfa49",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T16:55:38Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this return an error code?",
+      "revId": "714e6f62e3ead11ae53848939834576788e89990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4db9e5f_c52b459c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T16:55:38Z",
+      "side": 1,
+      "message": "What if these entities have associated aux names? How do those get mapped?",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 9
+      },
+      "revId": "714e6f62e3ead11ae53848939834576788e89990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
