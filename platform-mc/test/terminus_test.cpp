@@ -687,6 +687,8 @@ TEST(TerminusTest, getPldmEntityNameTest)
      * share an Inventory.Item interface still have their own name
      */
     EXPECT_EQ("Cpu", name(PLDM_ENTITY_PROC));
+    EXPECT_EQ("Dimm", name(PLDM_ENTITY_MEMORY_MODULE));
+    EXPECT_EQ("MemoryController", name(PLDM_ENTITY_MEMORY_CONTROLLER));
     EXPECT_EQ("Gpu", name(PLDM_ENTITY_GPU));
     EXPECT_EQ("Accelerator", name(PLDM_ENTITY_ACCELERATOR));
     EXPECT_EQ("Board", name(PLDM_ENTITY_BOARD));
@@ -725,6 +727,18 @@ TEST(TerminusTest, pldmEntityPortRoleTest)
     EXPECT_FALSE(
         pldm::dbus_api::isPldmEntityPortEndpoint(PLDM_ENTITY_SYS_BOARD));
     EXPECT_FALSE(pldm::dbus_api::isPldmEntityPortEndpoint(0xFFFF));
+}
+
+TEST(TerminusTest, pldmEntityContainedByTerminusTest)
+{
+    /* A memory controller is contained by a logical processor which has no
+     * D-Bus object, so the terminus contains it directly
+     */
+    EXPECT_TRUE(pldm::dbus_api::isPldmEntityContainedByTerminus(
+        PLDM_ENTITY_MEMORY_CONTROLLER));
+    EXPECT_FALSE(
+        pldm::dbus_api::isPldmEntityContainedByTerminus(PLDM_ENTITY_FAN));
+    EXPECT_FALSE(pldm::dbus_api::isPldmEntityContainedByTerminus(0xFFFF));
 }
 
 TEST(TerminusTest, addPortConnectionAssociationTest)
