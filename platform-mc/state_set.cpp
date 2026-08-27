@@ -3,8 +3,6 @@
 #include <common/utils.hpp>
 #include <phosphor-logging/lg2.hpp>
 
-#include <utility>
-
 PHOSPHOR_LOG2_USING;
 
 namespace pldm
@@ -35,10 +33,7 @@ void StateSetHealthState::setPresentState(uint8_t presentState)
         case PLDM_STATE_SET_HEALTH_STATE_LOWER_FATAL:
             break;
         default:
-            /* A terminus which reports a state the state set does not define
-             * keeps reporting it, so the entity is logged once.
-             */
-            if (!std::exchange(unknownStateLogged, true))
+            if (logUnknownStateOnce())
             {
                 lg2::error(
                     "The health state set has no state value {STATE}, so the entity on {PATH} is not functional.",
@@ -64,10 +59,9 @@ void StateSetPresence::setPresentState(uint8_t presentState)
             /* A `Present` of false is reported as a Redfish `State` of
              * `Absent`, a claim a state the state set does not define does not
              * support, so the presence keeps the value of the last reading a
-             * state value was defined for. A terminus which reports such a
-             * state keeps reporting it, so the entity is logged once.
+             * state value was defined for.
              */
-            if (!std::exchange(unknownStateLogged, true))
+            if (logUnknownStateOnce())
             {
                 lg2::error(
                     "The presence state set has no state value {STATE}, so the presence of the entity on {PATH} is left unchanged.",
@@ -94,10 +88,9 @@ void StateSetPerformance::setPresentState(uint8_t presentState)
             /* The interface carries no value for an entity the terminus
              * reports neither normal, throttled nor degraded, so the
              * performance keeps the value of the last reading a state value
-             * was defined for. A terminus which reports such a state keeps
-             * reporting it, so the entity is logged once.
+             * was defined for.
              */
-            if (!std::exchange(unknownStateLogged, true))
+            if (logUnknownStateOnce())
             {
                 lg2::error(
                     "The performance state set has no state value {STATE}, so the performance of the entity on {PATH} is left unchanged.",
@@ -120,11 +113,9 @@ void StateSetLinkState::setPresentState(uint8_t presentState)
         default:
             /* The interface carries no value for a link the terminus reports
              * neither connected nor disconnected, so the link status keeps the
-             * value of the last reading a state value was defined for. A
-             * terminus which reports such a state keeps reporting it, so the
-             * entity is logged once.
+             * value of the last reading a state value was defined for.
              */
-            if (!std::exchange(unknownStateLogged, true))
+            if (logUnknownStateOnce())
             {
                 lg2::error(
                     "The link state set has no state value {STATE}, so the link status of the entity on {PATH} is left unchanged.",
