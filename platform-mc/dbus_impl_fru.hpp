@@ -232,12 +232,14 @@ struct PldmEntityItem
  *  portEndpoint the entity types which a port may be connected to. A port is
  *  connected to the entity which contains it.
  */
-inline constexpr std::array<PldmEntityItem, 13> pldmEntityItems{{
+inline constexpr std::array<PldmEntityItem, 14> pldmEntityItems{{
     {PLDM_ENTITY_SYSTEM_CHASSIS, "Chassis", makePldmEntity<ChassisServer>,
      false, false, false},
     {PLDM_ENTITY_PROC, "Cpu", makePldmEntity<CpuServer>, true, false, false},
     {PLDM_ENTITY_MEMORY_MODULE, "Dimm", makePldmEntity<DimmServer>, false,
      false, false},
+    {PLDM_ENTITY_MEMORY_CONTROLLER, "MemoryController",
+     makePldmEntity<DimmServer>, true, false, false},
     {PLDM_ENTITY_FAN, "Fan", makePldmEntity<FanServer>, false, false, false},
     {PLDM_ENTITY_POWER_SUPPLY, "PowerSupply", makePldmEntity<PowerSupplyServer>,
      false, false, false},
