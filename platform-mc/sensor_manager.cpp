@@ -19,6 +19,30 @@ SensorManager::SensorManager(sdeventplus::Event& event,
     pollingTime(SENSOR_POLLING_TIME), manager(manager)
 {}
 
+SensorManager::~SensorManager()
+{
+    for (auto& [tid, timer] : sensorPollTimers)
+    {
+        if (timer)
+        {
+            timer->stop();
+        }
+    }
+    sensorPollTimers.clear();
+
+    for (auto& [tid, handle] : doSensorPollingTaskHandles)
+    {
+        if (handle)
+        {
+            handle->scope.request_stop();
+        }
+    }
+    doSensorPollingTaskHandles.clear();
+
+    roundRobinSensorItMap.clear();
+    availableState.clear();
+}
+
 void SensorManager::startPolling(pldm_tid_t tid)
 {
     if (!termini.contains(tid))
@@ -48,12 +72,13 @@ void SensorManager::startSensorPollTimer(pldm_tid_t tid)
 {
     try
     {
-        if (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning())
+        auto it = sensorPollTimers.find(tid);
+        if (it != sensorPollTimers.end() && it->second &&
+            !it->second->isRunning())
         {
-            sensorPollTimers[tid]->start(
-                duration_cast<std::chrono::milliseconds>(
-                    std::chrono::milliseconds(pollingTime)),
-                true);
+            it->second->start(duration_cast<std::chrono::milliseconds>(
+                                  std::chrono::milliseconds(pollingTime)),
+                              true);
         }
     }
     catch (const std::exception& e)
