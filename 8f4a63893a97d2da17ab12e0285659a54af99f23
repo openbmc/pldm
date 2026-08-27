@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d4e1fc_5cb102e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:50:15Z",
+      "side": 1,
+      "message": "Does this commit depend on/relate to the state set patches? Should this be separated out or move earlier in the series?",
+      "range": {
+        "startLine": 41,
+        "startChar": 3,
+        "endLine": 41,
+        "endChar": 10
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0e549de_665bffff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:50:15Z",
+      "side": 1,
+      "message": "Do you need to to also test corresponding Redfish?",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 2
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9938cc4_4cfc732a",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:50:15Z",
+      "side": 1,
+      "message": "How do we know this?",
+      "range": {
+        "startLine": 232,
+        "startChar": 68,
+        "endLine": 233,
+        "endChar": 46
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f04bf401_69b0bc15",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:50:15Z",
+      "side": 1,
+      "message": "Why do we need to do this?",
+      "range": {
+        "startLine": 119,
+        "startChar": 61,
+        "endLine": 120,
+        "endChar": 60
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4ace1b9_d521a75e",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:50:15Z",
+      "side": 1,
+      "message": "I think this needs some explanation in the commit message.",
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
