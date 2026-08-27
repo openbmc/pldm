@@ -669,6 +669,8 @@ TEST(TerminusTest, getPldmEntityNameTest)
      * share an Inventory.Item interface still have their own name
      */
     EXPECT_EQ("Cpu", name(PLDM_ENTITY_PROC));
+    EXPECT_EQ("Dimm", name(PLDM_ENTITY_MEMORY_MODULE));
+    EXPECT_EQ("MemoryController", name(PLDM_ENTITY_MEMORY_CONTROLLER));
     EXPECT_EQ("Gpu", name(PLDM_ENTITY_GPU));
     EXPECT_EQ("Accelerator", name(PLDM_ENTITY_ACCELERATOR));
     EXPECT_EQ("Board", name(PLDM_ENTITY_BOARD));
