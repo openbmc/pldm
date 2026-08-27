@@ -968,7 +968,20 @@ class GetPDR : public CommandInterface
         {"stateeffecter", PLDM_STATE_EFFECTER_PDR},
         {"entityassociation", PLDM_PDR_ENTITY_ASSOCIATION},
         {"frurecord", PLDM_PDR_FRU_RECORD_SET},
-        // Add other types
+        {"filedescriptor", PLDM_FILE_DESCRIPTOR_PDR},
+        {"numericsensorinit", PLDM_NUMERIC_SENSOR_INITIALIZATION_PDR},
+        {"statesensorinit", PLDM_STATE_SENSOR_INITIALIZATION_PDR},
+        {"oemunit", PLDM_OEM_UNIT_PDR},
+        {"oemstateset", PLDM_OEM_STATE_SET_PDR},
+        {"numericeffecterinit", PLDM_NUMERIC_EFFECTER_INITIALIZATION_PDR},
+        {"stateeffecterinit", PLDM_STATE_EFFECTER_INITIALIZATION_PDR},
+        {"effecteroemsemantic", PLDM_EFFECTER_OEM_SEMANTIC_PDR},
+        {"entityauxname", PLDM_ENTITY_AUXILIARY_NAMES_PDR},
+        {"oementityid", PLDM_OEM_ENTITY_ID_PDR},
+        {"interruptassociation", PLDM_INTERRUPT_ASSOCIATION_PDR},
+        {"eventlog", PLDM_EVENT_LOG_PDR},
+        {"oemdevice", PLDM_OEM_DEVICE_PDR},
+        {"oem", PLDM_OEM_PDR},
     };
 
     const std::map<uint8_t, std::string> setBaseUnit = {
