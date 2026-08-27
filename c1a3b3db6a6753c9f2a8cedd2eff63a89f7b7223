@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee007eca_9d2e5283",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-08-27T10:03:45Z",
+      "side": 1,
+      "message": "can you change the typecasting to c++ style `static_cast\u003cint\u003e(cc)`. I agree the old code has C style, but would be better to use c++ style on new changes.",
+      "revId": "c1a3b3db6a6753c9f2a8cedd2eff63a89f7b7223",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
