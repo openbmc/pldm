@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "321bf68a_b3d18d7e",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-08-27T17:57:18Z",
+      "side": 1,
+      "message": "Same questions as on the network entity patch.",
+      "revId": "f10590ba7b353987e202b297ff404639d77fcdff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
