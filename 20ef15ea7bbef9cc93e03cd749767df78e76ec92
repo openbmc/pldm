@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c0a9818_2bd40da7",
+        "filename": "platform-mc/entity.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-27T11:13:34Z",
+      "side": 1,
+      "message": "I tend to keep these lines, because some other D-Bus object might still relies on this for their redfish features.\n\nMy initial thought for this presence feature is to acknowledge whether the entity is currently absent. Keeping these lines to make created D-Bus object having `present\u003dtrue` has no harm for me, but removing these lines might.",
+      "parentUuid": "8283c25b_b28875d4",
+      "revId": "20ef15ea7bbef9cc93e03cd749767df78e76ec92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b31d529_e9582371",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44e341b8_92935f4a",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-27T11:13:34Z",
+      "side": 1,
+      "message": "I think the racing condition will not happens, because the sensor reading should arrives at runtime, while this line simply make every terminus having `present\u003dtrue` in default.\n\nIf the state sensor reads \"absent\", this property will be changed in the next updates.",
+      "parentUuid": "3b31d529_e9582371",
+      "revId": "20ef15ea7bbef9cc93e03cd749767df78e76ec92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f44f936c_77ef8253",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-08-26T02:37:34Z",
       "side": 1,
       "message": "New tests only cover the classes in isolation — no test exercises the actual Entity/Terminus wiring. No entity_test.cpp, and terminus_test.cpp has zero present() coverage.",
+      "revId": "20ef15ea7bbef9cc93e03cd749767df78e76ec92",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c8517c0_991b206a",
+        "filename": "platform-mc/test/state_set_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-27T11:13:34Z",
+      "side": 1,
+      "message": "The 2 files you mentioned will only be accessed during initialization, and for every entity being monitored for presence state set, their `present` property will be updated in the next polling interval.\n\nNot sure if we have to test such cases?\nSurely I can add those cases if you insists, please tell if you hope so.",
+      "parentUuid": "f44f936c_77ef8253",
       "revId": "20ef15ea7bbef9cc93e03cd749767df78e76ec92",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
